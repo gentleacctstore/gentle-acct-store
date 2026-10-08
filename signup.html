@@ -1,522 +1,1560 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
 
 <title>Create Account | Gentle Acct Store</title>
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<!-- GOOGLE FONT -->
+
+<link
+  rel="preconnect"
+  href="https://fonts.googleapis.com"
+>
+
+<link
+  rel="preconnect"
+  href="https://fonts.gstatic.com"
+  crossorigin
+>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+  rel="stylesheet"
+>
+
+
+<!-- FONT AWESOME -->
+
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+>
+
 
 <style>
+
+/* =========================
+   RESET
+========================= */
+
 *{
   box-sizing:border-box;
   margin:0;
   padding:0;
-  font-family:Arial,Helvetica,sans-serif;
 }
+
+
+/* =========================
+   ROOT
+========================= */
+
+:root{
+
+  --blue:#0b2d5c;
+
+  --blue-dark:#071f40;
+
+  --blue-light:#eef5fc;
+
+  --text:#10233f;
+
+  --muted:#6b7890;
+
+  --border:#dce5f0;
+
+  --white:#ffffff;
+
+}
+
+
+/* =========================
+   BODY
+========================= */
 
 body{
+
+  font-family:"Poppins",sans-serif;
+
+  background:#f7faff;
+
+  color:var(--text);
+
   min-height:100vh;
-  background:#f5f9ff;
-  color:#10213b;
+
 }
 
-header{
-  height:70px;
-  background:white;
-  border-bottom:1px solid #e3eaf3;
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+
+  width:100%;
+
+  background:var(--white);
+
+  border-bottom:1px solid #e8eef5;
+
+  position:relative;
+
+  z-index:10;
+
 }
 
-.nav{
-  height:100%;
-  max-width:1100px;
+
+.header-inner{
+
+  width:92%;
+
+  max-width:1180px;
+
   margin:auto;
-  padding:0 18px;
+
+  min-height:76px;
+
   display:flex;
+
   align-items:center;
+
   justify-content:space-between;
+
+  gap:20px;
+
 }
+
 
 .logo{
+
   display:flex;
+
   align-items:center;
-  gap:9px;
-  color:#10213b;
-  font-size:17px;
-  font-weight:800;
+
+  gap:11px;
+
+  color:var(--blue);
+
   text-decoration:none;
+
+  font-weight:800;
+
+  font-size:19px;
+
+  letter-spacing:-.3px;
+
 }
 
-.logo-box{
-  width:38px;
-  height:38px;
+
+.logo-icon{
+
+  width:40px;
+
+  height:40px;
+
   border-radius:11px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#1264e8;
+
+  background:var(--blue);
+
   color:white;
-  font-size:18px;
-  font-weight:900;
-}
 
-.logo span{
-  color:#1264e8;
-}
-
-.back{
-  text-decoration:none;
-  color:#1264e8;
-  background:#f0f6ff;
-  padding:9px 13px;
-  border-radius:9px;
-  font-size:12px;
-  font-weight:800;
-}
-
-.page{
-  min-height:calc(100vh - 70px);
   display:flex;
-  justify-content:center;
+
   align-items:center;
-  padding:35px 16px;
+
+  justify-content:center;
+
+  font-size:17px;
+
 }
+
+
+.home-link{
+
+  display:inline-flex;
+
+  align-items:center;
+
+  gap:8px;
+
+  color:var(--blue);
+
+  text-decoration:none;
+
+  font-size:13px;
+
+  font-weight:600;
+
+  border:1px solid var(--border);
+
+  padding:10px 15px;
+
+  border-radius:10px;
+
+  transition:.2s ease;
+
+}
+
+
+.home-link:hover{
+
+  background:var(--blue-light);
+
+  border-color:#c9d8e9;
+
+}
+
+
+/* =========================
+   MAIN
+========================= */
+
+.main{
+
+  min-height:calc(100vh - 76px);
+
+  padding:55px 18px 70px;
+
+  display:flex;
+
+  align-items:flex-start;
+
+  justify-content:center;
+
+}
+
+
+/* =========================
+   AUTH WRAPPER
+========================= */
+
+.auth-wrapper{
+
+  width:100%;
+
+  max-width:470px;
+
+}
+
+
+/* =========================
+   TOP INTRO
+========================= */
+
+.auth-heading{
+
+  text-align:center;
+
+  margin-bottom:28px;
+
+}
+
+
+.auth-icon{
+
+  width:58px;
+
+  height:58px;
+
+  margin:0 auto 16px;
+
+  border-radius:16px;
+
+  background:var(--blue);
+
+  color:white;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  font-size:21px;
+
+  box-shadow:0 12px 28px rgba(11,45,92,.18);
+
+}
+
+
+.auth-heading h1{
+
+  font-size:28px;
+
+  line-height:1.25;
+
+  font-weight:800;
+
+  letter-spacing:-.6px;
+
+  color:var(--blue-dark);
+
+}
+
+
+.auth-heading p{
+
+  margin-top:9px;
+
+  color:var(--muted);
+
+  font-size:13px;
+
+  line-height:1.7;
+
+}
+
+
+/* =========================
+   CARD
+========================= */
 
 .card{
-  width:100%;
-  max-width:450px;
-  background:white;
-  border:1px solid #e1e8f2;
-  border-radius:22px;
-  padding:32px 24px;
-  box-shadow:0 18px 50px rgba(20,50,90,.08);
+
+  background:var(--white);
+
+  border:1px solid #e4ebf3;
+
+  border-radius:18px;
+
+  padding:30px;
+
+  box-shadow:0 18px 45px rgba(7,31,64,.08);
+
 }
 
-.icon{
-  width:55px;
-  height:55px;
-  margin:0 auto 16px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#eaf3ff;
-  color:#1264e8;
-  border-radius:16px;
-  font-size:21px;
+
+.card-title{
+
+  font-size:20px;
+
+  font-weight:700;
+
+  color:var(--blue-dark);
+
+  margin-bottom:6px;
+
 }
 
-.title{
-  text-align:center;
-}
 
-.title h1{
-  font-size:27px;
-  color:#0b1d35;
-}
+.card-subtitle{
 
-.title p{
-  margin-top:9px;
-  color:#718096;
-  font-size:13px;
+  font-size:12.5px;
+
+  color:var(--muted);
+
   line-height:1.6;
+
+  margin-bottom:24px;
+
 }
 
-.test{
-  margin-top:15px;
-  padding:8px;
-  text-align:center;
-  border-radius:8px;
-  background:#fff8df;
-  border:1px solid #f0df9a;
-  color:#725b00;
-  font-size:10px;
-  font-weight:800;
-}
 
-form{
-  margin-top:25px;
-}
+/* =========================
+   FORM
+========================= */
 
-.field{
+.form-group{
+
   margin-bottom:17px;
+
 }
 
-label{
+
+.form-group label{
+
   display:block;
-  margin-bottom:7px;
-  font-size:12px;
-  font-weight:800;
-  color:#243650;
+
+  font-size:12.5px;
+
+  font-weight:600;
+
+  color:var(--text);
+
+  margin-bottom:8px;
+
 }
+
 
 .input-wrap{
+
   position:relative;
+
 }
+
 
 .input-icon{
+
   position:absolute;
+
   left:14px;
+
   top:50%;
+
   transform:translateY(-50%);
-  color:#7f91aa;
+
+  color:var(--blue);
+
   font-size:13px;
+
+  pointer-events:none;
+
 }
+
 
 input{
+
   width:100%;
-  height:49px;
-  border:1px solid #dbe4ef;
-  border-radius:11px;
-  padding:0 14px 0 40px;
+
+  height:50px;
+
+  padding:0 14px 0 42px;
+
+  border:1px solid var(--border);
+
+  border-radius:10px;
+
   outline:none;
-  font-size:14px;
-  color:#10213b;
+
   background:#fbfdff;
+
+  color:var(--text);
+
+  font-family:"Poppins",sans-serif;
+
+  font-size:13px;
+
+  transition:.2s ease;
+
 }
+
+
+input::placeholder{
+
+  color:#9aa7b8;
+
+}
+
 
 input:focus{
-  border-color:#1264e8;
-  box-shadow:0 0 0 3px rgba(18,100,232,.08);
+
+  border-color:var(--blue);
+
+  background:white;
+
+  box-shadow:0 0 0 3px rgba(11,45,92,.08);
+
 }
+
+
+/* =========================
+   PASSWORD NOTE
+========================= */
+
+.password-note{
+
+  margin-top:7px;
+
+  color:#8a96a7;
+
+  font-size:10.5px;
+
+}
+
+
+/* =========================
+   BUTTON
+========================= */
 
 button{
+
   width:100%;
+
   height:50px;
-  border:0;
-  border-radius:11px;
-  background:#1264e8;
+
+  border:none;
+
+  border-radius:10px;
+
+  background:var(--blue);
+
   color:white;
-  font-size:14px;
-  font-weight:800;
+
+  font-family:"Poppins",sans-serif;
+
+  font-size:13px;
+
+  font-weight:700;
+
   cursor:pointer;
+
+  margin-top:7px;
+
+  transition:.2s ease;
+
+  box-shadow:0 8px 20px rgba(11,45,92,.16);
+
 }
+
+
+button:hover{
+
+  background:var(--blue-dark);
+
+  transform:translateY(-1px);
+
+}
+
+
+button:active{
+
+  transform:translateY(0);
+
+}
+
 
 button:disabled{
+
   opacity:.65;
+
+  cursor:not-allowed;
+
+  transform:none;
+
 }
+
+
+button i{
+
+  margin-right:7px;
+
+}
+
+
+/* =========================
+   MESSAGE
+========================= */
 
 .message{
+
   display:none;
-  margin-top:15px;
-  padding:13px;
+
+  margin-top:16px;
+
+  padding:12px 14px;
+
   border-radius:10px;
-  font-size:12px;
+
+  font-size:11.5px;
+
   line-height:1.6;
-  text-align:center;
-  word-break:break-word;
+
 }
 
-.error{
-  display:block;
-  background:#fff0f0;
-  border:1px solid #f3d1d1;
-  color:#c53030;
-}
 
 .success{
+
   display:block;
-  background:#effaf3;
-  border:1px solid #ccebd7;
-  color:#237a43;
+
+  background:#edf9f1;
+
+  border:1px solid #c9ecd4;
+
+  color:#18733a;
+
 }
 
-.bottom{
+
+.error{
+
+  display:block;
+
+  background:#fff2f2;
+
+  border:1px solid #f3d0d0;
+
+  color:#b42318;
+
+}
+
+
+/* =========================
+   LOGIN
+========================= */
+
+.login-link{
+
   text-align:center;
+
   margin-top:22px;
-  color:#718096;
+
+  color:var(--muted);
+
   font-size:12px;
+
 }
 
-.bottom a{
-  color:#1264e8;
-  font-weight:800;
+
+.login-link a{
+
+  color:var(--blue);
+
+  font-weight:700;
+
   text-decoration:none;
+
+  margin-left:4px;
+
 }
 
-@media(max-width:450px){
-  .card{
-    padding:29px 19px;
-  }
+
+.login-link a:hover{
+
+  text-decoration:underline;
+
 }
+
+
+/* =========================
+   SECURITY NOTE
+========================= */
+
+.security-note{
+
+  margin-top:24px;
+
+  padding-top:20px;
+
+  border-top:1px solid #edf1f5;
+
+  display:flex;
+
+  align-items:flex-start;
+
+  gap:10px;
+
+}
+
+
+.security-icon{
+
+  color:var(--blue);
+
+  font-size:13px;
+
+  margin-top:2px;
+
+}
+
+
+.security-note p{
+
+  color:#7b8798;
+
+  font-size:10.5px;
+
+  line-height:1.6;
+
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+
+  text-align:center;
+
+  padding:0 18px 30px;
+
+  color:#9aa5b5;
+
+  font-size:10.5px;
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:600px){
+
+  .header-inner{
+
+    min-height:68px;
+
+  }
+
+
+  .logo{
+
+    font-size:16px;
+
+  }
+
+
+  .logo-icon{
+
+    width:36px;
+
+    height:36px;
+
+    border-radius:10px;
+
+    font-size:15px;
+
+  }
+
+
+  .home-link{
+
+    padding:9px 12px;
+
+    font-size:11px;
+
+  }
+
+
+  .home-link span{
+
+    display:none;
+
+  }
+
+
+  .main{
+
+    padding:38px 15px 55px;
+
+  }
+
+
+  .auth-heading{
+
+    margin-bottom:23px;
+
+  }
+
+
+  .auth-icon{
+
+    width:52px;
+
+    height:52px;
+
+    border-radius:14px;
+
+    font-size:19px;
+
+  }
+
+
+  .auth-heading h1{
+
+    font-size:24px;
+
+  }
+
+
+  .auth-heading p{
+
+    font-size:12px;
+
+  }
+
+
+  .card{
+
+    padding:24px 19px;
+
+    border-radius:16px;
+
+  }
+
+
+  .card-title{
+
+    font-size:18px;
+
+  }
+
+
+  input{
+
+    height:48px;
+
+    font-size:12.5px;
+
+  }
+
+
+  button{
+
+    height:49px;
+
+  }
+
+}
+
+
+/* =========================
+   SMALL PHONES
+========================= */
+
+@media(max-width:360px){
+
+  .logo{
+
+    font-size:14px;
+
+  }
+
+
+  .card{
+
+    padding:21px 16px;
+
+  }
+
+
+  .auth-heading h1{
+
+    font-size:22px;
+
+  }
+
+}
+
 </style>
+
 </head>
+
 
 <body>
 
-<header>
-<nav class="nav">
 
-<a href="index.html" class="logo">
-  <div class="logo-box">G</div>
-  Gentle <span>Acct</span> Store
-</a>
+<!-- =========================
+     HEADER
+========================= -->
 
-<a href="login.html" class="back">
-  <i class="fa-solid fa-arrow-left"></i>
-  Sign In
-</a>
+<header class="header">
 
-</nav>
+  <div class="header-inner">
+
+
+    <a
+      href="index.html"
+      class="logo"
+    >
+
+      <span class="logo-icon">
+
+        <i class="fa-solid fa-store"></i>
+
+      </span>
+
+
+      <span>
+        Gentle Acct Store
+      </span>
+
+    </a>
+
+
+    <a
+      href="index.html"
+      class="home-link"
+    >
+
+      <i class="fa-solid fa-arrow-left"></i>
+
+      <span>
+        Back to Home
+      </span>
+
+    </a>
+
+
+  </div>
+
 </header>
 
-<main class="page">
 
-<div class="card">
 
-<div class="title">
+<!-- =========================
+     MAIN
+========================= -->
 
-<div class="icon">
-<i class="fa-solid fa-user-plus"></i>
-</div>
+<main class="main">
 
-<h1>Create Account</h1>
 
-<p>
-Create your Gentle Acct Store customer account.
-</p>
+  <div class="auth-wrapper">
 
-</div>
 
-<div class="test">
-SIGNUP CONNECTION TEST — VERSION 2
-</div>
+    <!-- INTRO -->
 
-<form id="signupForm">
+    <div class="auth-heading">
 
-<div class="field">
 
-<label>Full Name</label>
+      <div class="auth-icon">
 
-<div class="input-wrap">
+        <i class="fa-solid fa-user-plus"></i>
 
-<i class="fa-solid fa-user input-icon"></i>
+      </div>
 
-<input
-id="fullName"
-type="text"
-placeholder="Enter your full name"
-required
->
 
-</div>
-</div>
+      <h1>
+        Create Your Account
+      </h1>
 
-<div class="field">
 
-<label>Email Address</label>
+      <p>
+        Join Gentle Acct Store and get access to your
+        dashboard, orders and wallet.
+      </p>
 
-<div class="input-wrap">
 
-<i class="fa-solid fa-envelope input-icon"></i>
+    </div>
 
-<input
-id="email"
-type="email"
-placeholder="Enter your email"
-required
->
 
-</div>
-</div>
 
-<div class="field">
+    <!-- CARD -->
 
-<label>Password</label>
+    <div class="card">
 
-<div class="input-wrap">
 
-<i class="fa-solid fa-lock input-icon"></i>
+      <div class="card-title">
+        Create Account
+      </div>
 
-<input
-id="password"
-type="password"
-placeholder="Create a password"
-minlength="6"
-required
->
 
-</div>
-</div>
+      <div class="card-subtitle">
+        Enter your details below to create your Gentle Acct Store account.
+      </div>
 
-<div class="field">
 
-<label>Confirm Password</label>
 
-<div class="input-wrap">
+      <!-- FORM -->
 
-<i class="fa-solid fa-lock input-icon"></i>
+      <form id="signupForm">
 
-<input
-id="confirmPassword"
-type="password"
-placeholder="Confirm your password"
-minlength="6"
-required
->
 
-</div>
-</div>
+        <!-- NAME -->
 
-<button type="submit" id="signupBtn">
-<i class="fa-solid fa-user-plus"></i>
-Create Account
-</button>
+        <div class="form-group">
 
-<div id="message" class="message"></div>
+          <label for="name">
+            Full Name
+          </label>
 
-</form>
 
-<div class="bottom">
-Already have an account?
-<a href="login.html">Sign In</a>
-</div>
+          <div class="input-wrap">
 
-</div>
+            <i class="fa-solid fa-user input-icon"></i>
+
+
+            <input
+              type="text"
+              id="name"
+              placeholder="Enter your full name"
+              autocomplete="name"
+              required
+            >
+
+          </div>
+
+        </div>
+
+
+
+        <!-- EMAIL -->
+
+        <div class="form-group">
+
+          <label for="email">
+            Email Address
+          </label>
+
+
+          <div class="input-wrap">
+
+            <i class="fa-solid fa-envelope input-icon"></i>
+
+
+            <input
+              type="email"
+              id="email"
+              placeholder="Enter your email address"
+              autocomplete="email"
+              required
+            >
+
+          </div>
+
+        </div>
+
+
+
+        <!-- PASSWORD -->
+
+        <div class="form-group">
+
+          <label for="password">
+            Password
+          </label>
+
+
+          <div class="input-wrap">
+
+            <i class="fa-solid fa-lock input-icon"></i>
+
+
+            <input
+              type="password"
+              id="password"
+              placeholder="Create a password"
+              minlength="6"
+              autocomplete="new-password"
+              required
+            >
+
+          </div>
+
+
+          <div class="password-note">
+
+            Password must contain at least 6 characters.
+
+          </div>
+
+        </div>
+
+
+
+        <!-- CONFIRM PASSWORD -->
+
+        <div class="form-group">
+
+          <label for="confirmPassword">
+            Confirm Password
+          </label>
+
+
+          <div class="input-wrap">
+
+            <i class="fa-solid fa-shield-halved input-icon"></i>
+
+
+            <input
+              type="password"
+              id="confirmPassword"
+              placeholder="Confirm your password"
+              minlength="6"
+              autocomplete="new-password"
+              required
+            >
+
+          </div>
+
+        </div>
+
+
+
+        <!-- SUBMIT -->
+
+        <button
+          type="submit"
+          id="signupBtn"
+        >
+
+          <i class="fa-solid fa-user-plus"></i>
+
+          Create Account
+
+        </button>
+
+
+      </form>
+
+
+
+      <!-- MESSAGE -->
+
+      <div
+        id="message"
+        class="message"
+      ></div>
+
+
+
+      <!-- LOGIN -->
+
+      <div class="login-link">
+
+        Already have an account?
+
+        <a href="login.html">
+          Login
+        </a>
+
+      </div>
+
+
+
+      <!-- SECURITY -->
+
+      <div class="security-note">
+
+
+        <div class="security-icon">
+
+          <i class="fa-solid fa-shield-halved"></i>
+
+        </div>
+
+
+        <p>
+
+          Your account information is protected and your
+          password is securely handled by Firebase Authentication.
+
+        </p>
+
+
+      </div>
+
+
+    </div>
+
+
+  </div>
 
 </main>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<!-- FOOTER -->
+
+<footer class="footer">
+
+  © 2026 Gentle Acct Store. All rights reserved.
+
+</footer>
+
+
+
+<!-- =========================
+     FIREBASE
+========================= -->
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<script src="firebase.js"></script>
+
+
 
 <script>
 
-const SUPABASE_URL =
-"https://fbeibzungcyhcgmidpw.supabase.co";
-
-const SUPABASE_KEY =
-"sb_publishable_6eVFrykVcHc6OQOcPhH3Fg_WQbAe7u3";
-
-const client =
-window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+/* =========================
+   ELEMENTS
+========================= */
 
 const form =
-document.getElementById("signupForm");
+  document.getElementById(
+    "signupForm"
+  );
+
 
 const button =
-document.getElementById("signupBtn");
+  document.getElementById(
+    "signupBtn"
+  );
+
 
 const message =
-document.getElementById("message");
+  document.getElementById(
+    "message"
+  );
 
-function showMessage(text,type){
+
+
+/* =========================
+   MESSAGE
+========================= */
+
+function showMessage(
+  text,
+  type
+){
+
+  message.textContent =
+    text;
 
   message.className =
-  "message " + type;
-
-  message.style.display =
-  "block";
-
-  message.innerHTML =
-  text;
+    "message " +
+    type;
 
 }
 
-form.addEventListener("submit",async function(e){
 
-  e.preventDefault();
 
-  const name =
-  document.getElementById("fullName").value.trim();
+/* =========================
+   SIGN UP
+========================= */
 
-  const email =
-  document.getElementById("email").value.trim().toLowerCase();
+form.addEventListener(
+  "submit",
+  async function(event){
 
-  const password =
-  document.getElementById("password").value;
+    event.preventDefault();
 
-  const confirm =
-  document.getElementById("confirmPassword").value;
 
-  if(password !== confirm){
 
-    showMessage(
-      "Passwords do not match.",
-      "error"
-    );
+    const name =
+      document
+        .getElementById("name")
+        .value
+        .trim();
 
-    return;
-  }
 
-  button.disabled = true;
 
-  button.innerHTML =
-  '<i class="fa-solid fa-spinner fa-spin"></i> Testing Connection...';
+    const email =
+      document
+        .getElementById("email")
+        .value
+        .trim();
 
-  showMessage(
-    "Connecting to Supabase...",
-    "success"
-  );
 
-  try{
 
-    const result =
-    await client.auth.signUp({
+    const password =
+      document
+        .getElementById("password")
+        .value;
 
-      email:email,
 
-      password:password,
 
-      options:{
-        data:{
-          full_name:name
-        },
+    const confirmPassword =
+      document
+        .getElementById(
+          "confirmPassword"
+        )
+        .value;
 
-        emailRedirectTo:
-        window.location.origin +
-        "/gentle-acct-store/login.html"
-      }
 
-    });
 
-    console.log("SUPABASE RESULT:",result);
+    /* =========================
+       VALIDATION
+    ========================= */
 
-    if(result.error){
+    if(!name){
 
-      throw result.error;
+      showMessage(
+        "Please enter your full name.",
+        "error"
+      );
+
+      return;
 
     }
 
-    showMessage(
-      '<i class="fa-solid fa-circle-check"></i> ' +
-      'Account request successful. Check your email to confirm your account.',
-      "success"
-    );
 
-    form.reset();
 
-  }
+    if(password !== confirmPassword){
 
-  catch(error){
+      showMessage(
+        "Passwords do not match.",
+        "error"
+      );
 
-    console.error(
-      "SIGNUP ERROR:",
-      error
-    );
+      return;
 
-    showMessage(
-      '<strong>SUPABASE ERROR</strong><br>' +
-      (error.message || String(error)),
-      "error"
-    );
+    }
 
-  }
 
-  finally{
 
-    button.disabled = false;
+    if(password.length < 6){
+
+      showMessage(
+        "Password must contain at least 6 characters.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+
+    button.disabled =
+      true;
+
+
 
     button.innerHTML =
-    '<i class="fa-solid fa-user-plus"></i> Create Account';
+      '<i class="fa-solid fa-spinner fa-spin"></i> Creating Account...';
+
+
+
+    try{
+
+
+      /* =========================
+         CREATE FIREBASE ACCOUNT
+      ========================= */
+
+      const result =
+        await firebaseAuth
+          .createUserWithEmailAndPassword(
+            email,
+            password
+          );
+
+
+
+      const user =
+        result.user;
+
+
+
+      /* =========================
+         SAVE NAME TO AUTH PROFILE
+      ========================= */
+
+      await user.updateProfile({
+
+        displayName:
+          name
+
+      });
+
+
+
+      /* =========================
+         SAVE CUSTOMER TO FIRESTORE
+      ========================= */
+
+      if(
+        typeof firebaseDB ===
+        "undefined"
+      ){
+
+        throw new Error(
+          "Firestore is not available."
+        );
+
+      }
+
+
+
+      await firebaseDB
+        .collection("customers")
+        .doc(user.uid)
+        .set({
+
+          uid:
+            user.uid,
+
+          name:
+            name,
+
+          email:
+            user.email,
+
+          status:
+            "Active",
+
+          createdAt:
+            firebase.firestore.FieldValue
+              .serverTimestamp()
+
+        });
+
+
+
+      /* =========================
+         SEND EMAIL VERIFICATION
+      ========================= */
+
+      await user.sendEmailVerification();
+
+
+
+      /* =========================
+         LOCAL COMPATIBILITY DATA
+      ========================= */
+
+      localStorage.setItem(
+        "gentleUser",
+        JSON.stringify({
+
+          id:
+            user.uid,
+
+          name:
+            name,
+
+          email:
+            user.email,
+
+          balance:
+            0
+
+        })
+      );
+
+
+
+      localStorage.setItem(
+        "gentleCurrentUserId",
+        user.uid
+      );
+
+
+
+      localStorage.setItem(
+        "gentleLoggedIn",
+        "true"
+      );
+
+
+
+      /* =========================
+         SUCCESS
+      ========================= */
+
+      showMessage(
+        "Account created successfully. A verification email has been sent to your email address.",
+        "success"
+      );
+
+
+
+      setTimeout(
+        function(){
+
+          window.location.href =
+            "dashboard.html";
+
+        },
+        2500
+      );
+
+
+
+    }catch(error){
+
+
+      console.error(
+        "Signup error:",
+        error
+      );
+
+
+
+      let text =
+        "Unable to create your account.";
+
+
+
+      if(
+        error.code ===
+        "auth/email-already-in-use"
+      ){
+
+        text =
+          "An account with this email already exists.";
+
+      }
+
+
+
+      else if(
+        error.code ===
+        "auth/invalid-email"
+      ){
+
+        text =
+          "Please enter a valid email address.";
+
+      }
+
+
+
+      else if(
+        error.code ===
+        "auth/weak-password"
+      ){
+
+        text =
+          "Your password is too weak. Use at least 6 characters.";
+
+      }
+
+
+
+      else if(
+        error.code ===
+        "auth/network-request-failed"
+      ){
+
+        text =
+          "Network error. Please check your internet connection.";
+
+      }
+
+
+
+      else if(
+        error.message &&
+        error.message.includes(
+          "permission"
+        )
+      ){
+
+        text =
+          "Your account was created, but the customer profile could not be saved. Please contact the store administrator.";
+
+      }
+
+
+
+      showMessage(
+        text,
+        "error"
+      );
+
+
+
+      button.disabled =
+        false;
+
+
+
+      button.innerHTML =
+        '<i class="fa-solid fa-user-plus"></i> Create Account';
+
+    }
 
   }
-
-});
+);
 
 </script>
 
+
 </body>
+
 </html>

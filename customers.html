@@ -1,15 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
 
 <title>Customers - Gentle Acct Store</title>
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+>
 
 <style>
+
 *{
   box-sizing:border-box;
   margin:0;
@@ -74,8 +83,6 @@ header{
   font-size:14px;
 }
 
-/* SUMMARY */
-
 .summary{
   background:linear-gradient(135deg,#0866ff,#0754d6);
   color:white;
@@ -106,8 +113,6 @@ header{
   opacity:.9;
 }
 
-/* SEARCH */
-
 .search-box{
   background:white;
   border:1px solid #e5eaf1;
@@ -130,8 +135,6 @@ header{
   font-size:14px;
   background:transparent;
 }
-
-/* CUSTOMER LIST */
 
 .list-head{
   display:flex;
@@ -239,8 +242,6 @@ header{
   font-weight:600;
 }
 
-/* EMPTY */
-
 .empty{
   background:white;
   border:1px dashed #cbd5e1;
@@ -262,9 +263,23 @@ header{
 .empty p{
   color:#7b8595;
   font-size:13px;
+  line-height:1.5;
 }
 
-/* DESKTOP */
+.loading{
+  background:white;
+  border:1px solid #e5eaf1;
+  border-radius:18px;
+  padding:40px 20px;
+  text-align:center;
+  color:#7b8595;
+}
+
+.loading i{
+  color:#0866ff;
+  font-size:25px;
+  margin-bottom:10px;
+}
 
 @media(min-width:650px){
 
@@ -285,21 +300,35 @@ header{
   }
 
 }
+
 </style>
+
 </head>
 
+
 <body>
+
 
 <header>
 
   <div class="logo">
+
     <i class="fa-solid fa-users"></i>
+
     Customers
+
   </div>
 
-  <a href="admin.html" class="back">
+
+  <a
+    href="admin.html"
+    class="back"
+  >
+
     <i class="fa-solid fa-arrow-left"></i>
+
     Admin
+
   </a>
 
 </header>
@@ -307,21 +336,37 @@ header{
 
 <div class="container">
 
+
   <div class="hero">
-    <h1>Customer Management</h1>
-    <p>View registered customers on your store.</p>
+
+    <h1>
+      Customer Management
+    </h1>
+
+    <p>
+      View registered customers on your store.
+    </p>
+
   </div>
 
 
   <div class="summary">
 
     <div class="summary-icon">
+
       <i class="fa-solid fa-users"></i>
+
     </div>
 
-    <h2 id="totalCustomers">0</h2>
 
-    <p>Total Registered Customers</p>
+    <h2 id="totalCustomers">
+      0
+    </h2>
+
+
+    <p>
+      Total Registered Customers
+    </p>
 
   </div>
 
@@ -329,6 +374,7 @@ header{
   <div class="search-box">
 
     <i class="fa-solid fa-magnifying-glass"></i>
+
 
     <input
       id="search"
@@ -342,123 +388,314 @@ header{
 
   <div class="list-head">
 
-    <h2>Customers</h2>
+    <h2>
+      Customers
+    </h2>
 
-    <span class="count" id="customerCount">
+
+    <span
+      class="count"
+      id="customerCount"
+    >
       0 Customers
     </span>
 
   </div>
 
 
-  <div id="customers" class="customers"></div>
+  <div
+    id="customers"
+    class="customers"
+  >
+
+    <div class="loading">
+
+      <i class="fa-solid fa-spinner fa-spin"></i>
+
+      <p>
+        Checking Firebase...
+      </p>
+
+    </div>
+
+  </div>
+
 
 </div>
 
 
+<!-- FIREBASE -->
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<script src="firebase.js"></script>
+
+
 <script>
 
-function getCustomers(){
+/* =========================
+   ADMIN UID
+========================= */
 
-  const saved =
-    localStorage.getItem("gentleUsers");
+const ADMIN_UID =
+"UoEjCy99gbQKkGob59vGi3CunZi1";
 
-  /*
-    The current sign-up page stores one user
-    as "gentleUser".
 
-    This page also supports "gentleUsers"
-    so we can expand to multiple customers later.
-  */
+/* =========================
+   CUSTOMER STORAGE
+========================= */
 
-  if(saved){
+window.gentleCustomers = [];
 
-    try{
 
-      const users = JSON.parse(saved);
+/* =========================
+   START PAGE
+========================= */
 
-      if(Array.isArray(users)){
-        return users;
+document.addEventListener(
+  "DOMContentLoaded",
+  function(){
+
+    firebaseAuth.onAuthStateChanged(
+      function(user){
+
+        if(!user){
+
+          showError(
+            "No Firebase user is currently signed in."
+          );
+
+          return;
+
+        }
+
+
+        /* =========================
+           DIAGNOSTIC CHECK
+        ========================= */
+
+        const currentUID =
+          user.uid;
+
+
+        const currentEmail =
+          user.email ||
+          "No email";
+
+
+        alert(
+          "Firebase account detected.\n\n" +
+          "Email:\n" +
+          currentEmail +
+          "\n\n" +
+          "Firebase UID:\n" +
+          currentUID +
+          "\n\n" +
+          "Expected Admin UID:\n" +
+          ADMIN_UID
+        );
+
+
+        /* =========================
+           ADMIN CHECK
+        ========================= */
+
+        if(
+          currentUID !== ADMIN_UID
+        ){
+
+          showError(
+            "The signed-in Firebase account does not match the admin account."
+          );
+
+          return;
+
+        }
+
+
+        if(
+          !user.emailVerified
+        ){
+
+          showError(
+            "The admin email address is not verified."
+          );
+
+          return;
+
+        }
+
+
+        loadCustomers();
+
       }
-
-    }catch(error){}
-
-  }
-
-
-  const singleUser =
-    localStorage.getItem("gentleUser");
-
-
-  if(singleUser){
-
-    try{
-
-      const user =
-        JSON.parse(singleUser);
-
-      return [user];
-
-    }catch(error){}
+    );
 
   }
+);
 
 
-  return [];
+/* =========================
+   LOAD CUSTOMERS
+========================= */
+
+async function loadCustomers(){
+
+  try{
+
+    if(
+      typeof firebaseDB ===
+      "undefined"
+    ){
+
+      throw new Error(
+        "Firestore is not available."
+      );
+
+    }
+
+
+    const snapshot =
+      await firebaseDB
+        .collection("customers")
+        .get();
+
+
+    const customers = [];
+
+
+    snapshot.forEach(
+      function(doc){
+
+        const data =
+          doc.data();
+
+
+        customers.push({
+
+          id:
+            doc.id,
+
+          name:
+            data.name ||
+            "Customer",
+
+          email:
+            data.email ||
+            "No email",
+
+          createdAt:
+            data.createdAt ||
+            "",
+
+          status:
+            data.status ||
+            "Active"
+
+        });
+
+      }
+    );
+
+
+    window.gentleCustomers =
+      customers;
+
+
+    renderCustomers();
+
+
+  }catch(error){
+
+    console.error(
+      "Customer loading error:",
+      error
+    );
+
+
+    showError(
+      error.message
+    );
+
+  }
 
 }
 
 
+/* =========================
+   RENDER CUSTOMERS
+========================= */
+
 function renderCustomers(){
 
   const customers =
-    getCustomers();
+    window.gentleCustomers ||
+    [];
 
 
   const search =
     document
-    .getElementById("search")
-    .value
-    .toLowerCase()
-    .trim();
+      .getElementById("search")
+      .value
+      .toLowerCase()
+      .trim();
 
 
   const filtered =
-    customers.filter(customer => {
+    customers.filter(
+      function(customer){
 
-      const name =
-        String(customer.name || "")
-        .toLowerCase();
-
-      const email =
-        String(customer.email || "")
-        .toLowerCase();
-
-      return (
-        name.includes(search) ||
-        email.includes(search)
-      );
-
-    });
+        const name =
+          String(
+            customer.name || ""
+          ).toLowerCase();
 
 
-  document.getElementById("totalCustomers")
-    .textContent = customers.length;
+        const email =
+          String(
+            customer.email || ""
+          ).toLowerCase();
 
 
-  document.getElementById("customerCount")
-    .textContent =
-      filtered.length +
-      (filtered.length === 1
-        ? " Customer"
-        : " Customers");
+        return (
+          name.includes(search) ||
+          email.includes(search)
+        );
+
+      }
+    );
+
+
+  document.getElementById(
+    "totalCustomers"
+  ).textContent =
+    customers.length;
+
+
+  document.getElementById(
+    "customerCount"
+  ).textContent =
+    filtered.length +
+    (
+      filtered.length === 1
+      ? " Customer"
+      : " Customers"
+    );
 
 
   const container =
-    document.getElementById("customers");
+    document.getElementById(
+      "customers"
+    );
 
 
-  if(filtered.length === 0){
+  if(
+    filtered.length === 0
+  ){
 
     container.innerHTML = `
 
@@ -467,15 +704,23 @@ function renderCustomers(){
         <i class="fa-solid fa-user-group"></i>
 
         <h3>
-          ${search ? "No customers found" : "No customers yet"}
+
+          ${
+            search
+            ? "No customers found"
+            : "No customers yet"
+          }
+
         </h3>
 
         <p>
+
           ${
             search
             ? "Try a different name or email."
             : "Registered customers will appear here."
           }
+
         </p>
 
       </div>
@@ -490,114 +735,242 @@ function renderCustomers(){
   container.innerHTML = "";
 
 
-  filtered.forEach((customer,index) => {
+  filtered.forEach(
+    function(customer,index){
 
-    const name =
-      customer.name || "Customer";
-
-
-    const email =
-      customer.email || "No email";
+      const name =
+        customer.name ||
+        "Customer";
 
 
-    const initial =
-      name.charAt(0).toUpperCase();
+      const email =
+        customer.email ||
+        "No email";
 
 
-    const date =
-      customer.date ||
-      customer.createdAt ||
-      "Registered account";
+      const initial =
+        name
+          .charAt(0)
+          .toUpperCase();
 
 
-    const card =
-      document.createElement("div");
+      const date =
+        formatDate(
+          customer.createdAt
+        );
 
 
-    card.className = "customer";
+      const status =
+        customer.status ||
+        "Active";
 
 
-    card.innerHTML = `
+      const card =
+        document.createElement(
+          "div"
+        );
 
-      <div class="customer-top">
 
-        <div class="avatar">
-          ${escapeHTML(initial)}
+      card.className =
+        "customer";
+
+
+      card.innerHTML = `
+
+        <div class="customer-top">
+
+          <div class="avatar">
+
+            ${escapeHTML(initial)}
+
+          </div>
+
+
+          <div class="customer-info">
+
+            <h3>
+
+              ${escapeHTML(name)}
+
+            </h3>
+
+
+            <div class="email">
+
+              ${escapeHTML(email)}
+
+            </div>
+
+          </div>
+
+
+          <span class="status">
+
+            ${escapeHTML(status)}
+
+          </span>
+
         </div>
 
-        <div class="customer-info">
 
-          <h3>
-            ${escapeHTML(name)}
-          </h3>
+        <div class="details">
 
-          <div class="email">
-            ${escapeHTML(email)}
+          <div class="detail">
+
+            <span>
+              Account
+            </span>
+
+            <span>
+              Customer #${index + 1}
+            </span>
+
+          </div>
+
+
+          <div class="detail">
+
+            <span>
+              Registered
+            </span>
+
+            <span>
+              ${escapeHTML(date)}
+            </span>
+
           </div>
 
         </div>
 
-        <span class="status">
-          Active
-        </span>
-
-      </div>
+      `;
 
 
-      <div class="details">
+      container.appendChild(
+        card
+      );
 
-        <div class="detail">
-
-          <span>
-            Account
-          </span>
-
-          <span>
-            Customer #${index + 1}
-          </span>
-
-        </div>
-
-
-        <div class="detail">
-
-          <span>
-            Registered
-          </span>
-
-          <span>
-            ${escapeHTML(date)}
-          </span>
-
-        </div>
-
-      </div>
-
-    `;
-
-
-    container.appendChild(card);
-
-  });
+    }
+  );
 
 }
 
+
+/* =========================
+   ERROR DISPLAY
+========================= */
+
+function showError(message){
+
+  const container =
+    document.getElementById(
+      "customers"
+    );
+
+
+  container.innerHTML = `
+
+    <div class="empty">
+
+      <i class="fa-solid fa-triangle-exclamation"></i>
+
+      <h3>
+        Unable to load customers
+      </h3>
+
+      <p>
+        ${escapeHTML(message)}
+      </p>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================
+   FORMAT DATE
+========================= */
+
+function formatDate(value){
+
+  if(!value){
+
+    return "Registered account";
+
+  }
+
+
+  try{
+
+    if(
+      typeof value.toDate ===
+      "function"
+    ){
+
+      return value
+        .toDate()
+        .toLocaleDateString();
+
+    }
+
+
+    const date =
+      new Date(value);
+
+
+    if(
+      !isNaN(
+        date.getTime()
+      )
+    ){
+
+      return date
+        .toLocaleDateString();
+
+    }
+
+  }catch(error){}
+
+
+  return String(value);
+
+}
+
+
+/* =========================
+   HTML SECURITY
+========================= */
 
 function escapeHTML(value){
 
   return String(value || "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
 
 }
 
-
-renderCustomers();
-
 </script>
 
+
 </body>
+
 </html>

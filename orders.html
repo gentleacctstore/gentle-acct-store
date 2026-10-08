@@ -2,942 +2,1623 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>My Orders | Gentle Acct Store</title>
+<meta charset="UTF-8">
 
-  <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+>
 
-  <style>
+<title>My Orders - Gentle Acct Store</title>
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
+<link
+rel="preconnect"
+href="https://fonts.googleapis.com"
+>
 
-    body {
-      background: #f5f8ff;
-      color: #172033;
-      min-height: 100vh;
-      padding-bottom: 30px;
-    }
+<link
+rel="preconnect"
+href="https://fonts.googleapis.com"
+crossorigin
+>
 
-    header {
-      height: 68px;
-      background: white;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 0 18px;
-      border-bottom: 1px solid #e5eaf2;
-      position: sticky;
-      top: 0;
-      z-index: 20;
-    }
+<link
+href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+rel="stylesheet"
+>
 
-    .back {
-      width: 40px;
-      height: 40px;
-      border: none;
-      background: #eaf2ff;
-      color: #1261e8;
-      border-radius: 11px;
-      font-size: 16px;
-      cursor: pointer;
-    }
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+>
 
-    header h2 {
-      font-size: 19px;
-      color: #172033;
-      font-weight: 800;
-    }
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 
-    .container {
-      max-width: 700px;
-      margin: auto;
-      padding: 22px 16px 45px;
-    }
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
-    .title {
-      margin-bottom: 17px;
-    }
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
-    .title h1 {
-      font-size: 24px;
-      font-weight: 800;
-    }
+<script src="firebase.js"></script>
 
-    .title p {
-      color: #8a94a6;
-      font-size: 13px;
-      margin-top: 6px;
-    }
+<style>
 
-    .summary {
-      background: linear-gradient(
-        135deg,
-        #1261e8,
-        #0849b9
-      );
-      color: white;
-      border-radius: 20px;
-      padding: 20px;
-      margin-bottom: 18px;
-      box-shadow: 0 10px 25px rgba(18,97,232,.17);
-    }
+:root{
 
-    .summary-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+--blue:#0b2d5c;
+--blue-dark:#071f40;
+--blue-light:#eaf2fb;
+--blue-soft:#f5f8fc;
 
-    .summary small {
-      opacity: .78;
-      font-size: 12px;
-    }
+--white:#ffffff;
 
-    .summary strong {
-      display: block;
-      font-size: 30px;
-      margin-top: 5px;
-    }
+--text:#172033;
+--muted:#748093;
 
-    .summary-icon {
-      width: 46px;
-      height: 46px;
-      border-radius: 13px;
-      background: rgba(255,255,255,.15);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-    }
+--border:#e4eaf2;
 
-    .order {
-      background: white;
-      border: 1px solid #e0e6ef;
-      border-radius: 19px;
-      padding: 16px;
-      margin-bottom: 14px;
-      box-shadow: 0 5px 18px rgba(23,32,51,.04);
-    }
+--success:#15803d;
 
-    .order-top {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-    }
+--shadow:
+0 8px 25px rgba(11,45,92,.07);
 
-    .order-icon {
-      width: 54px;
-      height: 54px;
-      border-radius: 15px;
-      background: #eaf2ff;
-      color: #1261e8;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      flex-shrink: 0;
-    }
+}
 
-    .order-name {
-      flex: 1;
-      min-width: 0;
-    }
+*{
 
-    .order-name h3 {
-      font-size: 15px;
-      font-weight: 800;
-      margin-bottom: 6px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+box-sizing:border-box;
 
-    .order-category {
-      display: inline-block;
-      background: #eef4ff;
-      color: #1261e8;
-      padding: 4px 8px;
-      border-radius: 20px;
-      font-size: 9px;
-      font-weight: 700;
-      text-transform: capitalize;
-    }
+margin:0;
 
-    .status {
-      background: #e9f8f0;
-      color: #16834b;
-      border-radius: 20px;
-      padding: 6px 9px;
-      font-size: 9px;
-      font-weight: 800;
-      white-space: nowrap;
-    }
+padding:0;
 
-    .details {
-      border-top: 1px solid #edf0f5;
-      margin-top: 15px;
-      padding-top: 14px;
-    }
+}
 
-    .row {
-      display: flex;
-      justify-content: space-between;
-      gap: 15px;
-      margin-bottom: 10px;
-      font-size: 12px;
-    }
+body{
 
-    .row:last-child {
-      margin-bottom: 0;
-    }
+font-family:"Poppins",sans-serif;
 
-    .row span:first-child {
-      color: #8a94a6;
-    }
+background:#f7f9fc;
 
-    .row span:last-child {
-      font-weight: 700;
-      text-align: right;
-      word-break: break-word;
-    }
+color:var(--text);
 
-    .amount {
-      color: #1261e8;
-    }
+min-height:100vh;
 
-    .purchase {
-      background: #f7faff;
-      border: 1px solid #dfe8f5;
-      border-radius: 15px;
-      padding: 15px;
-      margin-top: 15px;
-    }
+padding-bottom:30px;
 
-    .purchase-title {
-      color: #1261e8;
-      font-weight: 800;
-      font-size: 12px;
-      margin-bottom: 10px;
-    }
+}
 
-    .purchase-text {
-      background: white;
-      border: 1px solid #e4eaf3;
-      border-radius: 11px;
-      padding: 12px;
-      color: #39465a;
-      font-size: 13px;
-      line-height: 1.6;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
+button{
 
-    .copy {
-      width: 100%;
-      margin-top: 11px;
-      padding: 11px;
-      border-radius: 11px;
-      background: white;
-      color: #1261e8;
-      border: 1px solid #cfdced;
-      font-weight: 800;
-      font-size: 12px;
-      cursor: pointer;
-    }
+font-family:inherit;
 
-    .copy:active {
-      transform: scale(.98);
-    }
+cursor:pointer;
 
-    .empty {
-      background: white;
-      border: 1px solid #e0e6ef;
-      border-radius: 19px;
-      text-align: center;
-      padding: 55px 20px;
-      box-shadow: 0 5px 18px rgba(23,32,51,.04);
-    }
+}
 
-    .empty-icon {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      background: #eaf2ff;
-      color: #1261e8;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 16px;
-      font-size: 27px;
-    }
+a{
 
-    .empty h3 {
-      font-size: 18px;
-      font-weight: 800;
-    }
+text-decoration:none;
 
-    .empty p {
-      color: #8a94a6;
-      font-size: 13px;
-      line-height: 1.5;
-      margin-top: 7px;
-    }
+color:inherit;
 
-    .shop {
-      margin-top: 19px;
-      border: none;
-      background: #1261e8;
-      color: white;
-      padding: 13px 22px;
-      border-radius: 25px;
-      font-weight: 800;
-      cursor: pointer;
-    }
+}
 
-    @media (max-width: 400px) {
 
-      .status {
-        padding: 5px 7px;
-        font-size: 8px;
-      }
+/* ==========================================
+   PAGE
+========================================== */
 
-      .order-name h3 {
-        font-size: 14px;
-      }
+.page{
 
-    }
+width:100%;
 
-  </style>
+max-width:600px;
+
+margin:0 auto;
+
+min-height:100vh;
+
+}
+
+
+/* ==========================================
+   HEADER
+========================================== */
+
+header{
+
+height:68px;
+
+background:var(--white);
+
+padding:0 17px;
+
+border-bottom:1px solid var(--border);
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+position:sticky;
+
+top:0;
+
+z-index:50;
+
+}
+
+.header-left{
+
+display:flex;
+
+align-items:center;
+
+gap:11px;
+
+}
+
+.back-btn{
+
+width:38px;
+
+height:38px;
+
+border:none;
+
+border-radius:11px;
+
+background:var(--blue-light);
+
+color:var(--blue);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:14px;
+
+}
+
+.header-title{
+
+font-size:15px;
+
+font-weight:800;
+
+color:var(--blue-dark);
+
+}
+
+.header-right{
+
+color:var(--blue);
+
+font-size:18px;
+
+}
+
+
+/* ==========================================
+   MAIN
+========================================== */
+
+main{
+
+padding:18px 16px 35px;
+
+}
+
+
+/* ==========================================
+   HEADING
+========================================== */
+
+.page-heading{
+
+margin-bottom:17px;
+
+}
+
+.page-heading h1{
+
+font-size:23px;
+
+font-weight:800;
+
+color:var(--blue-dark);
+
+margin-bottom:4px;
+
+}
+
+.page-heading p{
+
+font-size:10px;
+
+color:var(--muted);
+
+line-height:1.6;
+
+}
+
+
+/* ==========================================
+   SUMMARY
+========================================== */
+
+.summary-card{
+
+background:var(--blue);
+
+color:var(--white);
+
+border-radius:18px;
+
+padding:17px;
+
+margin-bottom:15px;
+
+box-shadow:0 8px 24px rgba(11,45,92,.14);
+
+}
+
+.summary-top{
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+gap:12px;
+
+}
+
+.summary-label{
+
+font-size:9px;
+
+opacity:.72;
+
+margin-bottom:4px;
+
+}
+
+.summary-number{
+
+font-size:27px;
+
+font-weight:800;
+
+line-height:1;
+
+}
+
+.summary-icon{
+
+width:44px;
+
+height:44px;
+
+border-radius:13px;
+
+background:rgba(255,255,255,.13);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:17px;
+
+}
+
+
+/* ==========================================
+   ORDER CARD
+========================================== */
+
+.order{
+
+background:var(--white);
+
+border:1px solid var(--border);
+
+border-radius:18px;
+
+padding:15px;
+
+margin-bottom:13px;
+
+box-shadow:var(--shadow);
+
+}
+
+
+/* ==========================================
+   ORDER TOP
+========================================== */
+
+.order-top{
+
+display:flex;
+
+align-items:center;
+
+gap:11px;
+
+}
+
+.order-icon{
+
+width:48px;
+
+height:48px;
+
+border-radius:14px;
+
+background:var(--blue-light);
+
+color:var(--blue);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:17px;
+
+flex-shrink:0;
+
+}
+
+.order-name{
+
+flex:1;
+
+min-width:0;
+
+}
+
+.order-name h3{
+
+font-size:13px;
+
+font-weight:800;
+
+color:var(--blue-dark);
+
+margin-bottom:5px;
+
+white-space:nowrap;
+
+overflow:hidden;
+
+text-overflow:ellipsis;
+
+}
+
+.order-category{
+
+display:inline-block;
+
+background:#f0f4f9;
+
+color:#64748b;
+
+font-size:8px;
+
+font-weight:700;
+
+padding:4px 8px;
+
+border-radius:7px;
+
+text-transform:capitalize;
+
+}
+
+.status{
+
+background:#edf7f0;
+
+color:var(--success);
+
+border-radius:20px;
+
+padding:5px 8px;
+
+font-size:8px;
+
+font-weight:800;
+
+white-space:nowrap;
+
+}
+
+.status i{
+
+font-size:8px;
+
+margin-right:2px;
+
+}
+
+
+/* ==========================================
+   PURCHASE INFORMATION
+========================================== */
+
+.purchase{
+
+background:var(--blue-soft);
+
+border:1px solid var(--border);
+
+border-radius:14px;
+
+padding:13px;
+
+margin-top:14px;
+
+}
+
+.purchase-title{
+
+display:flex;
+
+align-items:center;
+
+gap:7px;
+
+font-size:10px;
+
+font-weight:800;
+
+color:var(--blue-dark);
+
+margin-bottom:9px;
+
+}
+
+.purchase-title i{
+
+color:var(--blue);
+
+}
+
+.purchase-text{
+
+background:var(--white);
+
+border:1px solid var(--border);
+
+border-radius:10px;
+
+padding:12px;
+
+font-size:11px;
+
+font-weight:700;
+
+color:var(--text);
+
+line-height:1.6;
+
+word-break:break-word;
+
+white-space:pre-wrap;
+
+}
+
+.copy{
+
+width:100%;
+
+border:1px solid #cfdae8;
+
+background:var(--white);
+
+color:var(--blue);
+
+border-radius:10px;
+
+padding:10px;
+
+margin-top:9px;
+
+font-size:9px;
+
+font-weight:800;
+
+}
+
+.copy i{
+
+margin-right:4px;
+
+}
+
+.copy:active{
+
+transform:scale(.98);
+
+}
+
+
+/* ==========================================
+   EMPTY
+========================================== */
+
+.empty{
+
+background:var(--white);
+
+border:1px solid var(--border);
+
+border-radius:18px;
+
+padding:45px 20px;
+
+text-align:center;
+
+box-shadow:var(--shadow);
+
+}
+
+.empty-icon{
+
+width:64px;
+
+height:64px;
+
+border-radius:50%;
+
+background:var(--blue-light);
+
+color:var(--blue);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+margin:0 auto 14px;
+
+font-size:24px;
+
+}
+
+.empty h3{
+
+font-size:16px;
+
+font-weight:800;
+
+color:var(--blue-dark);
+
+}
+
+.empty p{
+
+font-size:10px;
+
+line-height:1.6;
+
+color:var(--muted);
+
+margin-top:6px;
+
+}
+
+.shop{
+
+border:none;
+
+background:var(--blue);
+
+color:var(--white);
+
+border-radius:11px;
+
+padding:11px 17px;
+
+font-size:10px;
+
+font-weight:800;
+
+margin-top:16px;
+
+}
+
+
+/* ==========================================
+   LOADING
+========================================== */
+
+.loading{
+
+background:var(--white);
+
+border:1px solid var(--border);
+
+border-radius:18px;
+
+padding:45px 20px;
+
+text-align:center;
+
+color:var(--muted);
+
+}
+
+.loading i{
+
+color:var(--blue);
+
+font-size:24px;
+
+margin-bottom:10px;
+
+}
+
+.loading p{
+
+font-size:10px;
+
+}
+
+
+/* ==========================================
+   ERROR
+========================================== */
+
+.error-icon{
+
+width:62px;
+
+height:62px;
+
+border-radius:50%;
+
+background:#fff1f1;
+
+color:#dc2626;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+margin:0 auto 14px;
+
+font-size:23px;
+
+}
+
+.error-title{
+
+color:var(--blue-dark);
+
+}
+
+.error-message{
+
+word-break:break-word;
+
+}
+
+
+/* ==========================================
+   BOTTOM NAV
+========================================== */
+
+.bottom-nav{
+
+position:fixed;
+
+left:50%;
+
+bottom:0;
+
+transform:translateX(-50%);
+
+width:100%;
+
+max-width:600px;
+
+height:67px;
+
+background:rgba(255,255,255,.97);
+
+border-top:1px solid var(--border);
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-around;
+
+z-index:100;
+
+backdrop-filter:blur(10px);
+
+}
+
+.nav-item{
+
+flex:1;
+
+height:100%;
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+justify-content:center;
+
+gap:4px;
+
+font-size:8px;
+
+font-weight:700;
+
+color:#8993a3;
+
+}
+
+.nav-item i{
+
+font-size:16px;
+
+}
+
+.nav-item.active{
+
+color:var(--blue);
+
+}
+
+@media(min-width:700px){
+
+body{
+
+background:#eef3f8;
+
+}
+
+.page{
+
+background:#f7f9fc;
+
+box-shadow:
+0 0 40px rgba(0,0,0,.04);
+
+padding-bottom:70px;
+
+}
+
+}
+
+</style>
+
 </head>
 
 
 <body>
 
 
+<div class="page">
+
+
+<!-- ==========================================
+     HEADER
+========================================== -->
+
 <header>
 
-  <button
-    class="back"
-    onclick="window.location.href='dashboard.html'">
+<div class="header-left">
 
-    <i class="fa-solid fa-arrow-left"></i>
+<button
+class="back-btn"
+type="button"
+onclick="window.location.href='dashboard.html'"
+>
 
-  </button>
+<i class="fa-solid fa-arrow-left"></i>
 
-  <h2>
-    My Orders
-  </h2>
+</button>
+
+<div class="header-title">
+
+My Orders
+
+</div>
+
+</div>
+
+
+<div class="header-right">
+
+<i class="fa-solid fa-receipt"></i>
+
+</div>
 
 </header>
 
 
-<main class="container">
+<!-- ==========================================
+     MAIN
+========================================== -->
+
+<main>
 
 
-  <div class="title">
+<div class="page-heading">
 
-    <h1>
-      My Orders
-    </h1>
+<h1>
+My Orders
+</h1>
 
-    <p>
-      View your completed purchases and purchase information.
-    </p>
+<p>
+View your completed purchases and purchase information.
+</p>
 
-  </div>
-
-
-  <div class="summary">
-
-    <div class="summary-top">
-
-      <div>
-
-        <small>
-          Your Total Orders
-        </small>
-
-        <strong id="totalOrders">
-          0
-        </strong>
-
-      </div>
-
-      <div class="summary-icon">
-
-        <i class="fa-solid fa-bag-shopping"></i>
-
-      </div>
-
-    </div>
-
-  </div>
+</div>
 
 
-  <div id="ordersList"></div>
+<!-- ==========================================
+     SUMMARY
+========================================== -->
+
+<div class="summary-card">
+
+<div class="summary-top">
+
+<div>
+
+<div class="summary-label">
+Total Orders
+</div>
+
+<div
+class="summary-number"
+id="totalOrders"
+>
+0
+</div>
+
+</div>
+
+
+<div class="summary-icon">
+
+<i class="fa-solid fa-bag-shopping"></i>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ==========================================
+     ORDERS
+========================================== -->
+
+<div id="ordersList">
+
+<div class="loading">
+
+<i class="fa-solid fa-spinner fa-spin"></i>
+
+<p>
+Loading your orders...
+</p>
+
+</div>
+
+</div>
 
 
 </main>
 
 
+<!-- ==========================================
+     BOTTOM NAV
+========================================== -->
+
+<nav class="bottom-nav">
+
+
+<a
+class="nav-item"
+href="dashboard.html"
+>
+
+<i class="fa-solid fa-house"></i>
+
+<span>
+Home
+</span>
+
+</a>
+
+
+<a
+class="nav-item"
+href="dashboard.html#products"
+>
+
+<i class="fa-solid fa-box"></i>
+
+<span>
+Products
+</span>
+
+</a>
+
+
+<a
+class="nav-item active"
+href="orders.html"
+>
+
+<i class="fa-solid fa-receipt"></i>
+
+<span>
+Orders
+</span>
+
+</a>
+
+
+<a
+class="nav-item"
+href="fund.html"
+>
+
+<i class="fa-solid fa-wallet"></i>
+
+<span>
+Fund
+</span>
+
+</a>
+
+
+<a
+class="nav-item"
+href="profile.html"
+>
+
+<i class="fa-solid fa-user"></i>
+
+<span>
+Menu
+</span>
+
+</a>
+
+
+</nav>
+
+
+</div>
+
+
 <script>
 
-/* =========================
-   SECURITY / SESSION CHECK
-========================= */
+/* ==================================================
+   FIREBASE USER
+================================================== */
 
-function checkSession() {
+let firebaseUser = null;
 
-  const loggedIn =
-    localStorage.getItem("gentleLoggedIn")
-    === "true";
 
-  const savedUser =
-    localStorage.getItem("gentleUser");
+/* ==================================================
+   AUTH SESSION
+================================================== */
 
-  const savedCurrentUserId =
-    String(
-      localStorage.getItem(
-        "gentleCurrentUserId"
-      ) || ""
-    );
+firebaseAuth.onAuthStateChanged(
+function(user){
 
+if(
+!user ||
+!user.emailVerified
+){
 
-  let user = null;
-
-
-  try {
-
-    user =
-      JSON.parse(savedUser);
-
-  } catch(error) {
-
-    user = null;
-
-  }
-
-
-  /*
-    User must have:
-    1. Active login
-    2. Saved account
-    3. Current user ID
-    4. Matching account ID
-  */
-
-  if (
-    !loggedIn ||
-    !user ||
-    !savedCurrentUserId ||
-    !user.id ||
-    String(user.id)
-      !== savedCurrentUserId
-  ) {
-
-    localStorage.removeItem(
-      "gentleLoggedIn"
-    );
-
-    localStorage.removeItem(
-      "gentleCurrentUserId"
-    );
-
-    localStorage.removeItem(
-      "gentleCheckoutProduct"
-    );
-
-    window.location.replace(
-      "login.html"
-    );
-
-    return null;
-
-  }
-
-
-  return user;
-
-}
-
-
-/* =========================
-   LOAD CURRENT USER
-========================= */
-
-const currentUser =
-  checkSession();
-
-
-if (!currentUser) {
-
-  throw new Error(
-    "No valid customer session."
-  );
-
-}
-
-
-/* =========================
-   CUSTOMER ID
-========================= */
-
-const currentUserId =
-  String(currentUser.id);
-
-
-const currentUserEmail =
-  String(
-    currentUser.email || ""
-  ).toLowerCase();
-
-
-/* =========================
-   GET ALL ORDERS
-========================= */
-
-function loadOrders() {
-
-  let allOrders = [];
-
-
-  try {
-
-    allOrders =
-      JSON.parse(
-        localStorage.getItem(
-          "gentleOrders"
-        )
-      ) || [];
-
-  } catch(error) {
-
-    allOrders = [];
-
-  }
-
-
-  /* =========================
-     CUSTOMER FILTER
-  ========================= */
-
-  const orders =
-    allOrders.filter(
-      function(order) {
-
-
-        /*
-          New secure orders:
-          Match customer ID.
-        */
-
-        if (
-          order.userId !== undefined &&
-          order.userId !== null &&
-          String(order.userId) !== ""
-        ) {
-
-          return String(
-            order.userId
-          ) === currentUserId;
-
-        }
-
-
-        /*
-          Older orders:
-          Match customer email only.
-        */
-
-        if (order.userEmail) {
-
-          return String(
-            order.userEmail
-          )
-          .toLowerCase()
-          === currentUserEmail;
-
-        }
-
-
-        /*
-          Orders without customer
-          information are hidden.
-        */
-
-        return false;
-
-      }
-    );
-
-
-  return orders;
-
-}
-
-
-/* =========================
-   DISPLAY ORDERS
-========================= */
-
-function displayOrders() {
-
-  const orders =
-    loadOrders();
-
-
-  const total =
-    document.getElementById(
-      "totalOrders"
-    );
-
-
-  const list =
-    document.getElementById(
-      "ordersList"
-    );
-
-
-  total.textContent =
-    orders.length;
-
-
-  list.innerHTML = "";
-
-
-  /* =========================
-     EMPTY
-  ========================= */
-
-  if (orders.length === 0) {
-
-    list.innerHTML = `
-
-      <div class="empty">
-
-        <div class="empty-icon">
-
-          <i class="fa-solid fa-bag-shopping"></i>
-
-        </div>
-
-        <h3>
-          No orders yet
-        </h3>
-
-        <p>
-          Your completed purchases will appear here.
-        </p>
-
-        <button
-          class="shop"
-          onclick="window.location.href='dashboard.html'">
-
-          <i class="fa-solid fa-store"></i>
-
-          Start Shopping
-
-        </button>
-
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-
-  /* =========================
-     DISPLAY ORDERS
-  ========================= */
-
-  orders.forEach(
-    function(order, index) {
-
-
-      const productName =
-        order.productName ||
-        "Digital Product";
-
-
-      const category =
-        order.category ||
-        "Other";
-
-
-      const price =
-        Number(
-          order.price || 0
-        )
-        .toLocaleString(
-          "en-NG"
-        );
-
-
-      const orderId =
-        order.id ||
-        "Order";
-
-
-      const date =
-        order.date ||
-        "Date unavailable";
-
-
-      const status =
-        order.status ||
-        "Completed";
-
-
-      const purchaseText =
-        order.purchaseText ||
-        "Purchase information unavailable.";
-
-
-      list.innerHTML += `
-
-        <div class="order">
-
-
-          <div class="order-top">
-
-            <div class="order-icon">
-
-              <i class="fa-solid fa-box"></i>
-
-            </div>
-
-
-            <div class="order-name">
-
-              <h3>
-                ${escapeHtml(productName)}
-              </h3>
-
-              <span class="order-category">
-                ${escapeHtml(category)}
-              </span>
-
-            </div>
-
-
-            <div class="status">
-
-              <i class="fa-solid fa-check"></i>
-
-              ${escapeHtml(status)}
-
-            </div>
-
-          </div>
-
-
-          <div class="details">
-
-
-            <div class="row">
-
-              <span>
-                Order number
-              </span>
-
-              <span>
-                ${escapeHtml(orderId)}
-              </span>
-
-            </div>
-
-
-            <div class="row">
-
-              <span>
-                Amount
-              </span>
-
-              <span class="amount">
-                ₦${price}
-              </span>
-
-            </div>
-
-
-            <div class="row">
-
-              <span>
-                Date
-              </span>
-
-              <span>
-                ${escapeHtml(date)}
-              </span>
-
-            </div>
-
-
-          </div>
-
-
-          <div class="purchase">
-
-            <div class="purchase-title">
-
-              <i class="fa-solid fa-file-lines"></i>
-
-              Purchase Information
-
-            </div>
-
-
-            <div
-              class="purchase-text"
-              id="purchase-${index}">
-
-              ${escapeHtml(purchaseText)}
-
-            </div>
-
-
-            <button
-              class="copy"
-              onclick="copyText(${index})">
-
-              <i class="fa-regular fa-copy"></i>
-
-              Copy Purchase Information
-
-            </button>
-
-          </div>
-
-
-        </div>
-
-      `;
-
-    }
-  );
-
-}
-
-
-/* =========================
-   COPY PURCHASE INFORMATION
-========================= */
-
-function copyText(index) {
-
-  const orders =
-    loadOrders();
-
-
-  const text =
-    orders[index]
-      ?.purchaseText || "";
-
-
-  if (!text) {
-
-    alert(
-      "No purchase information available."
-    );
-
-    return;
-
-  }
-
-
-  if (
-    navigator.clipboard &&
-    navigator.clipboard.writeText
-  ) {
-
-    navigator.clipboard
-      .writeText(text)
-      .then(function() {
-
-        alert(
-          "Purchase information copied."
-        );
-
-      })
-      .catch(function() {
-
-        alert(
-          "Unable to copy. Please copy it manually."
-        );
-
-      });
-
-  } else {
-
-    alert(
-      "Unable to copy. Please copy it manually."
-    );
-
-  }
-
-}
-
-
-/* =========================
-   HTML SAFETY
-========================= */
-
-function escapeHtml(text) {
-
-  const div =
-    document.createElement(
-      "div"
-    );
-
-
-  div.textContent =
-    String(text || "");
-
-
-  return div.innerHTML;
-
-}
-
-
-/* =========================
-   INITIAL LOAD
-========================= */
-
-displayOrders();
-
-
-/* =========================
-   RECHECK WHEN PAGE RETURNS
-========================= */
-
-window.addEventListener(
-  "pageshow",
-  function() {
-
-    const user =
-      checkSession();
-
-
-    if (!user) return;
-
-
-    displayOrders();
-
-  }
+localStorage.removeItem(
+"gentleLoggedIn"
 );
+
+localStorage.removeItem(
+"gentleCurrentUserId"
+);
+
+window.location.replace(
+"login.html"
+);
+
+return;
+
+}
+
+
+firebaseUser =
+user;
+
+
+localStorage.setItem(
+"gentleLoggedIn",
+"true"
+);
+
+
+localStorage.setItem(
+"gentleCurrentUserId",
+user.uid
+);
+
+
+loadFirestoreOrders();
+
+}
+);
+
+
+/* ==================================================
+   LOAD ORDERS
+================================================== */
+
+async function loadFirestoreOrders(){
+
+const list =
+document.getElementById(
+"ordersList"
+);
+
+
+try{
+
+if(
+typeof firebaseDB ===
+"undefined"
+){
+
+throw new Error(
+"Firestore is not available."
+);
+
+}
+
+
+if(!firebaseUser){
+
+throw new Error(
+"You are not signed in."
+);
+
+}
+
+
+/*
+Load the customer's orders.
+*/
+
+const snapshot =
+await firebaseDB
+.collection("orders")
+.where(
+"userId",
+"==",
+firebaseUser.uid
+)
+.get();
+
+
+const orders = [];
+
+
+snapshot.forEach(
+function(doc){
+
+const data =
+doc.data();
+
+
+orders.push({
+
+id:
+data.orderId ||
+doc.id,
+
+productName:
+data.productName ||
+"Digital Product",
+
+category:
+data.category ||
+"Digital Product",
+
+amount:
+Number(
+data.amount ??
+data.price ??
+0
+),
+
+status:
+data.status ||
+"Completed",
+
+purchaseText:
+data.purchaseText ||
+"Purchase information unavailable.",
+
+createdAt:
+data.createdAt ||
+null
+
+});
+
+}
+);
+
+
+/*
+Newest orders first.
+*/
+
+orders.sort(
+function(a,b){
+
+return getTime(b.createdAt)
+-
+getTime(a.createdAt);
+
+}
+);
+
+
+displayOrders(
+orders
+);
+
+
+}catch(error){
+
+console.error(
+"Orders loading error:",
+error
+);
+
+
+list.innerHTML = `
+
+<div class="empty">
+
+<div class="error-icon">
+
+<i class="fa-solid fa-triangle-exclamation"></i>
+
+</div>
+
+<h3 class="error-title">
+
+Unable to load orders
+
+</h3>
+
+<p class="error-message">
+
+${escapeHtml(error.message)}
+
+</p>
+
+</div>
+
+`;
+
+}
+
+}
+
+
+/* ==================================================
+   DISPLAY ORDERS
+================================================== */
+
+function displayOrders(
+orders
+){
+
+const total =
+document.getElementById(
+"totalOrders"
+);
+
+
+const list =
+document.getElementById(
+"ordersList"
+);
+
+
+total.textContent =
+orders.length;
+
+
+list.innerHTML = "";
+
+
+if(
+orders.length === 0
+){
+
+list.innerHTML = `
+
+<div class="empty">
+
+<div class="empty-icon">
+
+<i class="fa-solid fa-bag-shopping"></i>
+
+</div>
+
+<h3>
+No orders yet
+</h3>
+
+<p>
+Your completed purchases will appear here.
+</p>
+
+<button
+class="shop"
+type="button"
+onclick="window.location.href='dashboard.html'"
+>
+
+<i class="fa-solid fa-store"></i>
+
+Start Shopping
+
+</button>
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+/*
+Keep orders available for
+the copy button.
+*/
+
+window.currentOrders =
+orders;
+
+
+orders.forEach(
+function(order,index){
+
+list.innerHTML += `
+
+<div class="order">
+
+<div class="order-top">
+
+<div class="order-icon">
+
+<i class="fa-solid fa-box"></i>
+
+</div>
+
+
+<div class="order-name">
+
+<h3>
+
+${escapeHtml(
+order.productName
+)}
+
+</h3>
+
+<span class="order-category">
+
+${escapeHtml(
+order.category
+)}
+
+</span>
+
+</div>
+
+
+<div class="status">
+
+<i class="fa-solid fa-check"></i>
+
+Completed
+
+</div>
+
+</div>
+
+
+<div class="purchase">
+
+<div class="purchase-title">
+
+<i class="fa-solid fa-key"></i>
+
+Purchase Information
+
+</div>
+
+
+<div
+class="purchase-text"
+id="purchase-${index}"
+>
+
+${escapeHtml(
+order.purchaseText
+)}
+
+</div>
+
+
+<button
+class="copy"
+type="button"
+onclick="copyText(${index})"
+>
+
+<i class="fa-regular fa-copy"></i>
+
+Copy Purchase Information
+
+</button>
+
+</div>
+
+
+</div>
+
+`;
+
+}
+);
+
+}
+
+
+/* ==================================================
+   COPY PURCHASE INFORMATION
+================================================== */
+
+function copyText(
+index
+){
+
+const orders =
+window.currentOrders ||
+[];
+
+
+const text =
+orders[index]
+?.purchaseText ||
+"";
+
+
+if(!text){
+
+showCopyMessage(
+"No purchase information available."
+);
+
+return;
+
+}
+
+
+if(
+navigator.clipboard &&
+navigator.clipboard.writeText
+){
+
+navigator.clipboard
+.writeText(text)
+.then(
+function(){
+
+showCopyMessage(
+"Purchase information copied."
+);
+
+}
+)
+.catch(
+function(){
+
+showCopyMessage(
+"Unable to copy. Please copy it manually."
+);
+
+}
+);
+
+}else{
+
+showCopyMessage(
+"Unable to copy. Please copy it manually."
+);
+
+}
+
+}
+
+
+/* ==================================================
+   COPY MESSAGE
+================================================== */
+
+function showCopyMessage(
+message
+){
+
+const toast =
+document.createElement(
+"div"
+);
+
+
+toast.textContent =
+message;
+
+
+toast.style.position =
+"fixed";
+
+toast.style.left =
+"50%";
+
+toast.style.bottom =
+"85px";
+
+toast.style.transform =
+"translateX(-50%)";
+
+toast.style.background =
+"#071f40";
+
+toast.style.color =
+"#ffffff";
+
+toast.style.padding =
+"11px 16px";
+
+toast.style.borderRadius =
+"10px";
+
+toast.style.fontSize =
+"10px";
+
+toast.style.fontWeight =
+"700";
+
+toast.style.zIndex =
+"300";
+
+
+document.body.appendChild(
+toast
+);
+
+
+setTimeout(
+function(){
+
+toast.remove();
+
+},
+2200
+);
+
+}
+
+
+/* ==================================================
+   FIRESTORE DATE
+================================================== */
+
+function getTime(
+value
+){
+
+if(!value){
+
+return 0;
+
+}
+
+
+try{
+
+if(
+typeof value.toDate ===
+"function"
+){
+
+return value
+.toDate()
+.getTime();
+
+}
+
+
+const date =
+new Date(value);
+
+
+return date.getTime() || 0;
+
+
+}catch(error){
+
+return 0;
+
+}
+
+}
+
+
+/* ==================================================
+   HTML SECURITY
+================================================== */
+
+function escapeHtml(
+text
+){
+
+const div =
+document.createElement(
+"div"
+);
+
+
+div.textContent =
+String(
+text ?? ""
+);
+
+
+return div.innerHTML;
+
+}
 
 </script>
 
 
 </body>
+
 </html>

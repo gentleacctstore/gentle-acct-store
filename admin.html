@@ -6,555 +6,1237 @@
 <meta charset="UTF-8">
 
 <meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0"
+name="viewport"
+content="width=device-width, initial-scale=1.0"
 >
 
 <title>Admin Dashboard - Gentle Acct Store</title>
 
 <link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+rel="preconnect"
+href="https://fonts.googleapis.com"
+>
+
+<link
+rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin
+>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+rel="stylesheet"
+>
+
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 >
 
 <style>
 
+:root{
+
+--blue:#0b2d5c;
+--blue-dark:#071f40;
+--blue-light:#eaf2fb;
+--blue-soft:#f4f8fc;
+
+--white:#ffffff;
+
+--text:#172033;
+--muted:#6f7a8b;
+
+--border:#e5ebf3;
+
+--danger:#dc2626;
+--danger-bg:#fff0f0;
+
+--shadow:
+0 8px 25px rgba(11,45,92,.06);
+
+}
+
 *{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
+box-sizing:border-box;
+margin:0;
+padding:0;
 }
 
 body{
-  font-family:Arial,sans-serif;
-  background:#f5f8fc;
-  color:#172033;
+
+font-family:"Poppins",sans-serif;
+
+background:#f7f9fc;
+
+color:var(--text);
+
+min-height:100vh;
+
 }
 
+button,
+input,
+select,
+textarea{
+
+font-family:inherit;
+
+}
+
+button{
+
+cursor:pointer;
+
+}
+
+a{
+
+text-decoration:none;
+
+color:inherit;
+
+}
+
+
+/* ==========================================
+   HEADER
+========================================== */
+
 header{
-  background:white;
-  padding:18px;
-  border-bottom:1px solid #e6ebf2;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  position:sticky;
-  top:0;
-  z-index:20;
+
+background:var(--white);
+
+padding:15px 18px;
+
+border-bottom:1px solid var(--border);
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+gap:15px;
+
+position:sticky;
+
+top:0;
+
+z-index:20;
+
 }
 
 .logo{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  color:#0866ff;
-  font-size:20px;
-  font-weight:800;
+
+display:flex;
+
+align-items:center;
+
+gap:10px;
+
+color:var(--blue);
+
+font-size:18px;
+
+font-weight:800;
+
+white-space:nowrap;
+
 }
 
 .logo i{
-  font-size:24px;
+
+width:40px;
+
+height:40px;
+
+border-radius:12px;
+
+background:var(--blue);
+
+color:var(--white);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:17px;
+
 }
 
 .header-actions{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  flex-wrap:wrap;
-  justify-content:flex-end;
+
+display:flex;
+
+align-items:center;
+
+gap:7px;
+
+flex-wrap:wrap;
+
+justify-content:flex-end;
+
 }
 
 .back,
 .logout{
-  border:none;
-  text-decoration:none;
-  font-size:13px;
-  font-weight:700;
-  cursor:pointer;
-  border-radius:10px;
-  padding:9px 11px;
+
+border:none;
+
+text-decoration:none;
+
+font-size:11px;
+
+font-weight:700;
+
+cursor:pointer;
+
+border-radius:10px;
+
+padding:9px 11px;
+
+display:inline-flex;
+
+align-items:center;
+
+gap:6px;
+
 }
 
 .back{
-  color:#555;
-  background:#f2f4f7;
+
+color:var(--blue);
+
+background:var(--blue-light);
+
 }
 
 .logout{
-  color:#dc2626;
-  background:#fff0f0;
+
+color:var(--danger);
+
+background:var(--danger-bg);
+
 }
+
+
+/* ==========================================
+   CONTAINER
+========================================== */
 
 .container{
-  max-width:1100px;
-  margin:auto;
-  padding:25px 16px 50px;
+
+width:100%;
+
+max-width:1100px;
+
+margin:auto;
+
+padding:25px 16px 50px;
+
 }
 
+
+/* ==========================================
+   HERO
+========================================== */
+
 .hero{
-  margin-bottom:22px;
+
+margin-bottom:20px;
+
 }
 
 .hero h1{
-  font-size:28px;
-  margin-bottom:7px;
+
+font-size:26px;
+
+font-weight:800;
+
+color:var(--blue-dark);
+
+margin-bottom:5px;
+
 }
 
 .hero p{
-  color:#6b7280;
-  font-size:14px;
+
+color:var(--muted);
+
+font-size:12px;
+
+line-height:1.6;
+
 }
 
-/* STATS */
+
+/* ==========================================
+   FIREBASE STATUS
+========================================== */
+
+.firebase-status{
+
+display:flex;
+
+align-items:center;
+
+gap:8px;
+
+background:var(--blue-light);
+
+border:1px solid #d5e3f2;
+
+color:var(--blue);
+
+padding:11px 13px;
+
+border-radius:12px;
+
+font-size:11px;
+
+font-weight:700;
+
+margin-bottom:20px;
+
+}
+
+.firebase-status.error{
+
+background:var(--danger-bg);
+
+border-color:#ffd0d0;
+
+color:#c62828;
+
+}
+
+
+/* ==========================================
+   STATS
+========================================== */
 
 .stats{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
-  margin-bottom:25px;
+
+display:grid;
+
+grid-template-columns:repeat(2,1fr);
+
+gap:11px;
+
+margin-bottom:25px;
+
 }
 
 .stat{
-  background:white;
-  border-radius:18px;
-  padding:18px;
-  border:1px solid #e8edf4;
-  box-shadow:0 6px 20px rgba(20,40,80,.05);
+
+background:var(--white);
+
+border-radius:17px;
+
+padding:17px;
+
+border:1px solid var(--border);
+
+box-shadow:var(--shadow);
+
 }
 
 .stat-icon{
-  width:42px;
-  height:42px;
-  border-radius:13px;
-  background:#edf4ff;
-  color:#0866ff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin-bottom:12px;
+
+width:40px;
+
+height:40px;
+
+border-radius:12px;
+
+background:var(--blue-light);
+
+color:var(--blue);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+margin-bottom:11px;
+
+font-size:14px;
+
 }
 
 .stat h3{
-  font-size:22px;
-  margin-bottom:4px;
+
+font-size:21px;
+
+font-weight:800;
+
+color:var(--blue-dark);
+
+margin-bottom:3px;
+
 }
 
 .stat p{
-  color:#7b8494;
-  font-size:12px;
+
+color:var(--muted);
+
+font-size:10px;
+
 }
 
-/* SECTION */
+
+/* ==========================================
+   SECTION CARD
+========================================== */
 
 .section-card{
-  background:white;
-  border-radius:20px;
-  padding:20px;
-  border:1px solid #e8edf4;
-  box-shadow:0 8px 25px rgba(20,40,80,.06);
-  margin-bottom:28px;
+
+background:var(--white);
+
+border-radius:19px;
+
+padding:19px;
+
+border:1px solid var(--border);
+
+box-shadow:var(--shadow);
+
+margin-bottom:27px;
+
 }
 
 .section-title{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin-bottom:18px;
+
+display:flex;
+
+align-items:center;
+
+gap:9px;
+
+margin-bottom:18px;
+
 }
 
 .section-title i{
-  color:#0866ff;
+
+color:var(--blue);
+
+font-size:16px;
+
 }
 
 .section-title h2{
-  font-size:19px;
+
+font-size:17px;
+
+font-weight:800;
+
+color:var(--blue-dark);
+
 }
 
-/* ADD PRODUCT */
+
+/* ==========================================
+   FIELDS
+========================================== */
 
 .field{
-  margin-bottom:15px;
+
+margin-bottom:15px;
+
 }
 
 .field label{
-  display:block;
-  font-size:13px;
-  font-weight:700;
-  margin-bottom:7px;
+
+display:block;
+
+font-size:11px;
+
+font-weight:700;
+
+color:var(--blue-dark);
+
+margin-bottom:7px;
+
 }
 
 .field input,
 .field select,
 .field textarea{
-  width:100%;
-  border:1px solid #dce3ed;
-  border-radius:12px;
-  padding:13px;
-  font-size:14px;
-  outline:none;
-  background:#fbfcfe;
+
+width:100%;
+
+border:1px solid #dce3ed;
+
+border-radius:11px;
+
+padding:12px;
+
+font-size:12px;
+
+outline:none;
+
+background:#fbfcfe;
+
+color:var(--text);
+
+transition:.2s;
+
 }
 
 .field textarea{
-  min-height:110px;
-  resize:vertical;
+
+min-height:105px;
+
+resize:vertical;
+
 }
 
 .field input:focus,
 .field select:focus,
 .field textarea:focus{
-  border-color:#0866ff;
-  background:white;
+
+border-color:var(--blue);
+
+background:var(--white);
+
+box-shadow:0 0 0 3px rgba(11,45,92,.06);
+
 }
 
+.field small{
+
+display:block;
+
+margin-top:6px;
+
+color:var(--muted);
+
+font-size:9px;
+
+line-height:1.5;
+
+}
+
+
+/* ==========================================
+   ADD BUTTON
+========================================== */
+
 .add-btn{
-  width:100%;
-  border:none;
-  background:#0866ff;
-  color:white;
-  padding:14px;
-  border-radius:12px;
-  font-weight:700;
-  font-size:15px;
-  cursor:pointer;
+
+width:100%;
+
+border:none;
+
+background:var(--blue);
+
+color:var(--white);
+
+padding:13px;
+
+border-radius:11px;
+
+font-weight:700;
+
+font-size:13px;
+
+cursor:pointer;
+
+transition:.2s;
+
 }
 
 .add-btn:hover{
-  background:#0054d9;
+
+background:var(--blue-dark);
+
 }
 
-/* PRODUCTS */
+.add-btn:disabled{
 
-.products-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:15px;
+opacity:.6;
+
+cursor:not-allowed;
+
 }
 
-.products-head h2{
-  font-size:20px;
+
+/* ==========================================
+   PRODUCTS HEAD
+========================================== */
+
+.products-head,
+.orders-head{
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+margin-bottom:14px;
+
+gap:10px;
+
 }
 
-.product-count{
-  background:#edf4ff;
-  color:#0866ff;
-  padding:7px 11px;
-  border-radius:20px;
-  font-size:12px;
-  font-weight:700;
+.products-head h2,
+.orders-head h2{
+
+font-size:18px;
+
+font-weight:800;
+
+color:var(--blue-dark);
+
 }
 
-.products{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:16px;
+.product-count,
+.order-count{
+
+background:var(--blue-light);
+
+color:var(--blue);
+
+padding:6px 10px;
+
+border-radius:20px;
+
+font-size:10px;
+
+font-weight:700;
+
+white-space:nowrap;
+
+}
+
+
+/* ==========================================
+   PRODUCT GRID
+========================================== */
+
+.products,
+.orders{
+
+display:grid;
+
+grid-template-columns:1fr;
+
+gap:14px;
+
 }
 
 .product{
-  background:white;
-  border-radius:20px;
-  padding:16px;
-  border:1px solid #e8edf4;
-  box-shadow:0 7px 22px rgba(20,40,80,.06);
+
+background:var(--white);
+
+border-radius:18px;
+
+padding:15px;
+
+border:1px solid var(--border);
+
+box-shadow:var(--shadow);
+
 }
 
 .product-top{
-  display:flex;
-  gap:13px;
-  align-items:center;
+
+display:flex;
+
+gap:12px;
+
+align-items:center;
+
 }
 
 .product-img{
-  width:62px;
-  height:62px;
-  border-radius:15px;
-  background:#edf4ff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
-  flex-shrink:0;
+
+width:60px;
+
+height:60px;
+
+border-radius:14px;
+
+background:var(--blue-light);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+overflow:hidden;
+
+flex-shrink:0;
+
 }
 
 .product-img img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
+
+width:100%;
+
+height:100%;
+
+object-fit:cover;
+
 }
 
 .product-img i{
-  color:#0866ff;
-  font-size:22px;
+
+color:var(--blue);
+
+font-size:21px;
+
 }
 
 .product-info{
-  flex:1;
-  min-width:0;
+
+flex:1;
+
+min-width:0;
+
 }
 
 .product-info h3{
-  font-size:16px;
-  margin-bottom:5px;
+
+font-size:14px;
+
+font-weight:700;
+
+color:var(--blue-dark);
+
+margin-bottom:5px;
+
+white-space:nowrap;
+
+overflow:hidden;
+
+text-overflow:ellipsis;
+
 }
 
 .category{
-  display:inline-block;
-  background:#f0f4f9;
-  color:#64748b;
-  padding:4px 8px;
-  border-radius:7px;
-  font-size:10px;
-  font-weight:700;
-  text-transform:capitalize;
+
+display:inline-block;
+
+background:#f0f4f9;
+
+color:#64748b;
+
+padding:4px 8px;
+
+border-radius:7px;
+
+font-size:9px;
+
+font-weight:700;
+
+text-transform:capitalize;
+
 }
 
 .product-price{
-  color:#0866ff;
-  font-size:18px;
-  font-weight:800;
-  margin-top:13px;
+
+color:var(--blue);
+
+font-size:17px;
+
+font-weight:800;
+
+margin-top:12px;
+
 }
 
 .stock{
-  margin-top:8px;
-  font-size:12px;
-  font-weight:700;
+
+margin-top:7px;
+
+font-size:10px;
+
+font-weight:700;
+
 }
 
 .in-stock{
-  color:#159447;
+
+color:var(--blue);
+
 }
 
 .out-stock{
-  color:#dc2626;
+
+color:var(--danger);
+
 }
 
 .description{
-  color:#737d8c;
-  font-size:13px;
-  line-height:1.5;
-  margin-top:10px;
+
+color:var(--muted);
+
+font-size:10px;
+
+line-height:1.6;
+
+margin-top:9px;
+
 }
 
+
+/* ==========================================
+   ACTION BUTTONS
+========================================== */
+
 .actions{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:9px;
-  margin-top:15px;
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:8px;
+
+margin-top:14px;
+
 }
 
 .action{
-  text-decoration:none;
-  text-align:center;
-  padding:11px;
-  border-radius:10px;
-  font-size:13px;
-  font-weight:700;
+
+text-align:center;
+
+padding:10px;
+
+border-radius:9px;
+
+font-size:11px;
+
+font-weight:700;
+
+border:none;
+
+cursor:pointer;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+gap:6px;
+
 }
 
 .edit{
-  background:#edf4ff;
-  color:#0866ff;
+
+background:var(--blue-light);
+
+color:var(--blue);
+
+}
+
+.edit:hover{
+
+background:#dce9f7;
+
 }
 
 .delete{
-  background:#fff0f0;
-  color:#dc2626;
+
+background:var(--danger-bg);
+
+color:var(--danger);
+
 }
 
-/* ORDERS */
+.delete:hover{
 
-.orders-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:15px;
+background:#ffe0e0;
+
 }
 
-.orders-head h2{
-  font-size:20px;
+
+/* ==========================================
+   INVENTORY
+========================================== */
+
+.inventory-list{
+
+margin-top:14px;
+
+padding-top:13px;
+
+border-top:1px solid #edf0f5;
+
 }
 
-.order-count{
-  background:#edf4ff;
-  color:#0866ff;
-  padding:7px 11px;
-  border-radius:20px;
-  font-size:12px;
-  font-weight:700;
+.inventory-title{
+
+font-size:10px;
+
+font-weight:800;
+
+margin-bottom:8px;
+
+color:#536074;
+
 }
 
-.orders{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:14px;
+.inventory-item{
+
+display:flex;
+
+align-items:center;
+
+gap:8px;
+
+padding:8px 9px;
+
+background:#f8fafc;
+
+border-radius:9px;
+
+margin-bottom:6px;
+
+font-size:9px;
+
+word-break:break-word;
+
 }
 
-.order{
-  background:white;
-  border:1px solid #e8edf4;
-  border-radius:18px;
-  padding:16px;
-  box-shadow:0 6px 20px rgba(20,40,80,.05);
+.inventory-number{
+
+width:22px;
+
+height:22px;
+
+border-radius:7px;
+
+background:var(--blue-light);
+
+color:var(--blue);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-weight:800;
+
+flex-shrink:0;
+
 }
 
-.order-top{
-  display:flex;
-  align-items:flex-start;
-  gap:12px;
+.inventory-sold{
+
+opacity:.55;
+
+text-decoration:line-through;
+
 }
 
-.order-icon{
-  width:48px;
-  height:48px;
-  border-radius:13px;
-  background:#edf4ff;
-  color:#0866ff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-shrink:0;
+.inventory-sold .inventory-number{
+
+background:#f1f1f1;
+
+color:#888;
+
 }
 
-.order-main{
-  flex:1;
-  min-width:0;
+
+/* ==========================================
+   EMPTY / LOADING
+========================================== */
+
+.empty,
+.loading{
+
+background:var(--white);
+
+border:1px dashed #cfd8e5;
+
+border-radius:17px;
+
+padding:38px 20px;
+
+text-align:center;
+
+color:#7a8493;
+
+grid-column:1/-1;
+
 }
 
-.order-main h3{
-  font-size:15px;
-  margin-bottom:5px;
+.empty i,
+.loading i{
+
+font-size:31px;
+
+color:#aab6c7;
+
+margin-bottom:11px;
+
 }
 
-.order-email{
-  color:#7b8494;
-  font-size:11px;
-  word-break:break-word;
+.empty h3,
+.loading h3{
+
+color:var(--blue-dark);
+
+font-size:13px;
+
+margin-bottom:5px;
+
 }
 
-.order-status{
-  background:#e9f8f0;
-  color:#16834b;
-  border-radius:20px;
-  padding:5px 8px;
-  font-size:9px;
-  font-weight:800;
-  white-space:nowrap;
+.empty p,
+.loading p{
+
+font-size:10px;
+
+line-height:1.5;
+
 }
 
-.order-details{
-  border-top:1px solid #edf0f5;
-  margin-top:14px;
-  padding-top:13px;
+
+/* ==========================================
+   MODAL
+========================================== */
+
+.modal{
+
+position:fixed;
+
+inset:0;
+
+background:rgba(7,31,64,.58);
+
+display:none;
+
+align-items:center;
+
+justify-content:center;
+
+padding:16px;
+
+z-index:100;
+
 }
 
-.order-row{
-  display:flex;
-  justify-content:space-between;
-  gap:15px;
-  margin-bottom:9px;
-  font-size:12px;
+.modal.show{
+
+display:flex;
+
 }
 
-.order-row:last-child{
-  margin-bottom:0;
+.modal-box{
+
+background:var(--white);
+
+width:100%;
+
+max-width:560px;
+
+max-height:90vh;
+
+overflow-y:auto;
+
+border-radius:21px;
+
+padding:21px;
+
 }
 
-.order-row span:first-child{
-  color:#8a94a6;
+.modal-head{
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+margin-bottom:19px;
+
 }
 
-.order-row span:last-child{
-  font-weight:700;
-  text-align:right;
-  word-break:break-word;
+.modal-head h2{
+
+font-size:18px;
+
+font-weight:800;
+
+color:var(--blue-dark);
+
 }
 
-.order-amount{
-  color:#0866ff;
+.close-modal{
+
+border:none;
+
+background:#f2f4f7;
+
+color:#555;
+
+width:35px;
+
+height:35px;
+
+border-radius:50%;
+
+cursor:pointer;
+
+font-size:14px;
+
 }
 
-.purchase-info{
-  background:#f7faff;
-  border:1px solid #dfe8f5;
-  border-radius:13px;
-  padding:13px;
-  margin-top:14px;
+.modal-actions{
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:9px;
+
+margin-top:18px;
+
 }
 
-.purchase-title{
-  color:#0866ff;
-  font-size:11px;
-  font-weight:800;
-  margin-bottom:8px;
+.cancel-btn,
+.save-btn{
+
+border:none;
+
+padding:12px;
+
+border-radius:10px;
+
+font-weight:700;
+
+font-size:12px;
+
+cursor:pointer;
+
 }
 
-.purchase-text{
-  background:white;
-  border:1px solid #e2e8f1;
-  border-radius:9px;
-  padding:10px;
-  color:#39465a;
-  font-size:12px;
-  line-height:1.5;
-  white-space:pre-wrap;
-  word-break:break-word;
+.cancel-btn{
+
+background:#f1f3f6;
+
+color:#555;
+
 }
 
-/* EMPTY */
+.save-btn{
 
-.empty{
-  background:white;
-  border:1px dashed #cfd8e5;
-  border-radius:18px;
-  padding:40px 20px;
-  text-align:center;
-  color:#7a8493;
+background:var(--blue);
+
+color:var(--white);
+
 }
 
-.empty i{
-  font-size:35px;
-  color:#aab6c7;
-  margin-bottom:12px;
+.save-btn:hover{
+
+background:var(--blue-dark);
+
 }
 
-.empty h3{
-  color:#263247;
-  margin-bottom:5px;
-}
 
-/* DESKTOP */
+/* ==========================================
+   DESKTOP
+========================================== */
 
 @media(min-width:650px){
 
-  .stats{
-    grid-template-columns:repeat(5,1fr);
-  }
+.stats{
 
-  .products{
-    grid-template-columns:repeat(2,1fr);
-  }
+grid-template-columns:repeat(5,1fr);
 
-  .orders{
-    grid-template-columns:repeat(2,1fr);
-  }
+}
+
+.products{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+.orders{
+
+grid-template-columns:repeat(2,1fr);
+
+}
 
 }
 
 @media(min-width:950px){
 
-  .products{
-    grid-template-columns:repeat(3,1fr);
-  }
+.products{
 
-  .orders{
-    grid-template-columns:repeat(2,1fr);
-  }
+grid-template-columns:repeat(3,1fr);
 
-  .container{
-    padding-top:35px;
-  }
+}
+
+.container{
+
+padding-top:35px;
+
+}
+
+}
+
+
+/* ==========================================
+   MOBILE HEADER
+========================================== */
+
+@media(max-width:560px){
+
+header{
+
+align-items:flex-start;
+
+}
+
+.logo{
+
+font-size:15px;
+
+}
+
+.logo i{
+
+width:36px;
+
+height:36px;
+
+font-size:15px;
+
+}
+
+.header-actions{
+
+gap:5px;
+
+}
+
+.back,
+.logout{
+
+padding:8px;
+
+font-size:9px;
+
+}
+
+.back i,
+.logout i{
+
+font-size:10px;
+
+}
 
 }
 
@@ -562,80 +1244,75 @@ header{
 
 </head>
 
-
 <body>
 
 
-<script>
+<!-- ==================================================
+     FIREBASE
+================================================== -->
 
-/* =========================
-   ADMIN SESSION PROTECTION
-========================= */
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 
-if(
-  localStorage.getItem(
-    "gentleAdminLoggedIn"
-  ) !== "true"
-){
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
-  window.location.replace(
-    "login.html"
-  );
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
-}
+<script src="firebase.js"></script>
 
-</script>
 
+<!-- ==================================================
+     HEADER
+================================================== -->
 
 <header>
 
-  <div class="logo">
+<div class="logo">
 
-    <i class="fa-solid fa-shield-halved"></i>
+<i class="fa-solid fa-shield-halved"></i>
 
-    Gentle Admin
+Gentle Admin
 
-  </div>
-
-
-  <div class="header-actions">
-
-    <a
-      href="customers.html"
-      class="back"
-    >
-
-      <i class="fa-solid fa-users"></i>
-
-      Customers
-
-    </a>
+</div>
 
 
-    <a
-      href="dashboard.html"
-      class="back"
-    >
+<div class="header-actions">
 
-      <i class="fa-solid fa-arrow-left"></i>
+<a
+href="customers.html"
+class="back"
+>
 
-      Store
+<i class="fa-solid fa-users"></i>
 
-    </a>
+Customers
+
+</a>
 
 
-    <button
-      class="logout"
-      onclick="adminLogout()"
-    >
+<a
+href="dashboard.html"
+class="back"
+>
 
-      <i class="fa-solid fa-right-from-bracket"></i>
+<i class="fa-solid fa-arrow-left"></i>
 
-      Logout
+Store
 
-    </button>
+</a>
 
-  </div>
+
+<button
+class="logout"
+onclick="adminLogout()"
+>
+
+<i class="fa-solid fa-right-from-bracket"></i>
+
+Logout
+
+</button>
+
+</div>
 
 </header>
 
@@ -643,1304 +1320,2039 @@ if(
 <div class="container">
 
 
-  <div class="hero">
+<!-- ==================================================
+     HERO
+================================================== -->
 
-    <h1>
-      Admin Dashboard
-    </h1>
+<div class="hero">
 
-    <p>
-      Manage your products, inventory, customers and store listings.
-    </p>
+<h1>
+Admin Dashboard
+</h1>
 
-  </div>
+<p>
+Manage your products, inventory, customers and store listings.
+</p>
 
+</div>
 
-  <!-- STATISTICS -->
 
-  <div class="stats">
+<!-- ==================================================
+     FIREBASE STATUS
+================================================== -->
 
+<div
+id="firebaseStatus"
+class="firebase-status"
+>
 
-    <div class="stat">
+<i class="fa-solid fa-spinner fa-spin"></i>
 
-      <div class="stat-icon">
+Connecting to Firebase...
 
-        <i class="fa-solid fa-box"></i>
+</div>
 
-      </div>
 
-      <h3 id="totalProducts">
-        0
-      </h3>
+<!-- ==================================================
+     STATS
+================================================== -->
 
-      <p>
-        Total Products
-      </p>
+<div class="stats">
 
-    </div>
 
+<div class="stat">
 
-    <div class="stat">
+<div class="stat-icon">
 
-      <div class="stat-icon">
+<i class="fa-solid fa-box"></i>
 
-        <i class="fa-solid fa-circle-check"></i>
+</div>
 
-      </div>
+<h3 id="totalProducts">
+0
+</h3>
 
-      <h3 id="inStock">
-        0
-      </h3>
+<p>
+Total Products
+</p>
 
-      <p>
-        In Stock
-      </p>
+</div>
 
-    </div>
 
+<div class="stat">
 
-    <div class="stat">
+<div class="stat-icon">
 
-      <div class="stat-icon">
+<i class="fa-solid fa-circle-check"></i>
 
-        <i class="fa-solid fa-circle-xmark"></i>
+</div>
 
-      </div>
+<h3 id="inStock">
+0
+</h3>
 
-      <h3 id="outStock">
-        0
-      </h3>
+<p>
+In Stock
+</p>
 
-      <p>
-        Out of Stock
-      </p>
+</div>
 
-    </div>
 
+<div class="stat">
 
-    <div class="stat">
+<div class="stat-icon">
 
-      <div class="stat-icon">
+<i class="fa-solid fa-circle-xmark"></i>
 
-        <i class="fa-solid fa-naira-sign"></i>
+</div>
 
-      </div>
+<h3 id="outStock">
+0
+</h3>
 
-      <h3 id="inventoryValue">
-        ₦0
-      </h3>
+<p>
+Out of Stock
+</p>
 
-      <p>
-        Inventory Value
-      </p>
+</div>
 
-    </div>
 
+<div class="stat">
 
-    <div class="stat">
+<div class="stat-icon">
 
-      <div class="stat-icon">
+<i class="fa-solid fa-naira-sign"></i>
 
-        <i class="fa-solid fa-users"></i>
+</div>
 
-      </div>
+<h3 id="inventoryValue">
+₦0
+</h3>
 
-      <h3 id="totalCustomers">
-        0
-      </h3>
+<p>
+Inventory Value
+</p>
 
-      <p>
-        Customers
-      </p>
+</div>
 
-    </div>
 
+<div class="stat">
 
-  </div>
+<div class="stat-icon">
 
+<i class="fa-solid fa-users"></i>
 
-  <!-- ADD PRODUCT -->
+</div>
 
-  <div class="section-card">
+<h3 id="totalCustomers">
+0
+</h3>
 
+<p>
+Customers
+</p>
 
-    <div class="section-title">
+</div>
 
-      <i class="fa-solid fa-plus-circle"></i>
 
-      <h2>
-        Add New Product
-      </h2>
+</div>
 
-    </div>
 
+<!-- ==================================================
+     ADD PRODUCT
+================================================== -->
 
-    <div class="field">
+<div class="section-card">
 
-      <label>
-        Product Name
-      </label>
 
-      <input
-        id="name"
-        type="text"
-        placeholder="Example: USA Number"
-      >
+<div class="section-title">
 
-    </div>
+<i class="fa-solid fa-plus-circle"></i>
 
+<h2>
+Add New Product
+</h2>
 
-    <div class="field">
+</div>
 
-      <label>
-        Category
-      </label>
 
-      <select id="category">
+<div class="field">
 
-        <option value="instagram">
-          Instagram
-        </option>
+<label>
+Product Name
+</label>
 
-        <option value="facebook">
-          Facebook
-        </option>
+<input
+id="name"
+type="text"
+placeholder="Example: USA Number"
+>
 
-        <option value="tiktok">
-          TikTok
-        </option>
+</div>
 
-        <option value="other">
-          Other
-        </option>
 
-      </select>
+<div class="field">
 
-    </div>
+<label>
+Category
+</label>
 
+<select id="category">
 
-    <div class="field">
+<option value="instagram">
+Instagram
+</option>
 
-      <label>
-        Price (₦)
-      </label>
+<option value="facebook">
+Facebook
+</option>
 
-      <input
-        id="price"
-        type="number"
-        placeholder="5000"
-      >
+<option value="tiktok">
+TikTok
+</option>
 
-    </div>
+<option value="other">
+Other
+</option>
 
+</select>
 
-    <div class="field">
+</div>
 
-      <label>
-        Product Image URL
-      </label>
 
-      <input
-        id="image"
-        type="text"
-        placeholder="https://example.com/image.jpg"
-      >
+<div class="field">
 
-    </div>
+<label>
+Price (₦)
+</label>
 
+<input
+id="price"
+type="number"
+min="1"
+placeholder="5000"
+>
 
-    <div class="field">
+</div>
 
-      <label>
-        Product Description
-      </label>
 
-      <textarea
-        id="description"
-        placeholder="Write a short description of the product..."
-      ></textarea>
+<div class="field">
 
-    </div>
+<label>
+Product Image URL
+</label>
 
+<input
+id="image"
+type="text"
+placeholder="https://example.com/image.jpg"
+>
 
-    <div class="field">
+</div>
 
-      <label>
-        Inventory / Stock Items
-      </label>
 
-      <textarea
-        id="inventory"
-        placeholder="Enter one inventory item per line&#10;Item 1&#10;Item 2&#10;Item 3"
-      ></textarea>
+<div class="field">
 
+<label>
+Product Description
+</label>
 
-      <small
-        style="display:block;margin-top:7px;color:#7b8494;font-size:11px;"
-      >
+<textarea
+id="description"
+placeholder="Write a short description of the product..."
+></textarea>
 
-        Each line represents one inventory item that will be delivered after a successful purchase.
+</div>
 
-      </small>
 
-    </div>
+<div class="field">
 
+<label>
+Inventory / Stock Items
+</label>
 
-    <button
-      class="add-btn"
-      onclick="addProduct()"
-    >
+<textarea
+id="inventory"
+placeholder="Enter one inventory item per line&#10;Item 1&#10;Item 2&#10;Item 3"
+></textarea>
 
-      <i class="fa-solid fa-plus"></i>
+<small>
 
-      Add Product
+Each line is stored separately in Firebase as one inventory item.
 
-    </button>
+</small>
 
+</div>
 
-  </div>
 
+<button
+id="addButton"
+class="add-btn"
+onclick="addProduct()"
+>
 
-  <!-- PRODUCTS -->
+<i class="fa-solid fa-plus"></i>
 
-  <div class="products-head">
+Add Product
 
-    <h2>
-      Products
-    </h2>
+</button>
 
 
-    <span
-      class="product-count"
-      id="productCount"
-    >
-      0 Products
-    </span>
+</div>
 
-  </div>
 
+<!-- ==================================================
+     PRODUCTS
+================================================== -->
 
-  <div
-    id="products"
-    class="products"
-  ></div>
+<div class="products-head">
 
+<h2>
+Products
+</h2>
 
-  <!-- ORDERS -->
+<span
+class="product-count"
+id="productCount"
+>
+0 Products
+</span>
 
-  <div
-    class="section-card"
-    style="margin-top:30px;"
-  >
+</div>
 
 
-    <div class="orders-head">
+<div
+id="products"
+class="products"
+>
 
-      <h2>
-        Customer Orders
-      </h2>
+<div class="loading">
 
+<i class="fa-solid fa-spinner fa-spin"></i>
 
-      <span
-        class="order-count"
-        id="orderCount"
-      >
-        0 Orders
-      </span>
+<h3>
+Loading products...
+</h3>
 
-    </div>
+</div>
 
+</div>
 
-    <div
-      id="orders"
-      class="orders"
-    ></div>
 
+<!-- ==================================================
+     ORDERS
+================================================== -->
 
-  </div>
+<div
+class="section-card"
+style="margin-top:30px;"
+>
 
+<div class="orders-head">
+
+<h2>
+Customer Orders
+</h2>
+
+<span
+class="order-count"
+id="orderCount"
+>
+0 Orders
+</span>
+
+</div>
+
+
+<div
+id="orders"
+class="orders"
+>
+
+<div class="empty">
+
+<i class="fa-solid fa-receipt"></i>
+
+<h3>
+Orders will appear here
+</h3>
+
+<p>
+Customer purchases will be connected next.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+<!-- ==================================================
+     EDIT MODAL
+================================================== -->
+
+<div
+id="editModal"
+class="modal"
+>
+
+<div class="modal-box">
+
+
+<div class="modal-head">
+
+<h2>
+Edit Product
+</h2>
+
+<button
+class="close-modal"
+onclick="closeEditModal()"
+>
+
+<i class="fa-solid fa-xmark"></i>
+
+</button>
+
+</div>
+
+
+<input
+type="hidden"
+id="editProductId"
+>
+
+
+<div class="field">
+
+<label>
+Product Name
+</label>
+
+<input
+id="editName"
+type="text"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Category
+</label>
+
+<select id="editCategory">
+
+<option value="instagram">
+Instagram
+</option>
+
+<option value="facebook">
+Facebook
+</option>
+
+<option value="tiktok">
+TikTok
+</option>
+
+<option value="other">
+Other
+</option>
+
+</select>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Price (₦)
+</label>
+
+<input
+id="editPrice"
+type="number"
+min="1"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Product Image URL
+</label>
+
+<input
+id="editImage"
+type="text"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Description
+</label>
+
+<textarea
+id="editDescription"
+></textarea>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Add More Inventory
+</label>
+
+<textarea
+id="editInventory"
+placeholder="Add one new item per line"
+></textarea>
+
+<small>
+
+Existing inventory will stay. New lines will be added to the end.
+
+</small>
+
+</div>
+
+
+<div class="modal-actions">
+
+<button
+class="cancel-btn"
+onclick="closeEditModal()"
+>
+
+Cancel
+
+</button>
+
+
+<button
+id="saveEditButton"
+class="save-btn"
+onclick="saveProductEdit()"
+>
+
+Save Changes
+
+</button>
+
+</div>
+
+
+</div>
 
 </div>
 
 
 <script>
 
-/* =========================
-   ADMIN LOGOUT
-========================= */
+/* ==================================================
+   SETTINGS
+================================================== */
 
-function adminLogout(){
+const ADMIN_UID =
+"UoEjCy99gbQKkGob59vGi3CunZi1";
 
-  const confirmLogout =
-    confirm(
-      "Are you sure you want to logout?"
-    );
+const PRODUCTS_COLLECTION =
+"products";
 
-
-  if(!confirmLogout){
-
-    return;
-
-  }
+let adminAuthorized = false;
 
 
-  localStorage.removeItem(
-    "gentleAdminLoggedIn"
-  );
+/* ==================================================
+   FIREBASE STATUS
+================================================== */
 
+function setFirebaseStatus(
+message,
+error = false
+){
 
-  window.location.replace(
-    "login.html"
-  );
+const box =
+document.getElementById(
+"firebaseStatus"
+);
 
-}
+box.className =
+error
+? "firebase-status error"
+: "firebase-status";
 
+box.innerHTML = `
 
-/* =========================
-   CUSTOMERS
-========================= */
+<i class="fa-solid ${
+error
+? "fa-circle-exclamation"
+: "fa-circle-check"
+}"></i>
 
-function getCustomers(){
+${escapeHTML(message)}
 
-  const savedUsers =
-    localStorage.getItem(
-      "gentleUsers"
-    );
-
-
-  if(savedUsers){
-
-    try{
-
-      const users =
-        JSON.parse(
-          savedUsers
-        );
-
-
-      if(Array.isArray(users)){
-
-        return users;
-
-      }
-
-    }catch(error){}
-
-  }
-
-
-  const singleUser =
-    localStorage.getItem(
-      "gentleUser"
-    );
-
-
-  if(singleUser){
-
-    try{
-
-      const user =
-        JSON.parse(
-          singleUser
-        );
-
-
-      return [user];
-
-    }catch(error){}
-
-  }
-
-
-  return [];
+`;
 
 }
 
 
-function updateCustomerCount(){
+/* ==================================================
+   AUTH
+================================================== */
 
-  const customers =
-    getCustomers();
+firebaseAuth.onAuthStateChanged(
+async function(user){
 
+if(!user){
 
-  document
-    .getElementById(
-      "totalCustomers"
-    )
-    .textContent =
-      customers.length;
+location.href =
+"admin-login.html";
 
-}
-
-
-/* =========================
-   PRODUCTS
-========================= */
-
-function getProducts(){
-
-  const saved =
-    localStorage.getItem(
-      "gentleProducts"
-    );
-
-
-  if(!saved){
-
-    return [];
-
-  }
-
-
-  try{
-
-    return JSON.parse(saved);
-
-  }catch(error){
-
-    return [];
-
-  }
+return;
 
 }
 
 
-function saveProducts(products){
+if(user.uid !== ADMIN_UID){
 
-  localStorage.setItem(
-    "gentleProducts",
-    JSON.stringify(products)
-  );
+await firebaseAuth.signOut();
+
+location.href =
+"admin-login.html";
+
+return;
 
 }
 
 
-/* =========================
+if(!user.emailVerified){
+
+alert(
+"Please verify your admin email first."
+);
+
+await firebaseAuth.signOut();
+
+location.href =
+"admin-login.html";
+
+return;
+
+}
+
+
+if(
+typeof firebaseDB === "undefined" ||
+!firebaseDB
+){
+
+setFirebaseStatus(
+"Firestore is not available.",
+true
+);
+
+return;
+
+}
+
+
+adminAuthorized = true;
+
+
+setFirebaseStatus(
+"Firebase connected successfully."
+);
+
+
+await renderProducts();
+
+});
+
+
+/* ==================================================
    ADD PRODUCT
-========================= */
+================================================== */
 
-function addProduct(){
+async function addProduct(){
 
-  const name =
-    document
-      .getElementById("name")
-      .value
-      .trim();
+if(!adminAuthorized){
 
+alert(
+"Admin authorization is still being verified."
+);
 
-  const category =
-    document
-      .getElementById("category")
-      .value;
-
-
-  const price =
-    Number(
-      document
-        .getElementById("price")
-        .value
-    );
-
-
-  const image =
-    document
-      .getElementById("image")
-      .value
-      .trim();
-
-
-  const description =
-    document
-      .getElementById("description")
-      .value
-      .trim();
-
-
-  const inventoryText =
-    document
-      .getElementById("inventory")
-      .value
-      .trim();
-
-
-  if(
-    !name ||
-    !price ||
-    !inventoryText
-  ){
-
-    alert(
-      "Please enter the product name, price and inventory."
-    );
-
-    return;
-
-  }
-
-
-  const inventory =
-    inventoryText
-      .split("\n")
-      .map(
-        item => item.trim()
-      )
-      .filter(
-        item => item !== ""
-      );
-
-
-  if(inventory.length === 0){
-
-    alert(
-      "Please add at least one inventory item."
-    );
-
-    return;
-
-  }
-
-
-  const products =
-    getProducts();
-
-
-  const product = {
-
-    id: Date.now(),
-
-    name: name,
-
-    category: category,
-
-    price: price,
-
-    image: image,
-
-    description: description,
-
-    inventory: inventory
-
-  };
-
-
-  products.push(product);
-
-
-  saveProducts(products);
-
-
-  alert(
-    "Product added successfully."
-  );
-
-
-  document
-    .getElementById("name")
-    .value = "";
-
-
-  document
-    .getElementById("price")
-    .value = "";
-
-
-  document
-    .getElementById("image")
-    .value = "";
-
-
-  document
-    .getElementById("description")
-    .value = "";
-
-
-  document
-    .getElementById("inventory")
-    .value = "";
-
-
-  renderProducts();
+return;
 
 }
 
 
-/* =========================
+const button =
+document.getElementById(
+"addButton"
+);
+
+
+const name =
+document
+.getElementById("name")
+.value
+.trim();
+
+
+const category =
+document
+.getElementById("category")
+.value;
+
+
+const price =
+Number(
+document
+.getElementById("price")
+.value
+);
+
+
+const image =
+document
+.getElementById("image")
+.value
+.trim();
+
+
+const description =
+document
+.getElementById("description")
+.value
+.trim();
+
+
+const inventoryText =
+document
+.getElementById("inventory")
+.value
+.trim();
+
+
+if(!name){
+
+alert(
+"Please enter the product name."
+);
+
+return;
+
+}
+
+
+if(!price || price <= 0){
+
+alert(
+"Please enter a valid price."
+);
+
+return;
+
+}
+
+
+if(!inventoryText){
+
+alert(
+"Please enter at least one inventory item."
+);
+
+return;
+
+}
+
+
+const inventory =
+inventoryText
+.split("\n")
+.map(function(item){
+
+return item.trim();
+
+})
+.filter(function(item){
+
+return item.length > 0;
+
+});
+
+
+if(!inventory.length){
+
+alert(
+"Please enter at least one inventory item."
+);
+
+return;
+
+}
+
+
+try{
+
+button.disabled = true;
+
+button.innerHTML = `
+
+<i class="fa-solid fa-spinner fa-spin"></i>
+
+Saving...
+
+`;
+
+
+/* CREATE PRODUCT */
+
+const productRef =
+firebaseDB
+.collection(PRODUCTS_COLLECTION)
+.doc();
+
+
+await productRef.set({
+
+name:name,
+
+category:category,
+
+price:price,
+
+image:image,
+
+description:description,
+
+stockCount:inventory.length,
+
+totalStock:inventory.length,
+
+createdBy:ADMIN_UID,
+
+createdAt:
+firebase.firestore
+.FieldValue
+.serverTimestamp()
+
+});
+
+
+/* CREATE INVENTORY */
+
+const batch =
+firebaseDB.batch();
+
+
+inventory.forEach(
+function(item,index){
+
+const itemRef =
+productRef
+.collection("inventory")
+.doc();
+
+
+batch.set(
+itemRef,
+{
+
+value:item,
+
+position:index,
+
+sold:false,
+
+soldTo:null,
+
+soldAt:null,
+
+createdAt:
+firebase.firestore
+.FieldValue
+.serverTimestamp()
+
+}
+);
+
+});
+
+
+await batch.commit();
+
+
+alert(
+"Product added to Firebase successfully."
+);
+
+
+/* CLEAR */
+
+document
+.getElementById("name")
+.value="";
+
+
+document
+.getElementById("price")
+.value="";
+
+
+document
+.getElementById("image")
+.value="";
+
+
+document
+.getElementById("description")
+.value="";
+
+
+document
+.getElementById("inventory")
+.value="";
+
+
+await renderProducts();
+
+
+}catch(error){
+
+console.error(
+"ADD PRODUCT ERROR:",
+error
+);
+
+alert(
+"Could not add product.\n\n" +
+error.message
+);
+
+}finally{
+
+button.disabled=false;
+
+button.innerHTML = `
+
+<i class="fa-solid fa-plus"></i>
+
+Add Product
+
+`;
+
+}
+
+}
+
+
+/* ==================================================
+   GET PRODUCTS
+================================================== */
+
+async function getProducts(){
+
+const snapshot =
+await firebaseDB
+.collection(PRODUCTS_COLLECTION)
+.get();
+
+
+const products=[];
+
+
+for(
+const doc of snapshot.docs
+){
+
+const data =
+doc.data();
+
+
+const inventorySnapshot =
+await doc.ref
+.collection("inventory")
+.get();
+
+
+const inventory =
+inventorySnapshot.docs
+.map(
+function(itemDoc){
+
+return {
+
+id:itemDoc.id,
+
+...itemDoc.data()
+
+};
+
+})
+.sort(
+function(a,b){
+
+return Number(
+a.position || 0
+)
+-
+Number(
+b.position || 0
+);
+
+});
+
+
+products.push({
+
+id:doc.id,
+
+name:data.name || "",
+
+category:
+data.category || "other",
+
+price:
+Number(data.price || 0),
+
+image:
+data.image || "",
+
+description:
+data.description || "",
+
+stockCount:
+Number(data.stockCount || 0),
+
+totalStock:
+Number(
+data.totalStock ||
+inventory.length
+),
+
+inventory:inventory,
+
+createdAt:
+data.createdAt || null
+
+});
+
+}
+
+
+/* NEWEST FIRST */
+
+products.sort(
+function(a,b){
+
+const aTime =
+a.createdAt &&
+typeof a.createdAt.toMillis ===
+"function"
+? a.createdAt.toMillis()
+: 0;
+
+
+const bTime =
+b.createdAt &&
+typeof b.createdAt.toMillis ===
+"function"
+? b.createdAt.toMillis()
+: 0;
+
+
+return bTime-aTime;
+
+});
+
+
+return products;
+
+}
+
+
+/* ==================================================
    RENDER PRODUCTS
-========================= */
+================================================== */
 
-function renderProducts(){
+async function renderProducts(){
 
-  const products =
-    getProducts();
+const container =
+document.getElementById(
+"products"
+);
 
 
-  const container =
-    document.getElementById(
-      "products"
-    );
+container.innerHTML = `
 
+<div class="loading">
 
-  document
-    .getElementById("productCount")
-    .textContent =
-      products.length +
-      (
-        products.length === 1
-        ? " Product"
-        : " Products"
-      );
+<i class="fa-solid fa-spinner fa-spin"></i>
 
+<h3>
+Loading products...
+</h3>
 
-  updateStats(products);
+<p>
+Reading from Firebase.
+</p>
 
+</div>
 
-  if(products.length === 0){
+`;
 
-    container.innerHTML = `
 
-      <div class="empty">
+try{
 
-        <i class="fa-solid fa-box-open"></i>
+const products =
+await getProducts();
 
-        <h3>
-          No products yet
-        </h3>
 
-        <p>
-          Add your first product above.
-        </p>
+document
+.getElementById(
+"productCount"
+)
+.textContent =
+products.length +
+(
+products.length === 1
+? " Product"
+: " Products"
+);
 
-      </div>
 
-    `;
+updateStats(products);
 
-    return;
 
-  }
+if(!products.length){
 
+container.innerHTML = `
 
-  container.innerHTML = "";
+<div class="empty">
 
+<i class="fa-solid fa-box-open"></i>
 
-  products.forEach(
-    function(product){
+<h3>
+No products yet
+</h3>
 
-      const inventory =
-        Array.isArray(
-          product.inventory
-        )
-        ? product.inventory
-        : [];
+<p>
+Add your first product above.
+</p>
 
+</div>
 
-      const stock =
-        inventory.length;
+`;
 
-
-      const out =
-        stock === 0;
-
-
-      const card =
-        document.createElement(
-          "div"
-        );
-
-
-      card.className =
-        "product";
-
-
-      const imageHTML =
-        product.image
-
-        ?
-
-        `<img
-          src="${escapeHTML(product.image)}"
-          alt="${escapeHTML(product.name)}"
-          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
-        >
-
-        <i
-          class="fa-solid fa-box"
-          style="display:none;"
-        ></i>`
-
-        :
-
-        `<i class="fa-solid fa-box"></i>`;
-
-
-      card.innerHTML = `
-
-        <div class="product-top">
-
-          <div class="product-img">
-
-            ${imageHTML}
-
-          </div>
-
-
-          <div class="product-info">
-
-            <h3>
-              ${escapeHTML(product.name)}
-            </h3>
-
-
-            <span class="category">
-
-              ${escapeHTML(product.category)}
-
-            </span>
-
-          </div>
-
-        </div>
-
-
-        <div class="product-price">
-
-          ₦${Number(product.price)
-            .toLocaleString("en-NG")}
-
-        </div>
-
-
-        <div
-          class="stock ${out ? "out-stock" : "in-stock"}"
-        >
-
-          <i
-            class="fa-solid ${
-              out
-              ? "fa-circle-xmark"
-              : "fa-circle-check"
-            }"
-          ></i>
-
-          ${
-            out
-            ? "Out of Stock"
-            : stock +
-              " item" +
-              (stock === 1 ? "" : "s") +
-              " available"
-          }
-
-        </div>
-
-
-        ${
-          product.description
-
-          ?
-
-          `<div class="description">
-
-            ${escapeHTML(
-              product.description
-            )}
-
-          </div>`
-
-          :
-
-          ""
-        }
-
-
-        <div class="actions">
-
-          <a
-            class="action edit"
-            href="edit.html?id=${product.id}"
-          >
-
-            <i class="fa-solid fa-pen"></i>
-
-            Edit
-
-          </a>
-
-
-          <a
-            class="action delete"
-            href="delete.html?id=${product.id}"
-          >
-
-            <i class="fa-solid fa-trash"></i>
-
-            Delete
-
-          </a>
-
-        </div>
-
-      `;
-
-
-      container.appendChild(
-        card
-      );
-
-    }
-  );
+return;
 
 }
 
 
-/* =========================
-   STATISTICS
-========================= */
+container.innerHTML="";
+
+
+products.forEach(
+function(product){
+
+const inventory =
+Array.isArray(product.inventory)
+? product.inventory
+: [];
+
+
+const available =
+inventory.filter(
+function(item){
+
+return item.sold !== true;
+
+}
+);
+
+
+const stock =
+available.length;
+
+
+const card =
+document.createElement("div");
+
+
+card.className="product";
+
+
+let imageHTML;
+
+
+if(product.image){
+
+imageHTML = `
+
+<img
+src="${escapeHTML(product.image)}"
+alt="${escapeHTML(product.name)}"
+onerror="this.style.display='none'"
+>
+
+`;
+
+}else{
+
+imageHTML = `
+
+<i class="fa-solid fa-box"></i>
+
+`;
+
+}
+
+
+let inventoryHTML="";
+
+
+if(inventory.length){
+
+inventoryHTML = `
+
+<div class="inventory-list">
+
+<div class="inventory-title">
+
+<i class="fa-solid fa-layer-group"></i>
+
+Inventory
+
+</div>
+
+${inventory.map(
+function(item,index){
+
+const sold =
+item.sold === true;
+
+
+return `
+
+<div
+class="inventory-item ${
+sold
+? "inventory-sold"
+: ""
+}"
+>
+
+<div class="inventory-number">
+
+${index+1}
+
+</div>
+
+<div>
+
+${escapeHTML(
+item.value || ""
+)}
+
+</div>
+
+</div>
+
+`;
+
+}
+).join("")}
+
+</div>
+
+`;
+
+}
+
+
+card.innerHTML = `
+
+<div class="product-top">
+
+<div class="product-img">
+
+${imageHTML}
+
+</div>
+
+
+<div class="product-info">
+
+<h3>
+
+${escapeHTML(
+product.name
+)}
+
+</h3>
+
+
+<span class="category">
+
+${escapeHTML(
+product.category
+)}
+
+</span>
+
+</div>
+
+</div>
+
+
+<div class="product-price">
+
+₦${Number(
+product.price || 0
+).toLocaleString(
+"en-NG"
+)}
+
+</div>
+
+
+<div
+class="stock ${
+stock > 0
+? "in-stock"
+: "out-stock"
+}"
+>
+
+<i
+class="fa-solid ${
+stock > 0
+? "fa-circle-check"
+: "fa-circle-xmark"
+}"
+></i>
+
+
+${
+stock > 0
+
+?
+
+stock +
+" item" +
+(
+stock === 1
+? ""
+: "s"
+) +
+" available"
+
+:
+
+"Out of Stock"
+
+}
+
+</div>
+
+
+${
+product.description
+
+?
+
+`
+
+<div class="description">
+
+${escapeHTML(
+product.description
+)}
+
+</div>
+
+`
+
+:
+
+""
+
+}
+
+
+${inventoryHTML}
+
+
+<div class="actions">
+
+<button
+class="action edit"
+onclick="openEditProduct('${escapeHTML(product.id)}')"
+>
+
+<i class="fa-solid fa-pen"></i>
+
+Edit
+
+</button>
+
+
+<a
+class="action delete"
+href="delete.html?id=${encodeURIComponent(product.id)}"
+>
+
+<i class="fa-solid fa-trash"></i>
+
+Delete
+
+</a>
+
+</div>
+
+`;
+
+
+container.appendChild(card);
+
+});
+
+
+}catch(error){
+
+console.error(
+"LOAD PRODUCTS ERROR:",
+error
+);
+
+
+setFirebaseStatus(
+"Firebase connected, but products could not be loaded.",
+true
+);
+
+
+container.innerHTML = `
+
+<div class="empty">
+
+<i class="fa-solid fa-triangle-exclamation"></i>
+
+<h3>
+Could not load products
+</h3>
+
+<p>
+${escapeHTML(error.message)}
+</p>
+
+</div>
+
+`;
+
+}
+
+}
+
+
+/* ==================================================
+   STATS
+================================================== */
 
 function updateStats(products){
 
-  let inStock = 0;
+let inStock=0;
 
-  let outStock = 0;
+let outStock=0;
 
-  let inventoryValue = 0;
-
-
-  products.forEach(
-    function(product){
-
-      const inventory =
-        Array.isArray(
-          product.inventory
-        )
-        ? product.inventory
-        : [];
+let inventoryValue=0;
 
 
-      const stock =
-        inventory.length;
+products.forEach(
+function(product){
+
+const inventory =
+Array.isArray(product.inventory)
+? product.inventory
+: [];
 
 
-      if(stock > 0){
+const available =
+inventory.filter(
+function(item){
 
-        inStock++;
+return item.sold !== true;
 
-      }else{
-
-        outStock++;
-
-      }
-
-
-      inventoryValue +=
-        Number(
-          product.price || 0
-        ) * stock;
-
-    }
-  );
+}
+).length;
 
 
-  document
-    .getElementById(
-      "totalProducts"
-    )
-    .textContent =
-      products.length;
+if(available > 0){
 
+inStock++;
 
-  document
-    .getElementById(
-      "inStock"
-    )
-    .textContent =
-      inStock;
+}else{
 
-
-  document
-    .getElementById(
-      "outStock"
-    )
-    .textContent =
-      outStock;
-
-
-  document
-    .getElementById(
-      "inventoryValue"
-    )
-    .textContent =
-      "₦" +
-      inventoryValue
-        .toLocaleString(
-          "en-NG"
-        );
+outStock++;
 
 }
 
 
-/* =========================
-   ORDERS
-========================= */
+inventoryValue +=
+Number(product.price || 0) *
+available;
 
-function getOrders(){
-
-  const saved =
-    localStorage.getItem(
-      "gentleOrders"
-    );
+});
 
 
-  if(!saved){
-
-    return [];
-
-  }
-
-
-  try{
-
-    const orders =
-      JSON.parse(saved);
+document
+.getElementById(
+"totalProducts"
+)
+.textContent =
+products.length;
 
 
-    return Array.isArray(orders)
-      ? orders
-      : [];
+document
+.getElementById(
+"inStock"
+)
+.textContent =
+inStock;
 
-  }catch(error){
 
-    return [];
+document
+.getElementById(
+"outStock"
+)
+.textContent =
+outStock;
 
-  }
+
+document
+.getElementById(
+"inventoryValue"
+)
+.textContent =
+"₦" +
+inventoryValue.toLocaleString(
+"en-NG"
+);
 
 }
 
 
-/* =========================
-   RENDER ORDERS
-========================= */
+/* ==================================================
+   EDIT PRODUCT
+================================================== */
 
-function renderOrders(){
+async function openEditProduct(
+productId
+){
 
-  const orders =
-    getOrders();
+try{
 
+const productRef =
+firebaseDB
+.collection(PRODUCTS_COLLECTION)
+.doc(productId);
 
-  const container =
-    document.getElementById(
-      "orders"
-    );
 
+const snapshot =
+await productRef.get();
 
-  const count =
-    document.getElementById(
-      "orderCount"
-    );
 
+if(!snapshot.exists){
 
-  count.textContent =
-    orders.length +
-    (
-      orders.length === 1
-      ? " Order"
-      : " Orders"
-    );
+alert(
+"Product not found."
+);
 
-
-  if(orders.length === 0){
-
-    container.innerHTML = `
-
-      <div class="empty">
-
-        <i class="fa-solid fa-receipt"></i>
-
-        <h3>
-          No customer orders yet
-        </h3>
-
-        <p>
-          Completed customer purchases will appear here.
-        </p>
-
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-
-  container.innerHTML = "";
-
-
-  const sortedOrders =
-    [...orders].reverse();
-
-
-  sortedOrders.forEach(
-    function(order){
-
-      const productName =
-        order.productName ||
-        "Digital Product";
-
-
-      const email =
-        order.userEmail ||
-        "Customer email unavailable";
-
-
-      const category =
-        order.category ||
-        "Other";
-
-
-      const price =
-        Number(
-          order.price || 0
-        )
-        .toLocaleString(
-          "en-NG"
-        );
-
-
-      const orderId =
-        order.id ||
-        "Order";
-
-
-      const date =
-        order.date ||
-        "Date unavailable";
-
-
-      const status =
-        order.status ||
-        "Completed";
-
-
-      const purchaseText =
-        order.purchaseText ||
-        "Purchase information unavailable.";
-
-
-      const card =
-        document.createElement(
-          "div"
-        );
-
-
-      card.className =
-        "order";
-
-
-      card.innerHTML = `
-
-        <div class="order-top">
-
-          <div class="order-icon">
-
-            <i class="fa-solid fa-receipt"></i>
-
-          </div>
-
-
-          <div class="order-main">
-
-            <h3>
-
-              ${escapeHTML(
-                productName
-              )}
-
-            </h3>
-
-
-            <div class="order-email">
-
-              ${escapeHTML(
-                email
-              )}
-
-            </div>
-
-          </div>
-
-
-          <div class="order-status">
-
-            <i class="fa-solid fa-check"></i>
-
-            ${escapeHTML(
-              status
-            )}
-
-          </div>
-
-
-        </div>
-
-
-        <div class="order-details">
-
-
-          <div class="order-row">
-
-            <span>
-              Order number
-            </span>
-
-            <span>
-              ${escapeHTML(
-                orderId
-              )}
-            </span>
-
-          </div>
-
-
-          <div class="order-row">
-
-            <span>
-              Product
-            </span>
-
-            <span>
-              ${escapeHTML(
-                productName
-              )}
-            </span>
-
-          </div>
-
-
-          <div class="order-row">
-
-            <span>
-              Category
-            </span>
-
-            <span>
-              ${escapeHTML(
-                category
-              )}
-            </span>
-
-          </div>
-
-
-          <div class="order-row">
-
-            <span>
-              Amount
-            </span>
-
-            <span class="order-amount">
-
-              ₦${price}
-
-            </span>
-
-          </div>
-
-
-          <div class="order-row">
-
-            <span>
-              Date
-            </span>
-
-            <span>
-              ${escapeHTML(
-                date
-              )}
-            </span>
-
-          </div>
-
-
-        </div>
-
-
-        <div class="purchase-info">
-
-          <div class="purchase-title">
-
-            <i class="fa-solid fa-file-lines"></i>
-
-            Purchase Information
-
-          </div>
-
-
-          <div class="purchase-text">
-
-            ${escapeHTML(
-              purchaseText
-            )}
-
-          </div>
-
-
-        </div>
-
-      `;
-
-
-      container.appendChild(
-        card
-      );
-
-    }
-  );
+return;
 
 }
 
 
-/* =========================
+const product =
+snapshot.data();
+
+
+document
+.getElementById(
+"editProductId"
+)
+.value =
+productId;
+
+
+document
+.getElementById(
+"editName"
+)
+.value =
+product.name || "";
+
+
+document
+.getElementById(
+"editCategory"
+)
+.value =
+product.category || "other";
+
+
+document
+.getElementById(
+"editPrice"
+)
+.value =
+product.price || "";
+
+
+document
+.getElementById(
+"editImage"
+)
+.value =
+product.image || "";
+
+
+document
+.getElementById(
+"editDescription"
+)
+.value =
+product.description || "";
+
+
+document
+.getElementById(
+"editInventory"
+)
+.value="";
+
+
+document
+.getElementById(
+"editModal"
+)
+.classList.add("show");
+
+
+}catch(error){
+
+console.error(error);
+
+alert(
+"Could not open product.\n\n" +
+error.message
+);
+
+}
+
+}
+
+
+/* ==================================================
+   SAVE EDIT
+================================================== */
+
+async function saveProductEdit(){
+
+const productId =
+document
+.getElementById(
+"editProductId"
+)
+.value;
+
+
+const name =
+document
+.getElementById(
+"editName"
+)
+.value
+.trim();
+
+
+const category =
+document
+.getElementById(
+"editCategory"
+)
+.value;
+
+
+const price =
+Number(
+document
+.getElementById(
+"editPrice"
+)
+.value
+);
+
+
+const image =
+document
+.getElementById(
+"editImage"
+)
+.value
+.trim();
+
+
+const description =
+document
+.getElementById(
+"editDescription"
+)
+.value
+.trim();
+
+
+const extraInventory =
+document
+.getElementById(
+"editInventory"
+)
+.value
+.trim();
+
+
+if(!name){
+
+alert(
+"Please enter a product name."
+);
+
+return;
+
+}
+
+
+if(!price || price<=0){
+
+alert(
+"Please enter a valid price."
+);
+
+return;
+
+}
+
+
+const button =
+document.getElementById(
+"saveEditButton"
+);
+
+
+try{
+
+button.disabled=true;
+
+button.textContent=
+"Saving...";
+
+
+const productRef =
+firebaseDB
+.collection(PRODUCTS_COLLECTION)
+.doc(productId);
+
+
+await productRef.update({
+
+name:name,
+
+category:category,
+
+price:price,
+
+image:image,
+
+description:description,
+
+updatedAt:
+firebase.firestore
+.FieldValue
+.serverTimestamp()
+
+});
+
+
+/* ADD NEW INVENTORY */
+
+if(extraInventory){
+
+const items =
+extraInventory
+.split("\n")
+.map(function(item){
+
+return item.trim();
+
+})
+.filter(function(item){
+
+return item.length>0;
+
+});
+
+
+if(items.length){
+
+const existingSnapshot =
+await productRef
+.collection("inventory")
+.get();
+
+
+let maxPosition=-1;
+
+
+existingSnapshot.docs.forEach(
+function(doc){
+
+const position =
+Number(
+doc.data().position || 0
+);
+
+
+if(position>maxPosition){
+
+maxPosition=position;
+
+}
+
+});
+
+
+const batch =
+firebaseDB.batch();
+
+
+items.forEach(
+function(item,index){
+
+const inventoryRef =
+productRef
+.collection("inventory")
+.doc();
+
+
+batch.set(
+inventoryRef,
+{
+
+value:item,
+
+position:
+maxPosition+index+1,
+
+sold:false,
+
+soldTo:null,
+
+soldAt:null,
+
+createdAt:
+firebase.firestore
+.FieldValue
+.serverTimestamp()
+
+}
+);
+
+});
+
+
+await batch.commit();
+
+
+await productRef.update({
+
+totalStock:
+firebase.firestore
+.FieldValue
+.increment(
+items.length
+),
+
+stockCount:
+firebase.firestore
+.FieldValue
+.increment(
+items.length
+)
+
+});
+
+}
+
+}
+
+
+closeEditModal();
+
+
+alert(
+"Product updated successfully."
+);
+
+
+await renderProducts();
+
+
+}catch(error){
+
+console.error(error);
+
+alert(
+"Could not update product.\n\n" +
+error.message
+);
+
+}finally{
+
+button.disabled=false;
+
+button.textContent=
+"Save Changes";
+
+}
+
+}
+
+
+/* ==================================================
+   CLOSE EDIT
+================================================== */
+
+function closeEditModal(){
+
+document
+.getElementById(
+"editModal"
+)
+.classList.remove("show");
+
+}
+
+
+/* ==================================================
+   LOGOUT
+================================================== */
+
+async function adminLogout(){
+
+if(
+!confirm(
+"Are you sure you want to logout?"
+)
+){
+
+return;
+
+}
+
+
+try{
+
+await firebaseAuth.signOut();
+
+}catch(error){
+
+console.error(error);
+
+}finally{
+
+location.href=
+"admin-login.html";
+
+}
+
+}
+
+
+/* ==================================================
    HTML SAFETY
-========================= */
+================================================== */
 
 function escapeHTML(value){
 
-  return String(
-    value || ""
-  )
-  .replace(
-    /&/g,
-    "&amp;"
-  )
-  .replace(
-    /</g,
-    "&lt;"
-  )
-  .replace(
-    />/g,
-    "&gt;"
-  )
-  .replace(
-    /"/g,
-    "&quot;"
-  )
-  .replace(
-    /'/g,
-    "&#039;"
-  );
+return String(
+value ?? ""
+)
+
+.replace(
+/&/g,
+"&amp;"
+)
+
+.replace(
+/</g,
+"&lt;"
+)
+
+.replace(
+/>/g,
+"&gt;"
+)
+
+.replace(
+/"/g,
+"&quot;"
+)
+
+.replace(
+/'/g,
+"&#039;"
+);
 
 }
 
 
-/* =========================
-   LOAD
-========================= */
+/* ==================================================
+   CLOSE MODAL OUTSIDE
+================================================== */
 
-renderProducts();
+document
+.getElementById(
+"editModal"
+)
+.addEventListener(
+"click",
+function(event){
 
-renderOrders();
+if(
+event.target === this
+){
 
-updateCustomerCount();
+closeEditModal();
+
+}
+
+});
 
 </script>
 

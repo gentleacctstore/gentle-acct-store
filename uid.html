@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firebase UID</title>
+</head>
+
+<body>
+  
+  <h2>Your Firebase UID</h2>
+  
+  <p id="status">Checking login...</p>
+  
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="firebase.js"></script>
+  
+  <script>
+    firebaseAuth.onAuthStateChanged(function(user) {
+      
+      if (!user) {
+        
+        document.getElementById("status").textContent =
+          "You are not logged in to Firebase.";
+        
+        return;
+        
+      }
+      
+      document.getElementById("status").innerHTML =
+        "<strong>" + user.uid + "</strong>";
+      
+    });
+  </script>
+  
+</body>
+
+</html> 

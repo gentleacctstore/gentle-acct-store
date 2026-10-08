@@ -245,6 +245,153 @@
       font-size: 11px;
       margin-top: 25px;
     }
+
+    /* =========================
+       CHANGE PASSWORD MODAL
+    ========================= */
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 25, 55, .55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      z-index: 100;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-card {
+      width: 100%;
+      max-width: 430px;
+      background: white;
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: 0 20px 50px rgba(0,0,0,.18);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .modal-header h3 {
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .close-btn {
+      width: 36px;
+      height: 36px;
+      border: none;
+      border-radius: 10px;
+      background: #f1f4f8;
+      color: #6f7887;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .input-group {
+      margin-bottom: 14px;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: #5f6878;
+      margin-bottom: 7px;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-wrap input {
+      width: 100%;
+      padding: 13px 45px 13px 13px;
+      border: 1px solid #dce2eb;
+      border-radius: 11px;
+      outline: none;
+      font-size: 14px;
+      background: #fbfcfe;
+    }
+
+    .input-wrap input:focus {
+      border-color: #1261e8;
+      background: white;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background: transparent;
+      color: #7c8696;
+      cursor: pointer;
+    }
+
+    .password-help {
+      color: #8992a2;
+      font-size: 11px;
+      line-height: 1.5;
+      margin: 4px 0 15px;
+    }
+
+    .password-message {
+      display: none;
+      padding: 11px 12px;
+      border-radius: 10px;
+      font-size: 12px;
+      margin-bottom: 14px;
+    }
+
+    .password-message.error {
+      display: block;
+      background: #fff0f0;
+      color: #c62828;
+    }
+
+    .password-message.success {
+      display: block;
+      background: #effbf3;
+      color: #198754;
+    }
+
+    .change-btn {
+      width: 100%;
+      border: none;
+      background: #1261e8;
+      color: white;
+      padding: 14px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .change-btn:disabled {
+      opacity: .65;
+      cursor: not-allowed;
+    }
+
+    .forgot-link {
+      display: block;
+      text-align: center;
+      margin-top: 13px;
+      color: #1261e8;
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+    }
   </style>
 </head>
 
@@ -382,6 +529,31 @@
 
 
     <button
+      class="menu-item"
+      onclick="openPasswordModal()">
+
+      <div class="menu-icon">
+        <i class="fa-solid fa-lock"></i>
+      </div>
+
+      <div class="menu-text">
+
+        <strong>
+          Change Password
+        </strong>
+
+        <small>
+          Update your account password
+        </small>
+
+      </div>
+
+      <i class="fa-solid fa-chevron-right arrow"></i>
+
+    </button>
+
+
+    <button
       class="menu-item logout"
       onclick="logout()">
 
@@ -415,92 +587,243 @@
 </div>
 
 
+<!-- =========================
+     CHANGE PASSWORD MODAL
+========================= -->
+
+<div
+  class="modal"
+  id="passwordModal">
+
+  <div class="modal-card">
+
+    <div class="modal-header">
+
+      <h3>
+        Change Password
+      </h3>
+
+      <button
+        class="close-btn"
+        onclick="closePasswordModal()">
+
+        <i class="fa-solid fa-xmark"></i>
+
+      </button>
+
+    </div>
+
+
+    <div
+      class="password-message"
+      id="passwordMessage">
+    </div>
+
+
+    <div class="input-group">
+
+      <label>
+        Current Password
+      </label>
+
+      <div class="input-wrap">
+
+        <input
+          type="password"
+          id="currentPassword"
+          placeholder="Enter current password"
+          autocomplete="current-password">
+
+        <button
+          class="toggle-password"
+          type="button"
+          onclick="togglePassword('currentPassword', this)">
+
+          <i class="fa-solid fa-eye"></i>
+
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <div class="input-group">
+
+      <label>
+        New Password
+      </label>
+
+      <div class="input-wrap">
+
+        <input
+          type="password"
+          id="newPassword"
+          placeholder="Enter new password"
+          autocomplete="new-password">
+
+        <button
+          class="toggle-password"
+          type="button"
+          onclick="togglePassword('newPassword', this)">
+
+          <i class="fa-solid fa-eye"></i>
+
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <div class="input-group">
+
+      <label>
+        Confirm New Password
+      </label>
+
+      <div class="input-wrap">
+
+        <input
+          type="password"
+          id="confirmPassword"
+          placeholder="Confirm new password"
+          autocomplete="new-password">
+
+        <button
+          class="toggle-password"
+          type="button"
+          onclick="togglePassword('confirmPassword', this)">
+
+          <i class="fa-solid fa-eye"></i>
+
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <div class="password-help">
+      Your new password must be at least 6 characters long.
+    </div>
+
+
+    <button
+      class="change-btn"
+      id="changePasswordButton"
+      onclick="changePassword()">
+
+      Change Password
+
+    </button>
+
+
+    <a
+      href="forgot-password.html"
+      class="forgot-link">
+
+      Forgot your password?
+
+    </a>
+
+  </div>
+
+</div>
+
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+<script src="firebase.js"></script>
+
+
 <script>
 
 /* =========================
    SESSION PROTECTION
 ========================= */
 
-const loggedIn =
-  localStorage.getItem(
-    "gentleLoggedIn"
-  ) === "true";
+let firebaseUser = null;
 
 
-const currentUserId =
-  String(
-    localStorage.getItem(
-      "gentleCurrentUserId"
-    ) || ""
+firebaseAuth.onAuthStateChanged(function(user) {
+
+  if (!user || !user.emailVerified) {
+
+    localStorage.removeItem("gentleLoggedIn");
+    localStorage.removeItem("gentleCurrentUserId");
+    localStorage.removeItem("gentleCheckoutProduct");
+
+    window.location.replace("login.html");
+
+    return;
+  }
+
+
+  firebaseUser = user;
+
+
+  /*
+    Keep compatibility with the
+    existing Gentle Acct Store pages.
+  */
+
+  localStorage.setItem(
+    "gentleLoggedIn",
+    "true"
   );
 
 
-let user = null;
-
-
-const savedUser =
-  localStorage.getItem(
-    "gentleUser"
+  localStorage.setItem(
+    "gentleCurrentUserId",
+    user.uid
   );
 
 
-if (savedUser) {
+  const savedUser =
+    localStorage.getItem("gentleUser");
 
-  try {
 
-    user =
-      JSON.parse(savedUser);
+  let localUser = {};
 
-  } catch (error) {
 
-    user = null;
+  if (savedUser) {
+
+    try {
+
+      localUser =
+        JSON.parse(savedUser);
+
+    } catch (error) {
+
+      localUser = {};
+
+    }
 
   }
 
-}
+
+  localUser.id = user.uid;
+  localUser.email = user.email || "";
+  localUser.name =
+    user.displayName ||
+    localUser.name ||
+    "User";
 
 
-/*
-  Make sure the current session
-  actually belongs to a valid user.
-*/
-
-if (
-  !loggedIn ||
-  !user ||
-  !currentUserId ||
-  String(user.id) !== currentUserId
-) {
-
-  localStorage.removeItem(
-    "gentleLoggedIn"
+  localStorage.setItem(
+    "gentleUser",
+    JSON.stringify(localUser)
   );
 
-  localStorage.removeItem(
-    "gentleCurrentUserId"
-  );
-
-  localStorage.removeItem(
-    "gentleCheckoutProduct"
-  );
-
-  window.location.replace(
-    "login.html"
-  );
-
-}
-
-
-/* =========================
-   USER INFORMATION
-========================= */
-
-if (user) {
 
   document
     .getElementById("userName")
     .textContent =
-    user.name || "User";
+    localUser.name;
 
 
   document
@@ -508,7 +831,10 @@ if (user) {
     .textContent =
     user.email || "";
 
-}
+
+  updateBalance();
+
+});
 
 
 /* =========================
@@ -539,9 +865,6 @@ function updateBalance() {
 }
 
 
-updateBalance();
-
-
 /* =========================
    REFRESH
 ========================= */
@@ -549,34 +872,6 @@ updateBalance();
 window.addEventListener(
   "pageshow",
   function() {
-
-    const sessionActive =
-      localStorage.getItem(
-        "gentleLoggedIn"
-      ) === "true";
-
-
-    const sessionUserId =
-      String(
-        localStorage.getItem(
-          "gentleCurrentUserId"
-        ) || ""
-      );
-
-
-    if (
-      !sessionActive ||
-      !sessionUserId
-    ) {
-
-      window.location.replace(
-        "login.html"
-      );
-
-      return;
-
-    }
-
 
     updateBalance();
 
@@ -613,14 +908,407 @@ function viewOrders() {
 
 
 /* =========================
+   CHANGE PASSWORD
+========================= */
+
+function openPasswordModal() {
+
+  const modal =
+    document.getElementById(
+      "passwordModal"
+    );
+
+
+  document
+    .getElementById("passwordMessage")
+    .className =
+    "password-message";
+
+
+  document
+    .getElementById("passwordMessage")
+    .textContent = "";
+
+
+  document
+    .getElementById("currentPassword")
+    .value = "";
+
+
+  document
+    .getElementById("newPassword")
+    .value = "";
+
+
+  document
+    .getElementById("confirmPassword")
+    .value = "";
+
+
+  modal.classList.add("show");
+
+}
+
+
+function closePasswordModal() {
+
+  document
+    .getElementById("passwordModal")
+    .classList.remove("show");
+
+}
+
+
+function showPasswordMessage(
+  message,
+  type
+) {
+
+  const box =
+    document.getElementById(
+      "passwordMessage"
+    );
+
+
+  box.textContent =
+    message;
+
+
+  box.className =
+    "password-message " +
+    type;
+
+}
+
+
+/* =========================
+   PASSWORD VISIBILITY
+========================= */
+
+function togglePassword(
+  inputId,
+  button
+) {
+
+  const input =
+    document.getElementById(
+      inputId
+    );
+
+
+  if (input.type === "password") {
+
+    input.type = "text";
+
+    button.innerHTML =
+      '<i class="fa-solid fa-eye-slash"></i>';
+
+  } else {
+
+    input.type = "password";
+
+    button.innerHTML =
+      '<i class="fa-solid fa-eye"></i>';
+
+  }
+
+}
+
+
+/* =========================
+   CHANGE PASSWORD WITH FIREBASE
+========================= */
+
+async function changePassword() {
+
+  if (!firebaseUser) {
+
+    showPasswordMessage(
+      "Your session has expired. Please log in again.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  const currentPassword =
+    document
+      .getElementById("currentPassword")
+      .value
+      .trim();
+
+
+  const newPassword =
+    document
+      .getElementById("newPassword")
+      .value;
+
+
+  const confirmPassword =
+    document
+      .getElementById("confirmPassword")
+      .value;
+
+
+  if (!currentPassword) {
+
+    showPasswordMessage(
+      "Enter your current password.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  if (!newPassword) {
+
+    showPasswordMessage(
+      "Enter your new password.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  if (newPassword.length < 6) {
+
+    showPasswordMessage(
+      "Your new password must be at least 6 characters long.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  if (newPassword !== confirmPassword) {
+
+    showPasswordMessage(
+      "The new passwords do not match.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  if (currentPassword === newPassword) {
+
+    showPasswordMessage(
+      "Your new password must be different from your current password.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  const button =
+    document.getElementById(
+      "changePasswordButton"
+    );
+
+
+  button.disabled = true;
+
+  button.textContent =
+    "Changing Password...";
+
+
+  try {
+
+    /*
+      Firebase requires recent
+      authentication before changing
+      a sensitive credential.
+
+      We re-authenticate using the
+      current password first.
+    */
+
+    const credential =
+      firebase.auth.EmailAuthProvider
+        .credential(
+          firebaseUser.email,
+          currentPassword
+        );
+
+
+    await firebaseUser.reauthenticateWithCredential(
+      credential
+    );
+
+
+    await firebaseUser.updatePassword(
+      newPassword
+    );
+
+
+    showPasswordMessage(
+      "Password changed successfully.",
+      "success"
+    );
+
+
+    document
+      .getElementById("currentPassword")
+      .value = "";
+
+
+    document
+      .getElementById("newPassword")
+      .value = "";
+
+
+    document
+      .getElementById("confirmPassword")
+      .value = "";
+
+
+    button.textContent =
+      "Password Changed";
+
+
+    setTimeout(function() {
+
+      closePasswordModal();
+
+      button.disabled = false;
+
+      button.textContent =
+        "Change Password";
+
+    }, 1500);
+
+
+  } catch (error) {
+
+    console.error(error);
+
+
+    let message =
+      "Unable to change your password. Please try again.";
+
+
+    if (
+      error.code ===
+      "auth/wrong-password"
+    ) {
+
+      message =
+        "Your current password is incorrect.";
+
+    }
+
+
+    if (
+      error.code ===
+      "auth/invalid-credential"
+    ) {
+
+      message =
+        "Your current password is incorrect.";
+
+    }
+
+
+    if (
+      error.code ===
+      "auth/weak-password"
+    ) {
+
+      message =
+        "Your new password is too weak.";
+
+    }
+
+
+    if (
+      error.code ===
+      "auth/requires-recent-login"
+    ) {
+
+      message =
+        "Please log in again before changing your password.";
+
+    }
+
+
+    if (
+      error.code ===
+      "auth/too-many-requests"
+    ) {
+
+      message =
+        "Too many attempts. Please wait and try again later.";
+
+    }
+
+
+    showPasswordMessage(
+      message,
+      "error"
+    );
+
+
+    button.disabled = false;
+
+    button.textContent =
+      "Change Password";
+
+  }
+
+}
+
+
+/* =========================
+   CLOSE MODAL OUTSIDE
+========================= */
+
+document
+  .getElementById("passwordModal")
+  .addEventListener(
+    "click",
+    function(event) {
+
+      if (
+        event.target ===
+        this
+      ) {
+
+        closePasswordModal();
+
+      }
+
+    }
+  );
+
+
+/* =========================
    SECURE LOGOUT
 ========================= */
 
-function logout() {
+async function logout() {
 
-  /*
-    End the current customer session.
-  */
+  try {
+
+    await firebaseAuth.signOut();
+
+  } catch (error) {
+
+    console.error(error);
+
+  }
+
 
   localStorage.removeItem(
     "gentleLoggedIn"
@@ -632,22 +1320,9 @@ function logout() {
   );
 
 
-  /*
-    Remove the currently selected
-    checkout product so another
-    customer cannot continue it.
-  */
-
   localStorage.removeItem(
     "gentleCheckoutProduct"
   );
-
-
-  /*
-    Do not delete gentleUser here.
-    It contains the registered account
-    information needed for the next login.
-  */
 
 
   window.location.replace(

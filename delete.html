@@ -1,181 +1,868 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Delete Product</title>
+<meta charset="UTF-8">
 
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+>
 
-    body {
-      margin: 0;
-      background: #f5f8ff;
-      color: #172033;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
+<title>Delete Product - Gentle Acct Store</title>
 
-    .box {
-      width: 100%;
-      max-width: 400px;
-      background: white;
-      border-radius: 18px;
-      padding: 30px 20px;
-      text-align: center;
-      box-shadow: 0 5px 20px rgba(0,0,0,.08);
-    }
+<link
+rel="preconnect"
+href="https://fonts.googleapis.com"
+>
 
-    .icon {
-      width: 65px;
-      height: 65px;
-      background: #fff0f0;
-      color: #d63030;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 18px;
-      font-size: 28px;
-    }
+<link
+rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin
+>
 
-    h2 {
-      margin-bottom: 10px;
-    }
+<link
+href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+rel="stylesheet"
+>
 
-    p {
-      color: #707a8b;
-      line-height: 1.5;
-      font-size: 14px;
-    }
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+>
 
-    button {
-      width: 100%;
-      border: none;
-      padding: 14px;
-      border-radius: 11px;
-      margin-top: 15px;
-      font-weight: bold;
-      font-size: 15px;
-      cursor: pointer;
-    }
+<style>
 
-    .delete {
-      background: #d63030;
-      color: white;
-    }
+:root{
 
-    .cancel {
-      background: #eaf2ff;
-      color: #1261e8;
-    }
-  </style>
+--blue:#0b2d5c;
+--blue-dark:#071f40;
+--blue-light:#eaf2fb;
+
+--white:#ffffff;
+
+--text:#172033;
+--muted:#7a8498;
+
+--danger:#d6362c;
+--danger-dark:#b52b23;
+--danger-bg:#fff1f1;
+
+--border:#dfe7f1;
+
+}
+
+*{
+
+box-sizing:border-box;
+
+margin:0;
+
+padding:0;
+
+}
+
+body{
+
+font-family:"Poppins",sans-serif;
+
+background:#f6f8fc;
+
+color:var(--text);
+
+min-height:100vh;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+padding:25px 16px;
+
+}
+
+.container{
+
+width:100%;
+
+max-width:760px;
+
+}
+
+.card{
+
+background:var(--white);
+
+border:1px solid var(--border);
+
+border-radius:28px;
+
+padding:60px 42px;
+
+box-shadow:
+0 15px 45px rgba(11,45,92,.08);
+
+text-align:center;
+
+}
+
+.icon{
+
+width:140px;
+
+height:140px;
+
+border-radius:50%;
+
+background:var(--danger-bg);
+
+color:var(--danger);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+margin:0 auto 45px;
+
+font-size:52px;
+
+}
+
+h1{
+
+font-size:39px;
+
+font-weight:800;
+
+color:var(--blue-dark);
+
+margin-bottom:22px;
+
+}
+
+.subtitle{
+
+font-size:18px;
+
+line-height:1.7;
+
+color:var(--muted);
+
+margin-bottom:35px;
+
+}
+
+.product-name{
+
+background:var(--blue-light);
+
+color:var(--blue);
+
+border-radius:18px;
+
+padding:18px;
+
+font-size:21px;
+
+font-weight:800;
+
+margin-bottom:20px;
+
+word-break:break-word;
+
+}
+
+.status{
+
+border-radius:16px;
+
+padding:17px;
+
+font-size:15px;
+
+font-weight:700;
+
+margin-bottom:28px;
+
+}
+
+.status.loading{
+
+background:var(--blue-light);
+
+color:var(--blue);
+
+}
+
+.status.success{
+
+background:#edf9f0;
+
+color:#16803c;
+
+}
+
+.status.error{
+
+background:var(--danger-bg);
+
+border:2px solid #f1cccc;
+
+color:var(--danger);
+
+}
+
+.delete-btn{
+
+width:100%;
+
+border:none;
+
+background:var(--danger);
+
+color:var(--white);
+
+padding:21px;
+
+border-radius:17px;
+
+font-size:18px;
+
+font-weight:800;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+gap:9px;
+
+cursor:pointer;
+
+transition:.2s;
+
+margin-bottom:20px;
+
+}
+
+.delete-btn:hover{
+
+background:var(--danger-dark);
+
+}
+
+.delete-btn:disabled{
+
+opacity:.55;
+
+cursor:not-allowed;
+
+}
+
+.cancel-btn{
+
+width:100%;
+
+border:none;
+
+background:var(--blue-light);
+
+color:var(--blue);
+
+padding:20px;
+
+border-radius:17px;
+
+font-size:18px;
+
+font-weight:800;
+
+cursor:pointer;
+
+}
+
+.cancel-btn:hover{
+
+background:#dce9f7;
+
+}
+
+.hidden{
+
+display:none;
+
+}
+
+@media(max-width:600px){
+
+body{
+
+padding:15px;
+
+}
+
+.card{
+
+padding:60px 30px;
+
+border-radius:25px;
+
+}
+
+.icon{
+
+width:120px;
+
+height:120px;
+
+font-size:45px;
+
+margin-bottom:40px;
+
+}
+
+h1{
+
+font-size:30px;
+
+}
+
+.subtitle{
+
+font-size:15px;
+
+}
+
+.product-name{
+
+font-size:17px;
+
+}
+
+.delete-btn,
+.cancel-btn{
+
+font-size:15px;
+
+padding:18px;
+
+}
+
+}
+
+</style>
+
 </head>
 
 <body>
 
-  <div class="box">
 
-    <div class="icon">
-      🗑
-    </div>
+<!-- FIREBASE -->
 
-    <h2>Delete Product?</h2>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 
-    <p>
-      Are you sure you want to delete this product?
-      This action cannot be undone.
-    </p>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
-    <button
-      class="delete"
-      onclick="deleteNow()">
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
-      Delete Product
-
-    </button>
-
-    <button
-      class="cancel"
-      onclick="goBack()">
-
-      Cancel
-
-    </button>
-
-  </div>
+<script src="firebase.js"></script>
 
 
-  <script>
+<div class="container">
 
-    function deleteNow() {
-
-      const params =
-        new URLSearchParams(
-          window.location.search
-        );
-
-      const id =
-        params.get("id");
+<div class="card">
 
 
-      if (!id) {
+<div class="icon">
 
-        alert(
-          "Product ID was not found."
-        );
+<i class="fa-solid fa-trash"></i>
 
-        return;
-
-      }
+</div>
 
 
-      let products =
-        JSON.parse(
-          localStorage.getItem(
-            "gentleProducts"
-          )
-        ) || [];
+<h1>
+Delete Product?
+</h1>
 
 
-      products =
-        products.filter(
-          function(product) {
+<p class="subtitle">
 
-            return String(product.id)
-              !== String(id);
+Are you sure you want to delete this product?
+This will also remove its inventory.
 
-          }
-        );
+</p>
 
 
-      localStorage.setItem(
-        "gentleProducts",
-        JSON.stringify(products)
-      );
+<div
+id="productName"
+class="product-name"
+>
+
+Loading product...
+
+</div>
 
 
-      window.location.href =
-        "admin.html";
+<div
+id="status"
+class="status loading"
+>
 
-    }
+<i class="fa-solid fa-spinner fa-spin"></i>
+
+Checking admin authorization...
+
+</div>
 
 
-    function goBack() {
+<button
+id="deleteButton"
+class="delete-btn"
+disabled
+onclick="deleteProduct()"
+>
 
-      window.location.href =
-        "admin.html";
+<i class="fa-solid fa-trash"></i>
 
-    }
+Delete Product
 
-  </script>
+</button>
+
+
+<button
+class="cancel-btn"
+onclick="goBack()"
+>
+
+<i class="fa-solid fa-arrow-left"></i>
+
+Cancel
+
+</button>
+
+
+</div>
+
+</div>
+
+
+<script>
+
+/* ==========================================
+   ADMIN SETTINGS
+========================================== */
+
+const ADMIN_UID =
+"UoEjCy99gbQKkGob59vGi3CunZi1";
+
+
+/* ==========================================
+   GET PRODUCT ID
+========================================== */
+
+const params =
+new URLSearchParams(
+window.location.search
+);
+
+const productId =
+params.get("id");
+
+
+let adminAuthorized = false;
+
+let productRef = null;
+
+
+/* ==========================================
+   ELEMENTS
+========================================== */
+
+const productName =
+document.getElementById(
+"productName"
+);
+
+const statusBox =
+document.getElementById(
+"status"
+);
+
+const deleteButton =
+document.getElementById(
+"deleteButton"
+);
+
+
+/* ==========================================
+   STATUS
+========================================== */
+
+function setStatus(
+message,
+type="loading"
+){
+
+statusBox.className =
+"status " + type;
+
+statusBox.innerHTML =
+message;
+
+}
+
+
+/* ==========================================
+   AUTH CHECK
+========================================== */
+
+firebaseAuth.onAuthStateChanged(
+async function(user){
+
+if(!user){
+
+setStatus(
+'<i class="fa-solid fa-circle-exclamation"></i> Please login as the admin first.',
+"error"
+);
+
+deleteButton.disabled=true;
+
+return;
+
+}
+
+
+/* EXACT ADMIN UID */
+
+if(
+String(user.uid).trim() !==
+String(ADMIN_UID).trim()
+){
+
+console.error(
+"Logged-in UID:",
+user.uid
+);
+
+console.error(
+"Required admin UID:",
+ADMIN_UID
+);
+
+setStatus(
+" You are not authorized to delete this product.",
+"error"
+);
+
+deleteButton.disabled=true;
+
+return;
+
+}
+
+
+/* ADMIN IS AUTHORIZED */
+
+adminAuthorized=true;
+
+setStatus(
+'<i class="fa-solid fa-circle-check"></i> Admin authorization confirmed.',
+"success"
+);
+
+await loadProduct();
+
+});
+
+
+/* ==========================================
+   LOAD PRODUCT
+========================================== */
+
+async function loadProduct(){
+
+if(!productId){
+
+productName.textContent =
+"No product selected.";
+
+setStatus(
+"Product ID is missing.",
+"error"
+);
+
+deleteButton.disabled=true;
+
+return;
+
+}
+
+
+try{
+
+productRef =
+firebaseDB
+.collection("products")
+.doc(productId);
+
+
+const snapshot =
+await productRef.get();
+
+
+if(!snapshot.exists){
+
+productName.textContent =
+"Product not found";
+
+setStatus(
+" This product does not exist.",
+"error"
+);
+
+deleteButton.disabled=true;
+
+return;
+
+}
+
+
+const data =
+snapshot.data();
+
+
+productName.textContent =
+data.name ||
+"Unnamed Product";
+
+
+deleteButton.disabled=false;
+
+
+}catch(error){
+
+console.error(
+"LOAD PRODUCT ERROR:",
+error
+);
+
+productName.textContent =
+"Unable to load product";
+
+setStatus(
+"Could not load this product.",
+"error"
+);
+
+deleteButton.disabled=true;
+
+}
+
+}
+
+
+/* ==========================================
+   DELETE PRODUCT
+========================================== */
+
+async function deleteProduct(){
+
+if(!adminAuthorized){
+
+alert(
+"You are not authorized to delete this product."
+);
+
+return;
+
+}
+
+
+if(!productId){
+
+alert(
+"Product ID is missing."
+);
+
+return;
+
+}
+
+
+const confirmed =
+confirm(
+"Are you sure you want to permanently delete this product and all its inventory?"
+);
+
+if(!confirmed){
+
+return;
+
+}
+
+
+try{
+
+deleteButton.disabled=true;
+
+deleteButton.innerHTML = `
+
+<i class="fa-solid fa-spinner fa-spin"></i>
+
+Deleting...
+
+`;
+
+
+setStatus(
+'<i class="fa-solid fa-spinner fa-spin"></i> Removing inventory...',
+"loading"
+);
+
+
+/* ==========================================
+   GET INVENTORY
+========================================== */
+
+const inventorySnapshot =
+await productRef
+.collection("inventory")
+.get();
+
+
+const inventoryDocs =
+inventorySnapshot.docs;
+
+
+/* ==========================================
+   DELETE INVENTORY
+========================================== */
+
+for(
+let i=0;
+i<inventoryDocs.length;
+i+=400
+){
+
+const batch =
+firebaseDB.batch();
+
+
+const chunk =
+inventoryDocs.slice(
+i,
+i+400
+);
+
+
+chunk.forEach(
+function(doc){
+
+batch.delete(
+doc.ref
+);
+
+});
+
+
+await batch.commit();
+
+}
+
+
+/* ==========================================
+   DELETE PRODUCT
+========================================== */
+
+setStatus(
+'<i class="fa-solid fa-spinner fa-spin"></i> Removing product...',
+"loading"
+);
+
+
+await productRef.delete();
+
+
+/* ==========================================
+   SUCCESS
+========================================== */
+
+setStatus(
+'<i class="fa-solid fa-circle-check"></i> Product deleted successfully.',
+"success"
+);
+
+productName.textContent =
+"Product Deleted";
+
+
+deleteButton.style.display =
+"none";
+
+
+setTimeout(
+function(){
+
+window.location.href =
+"admin.html";
+
+},
+1200
+);
+
+
+}catch(error){
+
+console.error(
+"DELETE ERROR:",
+error
+);
+
+
+deleteButton.disabled=false;
+
+deleteButton.innerHTML = `
+
+<i class="fa-solid fa-trash"></i>
+
+Delete Product
+
+`;
+
+
+setStatus(
+"Delete failed: " +
+(error.code || "") +
+" — " +
+(error.message || "Unknown error"),
+"error"
+);
+
+}
+
+}
+
+
+/* ==========================================
+   CANCEL
+========================================== */
+
+function goBack(){
+
+window.location.href =
+"admin.html";
+
+}
+
+</script>
 
 </body>
+
 </html>

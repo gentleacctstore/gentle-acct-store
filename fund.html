@@ -1,742 +1,1814 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Fund Wallet - Gentle Acct Store</title>
+<meta charset="UTF-8">
 
-  <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
+<title>Fund Wallet - Gentle Acct Store</title>
 
-    body {
-      background: #f4f8ff;
-      color: #111827;
-      min-height: 100vh;
-    }
+<link
+rel="preconnect"
+href="https://fonts.googleapis.com"
+>
 
-    /* HEADER */
+<link
+rel="preconnect"
+href="https://fonts.googleapis.com"
+crossorigin
+>
 
-    .header {
-      background: white;
-      padding: 15px 16px;
-      display: flex;
-      align-items: center;
-      gap: 13px;
-      border-bottom: 1px solid #e7edf6;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
+<link
+href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+rel="stylesheet"
+>
 
-    .back {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      background: #edf4ff;
-      color: #0757d5;
-      border: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 16px;
-    }
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+>
 
-    .header h2 {
-      font-size: 19px;
-    }
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 
-    .header p {
-      color: #6b7280;
-      font-size: 12px;
-      margin-top: 2px;
-    }
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
-    /* CONTAINER */
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
-    .container {
-      padding: 22px 16px 45px;
-      max-width: 600px;
-      margin: auto;
-    }
+<script src="firebase.js"></script>
 
-    /* WALLET CARD */
+<style>
 
-    .wallet {
-      background: linear-gradient(135deg, #0757d5, #0b72ff);
-      color: white;
-      border-radius: 22px;
-      padding: 25px;
-      box-shadow: 0 12px 28px rgba(7,87,213,0.20);
-      margin-bottom: 18px;
-      position: relative;
-      overflow: hidden;
-    }
+:root{
 
-    .wallet::after {
-      content: "";
-      position: absolute;
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.08);
-      right: -50px;
-      top: -55px;
-    }
+--blue:#0b2d5c;
+--blue-dark:#071f40;
+--blue-light:#eaf2fb;
+--blue-soft:#f5f8fc;
 
-    .wallet-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: relative;
-      z-index: 2;
-    }
+--white:#ffffff;
 
-    .wallet-label {
-      font-size: 13px;
-      opacity: .85;
-    }
+--text:#172033;
+--muted:#748093;
 
-    .wallet-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 13px;
-      background: rgba(255,255,255,.15);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-    }
+--border:#e4eaf2;
 
-    .wallet h1 {
-      margin-top: 12px;
-      font-size: 32px;
-      letter-spacing: -.5px;
-      position: relative;
-      z-index: 2;
-    }
+--success:#15803d;
+--danger:#dc2626;
 
-    .wallet-status {
-      margin-top: 12px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(255,255,255,.13);
-      padding: 7px 10px;
-      border-radius: 20px;
-      font-size: 12px;
-      position: relative;
-      z-index: 2;
-    }
+--shadow:
+0 8px 25px rgba(11,45,92,.07);
 
-    /* CARD */
+}
 
-    .card {
-      background: white;
-      border-radius: 20px;
-      padding: 20px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.05);
-      margin-bottom: 16px;
-    }
+*{
 
-    .card-title {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      margin-bottom: 7px;
-    }
+box-sizing:border-box;
 
-    .card-title-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 11px;
-      background: #edf4ff;
-      color: #0757d5;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+margin:0;
 
-    .card h3 {
-      font-size: 17px;
-    }
+padding:0;
 
-    .card p {
-      color: #6b7280;
-      font-size: 13px;
-      margin-bottom: 18px;
-      line-height: 1.5;
-    }
+}
 
-    /* INPUT */
+body{
 
-    .input-label {
-      display: block;
-      font-size: 13px;
-      font-weight: bold;
-      margin-bottom: 8px;
-      color: #374151;
-    }
+font-family:"Poppins",sans-serif;
 
-    .input-wrap {
-      position: relative;
-      margin-bottom: 14px;
-    }
+background:#f7f9fc;
 
-    .naira {
-      position: absolute;
-      left: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #0757d5;
-      font-size: 17px;
-      font-weight: bold;
-    }
+color:var(--text);
 
-    .amount-input {
-      width: 100%;
-      border: 1px solid #dbe3ef;
-      border-radius: 13px;
-      padding: 15px 15px 15px 35px;
-      font-size: 18px;
-      outline: none;
-      background: #fbfdff;
-    }
+min-height:100vh;
 
-    .amount-input:focus {
-      border-color: #0757d5;
-      background: white;
-      box-shadow: 0 0 0 3px rgba(7,87,213,.08);
-    }
+padding-bottom:80px;
 
-    /* QUICK AMOUNTS */
+}
 
-    .quick-title {
-      font-size: 12px;
-      color: #6b7280;
-      margin-bottom: 9px;
-    }
+button,
+input{
 
-    .quick {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 9px;
-      margin-bottom: 18px;
-    }
+font-family:inherit;
 
-    .quick button {
-      border: 1px solid #d8e3f5;
-      background: #f7faff;
-      color: #0757d5;
-      padding: 12px 5px;
-      border-radius: 11px;
-      font-weight: bold;
-      cursor: pointer;
-      font-size: 13px;
-    }
+}
 
-    .quick button:hover {
-      background: #edf4ff;
-      border-color: #0757d5;
-    }
+button{
 
-    .quick button:active {
-      transform: scale(.97);
-    }
+cursor:pointer;
 
-    /* CONTINUE BUTTON */
+}
 
-    .continue {
-      width: 100%;
-      border: none;
-      background: #0757d5;
-      color: white;
-      padding: 15px;
-      border-radius: 13px;
-      font-size: 15px;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 7px 16px rgba(7,87,213,.18);
-    }
+a{
 
-    .continue:hover {
-      background: #064dbd;
-    }
+text-decoration:none;
 
-    .continue:active {
-      transform: scale(.98);
-    }
+color:inherit;
 
-    .continue i {
-      margin-right: 7px;
-    }
+}
 
-    /* SUCCESS */
 
-    .success {
-      display: none;
-      margin-top: 14px;
-      background: #ecfdf3;
-      color: #087443;
-      border: 1px solid #c8f0da;
-      border-radius: 13px;
-      padding: 14px;
-      text-align: center;
-      font-size: 13px;
-      font-weight: bold;
-    }
+/* ==========================================
+   PAGE
+========================================== */
 
-    .success i {
-      margin-right: 6px;
-    }
+.page{
 
-    /* INFO */
+width:100%;
 
-    .note {
-      margin-top: 15px;
-      background: #fff8e6;
-      border: 1px solid #f5e5ae;
-      border-radius: 13px;
-      padding: 13px;
-      color: #765b00;
-      font-size: 12px;
-      line-height: 1.5;
-    }
+max-width:600px;
 
-    .note i {
-      margin-right: 5px;
-    }
+margin:0 auto;
 
-    /* HOW IT WORKS */
+min-height:100vh;
 
-    .steps {
-      display: grid;
-      gap: 12px;
-    }
+}
 
-    .step {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
 
-    .step-icon {
-      width: 38px;
-      height: 38px;
-      min-width: 38px;
-      border-radius: 11px;
-      background: #edf4ff;
-      color: #0757d5;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+/* ==========================================
+   HEADER
+========================================== */
 
-    .step strong {
-      display: block;
-      font-size: 13px;
-      margin-bottom: 3px;
-    }
+header{
 
-    .step span {
-      color: #6b7280;
-      font-size: 12px;
-    }
+height:68px;
 
-    /* DESKTOP */
+background:var(--white);
 
-    @media (min-width: 700px) {
-      .container {
-        padding-top: 30px;
-      }
+padding:0 17px;
 
-      .wallet {
-        padding: 30px;
-      }
+border-bottom:1px solid var(--border);
 
-      .wallet h1 {
-        font-size: 36px;
-      }
-    }
-  </style>
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+position:sticky;
+
+top:0;
+
+z-index:50;
+
+}
+
+.header-left{
+
+display:flex;
+
+align-items:center;
+
+gap:11px;
+
+}
+
+.back-btn{
+
+width:38px;
+
+height:38px;
+
+border:none;
+
+border-radius:11px;
+
+background:var(--blue-light);
+
+color:var(--blue);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:14px;
+
+}
+
+.header-info h2{
+
+font-size:15px;
+
+font-weight:800;
+
+color:var(--blue-dark);
+
+}
+
+.header-info p{
+
+font-size:8px;
+
+color:var(--muted);
+
+margin-top:1px;
+
+}
+
+.header-right{
+
+color:var(--blue);
+
+font-size:18px;
+
+}
+
+
+/* ==========================================
+   MAIN
+========================================== */
+
+main{
+
+padding:18px 16px 30px;
+
+}
+
+
+/* ==========================================
+   PAGE HEADING
+========================================== */
+
+.page-heading{
+
+margin-bottom:16px;
+
+}
+
+.page-heading h1{
+
+font-size:23px;
+
+font-weight:800;
+
+color:var(--blue-dark);
+
+margin-bottom:4px;
+
+}
+
+.page-heading p{
+
+font-size:10px;
+
+color:var(--muted);
+
+line-height:1.6;
+
+}
+
+
+/* ==========================================
+   WALLET CARD
+========================================== */
+
+.wallet{
+
+background:var(--blue);
+
+color:var(--white);
+
+border-radius:19px;
+
+padding:18px;
+
+margin-bottom:15px;
+
+box-shadow:
+0 9px 25px rgba(11,45,92,.15);
+
+position:relative;
+
+overflow:hidden;
+
+}
+
+.wallet::after{
+
+content:"";
+
+position:absolute;
+
+width:150px;
+
+height:150px;
+
+border-radius:50%;
+
+background:rgba(255,255,255,.06);
+
+right:-55px;
+
+top:-70px;
+
+}
+
+.wallet-top{
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+gap:12px;
+
+position:relative;
+
+z-index:2;
+
+}
+
+.wallet-label{
+
+font-size:9px;
+
+opacity:.72;
+
+margin-bottom:4px;
+
+}
+
+.wallet-balance{
+
+font-size:26px;
+
+font-weight:800;
+
+line-height:1.15;
+
+word-break:break-word;
+
+}
+
+.wallet-icon{
+
+width:43px;
+
+height:43px;
+
+border-radius:13px;
+
+background:rgba(255,255,255,.13);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:17px;
+
+flex-shrink:0;
+
+}
+
+.wallet-status{
+
+display:inline-flex;
+
+align-items:center;
+
+gap:6px;
+
+margin-top:12px;
+
+background:rgba(255,255,255,.12);
+
+padding:6px 9px;
+
+border-radius:20px;
+
+font-size:8px;
+
+font-weight:600;
+
+position:relative;
+
+z-index:2;
+
+}
+
+.wallet-status i{
+
+font-size:8px;
+
+}
+
+
+/* ==========================================
+   CARD
+========================================== */
+
+.card{
+
+background:var(--white);
+
+border:1px solid var(--border);
+
+border-radius:18px;
+
+padding:17px;
+
+margin-bottom:14px;
+
+box-shadow:var(--shadow);
+
+}
+
+.card-title{
+
+display:flex;
+
+align-items:center;
+
+gap:9px;
+
+margin-bottom:5px;
+
+}
+
+.card-title-icon{
+
+width:36px;
+
+height:36px;
+
+border-radius:10px;
+
+background:var(--blue-light);
+
+color:var(--blue);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:14px;
+
+}
+
+.card-title h3{
+
+font-size:14px;
+
+font-weight:800;
+
+color:var(--blue-dark);
+
+}
+
+.card-description{
+
+font-size:9px;
+
+line-height:1.6;
+
+color:var(--muted);
+
+margin-bottom:16px;
+
+}
+
+
+/* ==========================================
+   INPUT
+========================================== */
+
+.input-label{
+
+display:block;
+
+font-size:9px;
+
+font-weight:800;
+
+color:var(--text);
+
+margin-bottom:7px;
+
+}
+
+.input-wrap{
+
+position:relative;
+
+margin-bottom:14px;
+
+}
+
+.naira{
+
+position:absolute;
+
+left:13px;
+
+top:50%;
+
+transform:translateY(-50%);
+
+color:var(--blue);
+
+font-size:16px;
+
+font-weight:800;
+
+}
+
+.amount-input{
+
+width:100%;
+
+height:48px;
+
+border:1px solid var(--border);
+
+border-radius:11px;
+
+padding:0 13px 0 33px;
+
+font-size:14px;
+
+font-weight:600;
+
+color:var(--text);
+
+outline:none;
+
+background:#fbfcfe;
+
+}
+
+.amount-input:focus{
+
+border-color:var(--blue);
+
+background:var(--white);
+
+box-shadow:
+0 0 0 3px rgba(11,45,92,.07);
+
+}
+
+.amount-input::placeholder{
+
+color:#a0a9b7;
+
+font-weight:400;
+
+}
+
+
+/* ==========================================
+   QUICK AMOUNTS
+========================================== */
+
+.quick-title{
+
+font-size:9px;
+
+font-weight:700;
+
+color:var(--muted);
+
+margin-bottom:8px;
+
+}
+
+.quick{
+
+display:grid;
+
+grid-template-columns:repeat(3,1fr);
+
+gap:8px;
+
+margin-bottom:15px;
+
+}
+
+.quick button{
+
+border:1px solid var(--border);
+
+background:var(--blue-soft);
+
+color:var(--blue);
+
+border-radius:10px;
+
+padding:10px 4px;
+
+font-size:9px;
+
+font-weight:800;
+
+}
+
+.quick button:active{
+
+transform:scale(.97);
+
+}
+
+
+/* ==========================================
+   ADD BUTTON
+========================================== */
+
+.continue{
+
+width:100%;
+
+border:none;
+
+background:var(--blue);
+
+color:var(--white);
+
+border-radius:11px;
+
+padding:13px;
+
+font-size:11px;
+
+font-weight:800;
+
+box-shadow:
+0 7px 16px rgba(11,45,92,.15);
+
+}
+
+.continue:hover{
+
+background:var(--blue-dark);
+
+}
+
+.continue:disabled{
+
+opacity:.55;
+
+cursor:not-allowed;
+
+}
+
+.continue i{
+
+margin-right:5px;
+
+}
+
+
+/* ==========================================
+   SUCCESS
+========================================== */
+
+.success{
+
+display:none;
+
+margin-top:12px;
+
+background:#edf8f1;
+
+color:var(--success);
+
+border:1px solid #cfead8;
+
+border-radius:11px;
+
+padding:11px;
+
+text-align:center;
+
+font-size:9px;
+
+font-weight:700;
+
+line-height:1.5;
+
+}
+
+.success i{
+
+margin-right:4px;
+
+}
+
+
+/* ==========================================
+   ERROR
+========================================== */
+
+.error{
+
+display:none;
+
+margin-top:12px;
+
+background:#fff1f1;
+
+color:var(--danger);
+
+border:1px solid #f2d2d2;
+
+border-radius:11px;
+
+padding:11px;
+
+text-align:center;
+
+font-size:9px;
+
+font-weight:700;
+
+line-height:1.5;
+
+}
+
+
+/* ==========================================
+   DEMO NOTE
+========================================== */
+
+.note{
+
+margin-top:12px;
+
+background:var(--blue-soft);
+
+border:1px solid var(--border);
+
+border-radius:11px;
+
+padding:11px;
+
+color:var(--muted);
+
+font-size:8px;
+
+line-height:1.6;
+
+}
+
+.note i{
+
+color:var(--blue);
+
+margin-right:4px;
+
+}
+
+
+/* ==========================================
+   HOW IT WORKS
+========================================== */
+
+.steps{
+
+display:grid;
+
+gap:13px;
+
+}
+
+.step{
+
+display:flex;
+
+align-items:center;
+
+gap:10px;
+
+}
+
+.step-icon{
+
+width:36px;
+
+height:36px;
+
+min-width:36px;
+
+border-radius:10px;
+
+background:var(--blue-light);
+
+color:var(--blue);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:13px;
+
+}
+
+.step-text{
+
+min-width:0;
+
+}
+
+.step strong{
+
+display:block;
+
+font-size:9px;
+
+font-weight:800;
+
+color:var(--blue-dark);
+
+margin-bottom:2px;
+
+}
+
+.step span{
+
+display:block;
+
+font-size:8px;
+
+color:var(--muted);
+
+line-height:1.5;
+
+}
+
+
+/* ==========================================
+   BOTTOM NAV
+========================================== */
+
+.bottom-nav{
+
+position:fixed;
+
+left:50%;
+
+bottom:0;
+
+transform:translateX(-50%);
+
+width:100%;
+
+max-width:600px;
+
+height:67px;
+
+background:rgba(255,255,255,.97);
+
+border-top:1px solid var(--border);
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-around;
+
+z-index:100;
+
+backdrop-filter:blur(10px);
+
+}
+
+.nav-item{
+
+flex:1;
+
+height:100%;
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+justify-content:center;
+
+gap:4px;
+
+font-size:8px;
+
+font-weight:700;
+
+color:#8993a3;
+
+}
+
+.nav-item i{
+
+font-size:16px;
+
+}
+
+.nav-item.active{
+
+color:var(--blue);
+
+}
+
+
+/* ==========================================
+   DESKTOP
+========================================== */
+
+@media(min-width:700px){
+
+body{
+
+background:#eef3f8;
+
+}
+
+.page{
+
+background:#f7f9fc;
+
+box-shadow:
+0 0 40px rgba(0,0,0,.04);
+
+}
+
+}
+
+</style>
+
 </head>
+
 
 <body>
 
-  <!-- HEADER -->
 
-  <div class="header">
+<div class="page">
 
-    <button class="back" onclick="goBack()">
-      <i class="fa-solid fa-arrow-left"></i>
-    </button>
 
-    <div>
-      <h2>Fund Wallet</h2>
-      <p>Add money to your Gentle wallet</p>
-    </div>
+<!-- ==========================================
+     HEADER
+========================================== -->
 
-  </div>
+<header>
 
+<div class="header-left">
 
-  <div class="container">
+<button
+class="back-btn"
+type="button"
+onclick="goBack()"
+>
 
-    <!-- WALLET -->
+<i class="fa-solid fa-arrow-left"></i>
 
-    <div class="wallet">
+</button>
 
-      <div class="wallet-top">
 
-        <div>
-          <div class="wallet-label">
-            Available Balance
-          </div>
-        </div>
+<div class="header-info">
 
-        <div class="wallet-icon">
-          <i class="fa-solid fa-wallet"></i>
-        </div>
+<h2>
+Fund Wallet
+</h2>
 
-      </div>
+<p>
+Add money to your Gentle wallet
+</p>
 
-      <h1 id="balance">
-        ₦0.00
-      </h1>
+</div>
 
-      <div class="wallet-status">
-        <i class="fa-solid fa-circle-check"></i>
-        Wallet ready
-      </div>
+</div>
 
-    </div>
 
+<div class="header-right">
 
-    <!-- ADD MONEY -->
+<i class="fa-solid fa-wallet"></i>
 
-    <div class="card">
+</div>
 
-      <div class="card-title">
+</header>
 
-        <div class="card-title-icon">
-          <i class="fa-solid fa-money-bill-transfer"></i>
-        </div>
 
-        <h3>Add Money</h3>
+<!-- ==========================================
+     MAIN
+========================================== -->
 
-      </div>
+<main>
 
-      <p>
-        Enter the amount you want to add to your wallet.
-      </p>
 
+<div class="page-heading">
 
-      <label class="input-label">
-        Amount
-      </label>
+<h1>
+Fund Wallet
+</h1>
 
-      <div class="input-wrap">
+<p>
+Add money to your wallet and use it to purchase products.
+</p>
 
-        <span class="naira">
-          ₦
-        </span>
+</div>
 
-        <input
-          id="amount"
-          class="amount-input"
-          type="number"
-          min="100"
-          inputmode="numeric"
-          placeholder="Enter amount">
 
-      </div>
+<!-- ==========================================
+     WALLET
+========================================== -->
 
+<div class="wallet">
 
-      <div class="quick-title">
-        Quick amount
-      </div>
+<div class="wallet-top">
 
-      <div class="quick">
+<div>
 
-        <button onclick="setAmount(1000)">
-          ₦1,000
-        </button>
+<div class="wallet-label">
+Available Balance
+</div>
 
-        <button onclick="setAmount(5000)">
-          ₦5,000
-        </button>
+<div
+class="wallet-balance"
+id="balance"
+>
+₦0.00
+</div>
 
-        <button onclick="setAmount(10000)">
-          ₦10,000
-        </button>
+</div>
 
-      </div>
 
+<div class="wallet-icon">
 
-      <button
-        class="continue"
-        onclick="addFunds()">
+<i class="fa-solid fa-wallet"></i>
 
-        <i class="fa-solid fa-wallet"></i>
-        Add Funds
+</div>
 
-      </button>
+</div>
 
 
-      <div
-        class="success"
-        id="success">
+<div class="wallet-status">
 
-        <i class="fa-solid fa-circle-check"></i>
+<i class="fa-solid fa-circle-check"></i>
 
-        Funds added successfully.
+Wallet Ready
 
-      </div>
+</div>
 
+</div>
 
-      <div class="note">
 
-        <i class="fa-solid fa-circle-info"></i>
+<!-- ==========================================
+     ADD MONEY
+========================================== -->
 
-        Demo wallet only. Real payment processing
-        will be connected later.
+<div class="card">
 
-      </div>
 
-    </div>
+<div class="card-title">
 
+<div class="card-title-icon">
 
-    <!-- HOW IT WORKS -->
+<i class="fa-solid fa-money-bill-transfer"></i>
 
-    <div class="card">
+</div>
 
-      <div class="card-title">
+<h3>
+Add Money
+</h3>
 
-        <div class="card-title-icon">
-          <i class="fa-solid fa-circle-question"></i>
-        </div>
+</div>
 
-        <h3>How it works</h3>
 
-      </div>
+<p class="card-description">
 
-      <div class="steps">
+Enter the amount you want to add to your wallet.
 
-        <div class="step">
+</p>
 
-          <div class="step-icon">
-            <i class="fa-solid fa-wallet"></i>
-          </div>
 
-          <div>
-            <strong>Choose an amount</strong>
-            <span>Select a quick amount or enter your own.</span>
-          </div>
+<label
+class="input-label"
+for="amount"
+>
 
-        </div>
+Amount
 
+</label>
 
-        <div class="step">
 
-          <div class="step-icon">
-            <i class="fa-solid fa-plus"></i>
-          </div>
+<div class="input-wrap">
 
-          <div>
-            <strong>Add funds</strong>
-            <span>Your wallet balance updates immediately.</span>
-          </div>
+<span class="naira">
+₦
+</span>
 
-        </div>
 
+<input
+id="amount"
+class="amount-input"
+type="number"
+min="100"
+inputmode="numeric"
+placeholder="Enter amount"
+>
 
-        <div class="step">
+</div>
 
-          <div class="step-icon">
-            <i class="fa-solid fa-cart-shopping"></i>
-          </div>
 
-          <div>
-            <strong>Shop products</strong>
-            <span>Use your wallet balance when purchasing.</span>
-          </div>
+<div class="quick-title">
 
-        </div>
+Quick Amount
 
-      </div>
+</div>
 
-    </div>
 
-  </div>
+<div class="quick">
 
+<button
+type="button"
+onclick="setAmount(1000)"
+>
+₦1,000
+</button>
 
-  <script>
+<button
+type="button"
+onclick="setAmount(5000)"
+>
+₦5,000
+</button>
 
-    /* =========================
-       LOGIN PROTECTION
-    ========================= */
+<button
+type="button"
+onclick="setAmount(10000)"
+>
+₦10,000
+</button>
 
-    if (
-      localStorage.getItem("gentleLoggedIn")
-      !== "true"
-    ) {
+</div>
 
-      window.location.href =
-        "login.html";
 
-    }
+<button
+class="continue"
+id="addButton"
+type="button"
+onclick="addFunds()"
+>
 
+<i class="fa-solid fa-wallet"></i>
 
-    /* =========================
-       WALLET BALANCE
-    ========================= */
+Add Funds
 
-    let balance =
-      Number(
-        localStorage.getItem(
-          "gentleBalance"
-        )
-      ) || 0;
+</button>
 
 
-    function updateBalance() {
+<div
+class="success"
+id="success"
+>
 
-      document
-        .getElementById("balance")
-        .textContent =
-        "₦" +
-        balance.toLocaleString(
-          "en-NG",
-          {
-            minimumFractionDigits: 2
-          }
-        );
+<i class="fa-solid fa-circle-check"></i>
 
-    }
+Funds added successfully.
 
+</div>
 
-    /* =========================
-       QUICK AMOUNTS
-    ========================= */
 
-    function setAmount(amount) {
+<div
+class="error"
+id="error"
+></div>
 
-      document
-        .getElementById("amount")
-        .value =
-        amount;
 
-    }
+<div class="note">
 
+<i class="fa-solid fa-circle-info"></i>
 
-    /* =========================
-       ADD FUNDS
-    ========================= */
+This is currently a demo wallet for testing.
+Real payments will be connected later.
 
-    function addFunds() {
+</div>
 
-      const input =
-        document.getElementById(
-          "amount"
-        );
 
+</div>
 
-      const amount =
-        Number(input.value);
 
+<!-- ==========================================
+     HOW IT WORKS
+========================================== -->
 
-      if (!amount || amount < 100) {
+<div class="card">
 
-        alert(
-          "Please enter at least ₦100."
-        );
 
-        return;
+<div class="card-title">
 
-      }
+<div class="card-title-icon">
 
+<i class="fa-solid fa-circle-question"></i>
 
-      balance += amount;
+</div>
 
+<h3>
+How It Works
+</h3>
 
-      localStorage.setItem(
-        "gentleBalance",
-        balance
-      );
+</div>
 
 
-      updateBalance();
+<div class="steps">
 
 
-      input.value = "";
+<div class="step">
 
+<div class="step-icon">
 
-      document
-        .getElementById("success")
-        .style.display =
-        "block";
+<i class="fa-solid fa-wallet"></i>
 
+</div>
 
-      setTimeout(function() {
 
-        document
-          .getElementById("success")
-          .style.display =
-          "none";
+<div class="step-text">
 
-      }, 2500);
+<strong>
+Choose an amount
+</strong>
 
-    }
+<span>
+Select a quick amount or enter your own.
+</span>
 
+</div>
 
-    /* =========================
-       BACK
-    ========================= */
+</div>
 
-    function goBack() {
 
-      window.location.href =
-        "dashboard.html";
+<div class="step">
 
-    }
+<div class="step-icon">
 
+<i class="fa-solid fa-plus"></i>
 
-    /* =========================
-       INITIAL LOAD
-    ========================= */
+</div>
 
-    updateBalance();
 
+<div class="step-text">
 
-    /* =========================
-       REFRESH BALANCE
-    ========================= */
+<strong>
+Add funds
+</strong>
 
-    window.addEventListener(
-      "pageshow",
-      function() {
+<span>
+Your wallet balance is saved to your account.
+</span>
 
-        balance =
-          Number(
-            localStorage.getItem(
-              "gentleBalance"
-            )
-          ) || 0;
+</div>
 
-        updateBalance();
+</div>
 
-      }
-    );
 
-  </script>
+<div class="step">
+
+<div class="step-icon">
+
+<i class="fa-solid fa-cart-shopping"></i>
+
+</div>
+
+
+<div class="step-text">
+
+<strong>
+Shop products
+</strong>
+
+<span>
+Use your wallet balance when purchasing products.
+</span>
+
+</div>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+</main>
+
+
+<!-- ==========================================
+     BOTTOM NAV
+========================================== -->
+
+<nav class="bottom-nav">
+
+
+<a
+class="nav-item"
+href="dashboard.html"
+>
+
+<i class="fa-solid fa-house"></i>
+
+<span>
+Home
+</span>
+
+</a>
+
+
+<a
+class="nav-item"
+href="dashboard.html#products"
+>
+
+<i class="fa-solid fa-box"></i>
+
+<span>
+Products
+</span>
+
+</a>
+
+
+<a
+class="nav-item"
+href="orders.html"
+>
+
+<i class="fa-solid fa-receipt"></i>
+
+<span>
+Orders
+</span>
+
+</a>
+
+
+<a
+class="nav-item active"
+href="fund.html"
+>
+
+<i class="fa-solid fa-wallet"></i>
+
+<span>
+Fund
+</span>
+
+</a>
+
+
+<a
+class="nav-item"
+href="profile.html"
+>
+
+<i class="fa-solid fa-user"></i>
+
+<span>
+Menu
+</span>
+
+</a>
+
+
+</nav>
+
+
+</div>
+
+
+<script>
+
+/* ==================================================
+   VARIABLES
+================================================== */
+
+let firebaseUser = null;
+
+let balance = 0;
+
+
+/* ==================================================
+   FIREBASE SESSION
+================================================== */
+
+firebaseAuth.onAuthStateChanged(
+async function(user){
+
+if(
+!user ||
+!user.emailVerified
+){
+
+window.location.replace(
+"login.html"
+);
+
+return;
+
+}
+
+
+firebaseUser =
+user;
+
+
+await loadWallet();
+
+}
+);
+
+
+/* ==================================================
+   LOAD WALLET
+================================================== */
+
+async function loadWallet(){
+
+try{
+
+const walletRef =
+firebaseDB
+.collection("wallets")
+.doc(firebaseUser.uid);
+
+
+const snapshot =
+await walletRef.get();
+
+
+if(snapshot.exists){
+
+const data =
+snapshot.data();
+
+
+balance =
+Number(
+data.balance || 0
+);
+
+}else{
+
+balance = 0;
+
+
+await walletRef.set({
+
+userId:
+firebaseUser.uid,
+
+balance:
+0,
+
+updatedAt:
+firebase.firestore
+.FieldValue
+.serverTimestamp()
+
+});
+
+}
+
+
+/* Compatibility */
+
+localStorage.setItem(
+"gentleBalance",
+String(balance)
+);
+
+
+updateBalance();
+
+
+}catch(error){
+
+console.error(
+"WALLET LOADING ERROR:",
+error
+);
+
+showError(
+"Unable to load your wallet. Please try again."
+);
+
+}
+
+}
+
+
+/* ==================================================
+   DISPLAY BALANCE
+================================================== */
+
+function updateBalance(){
+
+document
+.getElementById("balance")
+.textContent =
+"₦" +
+balance.toLocaleString(
+"en-NG",
+{
+
+minimumFractionDigits:2,
+
+maximumFractionDigits:2
+
+}
+);
+
+}
+
+
+/* ==================================================
+   QUICK AMOUNTS
+================================================== */
+
+function setAmount(
+amount
+){
+
+document
+.getElementById("amount")
+.value =
+amount;
+
+}
+
+
+/* ==================================================
+   ADD FUNDS
+================================================== */
+
+async function addFunds(){
+
+if(!firebaseUser){
+
+showError(
+"Please log in again."
+);
+
+return;
+
+}
+
+
+const input =
+document.getElementById(
+"amount"
+);
+
+
+const button =
+document.getElementById(
+"addButton"
+);
+
+
+const amount =
+Number(
+input.value
+);
+
+
+if(
+!amount ||
+amount < 100
+){
+
+showError(
+"Please enter at least ₦100."
+);
+
+return;
+
+}
+
+
+button.disabled =
+true;
+
+
+button.innerHTML = `
+
+<i class="fa-solid fa-spinner fa-spin"></i>
+
+Adding Funds...
+
+`;
+
+
+hideMessages();
+
+
+try{
+
+const walletRef =
+firebaseDB
+.collection("wallets")
+.doc(firebaseUser.uid);
+
+
+await firebaseDB.runTransaction(
+async function(transaction){
+
+const snapshot =
+await transaction.get(
+walletRef
+);
+
+
+let currentBalance =
+0;
+
+
+if(snapshot.exists){
+
+currentBalance =
+Number(
+snapshot.data().balance || 0
+);
+
+}
+
+
+const newBalance =
+currentBalance + amount;
+
+
+transaction.set(
+walletRef,
+{
+
+userId:
+firebaseUser.uid,
+
+balance:
+newBalance,
+
+updatedAt:
+firebase.firestore
+.FieldValue
+.serverTimestamp()
+
+},
+{
+
+merge:true
+
+}
+);
+
+
+balance =
+newBalance;
+
+}
+);
+
+
+/* Compatibility */
+
+localStorage.setItem(
+"gentleBalance",
+String(balance)
+);
+
+
+updateBalance();
+
+
+input.value = "";
+
+
+document
+.getElementById("success")
+.style.display =
+"block";
+
+
+setTimeout(
+function(){
+
+document
+.getElementById("success")
+.style.display =
+"none";
+
+},
+2500
+);
+
+
+}catch(error){
+
+console.error(
+"ADD FUNDS ERROR:",
+error
+);
+
+showError(
+"Unable to update your wallet. Please try again."
+);
+
+}
+
+
+button.disabled =
+false;
+
+
+button.innerHTML = `
+
+<i class="fa-solid fa-wallet"></i>
+
+Add Funds
+
+`;
+
+}
+
+
+/* ==================================================
+   ERROR
+================================================== */
+
+function showError(
+message
+){
+
+const box =
+document.getElementById(
+"error"
+);
+
+
+box.textContent =
+message;
+
+
+box.style.display =
+"block";
+
+}
+
+
+/* ==================================================
+   HIDE MESSAGES
+================================================== */
+
+function hideMessages(){
+
+document
+.getElementById("error")
+.style.display =
+"none";
+
+}
+
+
+/* ==================================================
+   BACK
+================================================== */
+
+function goBack(){
+
+window.location.href =
+"dashboard.html";
+
+}
+
+
+/* ==================================================
+   REFRESH BALANCE
+================================================== */
+
+window.addEventListener(
+"pageshow",
+function(){
+
+if(firebaseUser){
+
+loadWallet();
+
+}
+
+}
+);
+
+</script>
+
 
 </body>
+
 </html>

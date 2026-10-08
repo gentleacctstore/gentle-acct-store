@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
@@ -11,381 +12,845 @@
 
 <title>Sign In | Gentle Acct Store</title>
 
+
+<!-- GOOGLE FONT -->
+
+<link
+  rel="preconnect"
+  href="https://fonts.googleapis.com"
+>
+
+<link
+  rel="preconnect"
+  href="https://fonts.gstatic.com"
+  crossorigin
+>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+  rel="stylesheet"
+>
+
+
+<!-- FONT AWESOME -->
+
 <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 >
 
+
 <style>
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, Helvetica, sans-serif;
+/* =========================
+   RESET
+========================= */
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
 
-body {
-  background: #f5f9ff;
-  color: #10213b;
-  min-height: 100vh;
+
+/* =========================
+   ROOT
+========================= */
+
+:root{
+
+  --blue:#0b2d5c;
+
+  --blue-dark:#071f40;
+
+  --blue-light:#eef5fc;
+
+  --text:#10233f;
+
+  --muted:#6b7890;
+
+  --border:#dce5f0;
+
+  --white:#ffffff;
+
 }
 
-a {
-  text-decoration: none;
+
+/* =========================
+   BODY
+========================= */
+
+body{
+
+  font-family:"Poppins",sans-serif;
+
+  background:#f7faff;
+
+  color:var(--text);
+
+  min-height:100vh;
+
 }
 
-header {
-  height: 70px;
-  background: rgba(255,255,255,.96);
-  border-bottom: 1px solid #e5ebf4;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  backdrop-filter: blur(12px);
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+
+  width:100%;
+
+  background:var(--white);
+
+  border-bottom:1px solid #e8eef5;
+
+  position:relative;
+
+  z-index:10;
+
 }
 
-.nav {
-  max-width: 1100px;
-  height: 100%;
-  margin: auto;
-  padding: 0 18px;
 
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.header-inner{
+
+  width:92%;
+
+  max-width:1180px;
+
+  margin:auto;
+
+  min-height:76px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:20px;
+
 }
 
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 9px;
 
-  color: #10213b;
-  font-size: 17px;
-  font-weight: 800;
+.logo{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:11px;
+
+  color:var(--blue);
+
+  text-decoration:none;
+
+  font-weight:800;
+
+  font-size:19px;
+
+  letter-spacing:-.3px;
+
 }
 
-.logo-box {
-  width: 38px;
-  height: 38px;
-  border-radius: 11px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.logo-icon{
 
-  background: linear-gradient(135deg,#0757d5,#1780ff);
-  color: white;
+  width:40px;
 
-  font-weight: 900;
-  font-size: 18px;
+  height:40px;
 
-  box-shadow: 0 7px 16px rgba(7,87,213,.20);
+  border-radius:11px;
+
+  background:var(--blue);
+
+  color:white;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  font-size:17px;
+
 }
 
-.logo span {
-  color: #1264e8;
+
+.home-link{
+
+  display:inline-flex;
+
+  align-items:center;
+
+  gap:8px;
+
+  color:var(--blue);
+
+  text-decoration:none;
+
+  font-size:13px;
+
+  font-weight:600;
+
+  border:1px solid var(--border);
+
+  padding:10px 15px;
+
+  border-radius:10px;
+
+  transition:.2s ease;
+
 }
 
-.back {
-  display: flex;
-  align-items: center;
-  gap: 7px;
 
-  color: #1264e8;
-  background: #f1f6ff;
+.home-link:hover{
 
-  padding: 9px 13px;
-  border-radius: 9px;
+  background:var(--blue-light);
 
-  font-size: 12px;
-  font-weight: 800;
+  border-color:#c9d8e9;
+
 }
 
-.page {
-  min-height: calc(100vh - 70px);
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* =========================
+   MAIN
+========================= */
 
-  padding: 35px 16px 45px;
+.main{
+
+  min-height:calc(100vh - 76px);
+
+  padding:55px 18px 70px;
+
+  display:flex;
+
+  align-items:flex-start;
+
+  justify-content:center;
+
 }
 
-.login-card {
-  width: 100%;
-  max-width: 450px;
 
-  background: white;
+/* =========================
+   AUTH WRAPPER
+========================= */
 
-  border: 1px solid #e1e8f2;
-  border-radius: 22px;
+.auth-wrapper{
 
-  padding: 32px 24px;
+  width:100%;
 
-  box-shadow: 0 18px 50px rgba(20,50,90,.08);
+  max-width:470px;
+
 }
 
-.title {
-  text-align: center;
+
+/* =========================
+   TOP INTRO
+========================= */
+
+.auth-heading{
+
+  text-align:center;
+
+  margin-bottom:28px;
+
 }
 
-.lock-icon {
-  width: 55px;
-  height: 55px;
 
-  margin: 0 auto 17px;
+.auth-icon{
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width:58px;
 
-  background: #eaf3ff;
-  color: #1264e8;
+  height:58px;
 
-  border-radius: 16px;
+  margin:0 auto 16px;
 
-  font-size: 21px;
+  border-radius:16px;
+
+  background:var(--blue);
+
+  color:white;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  font-size:21px;
+
+  box-shadow:0 12px 28px rgba(11,45,92,.18);
+
 }
 
-.title h1 {
-  font-size: 28px;
-  color: #0b1d35;
-  letter-spacing: -.5px;
+
+.auth-heading h1{
+
+  font-size:28px;
+
+  line-height:1.25;
+
+  font-weight:800;
+
+  letter-spacing:-.6px;
+
+  color:var(--blue-dark);
+
 }
 
-.title p {
-  color: #718096;
-  font-size: 13px;
-  margin-top: 8px;
-  line-height: 1.6;
+
+.auth-heading p{
+
+  margin-top:9px;
+
+  color:var(--muted);
+
+  font-size:13px;
+
+  line-height:1.7;
+
 }
 
-form {
-  margin-top: 28px;
+
+/* =========================
+   CARD
+========================= */
+
+.card{
+
+  background:var(--white);
+
+  border:1px solid #e4ebf3;
+
+  border-radius:18px;
+
+  padding:30px;
+
+  box-shadow:0 18px 45px rgba(7,31,64,.08);
+
 }
 
-.field {
-  margin-bottom: 18px;
+
+.card-title{
+
+  font-size:20px;
+
+  font-weight:700;
+
+  color:var(--blue-dark);
+
+  margin-bottom:6px;
+
 }
 
-label {
-  display: block;
-  font-size: 12px;
-  font-weight: 800;
-  margin-bottom: 7px;
-  color: #243650;
+
+.card-subtitle{
+
+  font-size:12.5px;
+
+  color:var(--muted);
+
+  line-height:1.6;
+
+  margin-bottom:24px;
+
 }
 
-.input-wrap {
-  position: relative;
+
+/* =========================
+   FORM
+========================= */
+
+.form-group{
+
+  margin-bottom:18px;
+
 }
 
-.input-icon {
-  position: absolute;
-  left: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #7f91aa;
-  font-size: 13px;
+
+.form-group label{
+
+  display:block;
+
+  font-size:12.5px;
+
+  font-weight:600;
+
+  color:var(--text);
+
+  margin-bottom:8px;
+
 }
 
-input {
-  width: 100%;
-  height: 49px;
 
-  border: 1px solid #dbe4ef;
-  border-radius: 11px;
+.input-wrap{
 
-  padding: 0 14px 0 40px;
+  position:relative;
 
-  outline: none;
-  font-size: 14px;
-
-  color: #10213b;
-  background: #fbfdff;
-
-  transition: .2s;
 }
 
-input:focus {
-  border-color: #1264e8;
-  background: white;
 
-  box-shadow:
-    0 0 0 3px rgba(18,100,232,.08);
+.input-icon{
+
+  position:absolute;
+
+  left:14px;
+
+  top:50%;
+
+  transform:translateY(-50%);
+
+  color:var(--blue);
+
+  font-size:13px;
+
+  pointer-events:none;
+
 }
 
-input::placeholder {
-  color: #9aa7b8;
+
+input{
+
+  width:100%;
+
+  height:50px;
+
+  padding:0 14px 0 42px;
+
+  border:1px solid var(--border);
+
+  border-radius:10px;
+
+  outline:none;
+
+  background:#fbfdff;
+
+  color:var(--text);
+
+  font-family:"Poppins",sans-serif;
+
+  font-size:13px;
+
+  transition:.2s ease;
+
 }
 
-.password-row {
-  display: flex;
-  justify-content: flex-end;
 
-  margin-top: -9px;
-  margin-bottom: 20px;
+input::placeholder{
+
+  color:#9aa7b8;
+
 }
 
-.forgot {
-  color: #1264e8;
-  font-size: 12px;
-  font-weight: 800;
+
+input:focus{
+
+  border-color:var(--blue);
+
+  background:white;
+
+  box-shadow:0 0 0 3px rgba(11,45,92,.08);
+
 }
 
-.login-btn {
-  width: 100%;
-  height: 50px;
 
-  border: 0;
-  border-radius: 11px;
+/* =========================
+   FORGOT PASSWORD
+========================= */
 
-  background: linear-gradient(135deg,#0757d5,#1264e8);
-  color: white;
+.forgot-row{
 
-  font-size: 14px;
-  font-weight: 800;
+  display:flex;
 
-  cursor: pointer;
+  justify-content:flex-end;
 
-  box-shadow: 0 10px 22px rgba(18,100,232,.18);
+  margin-top:-7px;
 
-  transition: .2s;
+  margin-bottom:21px;
+
 }
 
-.login-btn:hover {
-  transform: translateY(-1px);
+
+.forgot{
+
+  color:var(--blue);
+
+  text-decoration:none;
+
+  font-size:11.5px;
+
+  font-weight:600;
+
 }
 
-.login-btn:active {
-  transform: scale(.98);
+
+.forgot:hover{
+
+  text-decoration:underline;
+
 }
 
-.login-btn:disabled {
-  opacity: .75;
-  cursor: wait;
+
+/* =========================
+   BUTTON
+========================= */
+
+button{
+
+  width:100%;
+
+  height:50px;
+
+  border:none;
+
+  border-radius:10px;
+
+  background:var(--blue);
+
+  color:white;
+
+  font-family:"Poppins",sans-serif;
+
+  font-size:13px;
+
+  font-weight:700;
+
+  cursor:pointer;
+
+  transition:.2s ease;
+
+  box-shadow:0 8px 20px rgba(11,45,92,.16);
+
 }
 
-.login-btn i {
-  margin-right: 7px;
+
+button:hover{
+
+  background:var(--blue-dark);
+
+  transform:translateY(-1px);
+
 }
 
-.message {
-  display: none;
 
-  margin-top: 14px;
-  padding: 12px;
+button:active{
 
-  border-radius: 10px;
+  transform:translateY(0);
 
-  font-size: 12px;
-  text-align: center;
-  line-height: 1.5;
 }
 
-.message.error {
-  background: #fff0f0;
-  border: 1px solid #f3d1d1;
-  color: #c53030;
+
+button:disabled{
+
+  opacity:.65;
+
+  cursor:not-allowed;
+
+  transform:none;
+
 }
 
-.message.success {
-  background: #effaf3;
-  border: 1px solid #ccebd7;
-  color: #237a43;
+
+button i{
+
+  margin-right:7px;
+
 }
 
-.signup-text {
-  text-align: center;
 
-  margin-top: 23px;
+/* =========================
+   MESSAGE
+========================= */
 
-  color: #718096;
-  font-size: 12px;
+.message{
+
+  display:none;
+
+  margin-top:16px;
+
+  padding:12px 14px;
+
+  border-radius:10px;
+
+  font-size:11.5px;
+
+  line-height:1.6;
+
 }
 
-.signup-text a {
-  color: #1264e8;
-  font-weight: 800;
+
+.message.error{
+
+  display:block;
+
+  background:#fff2f2;
+
+  border:1px solid #f3d0d0;
+
+  color:#b42318;
+
 }
 
-.divider {
-  display: flex;
-  align-items: center;
-  gap: 12px;
 
-  margin: 25px 0;
+.message.success{
 
-  color: #a0aabd;
-  font-size: 10px;
-  font-weight: 700;
+  display:block;
 
-  text-transform: uppercase;
-  letter-spacing: .5px;
+  background:#edf9f1;
+
+  border:1px solid #c9ecd4;
+
+  color:#18733a;
+
 }
 
-.divider::before,
-.divider::after {
-  content: "";
 
-  height: 1px;
+/* =========================
+   SIGNUP
+========================= */
 
-  background: #e5ebf4;
+.signup-link{
 
-  flex: 1;
+  text-align:center;
+
+  margin-top:22px;
+
+  color:var(--muted);
+
+  font-size:12px;
+
 }
 
-.demo-note {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
 
-  background: #f5f9ff;
-  border: 1px solid #e1ebfa;
+.signup-link a{
 
-  padding: 13px;
-  border-radius: 11px;
+  color:var(--blue);
 
-  color: #718096;
-  font-size: 10px;
-  line-height: 1.6;
+  font-weight:700;
+
+  text-decoration:none;
+
+  margin-left:4px;
+
 }
 
-.demo-note i {
-  color: #1264e8;
-  margin-top: 2px;
+
+.signup-link a:hover{
+
+  text-decoration:underline;
+
 }
 
-@media (max-width: 450px) {
 
-  .nav {
-    padding: 0 14px;
+/* =========================
+   SECURITY
+========================= */
+
+.security-note{
+
+  margin-top:24px;
+
+  padding-top:20px;
+
+  border-top:1px solid #edf1f5;
+
+  display:flex;
+
+  align-items:flex-start;
+
+  gap:10px;
+
+}
+
+
+.security-icon{
+
+  color:var(--blue);
+
+  font-size:13px;
+
+  margin-top:2px;
+
+}
+
+
+.security-note p{
+
+  color:#7b8798;
+
+  font-size:10.5px;
+
+  line-height:1.6;
+
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+
+  text-align:center;
+
+  padding:0 18px 30px;
+
+  color:#9aa5b5;
+
+  font-size:10.5px;
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:600px){
+
+  .header-inner{
+
+    min-height:68px;
+
   }
 
-  .logo {
-    font-size: 15px;
+
+  .logo{
+
+    font-size:16px;
+
   }
 
-  .logo-box {
-    width: 35px;
-    height: 35px;
-    font-size: 16px;
+
+  .logo-icon{
+
+    width:36px;
+
+    height:36px;
+
+    border-radius:10px;
+
+    font-size:15px;
+
   }
 
-  .back {
-    padding: 8px 10px;
-    font-size: 11px;
+
+  .home-link{
+
+    padding:9px 12px;
+
+    font-size:11px;
+
   }
 
-  .login-card {
-    padding: 29px 19px;
-    border-radius: 19px;
+
+  .home-link span{
+
+    display:none;
+
   }
 
-  .title h1 {
-    font-size: 25px;
+
+  .main{
+
+    padding:38px 15px 55px;
+
+  }
+
+
+  .auth-heading{
+
+    margin-bottom:23px;
+
+  }
+
+
+  .auth-icon{
+
+    width:52px;
+
+    height:52px;
+
+    border-radius:14px;
+
+    font-size:19px;
+
+  }
+
+
+  .auth-heading h1{
+
+    font-size:24px;
+
+  }
+
+
+  .auth-heading p{
+
+    font-size:12px;
+
+  }
+
+
+  .card{
+
+    padding:24px 19px;
+
+    border-radius:16px;
+
+  }
+
+
+  .card-title{
+
+    font-size:18px;
+
+  }
+
+
+  input{
+
+    height:48px;
+
+    font-size:12.5px;
+
+  }
+
+
+  button{
+
+    height:49px;
+
+  }
+
+}
+
+
+/* =========================
+   SMALL PHONES
+========================= */
+
+@media(max-width:360px){
+
+  .logo{
+
+    font-size:14px;
+
+  }
+
+
+  .card{
+
+    padding:21px 16px;
+
+  }
+
+
+  .auth-heading h1{
+
+    font-size:22px;
+
   }
 
 }
@@ -394,214 +859,352 @@ input::placeholder {
 
 </head>
 
+
 <body>
 
-<header>
 
-  <nav class="nav">
+<!-- =========================
+     HEADER
+========================= -->
 
-    <a href="index.html" class="logo">
+<header class="header">
 
-      <div class="logo-box">
-        G
-      </div>
+  <div class="header-inner">
 
-      Gentle <span>Acct</span> Store
+
+    <a
+      href="index.html"
+      class="logo"
+    >
+
+      <span class="logo-icon">
+
+        <i class="fa-solid fa-store"></i>
+
+      </span>
+
+
+      <span>
+        Gentle Acct Store
+      </span>
 
     </a>
 
-    <a href="index.html" class="back">
+
+    <a
+      href="index.html"
+      class="home-link"
+    >
 
       <i class="fa-solid fa-arrow-left"></i>
 
-      Home
+      <span>
+        Back to Home
+      </span>
 
     </a>
 
-  </nav>
+
+  </div>
 
 </header>
 
 
-<main class="page">
 
-  <div class="login-card">
+<!-- =========================
+     MAIN
+========================= -->
 
-    <div class="title">
+<main class="main">
 
-      <div class="lock-icon">
+
+  <div class="auth-wrapper">
+
+
+    <!-- INTRO -->
+
+    <div class="auth-heading">
+
+
+      <div class="auth-icon">
 
         <i class="fa-solid fa-lock"></i>
 
       </div>
 
+
       <h1>
-        Welcome back
+        Welcome Back
       </h1>
+
 
       <p>
         Sign in to access your Gentle Acct Store account.
       </p>
 
+
     </div>
 
 
-    <form id="loginForm">
 
-      <div class="field">
+    <!-- CARD -->
 
-        <label for="email">
-          Email Address
-        </label>
+    <div class="card">
 
-        <div class="input-wrap">
 
-          <i class="fa-solid fa-envelope input-icon"></i>
-
-          <input
-            id="email"
-            type="email"
-            placeholder="Enter your email"
-            autocomplete="email"
-            required
-          >
-
-        </div>
-
+      <div class="card-title">
+        Sign In
       </div>
 
 
-      <div class="field">
-
-        <label for="password">
-          Password
-        </label>
-
-        <div class="input-wrap">
-
-          <i class="fa-solid fa-lock input-icon"></i>
-
-          <input
-            id="password"
-            type="password"
-            placeholder="Enter your password"
-            autocomplete="current-password"
-            required
-          >
-
-        </div>
-
+      <div class="card-subtitle">
+        Enter your account details below to continue.
       </div>
 
 
-      <div class="password-row">
 
-        <a
-          href="forgot-password.html"
-          class="forgot"
+      <!-- FORM -->
+
+      <form id="loginForm">
+
+
+        <!-- EMAIL -->
+
+        <div class="form-group">
+
+          <label for="email">
+            Email Address
+          </label>
+
+
+          <div class="input-wrap">
+
+            <i class="fa-solid fa-envelope input-icon"></i>
+
+
+            <input
+              id="email"
+              type="email"
+              placeholder="Enter your email address"
+              autocomplete="email"
+              required
+            >
+
+          </div>
+
+        </div>
+
+
+
+        <!-- PASSWORD -->
+
+        <div class="form-group">
+
+          <label for="password">
+            Password
+          </label>
+
+
+          <div class="input-wrap">
+
+            <i class="fa-solid fa-lock input-icon"></i>
+
+
+            <input
+              id="password"
+              type="password"
+              placeholder="Enter your password"
+              autocomplete="current-password"
+              required
+            >
+
+          </div>
+
+        </div>
+
+
+
+        <!-- FORGOT -->
+
+        <div class="forgot-row">
+
+          <a
+            href="forgot-password.html"
+            class="forgot"
+          >
+
+            Forgot Password?
+
+          </a>
+
+        </div>
+
+
+
+        <!-- LOGIN BUTTON -->
+
+        <button
+          type="submit"
+          id="loginBtn"
         >
-          Forgot Password?
+
+          <i class="fa-solid fa-right-to-bracket"></i>
+
+          Sign In
+
+        </button>
+
+
+        <!-- MESSAGE -->
+
+        <div
+          class="message"
+          id="message"
+        ></div>
+
+
+      </form>
+
+
+
+      <!-- CREATE ACCOUNT -->
+
+      <div class="signup-link">
+
+        Don't have an account?
+
+        <a href="signup.html">
+          Create Account
         </a>
 
       </div>
 
 
-      <button
-        type="submit"
-        class="login-btn"
-        id="loginBtn"
-      >
 
-        <i class="fa-solid fa-right-to-bracket"></i>
+      <!-- SECURITY -->
 
-        Sign In
-
-      </button>
+      <div class="security-note">
 
 
-      <div
-        class="message"
-        id="message"
-      ></div>
+        <div class="security-icon">
 
-    </form>
+          <i class="fa-solid fa-shield-halved"></i>
+
+        </div>
 
 
-    <div class="signup-text">
+        <p>
 
-      Don't have an account?
+          Your account is secured with Firebase Authentication.
+          Your password is securely handled by Firebase.
 
-      <a href="signup.html">
-        Create Account
-      </a>
+        </p>
+
+
+      </div>
+
 
     </div>
 
-
-    <div class="divider">
-      Secure account
-    </div>
-
-
-    <div class="demo-note">
-
-      <i class="fa-solid fa-shield-halved"></i>
-
-      <span>
-        Your account is secured with Supabase Authentication.
-        Your password is not stored in this website.
-      </span>
-
-    </div>
 
   </div>
 
 </main>
 
 
-<!-- Supabase -->
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- FOOTER -->
 
-<script src="supabase.js"></script>
+<footer class="footer">
+
+  © 2026 Gentle Acct Store. All rights reserved.
+
+</footer>
+
+
+
+<!-- =========================
+     FIREBASE
+========================= -->
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+<script src="firebase.js"></script>
+
 
 
 <script>
 
+/* =========================
+   ELEMENTS
+========================= */
+
 const form =
-  document.getElementById("loginForm");
+  document.getElementById(
+    "loginForm"
+  );
+
 
 const message =
-  document.getElementById("message");
+  document.getElementById(
+    "message"
+  );
+
 
 const loginBtn =
-  document.getElementById("loginBtn");
+  document.getElementById(
+    "loginBtn"
+  );
 
 
-function showMessage(text, type) {
 
-  message.style.display = "block";
+/* =========================
+   MESSAGE
+========================= */
+
+function showMessage(
+  text,
+  type
+){
+
+  message.style.display =
+    "block";
 
   message.className =
-    "message " + type;
+    "message " +
+    type;
 
-  message.innerHTML = text;
+  message.innerHTML =
+    text;
 
 }
 
 
+
+/* =========================
+   LOGIN
+========================= */
+
 form.addEventListener(
   "submit",
-  async function(event) {
+  async function(event){
 
     event.preventDefault();
 
-    message.style.display = "none";
 
-    loginBtn.disabled = true;
+    message.style.display =
+      "none";
+
+
+    loginBtn.disabled =
+      true;
+
 
     loginBtn.innerHTML =
       '<i class="fa-solid fa-spinner fa-spin"></i> Signing In...';
+
 
 
     const email =
@@ -618,33 +1221,28 @@ form.addEventListener(
         .value;
 
 
-    try {
 
-      const {
-        data,
-        error
-      } =
-        await supabaseClient.auth.signInWithPassword({
-
-          email: email,
-
-          password: password
-
-        });
+    try{
 
 
-      if(error) {
+      /* =========================
+         FIREBASE LOGIN
+      ========================= */
 
-        throw error;
-
-      }
+      const result =
+        await firebaseAuth
+          .signInWithEmailAndPassword(
+            email,
+            password
+          );
 
 
       const user =
-        data.user;
+        result.user;
 
 
-      if(!user) {
+
+      if(!user){
 
         throw new Error(
           "Unable to sign in. Please try again."
@@ -653,14 +1251,53 @@ form.addEventListener(
       }
 
 
+
+      /* =========================
+         EMAIL VERIFICATION
+      ========================= */
+
+      if(!user.emailVerified){
+
+        await firebaseAuth.signOut();
+
+
+        showMessage(
+          '<i class="fa-solid fa-envelope"></i> Please verify your email address before signing in.',
+          "error"
+        );
+
+
+        loginBtn.disabled =
+          false;
+
+
+        loginBtn.innerHTML =
+          '<i class="fa-solid fa-right-to-bracket"></i> Sign In';
+
+
+        return;
+
+      }
+
+
+
+      /* =========================
+         REMOVE OLD ADMIN SESSION
+      ========================= */
+
       localStorage.removeItem(
         "gentleAdminLoggedIn"
       );
 
 
+
+      /* =========================
+         SAVE FIREBASE USER ID
+      ========================= */
+
       localStorage.setItem(
         "gentleCurrentUserId",
-        user.id
+        user.uid
       );
 
 
@@ -670,11 +1307,10 @@ form.addEventListener(
       );
 
 
-      /*
-        Keep the customer's basic
-        information for the existing
-        dashboard.
-      */
+
+      /* =========================
+         COMPATIBILITY USER DATA
+      ========================= */
 
       const oldUser =
         localStorage.getItem(
@@ -685,14 +1321,14 @@ form.addEventListener(
       let existingUser = {};
 
 
-      if(oldUser) {
+      if(oldUser){
 
-        try {
+        try{
 
           existingUser =
             JSON.parse(oldUser);
 
-        } catch(error) {
+        }catch(error){
 
           existingUser = {};
 
@@ -701,15 +1337,18 @@ form.addEventListener(
       }
 
 
+
       const loggedInUser = {
 
-        id: user.id,
+        id:
+          user.uid,
 
-        email: user.email,
+        email:
+          user.email,
 
         name:
+          user.displayName ||
           existingUser.name ||
-          user.user_metadata?.full_name ||
           user.email?.split("@")[0] ||
           "Customer",
 
@@ -717,6 +1356,7 @@ form.addEventListener(
           Number(existingUser.balance) || 0
 
       };
+
 
 
       localStorage.setItem(
@@ -735,35 +1375,119 @@ form.addEventListener(
       );
 
 
+
+      /* =========================
+         CLEAR OLD CHECKOUT ITEM
+      ========================= */
+
       localStorage.removeItem(
         "gentleCheckoutProduct"
       );
 
 
-      window.location.replace(
-        "dashboard.html"
+
+      /* =========================
+         SUCCESS
+      ========================= */
+
+      showMessage(
+        "Login successful. Opening your dashboard...",
+        "success"
       );
 
-    } catch(error) {
 
-      console.error(error);
+
+      setTimeout(
+        function(){
+
+          window.location.replace(
+            "dashboard.html"
+          );
+
+        },
+        500
+      );
+
+
+    }catch(error){
+
+
+      console.error(
+        "Login error:",
+        error
+      );
 
 
       let errorMessage =
         "Incorrect email or password.";
 
 
+
       if(
-        error.message &&
-        error.message
-          .toLowerCase()
-          .includes("email not confirmed")
-      ) {
+        error.code ===
+        "auth/invalid-credential"
+      ){
 
         errorMessage =
-          "Please confirm your email address before signing in.";
+          "Incorrect email or password.";
 
       }
+
+
+      else if(
+        error.code ===
+        "auth/user-not-found"
+      ){
+
+        errorMessage =
+          "No account was found with this email.";
+
+      }
+
+
+      else if(
+        error.code ===
+        "auth/wrong-password"
+      ){
+
+        errorMessage =
+          "Incorrect password.";
+
+      }
+
+
+      else if(
+        error.code ===
+        "auth/invalid-email"
+      ){
+
+        errorMessage =
+          "Please enter a valid email address.";
+
+      }
+
+
+      else if(
+        error.code ===
+        "auth/too-many-requests"
+      ){
+
+        errorMessage =
+          "Too many attempts. Please try again later.";
+
+      }
+
+
+      else if(
+        error.code ===
+        "auth/network-request-failed"
+      ){
+
+        errorMessage =
+          "Network error. Please check your internet connection.";
+
+      }
+
 
 
       showMessage(
@@ -776,7 +1500,10 @@ form.addEventListener(
       );
 
 
-      loginBtn.disabled = false;
+
+      loginBtn.disabled =
+        false;
+
 
       loginBtn.innerHTML =
         '<i class="fa-solid fa-right-to-bracket"></i> Sign In';
@@ -788,5 +1515,7 @@ form.addEventListener(
 
 </script>
 
+
 </body>
+
 </html>

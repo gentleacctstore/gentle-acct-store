@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>Admin Login - Gentle Acct Store</title>
+
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+>
+
+<style>
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:Arial,sans-serif;
+  background:#f5f8fc;
+  color:#172033;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.login-card{
+  width:100%;
+  max-width:430px;
+  background:white;
+  border:1px solid #e6ebf2;
+  border-radius:24px;
+  padding:30px 22px;
+  box-shadow:0 12px 35px rgba(20,40,80,.08);
+}
+
+.logo{
+  width:62px;
+  height:62px;
+  border-radius:18px;
+  background:#edf4ff;
+  color:#0866ff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto 15px;
+  font-size:27px;
+}
+
+h1{
+  text-align:center;
+  font-size:25px;
+  margin-bottom:7px;
+}
+
+.subtitle{
+  text-align:center;
+  color:#7b8494;
+  font-size:13px;
+  line-height:1.5;
+  margin-bottom:25px;
+}
+
+.field{
+  margin-bottom:16px;
+}
+
+label{
+  display:block;
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:7px;
+}
+
+.input-wrap{
+  position:relative;
+}
+
+input{
+  width:100%;
+  border:1px solid #dce3ed;
+  border-radius:12px;
+  padding:13px 45px 13px 13px;
+  font-size:14px;
+  outline:none;
+  background:#fbfcfe;
+}
+
+input:focus{
+  border-color:#0866ff;
+  background:white;
+}
+
+.password-toggle{
+  position:absolute;
+  right:13px;
+  top:50%;
+  transform:translateY(-50%);
+  border:none;
+  background:none;
+  color:#7b8494;
+  cursor:pointer;
+  font-size:15px;
+}
+
+.login-btn{
+  width:100%;
+  border:none;
+  background:#0866ff;
+  color:white;
+  padding:14px;
+  border-radius:12px;
+  font-weight:700;
+  font-size:15px;
+  cursor:pointer;
+  margin-top:5px;
+}
+
+.login-btn:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+}
+
+.message{
+  display:none;
+  margin-bottom:15px;
+  padding:12px;
+  border-radius:11px;
+  font-size:12px;
+  line-height:1.5;
+}
+
+.error{
+  display:block;
+  background:#fff0f0;
+  color:#c62828;
+  border:1px solid #ffd5d5;
+}
+
+.success{
+  display:block;
+  background:#eaf8f0;
+  color:#16834b;
+  border:1px solid #ccebd9;
+}
+
+.back{
+  display:block;
+  text-align:center;
+  margin-top:20px;
+  color:#0866ff;
+  text-decoration:none;
+  font-size:13px;
+  font-weight:700;
+}
+
+.security{
+  text-align:center;
+  color:#8a94a6;
+  font-size:11px;
+  margin-top:20px;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="login-card">
+
+
+<div class="logo">
+
+<i class="fa-solid fa-shield-halved"></i>
+
+</div>
+
+
+<h1>
+Admin Login
+</h1>
+
+
+<p class="subtitle">
+Sign in with your authorized Firebase admin account.
+</p>
+
+
+<div
+id="message"
+class="message"
+></div>
+
+
+<div class="field">
+
+<label>
+Email Address
+</label>
+
+<input
+id="email"
+type="email"
+placeholder="Admin email"
+autocomplete="username"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Password
+</label>
+
+<div class="input-wrap">
+
+<input
+id="password"
+type="password"
+placeholder="Enter your password"
+autocomplete="current-password"
+>
+
+<button
+type="button"
+class="password-toggle"
+onclick="togglePassword()"
+>
+
+<i
+id="eyeIcon"
+class="fa-solid fa-eye"
+></i>
+
+</button>
+
+</div>
+
+</div>
+
+
+<button
+id="loginButton"
+class="login-btn"
+onclick="adminLogin()"
+>
+
+<i class="fa-solid fa-right-to-bracket"></i>
+
+&nbsp; Login to Admin Panel
+
+</button>
+
+
+<a
+href="forgot-password.html"
+class="back"
+>
+Forgot password?
+</a>
+
+
+<div class="security">
+
+<i class="fa-solid fa-lock"></i>
+
+&nbsp; Secure Firebase authentication
+
+</div>
+
+
+</div>
+
+
+<!-- FIREBASE -->
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+<script src="firebase.js"></script>
+
+
+<script>
+
+/* =========================
+   ADMIN UID
+========================= */
+
+const ADMIN_UID =
+"UoEjCy99gbQKkGob59vGi3CunZi1";
+
+
+/* =========================
+   HANDLE LOGOUT REDIRECT
+========================= */
+
+const urlParams =
+new URLSearchParams(
+  window.location.search
+);
+
+const wasLoggedOut =
+urlParams.get("loggedout") === "1";
+
+
+if(wasLoggedOut){
+
+  localStorage.removeItem(
+    "gentleAdminLoggedIn"
+  );
+
+  localStorage.removeItem(
+    "gentleAdminUID"
+  );
+
+}
+
+
+/* =========================
+   MESSAGE
+========================= */
+
+function showMessage(
+  message,
+  type
+){
+
+  const box =
+  document.getElementById(
+    "message"
+  );
+
+  box.textContent =
+  message;
+
+  box.className =
+  "message " +
+  type;
+
+}
+
+
+/* =========================
+   PASSWORD VISIBILITY
+========================= */
+
+function togglePassword(){
+
+  const password =
+  document.getElementById(
+    "password"
+  );
+
+  const icon =
+  document.getElementById(
+    "eyeIcon"
+  );
+
+
+  if(
+    password.type === "password"
+  ){
+
+    password.type =
+    "text";
+
+    icon.className =
+    "fa-solid fa-eye-slash";
+
+  }else{
+
+    password.type =
+    "password";
+
+    icon.className =
+    "fa-solid fa-eye";
+
+  }
+
+}
+
+
+/* =========================
+   ADMIN LOGIN
+========================= */
+
+async function adminLogin(){
+
+  const email =
+  document
+  .getElementById("email")
+  .value
+  .trim();
+
+
+  const password =
+  document
+  .getElementById("password")
+  .value;
+
+
+  const button =
+  document.getElementById(
+    "loginButton"
+  );
+
+
+  if(!email || !password){
+
+    showMessage(
+      "Please enter your email and password.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  try{
+
+    button.disabled =
+    true;
+
+    button.innerHTML =
+    '<i class="fa-solid fa-spinner fa-spin"></i> Signing in...';
+
+
+    const result =
+    await firebaseAuth
+    .signInWithEmailAndPassword(
+      email,
+      password
+    );
+
+
+    const user =
+    result.user;
+
+
+    if(
+      user.uid !== ADMIN_UID
+    ){
+
+      await firebaseAuth.signOut();
+
+      showMessage(
+        "This account is not authorized to access the admin panel.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    if(
+      !user.emailVerified
+    ){
+
+      await firebaseAuth.signOut();
+
+      showMessage(
+        "Please verify your email address before entering the admin panel.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    localStorage.setItem(
+      "gentleAdminLoggedIn",
+      "true"
+    );
+
+
+    localStorage.setItem(
+      "gentleAdminUID",
+      user.uid
+    );
+
+
+    showMessage(
+      "Admin login successful. Opening your panel...",
+      "success"
+    );
+
+
+    setTimeout(
+      function(){
+
+        window.location.href =
+        "admin.html";
+
+      },
+      500
+    );
+
+
+  }catch(error){
+
+    console.error(error);
+
+
+    let message =
+    "Login failed. Please check your email and password.";
+
+
+    if(
+      error.code ===
+      "auth/invalid-credential"
+    ){
+
+      message =
+      "Incorrect email or password.";
+
+    }
+
+    else if(
+      error.code ===
+      "auth/user-not-found"
+    ){
+
+      message =
+      "No account was found with this email.";
+
+    }
+
+    else if(
+      error.code ===
+      "auth/wrong-password"
+    ){
+
+      message =
+      "Incorrect password.";
+
+    }
+
+    else if(
+      error.code ===
+      "auth/too-many-requests"
+    ){
+
+      message =
+      "Too many login attempts. Please try again later.";
+
+    }
+
+
+    showMessage(
+      message,
+      "error"
+    );
+
+
+  }finally{
+
+    button.disabled =
+    false;
+
+    button.innerHTML =
+    '<i class="fa-solid fa-right-to-bracket"></i> &nbsp; Login to Admin Panel';
+
+  }
+
+}
+
+</script>
+
+
+</body>
+
+</html>

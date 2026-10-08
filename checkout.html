@@ -2,1274 +2,2063 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Checkout | Gentle Acct Store</title>
+<meta charset="UTF-8">
 
-  <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+>
 
-  <style>
+<title>Checkout - Gentle Acct Store</title>
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
+<link
+rel="preconnect"
+href="https://fonts.googleapis.com"
+>
 
-    body {
-      background: #f5f8ff;
-      color: #172033;
-      min-height: 100vh;
-    }
+<link
+rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin
+>
 
-    .header {
-      height: 68px;
-      background: white;
-      color: #172033;
-      padding: 0 18px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      border-bottom: 1px solid #e3e8f0;
-      position: sticky;
-      top: 0;
-      z-index: 20;
-    }
+<link
+href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+rel="stylesheet"
+>
 
-    .back {
-      width: 40px;
-      height: 40px;
-      border: none;
-      border-radius: 11px;
-      background: #eaf2ff;
-      color: #1261e8;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+>
 
-    .header h2 {
-      font-size: 19px;
-      font-weight: 800;
-    }
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 
-    .container {
-      max-width: 600px;
-      margin: auto;
-      padding: 20px 16px 45px;
-    }
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
-    .card {
-      background: white;
-      border: 1px solid #e1e7f0;
-      border-radius: 20px;
-      padding: 19px;
-      margin-bottom: 15px;
-      box-shadow: 0 5px 18px rgba(23,32,51,.04);
-    }
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
-    .product-top {
-      display: flex;
-      gap: 14px;
-      align-items: center;
-      margin-bottom: 17px;
-    }
+<script src="firebase.js"></script>
 
-    .product-image-box {
-      width: 82px;
-      height: 82px;
-      border-radius: 16px;
-      background: #eaf2ff;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #1261e8;
-      flex-shrink: 0;
-    }
+<style>
 
-    .product-image-box i {
-      font-size: 29px;
-    }
+:root{
 
-    .product-image {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+--blue:#0b2d5c;
+--blue-dark:#071f40;
+--blue-light:#eaf2fb;
+--blue-soft:#f5f8fc;
 
-    .product-details {
-      min-width: 0;
-    }
+--white:#ffffff;
 
-    .category {
-      display: inline-block;
-      background: #eef4ff;
-      color: #1261e8;
-      padding: 5px 9px;
-      border-radius: 20px;
-      font-size: 9px;
-      font-weight: 800;
-      margin-bottom: 7px;
-      text-transform: capitalize;
-    }
+--text:#172033;
+--muted:#748093;
 
-    .product-name {
-      font-size: 19px;
-      font-weight: 800;
-      margin-bottom: 4px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+--border:#e4eaf2;
 
-    .description {
-      color: #7b8494;
-      line-height: 1.5;
-      font-size: 13px;
-      margin-bottom: 17px;
-    }
+--danger:#dc2626;
 
-    .price-box {
-      background: #f5f8ff;
-      border: 1px solid #e5ebf5;
-      border-radius: 14px;
-      padding: 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+--shadow:
+0 8px 25px rgba(11,45,92,.07);
 
-    .price-box span {
-      color: #7b8494;
-      font-size: 13px;
-    }
+}
 
-    .price-box strong {
-      color: #1261e8;
-      font-size: 21px;
-      font-weight: 800;
-    }
+*{
 
-    .wallet {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
+box-sizing:border-box;
 
-    .wallet-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+margin:0;
 
-    .wallet-icon {
-      width: 45px;
-      height: 45px;
-      background: #eaf2ff;
-      color: #1261e8;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-    }
+padding:0;
 
-    .wallet small {
-      color: #7b8494;
-      font-size: 11px;
-    }
+}
 
-    .wallet strong {
-      display: block;
-      margin-top: 4px;
-      font-size: 18px;
-      font-weight: 800;
-    }
+body{
 
-    .wallet-status {
-      font-size: 11px;
-      color: #16834b;
-      font-weight: 700;
-    }
+font-family:"Poppins",sans-serif;
 
-    .insufficient,
-    .out-of-stock {
-      display: none;
-      border-radius: 14px;
-      padding: 14px;
-      margin-bottom: 14px;
-      line-height: 1.5;
-      font-size: 13px;
-    }
+background:#f7f9fc;
 
-    .insufficient {
-      background: #fff1f2;
-      color: #be123c;
-      border: 1px solid #ffd6dc;
-    }
+color:var(--text);
 
-    .out-of-stock {
-      background: #fff7ed;
-      color: #c2410c;
-      border: 1px solid #fed7aa;
-    }
+min-height:100vh;
 
-    .insufficient i,
-    .out-of-stock i {
-      margin-right: 5px;
-    }
+padding-bottom:30px;
 
-    .pay-btn {
-      width: 100%;
-      border: none;
-      background: #1261e8;
-      color: white;
-      padding: 16px;
-      border-radius: 14px;
-      font-size: 15px;
-      font-weight: 800;
-      cursor: pointer;
-      box-shadow: 0 8px 20px rgba(18,97,232,.18);
-    }
+}
 
-    .pay-btn:active {
-      transform: scale(.98);
-    }
+button,
+input{
 
-    .pay-btn:disabled {
-      background: #aeb7c5;
-      box-shadow: none;
-      cursor: not-allowed;
-    }
+font-family:inherit;
 
-    .secure-note {
-      text-align: center;
-      color: #8a94a6;
-      font-size: 10px;
-      margin-top: 10px;
-    }
+}
 
-    .secure-note i {
-      margin-right: 3px;
-    }
+button{
 
-    .success-page {
-      display: none;
-      text-align: center;
-    }
+cursor:pointer;
 
-    .success-icon {
-      width: 78px;
-      height: 78px;
-      background: #e9f9f0;
-      color: #0a8f4d;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 34px;
-      margin: 8px auto 18px;
-    }
+}
 
-    .success-page h1 {
-      font-size: 24px;
-      margin-bottom: 8px;
-      font-weight: 800;
-    }
+a{
 
-    .success-page > p {
-      color: #7b8494;
-      font-size: 13px;
-      line-height: 1.5;
-      margin-bottom: 20px;
-    }
+text-decoration:none;
 
-    .purchase-label {
-      text-align: left;
-      font-size: 12px;
-      color: #7b8494;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
+color:inherit;
 
-    .purchase-info {
-      background: #f7faff;
-      border: 1px solid #dce8fa;
-      border-radius: 14px;
-      padding: 17px;
-      text-align: left;
-      line-height: 1.6;
-      white-space: pre-wrap;
-      word-break: break-word;
-      font-size: 13px;
-    }
+}
 
-    .copy-btn,
-    .orders-btn {
-      width: 100%;
-      margin-top: 12px;
-      padding: 14px;
-      border-radius: 13px;
-      font-weight: 800;
-      font-size: 13px;
-      cursor: pointer;
-    }
+.page{
 
-    .copy-btn {
-      border: 1px solid #1261e8;
-      background: white;
-      color: #1261e8;
-    }
+width:100%;
 
-    .orders-btn {
-      border: none;
-      background: #1261e8;
-      color: white;
-    }
+max-width:600px;
 
-  </style>
+margin:0 auto;
+
+min-height:100vh;
+
+}
+
+header{
+
+background:var(--white);
+
+height:68px;
+
+padding:0 17px;
+
+border-bottom:1px solid var(--border);
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+position:sticky;
+
+top:0;
+
+z-index:50;
+
+}
+
+.header-left{
+
+display:flex;
+
+align-items:center;
+
+gap:11px;
+
+}
+
+.back-btn{
+
+width:38px;
+
+height:38px;
+
+border:none;
+
+border-radius:11px;
+
+background:var(--blue-light);
+
+color:var(--blue);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:14px;
+
+}
+
+.header-title{
+
+font-size:15px;
+
+font-weight:800;
+
+color:var(--blue-dark);
+
+}
+
+.header-right{
+
+color:var(--blue);
+
+font-size:18px;
+
+}
+
+main{
+
+padding:18px 16px 35px;
+
+}
+
+.page-heading{
+
+margin-bottom:17px;
+
+}
+
+.page-heading h1{
+
+font-size:23px;
+
+font-weight:800;
+
+color:var(--blue-dark);
+
+margin-bottom:4px;
+
+}
+
+.page-heading p{
+
+font-size:10px;
+
+color:var(--muted);
+
+line-height:1.6;
+
+}
+
+.product-card{
+
+background:var(--white);
+
+border:1px solid var(--border);
+
+border-radius:19px;
+
+padding:15px;
+
+box-shadow:var(--shadow);
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+margin-bottom:14px;
+
+}
+
+.product-image{
+
+width:68px;
+
+height:68px;
+
+border-radius:15px;
+
+background:var(--blue-light);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+overflow:hidden;
+
+flex-shrink:0;
+
+color:var(--blue);
+
+font-size:23px;
+
+}
+
+.product-image img{
+
+width:100%;
+
+height:100%;
+
+object-fit:cover;
+
+}
+
+.product-info{
+
+flex:1;
+
+min-width:0;
+
+}
+
+.product-info h2{
+
+font-size:14px;
+
+font-weight:800;
+
+color:var(--blue-dark);
+
+margin-bottom:5px;
+
+white-space:nowrap;
+
+overflow:hidden;
+
+text-overflow:ellipsis;
+
+}
+
+.category{
+
+display:inline-block;
+
+background:#f0f4f9;
+
+color:#64748b;
+
+font-size:8px;
+
+font-weight:700;
+
+padding:4px 8px;
+
+border-radius:7px;
+
+text-transform:capitalize;
+
+margin-bottom:6px;
+
+}
+
+.product-info p{
+
+font-size:9px;
+
+color:var(--muted);
+
+}
+
+.product-price{
+
+font-size:16px;
+
+font-weight:800;
+
+color:var(--blue);
+
+margin-top:4px;
+
+}
+
+.checkout-card{
+
+background:var(--white);
+
+border:1px solid var(--border);
+
+border-radius:19px;
+
+padding:18px;
+
+box-shadow:var(--shadow);
+
+margin-bottom:14px;
+
+}
+
+.card-title{
+
+display:flex;
+
+align-items:center;
+
+gap:9px;
+
+font-size:14px;
+
+font-weight:800;
+
+color:var(--blue-dark);
+
+margin-bottom:16px;
+
+}
+
+.card-title i{
+
+color:var(--blue);
+
+}
+
+.wallet-box{
+
+background:var(--blue);
+
+color:var(--white);
+
+border-radius:16px;
+
+padding:15px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+gap:12px;
+
+margin-bottom:17px;
+
+}
+
+.wallet-label{
+
+font-size:9px;
+
+opacity:.75;
+
+margin-bottom:3px;
+
+}
+
+.wallet-balance{
+
+font-size:20px;
+
+font-weight:800;
+
+}
+
+.wallet-icon{
+
+width:42px;
+
+height:42px;
+
+border-radius:12px;
+
+background:rgba(255,255,255,.13);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:17px;
+
+}
+
+.summary-row{
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+gap:10px;
+
+padding:11px 0;
+
+border-bottom:1px solid #edf0f5;
+
+font-size:11px;
+
+}
+
+.summary-row:last-child{
+
+border-bottom:none;
+
+}
+
+.summary-row span:first-child{
+
+color:var(--muted);
+
+}
+
+.summary-row span:last-child{
+
+font-weight:700;
+
+color:var(--text);
+
+}
+
+.total-row{
+
+padding-top:15px;
+
+margin-top:3px;
+
+}
+
+.total-row span:first-child{
+
+font-weight:800;
+
+color:var(--blue-dark);
+
+font-size:12px;
+
+}
+
+.total-row span:last-child{
+
+font-size:18px;
+
+font-weight:800;
+
+color:var(--blue);
+
+}
+
+.stock-box{
+
+display:flex;
+
+align-items:center;
+
+gap:8px;
+
+background:var(--blue-light);
+
+color:var(--blue);
+
+border-radius:11px;
+
+padding:10px 11px;
+
+font-size:9px;
+
+font-weight:700;
+
+margin-top:13px;
+
+}
+
+.stock-box i{
+
+font-size:11px;
+
+}
+
+.notice{
+
+display:flex;
+
+align-items:flex-start;
+
+gap:9px;
+
+background:#f7f9fc;
+
+border:1px solid var(--border);
+
+border-radius:12px;
+
+padding:11px;
+
+margin-top:14px;
+
+font-size:9px;
+
+line-height:1.6;
+
+color:var(--muted);
+
+}
+
+.notice i{
+
+color:var(--blue);
+
+font-size:12px;
+
+margin-top:2px;
+
+}
+
+.pay-btn{
+
+width:100%;
+
+border:none;
+
+background:var(--blue);
+
+color:var(--white);
+
+border-radius:12px;
+
+padding:14px;
+
+font-size:13px;
+
+font-weight:800;
+
+margin-top:17px;
+
+transition:.2s;
+
+}
+
+.pay-btn:hover{
+
+background:var(--blue-dark);
+
+}
+
+.pay-btn:disabled{
+
+opacity:.55;
+
+cursor:not-allowed;
+
+}
+
+.pay-btn i{
+
+margin-right:5px;
+
+}
+
+.fund-link{
+
+display:block;
+
+text-align:center;
+
+margin-top:11px;
+
+font-size:10px;
+
+font-weight:700;
+
+color:var(--blue);
+
+}
+
+.loading{
+
+background:var(--white);
+
+border:1px solid var(--border);
+
+border-radius:19px;
+
+padding:35px 20px;
+
+text-align:center;
+
+color:var(--muted);
+
+}
+
+.loading i{
+
+font-size:25px;
+
+color:var(--blue);
+
+margin-bottom:10px;
+
+}
+
+.loading p{
+
+font-size:10px;
+
+}
+
+.error-box{
+
+background:var(--white);
+
+border:1px solid #f0d5d5;
+
+border-radius:19px;
+
+padding:30px 20px;
+
+text-align:center;
+
+}
+
+.error-box i{
+
+width:52px;
+
+height:52px;
+
+border-radius:50%;
+
+background:#fff0f0;
+
+color:var(--danger);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+margin:0 auto 13px;
+
+font-size:20px;
+
+}
+
+.error-box h2{
+
+font-size:15px;
+
+color:var(--blue-dark);
+
+margin-bottom:5px;
+
+}
+
+.error-box p{
+
+font-size:10px;
+
+color:var(--muted);
+
+line-height:1.6;
+
+}
+
+.error-box button{
+
+margin-top:15px;
+
+border:none;
+
+background:var(--blue);
+
+color:var(--white);
+
+padding:11px 16px;
+
+border-radius:10px;
+
+font-size:10px;
+
+font-weight:700;
+
+}
+
+.success{
+
+display:none;
+
+text-align:center;
+
+}
+
+.success.show{
+
+display:block;
+
+}
+
+.success-icon{
+
+width:72px;
+
+height:72px;
+
+border-radius:50%;
+
+background:var(--blue-light);
+
+color:var(--blue);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+margin:0 auto 15px;
+
+font-size:30px;
+
+}
+
+.success h1{
+
+font-size:21px;
+
+font-weight:800;
+
+color:var(--blue-dark);
+
+margin-bottom:5px;
+
+}
+
+.success > p{
+
+font-size:10px;
+
+color:var(--muted);
+
+line-height:1.6;
+
+margin-bottom:17px;
+
+}
+
+.purchase-card{
+
+background:var(--white);
+
+border:1px solid var(--border);
+
+border-radius:18px;
+
+padding:18px;
+
+text-align:left;
+
+box-shadow:var(--shadow);
+
+}
+
+.purchase-label{
+
+font-size:11px;
+
+font-weight:700;
+
+color:var(--muted);
+
+margin-bottom:9px;
+
+}
+
+.purchase-item{
+
+background:var(--blue-light);
+
+color:var(--blue-dark);
+
+border-radius:13px;
+
+padding:16px;
+
+font-size:15px;
+
+font-weight:800;
+
+line-height:1.6;
+
+word-break:break-word;
+
+white-space:pre-wrap;
+
+}
+
+.success-buttons{
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:9px;
+
+margin-top:15px;
+
+}
+
+.success-btn{
+
+border:none;
+
+border-radius:10px;
+
+padding:12px;
+
+font-size:10px;
+
+font-weight:700;
+
+}
+
+.success-btn.primary{
+
+background:var(--blue);
+
+color:var(--white);
+
+}
+
+.success-btn.secondary{
+
+background:var(--blue-light);
+
+color:var(--blue);
+
+}
+
+.toast{
+
+position:fixed;
+
+left:50%;
+
+bottom:25px;
+
+transform:translate(-50%,20px);
+
+background:var(--blue-dark);
+
+color:var(--white);
+
+padding:11px 16px;
+
+border-radius:10px;
+
+font-size:10px;
+
+opacity:0;
+
+visibility:hidden;
+
+transition:.25s;
+
+z-index:200;
+
+max-width:calc(100% - 30px);
+
+text-align:center;
+
+}
+
+.toast.show{
+
+opacity:1;
+
+visibility:visible;
+
+transform:translate(-50%,0);
+
+}
+
+@media(min-width:700px){
+
+body{
+
+background:#eef3f8;
+
+}
+
+.page{
+
+background:#f7f9fc;
+
+box-shadow:0 0 40px rgba(0,0,0,.04);
+
+}
+
+}
+
+</style>
+
 </head>
-
 
 <body>
 
+<div class="page">
 
-<div class="header">
+<header>
 
-  <button
-    class="back"
-    onclick="goBack()">
+<div class="header-left">
 
-    <i class="fa-solid fa-arrow-left"></i>
+<button
+class="back-btn"
+type="button"
+onclick="goBack()"
+>
 
-  </button>
+<i class="fa-solid fa-arrow-left"></i>
 
-  <h2>
-    Checkout
-  </h2>
+</button>
+
+<div class="header-title">
+Checkout
+</div>
 
 </div>
 
+<div class="header-right">
 
-<div class="container">
-
-
-  <div id="checkoutArea">
-
-
-    <div class="card">
-
-      <div class="product-top">
-
-        <div
-          class="product-image-box"
-          id="productImageBox">
-
-          <i class="fa-solid fa-box"></i>
-
-        </div>
-
-
-        <div class="product-details">
-
-          <div
-            id="productCategory"
-            class="category">
-          </div>
-
-          <h1
-            id="productName"
-            class="product-name">
-          </h1>
-
-        </div>
-
-      </div>
-
-
-      <p
-        id="productDescription"
-        class="description">
-      </p>
-
-
-      <div class="price-box">
-
-        <span>
-          Total
-        </span>
-
-        <strong id="productPrice">
-          ₦0.00
-        </strong>
-
-      </div>
-
-    </div>
-
-
-    <div class="card">
-
-      <div class="wallet">
-
-        <div class="wallet-left">
-
-          <div class="wallet-icon">
-
-            <i class="fa-solid fa-wallet"></i>
-
-          </div>
-
-          <div>
-
-            <small>
-              Wallet Balance
-            </small>
-
-            <strong id="walletBalance">
-              ₦0.00
-            </strong>
-
-          </div>
-
-        </div>
-
-
-        <div
-          class="wallet-status"
-          id="walletStatus">
-
-          Ready
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div
-      class="insufficient"
-      id="insufficient">
-
-      <i class="fa-solid fa-circle-exclamation"></i>
-
-      <strong>
-        Insufficient wallet balance.
-      </strong>
-
-      <br>
-
-      Please fund your wallet before making this purchase.
-
-    </div>
-
-
-    <div
-      class="out-of-stock"
-      id="outOfStock">
-
-      <i class="fa-solid fa-box-open"></i>
-
-      <strong>
-        Out of Stock.
-      </strong>
-
-      <br>
-
-      This product currently has no available items.
-
-    </div>
-
-
-    <button
-      class="pay-btn"
-      id="payButton"
-      onclick="confirmPayment()">
-
-      <i class="fa-solid fa-lock"></i>
-
-      Confirm Purchase
-
-    </button>
-
-
-    <div class="secure-note">
-
-      <i class="fa-solid fa-shield-halved"></i>
-
-      Purchase processed through your wallet
-
-    </div>
-
-
-  </div>
-
-
-  <div
-    class="card success-page"
-    id="successPage">
-
-
-    <div class="success-icon">
-
-      <i class="fa-solid fa-check"></i>
-
-    </div>
-
-
-    <h1>
-      Purchase Successful
-    </h1>
-
-
-    <p>
-      Your purchase has been completed.
-      Your item is shown below.
-    </p>
-
-
-    <div class="purchase-label">
-      Purchase Information
-    </div>
-
-
-    <div
-      class="purchase-info"
-      id="purchaseInfo">
-    </div>
-
-
-    <button
-      class="copy-btn"
-      onclick="copyPurchaseInfo()">
-
-      <i class="fa-solid fa-copy"></i>
-
-      Copy Purchase Information
-
-    </button>
-
-
-    <button
-      class="orders-btn"
-      onclick="viewOrders()">
-
-      <i class="fa-solid fa-receipt"></i>
-
-      View My Orders
-
-    </button>
-
-  </div>
-
+<i class="fa-solid fa-lock"></i>
 
 </div>
 
+</header>
+
+<main>
+
+<div id="checkoutContent">
+
+<div class="loading">
+
+<i class="fa-solid fa-spinner fa-spin"></i>
+
+<p>
+Loading checkout...
+</p>
+
+</div>
+
+</div>
+
+<div
+id="successContent"
+class="success"
+>
+
+<div class="success-icon">
+
+<i class="fa-solid fa-check"></i>
+
+</div>
+
+<h1>
+Purchase Successful
+</h1>
+
+<p>
+Your purchase information is below.
+</p>
+
+<div class="purchase-card">
+
+<div class="purchase-label">
+Purchase Information
+</div>
+
+<div
+id="successPurchaseItem"
+class="purchase-item"
+>
+-
+</div>
+
+</div>
+
+<div class="success-buttons">
+
+<button
+class="success-btn primary"
+type="button"
+onclick="window.location.href='orders.html'"
+>
+
+<i class="fa-solid fa-receipt"></i>
+
+My Orders
+
+</button>
+
+<button
+class="success-btn secondary"
+type="button"
+onclick="window.location.href='dashboard.html'"
+>
+
+Continue Shopping
+
+</button>
+
+</div>
+
+</div>
+
+</main>
+
+</div>
+
+<div
+id="toast"
+class="toast"
+></div>
 
 <script>
 
-/* =========================
-   SESSION PROTECTION
-========================= */
-
-const loggedIn =
-  localStorage.getItem(
-    "gentleLoggedIn"
-  ) === "true";
-
-
-const savedUser =
-  localStorage.getItem(
-    "gentleUser"
-  );
-
-
-const savedUserId =
-  String(
-    localStorage.getItem(
-      "gentleCurrentUserId"
-    ) || ""
-  );
-
-
 let currentUser = null;
 
+let selectedProduct = null;
 
-if (savedUser) {
+let walletBalance = 0;
 
-  try {
+const urlParams =
+new URLSearchParams(
+window.location.search
+);
 
-    currentUser =
-      JSON.parse(savedUser);
+const urlProductId =
+urlParams.get("id");
 
-  } catch (error) {
+const savedProductId =
+localStorage.getItem(
+"gentleCheckoutProduct"
+);
 
-    currentUser = null;
+const selectedId =
+urlProductId ||
+savedProductId;
 
-  }
 
+/* =========================
+   AUTH
+========================= */
+
+firebaseAuth.onAuthStateChanged(
+async function(user){
+
+if(!user){
+
+window.location.replace(
+"login.html"
+);
+
+return;
+
+}
+
+currentUser = user;
+
+if(!selectedId){
+
+showError(
+"No product was selected."
+);
+
+return;
+
+}
+
+await loadCheckout();
+
+});
+
+
+/* =========================
+   LOAD CHECKOUT
+========================= */
+
+async function loadCheckout(){
+
+try{
+
+const productRef =
+firebaseDB
+.collection("products")
+.doc(selectedId);
+
+const productSnapshot =
+await productRef.get();
+
+if(!productSnapshot.exists){
+
+showError(
+"This product is no longer available."
+);
+
+return;
+
+}
+
+const product =
+productSnapshot.data();
+
+selectedProduct = {
+
+id:productSnapshot.id,
+
+...product
+
+};
+
+const walletSnapshot =
+await firebaseDB
+.collection("wallets")
+.doc(currentUser.uid)
+.get();
+
+if(walletSnapshot.exists){
+
+walletBalance =
+Number(
+walletSnapshot.data().balance || 0
+);
+
+}else{
+
+walletBalance = 0;
+
+}
+
+renderCheckout();
+
+}catch(error){
+
+console.error(
+"CHECKOUT ERROR:",
+error
+);
+
+showError(
+error.message ||
+"Unable to load checkout."
+);
+
+}
+
+}
+
+
+/* =========================
+   RENDER CHECKOUT
+========================= */
+
+function renderCheckout(){
+
+const container =
+document.getElementById(
+"checkoutContent"
+);
+
+const productName =
+escapeHTML(
+selectedProduct.name ||
+"Product"
+);
+
+const category =
+escapeHTML(
+selectedProduct.category ||
+"Product"
+);
+
+const price =
+Number(
+selectedProduct.price || 0
+);
+
+const stock =
+Number(
+selectedProduct.stockCount || 0
+);
+
+let imageHTML = `
+<i class="fa-solid fa-box"></i>
+`;
+
+if(selectedProduct.image){
+
+imageHTML = `
+<img
+src="${escapeAttribute(selectedProduct.image)}"
+alt="${productName}"
+onerror="this.style.display='none';"
+>
+`;
+
+}
+
+const hasEnoughBalance =
+walletBalance >= price;
+
+const canBuy =
+stock > 0 &&
+hasEnoughBalance;
+
+container.innerHTML = `
+
+<div class="page-heading">
+
+<h1>
+Complete Purchase
+</h1>
+
+<p>
+Review your order before confirming payment.
+</p>
+
+</div>
+
+<div class="product-card">
+
+<div class="product-image">
+
+${imageHTML}
+
+</div>
+
+<div class="product-info">
+
+<h2>
+${productName}
+</h2>
+
+<span class="category">
+${category}
+</span>
+
+<p>
+${escapeHTML(
+selectedProduct.description ||
+"Digital product"
+)}
+</p>
+
+<div class="product-price">
+
+₦${price.toLocaleString("en-NG",{
+minimumFractionDigits:2,
+maximumFractionDigits:2
+})}
+
+</div>
+
+</div>
+
+</div>
+
+<div class="checkout-card">
+
+<div class="card-title">
+
+<i class="fa-solid fa-wallet"></i>
+
+Wallet
+
+</div>
+
+<div class="wallet-box">
+
+<div>
+
+<div class="wallet-label">
+Available Balance
+</div>
+
+<div class="wallet-balance">
+${formatMoney(walletBalance)}
+</div>
+
+</div>
+
+<div class="wallet-icon">
+
+<i class="fa-solid fa-wallet"></i>
+
+</div>
+
+</div>
+
+<div class="card-title">
+
+<i class="fa-solid fa-file-invoice"></i>
+
+Order Summary
+
+</div>
+
+<div class="summary-row">
+
+<span>
+Product
+</span>
+
+<span>
+${productName}
+</span>
+
+</div>
+
+<div class="summary-row">
+
+<span>
+Quantity
+</span>
+
+<span>
+1
+</span>
+
+</div>
+
+<div class="summary-row">
+
+<span>
+Price
+</span>
+
+<span>
+${formatMoney(price)}
+</span>
+
+</div>
+
+<div class="summary-row total-row">
+
+<span>
+Total
+</span>
+
+<span>
+${formatMoney(price)}
+</span>
+
+</div>
+
+<div class="stock-box">
+
+<i class="fa-solid fa-box"></i>
+
+${
+stock > 0
+? stock +
+" item" +
+(stock === 1 ? "" : "s") +
+" available"
+: "This product is sold out"
+}
+
+</div>
+
+<div class="notice">
+
+<i class="fa-solid fa-circle-info"></i>
+
+<div>
+Your wallet balance will be used for this purchase.
+Make sure your balance is sufficient before confirming.
+</div>
+
+</div>
+
+${
+!hasEnoughBalance
+?
+
+`
+
+<div class="notice">
+
+<i class="fa-solid fa-triangle-exclamation"></i>
+
+<div>
+Your wallet balance is not enough for this purchase.
+</div>
+
+</div>
+
+<a
+href="fund.html"
+class="fund-link"
+>
+
+Fund Wallet
+
+<i class="fa-solid fa-arrow-right"></i>
+
+</a>
+
+`
+
+:
+
+""
+
+}
+
+<button
+id="payButton"
+class="pay-btn"
+type="button"
+${canBuy ? "" : "disabled"}
+>
+
+<i class="fa-solid fa-lock"></i>
+
+${
+stock <= 0
+? "Sold Out"
+: !hasEnoughBalance
+? "Insufficient Balance"
+: "Confirm & Pay " +
+formatMoney(price)
+}
+
+</button>
+
+</div>
+
+`;
+
+const payButton =
+document.getElementById("payButton");
+
+if(payButton && canBuy){
+
+payButton.addEventListener(
+"click",
+completePurchase
+);
+
+}
+
+}
+
+
+/* =========================
+   COMPLETE PURCHASE
+========================= */
+
+async function completePurchase(){
+
+const button =
+document.getElementById("payButton");
+
+if(!selectedProduct){
+
+showToast(
+"Product information is missing."
+);
+
+return;
+
+}
+
+const price =
+Number(
+selectedProduct.price || 0
+);
+
+if(walletBalance < price){
+
+showToast(
+"Insufficient wallet balance."
+);
+
+return;
+
+}
+
+if(Number(selectedProduct.stockCount || 0) <= 0){
+
+showToast(
+"This product is sold out."
+);
+
+return;
+
+}
+
+try{
+
+button.disabled = true;
+
+button.innerHTML = `
+<i class="fa-solid fa-spinner fa-spin"></i>
+Processing...
+`;
+
+
+/* FIND NEXT INVENTORY ITEM */
+
+const inventoryQuery =
+   await firebaseDB
+   .collection("products")
+   .doc(selectedProduct.id)
+   .collection("inventory")
+   .where("sold", "==", false)
+   .get();
+
+if (inventoryQuery.empty) {
+   
+   throw new Error(
+      "This product has no available inventory."
+   );
+   
 }
 
 
 /*
-  Checkout requires a valid
-  logged-in customer session.
+Get the first available inventory item
+according to its position.
 */
 
-if (
-  !loggedIn ||
-  !currentUser ||
-  !savedUserId ||
-  String(currentUser.id) !== savedUserId
-) {
+const inventoryDocs =
+   inventoryQuery.docs.sort(
+      function(a, b) {
+         
+         const positionA =
+            Number(
+               a.data().position || 0
+            );
+         
+         const positionB =
+            Number(
+               b.data().position || 0
+            );
+         
+         return positionA - positionB;
+         
+      }
+   );
 
-  localStorage.removeItem(
-    "gentleLoggedIn"
-  );
+const inventoryDoc =
+   inventoryDocs[0];
 
-  localStorage.removeItem(
-    "gentleCurrentUserId"
-  );
+const inventoryRef =
+inventoryDoc.ref;
 
-  localStorage.removeItem(
-    "gentleCheckoutProduct"
-  );
+const inventoryData =
+inventoryDoc.data();
 
-  window.location.replace(
-    "login.html"
-  );
+const purchaseItem =
+String(
+inventoryData.value || ""
+).trim();
+
+if(!purchaseItem){
+
+throw new Error(
+"The available inventory item is empty."
+);
+
+}
+
+
+/* REFERENCES */
+
+const productRef =
+firebaseDB
+.collection("products")
+.doc(selectedProduct.id);
+
+const walletRef =
+firebaseDB
+.collection("wallets")
+.doc(currentUser.uid);
+
+const orderRef =
+firebaseDB
+.collection("orders")
+.doc();
+
+
+let newBalance = 0;
+
+
+/* ATOMIC PURCHASE */
+
+await firebaseDB.runTransaction(
+async function(transaction){
+
+const walletSnapshot =
+await transaction.get(walletRef);
+
+const productSnapshot =
+await transaction.get(productRef);
+
+const inventorySnapshot =
+await transaction.get(inventoryRef);
+
+if(!productSnapshot.exists){
+
+throw new Error(
+"This product no longer exists."
+);
+
+}
+
+if(!inventorySnapshot.exists){
+
+throw new Error(
+"The inventory item no longer exists."
+);
+
+}
+
+const wallet =
+walletSnapshot.exists
+? walletSnapshot.data()
+: {};
+
+const product =
+productSnapshot.data();
+
+const inventory =
+inventorySnapshot.data();
+
+const currentBalance =
+Number(
+wallet.balance || 0
+);
+
+const currentStock =
+Number(
+product.stockCount || 0
+);
+
+const currentPrice =
+Number(
+product.price || 0
+);
+
+if(currentStock <= 0){
+
+throw new Error(
+"This product is sold out."
+);
+
+}
+
+if(currentBalance < currentPrice){
+
+throw new Error(
+"Insufficient wallet balance."
+);
+
+}
+
+if(inventory.sold === true){
+
+throw new Error(
+"This inventory item has already been purchased. Please try again."
+);
+
+}
+
+const currentItem =
+String(
+inventory.value || ""
+).trim();
+
+if(!currentItem){
+
+throw new Error(
+"The inventory item is empty."
+);
+
+}
+
+newBalance =
+Number(
+(currentBalance - currentPrice)
+.toFixed(2)
+);
+
+
+/* WALLET */
+
+transaction.update(
+walletRef,
+{
+
+balance:newBalance,
+
+updatedAt:
+firebase.firestore
+.FieldValue
+.serverTimestamp()
+
+}
+);
+
+
+/* PRODUCT STOCK */
+
+transaction.update(
+productRef,
+{
+
+stockCount:
+currentStock - 1,
+
+updatedAt:
+firebase.firestore
+.FieldValue
+.serverTimestamp()
+
+}
+);
+
+
+/* INVENTORY */
+
+transaction.update(
+inventoryRef,
+{
+
+sold:true,
+
+soldTo:
+currentUser.uid,
+
+soldAt:
+firebase.firestore
+.FieldValue
+.serverTimestamp(),
+
+orderId:
+orderRef.id
+
+}
+);
+
+
+/* ORDER */
+
+transaction.set(
+orderRef,
+{
+
+userId:
+currentUser.uid,
+
+userEmail:
+currentUser.email || "",
+
+productId:
+selectedProduct.id,
+
+productName:
+product.name || "",
+
+amount:
+currentPrice,
+
+status:
+"completed",
+
+purchaseText:
+currentItem,
+
+inventoryId:
+inventoryDoc.id,
+
+createdAt:
+firebase.firestore
+.FieldValue
+.serverTimestamp()
+
+}
+);
+
+}
+);
+
+
+/* UPDATE LOCAL DATA */
+
+walletBalance =
+newBalance;
+
+selectedProduct.stockCount =
+Number(
+selectedProduct.stockCount || 0
+) - 1;
+
+
+/* SHOW ONLY INVENTORY ITEM */
+
+showSuccess(
+purchaseItem
+);
+
+}catch(error){
+
+console.error(
+"PURCHASE ERROR:",
+error
+);
+
+button.disabled = false;
+
+button.innerHTML = `
+<i class="fa-solid fa-lock"></i>
+Confirm & Pay ${formatMoney(price)}
+`;
+
+showToast(
+error.message ||
+"Purchase could not be completed."
+);
+
+}
 
 }
 
 
 /* =========================
-   CUSTOMER ID
+   SUCCESS
 ========================= */
 
-const currentUserId =
-  String(currentUser.id);
+function showSuccess(
+purchaseItem
+){
 
+document
+.getElementById("checkoutContent")
+.style.display =
+"none";
 
-const currentUserEmail =
-  String(currentUser.email || "")
-    .toLowerCase();
+document
+.getElementById("successContent")
+.classList
+.add("show");
 
+document
+.getElementById("successPurchaseItem")
+.textContent =
+purchaseItem ||
+"No purchase information found.";
 
-/* =========================
-   PRODUCTS
-========================= */
-
-let products =
-  JSON.parse(
-    localStorage.getItem(
-      "gentleProducts"
-    )
-  ) || [];
-
-
-const selectedId =
-  localStorage.getItem(
-    "gentleCheckoutProduct"
-  );
-
-
-let product =
-  products.find(function(item) {
-
-    return String(item.id)
-      === String(selectedId);
-
-  });
-
-
-if (!product) {
-
-  alert(
-    "No product selected."
-  );
-
-  window.location.replace(
-    "dashboard.html"
-  );
+localStorage.removeItem(
+"gentleCheckoutProduct"
+);
 
 }
 
 
 /* =========================
-   WALLET
+   ERROR
 ========================= */
 
-let balance =
-  Number(
-    localStorage.getItem(
-      "gentleBalance"
-    )
-  ) || 0;
+function showError(
+message
+){
+
+document
+.getElementById("checkoutContent")
+.innerHTML = `
+
+<div class="error-box">
+
+<i class="fa-solid fa-triangle-exclamation"></i>
+
+<h2>
+Checkout unavailable
+</h2>
+
+<p>
+${escapeHTML(message)}
+</p>
+
+<button
+type="button"
+onclick="window.location.href='dashboard.html'"
+>
+
+Back to Store
+
+</button>
+
+</div>
+
+`;
+
+}
+
+
+/* =========================
+   GO BACK
+========================= */
+
+function goBack(){
+
+if(
+document
+.getElementById("successContent")
+.classList
+.contains("show")
+){
+
+window.location.href =
+"dashboard.html";
+
+return;
+
+}
+
+window.history.back();
+
+}
 
 
 /* =========================
    MONEY
 ========================= */
 
-function money(amount) {
+function formatMoney(
+amount
+){
 
-  return "₦" +
-    Number(amount)
-      .toLocaleString(
-        "en-NG",
-        {
-          minimumFractionDigits: 2
-        }
-      );
+return "₦" +
+Number(amount || 0)
+.toLocaleString(
+"en-NG",
+{
+minimumFractionDigits:2,
+maximumFractionDigits:2
+}
+);
 
 }
 
 
 /* =========================
-   PRODUCT ICON
+   TOAST
 ========================= */
 
-function getProductIcon() {
+let toastTimer;
 
-  const category =
-    String(
-      product.category || ""
-    ).toLowerCase();
+function showToast(
+message
+){
 
+const toast =
+document.getElementById("toast");
 
-  if (category === "instagram") {
-    return "fa-instagram";
-  }
+toast.textContent =
+message;
 
-  if (category === "facebook") {
-    return "fa-facebook";
-  }
+toast.classList.add("show");
 
-  if (category === "tiktok") {
-    return "fa-tiktok";
-  }
+clearTimeout(
+toastTimer
+);
 
-  return "fa-box";
+toastTimer =
+setTimeout(
+function(){
 
-}
+toast.classList.remove("show");
 
-
-/* =========================
-   DISPLAY PRODUCT
-========================= */
-
-const imageBox =
-  document.getElementById(
-    "productImageBox"
-  );
-
-
-if (product.image) {
-
-  imageBox.innerHTML = `
-
-    <img
-      class="product-image"
-      src="${escapeHtml(product.image)}"
-      alt="${escapeHtml(product.name)}">
-
-  `;
-
-} else {
-
-  imageBox.innerHTML = `
-
-    <i class="fa-solid ${getProductIcon()}"></i>
-
-  `;
-
-}
-
-
-document.getElementById(
-  "productCategory"
-).textContent =
-  product.category || "Other";
-
-
-document.getElementById(
-  "productName"
-).textContent =
-  product.name || "Product";
-
-
-document.getElementById(
-  "productDescription"
-).textContent =
-  product.description ||
-  "Digital product";
-
-
-document.getElementById(
-  "productPrice"
-).textContent =
-  money(product.price);
-
-
-document.getElementById(
-  "walletBalance"
-).textContent =
-  money(balance);
-
-
-/* =========================
-   INVENTORY
-========================= */
-
-function getInventory() {
-
-  if (
-    Array.isArray(product.inventory)
-  ) {
-
-    return product.inventory;
-
-  }
-
-  return [];
-
-}
-
-
-/* =========================
-   AVAILABILITY
-========================= */
-
-function checkPurchaseAvailability() {
-
-  const price =
-    Number(product.price) || 0;
-
-  const inventory =
-    getInventory();
-
-
-  const insufficientBox =
-    document.getElementById(
-      "insufficient"
-    );
-
-  const outOfStockBox =
-    document.getElementById(
-      "outOfStock"
-    );
-
-  const payButton =
-    document.getElementById(
-      "payButton"
-    );
-
-  const walletStatus =
-    document.getElementById(
-      "walletStatus"
-    );
-
-
-  insufficientBox.style.display =
-    "none";
-
-  outOfStockBox.style.display =
-    "none";
-
-  payButton.disabled =
-    false;
-
-
-  if (inventory.length === 0) {
-
-    outOfStockBox.style.display =
-      "block";
-
-    payButton.disabled =
-      true;
-
-    walletStatus.textContent =
-      "Unavailable";
-
-    walletStatus.style.color =
-      "#d93025";
-
-    return;
-
-  }
-
-
-  if (balance < price) {
-
-    insufficientBox.style.display =
-      "block";
-
-    payButton.disabled =
-      true;
-
-    walletStatus.textContent =
-      "Insufficient";
-
-    walletStatus.style.color =
-      "#d93025";
-
-    return;
-
-  }
-
-
-  walletStatus.textContent =
-    "Ready";
-
-  walletStatus.style.color =
-    "#16834b";
-
-}
-
-
-/* =========================
-   CONFIRM PURCHASE
-========================= */
-
-function confirmPayment() {
-
-  const payButton =
-    document.getElementById(
-      "payButton"
-    );
-
-
-  if (payButton.disabled) {
-    return;
-  }
-
-
-  payButton.disabled = true;
-
-
-  /*
-    Reload everything from storage
-    immediately before purchase.
-  */
-
-  const currentProducts =
-    JSON.parse(
-      localStorage.getItem(
-        "gentleProducts"
-      )
-    ) || [];
-
-
-  const currentProduct =
-    currentProducts.find(
-      function(item) {
-
-        return String(item.id)
-          === String(product.id);
-
-      }
-    );
-
-
-  if (!currentProduct) {
-
-    alert(
-      "Product is no longer available."
-    );
-
-    payButton.disabled =
-      false;
-
-    return;
-
-  }
-
-
-  const inventory =
-    Array.isArray(
-      currentProduct.inventory
-    )
-      ? currentProduct.inventory
-      : [];
-
-
-  if (inventory.length === 0) {
-
-    alert(
-      "Sorry, this product is out of stock."
-    );
-
-    document.getElementById(
-      "outOfStock"
-    ).style.display =
-      "block";
-
-    return;
-
-  }
-
-
-  /*
-    Always read the latest wallet
-    balance before charging.
-  */
-
-  balance =
-    Number(
-      localStorage.getItem(
-        "gentleBalance"
-      )
-    ) || 0;
-
-
-  const price =
-    Number(currentProduct.price) || 0;
-
-
-  if (balance < price) {
-
-    alert(
-      "Insufficient wallet balance."
-    );
-
-    document.getElementById(
-      "insufficient"
-    ).style.display =
-      "block";
-
-    payButton.disabled =
-      false;
-
-    return;
-
-  }
-
-
-  /*
-    Deliver exactly one inventory item.
-  */
-
-  const deliveredItem =
-    inventory.shift();
-
-
-  currentProduct.inventory =
-    inventory;
-
-
-  /*
-    Save updated stock.
-  */
-
-  localStorage.setItem(
-    "gentleProducts",
-    JSON.stringify(
-      currentProducts
-    )
-  );
-
-
-  /*
-    Deduct the purchase price.
-  */
-
-  balance =
-    balance - price;
-
-
-  localStorage.setItem(
-    "gentleBalance",
-    String(balance)
-  );
-
-
-  /*
-    Create an order belonging
-    to THIS customer.
-  */
-
-  const order = {
-
-    id:
-      "ORD-" + Date.now(),
-
-    userId:
-      currentUserId,
-
-    userEmail:
-      currentUserEmail,
-
-    productId:
-      currentProduct.id,
-
-    productName:
-      currentProduct.name,
-
-    category:
-      currentProduct.category,
-
-    price:
-      price,
-
-    purchaseText:
-      deliveredItem,
-
-    date:
-      new Date().toLocaleString(),
-
-    status:
-      "Completed"
-
-  };
-
-
-  /*
-    Load existing orders safely.
-  */
-
-  let orders = [];
-
-
-  try {
-
-    const savedOrders =
-      JSON.parse(
-        localStorage.getItem(
-          "gentleOrders"
-        )
-      );
-
-
-    if (Array.isArray(savedOrders)) {
-
-      orders =
-        savedOrders;
-
-    }
-
-  } catch (error) {
-
-    orders = [];
-
-  }
-
-
-  orders.unshift(order);
-
-
-  localStorage.setItem(
-    "gentleOrders",
-    JSON.stringify(orders)
-  );
-
-
-  /*
-    Show the delivered item.
-  */
-
-  document.getElementById(
-    "purchaseInfo"
-  ).textContent =
-    deliveredItem;
-
-
-  document.getElementById(
-    "checkoutArea"
-  ).style.display =
-    "none";
-
-
-  document.getElementById(
-    "successPage"
-  ).style.display =
-    "block";
-
-
-  /*
-    Prevent the same selected
-    product from being purchased
-    again by refreshing checkout.
-  */
-
-  localStorage.removeItem(
-    "gentleCheckoutProduct"
-  );
-
-}
-
-
-/* =========================
-   COPY PURCHASE INFORMATION
-========================= */
-
-function copyPurchaseInfo() {
-
-  const text =
-    document.getElementById(
-      "purchaseInfo"
-    ).textContent;
-
-
-  if (
-    navigator.clipboard &&
-    navigator.clipboard.writeText
-  ) {
-
-    navigator.clipboard
-      .writeText(text)
-      .then(function() {
-
-        alert(
-          "Purchase information copied."
-        );
-
-      })
-      .catch(function() {
-
-        alert(
-          "Unable to copy. Please copy it manually."
-        );
-
-      });
-
-  } else {
-
-    alert(
-      "Unable to copy. Please copy it manually."
-    );
-
-  }
-
-}
-
-
-/* =========================
-   ORDERS
-========================= */
-
-function viewOrders() {
-
-  window.location.href =
-    "orders.html";
-
-}
-
-
-/* =========================
-   BACK
-========================= */
-
-function goBack() {
-
-  window.location.href =
-    "dashboard.html";
+},
+3000
+);
 
 }
 
@@ -1278,65 +2067,83 @@ function goBack() {
    HTML SAFETY
 ========================= */
 
-function escapeHtml(text) {
+function escapeHTML(
+value
+){
 
-  const div =
-    document.createElement(
-      "div"
-    );
+return String(
+value ?? ""
+)
 
-  div.textContent =
-    text || "";
+.replace(
+/&/g,
+"&amp;"
+)
 
-  return div.innerHTML;
+.replace(
+/</g,
+"&lt;"
+)
+
+.replace(
+/>/g,
+"&gt;"
+)
+
+.replace(
+/"/g,
+"&quot;"
+)
+
+.replace(
+/'/g,
+"&#039;"
+);
 
 }
 
 
 /* =========================
-   START
+   ATTRIBUTE SAFETY
 ========================= */
 
-checkPurchaseAvailability();
+function escapeAttribute(
+value
+){
 
+return String(
+value ?? ""
+)
 
-/* =========================
-   PAGE REFRESH
-========================= */
+.replace(
+/&/g,
+"&amp;"
+)
 
-window.addEventListener(
-  "pageshow",
-  function() {
+.replace(
+/"/g,
+"&quot;"
+)
 
-    const sessionActive =
-      localStorage.getItem(
-        "gentleLoggedIn"
-      ) === "true";
+.replace(
+/'/g,
+"&#039;"
+)
 
+.replace(
+/</g,
+"&lt;"
+)
 
-    const sessionUserId =
-      String(
-        localStorage.getItem(
-          "gentleCurrentUserId"
-        ) || ""
-      );
-
-
-    if (
-      !sessionActive ||
-      !sessionUserId
-    ) {
-
-      window.location.replace(
-        "login.html"
-      );
-
-    }
-
-  }
+.replace(
+/>/g,
+"&gt;"
 );
+
+}
 
 </script>
 
 </body>
+
 </html>
