@@ -439,7 +439,82 @@ font-size:8px;
 
 
 /* =========================
-CARD
+CLOSED NOTICE
+========================= */
+
+.closed-notice{
+
+background:var(--white);
+
+border:1px solid var(--border);
+
+border-radius:19px;
+
+padding:17px;
+
+margin-bottom:15px;
+
+box-shadow:var(--shadow);
+
+}
+
+.closed-top{
+
+display:flex;
+
+align-items:center;
+
+gap:9px;
+
+margin-bottom:9px;
+
+}
+
+.closed-icon{
+
+width:37px;
+
+height:37px;
+
+border-radius:11px;
+
+background:var(--blue-light);
+
+color:var(--blue);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:14px;
+
+}
+
+.closed-top h3{
+
+font-size:14px;
+
+font-weight:800;
+
+color:var(--blue-dark);
+
+}
+
+.closed-notice p{
+
+font-size:9px;
+
+line-height:1.7;
+
+color:var(--muted);
+
+}
+
+
+/* =========================
+HOW IT WORKS
 ========================= */
 
 .card{
@@ -466,7 +541,7 @@ align-items:center;
 
 gap:9px;
 
-margin-bottom:5px;
+margin-bottom:13px;
 
 }
 
@@ -501,337 +576,6 @@ font-weight:800;
 color:var(--blue-dark);
 
 }
-
-.card-description{
-
-font-size:9px;
-
-line-height:1.6;
-
-color:var(--muted);
-
-margin-bottom:16px;
-
-}
-
-
-/* =========================
-INPUT
-========================= */
-
-.input-label{
-
-display:block;
-
-font-size:9px;
-
-font-weight:800;
-
-color:var(--text);
-
-margin-bottom:7px;
-
-}
-
-.input-wrap{
-
-position:relative;
-
-margin-bottom:14px;
-
-}
-
-.naira{
-
-position:absolute;
-
-left:13px;
-
-top:50%;
-
-transform:translateY(-50%);
-
-color:var(--blue);
-
-font-size:16px;
-
-font-weight:800;
-
-}
-
-.amount-input{
-
-width:100%;
-
-height:50px;
-
-border:1px solid var(--border);
-
-border-radius:12px;
-
-padding:0 13px 0 34px;
-
-font-size:14px;
-
-font-weight:600;
-
-color:var(--text);
-
-outline:none;
-
-background:#fbfcfe;
-
-transition:.2s;
-
-}
-
-.amount-input:focus{
-
-border-color:var(--blue);
-
-background:var(--white);
-
-box-shadow:
-0 0 0 3px rgba(11,45,92,.07);
-
-}
-
-.amount-input::placeholder{
-
-color:#a0a9b7;
-
-font-weight:400;
-
-}
-
-
-/* =========================
-QUICK AMOUNTS
-========================= */
-
-.quick-title{
-
-font-size:9px;
-
-font-weight:700;
-
-color:var(--muted);
-
-margin-bottom:8px;
-
-}
-
-.quick{
-
-display:grid;
-
-grid-template-columns:repeat(3,1fr);
-
-gap:8px;
-
-margin-bottom:15px;
-
-}
-
-.quick button{
-
-border:1px solid var(--border);
-
-background:var(--blue-soft);
-
-color:var(--blue);
-
-border-radius:11px;
-
-padding:10px 4px;
-
-font-size:9px;
-
-font-weight:800;
-
-transition:.2s;
-
-}
-
-.quick button:hover{
-
-background:var(--blue-light);
-
-border-color:#cbd9e9;
-
-}
-
-.quick button:active{
-
-transform:scale(.96);
-
-}
-
-
-/* =========================
-ADD BUTTON
-========================= */
-
-.continue{
-
-width:100%;
-
-border:none;
-
-background:var(--blue);
-
-color:var(--white);
-
-border-radius:12px;
-
-padding:13px;
-
-font-size:11px;
-
-font-weight:800;
-
-box-shadow:
-0 8px 18px rgba(11,45,92,.16);
-
-transition:.2s;
-
-}
-
-.continue:hover{
-
-background:var(--blue-dark);
-
-transform:translateY(-1px);
-
-}
-
-.continue:active{
-
-transform:translateY(0);
-
-}
-
-.continue:disabled{
-
-opacity:.55;
-
-cursor:not-allowed;
-
-transform:none;
-
-}
-
-.continue i{
-
-margin-right:5px;
-
-}
-
-
-/* =========================
-SUCCESS
-========================= */
-
-.success{
-
-display:none;
-
-margin-top:12px;
-
-background:#edf8f1;
-
-color:var(--success);
-
-border:1px solid #cfead8;
-
-border-radius:11px;
-
-padding:11px;
-
-text-align:center;
-
-font-size:9px;
-
-font-weight:700;
-
-line-height:1.5;
-
-}
-
-.success i{
-
-margin-right:4px;
-
-}
-
-
-/* =========================
-ERROR
-========================= */
-
-.error{
-
-display:none;
-
-margin-top:12px;
-
-background:#fff1f1;
-
-color:var(--danger);
-
-border:1px solid #f2d2d2;
-
-border-radius:11px;
-
-padding:11px;
-
-text-align:center;
-
-font-size:9px;
-
-font-weight:700;
-
-line-height:1.5;
-
-}
-
-
-/* =========================
-DEMO NOTE
-========================= */
-
-.note{
-
-margin-top:12px;
-
-background:var(--blue-soft);
-
-border:1px solid var(--border);
-
-border-radius:11px;
-
-padding:11px;
-
-color:var(--muted);
-
-font-size:8px;
-
-line-height:1.65;
-
-}
-
-.note i{
-
-color:var(--blue);
-
-margin-right:4px;
-
-}
-
-
-/* =========================
-HOW IT WORKS
-========================= */
 
 .steps{
 
@@ -1119,7 +863,7 @@ Fund Wallet
 </h1>
 
 <p>
-Add money to your wallet and use it to purchase products.
+Manage your wallet balance and funding status.
 </p>
 
 </div>
@@ -1165,135 +909,33 @@ Wallet Ready
 </div>
 
 
-<div class="card">
+<div class="closed-notice">
 
 
-<div class="card-title">
+<div class="closed-top">
 
-<div class="card-title-icon">
 
-<i class="fa-solid fa-money-bill-transfer"></i>
+<div class="closed-icon">
+
+<i class="fa-solid fa-lock"></i>
 
 </div>
+
 
 <h3>
-Add Money
+Add Funds Temporarily Closed
 </h3>
 
+
 </div>
 
 
-<p class="card-description">
-
-Enter the amount you want to add to your wallet.
-
+<p>
+Wallet funding is currently unavailable.
+We’ll reopen Add Funds when the official
+payment system is ready. Your existing wallet
+balance remains visible and available for purchases.
 </p>
-
-
-<label
-class="input-label"
-for="amount"
->
-
-Amount
-
-</label>
-
-
-<div class="input-wrap">
-
-<span class="naira">
-₦
-</span>
-
-
-<input
-id="amount"
-class="amount-input"
-type="number"
-min="100"
-step="100"
-inputmode="numeric"
-autocomplete="off"
-placeholder="Enter amount"
->
-
-</div>
-
-
-<div class="quick-title">
-
-Quick Amount
-
-</div>
-
-
-<div class="quick">
-
-<button
-type="button"
-onclick="setAmount(1000)"
->
-₦1,000
-</button>
-
-<button
-type="button"
-onclick="setAmount(5000)"
->
-₦5,000
-</button>
-
-<button
-type="button"
-onclick="setAmount(10000)"
->
-₦10,000
-</button>
-
-</div>
-
-
-<button
-class="continue"
-id="addButton"
-type="button"
-onclick="addFunds()"
->
-
-<i class="fa-solid fa-wallet"></i>
-
-Add Funds
-
-</button>
-
-
-<div
-class="success"
-id="success"
->
-
-<i class="fa-solid fa-circle-check"></i>
-
-Funds added successfully.
-
-</div>
-
-
-<div
-class="error"
-id="error"
-></div>
-
-
-<div class="note">
-
-<i class="fa-solid fa-circle-info"></i>
-
-This is currently a demo wallet for testing.
-Real payments will be connected later.
-
-</div>
 
 
 </div>
@@ -1324,18 +966,18 @@ How It Works
 
 <div class="step-icon">
 
-<i class="fa-solid fa-wallet"></i>
+<i class="fa-solid fa-lock"></i>
 
 </div>
 
 <div class="step-text">
 
 <strong>
-Choose an amount
+Add Funds is temporarily closed
 </strong>
 
 <span>
-Select a quick amount or enter your own.
+Wallet funding will be available again when the official payment system is launched.
 </span>
 
 </div>
@@ -1347,18 +989,18 @@ Select a quick amount or enter your own.
 
 <div class="step-icon">
 
-<i class="fa-solid fa-plus"></i>
+<i class="fa-solid fa-wallet"></i>
 
 </div>
 
 <div class="step-text">
 
 <strong>
-Add funds
+Your balance remains available
 </strong>
 
 <span>
-Your wallet balance is saved to your account.
+Your existing wallet balance is still displayed on your account.
 </span>
 
 </div>
@@ -1377,11 +1019,10 @@ Your wallet balance is saved to your account.
 <div class="step-text">
 
 <strong>
-Shop products
-</strong>
+Shop products</strong>
 
 <span>
-Use your wallet balance when purchasing products.
+Use your available wallet balance when purchasing products.
 </span>
 
 </div>
@@ -1581,10 +1222,6 @@ console.error(
 error
 );
 
-showError(
-"Unable to load your wallet. Please try again."
-);
-
 }
 
 }
@@ -1622,267 +1259,6 @@ maximumFractionDigits:2
 
 
 /* =========================
-QUICK AMOUNTS
-========================= */
-
-function setAmount(amount){
-
-const input =
-document.getElementById(
-"amount"
-);
-
-input.value = amount;
-
-input.focus();
-
-hideMessages();
-
-}
-
-
-/* =========================
-ADD FUNDS
-========================= */
-
-async function addFunds(){
-
-if(!firebaseUser){
-
-showError(
-"Please log in again."
-);
-
-return;
-
-}
-
-
-const input =
-document.getElementById(
-"amount"
-);
-
-const button =
-document.getElementById(
-"addButton"
-);
-
-const amount =
-Number(
-input.value
-);
-
-
-hideMessages();
-
-
-if(
-!Number.isFinite(amount) ||
-amount < 100
-){
-
-showError(
-"Please enter at least ₦100."
-);
-
-return;
-
-}
-
-
-if(
-amount % 1 !== 0
-){
-
-showError(
-"Please enter a valid whole naira amount."
-);
-
-return;
-
-}
-
-
-button.disabled = true;
-
-button.innerHTML = `
-
-<i class="fa-solid fa-spinner fa-spin"></i>
-
-Adding Funds...
-
-`;
-
-
-try{
-
-const walletRef =
-firebaseDB
-.collection("wallets")
-.doc(firebaseUser.uid);
-
-
-let newBalance = 0;
-
-
-await firebaseDB.runTransaction(
-async function(transaction){
-
-const snapshot =
-await transaction.get(
-walletRef
-);
-
-
-let currentBalance = 0;
-
-
-if(snapshot.exists){
-
-currentBalance =
-Number(
-snapshot.data().balance || 0
-);
-
-}
-
-
-newBalance =
-currentBalance + amount;
-
-
-transaction.set(
-walletRef,
-{
-
-userId:
-firebaseUser.uid,
-
-balance:
-newBalance,
-
-updatedAt:
-firebase.firestore
-.FieldValue
-.serverTimestamp()
-
-},
-{
-
-merge:true
-
-}
-);
-
-}
-);
-
-
-balance =
-newBalance;
-
-
-/* Compatibility */
-
-localStorage.setItem(
-"gentleBalance",
-String(balance)
-);
-
-
-updateBalance();
-
-input.value = "";
-
-
-const success =
-document.getElementById(
-"success"
-);
-
-success.style.display =
-"block";
-
-
-setTimeout(
-function(){
-
-success.style.display =
-"none";
-
-},
-2500
-);
-
-
-}catch(error){
-
-console.error(
-"ADD FUNDS ERROR:",
-error
-);
-
-showError(
-"Unable to update your wallet. Please try again."
-);
-
-}
-
-
-button.disabled = false;
-
-button.innerHTML = `
-
-<i class="fa-solid fa-wallet"></i>
-
-Add Funds
-
-`;
-
-}
-
-
-/* =========================
-ERROR
-========================= */
-
-function showError(message){
-
-const box =
-document.getElementById(
-"error"
-);
-
-box.textContent =
-message;
-
-box.style.display =
-"block";
-
-}
-
-
-/* =========================
-MESSAGES
-========================= */
-
-function hideMessages(){
-
-document
-.getElementById("error")
-.style.display =
-"none";
-
-document
-.getElementById("success")
-.style.display =
-"none";
-
-}
-
-
-/* =========================
 BACK
 ========================= */
 
@@ -1905,28 +1281,6 @@ function(){
 if(firebaseUser){
 
 loadWallet();
-
-}
-
-}
-);
-
-
-/* =========================
-ENTER KEY
-========================= */
-
-document
-.getElementById("amount")
-.addEventListener(
-"keydown",
-function(event){
-
-if(event.key === "Enter"){
-
-event.preventDefault();
-
-addFunds();
 
 }
 

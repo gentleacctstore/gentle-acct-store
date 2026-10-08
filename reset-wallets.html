@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reset Demo Wallets</title>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase.js"></script>
+
+<style>
+body{
+  font-family:Arial,sans-serif;
+  background:#f4f7fb;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
+  padding:20px;
+}
+
+.card{
+  width:100%;
+  max-width:450px;
+  background:white;
+  padding:30px;
+  border-radius:20px;
+  box-shadow:0 15px 40px rgba(0,0,0,.08);
+  text-align:center;
+}
+
+h1{
+  color:#0b2d5c;
+}
+
+p{
+  color:#687386;
+  line-height:1.6;
+}
+
+button{
+  width:100%;
+  padding:15px;
+  border:0;
+  border-radius:12px;
+  background:#0b2d5c;
+  color:white;
+  font-size:15px;
+  font-weight:bold;
+  cursor:pointer;
+  margin-top:20px;
+}
+
+button:disabled{
+  opacity:.5;
+}
+
+#status{
+  margin-top:20px;
+  font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<h1>Reset Demo Wallets</h1>
+
+<p>
+This will change every existing customer demo wallet balance
+to <strong>₦0.00</strong>.
+</p>
+
+<p>
+Customer accounts, orders and products will remain unchanged.
+</p>
+
+<button id="resetButton">
+Reset All Wallets to ₦0.00
+</button>
+
+<div id="status"></div>
+
+</div>
+
+<script>
+
+const ADMIN_UID =
+"UoEjCy99gbQKkGob59vGi3CunZi1";
+
+const resetButton =
+document.getElementById("resetButton");
+
+const status =
+document.getElementById("status");
+
+
+firebaseAuth.onAuthStateChanged(
+function(user){
+
+if(!user){
+
+status.textContent =
+"Please log in to your admin account first.";
+
+resetButton.disabled = true;
+
+return;
+
+}
+
+if(user.uid !== ADMIN_UID){
+
+status.textContent =
+"This account is not authorized.";
+
+resetButton.disabled = true;
+
+return;
+
+}
+
+status.textContent =
+"Admin verified. Ready to reset.";
+
+}
+);
+
+
+resetButton.addEventListener(
+"click",
+async function(){
+
+const confirmed =
+confirm(
+"Are you sure you want to reset ALL demo wallet balances to ₦0.00?"
+);
+
+if(!confirmed){
+return;
+}
+
+resetButton.disabled = true;
+
+status.textContent =
+"Resetting wallets...";
+
+
+try{
+
+const snapshot =
+await firebaseDB
+.collection("wallets")
+.get();
+
+
+if(snapshot.empty){
+
+status.textContent =
+"No wallets found.";
+
+resetButton.disabled = false;
+
+return;
+
+}
+
+
+const docs =
+snapshot.docs;
+
+let processed = 0;
+
+
+/*
+Firestore batches have a maximum
+of 500 writes, so we process
+wallets in groups of 400.
+*/
+
+for(
+let start = 0;
+start < docs.length;
+start += 400
+){
+
+const batch =
+firebaseDB.batch();
+
+const group =
+docs.slice(
+start,
+start + 400
+);
+
+
+group.forEach(
+function(doc){
+
+batch.update(
+doc.ref,
+{
+
+balance:0,
+
+updatedAt:
+firebase.firestore
+.FieldValue
+.serverTimestamp()
+
+}
+);
+
+});
+
+
+await batch.commit();
+
+processed += group.length;
+
+status.textContent =
+"Resetting... " +
+processed +
+" of " +
+docs.length;
+
+}
+
+
+status.textContent =
+"Done. All " +
+docs.length +
+" demo wallets are now ₦0.00.";
+
+alert(
+"All demo wallet balances have been reset to ₦0.00."
+);
+
+
+}catch(error){
+
+console.error(
+"RESET ERROR:",
+error
+);
+
+status.textContent =
+"Reset failed: " +
+(error.message || "Unknown error");
+
+resetButton.disabled = false;
+
+}
+
+}
+);
+
+</script>
+
+</body>
+</html>
