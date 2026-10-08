@@ -1,329 +1,265 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Create Account | Gentle Acct Store</title>
 
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
->
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <style>
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, Helvetica, sans-serif;
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial,Helvetica,sans-serif;
 }
 
-body {
-  background: #f5f9ff;
-  color: #10213b;
-  min-height: 100vh;
+body{
+  min-height:100vh;
+  background:#f5f9ff;
+  color:#10213b;
 }
 
-a {
-  text-decoration: none;
+header{
+  height:70px;
+  background:white;
+  border-bottom:1px solid #e3eaf3;
 }
 
-header {
-  height: 70px;
-  background: rgba(255,255,255,.96);
-  border-bottom: 1px solid #e5ebf4;
+.nav{
+  height:100%;
+  max-width:1100px;
+  margin:auto;
+  padding:0 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 }
 
-.nav {
-  max-width: 1100px;
-  height: 100%;
-  margin: auto;
-  padding: 0 18px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.logo{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  color:#10213b;
+  font-size:17px;
+  font-weight:800;
+  text-decoration:none;
 }
 
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  color: #10213b;
-  font-size: 17px;
-  font-weight: 800;
+.logo-box{
+  width:38px;
+  height:38px;
+  border-radius:11px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#1264e8;
+  color:white;
+  font-size:18px;
+  font-weight:900;
 }
 
-.logo-box {
-  width: 38px;
-  height: 38px;
-  border-radius: 11px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg,#0757d5,#1780ff);
-  color: white;
-  font-weight: 900;
-  font-size: 18px;
-  box-shadow: 0 7px 16px rgba(7,87,213,.20);
+.logo span{
+  color:#1264e8;
 }
 
-.logo span {
-  color: #1264e8;
+.back{
+  text-decoration:none;
+  color:#1264e8;
+  background:#f0f6ff;
+  padding:9px 13px;
+  border-radius:9px;
+  font-size:12px;
+  font-weight:800;
 }
 
-.back {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  color: #1264e8;
-  background: #f1f6ff;
-  padding: 9px 13px;
-  border-radius: 9px;
-  font-size: 12px;
-  font-weight: 800;
+.page{
+  min-height:calc(100vh - 70px);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:35px 16px;
 }
 
-.page {
-  min-height: calc(100vh - 70px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 35px 16px 45px;
+.card{
+  width:100%;
+  max-width:450px;
+  background:white;
+  border:1px solid #e1e8f2;
+  border-radius:22px;
+  padding:32px 24px;
+  box-shadow:0 18px 50px rgba(20,50,90,.08);
 }
 
-.card {
-  width: 100%;
-  max-width: 450px;
-  background: white;
-  border: 1px solid #e1e8f2;
-  border-radius: 22px;
-  padding: 32px 24px;
-  box-shadow: 0 18px 50px rgba(20,50,90,.08);
+.icon{
+  width:55px;
+  height:55px;
+  margin:0 auto 16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#eaf3ff;
+  color:#1264e8;
+  border-radius:16px;
+  font-size:21px;
 }
 
-.title {
-  text-align: center;
+.title{
+  text-align:center;
 }
 
-.icon {
-  width: 55px;
-  height: 55px;
-  margin: 0 auto 17px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #eaf3ff;
-  color: #1264e8;
-  border-radius: 16px;
-  font-size: 21px;
+.title h1{
+  font-size:27px;
+  color:#0b1d35;
 }
 
-.title h1 {
-  font-size: 27px;
-  color: #0b1d35;
+.title p{
+  margin-top:9px;
+  color:#718096;
+  font-size:13px;
+  line-height:1.6;
 }
 
-.title p {
-  color: #718096;
-  font-size: 13px;
-  margin-top: 9px;
-  line-height: 1.6;
+.test{
+  margin-top:15px;
+  padding:8px;
+  text-align:center;
+  border-radius:8px;
+  background:#fff8df;
+  border:1px solid #f0df9a;
+  color:#725b00;
+  font-size:10px;
+  font-weight:800;
 }
 
-form {
-  margin-top: 28px;
+form{
+  margin-top:25px;
 }
 
-.field {
-  margin-bottom: 18px;
+.field{
+  margin-bottom:17px;
 }
 
-label {
-  display: block;
-  font-size: 12px;
-  font-weight: 800;
-  margin-bottom: 7px;
-  color: #243650;
+label{
+  display:block;
+  margin-bottom:7px;
+  font-size:12px;
+  font-weight:800;
+  color:#243650;
 }
 
-.input-wrap {
-  position: relative;
+.input-wrap{
+  position:relative;
 }
 
-.input-icon {
-  position: absolute;
-  left: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #7f91aa;
-  font-size: 13px;
+.input-icon{
+  position:absolute;
+  left:14px;
+  top:50%;
+  transform:translateY(-50%);
+  color:#7f91aa;
+  font-size:13px;
 }
 
-input {
-  width: 100%;
-  height: 49px;
-  border: 1px solid #dbe4ef;
-  border-radius: 11px;
-  padding: 0 14px 0 40px;
-  outline: none;
-  font-size: 14px;
-  color: #10213b;
-  background: #fbfdff;
+input{
+  width:100%;
+  height:49px;
+  border:1px solid #dbe4ef;
+  border-radius:11px;
+  padding:0 14px 0 40px;
+  outline:none;
+  font-size:14px;
+  color:#10213b;
+  background:#fbfdff;
 }
 
-input:focus {
-  border-color: #1264e8;
-  background: white;
-  box-shadow: 0 0 0 3px rgba(18,100,232,.08);
+input:focus{
+  border-color:#1264e8;
+  box-shadow:0 0 0 3px rgba(18,100,232,.08);
 }
 
-input::placeholder {
-  color: #9aa7b8;
+button{
+  width:100%;
+  height:50px;
+  border:0;
+  border-radius:11px;
+  background:#1264e8;
+  color:white;
+  font-size:14px;
+  font-weight:800;
+  cursor:pointer;
 }
 
-.btn {
-  width: 100%;
-  height: 50px;
-  border: 0;
-  border-radius: 11px;
-  background: linear-gradient(135deg,#0757d5,#1264e8);
-  color: white;
-  font-size: 14px;
-  font-weight: 800;
-  cursor: pointer;
-  box-shadow: 0 10px 22px rgba(18,100,232,.18);
+button:disabled{
+  opacity:.65;
 }
 
-.btn:disabled {
-  opacity: .7;
-  cursor: wait;
+.message{
+  display:none;
+  margin-top:15px;
+  padding:13px;
+  border-radius:10px;
+  font-size:12px;
+  line-height:1.6;
+  text-align:center;
+  word-break:break-word;
 }
 
-.btn i {
-  margin-right: 7px;
+.error{
+  display:block;
+  background:#fff0f0;
+  border:1px solid #f3d1d1;
+  color:#c53030;
 }
 
-.message {
-  display: none;
-  margin-top: 14px;
-  padding: 12px;
-  border-radius: 10px;
-  font-size: 12px;
-  line-height: 1.5;
-  text-align: center;
-  word-break: break-word;
+.success{
+  display:block;
+  background:#effaf3;
+  border:1px solid #ccebd7;
+  color:#237a43;
 }
 
-.message.error {
-  display: block;
-  background: #fff0f0;
-  border: 1px solid #f3d1d1;
-  color: #c53030;
+.bottom{
+  text-align:center;
+  margin-top:22px;
+  color:#718096;
+  font-size:12px;
 }
 
-.message.success {
-  display: block;
-  background: #effaf3;
-  border: 1px solid #ccebd7;
-  color: #237a43;
+.bottom a{
+  color:#1264e8;
+  font-weight:800;
+  text-decoration:none;
 }
 
-.bottom {
-  text-align: center;
-  margin-top: 23px;
-  color: #718096;
-  font-size: 12px;
-}
-
-.bottom a {
-  color: #1264e8;
-  font-weight: 800;
-}
-
-.note {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  margin-top: 25px;
-  background: #f5f9ff;
-  border: 1px solid #e1ebfa;
-  padding: 13px;
-  border-radius: 11px;
-  color: #718096;
-  font-size: 10px;
-  line-height: 1.6;
-}
-
-.note i {
-  color: #1264e8;
-  margin-top: 2px;
-}
-
-@media (max-width: 450px) {
-
-  .nav {
-    padding: 0 14px;
+@media(max-width:450px){
+  .card{
+    padding:29px 19px;
   }
-
-  .logo {
-    font-size: 15px;
-  }
-
-  .logo-box {
-    width: 35px;
-    height: 35px;
-    font-size: 16px;
-  }
-
-  .back {
-    padding: 8px 10px;
-    font-size: 11px;
-  }
-
-  .card {
-    padding: 29px 19px;
-    border-radius: 19px;
-  }
-
-  .title h1 {
-    font-size: 25px;
-  }
-
 }
-
 </style>
-
 </head>
 
 <body>
 
 <header>
-
 <nav class="nav">
 
 <a href="index.html" class="logo">
-
-<div class="logo-box">G</div>
-
-Gentle <span>Acct</span> Store
-
+  <div class="logo-box">G</div>
+  Gentle <span>Acct</span> Store
 </a>
 
 <a href="login.html" class="back">
-
-<i class="fa-solid fa-arrow-left"></i>
-
-Sign In
-
+  <i class="fa-solid fa-arrow-left"></i>
+  Sign In
 </a>
 
 </nav>
-
 </header>
-
 
 <main class="page">
 
@@ -332,9 +268,7 @@ Sign In
 <div class="title">
 
 <div class="icon">
-
 <i class="fa-solid fa-user-plus"></i>
-
 </div>
 
 <h1>Create Account</h1>
@@ -345,12 +279,15 @@ Create your Gentle Acct Store customer account.
 
 </div>
 
+<div class="test">
+SIGNUP CONNECTION TEST — VERSION 2
+</div>
 
 <form id="signupForm">
 
 <div class="field">
 
-<label for="fullName">Full Name</label>
+<label>Full Name</label>
 
 <div class="input-wrap">
 
@@ -360,18 +297,15 @@ Create your Gentle Acct Store customer account.
 id="fullName"
 type="text"
 placeholder="Enter your full name"
-autocomplete="name"
 required
 >
 
 </div>
-
 </div>
-
 
 <div class="field">
 
-<label for="email">Email Address</label>
+<label>Email Address</label>
 
 <div class="input-wrap">
 
@@ -381,18 +315,15 @@ required
 id="email"
 type="email"
 placeholder="Enter your email"
-autocomplete="email"
 required
 >
 
 </div>
-
 </div>
-
 
 <div class="field">
 
-<label for="password">Password</label>
+<label>Password</label>
 
 <div class="input-wrap">
 
@@ -402,19 +333,16 @@ required
 id="password"
 type="password"
 placeholder="Create a password"
-autocomplete="new-password"
 minlength="6"
 required
 >
 
 </div>
-
 </div>
-
 
 <div class="field">
 
-<label for="confirmPassword">Confirm Password</label>
+<label>Confirm Password</label>
 
 <div class="input-wrap">
 
@@ -424,412 +352,167 @@ required
 id="confirmPassword"
 type="password"
 placeholder="Confirm your password"
-autocomplete="new-password"
 minlength="6"
 required
 >
 
 </div>
-
 </div>
 
-
-<button
-type="submit"
-class="btn"
-id="signupBtn"
->
-
+<button type="submit" id="signupBtn">
 <i class="fa-solid fa-user-plus"></i>
-
 Create Account
-
 </button>
 
-
-<div id="message"></div>
+<div id="message" class="message"></div>
 
 </form>
 
-
 <div class="bottom">
-
 Already have an account?
-
 <a href="login.html">Sign In</a>
-
-</div>
-
-
-<div class="note">
-
-<i class="fa-solid fa-shield-halved"></i>
-
-<span>
-Your password is securely handled by Supabase Authentication.
-</span>
-
 </div>
 
 </div>
 
 </main>
 
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script src="supabase.js"></script>
-
 
 <script>
 
-document.addEventListener("DOMContentLoaded", function () {
+const SUPABASE_URL =
+"https://fbeibzungcyhcgmidpw.supabase.co";
 
-  const form =
-    document.getElementById("signupForm");
+const SUPABASE_KEY =
+"sb_publishable_6eVFrykVcHc6OQOcPhH3Fg_WQbAe7u3";
 
-  const fullNameInput =
-    document.getElementById("fullName");
+const client =
+window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 
-  const emailInput =
-    document.getElementById("email");
+const form =
+document.getElementById("signupForm");
 
-  const passwordInput =
-    document.getElementById("password");
+const button =
+document.getElementById("signupBtn");
 
-  const confirmInput =
-    document.getElementById("confirmPassword");
+const message =
+document.getElementById("message");
 
-  const signupBtn =
-    document.getElementById("signupBtn");
+function showMessage(text,type){
 
-  const message =
-    document.getElementById("message");
+  message.className =
+  "message " + type;
 
+  message.style.display =
+  "block";
 
-  function showMessage(text, type) {
+  message.innerHTML =
+  text;
 
-    message.className =
-      "message " + type;
+}
 
-    message.style.display =
-      "block";
+form.addEventListener("submit",async function(e){
 
-    message.innerHTML =
-      text;
+  e.preventDefault();
 
-  }
+  const name =
+  document.getElementById("fullName").value.trim();
 
+  const email =
+  document.getElementById("email").value.trim().toLowerCase();
 
-  function resetButton() {
+  const password =
+  document.getElementById("password").value;
 
-    signupBtn.disabled = false;
+  const confirm =
+  document.getElementById("confirmPassword").value;
 
-    signupBtn.innerHTML =
-      '<i class="fa-solid fa-user-plus"></i> Create Account';
-
-  }
-
-
-  /*
-  CHECK SUPABASE LIBRARY
-  */
-
-  if (!window.supabase) {
+  if(password !== confirm){
 
     showMessage(
-      '<i class="fa-solid fa-circle-exclamation"></i> ' +
-      'Supabase library did not load. Please refresh the page.',
+      "Passwords do not match.",
       "error"
     );
 
     return;
-
   }
 
+  button.disabled = true;
 
-  /*
-  CHECK SUPABASE CLIENT
-  */
+  button.innerHTML =
+  '<i class="fa-solid fa-spinner fa-spin"></i> Testing Connection...';
 
-  if (!window.supabaseClient) {
+  showMessage(
+    "Connecting to Supabase...",
+    "success"
+  );
 
-    showMessage(
-      '<i class="fa-solid fa-circle-exclamation"></i> ' +
-      'Supabase client did not load. Please check supabase.js.',
-      "error"
-    );
+  try{
 
-    return;
+    const result =
+    await client.auth.signUp({
 
-  }
+      email:email,
 
+      password:password,
 
-  form.addEventListener(
-    "submit",
-    async function (event) {
+      options:{
+        data:{
+          full_name:name
+        },
 
-      event.preventDefault();
-
-
-      message.className = "";
-
-      message.style.display =
-        "none";
-
-
-      const fullName =
-        fullNameInput.value.trim();
-
-      const email =
-        emailInput.value.trim().toLowerCase();
-
-      const password =
-        passwordInput.value;
-
-      const confirmPassword =
-        confirmInput.value;
-
-
-      if (fullName.length < 2) {
-
-        showMessage(
-          "Please enter your full name.",
-          "error"
-        );
-
-        return;
-
+        emailRedirectTo:
+        window.location.origin +
+        "/gentle-acct-store/login.html"
       }
 
+    });
 
-      if (password.length < 6) {
+    console.log("SUPABASE RESULT:",result);
 
-        showMessage(
-          "Password must be at least 6 characters.",
-          "error"
-        );
+    if(result.error){
 
-        return;
-
-      }
-
-
-      if (password !== confirmPassword) {
-
-        showMessage(
-          "Passwords do not match.",
-          "error"
-        );
-
-        return;
-
-      }
-
-
-      signupBtn.disabled = true;
-
-      signupBtn.innerHTML =
-        '<i class="fa-solid fa-spinner fa-spin"></i> Creating Account...';
-
-
-      try {
-
-        const redirectUrl =
-          window.location.origin +
-          "/gentle-acct-store/login.html";
-
-
-        /*
-        CREATE ACCOUNT
-
-        Give Supabase 20 seconds.
-        This prevents the button from
-        spinning forever.
-        */
-
-        const signupPromise =
-          window.supabaseClient.auth.signUp({
-
-            email: email,
-
-            password: password,
-
-            options: {
-
-              data: {
-                full_name: fullName
-              },
-
-              emailRedirectTo:
-                redirectUrl
-
-            }
-
-          });
-
-
-        const timeoutPromise =
-          new Promise(function (_, reject) {
-
-            setTimeout(function () {
-
-              reject(
-                new Error(
-                  "The connection to Supabase timed out. The website could reach the server, but the signup request did not receive a response."
-                )
-              );
-
-            }, 20000);
-
-          });
-
-
-        const result =
-          await Promise.race([
-            signupPromise,
-            timeoutPromise
-          ]);
-
-
-        /*
-        SUPABASE RETURNED AN ERROR
-        */
-
-        if (result.error) {
-
-          const error =
-            result.error;
-
-          console.error(
-            "SUPABASE SIGNUP ERROR:",
-            error
-          );
-
-
-          let text =
-            error.message ||
-            "Supabase returned an unknown error.";
-
-
-          if (error.status) {
-
-            text +=
-              " (Status: " +
-              error.status +
-              ")";
-
-          }
-
-
-          throw new Error(text);
-
-        }
-
-
-        /*
-        SUCCESS
-        */
-
-        const user =
-          result.data &&
-          result.data.user;
-
-
-        const localUser = {
-
-          id:
-            user ? user.id : "",
-
-          name:
-            fullName,
-
-          email:
-            email,
-
-          balance:
-            0
-
-        };
-
-
-        localStorage.setItem(
-          "gentleUser",
-          JSON.stringify(localUser)
-        );
-
-
-        localStorage.removeItem(
-          "gentleLoggedIn"
-        );
-
-
-        localStorage.removeItem(
-          "gentleCurrentUserId"
-        );
-
-
-        showMessage(
-          '<i class="fa-solid fa-circle-check"></i> ' +
-          'Account created successfully! Check your email and confirm your account before signing in.',
-          "success"
-        );
-
-
-        form.reset();
-
-
-        resetButton();
-
-
-      }
-
-
-      catch (error) {
-
-        console.error(
-          "COMPLETE SIGNUP ERROR:",
-          error
-        );
-
-
-        /*
-        SHOW THE REAL ERROR
-        */
-
-        let errorMessage =
-          error &&
-          error.message
-            ? error.message
-            : String(error);
-
-
-        if (
-          errorMessage
-            .toLowerCase()
-            .includes("already registered")
-        ) {
-
-          errorMessage =
-            "An account with this email already exists. Please sign in.";
-
-        }
-
-
-        showMessage(
-          '<i class="fa-solid fa-circle-exclamation"></i> ' +
-          errorMessage,
-          "error"
-        );
-
-
-        resetButton();
-
-      }
+      throw result.error;
 
     }
 
-  );
+    showMessage(
+      '<i class="fa-solid fa-circle-check"></i> ' +
+      'Account request successful. Check your email to confirm your account.',
+      "success"
+    );
+
+    form.reset();
+
+  }
+
+  catch(error){
+
+    console.error(
+      "SIGNUP ERROR:",
+      error
+    );
+
+    showMessage(
+      '<strong>SUPABASE ERROR</strong><br>' +
+      (error.message || String(error)),
+      "error"
+    );
+
+  }
+
+  finally{
+
+    button.disabled = false;
+
+    button.innerHTML =
+    '<i class="fa-solid fa-user-plus"></i> Create Account';
+
+  }
 
 });
 
