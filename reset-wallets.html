@@ -1,169 +1,1034 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reset Demo Wallets</title>
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+>
+
+<meta
+name="theme-color"
+content="#0b2d5c"
+>
+
+<title>Admin Wallet Reset - Gentle Acct Store</title>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
 <script src="firebase.js"></script>
 
 <style>
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
 body{
-  font-family:Arial,sans-serif;
-  background:#f4f7fb;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  min-height:100vh;
-  padding:20px;
+
+font-family:Arial,sans-serif;
+
+background:#f4f7fb;
+
+min-height:100vh;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+padding:20px;
+
+color:#172033;
+
 }
 
 .card{
-  width:100%;
-  max-width:450px;
-  background:white;
-  padding:30px;
-  border-radius:20px;
-  box-shadow:0 15px 40px rgba(0,0,0,.08);
-  text-align:center;
+
+width:100%;
+
+max-width:450px;
+
+background:#fff;
+
+padding:28px;
+
+border-radius:22px;
+
+box-shadow:0 15px 40px rgba(0,0,0,.08);
+
+border:1px solid #e3eaf3;
+
+}
+
+.logo{
+
+width:58px;
+
+height:58px;
+
+border-radius:16px;
+
+background:#eaf2fb;
+
+color:#0b2d5c;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:25px;
+
+margin:0 auto 15px;
+
 }
 
 h1{
-  color:#0b2d5c;
+
+text-align:center;
+
+font-size:24px;
+
+color:#0b2d5c;
+
+margin-bottom:8px;
+
 }
 
-p{
-  color:#687386;
-  line-height:1.6;
+.subtitle{
+
+text-align:center;
+
+font-size:12px;
+
+color:#748093;
+
+line-height:1.6;
+
+margin-bottom:24px;
+
+}
+
+label{
+
+display:block;
+
+font-size:12px;
+
+font-weight:bold;
+
+color:#172033;
+
+margin-bottom:7px;
+
+}
+
+input{
+
+width:100%;
+
+height:48px;
+
+border:1px solid #dfe6ef;
+
+border-radius:11px;
+
+padding:0 13px;
+
+font-size:14px;
+
+outline:none;
+
+margin-bottom:15px;
+
+}
+
+input:focus{
+
+border-color:#0b2d5c;
+
+box-shadow:0 0 0 3px rgba(11,45,92,.08);
+
 }
 
 button{
-  width:100%;
-  padding:15px;
-  border:0;
-  border-radius:12px;
-  background:#0b2d5c;
-  color:white;
-  font-size:15px;
-  font-weight:bold;
-  cursor:pointer;
-  margin-top:20px;
+
+width:100%;
+
+height:48px;
+
+border:0;
+
+border-radius:11px;
+
+background:#0b2d5c;
+
+color:#fff;
+
+font-size:13px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+margin-top:5px;
+
 }
 
 button:disabled{
-  opacity:.5;
+
+opacity:.5;
+
+cursor:not-allowed;
+
 }
 
-#status{
-  margin-top:20px;
-  font-weight:bold;
+.logout{
+
+background:#eef3f8;
+
+color:#0b2d5c;
+
+margin-top:10px;
+
 }
+
+.status{
+
+margin-top:15px;
+
+padding:12px;
+
+border-radius:10px;
+
+font-size:12px;
+
+font-weight:bold;
+
+line-height:1.5;
+
+display:none;
+
+}
+
+.error{
+
+display:block;
+
+background:#fff1f1;
+
+border:1px solid #f2d2d2;
+
+color:#dc2626;
+
+}
+
+.success{
+
+display:block;
+
+background:#edf8f1;
+
+border:1px solid #cfead8;
+
+color:#15803d;
+
+}
+
+.info{
+
+display:block;
+
+background:#eaf2fb;
+
+border:1px solid #d5e3f3;
+
+color:#0b2d5c;
+
+}
+
+#loginSection{
+
+display:block;
+
+}
+
+#adminSection{
+
+display:none;
+
+}
+
+.admin-badge{
+
+text-align:center;
+
+padding:9px;
+
+border-radius:20px;
+
+background:#edf8f1;
+
+color:#15803d;
+
+font-size:11px;
+
+font-weight:bold;
+
+margin-bottom:18px;
+
+}
+
+.balance-card{
+
+background:linear-gradient(
+135deg,
+#0b2d5c,
+#123e78
+);
+
+color:white;
+
+border-radius:18px;
+
+padding:20px;
+
+margin-bottom:16px;
+
+}
+
+.balance-label{
+
+font-size:11px;
+
+opacity:.75;
+
+margin-bottom:6px;
+
+}
+
+.balance{
+
+font-size:29px;
+
+font-weight:800;
+
+word-break:break-word;
+
+}
+
+.wallet-count{
+
+font-size:11px;
+
+opacity:.8;
+
+margin-top:9px;
+
+}
+
+.warning{
+
+background:#fff7e8;
+
+border:1px solid #f1ddb5;
+
+color:#815600;
+
+border-radius:11px;
+
+padding:12px;
+
+font-size:11px;
+
+line-height:1.6;
+
+margin-bottom:15px;
+
+}
+
 </style>
+
 </head>
+
 
 <body>
 
+
 <div class="card">
 
-<h1>Reset Demo Wallets</h1>
 
-<p>
-This will change every existing customer demo wallet balance
-to <strong>₦0.00</strong>.
-</p>
+<div class="logo">
 
-<p>
-Customer accounts, orders and products will remain unchanged.
-</p>
-
-<button id="resetButton">
-Reset All Wallets to ₦0.00
-</button>
-
-<div id="status"></div>
+◆
 
 </div>
 
+
+<h1>
+Admin Wallet
+</h1>
+
+
+<p class="subtitle">
+Log in to manage the demo wallet balances.
+</p>
+
+
+<!-- =========================
+LOGIN
+========================= -->
+
+<div id="loginSection">
+
+
+<label for="email">
+Admin Email
+</label>
+
+<input
+type="email"
+id="email"
+placeholder="Enter admin email"
+autocomplete="email"
+>
+
+
+<label for="password">
+Password
+</label>
+
+<input
+type="password"
+id="password"
+placeholder="Enter admin password"
+autocomplete="current-password"
+>
+
+
+<button
+id="loginButton"
+type="button"
+onclick="loginAdmin()"
+>
+
+Log In
+
+</button>
+
+
+<div
+id="loginStatus"
+class="status"
+></div>
+
+
+</div>
+
+
+<!-- =========================
+ADMIN
+========================= -->
+
+<div id="adminSection">
+
+
+<div class="admin-badge">
+
+✓ Admin account verified
+
+</div>
+
+
+<div class="balance-card">
+
+
+<div class="balance-label">
+Total Demo Wallet Balance
+</div>
+
+
+<div
+class="balance"
+id="totalBalance"
+>
+₦0.00
+</div>
+
+
+<div
+class="wallet-count"
+id="walletCount"
+>
+0 wallets found
+</div>
+
+
+</div>
+
+
+<div class="warning">
+
+<strong>Important:</strong><br>
+
+This resets the balance of every wallet in
+the Firestore <strong>wallets</strong> collection
+to ₦0.00. Customer accounts, orders and products
+will not be deleted.
+
+</div>
+
+
+<button
+id="resetButton"
+type="button"
+onclick="resetWallets()"
+>
+
+Reset All Wallets to ₦0.00
+
+</button>
+
+
+<div
+id="resetStatus"
+class="status"
+></div>
+
+
+<button
+class="logout"
+type="button"
+onclick="logoutAdmin()"
+>
+
+Log Out
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
 <script>
+
+
+/* =====================================================
+   ADMIN UID
+   ===================================================== */
 
 const ADMIN_UID =
 "UoEjCy99gbQKkGob59vGi3CunZi1";
 
+
+/* =====================================================
+   ELEMENTS
+   ===================================================== */
+
+const loginSection =
+document.getElementById("loginSection");
+
+const adminSection =
+document.getElementById("adminSection");
+
+const loginStatus =
+document.getElementById("loginStatus");
+
+const resetStatus =
+document.getElementById("resetStatus");
+
+const loginButton =
+document.getElementById("loginButton");
+
 const resetButton =
 document.getElementById("resetButton");
 
-const status =
-document.getElementById("status");
+const totalBalance =
+document.getElementById("totalBalance");
 
+const walletCount =
+document.getElementById("walletCount");
+
+
+/* =====================================================
+   AUTH STATE
+   ===================================================== */
 
 firebaseAuth.onAuthStateChanged(
-function(user){
+
+async function(user){
 
 if(!user){
 
-status.textContent =
-"Please log in to your admin account first.";
-
-resetButton.disabled = true;
+showLogin();
 
 return;
 
 }
+
+
+/* Check admin UID */
 
 if(user.uid !== ADMIN_UID){
 
-status.textContent =
-"This account is not authorized.";
+await firebaseAuth.signOut();
 
-resetButton.disabled = true;
+showLogin();
+
+showLoginStatus(
+"This account is not authorized. Please use your admin account.",
+"error"
+);
 
 return;
 
 }
 
-status.textContent =
-"Admin verified. Ready to reset.";
+
+/* Admin is logged in */
+
+showAdmin();
+
+await loadWalletSummary();
 
 }
+
 );
 
 
-resetButton.addEventListener(
-"click",
-async function(){
+/* =====================================================
+   LOGIN
+   ===================================================== */
 
-const confirmed =
-confirm(
-"Are you sure you want to reset ALL demo wallet balances to ₦0.00?"
+async function loginAdmin(){
+
+const email =
+document.getElementById("email").value.trim();
+
+const password =
+document.getElementById("password").value;
+
+
+if(!email){
+
+showLoginStatus(
+"Please enter your admin email.",
+"error"
 );
 
-if(!confirmed){
 return;
+
 }
 
-resetButton.disabled = true;
 
-status.textContent =
-"Resetting wallets...";
+if(!password){
+
+showLoginStatus(
+"Please enter your password.",
+"error"
+);
+
+return;
+
+}
+
+
+loginButton.disabled =
+true;
+
+loginButton.textContent =
+"Logging in...";
 
 
 try{
 
+
+const result =
+
+await firebaseAuth.signInWithEmailAndPassword(
+email,
+password
+);
+
+
+const user =
+result.user;
+
+
+/* Verify admin UID */
+
+if(user.uid !== ADMIN_UID){
+
+await firebaseAuth.signOut();
+
+showLoginStatus(
+"This account is not authorized as admin.",
+"error"
+);
+
+loginButton.disabled =
+false;
+
+loginButton.textContent =
+"Log In";
+
+return;
+
+}
+
+
+/* Success */
+
+showLoginStatus(
+"Admin login successful.",
+"success"
+);
+
+
+}catch(error){
+
+console.error(
+"LOGIN ERROR:",
+error
+);
+
+
+let message =
+"Unable to log in.";
+
+
+if(
+error.code ===
+"auth/invalid-credential"
+){
+
+message =
+"Incorrect email or password.";
+
+}
+
+else if(
+error.code ===
+"auth/user-not-found"
+){
+
+message =
+"No account was found with this email.";
+
+}
+
+else if(
+error.code ===
+"auth/wrong-password"
+){
+
+message =
+"Incorrect password.";
+
+}
+
+else if(
+error.code ===
+"auth/invalid-email"
+){
+
+message =
+"Please enter a valid email address.";
+
+}
+
+else if(
+error.code ===
+"auth/too-many-requests"
+){
+
+message =
+"Too many login attempts. Please try again later.";
+
+}
+
+else if(error.message){
+
+message =
+error.message;
+
+}
+
+
+showLoginStatus(
+message,
+"error"
+);
+
+
+loginButton.disabled =
+false;
+
+loginButton.textContent =
+"Log In";
+
+}
+
+}
+
+
+/* =====================================================
+   SHOW LOGIN
+   ===================================================== */
+
+function showLogin(){
+
+loginSection.style.display =
+"block";
+
+adminSection.style.display =
+"none";
+
+}
+
+
+/* =====================================================
+   SHOW ADMIN
+   ===================================================== */
+
+function showAdmin(){
+
+loginSection.style.display =
+"none";
+
+adminSection.style.display =
+"block";
+
+}
+
+
+/* =====================================================
+   LOGIN MESSAGE
+   ===================================================== */
+
+function showLoginStatus(
+message,
+type
+){
+
+loginStatus.textContent =
+message;
+
+loginStatus.className =
+"status " + type;
+
+}
+
+
+/* =====================================================
+   RESET MESSAGE
+   ===================================================== */
+
+function showResetStatus(
+message,
+type
+){
+
+resetStatus.textContent =
+message;
+
+resetStatus.className =
+"status " + type;
+
+}
+
+
+/* =====================================================
+   LOAD WALLET SUMMARY
+   ===================================================== */
+
+async function loadWalletSummary(){
+
+try{
+
+
 const snapshot =
+
 await firebaseDB
+
 .collection("wallets")
+
+.get();
+
+
+let total =
+0;
+
+
+snapshot.forEach(
+
+function(doc){
+
+const data =
+doc.data();
+
+const amount =
+Number(
+data.balance || 0
+);
+
+total += amount;
+
+}
+
+);
+
+
+totalBalance.textContent =
+
+"₦" +
+
+total.toLocaleString(
+"en-NG",
+{
+minimumFractionDigits:2,
+maximumFractionDigits:2
+}
+);
+
+
+walletCount.textContent =
+
+snapshot.size +
+
+(
+snapshot.size === 1
+? " wallet found"
+: " wallets found"
+);
+
+
+}catch(error){
+
+console.error(
+"SUMMARY ERROR:",
+error
+);
+
+
+totalBalance.textContent =
+"Unable to load";
+
+
+walletCount.textContent =
+"Could not read wallets";
+
+}
+
+}
+
+
+/* =====================================================
+   RESET ALL WALLETS
+   ===================================================== */
+
+async function resetWallets(){
+
+const user =
+firebaseAuth.currentUser;
+
+
+/* Security check */
+
+if(!user){
+
+showResetStatus(
+"Please log in first.",
+"error"
+);
+
+return;
+
+}
+
+
+if(user.uid !== ADMIN_UID){
+
+showResetStatus(
+"This account is not authorized.",
+"error"
+);
+
+return;
+
+}
+
+
+/* Confirmation */
+
+const confirmed =
+
+confirm(
+
+"Are you sure you want to reset ALL demo wallet balances to ₦0.00?"
+
+);
+
+
+if(!confirmed){
+
+return;
+
+}
+
+
+resetButton.disabled =
+true;
+
+resetButton.textContent =
+"Resetting...";
+
+
+showResetStatus(
+"Loading wallets...",
+"info"
+);
+
+
+try{
+
+
+const snapshot =
+
+await firebaseDB
+
+.collection("wallets")
+
 .get();
 
 
 if(snapshot.empty){
 
-status.textContent =
-"No wallets found.";
+showResetStatus(
+"No wallets were found.",
+"info"
+);
 
-resetButton.disabled = false;
+resetButton.disabled =
+false;
+
+resetButton.textContent =
+"Reset All Wallets to ₦0.00";
 
 return;
 
@@ -173,25 +1038,30 @@ return;
 const docs =
 snapshot.docs;
 
-let processed = 0;
+let processed =
+0;
 
 
-/*
-Firestore batches have a maximum
-of 500 writes, so we process
-wallets in groups of 400.
+/* Firestore batch limit is 500.
+   We use 400 for safety.
 */
 
 for(
+
 let start = 0;
+
 start < docs.length;
+
 start += 400
+
 ){
 
 const batch =
 firebaseDB.batch();
 
+
 const group =
+
 docs.slice(
 start,
 start + 400
@@ -199,10 +1069,13 @@ start + 400
 
 
 group.forEach(
+
 function(doc){
 
 batch.update(
+
 doc.ref,
+
 {
 
 balance:0,
@@ -213,6 +1086,7 @@ firebase.firestore
 .serverTimestamp()
 
 }
+
 );
 
 });
@@ -220,25 +1094,62 @@ firebase.firestore
 
 await batch.commit();
 
-processed += group.length;
 
-status.textContent =
+processed +=
+group.length;
+
+
+showResetStatus(
+
 "Resetting... " +
 processed +
 " of " +
-docs.length;
+docs.length +
+" wallets.",
+
+"info"
+
+);
 
 }
 
 
-status.textContent =
-"Done. All " +
+/* Finished */
+
+totalBalance.textContent =
+"₦0.00";
+
+
+walletCount.textContent =
+
 docs.length +
-" demo wallets are now ₦0.00.";
+
+(
+docs.length === 1
+? " wallet reset"
+: " wallets reset"
+);
+
+
+showResetStatus(
+
+"Done. All wallet balances have been reset to ₦0.00.",
+
+"success"
+
+);
+
 
 alert(
 "All demo wallet balances have been reset to ₦0.00."
 );
+
+
+resetButton.disabled =
+false;
+
+resetButton.textContent =
+"Reset All Wallets to ₦0.00";
 
 
 }catch(error){
@@ -248,18 +1159,58 @@ console.error(
 error
 );
 
-status.textContent =
+
+showResetStatus(
+
 "Reset failed: " +
-(error.message || "Unknown error");
+(
+error.message ||
+"Unknown error"
+),
 
-resetButton.disabled = false;
+"error"
 
-}
-
-}
 );
+
+
+resetButton.disabled =
+false;
+
+resetButton.textContent =
+"Reset All Wallets to ₦0.00";
+
+}
+
+}
+
+
+/* =====================================================
+   LOGOUT
+   ===================================================== */
+
+async function logoutAdmin(){
+
+try{
+
+await firebaseAuth.signOut();
+
+}catch(error){
+
+console.error(
+"LOGOUT ERROR:",
+error
+);
+
+}
+
+showLogin();
+
+}
+
 
 </script>
 
+
 </body>
+
 </html>
