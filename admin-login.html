@@ -15,7 +15,9 @@
   content="#0b2d5c"
 >
 
-<title>Admin Login - Gentle Acct Store</title>
+<title>Admin Login | Gentle Acct Store</title>
+
+<!-- GOOGLE FONT -->
 
 <link
   rel="preconnect"
@@ -24,7 +26,7 @@
 
 <link
   rel="preconnect"
-  href="https://fonts.googleapis.com"
+  href="https://fonts.gstatic.com"
   crossorigin
 >
 
@@ -33,441 +35,405 @@
   rel="stylesheet"
 >
 
+<!-- FONT AWESOME -->
+
 <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 >
 
+<!-- FIREBASE -->
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+<script src="firebase.js"></script>
+
+
 <style>
 
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-html{
-  min-height:100%;
-}
-
-body{
-  min-height:100vh;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  padding:20px;
-
+body {
+  font-family: "Poppins", sans-serif;
   background:
     radial-gradient(
-      circle at top right,
-      rgba(18,75,136,.10),
+      circle at top left,
+      rgba(37, 99, 235, 0.08),
       transparent 35%
     ),
-    #f5f8fc;
-
-  font-family:'Poppins',sans-serif;
-
-  color:#071f40;
+    #f3f6fb;
+  color: #14213d;
+  min-height: 100vh;
 }
 
-/* =========================
-   CARD
-========================= */
-
-.login-card{
-  width:100%;
-  max-width:410px;
-
-  background:rgba(255,255,255,.97);
-
-  border:1px solid #e1e8f0;
-
-  border-radius:25px;
-
-  padding:28px 22px;
-
-  box-shadow:
-    0 20px 50px rgba(7,31,64,.10);
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
-/* =========================
-   BRAND
-========================= */
-
-.brand{
-  text-align:center;
-
-  margin-bottom:22px;
+.header {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  background: rgba(255,255,255,0.94);
+  border-bottom: 1px solid #e5eaf2;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  backdrop-filter: blur(14px);
 }
 
-.logo{
-  width:62px;
-  height:62px;
-
-  margin:0 auto 13px;
-
-  border-radius:18px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #0b2d5c,
-      #124b88
-    );
-
-  color:white;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  font-size:24px;
-
-  box-shadow:
-    0 10px 24px rgba(11,45,92,.20);
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 19px;
+  font-weight: 800;
+  color: #12376d;
 }
 
-.brand h1{
-  color:#071f40;
-
-  font-size:23px;
-  font-weight:800;
-
-  line-height:1.2;
-
-  margin-bottom:6px;
+.logo-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: #12376d;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.subtitle{
-  color:#7b8595;
-
-  font-size:11px;
-
-  line-height:1.6;
-
-  max-width:300px;
-
-  margin:auto;
+.back-store {
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 7px;
 }
 
-/* =========================
-   ADMIN BADGE
-========================= */
-
-.admin-badge{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:6px;
-
-  width:max-content;
-
-  margin:0 auto 20px;
-
-  padding:6px 10px;
-
-  border-radius:20px;
-
-  background:#edf3fa;
-
-  color:#0b2d5c;
-
-  font-size:9px;
-  font-weight:700;
+.back-store:hover {
+  color: #12376d;
 }
 
-.admin-badge i{
-  font-size:9px;
+.page {
+  min-height: calc(100vh - 72px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 45px 18px;
 }
 
-/* =========================
-   MESSAGE
-========================= */
-
-.message{
-  display:none;
-
-  margin-bottom:15px;
-
-  padding:11px 12px;
-
-  border-radius:11px;
-
-  font-size:10px;
-
-  line-height:1.6;
+.card {
+  width: 100%;
+  max-width: 720px;
+  background: white;
+  border: 1px solid #dfe6f0;
+  border-radius: 38px;
+  padding: 58px 48px 48px;
+  box-shadow: 0 25px 70px rgba(20, 50, 90, 0.10);
+  text-align: center;
 }
 
-.message.error{
-  display:block;
-
-  background:#fff0f0;
-
-  color:#b42318;
-
-  border:1px solid #ffd5d5;
+.shield {
+  width: 132px;
+  height: 132px;
+  margin: 0 auto 28px;
+  border-radius: 38px;
+  background: linear-gradient(
+    145deg,
+    #183b73,
+    #28599b
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 54px;
+  box-shadow: 0 18px 38px rgba(18,55,109,0.20);
 }
 
-.message.success{
-  display:block;
-
-  background:#eaf8f0;
-
-  color:#168447;
-
-  border:1px solid #ccebd9;
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  background: #eef4fb;
+  color: #183b73;
+  font-size: 14px;
+  font-weight: 800;
+  margin-bottom: 32px;
 }
 
-/* =========================
-   FIELD
-========================= */
-
-.field{
-  margin-bottom:15px;
+h1 {
+  font-size: 48px;
+  line-height: 1.1;
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  color: #10284d;
+  margin-bottom: 15px;
 }
 
-label{
-  display:block;
-
-  color:#26364c;
-
-  font-size:10px;
-  font-weight:700;
-
-  margin-bottom:7px;
+.subtitle {
+  color: #7c879b;
+  font-size: 18px;
+  line-height: 1.7;
+  margin: 0 auto 38px;
+  max-width: 590px;
 }
 
-.input-wrap{
-  position:relative;
+.message {
+  display: none;
+  text-align: left;
+  padding: 17px 20px;
+  border-radius: 18px;
+  margin-bottom: 25px;
+  font-size: 14px;
+  line-height: 1.6;
+  font-weight: 500;
 }
 
-input{
-  width:100%;
-
-  height:48px;
-
-  border:1px solid #dce4ee;
-
-  border-radius:12px;
-
-  padding:0 44px 0 13px;
-
-  background:#f9fbfd;
-
-  color:#172033;
-
-  outline:none;
-
-  font-family:'Poppins',sans-serif;
-
-  font-size:12px;
-
-  transition:.2s;
+.message.error {
+  display: block;
+  background: #fff1f1;
+  border: 1px solid #ffcaca;
+  color: #b83232;
 }
 
-input:focus{
-  border-color:#0b2d5c;
-
-  background:white;
-
-  box-shadow:
-    0 0 0 4px rgba(11,45,92,.06);
+.message.success {
+  display: block;
+  background: #effbf4;
+  border: 1px solid #bce8cb;
+  color: #20733c;
 }
 
-input::placeholder{
-  color:#9aa4b3;
+.form {
+  text-align: left;
 }
 
-/* =========================
-   PASSWORD
-========================= */
-
-.password-toggle{
-  position:absolute;
-
-  right:12px;
-  top:50%;
-
-  transform:translateY(-50%);
-
-  width:30px;
-  height:30px;
-
-  border:0;
-
-  background:transparent;
-
-  color:#7b8595;
-
-  cursor:pointer;
-
-  border-radius:8px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
+.field {
+  margin-bottom: 24px;
 }
 
-.password-toggle:hover{
-  background:#edf3fa;
-
-  color:#0b2d5c;
+label {
+  display: block;
+  margin-bottom: 10px;
+  color: #263650;
+  font-size: 15px;
+  font-weight: 700;
 }
 
-/* =========================
-   LOGIN BUTTON
-========================= */
-
-.login-btn{
-  width:100%;
-
-  height:49px;
-
-  border:0;
-
-  border-radius:12px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #0b2d5c,
-      #124b88
-    );
-
-  color:white;
-
-  font-family:'Poppins',sans-serif;
-
-  font-size:12px;
-
-  font-weight:700;
-
-  cursor:pointer;
-
-  margin-top:4px;
-
-  box-shadow:
-    0 9px 20px rgba(11,45,92,.16);
-
-  transition:
-    transform .2s,
-    box-shadow .2s,
-    opacity .2s;
+.input-wrap {
+  position: relative;
 }
 
-.login-btn:hover{
-  transform:translateY(-1px);
-
-  box-shadow:
-    0 12px 25px rgba(11,45,92,.21);
+input {
+  width: 100%;
+  height: 68px;
+  border: 2px solid #dce4ef;
+  background: #f8fafc;
+  border-radius: 20px;
+  padding: 0 58px 0 20px;
+  font-family: "Poppins", sans-serif;
+  font-size: 16px;
+  color: #17233b;
+  outline: none;
+  transition: 0.2s ease;
 }
 
-.login-btn:active{
-  transform:scale(.98);
+input:focus {
+  border-color: #28599b;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(40,89,155,0.08);
 }
 
-.login-btn:disabled{
-  opacity:.6;
-
-  cursor:not-allowed;
-
-  transform:none;
+.toggle-password {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  color: #7f8a9c;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 8px;
 }
 
-/* =========================
-   FORGOT
-========================= */
-
-.forgot{
-  display:block;
-
-  text-align:center;
-
-  margin-top:17px;
-
-  color:#0b2d5c;
-
-  text-decoration:none;
-
-  font-size:10px;
-
-  font-weight:700;
+.login-btn {
+  width: 100%;
+  height: 68px;
+  border: none;
+  border-radius: 20px;
+  background: linear-gradient(
+    135deg,
+    #17396f,
+    #28599b
+  );
+  color: white;
+  font-family: "Poppins", sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 8px;
+  box-shadow: 0 15px 30px rgba(18,55,109,0.20);
+  transition: 0.2s ease;
 }
 
-.forgot:hover{
-  text-decoration:underline;
+.login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 34px rgba(18,55,109,0.25);
 }
 
-/* =========================
-   SECURITY
-========================= */
-
-.security{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:6px;
-
-  margin-top:21px;
-
-  color:#929baa;
-
-  font-size:9px;
+.login-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
 }
 
-.security i{
-  color:#0b2d5c;
-
-  font-size:9px;
+.forgot {
+  display: block;
+  text-align: center;
+  margin-top: 27px;
+  color: #17396f;
+  font-size: 15px;
+  font-weight: 800;
 }
 
-/* =========================
-   BACK HOME
-========================= */
-
-.home{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:6px;
-
-  margin-top:14px;
-
-  color:#6f7b8d;
-
-  text-decoration:none;
-
-  font-size:10px;
-
-  font-weight:600;
+.security {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 45px;
+  color: #9aa4b5;
+  font-size: 14px;
+  font-weight: 500;
 }
 
-.home:hover{
-  color:#0b2d5c;
+.security i {
+  color: #17396f;
 }
 
-/* =========================
-   MOBILE
-========================= */
+.bottom-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 9px;
+  margin-top: 30px;
+  color: #7b8799;
+  font-size: 15px;
+  font-weight: 700;
+}
 
-@media(max-width:360px){
+.bottom-link:hover {
+  color: #17396f;
+}
 
-  body{
-    padding:14px;
+.loading {
+  display: inline-block;
+  width: 19px;
+  height: 19px;
+  border: 3px solid rgba(255,255,255,0.35);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 600px) {
+
+  .header {
+    height: 64px;
+    padding: 0 16px;
   }
 
-  .login-card{
-    padding:24px 17px;
-
-    border-radius:21px;
+  .logo {
+    font-size: 16px;
   }
 
-  .brand h1{
-    font-size:21px;
+  .logo-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
   }
 
+  .back-store {
+    font-size: 12px;
+  }
+
+  .page {
+    padding: 22px 10px 35px;
+    align-items: flex-start;
+  }
+
+  .card {
+    border-radius: 30px;
+    padding: 42px 24px 36px;
+  }
+
+  .shield {
+    width: 112px;
+    height: 112px;
+    border-radius: 32px;
+    font-size: 45px;
+    margin-bottom: 24px;
+  }
+
+  .badge {
+    font-size: 12px;
+    padding: 9px 16px;
+    margin-bottom: 25px;
+  }
+
+  h1 {
+    font-size: 36px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+    line-height: 1.65;
+    margin-bottom: 30px;
+  }
+
+  input {
+    height: 62px;
+    border-radius: 17px;
+    font-size: 15px;
+  }
+
+  .login-btn {
+    height: 62px;
+    border-radius: 17px;
+    font-size: 15px;
+  }
+
+  .security {
+    margin-top: 34px;
+    font-size: 12px;
+  }
+
+  .bottom-link {
+    font-size: 13px;
+  }
 }
 
 </style>
@@ -478,260 +444,238 @@ input::placeholder{
 <body>
 
 
-<div class="login-card">
+<header class="header">
+
+  <a href="index.html" class="logo">
+
+    <span class="logo-icon">
+      <i class="fa-solid fa-store"></i>
+    </span>
+
+    <span>Gentle Acct Store</span>
+
+  </a>
+
+  <a href="index.html" class="back-store">
+    <i class="fa-solid fa-arrow-left"></i>
+    Back to Store
+  </a>
+
+</header>
 
 
-  <!-- BRAND -->
+<main class="page">
 
-  <div class="brand">
+  <section class="card">
 
-    <div class="logo">
-
+    <div class="shield">
       <i class="fa-solid fa-shield-halved"></i>
-
     </div>
 
-
-    <div class="admin-badge">
-
+    <div class="badge">
       <i class="fa-solid fa-lock"></i>
-
       ADMIN ACCESS
-
     </div>
 
-
-    <h1>
-      Admin Login
-    </h1>
-
+    <h1>Admin Login</h1>
 
     <p class="subtitle">
       Sign in with your authorized Gentle Acct Store admin account.
     </p>
 
-  </div>
+
+    <div
+      id="message"
+      class="message"
+    ></div>
 
 
-  <!-- MESSAGE -->
-
-  <div
-    id="message"
-    class="message"
-  ></div>
-
-
-  <!-- EMAIL -->
-
-  <div class="field">
-
-    <label>
-      Email Address
-    </label>
-
-
-    <input
-      id="email"
-      type="email"
-      placeholder="Admin email"
-      autocomplete="username"
-      autocapitalize="none"
-      spellcheck="false"
+    <form
+      id="loginForm"
+      class="form"
     >
 
-  </div>
+      <div class="field">
+
+        <label for="email">
+          Email Address
+        </label>
+
+        <div class="input-wrap">
+
+          <input
+            type="email"
+            id="email"
+            placeholder="Enter admin email"
+            autocomplete="email"
+            required
+          >
+
+        </div>
+
+      </div>
 
 
-  <!-- PASSWORD -->
+      <div class="field">
 
-  <div class="field">
+        <label for="password">
+          Password
+        </label>
 
-    <label>
-      Password
-    </label>
+        <div class="input-wrap">
 
+          <input
+            type="password"
+            id="password"
+            placeholder="Enter admin password"
+            autocomplete="current-password"
+            required
+          >
 
-    <div class="input-wrap">
+          <button
+            type="button"
+            class="toggle-password"
+            id="togglePassword"
+            aria-label="Show password"
+          >
+            <i class="fa-solid fa-eye"></i>
+          </button>
 
-      <input
-        id="password"
-        type="password"
-        placeholder="Enter your password"
-        autocomplete="current-password"
-      >
+        </div>
+
+      </div>
 
 
       <button
-        type="button"
-        id="passwordToggle"
-        class="password-toggle"
-        aria-label="Show password"
+        type="submit"
+        class="login-btn"
+        id="loginBtn"
       >
 
-        <i
-          id="eyeIcon"
-          class="fa-solid fa-eye"
-        ></i>
+        <i class="fa-solid fa-right-to-bracket"></i>
+
+        <span>Login to Admin Panel</span>
 
       </button>
 
+    </form>
+
+
+    <a
+      href="forgot-password.html"
+      class="forgot"
+    >
+      Forgot your password?
+    </a>
+
+
+    <div class="security">
+
+      <i class="fa-solid fa-lock"></i>
+
+      <span>
+        Secure Firebase authentication
+      </span>
+
     </div>
 
-  </div>
 
+    <a
+      href="index.html"
+      class="bottom-link"
+    >
 
-  <!-- LOGIN -->
+      <i class="fa-solid fa-arrow-left"></i>
 
-  <button
-    type="button"
-    id="loginButton"
-    class="login-btn"
-  >
+      Back to Store
 
-    <i class="fa-solid fa-right-to-bracket"></i>
+    </a>
 
-    &nbsp; Login to Admin Panel
+  </section>
 
-  </button>
-
-
-  <!-- FORGOT -->
-
-  <a
-    href="forgot-password.html"
-    class="forgot"
-  >
-
-    Forgot your password?
-
-  </a>
-
-
-  <!-- SECURITY -->
-
-  <div class="security">
-
-    <i class="fa-solid fa-lock"></i>
-
-    <span>
-      Secure Firebase authentication
-    </span>
-
-  </div>
-
-
-  <!-- HOME -->
-
-  <a
-    href="index.html"
-    class="home"
-  >
-
-    <i class="fa-solid fa-arrow-left"></i>
-
-    Back to Store
-
-  </a>
-
-
-</div>
-
-
-<!-- =========================
-     FIREBASE
-========================= -->
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-
-<script src="firebase.js"></script>
+</main>
 
 
 <script>
 
-/* =========================
+/* =========================================
    ADMIN UID
-========================= */
+   ========================================= */
 
 const ADMIN_UID =
-"UoEjCy99gbQQKkGob59vGi3CunZi1";
+  "UoEjCy99gbQKkGob59vGi3CunZi1";
 
 
-/* =========================
+/* =========================================
    ELEMENTS
-========================= */
+   ========================================= */
+
+const loginForm =
+  document.getElementById("loginForm");
 
 const emailInput =
-document.getElementById("email");
+  document.getElementById("email");
 
 const passwordInput =
-document.getElementById("password");
+  document.getElementById("password");
 
-const loginButton =
-document.getElementById("loginButton");
+const loginBtn =
+  document.getElementById("loginBtn");
 
-const passwordToggle =
-document.getElementById("passwordToggle");
+const message =
+  document.getElementById("message");
 
-const eyeIcon =
-document.getElementById("eyeIcon");
-
-const messageBox =
-document.getElementById("message");
+const togglePassword =
+  document.getElementById("togglePassword");
 
 
-/* =========================
+/* =========================================
    MESSAGE
-========================= */
+   ========================================= */
 
-function showMessage(
-  message,
-  type
-){
+function showMessage(text, type) {
 
-  messageBox.textContent =
-    message;
+  message.textContent = text;
 
-  messageBox.className =
+  message.className =
     "message " + type;
 
 }
 
 
-/* =========================
+/* =========================================
    PASSWORD TOGGLE
-========================= */
+   ========================================= */
 
-passwordToggle.addEventListener(
+togglePassword.addEventListener(
   "click",
-  function(){
+  function () {
 
-    if(
-      passwordInput.type ===
-      "password"
-    ){
+    const icon =
+      togglePassword.querySelector("i");
 
-      passwordInput.type =
-        "text";
+    if (
+      passwordInput.type === "password"
+    ) {
 
-      eyeIcon.className =
+      passwordInput.type = "text";
+
+      icon.className =
         "fa-solid fa-eye-slash";
 
-      passwordToggle.setAttribute(
+      togglePassword.setAttribute(
         "aria-label",
         "Hide password"
       );
 
-    }else{
+    } else {
 
-      passwordInput.type =
-        "password";
+      passwordInput.type = "password";
 
-      eyeIcon.className =
+      icon.className =
         "fa-solid fa-eye";
 
-      passwordToggle.setAttribute(
+      togglePassword.setAttribute(
         "aria-label",
         "Show password"
       );
@@ -742,99 +686,51 @@ passwordToggle.addEventListener(
 );
 
 
-/* =========================
-   LOGIN
-========================= */
+/* =========================================
+   CHECK EXISTING SESSION
+   ========================================= */
 
-async function adminLogin(){
+firebaseAuth.onAuthStateChanged(
+  async function (user) {
 
-  const email =
-    emailInput.value
-      .trim();
+    if (!user) {
+      return;
+    }
 
-  const password =
-    passwordInput.value;
-
-
-  if(
-    !email ||
-    !password
-  ){
-
-    showMessage(
-      "Please enter your email and password.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  try{
-
-    loginButton.disabled =
-      true;
-
-    loginButton.innerHTML =
-      '<i class="fa-solid fa-spinner fa-spin"></i> Signing in...';
-
-
-    const result =
-      await firebaseAuth
-        .signInWithEmailAndPassword(
-          email,
-          password
-        );
-
-
-    const user =
-      result.user;
-
-
-    /* =========================
-       ADMIN CHECK
-    ========================= */
-
-    if(
-      user.uid !== ADMIN_UID
-    ){
+    if (user.uid !== ADMIN_UID) {
 
       await firebaseAuth.signOut();
 
+      localStorage.removeItem(
+        "gentleAdminLoggedIn"
+      );
+
+      localStorage.removeItem(
+        "gentleAdminUID"
+      );
+
+      return;
+    }
+
+    if (!user.emailVerified) {
+
+      await firebaseAuth.signOut();
+
+      localStorage.removeItem(
+        "gentleAdminLoggedIn"
+      );
+
+      localStorage.removeItem(
+        "gentleAdminUID"
+      );
+
       showMessage(
-        "This account is not authorized to access the admin panel.",
+        "Please verify the admin email address before accessing the admin panel.",
         "error"
       );
 
       return;
-
     }
-
-
-    /* =========================
-       EMAIL CHECK
-    ========================= */
-
-    if(
-      !user.emailVerified
-    ){
-
-      await firebaseAuth.signOut();
-
-      showMessage(
-        "Please verify your admin email address before logging in.",
-        "error"
-      );
-
-      return;
-
-    }
-
-
-    /* =========================
-       SAVE ADMIN SESSION
-    ========================= */
 
     localStorage.setItem(
       "gentleAdminLoggedIn",
@@ -846,156 +742,240 @@ async function adminLogin(){
       user.uid
     );
 
+    window.location.href =
+      "admin.html";
 
-    showMessage(
-      "Admin login successful. Opening admin panel...",
-      "success"
-    );
+  }
+);
 
 
-    setTimeout(
-      function(){
+/* =========================================
+   LOGIN
+   ========================================= */
 
-        window.location.replace(
-          "admin.html"
+loginForm.addEventListener(
+  "submit",
+  async function (event) {
+
+    event.preventDefault();
+
+    const email =
+      emailInput.value.trim();
+
+    const password =
+      passwordInput.value;
+
+    if (!email || !password) {
+
+      showMessage(
+        "Please enter your email and password.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    loginBtn.disabled = true;
+
+    loginBtn.innerHTML = `
+      <span class="loading"></span>
+      <span>Checking Access...</span>
+    `;
+
+
+    try {
+
+      const credential =
+        await firebaseAuth.signInWithEmailAndPassword(
+          email,
+          password
         );
 
-      },
-      600
-    );
+      const user =
+        credential.user;
 
 
-  }catch(error){
+      /* =========================================
+         CHECK ADMIN UID
+         ========================================= */
 
-    console.error(
-      "ADMIN LOGIN ERROR:",
-      error
-    );
+      if (user.uid !== ADMIN_UID) {
 
+        await firebaseAuth.signOut();
 
-    let message =
-      "Login failed. Please check your email and password.";
+        localStorage.removeItem(
+          "gentleAdminLoggedIn"
+        );
 
+        localStorage.removeItem(
+          "gentleAdminUID"
+        );
 
-    if(
-      error.code ===
-      "auth/invalid-credential"
-    ){
+        showMessage(
+          "This account is not authorized to access the admin panel.",
+          "error"
+        );
 
-      message =
-        "Incorrect email or password.";
+        loginBtn.disabled = false;
 
-    }
+        loginBtn.innerHTML = `
+          <i class="fa-solid fa-right-to-bracket"></i>
+          <span>Login to Admin Panel</span>
+        `;
 
-    else if(
-      error.code ===
-      "auth/user-not-found"
-    ){
-
-      message =
-        "No account was found with this email.";
-
-    }
-
-    else if(
-      error.code ===
-      "auth/wrong-password"
-    ){
-
-      message =
-        "Incorrect password.";
-
-    }
-
-    else if(
-      error.code ===
-      "auth/invalid-email"
-    ){
-
-      message =
-        "Please enter a valid email address.";
-
-    }
-
-    else if(
-      error.code ===
-      "auth/too-many-requests"
-    ){
-
-      message =
-        "Too many login attempts. Please try again later.";
-
-    }
-
-    else if(
-      error.code ===
-      "auth/network-request-failed"
-    ){
-
-      message =
-        "Network error. Please check your internet connection.";
-
-    }
+        return;
+      }
 
 
-    showMessage(
-      message,
-      "error"
-    );
+      /* =========================================
+         CHECK EMAIL VERIFICATION
+         ========================================= */
+
+      if (!user.emailVerified) {
+
+        await firebaseAuth.signOut();
+
+        localStorage.removeItem(
+          "gentleAdminLoggedIn"
+        );
+
+        localStorage.removeItem(
+          "gentleAdminUID"
+        );
+
+        showMessage(
+          "Please verify this admin email address before accessing the admin panel.",
+          "error"
+        );
+
+        loginBtn.disabled = false;
+
+        loginBtn.innerHTML = `
+          <i class="fa-solid fa-right-to-bracket"></i>
+          <span>Login to Admin Panel</span>
+        `;
+
+        return;
+      }
 
 
-  }finally{
+      /* =========================================
+         SAVE ADMIN SESSION
+         ========================================= */
 
-    loginButton.disabled =
-      false;
+      localStorage.setItem(
+        "gentleAdminLoggedIn",
+        "true"
+      );
 
-    loginButton.innerHTML =
-      '<i class="fa-solid fa-right-to-bracket"></i> &nbsp; Login to Admin Panel';
-
-  }
-
-}
-
-
-/* =========================
-   LOGIN BUTTON
-========================= */
-
-loginButton.addEventListener(
-  "click",
-  adminLogin
-);
+      localStorage.setItem(
+        "gentleAdminUID",
+        user.uid
+      );
 
 
-/* =========================
-   ENTER KEY
-========================= */
-
-emailInput.addEventListener(
-  "keydown",
-  function(event){
-
-    if(
-      event.key === "Enter"
-    ){
-
-      passwordInput.focus();
-
-    }
-
-  }
-);
+      showMessage(
+        "Admin login successful. Opening dashboard...",
+        "success"
+      );
 
 
-passwordInput.addEventListener(
-  "keydown",
-  function(event){
+      setTimeout(
+        function () {
 
-    if(
-      event.key === "Enter"
-    ){
+          window.location.href =
+            "admin.html";
 
-      adminLogin();
+        },
+        700
+      );
+
+    } catch (error) {
+
+      console.error(
+        "Admin login error:",
+        error
+      );
+
+
+      let errorMessage =
+        "Unable to login. Please check your email and password.";
+
+
+      if (
+        error.code ===
+        "auth/invalid-credential"
+      ) {
+
+        errorMessage =
+          "Incorrect email or password.";
+
+      }
+
+      else if (
+        error.code ===
+        "auth/user-not-found"
+      ) {
+
+        errorMessage =
+          "No account was found with this email.";
+
+      }
+
+      else if (
+        error.code ===
+        "auth/wrong-password"
+      ) {
+
+        errorMessage =
+          "Incorrect password.";
+
+      }
+
+      else if (
+        error.code ===
+        "auth/invalid-email"
+      ) {
+
+        errorMessage =
+          "Please enter a valid email address.";
+
+      }
+
+      else if (
+        error.code ===
+        "auth/too-many-requests"
+      ) {
+
+        errorMessage =
+          "Too many login attempts. Please wait and try again.";
+
+      }
+
+      else if (
+        error.code ===
+        "auth/network-request-failed"
+      ) {
+
+        errorMessage =
+          "Network error. Please check your internet connection.";
+
+      }
+
+
+      showMessage(
+        errorMessage,
+        "error"
+      );
+
+
+      loginBtn.disabled = false;
+
+      loginBtn.innerHTML = `
+        <i class="fa-solid fa-right-to-bracket"></i>
+        <span>Login to Admin Panel</span>
+      `;
 
     }
 
