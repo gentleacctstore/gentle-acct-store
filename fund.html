@@ -10,6 +10,11 @@ name="viewport"
 content="width=device-width, initial-scale=1.0"
 >
 
+<meta
+name="theme-color"
+content="#0b2d5c"
+>
+
 <title>Fund Wallet - Gentle Acct Store</title>
 
 <link
@@ -19,7 +24,7 @@ href="https://fonts.googleapis.com"
 
 <link
 rel="preconnect"
-href="https://fonts.googleapis.com"
+href="https://fonts.gstatic.com"
 crossorigin
 >
 
@@ -60,19 +65,18 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 --success:#15803d;
 --danger:#dc2626;
 
---shadow:
-0 8px 25px rgba(11,45,92,.07);
+--shadow:0 10px 30px rgba(11,45,92,.07);
 
 }
 
 *{
-
 box-sizing:border-box;
-
 margin:0;
-
 padding:0;
+}
 
+html{
+scroll-behavior:smooth;
 }
 
 body{
@@ -85,35 +89,23 @@ color:var(--text);
 
 min-height:100vh;
 
-padding-bottom:80px;
+padding-bottom:82px;
 
 }
 
 button,
 input{
-
 font-family:inherit;
-
 }
 
 button{
-
 cursor:pointer;
-
 }
 
 a{
-
 text-decoration:none;
-
 color:inherit;
-
 }
-
-
-/* ==========================================
-   PAGE
-========================================== */
 
 .page{
 
@@ -128,15 +120,15 @@ min-height:100vh;
 }
 
 
-/* ==========================================
-   HEADER
-========================================== */
+/* =========================
+HEADER
+========================= */
 
 header{
 
 height:68px;
 
-background:var(--white);
+background:rgba(255,255,255,.96);
 
 padding:0 17px;
 
@@ -154,6 +146,8 @@ top:0;
 
 z-index:50;
 
+backdrop-filter:blur(12px);
+
 }
 
 .header-left{
@@ -168,13 +162,13 @@ gap:11px;
 
 .back-btn{
 
-width:38px;
+width:39px;
 
-height:38px;
+height:39px;
 
 border:none;
 
-border-radius:11px;
+border-radius:12px;
 
 background:var(--blue-light);
 
@@ -188,6 +182,12 @@ justify-content:center;
 
 font-size:14px;
 
+transition:.2s;
+
+}
+
+.back-btn:active{
+transform:scale(.94);
 }
 
 .header-info h2{
@@ -206,49 +206,60 @@ font-size:8px;
 
 color:var(--muted);
 
-margin-top:1px;
+margin-top:2px;
 
 }
 
 .header-right{
 
+width:38px;
+
+height:38px;
+
+border-radius:11px;
+
+background:var(--blue-light);
+
 color:var(--blue);
 
-font-size:18px;
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:15px;
 
 }
 
 
-/* ==========================================
-   MAIN
-========================================== */
+/* =========================
+MAIN
+========================= */
 
 main{
 
-padding:18px 16px 30px;
+padding:20px 16px 30px;
 
 }
 
-
-/* ==========================================
-   PAGE HEADING
-========================================== */
-
 .page-heading{
 
-margin-bottom:16px;
+margin-bottom:17px;
 
 }
 
 .page-heading h1{
 
-font-size:23px;
+font-size:24px;
 
 font-weight:800;
 
+letter-spacing:-.4px;
+
 color:var(--blue-dark);
 
-margin-bottom:4px;
+margin-bottom:5px;
 
 }
 
@@ -263,28 +274,52 @@ line-height:1.6;
 }
 
 
-/* ==========================================
-   WALLET CARD
-========================================== */
+/* =========================
+WALLET
+========================= */
 
 .wallet{
 
-background:var(--blue);
+background:linear-gradient(
+135deg,
+#0b2d5c,
+#123e78
+);
 
 color:var(--white);
 
-border-radius:19px;
+border-radius:21px;
 
-padding:18px;
+padding:19px;
 
-margin-bottom:15px;
+margin-bottom:16px;
 
 box-shadow:
-0 9px 25px rgba(11,45,92,.15);
+0 12px 30px rgba(11,45,92,.18);
 
 position:relative;
 
 overflow:hidden;
+
+}
+
+.wallet::before{
+
+content:"";
+
+position:absolute;
+
+width:190px;
+
+height:190px;
+
+border-radius:50%;
+
+background:rgba(255,255,255,.055);
+
+right:-85px;
+
+top:-100px;
 
 }
 
@@ -294,17 +329,17 @@ content:"";
 
 position:absolute;
 
-width:150px;
+width:100px;
 
-height:150px;
+height:100px;
 
 border-radius:50%;
 
-background:rgba(255,255,255,.06);
+background:rgba(255,255,255,.035);
 
-right:-55px;
+left:-55px;
 
-top:-70px;
+bottom:-55px;
 
 }
 
@@ -312,11 +347,11 @@ top:-70px;
 
 display:flex;
 
-align-items:center;
+align-items:flex-start;
 
 justify-content:space-between;
 
-gap:12px;
+gap:15px;
 
 position:relative;
 
@@ -328,19 +363,21 @@ z-index:2;
 
 font-size:9px;
 
-opacity:.72;
+opacity:.7;
 
-margin-bottom:4px;
+margin-bottom:5px;
 
 }
 
 .wallet-balance{
 
-font-size:26px;
+font-size:28px;
 
 font-weight:800;
 
 line-height:1.15;
+
+letter-spacing:-.5px;
 
 word-break:break-word;
 
@@ -348,11 +385,11 @@ word-break:break-word;
 
 .wallet-icon{
 
-width:43px;
+width:45px;
 
-height:43px;
+height:45px;
 
-border-radius:13px;
+border-radius:14px;
 
 background:rgba(255,255,255,.13);
 
@@ -376,11 +413,11 @@ align-items:center;
 
 gap:6px;
 
-margin-top:12px;
+margin-top:13px;
 
 background:rgba(255,255,255,.12);
 
-padding:6px 9px;
+padding:6px 10px;
 
 border-radius:20px;
 
@@ -401,9 +438,9 @@ font-size:8px;
 }
 
 
-/* ==========================================
-   CARD
-========================================== */
+/* =========================
+CARD
+========================= */
 
 .card{
 
@@ -411,11 +448,11 @@ background:var(--white);
 
 border:1px solid var(--border);
 
-border-radius:18px;
+border-radius:19px;
 
 padding:17px;
 
-margin-bottom:14px;
+margin-bottom:15px;
 
 box-shadow:var(--shadow);
 
@@ -435,11 +472,11 @@ margin-bottom:5px;
 
 .card-title-icon{
 
-width:36px;
+width:37px;
 
-height:36px;
+height:37px;
 
-border-radius:10px;
+border-radius:11px;
 
 background:var(--blue-light);
 
@@ -478,9 +515,9 @@ margin-bottom:16px;
 }
 
 
-/* ==========================================
-   INPUT
-========================================== */
+/* =========================
+INPUT
+========================= */
 
 .input-label{
 
@@ -526,13 +563,13 @@ font-weight:800;
 
 width:100%;
 
-height:48px;
+height:50px;
 
 border:1px solid var(--border);
 
-border-radius:11px;
+border-radius:12px;
 
-padding:0 13px 0 33px;
+padding:0 13px 0 34px;
 
 font-size:14px;
 
@@ -543,6 +580,8 @@ color:var(--text);
 outline:none;
 
 background:#fbfcfe;
+
+transition:.2s;
 
 }
 
@@ -566,9 +605,9 @@ font-weight:400;
 }
 
 
-/* ==========================================
-   QUICK AMOUNTS
-========================================== */
+/* =========================
+QUICK AMOUNTS
+========================= */
 
 .quick-title{
 
@@ -602,7 +641,7 @@ background:var(--blue-soft);
 
 color:var(--blue);
 
-border-radius:10px;
+border-radius:11px;
 
 padding:10px 4px;
 
@@ -610,18 +649,28 @@ font-size:9px;
 
 font-weight:800;
 
+transition:.2s;
+
+}
+
+.quick button:hover{
+
+background:var(--blue-light);
+
+border-color:#cbd9e9;
+
 }
 
 .quick button:active{
 
-transform:scale(.97);
+transform:scale(.96);
 
 }
 
 
-/* ==========================================
-   ADD BUTTON
-========================================== */
+/* =========================
+ADD BUTTON
+========================= */
 
 .continue{
 
@@ -633,7 +682,7 @@ background:var(--blue);
 
 color:var(--white);
 
-border-radius:11px;
+border-radius:12px;
 
 padding:13px;
 
@@ -642,13 +691,23 @@ font-size:11px;
 font-weight:800;
 
 box-shadow:
-0 7px 16px rgba(11,45,92,.15);
+0 8px 18px rgba(11,45,92,.16);
+
+transition:.2s;
 
 }
 
 .continue:hover{
 
 background:var(--blue-dark);
+
+transform:translateY(-1px);
+
+}
+
+.continue:active{
+
+transform:translateY(0);
 
 }
 
@@ -657,6 +716,8 @@ background:var(--blue-dark);
 opacity:.55;
 
 cursor:not-allowed;
+
+transform:none;
 
 }
 
@@ -667,9 +728,9 @@ margin-right:5px;
 }
 
 
-/* ==========================================
-   SUCCESS
-========================================== */
+/* =========================
+SUCCESS
+========================= */
 
 .success{
 
@@ -704,9 +765,9 @@ margin-right:4px;
 }
 
 
-/* ==========================================
-   ERROR
-========================================== */
+/* =========================
+ERROR
+========================= */
 
 .error{
 
@@ -735,9 +796,9 @@ line-height:1.5;
 }
 
 
-/* ==========================================
-   DEMO NOTE
-========================================== */
+/* =========================
+DEMO NOTE
+========================= */
 
 .note{
 
@@ -755,7 +816,7 @@ color:var(--muted);
 
 font-size:8px;
 
-line-height:1.6;
+line-height:1.65;
 
 }
 
@@ -768,15 +829,15 @@ margin-right:4px;
 }
 
 
-/* ==========================================
-   HOW IT WORKS
-========================================== */
+/* =========================
+HOW IT WORKS
+========================= */
 
 .steps{
 
 display:grid;
 
-gap:13px;
+gap:14px;
 
 }
 
@@ -792,13 +853,13 @@ gap:10px;
 
 .step-icon{
 
-width:36px;
+width:37px;
 
-height:36px;
+height:37px;
 
-min-width:36px;
+min-width:37px;
 
-border-radius:10px;
+border-radius:11px;
 
 background:var(--blue-light);
 
@@ -847,9 +908,9 @@ line-height:1.5;
 }
 
 
-/* ==========================================
-   BOTTOM NAV
-========================================== */
+/* =========================
+BOTTOM NAV
+========================= */
 
 .bottom-nav{
 
@@ -879,7 +940,7 @@ justify-content:space-around;
 
 z-index:100;
 
-backdrop-filter:blur(10px);
+backdrop-filter:blur(12px);
 
 }
 
@@ -905,6 +966,8 @@ font-weight:700;
 
 color:#8993a3;
 
+transition:.2s;
+
 }
 
 .nav-item i{
@@ -920,9 +983,9 @@ color:var(--blue);
 }
 
 
-/* ==========================================
-   DESKTOP
-========================================== */
+/* =========================
+DESKTOP
+========================= */
 
 @media(min-width:700px){
 
@@ -943,6 +1006,58 @@ box-shadow:
 
 }
 
+
+/* =========================
+SMALL PHONES
+========================= */
+
+@media(max-width:360px){
+
+main{
+
+padding-left:13px;
+
+padding-right:13px;
+
+}
+
+.wallet-balance{
+
+font-size:25px;
+
+}
+
+.page-heading h1{
+
+font-size:22px;
+
+}
+
+.card{
+
+padding:15px;
+
+}
+
+}
+
+
+/* =========================
+REDUCED MOTION
+========================= */
+
+@media(prefers-reduced-motion:reduce){
+
+*{
+
+scroll-behavior:auto !important;
+
+transition:none !important;
+
+}
+
+}
+
 </style>
 
 </head>
@@ -954,10 +1069,6 @@ box-shadow:
 <div class="page">
 
 
-<!-- ==========================================
-     HEADER
-========================================== -->
-
 <header>
 
 <div class="header-left">
@@ -966,6 +1077,7 @@ box-shadow:
 class="back-btn"
 type="button"
 onclick="goBack()"
+aria-label="Go back"
 >
 
 <i class="fa-solid fa-arrow-left"></i>
@@ -997,10 +1109,6 @@ Add money to your Gentle wallet
 </header>
 
 
-<!-- ==========================================
-     MAIN
-========================================== -->
-
 <main>
 
 
@@ -1016,10 +1124,6 @@ Add money to your wallet and use it to purchase products.
 
 </div>
 
-
-<!-- ==========================================
-     WALLET
-========================================== -->
 
 <div class="wallet">
 
@@ -1060,10 +1164,6 @@ Wallet Ready
 
 </div>
 
-
-<!-- ==========================================
-     ADD MONEY
-========================================== -->
 
 <div class="card">
 
@@ -1112,7 +1212,9 @@ id="amount"
 class="amount-input"
 type="number"
 min="100"
+step="100"
 inputmode="numeric"
+autocomplete="off"
 placeholder="Enter amount"
 >
 
@@ -1197,10 +1299,6 @@ Real payments will be connected later.
 </div>
 
 
-<!-- ==========================================
-     HOW IT WORKS
-========================================== -->
-
 <div class="card">
 
 
@@ -1230,7 +1328,6 @@ How It Works
 
 </div>
 
-
 <div class="step-text">
 
 <strong>
@@ -1253,7 +1350,6 @@ Select a quick amount or enter your own.
 <i class="fa-solid fa-plus"></i>
 
 </div>
-
 
 <div class="step-text">
 
@@ -1278,7 +1374,6 @@ Your wallet balance is saved to your account.
 
 </div>
 
-
 <div class="step-text">
 
 <strong>
@@ -1301,10 +1396,6 @@ Use your wallet balance when purchasing products.
 
 </main>
 
-
-<!-- ==========================================
-     BOTTOM NAV
-========================================== -->
 
 <nav class="bottom-nav">
 
@@ -1387,18 +1478,14 @@ Menu
 
 <script>
 
-/* ==================================================
-   VARIABLES
-================================================== */
-
 let firebaseUser = null;
 
 let balance = 0;
 
 
-/* ==================================================
-   FIREBASE SESSION
-================================================== */
+/* =========================
+AUTH
+========================= */
 
 firebaseAuth.onAuthStateChanged(
 async function(user){
@@ -1416,10 +1503,7 @@ return;
 
 }
 
-
-firebaseUser =
-user;
-
+firebaseUser = user;
 
 await loadWallet();
 
@@ -1427,11 +1511,15 @@ await loadWallet();
 );
 
 
-/* ==================================================
-   LOAD WALLET
-================================================== */
+/* =========================
+LOAD WALLET
+========================= */
 
 async function loadWallet(){
+
+if(!firebaseUser){
+return;
+}
 
 try{
 
@@ -1439,7 +1527,6 @@ const walletRef =
 firebaseDB
 .collection("wallets")
 .doc(firebaseUser.uid);
-
 
 const snapshot =
 await walletRef.get();
@@ -1450,7 +1537,6 @@ if(snapshot.exists){
 const data =
 snapshot.data();
 
-
 balance =
 Number(
 data.balance || 0
@@ -1459,7 +1545,6 @@ data.balance || 0
 }else{
 
 balance = 0;
-
 
 await walletRef.set({
 
@@ -1486,7 +1571,6 @@ localStorage.setItem(
 String(balance)
 );
 
-
 updateBalance();
 
 
@@ -1506,15 +1590,22 @@ showError(
 }
 
 
-/* ==================================================
-   DISPLAY BALANCE
-================================================== */
+/* =========================
+DISPLAY BALANCE
+========================= */
 
 function updateBalance(){
 
-document
-.getElementById("balance")
-.textContent =
+const balanceElement =
+document.getElementById(
+"balance"
+);
+
+if(!balanceElement){
+return;
+}
+
+balanceElement.textContent =
 "₦" +
 balance.toLocaleString(
 "en-NG",
@@ -1530,25 +1621,29 @@ maximumFractionDigits:2
 }
 
 
-/* ==================================================
-   QUICK AMOUNTS
-================================================== */
+/* =========================
+QUICK AMOUNTS
+========================= */
 
-function setAmount(
-amount
-){
+function setAmount(amount){
 
-document
-.getElementById("amount")
-.value =
-amount;
+const input =
+document.getElementById(
+"amount"
+);
+
+input.value = amount;
+
+input.focus();
+
+hideMessages();
 
 }
 
 
-/* ==================================================
-   ADD FUNDS
-================================================== */
+/* =========================
+ADD FUNDS
+========================= */
 
 async function addFunds(){
 
@@ -1568,12 +1663,10 @@ document.getElementById(
 "amount"
 );
 
-
 const button =
 document.getElementById(
 "addButton"
 );
-
 
 const amount =
 Number(
@@ -1581,8 +1674,11 @@ input.value
 );
 
 
+hideMessages();
+
+
 if(
-!amount ||
+!Number.isFinite(amount) ||
 amount < 100
 ){
 
@@ -1595,9 +1691,20 @@ return;
 }
 
 
-button.disabled =
-true;
+if(
+amount % 1 !== 0
+){
 
+showError(
+"Please enter a valid whole naira amount."
+);
+
+return;
+
+}
+
+
+button.disabled = true;
 
 button.innerHTML = `
 
@@ -1608,15 +1715,15 @@ Adding Funds...
 `;
 
 
-hideMessages();
-
-
 try{
 
 const walletRef =
 firebaseDB
 .collection("wallets")
 .doc(firebaseUser.uid);
+
+
+let newBalance = 0;
 
 
 await firebaseDB.runTransaction(
@@ -1628,8 +1735,7 @@ walletRef
 );
 
 
-let currentBalance =
-0;
+let currentBalance = 0;
 
 
 if(snapshot.exists){
@@ -1642,7 +1748,7 @@ snapshot.data().balance || 0
 }
 
 
-const newBalance =
+newBalance =
 currentBalance + amount;
 
 
@@ -1669,12 +1775,12 @@ merge:true
 }
 );
 
+}
+);
+
 
 balance =
 newBalance;
-
-}
-);
 
 
 /* Compatibility */
@@ -1687,22 +1793,22 @@ String(balance)
 
 updateBalance();
 
-
 input.value = "";
 
 
-document
-.getElementById("success")
-.style.display =
+const success =
+document.getElementById(
+"success"
+);
+
+success.style.display =
 "block";
 
 
 setTimeout(
 function(){
 
-document
-.getElementById("success")
-.style.display =
+success.style.display =
 "none";
 
 },
@@ -1724,9 +1830,7 @@ showError(
 }
 
 
-button.disabled =
-false;
-
+button.disabled = false;
 
 button.innerHTML = `
 
@@ -1739,23 +1843,19 @@ Add Funds
 }
 
 
-/* ==================================================
-   ERROR
-================================================== */
+/* =========================
+ERROR
+========================= */
 
-function showError(
-message
-){
+function showError(message){
 
 const box =
 document.getElementById(
 "error"
 );
 
-
 box.textContent =
 message;
-
 
 box.style.display =
 "block";
@@ -1763,9 +1863,9 @@ box.style.display =
 }
 
 
-/* ==================================================
-   HIDE MESSAGES
-================================================== */
+/* =========================
+MESSAGES
+========================= */
 
 function hideMessages(){
 
@@ -1774,12 +1874,17 @@ document
 .style.display =
 "none";
 
+document
+.getElementById("success")
+.style.display =
+"none";
+
 }
 
 
-/* ==================================================
-   BACK
-================================================== */
+/* =========================
+BACK
+========================= */
 
 function goBack(){
 
@@ -1789,9 +1894,9 @@ window.location.href =
 }
 
 
-/* ==================================================
-   REFRESH BALANCE
-================================================== */
+/* =========================
+PAGE SHOW
+========================= */
 
 window.addEventListener(
 "pageshow",
@@ -1800,6 +1905,28 @@ function(){
 if(firebaseUser){
 
 loadWallet();
+
+}
+
+}
+);
+
+
+/* =========================
+ENTER KEY
+========================= */
+
+document
+.getElementById("amount")
+.addEventListener(
+"keydown",
+function(event){
+
+if(event.key === "Enter"){
+
+event.preventDefault();
+
+addFunds();
 
 }
 

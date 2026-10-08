@@ -10,9 +10,21 @@
   content="width=device-width, initial-scale=1.0"
 >
 
+<meta
+  name="theme-color"
+  content="#0b2d5c"
+>
+
+<meta
+  name="description"
+  content="Gentle Acct Store — a simple and convenient digital store."
+>
+
 <title>Gentle Acct Store</title>
 
+
 <!-- GOOGLE FONT -->
+
 <link
   rel="preconnect"
   href="https://fonts.googleapis.com"
@@ -29,7 +41,9 @@
   rel="stylesheet"
 >
 
+
 <!-- FONT AWESOME -->
+
 <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
@@ -38,9 +52,9 @@
 
 <style>
 
-/* ========================================
+/* ==================================================
    RESET
-======================================== */
+================================================== */
 
 *{
   box-sizing:border-box;
@@ -69,9 +83,9 @@ button{
 }
 
 
-/* ========================================
+/* ==================================================
    COLORS
-======================================== */
+================================================== */
 
 :root{
 
@@ -79,48 +93,72 @@ button{
 
   --blue-dark:#071f40;
 
+  --blue-mid:#16477f;
+
   --blue-light:#eef4fb;
 
-  --blue-border:#cbdbea;
+  --blue-soft:#f6f9fd;
+
+  --blue-border:#d6e1ee;
 
   --text:#101828;
 
   --muted:#667085;
 
+  --muted-light:#8a94a6;
+
   --white:#ffffff;
 
-  --green:#173f2b;
+  --success:#17845b;
+
+  --shadow:0 15px 45px rgba(11,45,92,.08);
+
+  --shadow-lg:0 25px 70px rgba(11,45,92,.13);
 
 }
 
 
-/* ========================================
+/* ==================================================
+   SELECTION
+================================================== */
+
+::selection{
+  background:var(--blue);
+  color:#ffffff;
+}
+
+
+/* ==================================================
    HEADER
-======================================== */
+================================================== */
 
 .header{
 
   width:100%;
 
-  background:#ffffff;
+  background:rgba(255,255,255,.94);
 
-  border-bottom:1px solid #e6ebf1;
+  backdrop-filter:blur(15px);
+
+  -webkit-backdrop-filter:blur(15px);
+
+  border-bottom:1px solid #e7edf4;
 
   position:sticky;
 
   top:0;
 
-  z-index:100;
+  z-index:1000;
 
 }
 
 .header-inner{
 
-  max-width:1120px;
+  max-width:1150px;
 
   margin:auto;
 
-  padding:13px 18px;
+  padding:12px 18px;
 
   display:flex;
 
@@ -141,9 +179,9 @@ button{
 
   align-items:center;
 
-  gap:8px;
+  gap:9px;
 
-  font-size:20px;
+  font-size:19px;
 
   font-weight:800;
 
@@ -157,15 +195,19 @@ button{
 
 .logo-icon{
 
-  width:34px;
+  width:35px;
 
-  height:34px;
+  height:35px;
 
-  border-radius:10px;
+  border-radius:11px;
 
-  background:var(--blue);
+  background:linear-gradient(
+    145deg,
+    var(--blue),
+    var(--blue-dark)
+  );
 
-  color:white;
+  color:#ffffff;
 
   display:flex;
 
@@ -174,6 +216,8 @@ button{
   justify-content:center;
 
   font-size:15px;
+
+  box-shadow:0 6px 16px rgba(11,45,92,.18);
 
 }
 
@@ -186,19 +230,55 @@ button{
 
   align-items:center;
 
-  gap:26px;
+  gap:28px;
 
-  font-size:13px;
+  font-size:12px;
 
   font-weight:600;
 
-  color:#4b5565;
+  color:#475467;
+
+}
+
+.desktop-nav a{
+
+  position:relative;
+
+  transition:.2s ease;
+
+}
+
+.desktop-nav a::after{
+
+  content:"";
+
+  position:absolute;
+
+  left:0;
+
+  bottom:-7px;
+
+  width:0;
+
+  height:2px;
+
+  border-radius:5px;
+
+  background:var(--blue);
+
+  transition:.2s ease;
 
 }
 
 .desktop-nav a:hover{
 
   color:var(--blue);
+
+}
+
+.desktop-nav a:hover::after{
+
+  width:100%;
 
 }
 
@@ -211,65 +291,54 @@ button{
 
   align-items:center;
 
-  gap:8px;
+  gap:7px;
+
+}
+
+.sign-in,
+.create-account{
+
+  min-height:42px;
+
+  padding:0 16px;
+
+  border-radius:11px;
+
+  font-size:12px;
+
+  font-weight:700;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  gap:7px;
+
+  transition:.2s ease;
 
 }
 
 .sign-in{
 
-  min-height:44px;
-
-  padding:0 17px;
-
   border:1px solid var(--blue-border);
 
-  background:white;
+  background:#ffffff;
 
   color:var(--blue);
-
-  border-radius:12px;
-
-  font-size:13px;
-
-  font-weight:700;
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  gap:7px;
 
 }
 
 .create-account{
 
-  min-height:44px;
-
-  padding:0 17px;
-
   background:var(--blue);
 
-  color:white;
+  color:#ffffff;
 
   border:1px solid var(--blue);
 
-  border-radius:12px;
-
-  font-size:13px;
-
-  font-weight:700;
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  gap:7px;
-
-  box-shadow:0 5px 14px rgba(11,45,92,.14);
+  box-shadow:0 7px 18px rgba(11,45,92,.15);
 
 }
 
@@ -277,42 +346,89 @@ button{
 
   background:var(--blue-light);
 
+  transform:translateY(-1px);
+
 }
 
 .create-account:hover{
 
   background:var(--blue-dark);
 
+  transform:translateY(-1px);
+
 }
 
 
-/* ========================================
+/* ==================================================
    HERO
-======================================== */
+================================================== */
 
 .hero{
 
-  background:#ffffff;
+  position:relative;
 
-  padding:70px 18px 55px;
+  overflow:hidden;
+
+  padding:78px 18px 65px;
+
+  background:
+
+    radial-gradient(
+      circle at 80% 15%,
+      rgba(11,45,92,.08),
+      transparent 28%
+    ),
+
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #f9fbfe 100%
+    );
+
+}
+
+.hero::before{
+
+  content:"";
+
+  position:absolute;
+
+  width:350px;
+
+  height:350px;
+
+  border-radius:50%;
+
+  border:1px solid rgba(11,45,92,.05);
+
+  right:-160px;
+
+  top:-130px;
 
 }
 
 .hero-inner{
 
-  max-width:1120px;
+  position:relative;
+
+  z-index:2;
+
+  max-width:1150px;
 
   margin:auto;
 
   display:grid;
 
-  grid-template-columns:1.1fr .9fr;
+  grid-template-columns:1.08fr .92fr;
 
   align-items:center;
 
-  gap:50px;
+  gap:65px;
 
 }
+
+
+/* HERO CONTENT */
 
 .hero-badge{
 
@@ -332,33 +448,37 @@ button{
 
   border:1px solid var(--blue-border);
 
-  font-size:11px;
+  font-size:10px;
 
   font-weight:700;
 
-  margin-bottom:18px;
+  margin-bottom:19px;
 
 }
 
 .hero-badge i{
 
-  font-size:10px;
+  font-size:9px;
+
+  color:var(--success);
 
 }
 
 .hero h1{
 
-  font-size:48px;
+  max-width:680px;
 
-  line-height:1.15;
+  font-size:50px;
 
-  letter-spacing:-1.7px;
+  line-height:1.12;
+
+  letter-spacing:-2px;
 
   font-weight:800;
 
-  color:#101828;
+  color:var(--text);
 
-  margin-bottom:17px;
+  margin-bottom:18px;
 
 }
 
@@ -370,15 +490,15 @@ button{
 
 .hero-text{
 
-  max-width:570px;
+  max-width:580px;
 
   color:var(--muted);
 
-  font-size:15px;
+  font-size:14px;
 
-  line-height:1.8;
+  line-height:1.9;
 
-  margin-bottom:26px;
+  margin-bottom:27px;
 
 }
 
@@ -392,17 +512,14 @@ button{
 
 }
 
-.hero-primary{
-
-  background:var(--blue);
-
-  color:white;
+.hero-primary,
+.hero-secondary{
 
   padding:14px 20px;
 
   border-radius:12px;
 
-  font-size:13px;
+  font-size:12px;
 
   font-weight:700;
 
@@ -414,33 +531,27 @@ button{
 
   gap:8px;
 
-  box-shadow:0 8px 20px rgba(11,45,92,.16);
+  transition:.2s ease;
+
+}
+
+.hero-primary{
+
+  background:var(--blue);
+
+  color:#ffffff;
+
+  box-shadow:0 10px 24px rgba(11,45,92,.18);
 
 }
 
 .hero-secondary{
 
-  background:white;
+  background:#ffffff;
 
   color:var(--blue);
 
   border:1px solid var(--blue-border);
-
-  padding:14px 20px;
-
-  border-radius:12px;
-
-  font-size:13px;
-
-  font-weight:700;
-
-  display:inline-flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  gap:8px;
 
 }
 
@@ -448,60 +559,195 @@ button{
 
   background:var(--blue-dark);
 
+  transform:translateY(-2px);
+
 }
 
 .hero-secondary:hover{
 
   background:var(--blue-light);
 
-}
-
-
-/* ========================================
-   HERO PREVIEW
-======================================== */
-
-.hero-preview{
-
-  background:#f8fafc;
-
-  border:1px solid var(--blue-border);
-
-  border-radius:25px;
-
-  padding:15px;
-
-  box-shadow:0 18px 45px rgba(11,45,92,.08);
+  transform:translateY(-2px);
 
 }
 
-.preview-top{
 
-  background:var(--blue);
+/* HERO TRUST MINI */
 
-  color:white;
+.hero-mini-trust{
 
-  border-radius:17px;
+  display:flex;
 
-  padding:20px;
+  align-items:center;
+
+  flex-wrap:wrap;
+
+  gap:16px;
+
+  margin-top:23px;
 
 }
 
-.preview-top small{
+.hero-mini-trust span{
 
-  opacity:.75;
+  display:flex;
+
+  align-items:center;
+
+  gap:6px;
+
+  color:#7b8798;
+
+  font-size:9px;
+
+  font-weight:600;
+
+}
+
+.hero-mini-trust i{
+
+  color:var(--blue);
 
   font-size:10px;
 
 }
 
+
+/* ==================================================
+   DASHBOARD PREVIEW
+================================================== */
+
+.hero-preview-wrap{
+
+  position:relative;
+
+}
+
+.preview-glow{
+
+  position:absolute;
+
+  width:220px;
+
+  height:220px;
+
+  background:rgba(11,45,92,.09);
+
+  filter:blur(65px);
+
+  border-radius:50%;
+
+  right:20px;
+
+  top:30px;
+
+}
+
+.hero-preview{
+
+  position:relative;
+
+  background:rgba(255,255,255,.92);
+
+  border:1px solid var(--blue-border);
+
+  border-radius:27px;
+
+  padding:12px;
+
+  box-shadow:var(--shadow-lg);
+
+  transform:rotate(.5deg);
+
+}
+
+.preview-top{
+
+  background:
+
+    radial-gradient(
+      circle at 90% 0%,
+      rgba(255,255,255,.15),
+      transparent 32%
+    ),
+
+    linear-gradient(
+      145deg,
+      var(--blue),
+      var(--blue-dark)
+    );
+
+  color:#ffffff;
+
+  border-radius:20px;
+
+  padding:22px;
+
+}
+
+.preview-top-row{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:10px;
+
+}
+
+.preview-top small{
+
+  opacity:.7;
+
+  font-size:9px;
+
+  letter-spacing:.5px;
+
+  font-weight:600;
+
+}
+
+.preview-wallet-icon{
+
+  width:31px;
+
+  height:31px;
+
+  border-radius:10px;
+
+  background:rgba(255,255,255,.12);
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  font-size:12px;
+
+}
+
 .preview-balance{
 
-  font-size:27px;
+  font-size:29px;
 
   font-weight:800;
 
+  letter-spacing:-1px;
+
   margin-top:5px;
+
+}
+
+.preview-wallet-label{
+
+  color:rgba(255,255,255,.58);
+
+  font-size:8px;
+
+  margin-top:1px;
 
 }
 
@@ -509,9 +755,9 @@ button{
 
   display:flex;
 
-  gap:10px;
+  gap:9px;
 
-  margin-top:17px;
+  margin-top:18px;
 
 }
 
@@ -519,9 +765,9 @@ button{
 
   flex:1;
 
-  background:white;
+  background:rgba(255,255,255,.98);
 
-  border-radius:13px;
+  border-radius:14px;
 
   padding:13px;
 
@@ -533,6 +779,8 @@ button{
 
   color:var(--blue);
 
+  font-size:13px;
+
   margin-bottom:8px;
 
 }
@@ -541,7 +789,7 @@ button{
 
   display:block;
 
-  font-size:12px;
+  font-size:11px;
 
 }
 
@@ -551,19 +799,22 @@ button{
 
   color:#8a94a6;
 
-  font-size:9px;
+  font-size:8px;
 
   margin-top:3px;
 
 }
 
+
+/* PREVIEW PRODUCTS */
+
 .preview-products{
 
-  background:white;
+  background:#ffffff;
 
-  border-radius:17px;
+  border-radius:19px;
 
-  margin-top:12px;
+  margin-top:10px;
 
   padding:15px;
 
@@ -577,13 +828,13 @@ button{
 
   align-items:center;
 
-  margin-bottom:12px;
+  margin-bottom:8px;
 
 }
 
 .preview-title strong{
 
-  font-size:13px;
+  font-size:12px;
 
 }
 
@@ -591,7 +842,7 @@ button{
 
   color:var(--blue);
 
-  font-size:10px;
+  font-size:9px;
 
   font-weight:700;
 
@@ -605,7 +856,7 @@ button{
 
   gap:10px;
 
-  padding:10px 0;
+  padding:11px 0;
 
   border-bottom:1px solid #edf0f4;
 
@@ -619,11 +870,11 @@ button{
 
 .preview-product-icon{
 
-  width:38px;
+  width:39px;
 
-  height:38px;
+  height:39px;
 
-  border-radius:11px;
+  border-radius:12px;
 
   background:var(--blue-light);
 
@@ -634,6 +885,8 @@ button{
   align-items:center;
 
   justify-content:center;
+
+  font-size:13px;
 
 }
 
@@ -647,7 +900,7 @@ button{
 
   display:block;
 
-  font-size:11px;
+  font-size:10px;
 
 }
 
@@ -655,7 +908,7 @@ button{
 
   color:#8a94a6;
 
-  font-size:9px;
+  font-size:8px;
 
 }
 
@@ -663,26 +916,32 @@ button{
 
   color:var(--blue);
 
-  font-size:11px;
+  font-size:9px;
 
   font-weight:800;
 
 }
 
 
-/* ========================================
-   TRUST ROW
-======================================== */
+/* ==================================================
+   TRUST
+================================================== */
 
 .trust{
 
-  padding:0 18px 50px;
+  position:relative;
+
+  z-index:5;
+
+  padding:0 18px 55px;
+
+  margin-top:-1px;
 
 }
 
 .trust-inner{
 
-  max-width:1000px;
+  max-width:1050px;
 
   margin:auto;
 
@@ -692,17 +951,19 @@ button{
 
   border:1px solid var(--blue-border);
 
-  border-radius:18px;
+  border-radius:20px;
 
   overflow:hidden;
 
-  background:white;
+  background:#ffffff;
+
+  box-shadow:0 12px 35px rgba(11,45,92,.06);
 
 }
 
 .trust-item{
 
-  padding:19px 12px;
+  padding:20px 12px;
 
   text-align:center;
 
@@ -718,153 +979,13 @@ button{
 
 .trust-item i{
 
-  color:var(--blue);
+  width:36px;
 
-  font-size:18px;
+  height:36px;
 
-  margin-bottom:7px;
+  margin:0 auto 8px;
 
-}
-
-.trust-item strong{
-
-  display:block;
-
-  font-size:11px;
-
-}
-
-.trust-item span{
-
-  display:block;
-
-  color:#8993a3;
-
-  font-size:9px;
-
-  margin-top:2px;
-
-}
-
-
-/* ========================================
-   GENERAL SECTION
-======================================== */
-
-.section{
-
-  padding:65px 18px;
-
-}
-
-.section.alt{
-
-  background:#f8fafc;
-
-}
-
-.section-inner{
-
-  max-width:1050px;
-
-  margin:auto;
-
-}
-
-.section-heading{
-
-  text-align:center;
-
-  max-width:650px;
-
-  margin:0 auto 35px;
-
-}
-
-.section-label{
-
-  display:inline-block;
-
-  color:var(--blue);
-
-  font-size:10px;
-
-  font-weight:800;
-
-  letter-spacing:1px;
-
-  text-transform:uppercase;
-
-  margin-bottom:9px;
-
-}
-
-.section-heading h2{
-
-  font-size:30px;
-
-  line-height:1.25;
-
-  letter-spacing:-.7px;
-
-  margin-bottom:10px;
-
-}
-
-.section-heading p{
-
-  color:var(--muted);
-
-  font-size:13px;
-
-  line-height:1.7;
-
-}
-
-
-/* ========================================
-   ABOUT
-======================================== */
-
-.about-grid{
-
-  display:grid;
-
-  grid-template-columns:1fr 1fr;
-
-  gap:20px;
-
-}
-
-.about-card{
-
-  background:white;
-
-  border:1px solid var(--blue-border);
-
-  border-radius:22px;
-
-  padding:28px;
-
-}
-
-.about-card.blue{
-
-  background:var(--blue);
-
-  color:white;
-
-  border-color:var(--blue);
-
-}
-
-.about-icon{
-
-  width:48px;
-
-  height:48px;
-
-  border-radius:14px;
+  border-radius:11px;
 
   background:var(--blue-light);
 
@@ -876,27 +997,118 @@ button{
 
   justify-content:center;
 
-  margin-bottom:17px;
+  font-size:13px;
 
 }
 
-.about-card.blue .about-icon{
+.trust-item strong{
 
-  background:rgba(255,255,255,.12);
+  display:block;
 
-  color:white;
-
-}
-
-.about-card h3{
-
-  font-size:18px;
-
-  margin-bottom:9px;
+  font-size:10px;
 
 }
 
-.about-card p{
+.trust-item span{
+
+  display:block;
+
+  color:#8993a3;
+
+  font-size:8px;
+
+  margin-top:3px;
+
+}
+
+
+/* ==================================================
+   GENERAL SECTION
+================================================== */
+
+.section{
+
+  padding:75px 18px;
+
+}
+
+.section.alt{
+
+  background:#f8fafc;
+
+  border-top:1px solid #f0f3f7;
+
+  border-bottom:1px solid #f0f3f7;
+
+}
+
+.section-inner{
+
+  max-width:1080px;
+
+  margin:auto;
+
+}
+
+.section-heading{
+
+  text-align:center;
+
+  max-width:670px;
+
+  margin:0 auto 38px;
+
+}
+
+.section-label{
+
+  display:inline-flex;
+
+  align-items:center;
+
+  gap:7px;
+
+  color:var(--blue);
+
+  font-size:9px;
+
+  font-weight:800;
+
+  letter-spacing:1.3px;
+
+  text-transform:uppercase;
+
+  margin-bottom:10px;
+
+}
+
+.section-label::before{
+
+  content:"";
+
+  width:17px;
+
+  height:2px;
+
+  border-radius:5px;
+
+  background:var(--blue);
+
+}
+
+.section-heading h2{
+
+  font-size:30px;
+
+  line-height:1.25;
+
+  letter-spacing:-.8px;
+
+  margin-bottom:11px;
+
+}
+
+.section-heading p{
 
   color:var(--muted);
 
@@ -906,16 +1118,127 @@ button{
 
 }
 
+
+/* ==================================================
+   ABOUT
+================================================== */
+
+.about-grid{
+
+  display:grid;
+
+  grid-template-columns:1fr 1fr;
+
+  gap:18px;
+
+}
+
+.about-card{
+
+  position:relative;
+
+  overflow:hidden;
+
+  background:#ffffff;
+
+  border:1px solid var(--blue-border);
+
+  border-radius:23px;
+
+  padding:30px;
+
+  transition:.25s ease;
+
+}
+
+.about-card:hover{
+
+  transform:translateY(-4px);
+
+  box-shadow:var(--shadow);
+
+}
+
+.about-card.blue{
+
+  background:
+
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(255,255,255,.13),
+      transparent 30%
+    ),
+
+    linear-gradient(
+      145deg,
+      var(--blue),
+      var(--blue-dark)
+    );
+
+  color:#ffffff;
+
+  border-color:var(--blue);
+
+}
+
+.about-icon{
+
+  width:49px;
+
+  height:49px;
+
+  border-radius:15px;
+
+  background:var(--blue-light);
+
+  color:var(--blue);
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  margin-bottom:18px;
+
+}
+
+.about-card.blue .about-icon{
+
+  background:rgba(255,255,255,.12);
+
+  color:#ffffff;
+
+}
+
+.about-card h3{
+
+  font-size:17px;
+
+  margin-bottom:9px;
+
+}
+
+.about-card p{
+
+  color:var(--muted);
+
+  font-size:11px;
+
+  line-height:1.8;
+
+}
+
 .about-card.blue p{
 
-  color:rgba(255,255,255,.78);
+  color:rgba(255,255,255,.75);
 
 }
 
 
-/* ========================================
+/* ==================================================
    BENEFITS
-======================================== */
+================================================== */
 
 .benefits{
 
@@ -929,27 +1252,39 @@ button{
 
 .benefit{
 
-  background:white;
+  background:#ffffff;
 
   border:1px solid var(--blue-border);
 
-  border-radius:20px;
+  border-radius:21px;
 
-  padding:25px;
+  padding:26px 22px;
 
   text-align:center;
+
+  transition:.25s ease;
+
+}
+
+.benefit:hover{
+
+  transform:translateY(-5px);
+
+  box-shadow:var(--shadow);
+
+  border-color:#b9cade;
 
 }
 
 .benefit-icon{
 
-  width:52px;
+  width:53px;
 
-  height:52px;
+  height:53px;
 
   margin:0 auto 16px;
 
-  border-radius:15px;
+  border-radius:16px;
 
   background:var(--blue-light);
 
@@ -963,13 +1298,13 @@ button{
 
   justify-content:center;
 
-  font-size:19px;
+  font-size:18px;
 
 }
 
 .benefit h3{
 
-  font-size:15px;
+  font-size:14px;
 
   margin-bottom:8px;
 
@@ -979,16 +1314,16 @@ button{
 
   color:var(--muted);
 
-  font-size:11px;
+  font-size:10px;
 
-  line-height:1.7;
+  line-height:1.8;
 
 }
 
 
-/* ========================================
+/* ==================================================
    HOW IT WORKS
-======================================== */
+================================================== */
 
 .steps{
 
@@ -996,13 +1331,15 @@ button{
 
   grid-template-columns:repeat(3,1fr);
 
-  gap:18px;
+  gap:16px;
 
 }
 
 .step{
 
-  background:white;
+  position:relative;
+
+  background:#ffffff;
 
   border:1px solid var(--blue-border);
 
@@ -1012,7 +1349,7 @@ button{
 
   text-align:center;
 
-  min-height:260px;
+  min-height:255px;
 
   display:flex;
 
@@ -1022,17 +1359,27 @@ button{
 
   justify-content:center;
 
+  transition:.25s ease;
+
+}
+
+.step:hover{
+
+  transform:translateY(-5px);
+
+  box-shadow:var(--shadow);
+
 }
 
 .step-number{
 
-  font-size:10px;
+  font-size:9px;
 
   font-weight:800;
 
   color:var(--blue);
 
-  letter-spacing:1px;
+  letter-spacing:1.2px;
 
   margin-bottom:13px;
 
@@ -1040,11 +1387,11 @@ button{
 
 .step-icon{
 
-  width:54px;
+  width:55px;
 
-  height:54px;
+  height:55px;
 
-  border-radius:15px;
+  border-radius:16px;
 
   background:var(--blue-light);
 
@@ -1058,7 +1405,7 @@ button{
 
   justify-content:center;
 
-  font-size:19px;
+  font-size:18px;
 
   margin-bottom:16px;
 
@@ -1066,9 +1413,9 @@ button{
 
 .step h3{
 
-  font-size:15px;
+  font-size:14px;
 
-  margin-bottom:9px;
+  margin-bottom:8px;
 
 }
 
@@ -1076,44 +1423,86 @@ button{
 
   color:var(--muted);
 
-  font-size:11px;
+  font-size:10px;
 
-  line-height:1.7;
+  line-height:1.8;
+
+  max-width:250px;
 
 }
 
 
-/* ========================================
+/* ==================================================
    CTA
-======================================== */
+================================================== */
 
 .cta{
 
-  padding:65px 18px;
+  padding:75px 18px;
 
 }
 
 .cta-box{
 
-  max-width:1000px;
+  position:relative;
+
+  overflow:hidden;
+
+  max-width:1030px;
 
   margin:auto;
 
-  background:var(--blue);
+  background:
 
-  color:white;
+    radial-gradient(
+      circle at 90% 0%,
+      rgba(255,255,255,.13),
+      transparent 30%
+    ),
 
-  border-radius:25px;
+    linear-gradient(
+      145deg,
+      var(--blue),
+      var(--blue-dark)
+    );
 
-  padding:48px 25px;
+  color:#ffffff;
+
+  border-radius:27px;
+
+  padding:55px 25px;
 
   text-align:center;
+
+  box-shadow:0 20px 55px rgba(11,45,92,.18);
+
+}
+
+.cta-box::before{
+
+  content:"";
+
+  position:absolute;
+
+  width:220px;
+
+  height:220px;
+
+  border:1px solid rgba(255,255,255,.08);
+
+  border-radius:50%;
+
+  left:-90px;
+
+  bottom:-110px;
 
 }
 
 .cta-box h2{
 
-  font-size:30px;
+  position:relative;
+
+  font-size:29px;
 
   line-height:1.3;
 
@@ -1123,19 +1512,23 @@ button{
 
 .cta-box p{
 
-  color:rgba(255,255,255,.78);
+  position:relative;
+
+  color:rgba(255,255,255,.75);
 
   max-width:560px;
 
-  margin:0 auto 23px;
+  margin:0 auto 24px;
 
-  font-size:12px;
+  font-size:11px;
 
-  line-height:1.7;
+  line-height:1.8;
 
 }
 
 .cta-button{
+
+  position:relative;
 
   display:inline-flex;
 
@@ -1145,7 +1538,7 @@ button{
 
   gap:8px;
 
-  background:white;
+  background:#ffffff;
 
   color:var(--blue);
 
@@ -1153,16 +1546,26 @@ button{
 
   border-radius:12px;
 
-  font-size:13px;
+  font-size:12px;
 
   font-weight:800;
+
+  transition:.2s ease;
+
+}
+
+.cta-button:hover{
+
+  transform:translateY(-2px);
+
+  box-shadow:0 8px 20px rgba(0,0,0,.12);
 
 }
 
 
-/* ========================================
+/* ==================================================
    FAQ
-======================================== */
+================================================== */
 
 .faq{
 
@@ -1174,7 +1577,7 @@ button{
 
 .faq-item{
 
-  background:white;
+  background:#ffffff;
 
   border:1px solid var(--blue-border);
 
@@ -1183,6 +1586,16 @@ button{
   margin-bottom:10px;
 
   overflow:hidden;
+
+  transition:.2s ease;
+
+}
+
+.faq-item[open]{
+
+  border-color:#b9cade;
+
+  box-shadow:0 8px 25px rgba(11,45,92,.05);
 
 }
 
@@ -1194,7 +1607,7 @@ button{
 
   padding:18px;
 
-  font-size:12px;
+  font-size:11px;
 
   font-weight:700;
 
@@ -1203,6 +1616,8 @@ button{
   justify-content:space-between;
 
   align-items:center;
+
+  gap:15px;
 
 }
 
@@ -1216,6 +1631,16 @@ button{
 
   color:var(--blue);
 
+  font-size:10px;
+
+  transition:.2s ease;
+
+}
+
+.faq-item[open] summary i{
+
+  transform:rotate(45deg);
+
 }
 
 .faq-answer{
@@ -1224,16 +1649,16 @@ button{
 
   color:var(--muted);
 
-  font-size:11px;
+  font-size:10px;
 
-  line-height:1.7;
+  line-height:1.8;
 
 }
 
 
-/* ========================================
+/* ==================================================
    FOOTER
-======================================== */
+================================================== */
 
 .footer{
 
@@ -1241,13 +1666,13 @@ button{
 
   border-top:1px solid #e5eaf1;
 
-  padding:40px 18px 25px;
+  padding:45px 18px 25px;
 
 }
 
 .footer-inner{
 
-  max-width:1050px;
+  max-width:1080px;
 
   margin:auto;
 
@@ -1259,9 +1684,9 @@ button{
 
   justify-content:space-between;
 
-  gap:30px;
+  gap:35px;
 
-  padding-bottom:28px;
+  padding-bottom:30px;
 
   border-bottom:1px solid #e1e7ee;
 
@@ -1269,13 +1694,13 @@ button{
 
 .footer-brand{
 
-  max-width:330px;
+  max-width:350px;
 
 }
 
 .footer-brand .logo{
 
-  margin-bottom:11px;
+  margin-bottom:12px;
 
 }
 
@@ -1283,9 +1708,9 @@ button{
 
   color:var(--muted);
 
-  font-size:11px;
+  font-size:10px;
 
-  line-height:1.7;
+  line-height:1.8;
 
 }
 
@@ -1293,7 +1718,7 @@ button{
 
   display:flex;
 
-  gap:45px;
+  gap:55px;
 
 }
 
@@ -1301,9 +1726,9 @@ button{
 
   display:block;
 
-  font-size:11px;
+  font-size:10px;
 
-  margin-bottom:12px;
+  margin-bottom:13px;
 
 }
 
@@ -1313,9 +1738,17 @@ button{
 
   color:var(--muted);
 
-  font-size:10px;
+  font-size:9px;
 
-  margin-bottom:8px;
+  margin-bottom:9px;
+
+  transition:.2s ease;
+
+}
+
+.footer-column a:hover{
+
+  color:var(--blue);
 
 }
 
@@ -1333,16 +1766,16 @@ button{
 
   color:#8a94a6;
 
-  font-size:9px;
+  font-size:8px;
 
 }
 
 
-/* ========================================
+/* ==================================================
    MOBILE
-======================================== */
+================================================== */
 
-@media(max-width:800px){
+@media(max-width:900px){
 
   .desktop-nav{
 
@@ -1352,7 +1785,7 @@ button{
 
   .hero{
 
-    padding-top:45px;
+    padding-top:55px;
 
   }
 
@@ -1360,13 +1793,29 @@ button{
 
     grid-template-columns:1fr;
 
-    gap:35px;
+    gap:42px;
 
   }
 
   .hero h1{
 
-    font-size:38px;
+    font-size:42px;
+
+  }
+
+  .hero-text{
+
+    max-width:650px;
+
+  }
+
+  .hero-preview{
+
+    max-width:600px;
+
+    margin:auto;
+
+    width:100%;
 
   }
 
@@ -1401,7 +1850,6 @@ button{
   }
 
   .trust-item:nth-child(1),
-
   .trust-item:nth-child(2){
 
     border-bottom:1px solid var(--blue-border);
@@ -1414,26 +1862,20 @@ button{
 
   }
 
-  .footer-links{
-
-    gap:50px;
-
-  }
-
 }
 
 
-@media(max-width:500px){
+@media(max-width:600px){
 
   .header-inner{
 
-    padding:11px 12px;
+    padding:10px 12px;
 
   }
 
   .logo{
 
-    font-size:17px;
+    font-size:16px;
 
   }
 
@@ -1442,6 +1884,8 @@ button{
     width:31px;
 
     height:31px;
+
+    border-radius:9px;
 
   }
 
@@ -1452,42 +1896,45 @@ button{
   }
 
   .sign-in,
-
   .create-account{
 
-    min-height:40px;
+    min-height:39px;
 
     padding:0 10px;
 
-    font-size:10px;
+    font-size:9px;
+
+    border-radius:10px;
 
   }
 
   .sign-in i,
-
   .create-account i{
 
     display:none;
 
   }
 
+
   .hero{
 
-    padding:42px 15px 45px;
+    padding:42px 15px 48px;
 
   }
 
   .hero h1{
 
-    font-size:32px;
+    font-size:34px;
 
-    letter-spacing:-1px;
+    letter-spacing:-1.3px;
 
   }
 
   .hero-text{
 
-    font-size:13px;
+    font-size:12px;
+
+    line-height:1.8;
 
   }
 
@@ -1498,16 +1945,30 @@ button{
   }
 
   .hero-primary,
-
   .hero-secondary{
 
     width:100%;
 
   }
 
+  .hero-mini-trust{
+
+    gap:10px 14px;
+
+  }
+
+  .hero-mini-trust span{
+
+    font-size:8px;
+
+  }
+
+
   .hero-preview{
 
-    padding:10px;
+    padding:9px;
+
+    border-radius:22px;
 
   }
 
@@ -1515,17 +1976,45 @@ button{
 
     padding:17px;
 
+    border-radius:17px;
+
   }
 
   .preview-balance{
 
-    font-size:24px;
+    font-size:25px;
 
   }
 
+
+  .trust{
+
+    padding:0 12px 45px;
+
+  }
+
+  .trust-inner{
+
+    border-radius:17px;
+
+  }
+
+  .trust-item{
+
+    padding:17px 8px;
+
+  }
+
+
   .section{
 
-    padding:50px 15px;
+    padding:55px 15px;
+
+  }
+
+  .section-heading{
+
+    margin-bottom:30px;
 
   }
 
@@ -1535,27 +2024,45 @@ button{
 
   }
 
+  .section-heading p{
+
+    font-size:11px;
+
+  }
+
+
   .about-card{
 
     padding:23px;
 
   }
 
-  .step{
 
-    min-height:235px;
+  .benefit{
+
+    padding:23px 19px;
 
   }
 
+
+  .step{
+
+    min-height:225px;
+
+  }
+
+
   .cta{
 
-    padding:50px 15px;
+    padding:55px 15px;
 
   }
 
   .cta-box{
 
-    padding:38px 20px;
+    padding:42px 20px;
+
+    border-radius:23px;
 
   }
 
@@ -1565,9 +2072,16 @@ button{
 
   }
 
+
+  .footer{
+
+    padding:38px 15px 23px;
+
+  }
+
   .footer-links{
 
-    gap:25px;
+    gap:30px;
 
     flex-wrap:wrap;
 
@@ -1578,6 +2092,67 @@ button{
     flex-direction:column;
 
     align-items:flex-start;
+
+    gap:6px;
+
+  }
+
+}
+
+
+@media(max-width:390px){
+
+  .logo{
+
+    font-size:14px;
+
+  }
+
+  .sign-in,
+  .create-account{
+
+    padding:0 8px;
+
+  }
+
+  .hero h1{
+
+    font-size:30px;
+
+  }
+
+  .preview-row{
+
+    gap:6px;
+
+  }
+
+  .preview-mini{
+
+    padding:11px;
+
+  }
+
+}
+
+
+/* ==================================================
+   REDUCED MOTION
+================================================== */
+
+@media(prefers-reduced-motion:reduce){
+
+  html{
+
+    scroll-behavior:auto;
+
+  }
+
+  *,
+  *::before,
+  *::after{
+
+    transition:none !important;
 
   }
 
@@ -1591,9 +2166,9 @@ button{
 <body>
 
 
-<!-- ========================================
+<!-- ==================================================
      HEADER
-========================================= -->
+================================================== -->
 
 <header class="header">
 
@@ -1670,9 +2245,9 @@ button{
 
 
 
-<!-- ========================================
+<!-- ==================================================
      HERO
-========================================= -->
+================================================== -->
 
 <section class="hero">
 
@@ -1680,6 +2255,7 @@ button{
 
 
     <div>
+
 
       <div class="hero-badge">
 
@@ -1703,14 +2279,16 @@ button{
 
       <p class="hero-text">
 
-        Create your account, fund your wallet,
-        browse available accounts and get your
-        purchased logs quickly and easily.
+        Create your account, explore available
+        products, manage your wallet and keep
+        your purchases organized in one simple
+        store.
 
       </p>
 
 
       <div class="hero-buttons">
+
 
         <a
           href="signup.html"
@@ -1735,7 +2313,38 @@ button{
 
         </a>
 
+
       </div>
+
+
+      <div class="hero-mini-trust">
+
+        <span>
+
+          <i class="fa-solid fa-shield-halved"></i>
+
+          Secure account
+
+        </span>
+
+        <span>
+
+          <i class="fa-solid fa-bolt"></i>
+
+          Simple shopping
+
+        </span>
+
+        <span>
+
+          <i class="fa-solid fa-headset"></i>
+
+          Customer support
+
+        </span>
+
+      </div>
+
 
     </div>
 
@@ -1743,129 +2352,158 @@ button{
 
     <!-- DASHBOARD PREVIEW -->
 
-    <div class="hero-preview">
+    <div class="hero-preview-wrap">
+
+      <div class="preview-glow"></div>
 
 
-      <div class="preview-top">
-
-        <small>
-          WALLET BALANCE
-        </small>
-
-        <div class="preview-balance">
-          ₦0.00
-        </div>
+      <div class="hero-preview">
 
 
-        <div class="preview-row">
+        <div class="preview-top">
 
 
-          <div class="preview-mini">
+          <div class="preview-top-row">
 
-            <i class="fa-solid fa-box"></i>
+            <small>
+              WALLET BALANCE
+            </small>
 
-            <strong>
-              Products
-            </strong>
+            <div class="preview-wallet-icon">
 
-            <span>
-              Browse store
-            </span>
+              <i class="fa-solid fa-wallet"></i>
+
+            </div>
 
           </div>
 
 
-          <div class="preview-mini">
-
-            <i class="fa-solid fa-receipt"></i>
-
-            <strong>
-              Orders
-            </strong>
-
-            <span>
-              View purchases
-            </span>
-
+          <div class="preview-balance">
+            ₦0.00
           </div>
 
 
-        </div>
-
-      </div>
-
-
-
-      <div class="preview-products">
-
-
-        <div class="preview-title">
-
-          <strong>
-            Available Products
-          </strong>
-
-          <span>
-            View All
-          </span>
-
-        </div>
-
-
-        <div class="preview-product">
-
-          <div class="preview-product-icon">
-
-            <i class="fa-brands fa-instagram"></i>
-
+          <div class="preview-wallet-label">
+            Available balance
           </div>
 
 
-          <div class="preview-product-info">
-
-            <strong>
-              Digital Products
-            </strong>
-
-            <span>
-              Available in store
-            </span>
-
-          </div>
+          <div class="preview-row">
 
 
-          <div class="preview-price">
-            BUY
+            <div class="preview-mini">
+
+              <i class="fa-solid fa-box"></i>
+
+              <strong>
+                Products
+              </strong>
+
+              <span>
+                Browse store
+              </span>
+
+            </div>
+
+
+            <div class="preview-mini">
+
+              <i class="fa-solid fa-receipt"></i>
+
+              <strong>
+                Orders
+              </strong>
+
+              <span>
+                View purchases
+              </span>
+
+            </div>
+
+
           </div>
 
         </div>
 
 
-        <div class="preview-product">
 
-          <div class="preview-product-icon">
-
-            <i class="fa-solid fa-box"></i>
-
-          </div>
+        <div class="preview-products">
 
 
-          <div class="preview-product-info">
+          <div class="preview-title">
 
             <strong>
-              More Products
+              Available Products
             </strong>
 
             <span>
-              New items available
+              View All
             </span>
 
           </div>
 
 
-          <div class="preview-price">
-            BUY
+          <div class="preview-product">
+
+
+            <div class="preview-product-icon">
+
+              <i class="fa-brands fa-instagram"></i>
+
+            </div>
+
+
+            <div class="preview-product-info">
+
+              <strong>
+                Digital Products
+              </strong>
+
+              <span>
+                Available in store
+              </span>
+
+            </div>
+
+
+            <div class="preview-price">
+              BUY
+            </div>
+
+
           </div>
+
+
+          <div class="preview-product">
+
+
+            <div class="preview-product-icon">
+
+              <i class="fa-solid fa-box"></i>
+
+            </div>
+
+
+            <div class="preview-product-info">
+
+              <strong>
+                More Products
+              </strong>
+
+              <span>
+                New items available
+              </span>
+
+            </div>
+
+
+            <div class="preview-price">
+              BUY
+            </div>
+
+
+          </div>
+
 
         </div>
 
@@ -1880,9 +2518,9 @@ button{
 
 
 
-<!-- ========================================
+<!-- ==================================================
      TRUST
-========================================= -->
+================================================== -->
 
 <section class="trust">
 
@@ -1955,9 +2593,9 @@ button{
 
 
 
-<!-- ========================================
+<!-- ==================================================
      ABOUT
-========================================= -->
+================================================== -->
 
 <section
   class="section alt"
@@ -1979,7 +2617,7 @@ button{
 
       <p>
         Gentle Acct Store is designed to make
-        buying digital products straightforward
+        buying digital products straightforward,
         from registration to delivery.
       </p>
 
@@ -2002,9 +2640,9 @@ button{
         </h3>
 
         <p>
-          Browse the available products from
-          your dashboard, check your wallet and
-          manage your purchases from one account.
+          Browse available products, check your
+          wallet and manage your purchases from
+          one convenient customer account.
         </p>
 
       </div>
@@ -2023,9 +2661,9 @@ button{
         </h3>
 
         <p>
-          Our simple customer experience makes
-          it easy to move from creating an account
-          to completing a purchase.
+          A straightforward shopping experience
+          that makes it easy to move from creating
+          an account to completing a purchase.
         </p>
 
       </div>
@@ -2039,9 +2677,9 @@ button{
 
 
 
-<!-- ========================================
+<!-- ==================================================
      BENEFITS
-========================================= -->
+================================================== -->
 
 <section
   class="section"
@@ -2140,9 +2778,9 @@ button{
 
 
 
-<!-- ========================================
+<!-- ==================================================
      HOW IT WORKS
-========================================= -->
+================================================== -->
 
 <section
   class="section alt"
@@ -2193,8 +2831,8 @@ button{
 
 
         <p>
-          Sign up in under 60 seconds and
-          access your customer dashboard.
+          Sign up and access your customer
+          dashboard.
         </p>
 
       </div>
@@ -2264,9 +2902,9 @@ button{
 
 
 
-<!-- ========================================
+<!-- ==================================================
      CTA
-========================================= -->
+================================================== -->
 
 <section class="cta">
 
@@ -2302,9 +2940,9 @@ button{
 
 
 
-<!-- ========================================
+<!-- ==================================================
      FAQ
-========================================= -->
+================================================== -->
 
 <section
   class="section"
@@ -2323,6 +2961,11 @@ button{
       <h2>
         Frequently asked questions.
       </h2>
+
+      <p>
+        Quick answers to common questions
+        about using the store.
+      </p>
 
     </div>
 
@@ -2428,9 +3071,9 @@ button{
 
 
 
-<!-- ========================================
+<!-- ==================================================
      FOOTER
-========================================= -->
+================================================== -->
 
 <footer class="footer">
 
@@ -2496,6 +3139,10 @@ button{
 
           <a href="#about">
             About
+          </a>
+
+          <a href="#benefits">
+            Benefits
           </a>
 
           <a href="#how-it-works">

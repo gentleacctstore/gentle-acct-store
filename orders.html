@@ -6,32 +6,44 @@
 <meta charset="UTF-8">
 
 <meta
-name="viewport"
-content="width=device-width, initial-scale=1.0"
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<meta
+  name="theme-color"
+  content="#071f40"
+>
+
+<meta
+  name="description"
+  content="View your Gentle Acct Store orders and purchase information."
 >
 
 <title>My Orders - Gentle Acct Store</title>
 
+
 <link
-rel="preconnect"
-href="https://fonts.googleapis.com"
+  rel="preconnect"
+  href="https://fonts.googleapis.com"
 >
 
 <link
-rel="preconnect"
-href="https://fonts.googleapis.com"
-crossorigin
+  rel="preconnect"
+  href="https://fonts.gstatic.com"
 >
 
 <link
-href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
-rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+  rel="stylesheet"
 >
 
+
 <link
-rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 >
+
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 
@@ -41,66 +53,90 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
 <script src="firebase.js"></script>
 
+
 <style>
 
 :root{
 
---blue:#0b2d5c;
---blue-dark:#071f40;
---blue-light:#eaf2fb;
---blue-soft:#f5f8fc;
+  --blue:#0b3b72;
+  --blue-main:#0b2d5c;
+  --blue-dark:#071f40;
 
---white:#ffffff;
+  --blue-light:#edf4fc;
+  --blue-soft:#f5f8fc;
 
---text:#172033;
---muted:#748093;
+  --white:#ffffff;
 
---border:#e4eaf2;
+  --text:#172033;
+  --muted:#748093;
 
---success:#15803d;
+  --border:#e2e8f0;
 
---shadow:
-0 8px 25px rgba(11,45,92,.07);
+  --success:#15803d;
+  --success-bg:#edf8f0;
+
+  --danger:#dc2626;
+  --danger-bg:#fff1f1;
+
+  --shadow:
+    0 9px 28px rgba(7,31,64,.07);
 
 }
+
 
 *{
 
-box-sizing:border-box;
+  box-sizing:border-box;
 
-margin:0;
+  margin:0;
 
-padding:0;
+  padding:0;
 
 }
+
+
+html{
+
+  scroll-behavior:smooth;
+
+}
+
 
 body{
 
-font-family:"Poppins",sans-serif;
+  font-family:"Poppins",sans-serif;
 
-background:#f7f9fc;
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(31,105,194,.08),
+      transparent 30%
+    ),
+    #f6f8fc;
 
-color:var(--text);
+  color:var(--text);
 
-min-height:100vh;
+  min-height:100vh;
 
-padding-bottom:30px;
+  padding-bottom:85px;
 
 }
+
 
 button{
 
-font-family:inherit;
+  font-family:inherit;
 
-cursor:pointer;
+  cursor:pointer;
 
 }
 
+
 a{
 
-text-decoration:none;
+  text-decoration:none;
 
-color:inherit;
+  color:inherit;
 
 }
 
@@ -111,13 +147,13 @@ color:inherit;
 
 .page{
 
-width:100%;
+  width:100%;
 
-max-width:600px;
+  max-width:600px;
 
-margin:0 auto;
+  margin:0 auto;
 
-min-height:100vh;
+  min-height:100vh;
 
 }
 
@@ -128,77 +164,110 @@ min-height:100vh;
 
 header{
 
-height:68px;
+  height:70px;
 
-background:var(--white);
+  background:rgba(255,255,255,.95);
 
-padding:0 17px;
+  padding:0 17px;
 
-border-bottom:1px solid var(--border);
+  border-bottom:1px solid var(--border);
 
-display:flex;
+  display:flex;
 
-align-items:center;
+  align-items:center;
 
-justify-content:space-between;
+  justify-content:space-between;
 
-position:sticky;
+  position:sticky;
 
-top:0;
+  top:0;
 
-z-index:50;
+  z-index:50;
+
+  backdrop-filter:blur(14px);
+
+  -webkit-backdrop-filter:blur(14px);
 
 }
+
 
 .header-left{
 
-display:flex;
+  display:flex;
 
-align-items:center;
+  align-items:center;
 
-gap:11px;
+  gap:11px;
 
 }
+
 
 .back-btn{
 
-width:38px;
+  width:39px;
 
-height:38px;
+  height:39px;
 
-border:none;
+  border:none;
 
-border-radius:11px;
+  border-radius:11px;
 
-background:var(--blue-light);
+  background:var(--blue-light);
 
-color:var(--blue);
+  color:var(--blue);
 
-display:flex;
+  display:flex;
 
-align-items:center;
+  align-items:center;
 
-justify-content:center;
+  justify-content:center;
 
-font-size:14px;
+  font-size:14px;
+
+  transition:.2s ease;
 
 }
+
+
+.back-btn:hover{
+
+  background:#e1ebf7;
+
+  transform:translateX(-1px);
+
+}
+
 
 .header-title{
 
-font-size:15px;
+  font-size:16px;
 
-font-weight:800;
+  font-weight:800;
 
-color:var(--blue-dark);
+  color:var(--blue-dark);
 
 }
 
+
 .header-right{
 
-color:var(--blue);
+  width:39px;
 
-font-size:18px;
+  height:39px;
+
+  border-radius:11px;
+
+  background:var(--blue-light);
+
+  color:var(--blue);
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  font-size:14px;
 
 }
 
@@ -209,7 +278,7 @@ font-size:18px;
 
 main{
 
-padding:18px 16px 35px;
+  padding:20px 15px 35px;
 
 }
 
@@ -220,29 +289,33 @@ padding:18px 16px 35px;
 
 .page-heading{
 
-margin-bottom:17px;
+  margin-bottom:17px;
 
 }
+
 
 .page-heading h1{
 
-font-size:23px;
+  font-size:23px;
 
-font-weight:800;
+  font-weight:800;
 
-color:var(--blue-dark);
+  color:var(--blue-dark);
 
-margin-bottom:4px;
+  margin-bottom:4px;
+
+  letter-spacing:-.4px;
 
 }
 
+
 .page-heading p{
 
-font-size:10px;
+  font-size:10px;
 
-color:var(--muted);
+  color:var(--muted);
 
-line-height:1.6;
+  line-height:1.6;
 
 }
 
@@ -253,69 +326,108 @@ line-height:1.6;
 
 .summary-card{
 
-background:var(--blue);
+  position:relative;
 
-color:var(--white);
+  overflow:hidden;
 
-border-radius:18px;
+  background:
+    linear-gradient(
+      145deg,
+      #0d3c78,
+      #071f40
+    );
 
-padding:17px;
+  color:var(--white);
 
-margin-bottom:15px;
+  border-radius:20px;
 
-box-shadow:0 8px 24px rgba(11,45,92,.14);
+  padding:18px;
+
+  margin-bottom:17px;
+
+  box-shadow:
+    0 12px 28px rgba(7,31,64,.17);
 
 }
+
+
+.summary-card::after{
+
+  content:"";
+
+  position:absolute;
+
+  width:145px;
+
+  height:145px;
+
+  border-radius:50%;
+
+  right:-65px;
+
+  top:-70px;
+
+  background:rgba(255,255,255,.07);
+
+}
+
 
 .summary-top{
 
-display:flex;
+  position:relative;
 
-align-items:center;
+  z-index:2;
 
-justify-content:space-between;
+  display:flex;
 
-gap:12px;
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:12px;
 
 }
+
 
 .summary-label{
 
-font-size:9px;
+  font-size:9px;
 
-opacity:.72;
+  opacity:.72;
 
-margin-bottom:4px;
+  margin-bottom:5px;
 
 }
+
 
 .summary-number{
 
-font-size:27px;
+  font-size:28px;
 
-font-weight:800;
+  font-weight:800;
 
-line-height:1;
+  line-height:1;
 
 }
 
+
 .summary-icon{
 
-width:44px;
+  width:45px;
 
-height:44px;
+  height:45px;
 
-border-radius:13px;
+  border-radius:14px;
 
-background:rgba(255,255,255,.13);
+  background:rgba(255,255,255,.13);
 
-display:flex;
+  display:flex;
 
-align-items:center;
+  align-items:center;
 
-justify-content:center;
+  justify-content:center;
 
-font-size:17px;
+  font-size:17px;
 
 }
 
@@ -326,17 +438,29 @@ font-size:17px;
 
 .order{
 
-background:var(--white);
+  background:var(--white);
 
-border:1px solid var(--border);
+  border:1px solid var(--border);
 
-border-radius:18px;
+  border-radius:19px;
 
-padding:15px;
+  padding:15px;
 
-margin-bottom:13px;
+  margin-bottom:13px;
 
-box-shadow:var(--shadow);
+  box-shadow:var(--shadow);
+
+  transition:.2s ease;
+
+}
+
+
+.order:hover{
+
+  transform:translateY(-1px);
+
+  box-shadow:
+    0 12px 30px rgba(7,31,64,.09);
 
 }
 
@@ -347,107 +471,113 @@ box-shadow:var(--shadow);
 
 .order-top{
 
-display:flex;
+  display:flex;
 
-align-items:center;
+  align-items:center;
 
-gap:11px;
+  gap:11px;
 
 }
+
 
 .order-icon{
 
-width:48px;
+  width:48px;
 
-height:48px;
+  height:48px;
 
-border-radius:14px;
+  border-radius:14px;
 
-background:var(--blue-light);
+  background:var(--blue-light);
 
-color:var(--blue);
+  color:var(--blue);
 
-display:flex;
+  display:flex;
 
-align-items:center;
+  align-items:center;
 
-justify-content:center;
+  justify-content:center;
 
-font-size:17px;
+  font-size:17px;
 
-flex-shrink:0;
+  flex-shrink:0;
 
 }
+
 
 .order-name{
 
-flex:1;
+  flex:1;
 
-min-width:0;
+  min-width:0;
 
 }
+
 
 .order-name h3{
 
-font-size:13px;
+  font-size:13px;
 
-font-weight:800;
+  font-weight:800;
 
-color:var(--blue-dark);
+  color:var(--blue-dark);
 
-margin-bottom:5px;
+  margin-bottom:5px;
 
-white-space:nowrap;
+  white-space:nowrap;
 
-overflow:hidden;
+  overflow:hidden;
 
-text-overflow:ellipsis;
+  text-overflow:ellipsis;
 
 }
+
 
 .order-category{
 
-display:inline-block;
+  display:inline-block;
 
-background:#f0f4f9;
+  background:#f0f4f9;
 
-color:#64748b;
+  color:#64748b;
 
-font-size:8px;
+  font-size:8px;
 
-font-weight:700;
+  font-weight:700;
 
-padding:4px 8px;
+  padding:4px 8px;
 
-border-radius:7px;
+  border-radius:7px;
 
-text-transform:capitalize;
+  text-transform:capitalize;
 
 }
+
 
 .status{
 
-background:#edf7f0;
+  background:var(--success-bg);
 
-color:var(--success);
+  color:var(--success);
 
-border-radius:20px;
+  border-radius:20px;
 
-padding:5px 8px;
+  padding:5px 8px;
 
-font-size:8px;
+  font-size:8px;
 
-font-weight:800;
+  font-weight:800;
 
-white-space:nowrap;
+  white-space:nowrap;
 
 }
 
+
 .status i{
 
-font-size:8px;
+  font-size:8px;
 
-margin-right:2px;
+  margin-right:2px;
 
 }
 
@@ -458,97 +588,112 @@ margin-right:2px;
 
 .purchase{
 
-background:var(--blue-soft);
+  background:var(--blue-soft);
 
-border:1px solid var(--border);
+  border:1px solid var(--border);
 
-border-radius:14px;
+  border-radius:14px;
 
-padding:13px;
+  padding:13px;
 
-margin-top:14px;
+  margin-top:14px;
 
 }
+
 
 .purchase-title{
 
-display:flex;
+  display:flex;
 
-align-items:center;
+  align-items:center;
 
-gap:7px;
+  gap:7px;
 
-font-size:10px;
+  font-size:10px;
 
-font-weight:800;
+  font-weight:800;
 
-color:var(--blue-dark);
+  color:var(--blue-dark);
 
-margin-bottom:9px;
+  margin-bottom:9px;
 
 }
+
 
 .purchase-title i{
 
-color:var(--blue);
+  color:var(--blue);
 
 }
+
 
 .purchase-text{
 
-background:var(--white);
+  background:var(--white);
 
-border:1px solid var(--border);
+  border:1px solid var(--border);
 
-border-radius:10px;
+  border-radius:10px;
 
-padding:12px;
+  padding:12px;
 
-font-size:11px;
+  font-size:11px;
 
-font-weight:700;
+  font-weight:700;
 
-color:var(--text);
+  color:var(--text);
 
-line-height:1.6;
+  line-height:1.6;
 
-word-break:break-word;
+  word-break:break-word;
 
-white-space:pre-wrap;
+  white-space:pre-wrap;
 
 }
+
 
 .copy{
 
-width:100%;
+  width:100%;
 
-border:1px solid #cfdae8;
+  border:1px solid #cfdae8;
 
-background:var(--white);
+  background:var(--white);
 
-color:var(--blue);
+  color:var(--blue);
 
-border-radius:10px;
+  border-radius:10px;
 
-padding:10px;
+  padding:10px;
 
-margin-top:9px;
+  margin-top:9px;
 
-font-size:9px;
+  font-size:9px;
 
-font-weight:800;
+  font-weight:800;
+
+  transition:.2s ease;
+
+}
+
+
+.copy:hover{
+
+  background:var(--blue-light);
 
 }
 
-.copy i{
-
-margin-right:4px;
-
-}
 
 .copy:active{
 
-transform:scale(.98);
+  transform:scale(.98);
+
+}
+
+
+.copy i{
+
+  margin-right:4px;
 
 }
 
@@ -559,83 +704,95 @@ transform:scale(.98);
 
 .empty{
 
-background:var(--white);
+  background:var(--white);
 
-border:1px solid var(--border);
+  border:1px solid var(--border);
 
-border-radius:18px;
+  border-radius:19px;
 
-padding:45px 20px;
+  padding:46px 20px;
 
-text-align:center;
+  text-align:center;
 
-box-shadow:var(--shadow);
+  box-shadow:var(--shadow);
 
 }
+
 
 .empty-icon{
 
-width:64px;
+  width:65px;
 
-height:64px;
+  height:65px;
 
-border-radius:50%;
+  border-radius:50%;
 
-background:var(--blue-light);
+  background:var(--blue-light);
 
-color:var(--blue);
+  color:var(--blue);
 
-display:flex;
+  display:flex;
 
-align-items:center;
+  align-items:center;
 
-justify-content:center;
+  justify-content:center;
 
-margin:0 auto 14px;
+  margin:0 auto 14px;
 
-font-size:24px;
+  font-size:24px;
 
 }
+
 
 .empty h3{
 
-font-size:16px;
+  font-size:16px;
 
-font-weight:800;
+  font-weight:800;
 
-color:var(--blue-dark);
+  color:var(--blue-dark);
 
 }
+
 
 .empty p{
 
-font-size:10px;
+  font-size:10px;
 
-line-height:1.6;
+  line-height:1.6;
 
-color:var(--muted);
+  color:var(--muted);
 
-margin-top:6px;
+  margin-top:6px;
 
 }
 
+
 .shop{
 
-border:none;
+  border:none;
 
-background:var(--blue);
+  background:
+    linear-gradient(
+      135deg,
+      #0d3c78,
+      #071f40
+    );
 
-color:var(--white);
+  color:var(--white);
 
-border-radius:11px;
+  border-radius:11px;
 
-padding:11px 17px;
+  padding:11px 17px;
 
-font-size:10px;
+  font-size:10px;
 
-font-weight:800;
+  font-weight:800;
 
-margin-top:16px;
+  margin-top:16px;
+
+  box-shadow:
+    0 8px 18px rgba(7,31,64,.15);
 
 }
 
@@ -646,33 +803,37 @@ margin-top:16px;
 
 .loading{
 
-background:var(--white);
+  background:var(--white);
 
-border:1px solid var(--border);
+  border:1px solid var(--border);
 
-border-radius:18px;
+  border-radius:19px;
 
-padding:45px 20px;
+  padding:45px 20px;
 
-text-align:center;
+  text-align:center;
 
-color:var(--muted);
+  color:var(--muted);
+
+  box-shadow:var(--shadow);
 
 }
+
 
 .loading i{
 
-color:var(--blue);
+  color:var(--blue);
 
-font-size:24px;
+  font-size:24px;
 
-margin-bottom:10px;
+  margin-bottom:10px;
 
 }
 
+
 .loading p{
 
-font-size:10px;
+  font-size:10px;
 
 }
 
@@ -683,37 +844,39 @@ font-size:10px;
 
 .error-icon{
 
-width:62px;
+  width:62px;
 
-height:62px;
+  height:62px;
 
-border-radius:50%;
+  border-radius:50%;
 
-background:#fff1f1;
+  background:var(--danger-bg);
 
-color:#dc2626;
+  color:var(--danger);
 
-display:flex;
+  display:flex;
 
-align-items:center;
+  align-items:center;
 
-justify-content:center;
+  justify-content:center;
 
-margin:0 auto 14px;
+  margin:0 auto 14px;
 
-font-size:23px;
+  font-size:23px;
 
 }
+
 
 .error-title{
 
-color:var(--blue-dark);
+  color:var(--blue-dark);
 
 }
 
+
 .error-message{
 
-word-break:break-word;
+  word-break:break-word;
 
 }
 
@@ -724,90 +887,143 @@ word-break:break-word;
 
 .bottom-nav{
 
-position:fixed;
+  position:fixed;
 
-left:50%;
+  left:50%;
 
-bottom:0;
+  bottom:0;
 
-transform:translateX(-50%);
+  transform:translateX(-50%);
 
-width:100%;
+  width:100%;
 
-max-width:600px;
+  max-width:600px;
 
-height:67px;
+  height:70px;
 
-background:rgba(255,255,255,.97);
+  background:rgba(255,255,255,.97);
 
-border-top:1px solid var(--border);
+  border-top:1px solid var(--border);
 
-display:flex;
+  display:flex;
 
-align-items:center;
+  align-items:center;
 
-justify-content:space-around;
+  justify-content:space-around;
 
-z-index:100;
+  z-index:100;
 
-backdrop-filter:blur(10px);
+  backdrop-filter:blur(14px);
+
+  -webkit-backdrop-filter:blur(14px);
 
 }
+
 
 .nav-item{
 
-flex:1;
+  flex:1;
 
-height:100%;
+  height:100%;
 
-display:flex;
+  display:flex;
 
-flex-direction:column;
+  flex-direction:column;
 
-align-items:center;
+  align-items:center;
 
-justify-content:center;
+  justify-content:center;
 
-gap:4px;
+  gap:4px;
 
-font-size:8px;
+  font-size:8px;
 
-font-weight:700;
+  font-weight:700;
 
-color:#8993a3;
+  color:#8993a3;
+
+  transition:.2s ease;
 
 }
+
 
 .nav-item i{
 
-font-size:16px;
+  font-size:16px;
 
 }
+
 
 .nav-item.active{
 
-color:var(--blue);
+  color:var(--blue);
 
 }
+
+
+.nav-item:hover{
+
+  color:var(--blue);
+
+}
+
+
+/* ==========================================
+   DESKTOP
+========================================== */
 
 @media(min-width:700px){
 
-body{
+  body{
 
-background:#eef3f8;
+    background:#eef3f8;
+
+  }
+
+
+  .page{
+
+    background:#f7f9fc;
+
+    box-shadow:
+      0 0 40px rgba(0,0,0,.04);
+
+    padding-bottom:70px;
+
+  }
 
 }
 
-.page{
 
-background:#f7f9fc;
+/* ==========================================
+   SMALL MOBILE
+========================================== */
 
-box-shadow:
-0 0 40px rgba(0,0,0,.04);
+@media(max-width:370px){
 
-padding-bottom:70px;
+  main{
 
-}
+    padding-left:12px;
+
+    padding-right:12px;
+
+  }
+
+
+  .order{
+
+    padding:13px;
+
+  }
+
+
+  .status{
+
+    font-size:7px;
+
+    padding:5px 7px;
+
+  }
 
 }
 
@@ -828,23 +1044,28 @@ padding-bottom:70px;
 
 <header>
 
+
 <div class="header-left">
 
+
 <button
-class="back-btn"
-type="button"
-onclick="window.location.href='dashboard.html'"
+  class="back-btn"
+  type="button"
+  id="backButton"
+  aria-label="Back to dashboard"
 >
 
 <i class="fa-solid fa-arrow-left"></i>
 
 </button>
 
+
 <div class="header-title">
 
 My Orders
 
 </div>
+
 
 </div>
 
@@ -854,6 +1075,7 @@ My Orders
 <i class="fa-solid fa-receipt"></i>
 
 </div>
+
 
 </header>
 
@@ -871,9 +1093,11 @@ My Orders
 My Orders
 </h1>
 
+
 <p>
 View your completed purchases and purchase information.
 </p>
+
 
 </div>
 
@@ -884,7 +1108,9 @@ View your completed purchases and purchase information.
 
 <div class="summary-card">
 
+
 <div class="summary-top">
+
 
 <div>
 
@@ -892,12 +1118,14 @@ View your completed purchases and purchase information.
 Total Orders
 </div>
 
+
 <div
-class="summary-number"
-id="totalOrders"
+  class="summary-number"
+  id="totalOrders"
 >
 0
 </div>
+
 
 </div>
 
@@ -908,7 +1136,9 @@ id="totalOrders"
 
 </div>
 
+
 </div>
+
 
 </div>
 
@@ -919,6 +1149,7 @@ id="totalOrders"
 
 <div id="ordersList">
 
+
 <div class="loading">
 
 <i class="fa-solid fa-spinner fa-spin"></i>
@@ -928,6 +1159,7 @@ Loading your orders...
 </p>
 
 </div>
+
 
 </div>
 
@@ -943,8 +1175,8 @@ Loading your orders...
 
 
 <a
-class="nav-item"
-href="dashboard.html"
+  class="nav-item"
+  href="dashboard.html"
 >
 
 <i class="fa-solid fa-house"></i>
@@ -957,8 +1189,8 @@ Home
 
 
 <a
-class="nav-item"
-href="dashboard.html#products"
+  class="nav-item"
+  href="dashboard.html#products"
 >
 
 <i class="fa-solid fa-box"></i>
@@ -971,8 +1203,8 @@ Products
 
 
 <a
-class="nav-item active"
-href="orders.html"
+  class="nav-item active"
+  href="orders.html"
 >
 
 <i class="fa-solid fa-receipt"></i>
@@ -985,8 +1217,8 @@ Orders
 
 
 <a
-class="nav-item"
-href="fund.html"
+  class="nav-item"
+  href="fund.html"
 >
 
 <i class="fa-solid fa-wallet"></i>
@@ -999,8 +1231,8 @@ Fund
 
 
 <a
-class="nav-item"
-href="profile.html"
+  class="nav-item"
+  href="profile.html"
 >
 
 <i class="fa-solid fa-user"></i>
@@ -1034,48 +1266,67 @@ let firebaseUser = null;
 firebaseAuth.onAuthStateChanged(
 function(user){
 
-if(
-!user ||
-!user.emailVerified
-){
+  if(
+    !user ||
+    !user.emailVerified
+  ){
 
-localStorage.removeItem(
-"gentleLoggedIn"
-);
+    localStorage.removeItem(
+      "gentleLoggedIn"
+    );
 
-localStorage.removeItem(
-"gentleCurrentUserId"
-);
+    localStorage.removeItem(
+      "gentleCurrentUserId"
+    );
 
-window.location.replace(
-"login.html"
-);
+    window.location.replace(
+      "login.html"
+    );
 
-return;
+    return;
+
+  }
+
+
+  firebaseUser =
+    user;
+
+
+  localStorage.setItem(
+    "gentleLoggedIn",
+    "true"
+  );
+
+
+  localStorage.setItem(
+    "gentleCurrentUserId",
+    user.uid
+  );
+
+
+  loadFirestoreOrders();
 
 }
-
-
-firebaseUser =
-user;
-
-
-localStorage.setItem(
-"gentleLoggedIn",
-"true"
 );
 
 
-localStorage.setItem(
-"gentleCurrentUserId",
-user.uid
-);
+/* ==================================================
+   BACK BUTTON
+================================================== */
 
+document
+  .getElementById(
+    "backButton"
+  )
+  .addEventListener(
+    "click",
+    function(){
 
-loadFirestoreOrders();
+      window.location.href =
+        "dashboard.html";
 
-}
-);
+    }
+  );
 
 
 /* ==================================================
@@ -1084,154 +1335,156 @@ loadFirestoreOrders();
 
 async function loadFirestoreOrders(){
 
-const list =
-document.getElementById(
-"ordersList"
-);
+  const list =
+    document.getElementById(
+      "ordersList"
+    );
 
 
-try{
+  try{
 
-if(
-typeof firebaseDB ===
-"undefined"
-){
+    if(
+      typeof firebaseDB ===
+      "undefined"
+    ){
 
-throw new Error(
-"Firestore is not available."
-);
+      throw new Error(
+        "Firestore is not available."
+      );
 
-}
-
-
-if(!firebaseUser){
-
-throw new Error(
-"You are not signed in."
-);
-
-}
+    }
 
 
-/*
-Load the customer's orders.
-*/
+    if(!firebaseUser){
 
-const snapshot =
-await firebaseDB
-.collection("orders")
-.where(
-"userId",
-"==",
-firebaseUser.uid
-)
-.get();
+      throw new Error(
+        "You are not signed in."
+      );
+
+    }
 
 
-const orders = [];
+    const snapshot =
+      await firebaseDB
+        .collection("orders")
+        .where(
+          "userId",
+          "==",
+          firebaseUser.uid
+        )
+        .get();
 
 
-snapshot.forEach(
-function(doc){
-
-const data =
-doc.data();
+    const orders = [];
 
 
-orders.push({
+    snapshot.forEach(
+      function(doc){
 
-id:
-data.orderId ||
-doc.id,
-
-productName:
-data.productName ||
-"Digital Product",
-
-category:
-data.category ||
-"Digital Product",
-
-amount:
-Number(
-data.amount ??
-data.price ??
-0
-),
-
-status:
-data.status ||
-"Completed",
-
-purchaseText:
-data.purchaseText ||
-"Purchase information unavailable.",
-
-createdAt:
-data.createdAt ||
-null
-
-});
-
-}
-);
+        const data =
+          doc.data();
 
 
-/*
-Newest orders first.
-*/
+        orders.push({
 
-orders.sort(
-function(a,b){
+          id:
+            data.orderId ||
+            doc.id,
 
-return getTime(b.createdAt)
--
-getTime(a.createdAt);
+          productName:
+            data.productName ||
+            "Digital Product",
 
-}
-);
+          category:
+            data.category ||
+            "Digital Product",
+
+          amount:
+            Number(
+              data.amount ??
+              data.price ??
+              0
+            ),
+
+          status:
+            data.status ||
+            "Completed",
+
+          purchaseText:
+            data.purchaseText ||
+            "Purchase information unavailable.",
+
+          createdAt:
+            data.createdAt ||
+            null
+
+        });
+
+      }
+    );
 
 
-displayOrders(
-orders
-);
+    /* Newest orders first */
+
+    orders.sort(
+      function(a,b){
+
+        return getTime(
+          b.createdAt
+        )
+        -
+        getTime(
+          a.createdAt
+        );
+
+      }
+    );
 
 
-}catch(error){
-
-console.error(
-"Orders loading error:",
-error
-);
+    displayOrders(
+      orders
+    );
 
 
-list.innerHTML = `
+  }catch(error){
 
-<div class="empty">
+    console.error(
+      "Orders loading error:",
+      error
+    );
 
-<div class="error-icon">
 
-<i class="fa-solid fa-triangle-exclamation"></i>
+    list.innerHTML = `
 
-</div>
+      <div class="empty">
 
-<h3 class="error-title">
+        <div class="error-icon">
 
-Unable to load orders
+          <i class="fa-solid fa-triangle-exclamation"></i>
 
-</h3>
+        </div>
 
-<p class="error-message">
 
-${escapeHtml(error.message)}
+        <h3 class="error-title">
 
-</p>
+          Unable to load orders
 
-</div>
+        </h3>
 
-`;
 
-}
+        <p class="error-message">
+
+          ${escapeHtml(
+            error.message
+          )}
+
+        </p>
+
+      </div>
+
+    `;
+
+  }
 
 }
 
@@ -1241,172 +1494,219 @@ ${escapeHtml(error.message)}
 ================================================== */
 
 function displayOrders(
-orders
+  orders
 ){
 
-const total =
-document.getElementById(
-"totalOrders"
-);
+  const total =
+    document.getElementById(
+      "totalOrders"
+    );
 
 
-const list =
-document.getElementById(
-"ordersList"
-);
+  const list =
+    document.getElementById(
+      "ordersList"
+    );
 
 
-total.textContent =
-orders.length;
+  total.textContent =
+    orders.length;
 
 
-list.innerHTML = "";
+  list.innerHTML =
+    "";
 
 
-if(
-orders.length === 0
-){
+  if(
+    orders.length === 0
+  ){
 
-list.innerHTML = `
+    list.innerHTML = `
 
-<div class="empty">
+      <div class="empty">
 
-<div class="empty-icon">
+        <div class="empty-icon">
 
-<i class="fa-solid fa-bag-shopping"></i>
+          <i class="fa-solid fa-bag-shopping"></i>
 
-</div>
+        </div>
 
-<h3>
-No orders yet
-</h3>
 
-<p>
-Your completed purchases will appear here.
-</p>
+        <h3>
+          No orders yet
+        </h3>
 
-<button
-class="shop"
-type="button"
-onclick="window.location.href='dashboard.html'"
->
 
-<i class="fa-solid fa-store"></i>
+        <p>
+          Your completed purchases will appear here.
+        </p>
 
-Start Shopping
 
-</button>
+        <button
+          class="shop"
+          type="button"
+          id="startShoppingButton"
+        >
 
-</div>
+          <i class="fa-solid fa-store"></i>
 
-`;
+          &nbsp; Start Shopping
 
-return;
+        </button>
 
-}
+      </div>
 
+    `;
 
-/*
-Keep orders available for
-the copy button.
-*/
 
-window.currentOrders =
-orders;
+    document
+      .getElementById(
+        "startShoppingButton"
+      )
+      .addEventListener(
+        "click",
+        function(){
 
+          window.location.href =
+            "dashboard.html";
 
-orders.forEach(
-function(order,index){
+        }
+      );
 
-list.innerHTML += `
 
-<div class="order">
+    return;
 
-<div class="order-top">
+  }
 
-<div class="order-icon">
 
-<i class="fa-solid fa-box"></i>
+  window.currentOrders =
+    orders;
 
-</div>
 
+  orders.forEach(
+    function(order,index){
 
-<div class="order-name">
+      list.innerHTML += `
 
-<h3>
+        <div class="order">
 
-${escapeHtml(
-order.productName
-)}
+          <div class="order-top">
 
-</h3>
 
-<span class="order-category">
+            <div class="order-icon">
 
-${escapeHtml(
-order.category
-)}
+              <i class="fa-solid fa-box"></i>
 
-</span>
+            </div>
 
-</div>
 
+            <div class="order-name">
 
-<div class="status">
+              <h3>
 
-<i class="fa-solid fa-check"></i>
+                ${escapeHtml(
+                  order.productName
+                )}
 
-Completed
+              </h3>
 
-</div>
 
-</div>
+              <span class="order-category">
 
+                ${escapeHtml(
+                  order.category
+                )}
 
-<div class="purchase">
+              </span>
 
-<div class="purchase-title">
+            </div>
 
-<i class="fa-solid fa-key"></i>
 
-Purchase Information
+            <div class="status">
 
-</div>
+              <i class="fa-solid fa-check"></i>
 
+              Completed
 
-<div
-class="purchase-text"
-id="purchase-${index}"
->
+            </div>
 
-${escapeHtml(
-order.purchaseText
-)}
 
-</div>
+          </div>
 
 
-<button
-class="copy"
-type="button"
-onclick="copyText(${index})"
->
+          <div class="purchase">
 
-<i class="fa-regular fa-copy"></i>
 
-Copy Purchase Information
+            <div class="purchase-title">
 
-</button>
+              <i class="fa-solid fa-key"></i>
 
-</div>
+              Purchase Information
 
+            </div>
 
-</div>
 
-`;
+            <div
+              class="purchase-text"
+              id="purchase-${index}"
+            >
 
-}
-);
+              ${escapeHtml(
+                order.purchaseText
+              )}
+
+            </div>
+
+
+            <button
+              class="copy"
+              type="button"
+              data-index="${index}"
+            >
+
+              <i class="fa-regular fa-copy"></i>
+
+              Copy Purchase Information
+
+            </button>
+
+
+          </div>
+
+
+        </div>
+
+      `;
+
+    }
+  );
+
+
+  /* Attach copy buttons */
+
+  document
+    .querySelectorAll(
+      ".copy"
+    )
+    .forEach(
+      function(button){
+
+        button.addEventListener(
+          "click",
+          function(){
+
+            copyText(
+              Number(
+                button.dataset.index
+              ),
+              button
+            );
+
+          }
+        );
+
+      }
+    );
 
 }
 
@@ -1416,133 +1716,192 @@ Copy Purchase Information
 ================================================== */
 
 function copyText(
-index
+  index,
+  button
 ){
 
-const orders =
-window.currentOrders ||
-[];
+  const orders =
+    window.currentOrders ||
+    [];
 
 
-const text =
-orders[index]
-?.purchaseText ||
-"";
+  const text =
+    orders[index]
+    ?.purchaseText ||
+    "";
 
 
-if(!text){
+  if(!text){
 
-showCopyMessage(
-"No purchase information available."
-);
+    showCopyMessage(
+      "No purchase information available."
+    );
 
-return;
+    return;
 
-}
+  }
 
 
-if(
-navigator.clipboard &&
-navigator.clipboard.writeText
-){
+  if(
+    navigator.clipboard &&
+    navigator.clipboard.writeText
+  ){
 
-navigator.clipboard
-.writeText(text)
-.then(
-function(){
+    navigator.clipboard
+      .writeText(text)
+      .then(
+        function(){
 
-showCopyMessage(
-"Purchase information copied."
-);
+          showCopyMessage(
+            "Purchase information copied."
+          );
 
-}
-)
-.catch(
-function(){
 
-showCopyMessage(
-"Unable to copy. Please copy it manually."
-);
+          if(button){
 
-}
-);
+            button.innerHTML =
+              '<i class="fa-solid fa-check"></i> Copied';
 
-}else{
+            setTimeout(
+              function(){
 
-showCopyMessage(
-"Unable to copy. Please copy it manually."
-);
+                button.innerHTML =
+                  '<i class="fa-regular fa-copy"></i> Copy Purchase Information';
 
-}
+              },
+              1800
+            );
+
+          }
+
+        }
+      )
+      .catch(
+        function(){
+
+          showCopyMessage(
+            "Unable to copy. Please copy it manually."
+          );
+
+        }
+      );
+
+  }else{
+
+    showCopyMessage(
+      "Unable to copy. Please copy it manually."
+    );
+
+  }
 
 }
 
 
 /* ==================================================
-   COPY MESSAGE
+   COPY TOAST
 ================================================== */
 
 function showCopyMessage(
-message
+  message
 ){
 
-const toast =
-document.createElement(
-"div"
-);
+  const oldToast =
+    document.getElementById(
+      "copyToast"
+    );
 
 
-toast.textContent =
-message;
+  if(oldToast){
+
+    oldToast.remove();
+
+  }
 
 
-toast.style.position =
-"fixed";
-
-toast.style.left =
-"50%";
-
-toast.style.bottom =
-"85px";
-
-toast.style.transform =
-"translateX(-50%)";
-
-toast.style.background =
-"#071f40";
-
-toast.style.color =
-"#ffffff";
-
-toast.style.padding =
-"11px 16px";
-
-toast.style.borderRadius =
-"10px";
-
-toast.style.fontSize =
-"10px";
-
-toast.style.fontWeight =
-"700";
-
-toast.style.zIndex =
-"300";
+  const toast =
+    document.createElement(
+      "div"
+    );
 
 
-document.body.appendChild(
-toast
-);
+  toast.id =
+    "copyToast";
 
 
-setTimeout(
-function(){
+  toast.innerHTML = `
 
-toast.remove();
+    <i class="fa-solid fa-circle-check"></i>
 
-},
-2200
-);
+    ${escapeHtml(message)}
+
+  `;
+
+
+  toast.style.position =
+    "fixed";
+
+
+  toast.style.left =
+    "50%";
+
+
+  toast.style.bottom =
+    "85px";
+
+
+  toast.style.transform =
+    "translateX(-50%)";
+
+
+  toast.style.background =
+    "#071f40";
+
+
+  toast.style.color =
+    "#ffffff";
+
+
+  toast.style.padding =
+    "11px 16px";
+
+
+  toast.style.borderRadius =
+    "11px";
+
+
+  toast.style.fontSize =
+    "10px";
+
+
+  toast.style.fontWeight =
+    "700";
+
+
+  toast.style.zIndex =
+    "300";
+
+
+  toast.style.boxShadow =
+    "0 8px 25px rgba(0,0,0,.18)";
+
+
+  toast.style.whiteSpace =
+    "nowrap";
+
+
+  document.body.appendChild(
+    toast
+  );
+
+
+  setTimeout(
+    function(){
+
+      toast.remove();
+
+    },
+    2200
+  );
 
 }
 
@@ -1552,42 +1911,42 @@ toast.remove();
 ================================================== */
 
 function getTime(
-value
+  value
 ){
 
-if(!value){
+  if(!value){
 
-return 0;
+    return 0;
 
-}
-
-
-try{
-
-if(
-typeof value.toDate ===
-"function"
-){
-
-return value
-.toDate()
-.getTime();
-
-}
+  }
 
 
-const date =
-new Date(value);
+  try{
+
+    if(
+      typeof value.toDate ===
+      "function"
+    ){
+
+      return value
+        .toDate()
+        .getTime();
+
+    }
 
 
-return date.getTime() || 0;
+    const date =
+      new Date(value);
 
 
-}catch(error){
+    return date.getTime() || 0;
 
-return 0;
 
-}
+  }catch(error){
+
+    return 0;
+
+  }
 
 }
 
@@ -1597,22 +1956,22 @@ return 0;
 ================================================== */
 
 function escapeHtml(
-text
+  text
 ){
 
-const div =
-document.createElement(
-"div"
-);
+  const div =
+    document.createElement(
+      "div"
+    );
 
 
-div.textContent =
-String(
-text ?? ""
-);
+  div.textContent =
+    String(
+      text ?? ""
+    );
 
 
-return div.innerHTML;
+  return div.innerHTML;
 
 }
 

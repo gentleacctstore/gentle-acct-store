@@ -10,10 +10,12 @@
   content="width=device-width, initial-scale=1.0"
 >
 
+<meta
+  name="theme-color"
+  content="#0b2d5c"
+>
+
 <title>Create Account | Gentle Acct Store</title>
-
-
-<!-- GOOGLE FONT -->
 
 <link
   rel="preconnect"
@@ -31,20 +33,12 @@
   rel="stylesheet"
 >
 
-
-<!-- FONT AWESOME -->
-
 <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 >
 
-
 <style>
-
-/* =========================
-   RESET
-========================= */
 
 *{
   box-sizing:border-box;
@@ -52,516 +46,476 @@
   padding:0;
 }
 
-
-/* =========================
-   ROOT
-========================= */
-
-:root{
-
-  --blue:#0b2d5c;
-
-  --blue-dark:#071f40;
-
-  --blue-light:#eef5fc;
-
-  --text:#10233f;
-
-  --muted:#6b7890;
-
-  --border:#dce5f0;
-
-  --white:#ffffff;
-
+html{
+  scroll-behavior:smooth;
 }
 
-
-/* =========================
-   BODY
-========================= */
-
 body{
+  min-height:100vh;
 
   font-family:"Poppins",sans-serif;
 
-  background:#f7faff;
+  background:
+    radial-gradient(
+      circle at 90% 5%,
+      rgba(11,45,92,.07),
+      transparent 25%
+    ),
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #f7faff 100%
+    );
 
-  color:var(--text);
-
-  min-height:100vh;
-
+  color:#101828;
 }
 
+a{
+  text-decoration:none;
+  color:inherit;
+}
+
+button,
+input{
+  font-family:"Poppins",sans-serif;
+}
 
 /* =========================
    HEADER
 ========================= */
 
 .header{
+  position:sticky;
+  top:0;
+  z-index:1000;
 
   width:100%;
 
-  background:var(--white);
+  background:rgba(255,255,255,.94);
 
-  border-bottom:1px solid #e8eef5;
+  backdrop-filter:blur(15px);
+  -webkit-backdrop-filter:blur(15px);
 
-  position:relative;
-
-  z-index:10;
-
+  border-bottom:1px solid #e7edf4;
 }
 
-
 .header-inner{
-
-  width:92%;
-
-  max-width:1180px;
+  max-width:1150px;
 
   margin:auto;
 
-  min-height:76px;
+  min-height:68px;
+
+  padding:10px 18px;
 
   display:flex;
-
   align-items:center;
-
   justify-content:space-between;
 
-  gap:20px;
-
+  gap:15px;
 }
-
 
 .logo{
-
   display:flex;
-
   align-items:center;
 
-  gap:11px;
+  gap:9px;
 
-  color:var(--blue);
+  color:#0b2d5c;
 
-  text-decoration:none;
-
+  font-size:18px;
   font-weight:800;
 
-  font-size:19px;
-
-  letter-spacing:-.3px;
-
+  letter-spacing:-.6px;
 }
 
-
 .logo-icon{
-
-  width:40px;
-
-  height:40px;
+  width:35px;
+  height:35px;
 
   border-radius:11px;
 
-  background:var(--blue);
+  background:
+    linear-gradient(
+      145deg,
+      #0b2d5c,
+      #071f40
+    );
 
   color:white;
 
   display:flex;
-
   align-items:center;
-
   justify-content:center;
 
-  font-size:17px;
+  font-size:14px;
 
+  box-shadow:
+    0 6px 16px rgba(11,45,92,.17);
 }
-
 
 .home-link{
-
   display:inline-flex;
-
   align-items:center;
 
-  gap:8px;
+  gap:7px;
 
-  color:var(--blue);
+  color:#0b2d5c;
 
-  text-decoration:none;
+  font-size:11px;
+  font-weight:700;
 
-  font-size:13px;
+  border:1px solid #d6e1ee;
 
-  font-weight:600;
+  background:white;
 
-  border:1px solid var(--border);
-
-  padding:10px 15px;
+  padding:9px 13px;
 
   border-radius:10px;
-
-  transition:.2s ease;
-
 }
-
-
-.home-link:hover{
-
-  background:var(--blue-light);
-
-  border-color:#c9d8e9;
-
-}
-
 
 /* =========================
    MAIN
 ========================= */
 
 .main{
+  min-height:calc(100vh - 68px);
 
-  min-height:calc(100vh - 76px);
-
-  padding:55px 18px 70px;
+  padding:48px 15px 60px;
 
   display:flex;
-
-  align-items:flex-start;
-
   justify-content:center;
-
+  align-items:flex-start;
 }
-
-
-/* =========================
-   AUTH WRAPPER
-========================= */
 
 .auth-wrapper{
-
   width:100%;
-
-  max-width:470px;
-
+  max-width:460px;
 }
 
-
 /* =========================
-   TOP INTRO
+   HEADING
 ========================= */
 
 .auth-heading{
-
   text-align:center;
 
-  margin-bottom:28px;
-
+  margin-bottom:25px;
 }
 
-
 .auth-icon{
+  position:relative;
 
   width:58px;
-
   height:58px;
 
-  margin:0 auto 16px;
+  margin:0 auto 15px;
 
-  border-radius:16px;
+  border-radius:17px;
 
-  background:var(--blue);
+  background:
+    linear-gradient(
+      145deg,
+      #0b2d5c,
+      #071f40
+    );
 
   color:white;
 
   display:flex;
-
   align-items:center;
-
   justify-content:center;
 
-  font-size:21px;
+  font-size:20px;
 
-  box-shadow:0 12px 28px rgba(11,45,92,.18);
-
+  box-shadow:
+    0 12px 28px rgba(11,45,92,.18);
 }
 
+.auth-icon::after{
+  content:"";
+
+  position:absolute;
+
+  width:9px;
+  height:9px;
+
+  border-radius:50%;
+
+  background:#22a06b;
+
+  right:-2px;
+  top:-2px;
+
+  border:2px solid white;
+}
 
 .auth-heading h1{
+  color:#071f40;
 
   font-size:28px;
-
-  line-height:1.25;
+  line-height:1.2;
 
   font-weight:800;
 
-  letter-spacing:-.6px;
-
-  color:var(--blue-dark);
-
+  letter-spacing:-.8px;
 }
-
 
 .auth-heading p{
+  max-width:390px;
 
-  margin-top:9px;
+  margin:9px auto 0;
 
-  color:var(--muted);
+  color:#667085;
 
-  font-size:13px;
+  font-size:11px;
 
-  line-height:1.7;
-
+  line-height:1.8;
 }
-
 
 /* =========================
    CARD
 ========================= */
 
 .card{
+  background:rgba(255,255,255,.97);
 
-  background:var(--white);
+  border:1px solid #e0e8f2;
 
-  border:1px solid #e4ebf3;
+  border-radius:22px;
 
-  border-radius:18px;
+  padding:28px;
 
-  padding:30px;
-
-  box-shadow:0 18px 45px rgba(7,31,64,.08);
-
+  box-shadow:
+    0 20px 55px rgba(7,31,64,.08);
 }
 
+.card-title-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  gap:10px;
+
+  margin-bottom:5px;
+}
 
 .card-title{
+  font-size:19px;
+  font-weight:800;
 
-  font-size:20px;
-
-  font-weight:700;
-
-  color:var(--blue-dark);
-
-  margin-bottom:6px;
-
+  color:#071f40;
 }
 
+.card-badge{
+  display:inline-flex;
+  align-items:center;
+
+  gap:5px;
+
+  background:#eef4fb;
+
+  border:1px solid #d6e1ee;
+
+  color:#0b2d5c;
+
+  padding:5px 8px;
+
+  border-radius:20px;
+
+  font-size:8px;
+  font-weight:700;
+}
 
 .card-subtitle{
+  font-size:10.5px;
 
-  font-size:12.5px;
+  color:#667085;
 
-  color:var(--muted);
+  line-height:1.7;
 
-  line-height:1.6;
-
-  margin-bottom:24px;
-
+  margin-bottom:23px;
 }
-
 
 /* =========================
    FORM
 ========================= */
 
 .form-group{
-
-  margin-bottom:17px;
-
+  margin-bottom:16px;
 }
-
 
 .form-group label{
-
   display:block;
 
-  font-size:12.5px;
+  font-size:10.5px;
+  font-weight:700;
 
-  font-weight:600;
+  color:#344054;
 
-  color:var(--text);
-
-  margin-bottom:8px;
-
+  margin-bottom:7px;
 }
-
 
 .input-wrap{
-
   position:relative;
-
 }
 
-
 .input-icon{
-
   position:absolute;
 
   left:14px;
-
   top:50%;
 
   transform:translateY(-50%);
 
-  color:var(--blue);
+  color:#0b2d5c;
 
-  font-size:13px;
+  font-size:12px;
 
   pointer-events:none;
 
+  z-index:2;
 }
 
-
 input{
-
   width:100%;
 
-  height:50px;
+  height:49px;
 
-  padding:0 14px 0 42px;
+  padding:0 43px 0 40px;
 
-  border:1px solid var(--border);
+  border:1px solid #d6e1ee;
 
-  border-radius:10px;
+  border-radius:11px;
 
   outline:none;
 
-  background:#fbfdff;
+  background:#fafdff;
 
-  color:var(--text);
+  color:#101828;
 
-  font-family:"Poppins",sans-serif;
+  font-size:11.5px;
 
-  font-size:13px;
-
-  transition:.2s ease;
-
+  transition:.2s;
 }
-
-
-input::placeholder{
-
-  color:#9aa7b8;
-
-}
-
 
 input:focus{
-
-  border-color:var(--blue);
+  border-color:#0b2d5c;
 
   background:white;
 
-  box-shadow:0 0 0 3px rgba(11,45,92,.08);
-
+  box-shadow:
+    0 0 0 3px rgba(11,45,92,.07);
 }
 
+input::placeholder{
+  color:#9aa7b8;
+}
 
-/* =========================
-   PASSWORD NOTE
-========================= */
+.password-toggle{
+  position:absolute;
+
+  right:11px;
+  top:50%;
+
+  transform:translateY(-50%);
+
+  width:29px;
+  height:29px;
+
+  border:none;
+
+  background:transparent;
+
+  color:#8995a6;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  cursor:pointer;
+}
 
 .password-note{
+  margin-top:6px;
 
-  margin-top:7px;
+  display:flex;
+  align-items:center;
+
+  gap:5px;
 
   color:#8a96a7;
 
-  font-size:10.5px;
-
+  font-size:8.5px;
 }
 
+.password-note i{
+  color:#0b2d5c;
+}
 
 /* =========================
    BUTTON
 ========================= */
 
-button{
-
+.submit-button{
   width:100%;
 
-  height:50px;
+  height:49px;
 
   border:none;
 
-  border-radius:10px;
+  border-radius:11px;
 
-  background:var(--blue);
+  background:
+    linear-gradient(
+      145deg,
+      #0b2d5c,
+      #071f40
+    );
 
   color:white;
 
-  font-family:"Poppins",sans-serif;
-
-  font-size:13px;
+  font-size:11.5px;
 
   font-weight:700;
 
   cursor:pointer;
 
-  margin-top:7px;
+  margin-top:6px;
 
-  transition:.2s ease;
-
-  box-shadow:0 8px 20px rgba(11,45,92,.16);
-
+  box-shadow:
+    0 9px 22px rgba(11,45,92,.17);
 }
 
-
-button:hover{
-
-  background:var(--blue-dark);
-
-  transform:translateY(-1px);
-
-}
-
-
-button:active{
-
-  transform:translateY(0);
-
-}
-
-
-button:disabled{
-
+.submit-button:disabled{
   opacity:.65;
 
   cursor:not-allowed;
-
-  transform:none;
-
 }
 
-
-button i{
-
+.submit-button i{
   margin-right:7px;
-
 }
-
 
 /* =========================
    MESSAGE
 ========================= */
 
 .message{
-
   display:none;
 
-  margin-top:16px;
+  margin-top:14px;
 
-  padding:12px 14px;
+  padding:11px 13px;
 
   border-radius:10px;
 
-  font-size:11.5px;
+  font-size:9.5px;
 
-  line-height:1.6;
-
+  line-height:1.65;
 }
 
-
-.success{
-
+.message.success{
   display:block;
 
   background:#edf9f1;
@@ -569,119 +523,257 @@ button i{
   border:1px solid #c9ecd4;
 
   color:#18733a;
-
 }
 
-
-.error{
-
+.message.error{
   display:block;
 
-  background:#fff2f2;
+  background:#fff3f3;
 
-  border:1px solid #f3d0d0;
+  border:1px solid #f0cccc;
 
   color:#b42318;
-
 }
-
 
 /* =========================
    LOGIN
 ========================= */
 
 .login-link{
-
   text-align:center;
 
-  margin-top:22px;
+  margin-top:20px;
 
-  color:var(--muted);
+  color:#667085;
 
-  font-size:12px;
-
+  font-size:10px;
 }
-
 
 .login-link a{
+  color:#0b2d5c;
 
-  color:var(--blue);
-
-  font-weight:700;
-
-  text-decoration:none;
+  font-weight:800;
 
   margin-left:4px;
-
 }
-
-
-.login-link a:hover{
-
-  text-decoration:underline;
-
-}
-
 
 /* =========================
-   SECURITY NOTE
+   SECURITY
 ========================= */
 
 .security-note{
+  margin-top:20px;
 
-  margin-top:24px;
+  padding:14px;
 
-  padding-top:20px;
+  border-radius:12px;
 
-  border-top:1px solid #edf1f5;
+  background:#f7faff;
+
+  border:1px solid #e8eef5;
 
   display:flex;
-
   align-items:flex-start;
 
-  gap:10px;
-
+  gap:9px;
 }
-
 
 .security-icon{
+  width:27px;
+  height:27px;
 
-  color:var(--blue);
+  flex:none;
 
-  font-size:13px;
+  border-radius:8px;
 
-  margin-top:2px;
+  background:#eef4fb;
 
+  color:#0b2d5c;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:10px;
 }
 
-
 .security-note p{
-
   color:#7b8798;
 
-  font-size:10.5px;
+  font-size:8.5px;
+
+  line-height:1.65;
+}
+
+/* =========================
+   VERIFY SCREEN
+========================= */
+
+.verify-screen{
+  display:none;
+}
+
+.verify-screen.show{
+  display:block;
+}
+
+.verify-icon{
+  width:72px;
+  height:72px;
+
+  margin:0 auto 17px;
+
+  border-radius:22px;
+
+  background:#eef4fb;
+
+  color:#0b2d5c;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:29px;
+}
+
+.verify-card{
+  background:white;
+
+  border:1px solid #e0e8f2;
+
+  border-radius:22px;
+
+  padding:28px 22px;
+
+  text-align:center;
+
+  box-shadow:
+    0 20px 55px rgba(7,31,64,.08);
+}
+
+.verify-card h2{
+  color:#071f40;
+
+  font-size:20px;
+
+  margin-bottom:8px;
+}
+
+.verify-card .verify-text{
+  color:#667085;
+
+  font-size:10px;
+
+  line-height:1.8;
+
+  margin-bottom:18px;
+}
+
+.email-box{
+  background:#f5f8fc;
+
+  border:1px solid #e2e9f1;
+
+  border-radius:12px;
+
+  padding:12px;
+
+  color:#0b2d5c;
+
+  font-size:10px;
+
+  font-weight:700;
+
+  word-break:break-word;
+
+  margin-bottom:16px;
+}
+
+.verify-status{
+  padding:11px;
+
+  border-radius:11px;
+
+  background:#f7faff;
+
+  color:#667085;
+
+  font-size:9px;
 
   line-height:1.6;
 
+  margin-bottom:14px;
 }
 
+.verify-status.success{
+  background:#edf9f1;
+
+  color:#18733a;
+
+  border:1px solid #c9ecd4;
+}
+
+.verify-status.error{
+  background:#fff3f3;
+
+  color:#b42318;
+
+  border:1px solid #f0cccc;
+}
+
+.verify-button,
+.resend-button{
+  width:100%;
+
+  height:46px;
+
+  border:none;
+
+  border-radius:11px;
+
+  font-family:"Poppins",sans-serif;
+
+  font-size:10.5px;
+
+  font-weight:700;
+
+  cursor:pointer;
+}
+
+.verify-button{
+  background:#0b2d5c;
+
+  color:white;
+
+  margin-bottom:9px;
+}
+
+.resend-button{
+  background:#eef4fb;
+
+  color:#0b2d5c;
+}
+
+.verify-button:disabled,
+.resend-button:disabled{
+  opacity:.55;
+
+  cursor:not-allowed;
+}
 
 /* =========================
    FOOTER
 ========================= */
 
 .footer{
-
   text-align:center;
 
-  padding:0 18px 30px;
+  padding:0 15px 25px;
 
   color:#9aa5b5;
 
-  font-size:10.5px;
-
+  font-size:8.5px;
 }
-
 
 /* =========================
    MOBILE
@@ -690,147 +782,87 @@ button i{
 @media(max-width:600px){
 
   .header-inner{
-
-    min-height:68px;
-
-  }
-
-
-  .logo{
-
-    font-size:16px;
-
-  }
-
-
-  .logo-icon{
-
-    width:36px;
-
-    height:36px;
-
-    border-radius:10px;
-
-    font-size:15px;
-
-  }
-
-
-  .home-link{
+    min-height:62px;
 
     padding:9px 12px;
-
-    font-size:11px;
-
   }
 
+  .logo{
+    font-size:15px;
+  }
+
+  .logo-icon{
+    width:32px;
+    height:32px;
+
+    border-radius:9px;
+
+    font-size:13px;
+  }
+
+  .home-link{
+    padding:8px 10px;
+
+    font-size:10px;
+  }
 
   .home-link span{
-
     display:none;
-
   }
-
 
   .main{
-
-    padding:38px 15px 55px;
-
+    padding:34px 13px 48px;
   }
-
 
   .auth-heading{
-
-    margin-bottom:23px;
-
+    margin-bottom:20px;
   }
-
 
   .auth-icon{
+    width:53px;
+    height:53px;
 
-    width:52px;
-
-    height:52px;
-
-    border-radius:14px;
-
-    font-size:19px;
-
-  }
-
-
-  .auth-heading h1{
-
-    font-size:24px;
-
-  }
-
-
-  .auth-heading p{
-
-    font-size:12px;
-
-  }
-
-
-  .card{
-
-    padding:24px 19px;
-
-    border-radius:16px;
-
-  }
-
-
-  .card-title{
+    border-radius:15px;
 
     font-size:18px;
-
   }
 
-
-  input{
-
-    height:48px;
-
-    font-size:12.5px;
-
+  .auth-heading h1{
+    font-size:24px;
   }
 
+  .auth-heading p{
+    font-size:10px;
 
-  button{
+    padding:0 8px;
+  }
 
-    height:49px;
+  .card{
+    padding:22px 17px;
 
+    border-radius:18px;
+  }
+
+  .verify-card{
+    padding:25px 17px;
+
+    border-radius:18px;
   }
 
 }
 
-
-/* =========================
-   SMALL PHONES
-========================= */
-
-@media(max-width:360px){
+@media(max-width:370px){
 
   .logo{
-
-    font-size:14px;
-
+    font-size:13px;
   }
 
-
-  .card{
-
-    padding:21px 16px;
-
+  .card-badge{
+    display:none;
   }
-
 
   .auth-heading h1{
-
     font-size:22px;
-
   }
 
 }
@@ -851,7 +883,6 @@ button i{
 
   <div class="header-inner">
 
-
     <a
       href="index.html"
       class="logo"
@@ -862,7 +893,6 @@ button i{
         <i class="fa-solid fa-store"></i>
 
       </span>
-
 
       <span>
         Gentle Acct Store
@@ -884,11 +914,9 @@ button i{
 
     </a>
 
-
   </div>
 
 </header>
-
 
 
 <!-- =========================
@@ -897,242 +925,359 @@ button i{
 
 <main class="main">
 
-
   <div class="auth-wrapper">
 
 
-    <!-- INTRO -->
+    <!-- =========================
+         SIGNUP SCREEN
+    ========================= -->
 
-    <div class="auth-heading">
+    <div id="signupScreen">
+
+      <div class="auth-heading">
+
+        <div class="auth-icon">
+
+          <i class="fa-solid fa-user-plus"></i>
+
+        </div>
 
 
-      <div class="auth-icon">
+        <h1>
+          Create Your Account
+        </h1>
 
-        <i class="fa-solid fa-user-plus"></i>
+
+        <p>
+          Join Gentle Acct Store and manage your
+          products, wallet and orders from one account.
+        </p>
 
       </div>
 
 
-      <h1>
-        Create Your Account
-      </h1>
+      <div class="card">
+
+        <div class="card-title-row">
+
+          <div class="card-title">
+            Create Account
+          </div>
 
 
-      <p>
-        Join Gentle Acct Store and get access to your
-        dashboard, orders and wallet.
-      </p>
+          <div class="card-badge">
 
+            <i class="fa-solid fa-shield-halved"></i>
+
+            Secure
+
+          </div>
+
+        </div>
+
+
+        <div class="card-subtitle">
+
+          Enter your details below to create your
+          Gentle Acct Store account.
+
+        </div>
+
+
+        <form id="signupForm">
+
+
+          <!-- NAME -->
+
+          <div class="form-group">
+
+            <label for="name">
+              Full Name
+            </label>
+
+
+            <div class="input-wrap">
+
+              <i class="fa-solid fa-user input-icon"></i>
+
+
+              <input
+                type="text"
+                id="name"
+                placeholder="Enter your full name"
+                autocomplete="name"
+                required
+              >
+
+            </div>
+
+          </div>
+
+
+          <!-- EMAIL -->
+
+          <div class="form-group">
+
+            <label for="email">
+              Email Address
+            </label>
+
+
+            <div class="input-wrap">
+
+              <i class="fa-solid fa-envelope input-icon"></i>
+
+
+              <input
+                type="email"
+                id="email"
+                placeholder="Enter your email address"
+                autocomplete="email"
+                autocapitalize="none"
+                spellcheck="false"
+                required
+              >
+
+            </div>
+
+          </div>
+
+
+          <!-- PASSWORD -->
+
+          <div class="form-group">
+
+            <label for="password">
+              Password
+            </label>
+
+
+            <div class="input-wrap">
+
+              <i class="fa-solid fa-lock input-icon"></i>
+
+
+              <input
+                type="password"
+                id="password"
+                placeholder="Create a password"
+                minlength="6"
+                autocomplete="new-password"
+                required
+              >
+
+
+              <button
+                type="button"
+                class="password-toggle"
+                id="passwordToggle"
+                aria-label="Show password"
+              >
+
+                <i class="fa-solid fa-eye"></i>
+
+              </button>
+
+            </div>
+
+
+            <div class="password-note">
+
+              <i class="fa-solid fa-circle-info"></i>
+
+              Password must contain at least 6 characters.
+
+            </div>
+
+          </div>
+
+
+          <!-- CONFIRM PASSWORD -->
+
+          <div class="form-group">
+
+            <label for="confirmPassword">
+              Confirm Password
+            </label>
+
+
+            <div class="input-wrap">
+
+              <i class="fa-solid fa-shield-halved input-icon"></i>
+
+
+              <input
+                type="password"
+                id="confirmPassword"
+                placeholder="Confirm your password"
+                minlength="6"
+                autocomplete="new-password"
+                required
+              >
+
+
+              <button
+                type="button"
+                class="password-toggle"
+                id="confirmPasswordToggle"
+                aria-label="Show password"
+              >
+
+                <i class="fa-solid fa-eye"></i>
+
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <!-- SUBMIT -->
+
+          <button
+            type="submit"
+            id="signupBtn"
+            class="submit-button"
+          >
+
+            <i class="fa-solid fa-user-plus"></i>
+
+            Create Account
+
+          </button>
+
+        </form>
+
+
+        <div
+          id="message"
+          class="message"
+        ></div>
+
+
+        <div class="login-link">
+
+          Already have an account?
+
+          <a href="login.html">
+            Login
+          </a>
+
+        </div>
+
+
+        <div class="security-note">
+
+          <div class="security-icon">
+
+            <i class="fa-solid fa-shield-halved"></i>
+
+          </div>
+
+
+          <p>
+
+            You'll need to verify your email before
+            accessing your Gentle Acct Store account.
+
+          </p>
+
+        </div>
+
+      </div>
 
     </div>
 
 
+    <!-- =========================
+         VERIFY SCREEN
+    ========================= -->
 
-    <!-- CARD -->
+    <div
+      id="verifyScreen"
+      class="verify-screen"
+    >
 
-    <div class="card">
+      <div class="auth-heading">
 
+        <div class="verify-icon">
 
-      <div class="card-title">
-        Create Account
-      </div>
-
-
-      <div class="card-subtitle">
-        Enter your details below to create your Gentle Acct Store account.
-      </div>
-
-
-
-      <!-- FORM -->
-
-      <form id="signupForm">
-
-
-        <!-- NAME -->
-
-        <div class="form-group">
-
-          <label for="name">
-            Full Name
-          </label>
-
-
-          <div class="input-wrap">
-
-            <i class="fa-solid fa-user input-icon"></i>
-
-
-            <input
-              type="text"
-              id="name"
-              placeholder="Enter your full name"
-              autocomplete="name"
-              required
-            >
-
-          </div>
+          <i class="fa-solid fa-envelope-circle-check"></i>
 
         </div>
 
 
-
-        <!-- EMAIL -->
-
-        <div class="form-group">
-
-          <label for="email">
-            Email Address
-          </label>
-
-
-          <div class="input-wrap">
-
-            <i class="fa-solid fa-envelope input-icon"></i>
-
-
-            <input
-              type="email"
-              id="email"
-              placeholder="Enter your email address"
-              autocomplete="email"
-              required
-            >
-
-          </div>
-
-        </div>
-
-
-
-        <!-- PASSWORD -->
-
-        <div class="form-group">
-
-          <label for="password">
-            Password
-          </label>
-
-
-          <div class="input-wrap">
-
-            <i class="fa-solid fa-lock input-icon"></i>
-
-
-            <input
-              type="password"
-              id="password"
-              placeholder="Create a password"
-              minlength="6"
-              autocomplete="new-password"
-              required
-            >
-
-          </div>
-
-
-          <div class="password-note">
-
-            Password must contain at least 6 characters.
-
-          </div>
-
-        </div>
-
-
-
-        <!-- CONFIRM PASSWORD -->
-
-        <div class="form-group">
-
-          <label for="confirmPassword">
-            Confirm Password
-          </label>
-
-
-          <div class="input-wrap">
-
-            <i class="fa-solid fa-shield-halved input-icon"></i>
-
-
-            <input
-              type="password"
-              id="confirmPassword"
-              placeholder="Confirm your password"
-              minlength="6"
-              autocomplete="new-password"
-              required
-            >
-
-          </div>
-
-        </div>
-
-
-
-        <!-- SUBMIT -->
-
-        <button
-          type="submit"
-          id="signupBtn"
-        >
-
-          <i class="fa-solid fa-user-plus"></i>
-
-          Create Account
-
-        </button>
-
-
-      </form>
-
-
-
-      <!-- MESSAGE -->
-
-      <div
-        id="message"
-        class="message"
-      ></div>
-
-
-
-      <!-- LOGIN -->
-
-      <div class="login-link">
-
-        Already have an account?
-
-        <a href="login.html">
-          Login
-        </a>
-
-      </div>
-
-
-
-      <!-- SECURITY -->
-
-      <div class="security-note">
-
-
-        <div class="security-icon">
-
-          <i class="fa-solid fa-shield-halved"></i>
-
-        </div>
+        <h1>
+          Check Your Email
+        </h1>
 
 
         <p>
+          Your account has been created successfully.
+        </p>
 
-          Your account information is protected and your
-          password is securely handled by Firebase Authentication.
+      </div>
+
+
+      <div class="verify-card">
+
+        <h2>
+          Verify Your Email
+        </h2>
+
+
+        <p class="verify-text">
+
+          We've sent a verification link to:
 
         </p>
 
 
-      </div>
+        <div
+          id="verificationEmail"
+          class="email-box"
+        >
+          -
+        </div>
 
+
+        <div
+          id="verifyStatus"
+          class="verify-status"
+        >
+
+          Open your email and tap the verification
+          link. Then return here.
+
+        </div>
+
+
+        <button
+          type="button"
+          id="checkVerification"
+          class="verify-button"
+        >
+
+          <i class="fa-solid fa-circle-check"></i>
+
+          I've Verified My Email
+
+        </button>
+
+
+        <button
+          type="button"
+          id="resendVerification"
+          class="resend-button"
+        >
+
+          <i class="fa-solid fa-paper-plane"></i>
+
+          Resend Verification Email
+
+        </button>
+
+      </div>
 
     </div>
 
@@ -1142,15 +1287,11 @@ button i{
 </main>
 
 
-
-<!-- FOOTER -->
-
 <footer class="footer">
 
   © 2026 Gentle Acct Store. All rights reserved.
 
 </footer>
-
 
 
 <!-- =========================
@@ -1166,7 +1307,6 @@ button i{
 <script src="firebase.js"></script>
 
 
-
 <script>
 
 /* =========================
@@ -1178,18 +1318,72 @@ const form =
     "signupForm"
   );
 
-
-const button =
+const signupButton =
   document.getElementById(
     "signupBtn"
   );
-
 
 const message =
   document.getElementById(
     "message"
   );
 
+const password =
+  document.getElementById(
+    "password"
+  );
+
+const confirmPassword =
+  document.getElementById(
+    "confirmPassword"
+  );
+
+const passwordToggle =
+  document.getElementById(
+    "passwordToggle"
+  );
+
+const confirmPasswordToggle =
+  document.getElementById(
+    "confirmPasswordToggle"
+  );
+
+const signupScreen =
+  document.getElementById(
+    "signupScreen"
+  );
+
+const verifyScreen =
+  document.getElementById(
+    "verifyScreen"
+  );
+
+const verificationEmail =
+  document.getElementById(
+    "verificationEmail"
+  );
+
+const verifyStatus =
+  document.getElementById(
+    "verifyStatus"
+  );
+
+const checkVerification =
+  document.getElementById(
+    "checkVerification"
+  );
+
+const resendVerification =
+  document.getElementById(
+    "resendVerification"
+  );
+
+
+let verificationUser =
+  null;
+
+let verificationTimer =
+  null;
 
 
 /* =========================
@@ -1205,11 +1399,246 @@ function showMessage(
     text;
 
   message.className =
-    "message " +
-    type;
+    "message " + type;
 
 }
 
+
+/* =========================
+   PASSWORD TOGGLE
+========================= */
+
+function togglePassword(
+  input,
+  button
+){
+
+  const icon =
+    button.querySelector(
+      "i"
+    );
+
+
+  if(
+    input.type ===
+    "password"
+  ){
+
+    input.type =
+      "text";
+
+    icon.className =
+      "fa-solid fa-eye-slash";
+
+    button.setAttribute(
+      "aria-label",
+      "Hide password"
+    );
+
+  }else{
+
+    input.type =
+      "password";
+
+    icon.className =
+      "fa-solid fa-eye";
+
+    button.setAttribute(
+      "aria-label",
+      "Show password"
+    );
+
+  }
+
+}
+
+
+passwordToggle.addEventListener(
+  "click",
+  function(){
+
+    togglePassword(
+      password,
+      passwordToggle
+    );
+
+  }
+);
+
+
+confirmPasswordToggle.addEventListener(
+  "click",
+  function(){
+
+    togglePassword(
+      confirmPassword,
+      confirmPasswordToggle
+    );
+
+  }
+);
+
+
+/* =========================
+   SHOW VERIFY SCREEN
+========================= */
+
+function showVerifyScreen(
+  user
+){
+
+  verificationUser =
+    user;
+
+  verificationEmail.textContent =
+    user.email || "";
+
+  signupScreen.style.display =
+    "none";
+
+  verifyScreen.classList.add(
+    "show"
+  );
+
+  startVerificationCheck();
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+}
+
+
+/* =========================
+   START AUTO CHECK
+========================= */
+
+function startVerificationCheck(){
+
+  if(
+    verificationTimer
+  ){
+
+    clearInterval(
+      verificationTimer
+    );
+
+  }
+
+
+  verificationTimer =
+    setInterval(
+      async function(){
+
+        if(
+          !verificationUser
+        ){
+
+          return;
+
+        }
+
+
+        try{
+
+          await verificationUser.reload();
+
+
+          const user =
+            firebaseAuth.currentUser;
+
+
+          if(
+            user &&
+            user.emailVerified
+          ){
+
+            await verificationComplete();
+
+          }
+
+        }catch(error){
+
+          console.error(
+            "AUTO VERIFICATION ERROR:",
+            error
+          );
+
+        }
+
+      },
+      2000
+    );
+
+}
+
+
+/* =========================
+   VERIFICATION COMPLETE
+========================= */
+
+async function verificationComplete(){
+
+  if(
+    verificationTimer
+  ){
+
+    clearInterval(
+      verificationTimer
+    );
+
+    verificationTimer =
+      null;
+
+  }
+
+
+  verifyStatus.className =
+    "verify-status success";
+
+
+  verifyStatus.innerHTML =
+    '<i class="fa-solid fa-circle-check"></i> Email verified successfully. Redirecting to login...';
+
+
+  checkVerification.disabled =
+    true;
+
+  resendVerification.disabled =
+    true;
+
+
+  checkVerification.innerHTML =
+    '<i class="fa-solid fa-spinner fa-spin"></i> Opening Login...';
+
+
+  try{
+
+    await firebaseAuth.signOut();
+
+  }catch(error){
+
+    console.error(
+      "SIGNOUT AFTER VERIFICATION ERROR:",
+      error
+    );
+
+  }
+
+
+  setTimeout(
+    function(){
+
+      window.location.replace(
+        "login.html"
+      );
+
+    },
+    800
+  );
+
+}
 
 
 /* =========================
@@ -1223,42 +1652,31 @@ form.addEventListener(
     event.preventDefault();
 
 
-
     const name =
       document
-        .getElementById("name")
+        .getElementById(
+          "name"
+        )
         .value
         .trim();
-
 
 
     const email =
       document
-        .getElementById("email")
+        .getElementById(
+          "email"
+        )
         .value
         .trim();
 
 
-
-    const password =
-      document
-        .getElementById("password")
-        .value;
+    const passwordValue =
+      password.value;
 
 
+    const confirmPasswordValue =
+      confirmPassword.value;
 
-    const confirmPassword =
-      document
-        .getElementById(
-          "confirmPassword"
-        )
-        .value;
-
-
-
-    /* =========================
-       VALIDATION
-    ========================= */
 
     if(!name){
 
@@ -1272,8 +1690,10 @@ form.addEventListener(
     }
 
 
-
-    if(password !== confirmPassword){
+    if(
+      passwordValue !==
+      confirmPasswordValue
+    ){
 
       showMessage(
         "Passwords do not match.",
@@ -1285,8 +1705,9 @@ form.addEventListener(
     }
 
 
-
-    if(password.length < 6){
+    if(
+      passwordValue.length < 6
+    ){
 
       showMessage(
         "Password must contain at least 6 characters.",
@@ -1298,40 +1719,34 @@ form.addEventListener(
     }
 
 
-
-    button.disabled =
+    signupButton.disabled =
       true;
 
 
-
-    button.innerHTML =
+    signupButton.innerHTML =
       '<i class="fa-solid fa-spinner fa-spin"></i> Creating Account...';
-
 
 
     try{
 
-
       /* =========================
-         CREATE FIREBASE ACCOUNT
+         CREATE ACCOUNT
       ========================= */
 
       const result =
         await firebaseAuth
           .createUserWithEmailAndPassword(
             email,
-            password
+            passwordValue
           );
-
 
 
       const user =
         result.user;
 
 
-
       /* =========================
-         SAVE NAME TO AUTH PROFILE
+         SAVE NAME
       ========================= */
 
       await user.updateProfile({
@@ -1342,9 +1757,8 @@ form.addEventListener(
       });
 
 
-
       /* =========================
-         SAVE CUSTOMER TO FIRESTORE
+         SAVE CUSTOMER
       ========================= */
 
       if(
@@ -1357,7 +1771,6 @@ form.addEventListener(
         );
 
       }
-
 
 
       await firebaseDB
@@ -1378,96 +1791,56 @@ form.addEventListener(
             "Active",
 
           createdAt:
-            firebase.firestore.FieldValue
+            firebase.firestore
+              .FieldValue
               .serverTimestamp()
 
         });
 
 
-
       /* =========================
-         SEND EMAIL VERIFICATION
+         SEND VERIFICATION EMAIL
       ========================= */
 
       await user.sendEmailVerification();
 
 
-
       /* =========================
-         LOCAL COMPATIBILITY DATA
+         DO NOT LOGIN USER
       ========================= */
 
-      localStorage.setItem(
-        "gentleUser",
-        JSON.stringify({
-
-          id:
-            user.uid,
-
-          name:
-            name,
-
-          email:
-            user.email,
-
-          balance:
-            0
-
-        })
+      localStorage.removeItem(
+        "gentleLoggedIn"
       );
 
-
-
-      localStorage.setItem(
-        "gentleCurrentUserId",
-        user.uid
+      localStorage.removeItem(
+        "gentleUser"
       );
 
-
-
-      localStorage.setItem(
-        "gentleLoggedIn",
-        "true"
+      localStorage.removeItem(
+        "gentleCurrentUserId"
       );
-
 
 
       /* =========================
-         SUCCESS
+         SHOW VERIFY SCREEN
       ========================= */
 
-      showMessage(
-        "Account created successfully. A verification email has been sent to your email address.",
-        "success"
+      showVerifyScreen(
+        user
       );
-
-
-
-      setTimeout(
-        function(){
-
-          window.location.href =
-            "dashboard.html";
-
-        },
-        2500
-      );
-
 
 
     }catch(error){
 
-
       console.error(
-        "Signup error:",
+        "SIGNUP ERROR:",
         error
       );
 
 
-
       let text =
         "Unable to create your account.";
-
 
 
       if(
@@ -1480,8 +1853,6 @@ form.addEventListener(
 
       }
 
-
-
       else if(
         error.code ===
         "auth/invalid-email"
@@ -1491,8 +1862,6 @@ form.addEventListener(
           "Please enter a valid email address.";
 
       }
-
-
 
       else if(
         error.code ===
@@ -1504,8 +1873,6 @@ form.addEventListener(
 
       }
 
-
-
       else if(
         error.code ===
         "auth/network-request-failed"
@@ -1516,20 +1883,17 @@ form.addEventListener(
 
       }
 
-
-
       else if(
         error.message &&
-        error.message.includes(
-          "permission"
-        )
+        error.message
+          .toLowerCase()
+          .includes("permission")
       ){
 
         text =
-          "Your account was created, but the customer profile could not be saved. Please contact the store administrator.";
+          "Your account was created, but your customer profile could not be saved.";
 
       }
-
 
 
       showMessage(
@@ -1538,13 +1902,11 @@ form.addEventListener(
       );
 
 
-
-      button.disabled =
+      signupButton.disabled =
         false;
 
 
-
-      button.innerHTML =
+      signupButton.innerHTML =
         '<i class="fa-solid fa-user-plus"></i> Create Account';
 
     }
@@ -1552,8 +1914,184 @@ form.addEventListener(
   }
 );
 
-</script>
 
+/* =========================
+   MANUAL CHECK
+========================= */
+
+checkVerification.addEventListener(
+  "click",
+  async function(){
+
+    if(
+      !verificationUser
+    ){
+
+      return;
+
+    }
+
+
+    try{
+
+      checkVerification.disabled =
+        true;
+
+
+      checkVerification.innerHTML =
+        '<i class="fa-solid fa-spinner fa-spin"></i> Checking...';
+
+
+      await verificationUser.reload();
+
+
+      const user =
+        firebaseAuth.currentUser;
+
+
+      if(
+        user &&
+        user.emailVerified
+      ){
+
+        await verificationComplete();
+
+      }else{
+
+        verifyStatus.className =
+          "verify-status error";
+
+
+        verifyStatus.innerHTML =
+          '<i class="fa-solid fa-circle-exclamation"></i> Your email has not been verified yet. Please check your inbox and spam folder, then try again.';
+
+
+        checkVerification.disabled =
+          false;
+
+
+        checkVerification.innerHTML =
+          '<i class="fa-solid fa-circle-check"></i> I\'ve Verified My Email';
+
+      }
+
+
+    }catch(error){
+
+      console.error(
+        "VERIFICATION CHECK ERROR:",
+        error
+      );
+
+
+      verifyStatus.className =
+        "verify-status error";
+
+
+      verifyStatus.textContent =
+        "Unable to check verification status. Please try again.";
+
+
+      checkVerification.disabled =
+        false;
+
+
+      checkVerification.innerHTML =
+        '<i class="fa-solid fa-circle-check"></i> I\'ve Verified My Email';
+
+    }
+
+  }
+);
+
+
+/* =========================
+   RESEND EMAIL
+========================= */
+
+resendVerification.addEventListener(
+  "click",
+  async function(){
+
+    if(
+      !verificationUser
+    ){
+
+      return;
+
+    }
+
+
+    try{
+
+      resendVerification.disabled =
+        true;
+
+
+      resendVerification.innerHTML =
+        '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+
+
+      await verificationUser
+        .sendEmailVerification();
+
+
+      verifyStatus.className =
+        "verify-status success";
+
+
+      verifyStatus.textContent =
+        "A new verification email has been sent. Please check your inbox and spam folder.";
+
+
+    }catch(error){
+
+      console.error(
+        "RESEND VERIFICATION ERROR:",
+        error
+      );
+
+
+      verifyStatus.className =
+        "verify-status error";
+
+
+      if(
+        error.code ===
+        "auth/too-many-requests"
+      ){
+
+        verifyStatus.textContent =
+          "Too many verification emails were requested. Please wait a little before trying again.";
+
+      }else{
+
+        verifyStatus.textContent =
+          "Could not resend the verification email. Please try again.";
+
+      }
+
+    }
+
+
+    setTimeout(
+      function(){
+
+        resendVerification.disabled =
+          false;
+
+
+        resendVerification.innerHTML =
+          '<i class="fa-solid fa-paper-plane"></i> Resend Verification Email';
+
+      },
+      3000
+    );
+
+  }
+);
+
+</script>
 
 </body>
 

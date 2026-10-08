@@ -10,6 +10,11 @@
   content="width=device-width, initial-scale=1.0"
 >
 
+<meta
+  name="theme-color"
+  content="#0b2d5c"
+>
+
 <title>Sign In | Gentle Acct Store</title>
 
 
@@ -42,9 +47,9 @@
 
 <style>
 
-/* =========================
+/* ==================================================
    RESET
-========================= */
+================================================== */
 
 *{
   box-sizing:border-box;
@@ -52,10 +57,48 @@
   padding:0;
 }
 
+html{
+  scroll-behavior:smooth;
+}
 
-/* =========================
-   ROOT
-========================= */
+body{
+
+  font-family:"Poppins",sans-serif;
+
+  background:
+    radial-gradient(
+      circle at 90% 5%,
+      rgba(11,45,92,.07),
+      transparent 25%
+    ),
+
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #f7faff 100%
+    );
+
+  color:#101828;
+
+  min-height:100vh;
+
+  overflow-x:hidden;
+}
+
+a{
+  text-decoration:none;
+  color:inherit;
+}
+
+button,
+input{
+  font-family:"Poppins",sans-serif;
+}
+
+
+/* ==================================================
+   COLORS
+================================================== */
 
 :root{
 
@@ -63,64 +106,53 @@
 
   --blue-dark:#071f40;
 
-  --blue-light:#eef5fc;
+  --blue-light:#eef4fb;
 
-  --text:#10233f;
+  --blue-border:#d6e1ee;
 
-  --muted:#6b7890;
+  --text:#101828;
 
-  --border:#dce5f0;
+  --muted:#667085;
 
   --white:#ffffff;
 
 }
 
 
-/* =========================
-   BODY
-========================= */
-
-body{
-
-  font-family:"Poppins",sans-serif;
-
-  background:#f7faff;
-
-  color:var(--text);
-
-  min-height:100vh;
-
-}
-
-
-/* =========================
+/* ==================================================
    HEADER
-========================= */
+================================================== */
 
 .header{
 
+  position:sticky;
+
+  top:0;
+
+  z-index:1000;
+
   width:100%;
 
-  background:var(--white);
+  background:rgba(255,255,255,.94);
 
-  border-bottom:1px solid #e8eef5;
+  backdrop-filter:blur(15px);
 
-  position:relative;
+  -webkit-backdrop-filter:blur(15px);
 
-  z-index:10;
+  border-bottom:1px solid #e7edf4;
 
 }
 
 
 .header-inner{
 
-  width:92%;
-
-  max-width:1180px;
+  max-width:1150px;
 
   margin:auto;
 
-  min-height:76px;
+  min-height:68px;
+
+  padding:10px 18px;
 
   display:flex;
 
@@ -128,10 +160,12 @@ body{
 
   justify-content:space-between;
 
-  gap:20px;
+  gap:15px;
 
 }
 
+
+/* LOGO */
 
 .logo{
 
@@ -139,30 +173,33 @@ body{
 
   align-items:center;
 
-  gap:11px;
+  gap:9px;
 
   color:var(--blue);
 
-  text-decoration:none;
+  font-size:18px;
 
   font-weight:800;
 
-  font-size:19px;
-
-  letter-spacing:-.3px;
+  letter-spacing:-.6px;
 
 }
 
 
 .logo-icon{
 
-  width:40px;
+  width:35px;
 
-  height:40px;
+  height:35px;
 
   border-radius:11px;
 
-  background:var(--blue);
+  background:
+    linear-gradient(
+      145deg,
+      var(--blue),
+      var(--blue-dark)
+    );
 
   color:white;
 
@@ -172,10 +209,15 @@ body{
 
   justify-content:center;
 
-  font-size:17px;
+  font-size:14px;
+
+  box-shadow:
+    0 6px 16px rgba(11,45,92,.17);
 
 }
 
+
+/* HOME LINK */
 
 .home-link{
 
@@ -183,19 +225,19 @@ body{
 
   align-items:center;
 
-  gap:8px;
+  gap:7px;
 
   color:var(--blue);
 
-  text-decoration:none;
+  font-size:11px;
 
-  font-size:13px;
+  font-weight:700;
 
-  font-weight:600;
+  border:1px solid var(--blue-border);
 
-  border:1px solid var(--border);
+  background:#ffffff;
 
-  padding:10px 15px;
+  padding:9px 13px;
 
   border-radius:10px;
 
@@ -208,67 +250,74 @@ body{
 
   background:var(--blue-light);
 
-  border-color:#c9d8e9;
+  transform:translateY(-1px);
 
 }
 
 
-/* =========================
+/* ==================================================
    MAIN
-========================= */
+================================================== */
 
 .main{
 
-  min-height:calc(100vh - 76px);
+  min-height:calc(100vh - 68px);
 
-  padding:55px 18px 70px;
+  padding:48px 15px 60px;
 
   display:flex;
 
-  align-items:flex-start;
-
   justify-content:center;
+
+  align-items:flex-start;
 
 }
 
 
-/* =========================
+/* ==================================================
    AUTH WRAPPER
-========================= */
+================================================== */
 
 .auth-wrapper{
 
   width:100%;
 
-  max-width:470px;
+  max-width:460px;
 
 }
 
 
-/* =========================
-   TOP INTRO
-========================= */
+/* ==================================================
+   HEADING
+================================================== */
 
 .auth-heading{
 
   text-align:center;
 
-  margin-bottom:28px;
+  margin-bottom:25px;
 
 }
 
 
 .auth-icon{
 
+  position:relative;
+
   width:58px;
 
   height:58px;
 
-  margin:0 auto 16px;
+  margin:0 auto 15px;
 
-  border-radius:16px;
+  border-radius:17px;
 
-  background:var(--blue);
+  background:
+    linear-gradient(
+      145deg,
+      var(--blue),
+      var(--blue-dark)
+    );
 
   color:white;
 
@@ -278,93 +327,158 @@ body{
 
   justify-content:center;
 
-  font-size:21px;
+  font-size:20px;
 
-  box-shadow:0 12px 28px rgba(11,45,92,.18);
+  box-shadow:
+    0 12px 28px rgba(11,45,92,.18);
+
+}
+
+
+.auth-icon::after{
+
+  content:"";
+
+  position:absolute;
+
+  width:9px;
+
+  height:9px;
+
+  border-radius:50%;
+
+  background:#22a06b;
+
+  right:-2px;
+
+  top:-2px;
+
+  border:2px solid white;
 
 }
 
 
 .auth-heading h1{
 
+  color:var(--blue-dark);
+
   font-size:28px;
 
-  line-height:1.25;
+  line-height:1.2;
 
   font-weight:800;
 
-  letter-spacing:-.6px;
-
-  color:var(--blue-dark);
+  letter-spacing:-.8px;
 
 }
 
 
 .auth-heading p{
 
-  margin-top:9px;
+  max-width:390px;
+
+  margin:9px auto 0;
 
   color:var(--muted);
 
-  font-size:13px;
+  font-size:11px;
 
-  line-height:1.7;
+  line-height:1.8;
 
 }
 
 
-/* =========================
+/* ==================================================
    CARD
-========================= */
+================================================== */
 
 .card{
 
-  background:var(--white);
+  background:rgba(255,255,255,.97);
 
-  border:1px solid #e4ebf3;
+  border:1px solid #e0e8f2;
 
-  border-radius:18px;
+  border-radius:22px;
 
-  padding:30px;
+  padding:28px;
 
-  box-shadow:0 18px 45px rgba(7,31,64,.08);
+  box-shadow:
+    0 20px 55px rgba(7,31,64,.08);
+
+}
+
+
+.card-title-row{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:10px;
+
+  margin-bottom:5px;
 
 }
 
 
 .card-title{
 
-  font-size:20px;
+  font-size:19px;
 
-  font-weight:700;
+  font-weight:800;
 
   color:var(--blue-dark);
 
-  margin-bottom:6px;
+}
+
+
+.card-badge{
+
+  display:inline-flex;
+
+  align-items:center;
+
+  gap:5px;
+
+  background:var(--blue-light);
+
+  border:1px solid var(--blue-border);
+
+  color:var(--blue);
+
+  padding:5px 8px;
+
+  border-radius:20px;
+
+  font-size:8px;
+
+  font-weight:700;
 
 }
 
 
 .card-subtitle{
 
-  font-size:12.5px;
+  font-size:10.5px;
 
   color:var(--muted);
 
-  line-height:1.6;
+  line-height:1.7;
 
-  margin-bottom:24px;
+  margin-bottom:23px;
 
 }
 
 
-/* =========================
+/* ==================================================
    FORM
-========================= */
+================================================== */
 
 .form-group{
 
-  margin-bottom:18px;
+  margin-bottom:16px;
 
 }
 
@@ -373,13 +487,13 @@ body{
 
   display:block;
 
-  font-size:12.5px;
+  font-size:10.5px;
 
-  font-weight:600;
+  font-weight:700;
 
-  color:var(--text);
+  color:#344054;
 
-  margin-bottom:8px;
+  margin-bottom:7px;
 
 }
 
@@ -403,9 +517,11 @@ body{
 
   color:var(--blue);
 
-  font-size:13px;
+  font-size:12px;
 
   pointer-events:none;
+
+  z-index:2;
 
 }
 
@@ -414,23 +530,21 @@ input{
 
   width:100%;
 
-  height:50px;
+  height:49px;
 
-  padding:0 14px 0 42px;
+  padding:0 43px 0 40px;
 
-  border:1px solid var(--border);
+  border:1px solid var(--blue-border);
 
-  border-radius:10px;
+  border-radius:11px;
 
   outline:none;
 
-  background:#fbfdff;
+  background:#fafdff;
 
   color:var(--text);
 
-  font-family:"Poppins",sans-serif;
-
-  font-size:13px;
+  font-size:11.5px;
 
   transition:.2s ease;
 
@@ -444,20 +558,80 @@ input::placeholder{
 }
 
 
-input:focus{
+input:hover{
 
-  border-color:var(--blue);
-
-  background:white;
-
-  box-shadow:0 0 0 3px rgba(11,45,92,.08);
+  border-color:#bdcddd;
 
 }
 
 
-/* =========================
+input:focus{
+
+  border-color:var(--blue);
+
+  background:#ffffff;
+
+  box-shadow:
+    0 0 0 3px rgba(11,45,92,.07);
+
+}
+
+
+/* ==================================================
+   PASSWORD TOGGLE
+================================================== */
+
+.password-toggle{
+
+  position:absolute;
+
+  right:10px;
+
+  top:50%;
+
+  transform:translateY(-50%);
+
+  width:29px;
+
+  height:29px;
+
+  padding:0;
+
+  margin:0;
+
+  border:none;
+
+  background:transparent;
+
+  color:#8995a6;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  cursor:pointer;
+
+  box-shadow:none;
+
+}
+
+
+.password-toggle:hover{
+
+  background:var(--blue-light);
+
+  color:var(--blue);
+
+  transform:translateY(-50%);
+
+}
+
+
+/* ==================================================
    FORGOT PASSWORD
-========================= */
+================================================== */
 
 .forgot-row{
 
@@ -465,22 +639,26 @@ input:focus{
 
   justify-content:flex-end;
 
-  margin-top:-7px;
+  margin-top:-4px;
 
-  margin-bottom:21px;
+  margin-bottom:20px;
 
 }
 
 
 .forgot{
 
+  display:inline-flex;
+
+  align-items:center;
+
+  gap:5px;
+
   color:var(--blue);
 
-  text-decoration:none;
+  font-size:9.5px;
 
-  font-size:11.5px;
-
-  font-weight:600;
+  font-weight:700;
 
 }
 
@@ -492,27 +670,30 @@ input:focus{
 }
 
 
-/* =========================
-   BUTTON
-========================= */
+/* ==================================================
+   LOGIN BUTTON
+================================================== */
 
-button{
+.submit-button{
 
   width:100%;
 
-  height:50px;
+  height:49px;
 
   border:none;
 
-  border-radius:10px;
+  border-radius:11px;
 
-  background:var(--blue);
+  background:
+    linear-gradient(
+      145deg,
+      var(--blue),
+      var(--blue-dark)
+    );
 
   color:white;
 
-  font-family:"Poppins",sans-serif;
-
-  font-size:13px;
+  font-size:11.5px;
 
   font-weight:700;
 
@@ -520,28 +701,30 @@ button{
 
   transition:.2s ease;
 
-  box-shadow:0 8px 20px rgba(11,45,92,.16);
+  box-shadow:
+    0 9px 22px rgba(11,45,92,.17);
 
 }
 
 
-button:hover{
-
-  background:var(--blue-dark);
+.submit-button:hover{
 
   transform:translateY(-1px);
 
+  box-shadow:
+    0 12px 25px rgba(11,45,92,.21);
+
 }
 
 
-button:active{
+.submit-button:active{
 
   transform:translateY(0);
 
 }
 
 
-button:disabled{
+.submit-button:disabled{
 
   opacity:.65;
 
@@ -552,30 +735,30 @@ button:disabled{
 }
 
 
-button i{
+.submit-button i{
 
   margin-right:7px;
 
 }
 
 
-/* =========================
+/* ==================================================
    MESSAGE
-========================= */
+================================================== */
 
 .message{
 
   display:none;
 
-  margin-top:16px;
+  margin-top:14px;
 
-  padding:12px 14px;
+  padding:11px 13px;
 
   border-radius:10px;
 
-  font-size:11.5px;
+  font-size:9.5px;
 
-  line-height:1.6;
+  line-height:1.65;
 
 }
 
@@ -584,9 +767,9 @@ button i{
 
   display:block;
 
-  background:#fff2f2;
+  background:#fff3f3;
 
-  border:1px solid #f3d0d0;
+  border:1px solid #f0cccc;
 
   color:#b42318;
 
@@ -606,19 +789,19 @@ button i{
 }
 
 
-/* =========================
-   SIGNUP
-========================= */
+/* ==================================================
+   SIGN UP
+================================================== */
 
 .signup-link{
 
   text-align:center;
 
-  margin-top:22px;
+  margin-top:20px;
 
   color:var(--muted);
 
-  font-size:12px;
+  font-size:10px;
 
 }
 
@@ -627,9 +810,7 @@ button i{
 
   color:var(--blue);
 
-  font-weight:700;
-
-  text-decoration:none;
+  font-weight:800;
 
   margin-left:4px;
 
@@ -643,34 +824,52 @@ button i{
 }
 
 
-/* =========================
+/* ==================================================
    SECURITY
-========================= */
+================================================== */
 
 .security-note{
 
-  margin-top:24px;
+  margin-top:20px;
 
-  padding-top:20px;
+  padding:14px;
 
-  border-top:1px solid #edf1f5;
+  border-radius:12px;
+
+  background:#f7faff;
+
+  border:1px solid #e8eef5;
 
   display:flex;
 
   align-items:flex-start;
 
-  gap:10px;
+  gap:9px;
 
 }
 
 
 .security-icon{
 
+  width:27px;
+
+  height:27px;
+
+  flex:none;
+
+  border-radius:8px;
+
+  background:var(--blue-light);
+
   color:var(--blue);
 
-  font-size:13px;
+  display:flex;
 
-  margin-top:2px;
+  align-items:center;
+
+  justify-content:center;
+
+  font-size:10px;
 
 }
 
@@ -679,68 +878,70 @@ button i{
 
   color:#7b8798;
 
-  font-size:10.5px;
+  font-size:8.5px;
 
-  line-height:1.6;
+  line-height:1.65;
 
 }
 
 
-/* =========================
+/* ==================================================
    FOOTER
-========================= */
+================================================== */
 
 .footer{
 
   text-align:center;
 
-  padding:0 18px 30px;
+  padding:0 15px 25px;
 
   color:#9aa5b5;
 
-  font-size:10.5px;
+  font-size:8.5px;
 
 }
 
 
-/* =========================
+/* ==================================================
    MOBILE
-========================= */
+================================================== */
 
 @media(max-width:600px){
 
   .header-inner{
 
-    min-height:68px;
+    min-height:62px;
+
+    padding:9px 12px;
 
   }
 
 
   .logo{
 
-    font-size:16px;
+    font-size:15px;
 
   }
 
 
   .logo-icon{
 
-    width:36px;
+    width:32px;
 
-    height:36px;
+    height:32px;
 
-    border-radius:10px;
+    border-radius:9px;
 
-    font-size:15px;
+    font-size:13px;
 
   }
 
 
   .home-link{
 
-    padding:9px 12px;
+    padding:8px 10px;
 
-    font-size:11px;
+    font-size:10px;
 
   }
 
@@ -754,27 +955,27 @@ button i{
 
   .main{
 
-    padding:38px 15px 55px;
+    padding:34px 13px 48px;
 
   }
 
 
   .auth-heading{
 
-    margin-bottom:23px;
+    margin-bottom:20px;
 
   }
 
 
   .auth-icon{
 
-    width:52px;
+    width:53px;
 
-    height:52px;
+    height:53px;
 
-    border-radius:14px;
+    border-radius:15px;
 
-    font-size:19px;
+    font-size:18px;
 
   }
 
@@ -788,23 +989,39 @@ button i{
 
   .auth-heading p{
 
-    font-size:12px;
+    font-size:10px;
+
+    padding:0 8px;
 
   }
 
 
   .card{
 
-    padding:24px 19px;
+    padding:22px 17px;
 
-    border-radius:16px;
+    border-radius:18px;
 
   }
 
 
   .card-title{
 
-    font-size:18px;
+    font-size:17px;
+
+  }
+
+
+  .card-badge{
+
+    font-size:7px;
+
+  }
+
+
+  .card-subtitle{
+
+    font-size:9.5px;
 
   }
 
@@ -813,36 +1030,36 @@ button i{
 
     height:48px;
 
-    font-size:12.5px;
+    font-size:11px;
 
   }
 
 
-  button{
+  .submit-button{
 
-    height:49px;
+    height:48px;
 
   }
 
 }
 
 
-/* =========================
+/* ==================================================
    SMALL PHONES
-========================= */
+================================================== */
 
-@media(max-width:360px){
+@media(max-width:370px){
 
   .logo{
 
-    font-size:14px;
+    font-size:13px;
 
   }
 
 
   .card{
 
-    padding:21px 16px;
+    padding:20px 14px;
 
   }
 
@@ -850,6 +1067,13 @@ button i{
   .auth-heading h1{
 
     font-size:22px;
+
+  }
+
+
+  .card-badge{
+
+    display:none;
 
   }
 
@@ -863,9 +1087,9 @@ button i{
 <body>
 
 
-<!-- =========================
+<!-- ==================================================
      HEADER
-========================= -->
+================================================== -->
 
 <header class="header">
 
@@ -911,9 +1135,9 @@ button i{
 
 
 
-<!-- =========================
+<!-- ==================================================
      MAIN
-========================= -->
+================================================== -->
 
 <main class="main">
 
@@ -952,13 +1176,28 @@ button i{
     <div class="card">
 
 
-      <div class="card-title">
-        Sign In
+      <div class="card-title-row">
+
+        <div class="card-title">
+          Sign In
+        </div>
+
+
+        <div class="card-badge">
+
+          <i class="fa-solid fa-shield-halved"></i>
+
+          Secure
+
+        </div>
+
       </div>
 
 
       <div class="card-subtitle">
+
         Enter your account details below to continue.
+
       </div>
 
 
@@ -1018,6 +1257,18 @@ button i{
               required
             >
 
+
+            <button
+              type="button"
+              class="password-toggle"
+              id="passwordToggle"
+              aria-label="Show password"
+            >
+
+              <i class="fa-solid fa-eye"></i>
+
+            </button>
+
           </div>
 
         </div>
@@ -1033,6 +1284,8 @@ button i{
             class="forgot"
           >
 
+            <i class="fa-solid fa-key"></i>
+
             Forgot Password?
 
           </a>
@@ -1046,6 +1299,7 @@ button i{
         <button
           type="submit"
           id="loginBtn"
+          class="submit-button"
         >
 
           <i class="fa-solid fa-right-to-bracket"></i>
@@ -1095,8 +1349,9 @@ button i{
 
         <p>
 
-          Your account is secured with Firebase Authentication.
-          Your password is securely handled by Firebase.
+          Your account is secured with Firebase
+          Authentication. Your password is securely
+          handled by Firebase.
 
         </p>
 
@@ -1123,9 +1378,9 @@ button i{
 
 
 
-<!-- =========================
+<!-- ==================================================
      FIREBASE
-========================= -->
+================================================== -->
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 
@@ -1137,9 +1392,9 @@ button i{
 
 <script>
 
-/* =========================
+/* ==================================================
    ELEMENTS
-========================= */
+================================================== */
 
 const form =
   document.getElementById(
@@ -1159,10 +1414,21 @@ const loginBtn =
   );
 
 
+const password =
+  document.getElementById(
+    "password"
+  );
 
-/* =========================
+
+const passwordToggle =
+  document.getElementById(
+    "passwordToggle"
+  );
+
+
+/* ==================================================
    MESSAGE
-========================= */
+================================================== */
 
 function showMessage(
   text,
@@ -1182,10 +1448,58 @@ function showMessage(
 }
 
 
+/* ==================================================
+   PASSWORD VISIBILITY
+================================================== */
 
-/* =========================
+passwordToggle.addEventListener(
+  "click",
+  function(){
+
+    const icon =
+      passwordToggle.querySelector(
+        "i"
+      );
+
+
+    if(
+      password.type ===
+      "password"
+    ){
+
+      password.type =
+        "text";
+
+      icon.className =
+        "fa-solid fa-eye-slash";
+
+      passwordToggle.setAttribute(
+        "aria-label",
+        "Hide password"
+      );
+
+    }else{
+
+      password.type =
+        "password";
+
+      icon.className =
+        "fa-solid fa-eye";
+
+      passwordToggle.setAttribute(
+        "aria-label",
+        "Show password"
+      );
+
+    }
+
+  }
+);
+
+
+/* ==================================================
    LOGIN
-========================= */
+================================================== */
 
 form.addEventListener(
   "submit",
@@ -1206,7 +1520,6 @@ form.addEventListener(
       '<i class="fa-solid fa-spinner fa-spin"></i> Signing In...';
 
 
-
     const email =
       document
         .getElementById("email")
@@ -1215,31 +1528,27 @@ form.addEventListener(
         .toLowerCase();
 
 
-    const password =
-      document
-        .getElementById("password")
-        .value;
-
+    const passwordValue =
+      password.value;
 
 
     try{
 
 
-      /* =========================
+      /* ==================================================
          FIREBASE LOGIN
-      ========================= */
+      ================================================== */
 
       const result =
         await firebaseAuth
           .signInWithEmailAndPassword(
             email,
-            password
+            passwordValue
           );
 
 
       const user =
         result.user;
-
 
 
       if(!user){
@@ -1251,10 +1560,9 @@ form.addEventListener(
       }
 
 
-
-      /* =========================
+      /* ==================================================
          EMAIL VERIFICATION
-      ========================= */
+      ================================================== */
 
       if(!user.emailVerified){
 
@@ -1280,20 +1588,18 @@ form.addEventListener(
       }
 
 
-
-      /* =========================
+      /* ==================================================
          REMOVE OLD ADMIN SESSION
-      ========================= */
+      ================================================== */
 
       localStorage.removeItem(
         "gentleAdminLoggedIn"
       );
 
 
-
-      /* =========================
+      /* ==================================================
          SAVE FIREBASE USER ID
-      ========================= */
+      ================================================== */
 
       localStorage.setItem(
         "gentleCurrentUserId",
@@ -1307,10 +1613,9 @@ form.addEventListener(
       );
 
 
-
-      /* =========================
+      /* ==================================================
          COMPATIBILITY USER DATA
-      ========================= */
+      ================================================== */
 
       const oldUser =
         localStorage.getItem(
@@ -1337,7 +1642,6 @@ form.addEventListener(
       }
 
 
-
       const loggedInUser = {
 
         id:
@@ -1349,14 +1653,16 @@ form.addEventListener(
         name:
           user.displayName ||
           existingUser.name ||
-          user.email?.split("@")[0] ||
-          "Customer",
+          (
+            user.email
+              ? user.email.split("@")[0]
+              : "Customer"
+          ),
 
         balance:
           Number(existingUser.balance) || 0
 
       };
-
 
 
       localStorage.setItem(
@@ -1375,26 +1681,23 @@ form.addEventListener(
       );
 
 
-
-      /* =========================
+      /* ==================================================
          CLEAR OLD CHECKOUT ITEM
-      ========================= */
+      ================================================== */
 
       localStorage.removeItem(
         "gentleCheckoutProduct"
       );
 
 
-
-      /* =========================
+      /* ==================================================
          SUCCESS
-      ========================= */
+      ================================================== */
 
       showMessage(
         "Login successful. Opening your dashboard...",
         "success"
       );
-
 
 
       setTimeout(
@@ -1420,7 +1723,6 @@ form.addEventListener(
 
       let errorMessage =
         "Incorrect email or password.";
-
 
 
       if(
@@ -1489,7 +1791,6 @@ form.addEventListener(
       }
 
 
-
       showMessage(
 
         '<i class="fa-solid fa-circle-exclamation"></i> ' +
@@ -1498,7 +1799,6 @@ form.addEventListener(
         "error"
 
       );
-
 
 
       loginBtn.disabled =

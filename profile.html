@@ -6,101 +6,134 @@
 <meta charset="UTF-8">
 
 <meta
-name="viewport"
-content="width=device-width, initial-scale=1.0"
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<meta
+  name="theme-color"
+  content="#071f40"
+>
+
+<meta
+  name="description"
+  content="Manage your Gentle Acct Store profile, orders, wallet and account security."
 >
 
 <title>Profile - Gentle Acct Store</title>
 
+
 <link
-rel="preconnect"
-href="https://fonts.googleapis.com"
+  rel="preconnect"
+  href="https://fonts.googleapis.com"
 >
 
 <link
-rel="preconnect"
-href="https://fonts.googleapis.com"
-crossorigin
+  rel="preconnect"
+  href="https://fonts.gstatic.com"
 >
 
 <link
-href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
-rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+  rel="stylesheet"
 >
 
+
 <link
-rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 >
+
 
 <style>
 
 :root{
 
---blue:#0b2d5c;
---blue-dark:#071f40;
---blue-light:#eaf2fb;
+  --blue:#0b3b72;
+  --blue-dark:#071f40;
+  --blue-main:#0b2d5c;
 
---white:#ffffff;
+  --blue-light:#edf4fc;
+  --blue-soft:#f5f8fc;
 
---text:#172033;
---muted:#778399;
+  --white:#ffffff;
 
---border:#e2e8f0;
+  --text:#172033;
+  --muted:#778399;
 
---danger:#dc2626;
---danger-bg:#fff1f1;
+  --border:#e2e8f0;
 
---success:#16803c;
---success-bg:#edf9f0;
+  --danger:#dc2626;
+  --danger-bg:#fff1f1;
 
---shadow:
-0 8px 25px rgba(11,45,92,.07);
+  --success:#16803c;
+  --success-bg:#edf9f0;
+
+  --shadow:
+    0 9px 28px rgba(7,31,64,.07);
 
 }
+
 
 *{
 
-box-sizing:border-box;
+  box-sizing:border-box;
 
-margin:0;
+  margin:0;
 
-padding:0;
+  padding:0;
 
 }
+
+
+html{
+
+  scroll-behavior:smooth;
+
+}
+
 
 body{
 
-font-family:"Poppins",sans-serif;
+  min-height:100vh;
 
-background:#f6f8fc;
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(31,105,194,.08),
+      transparent 30%
+    ),
+    #f6f8fc;
 
-color:var(--text);
+  color:var(--text);
 
-min-height:100vh;
+  font-family:'Poppins',sans-serif;
 
-padding-bottom:90px;
+  padding-bottom:90px;
 
 }
+
 
 button,
 input{
 
-font-family:inherit;
+  font-family:inherit;
 
 }
+
 
 button{
 
-cursor:pointer;
+  cursor:pointer;
 
 }
 
+
 a{
 
-text-decoration:none;
+  text-decoration:none;
 
-color:inherit;
+  color:inherit;
 
 }
 
@@ -111,59 +144,78 @@ color:inherit;
 
 .header{
 
-height:68px;
+  height:70px;
 
-background:var(--white);
+  background:rgba(255,255,255,.95);
 
-border-bottom:1px solid var(--border);
+  border-bottom:1px solid var(--border);
 
-display:flex;
+  display:flex;
 
-align-items:center;
+  align-items:center;
 
-justify-content:space-between;
+  justify-content:space-between;
 
-padding:0 17px;
+  padding:0 17px;
 
-position:sticky;
+  position:sticky;
 
-top:0;
+  top:0;
 
-z-index:30;
+  z-index:30;
+
+  backdrop-filter:blur(14px);
+
+  -webkit-backdrop-filter:blur(14px);
 
 }
+
 
 .header-title{
 
-font-size:17px;
+  font-size:17px;
 
-font-weight:800;
+  font-weight:800;
 
-color:var(--blue-dark);
+  color:var(--blue-dark);
+
+  letter-spacing:-.3px;
 
 }
 
+
 .header-icon{
 
-width:38px;
+  width:39px;
 
-height:38px;
+  height:39px;
 
-border:none;
+  border:none;
 
-border-radius:11px;
+  border-radius:11px;
 
-background:var(--blue-light);
+  background:var(--blue-light);
 
-color:var(--blue);
+  color:var(--blue);
 
-display:flex;
+  display:flex;
 
-align-items:center;
+  align-items:center;
 
-justify-content:center;
+  justify-content:center;
 
-font-size:15px;
+  font-size:14px;
+
+  transition:.2s ease;
+
+}
+
+
+.header-icon:hover{
+
+  background:#e1ebf7;
+
+  transform:translateY(-1px);
 
 }
 
@@ -174,13 +226,13 @@ font-size:15px;
 
 .container{
 
-width:100%;
+  width:100%;
 
-max-width:600px;
+  max-width:600px;
 
-margin:auto;
+  margin:auto;
 
-padding:20px 15px 35px;
+  padding:20px 15px 35px;
 
 }
 
@@ -191,112 +243,178 @@ padding:20px 15px 35px;
 
 .profile-card{
 
-background:var(--blue);
+  position:relative;
 
-color:var(--white);
+  overflow:hidden;
 
-border-radius:22px;
+  background:
+    linear-gradient(
+      145deg,
+      #0d3c78,
+      #071f40
+    );
 
-padding:25px 20px;
+  color:var(--white);
 
-box-shadow:
-0 12px 30px rgba(11,45,92,.16);
+  border-radius:23px;
 
-margin-bottom:15px;
+  padding:25px 20px;
+
+  box-shadow:
+    0 15px 34px rgba(7,31,64,.18);
+
+  margin-bottom:15px;
 
 }
+
+
+.profile-card::after{
+
+  content:"";
+
+  position:absolute;
+
+  width:170px;
+
+  height:170px;
+
+  border-radius:50%;
+
+  right:-70px;
+
+  top:-75px;
+
+  background:rgba(255,255,255,.07);
+
+}
+
+
+.profile-card::before{
+
+  content:"";
+
+  position:absolute;
+
+  width:120px;
+
+  height:120px;
+
+  border-radius:50%;
+
+  right:45px;
+
+  bottom:-80px;
+
+  background:rgba(255,255,255,.04);
+
+}
+
 
 .profile-top{
 
-display:flex;
+  position:relative;
 
-align-items:center;
+  z-index:2;
 
-gap:14px;
+  display:flex;
+
+  align-items:center;
+
+  gap:14px;
 
 }
+
 
 .avatar{
 
-width:65px;
+  width:65px;
 
-height:65px;
+  height:65px;
 
-border-radius:20px;
+  border-radius:20px;
 
-background:var(--white);
+  background:var(--white);
 
-color:var(--blue);
+  color:var(--blue);
 
-display:flex;
+  display:flex;
 
-align-items:center;
+  align-items:center;
 
-justify-content:center;
+  justify-content:center;
 
-font-size:25px;
+  font-size:25px;
 
-font-weight:800;
+  font-weight:800;
 
-flex-shrink:0;
+  flex-shrink:0;
+
+  box-shadow:
+    0 7px 18px rgba(0,0,0,.10);
 
 }
+
 
 .profile-info{
 
-min-width:0;
+  min-width:0;
 
 }
+
 
 .profile-name{
 
-font-size:18px;
+  font-size:18px;
 
-font-weight:800;
+  font-weight:800;
 
-margin-bottom:4px;
+  margin-bottom:4px;
 
-white-space:nowrap;
+  white-space:nowrap;
 
-overflow:hidden;
+  overflow:hidden;
 
-text-overflow:ellipsis;
+  text-overflow:ellipsis;
 
 }
+
 
 .profile-email{
 
-font-size:10px;
+  font-size:10px;
 
-opacity:.82;
+  opacity:.82;
 
-white-space:nowrap;
+  white-space:nowrap;
 
-overflow:hidden;
+  overflow:hidden;
 
-text-overflow:ellipsis;
+  text-overflow:ellipsis;
 
 }
 
+
 .verified{
 
-display:inline-flex;
+  display:inline-flex;
 
-align-items:center;
+  align-items:center;
 
-gap:5px;
+  gap:5px;
 
-font-size:9px;
+  font-size:9px;
 
-font-weight:700;
+  font-weight:700;
 
-margin-top:8px;
+  margin-top:8px;
 
-background:rgba(255,255,255,.14);
+  background:rgba(255,255,255,.14);
 
-padding:5px 8px;
+  border:1px solid rgba(255,255,255,.08);
 
-border-radius:8px;
+  padding:5px 8px;
+
+  border-radius:8px;
 
 }
 
@@ -307,29 +425,30 @@ border-radius:8px;
 
 .section{
 
-background:var(--white);
+  background:var(--white);
 
-border:1px solid var(--border);
+  border:1px solid var(--border);
 
-border-radius:19px;
+  border-radius:20px;
 
-box-shadow:var(--shadow);
+  box-shadow:var(--shadow);
 
-margin-bottom:15px;
+  margin-bottom:15px;
 
-overflow:hidden;
+  overflow:hidden;
 
 }
 
+
 .section-title{
 
-padding:17px 17px 12px;
+  padding:17px 17px 12px;
 
-font-size:14px;
+  font-size:13px;
 
-font-weight:800;
+  font-weight:800;
 
-color:var(--blue-dark);
+  color:var(--blue-dark);
 
 }
 
@@ -340,87 +459,170 @@ color:var(--blue-dark);
 
 .menu-item{
 
-width:100%;
+  width:100%;
 
-background:var(--white);
+  background:var(--white);
 
-border:none;
+  border:none;
 
-border-top:1px solid #edf1f5;
+  border-top:1px solid #edf1f5;
 
-padding:15px 17px;
+  padding:15px 17px;
 
-display:flex;
+  display:flex;
 
-align-items:center;
+  align-items:center;
 
-gap:13px;
+  gap:13px;
 
-text-align:left;
+  text-align:left;
+
+  transition:.2s ease;
 
 }
+
+
+.menu-item:hover{
+
+  background:#fbfcfe;
+
+}
+
+
+.menu-item:active{
+
+  background:#f4f7fb;
+
+}
+
 
 .menu-icon{
 
-width:40px;
+  width:40px;
 
-height:40px;
+  height:40px;
 
-border-radius:12px;
+  border-radius:12px;
 
-background:var(--blue-light);
+  background:var(--blue-light);
 
-color:var(--blue);
+  color:var(--blue);
 
-display:flex;
+  display:flex;
 
-align-items:center;
+  align-items:center;
 
-justify-content:center;
+  justify-content:center;
 
-font-size:14px;
+  font-size:14px;
 
-flex-shrink:0;
+  flex-shrink:0;
 
 }
+
 
 .menu-content{
 
-flex:1;
+  flex:1;
 
-min-width:0;
+  min-width:0;
 
 }
+
 
 .menu-content strong{
 
-display:block;
+  display:block;
 
-font-size:12px;
+  font-size:12px;
 
-font-weight:700;
+  font-weight:700;
 
-color:var(--blue-dark);
+  color:var(--blue-dark);
 
-margin-bottom:2px;
+  margin-bottom:2px;
 
 }
+
 
 .menu-content span{
 
-display:block;
+  display:block;
 
-font-size:9px;
+  font-size:9px;
 
-color:var(--muted);
+  color:var(--muted);
+
+  line-height:1.5;
 
 }
 
+
 .menu-arrow{
 
-color:#9aa5b5;
+  color:#9aa5b5;
 
-font-size:11px;
+  font-size:10px;
+
+}
+
+
+/* ==========================================
+   SECURITY ROW
+========================================== */
+
+.security-row{
+
+  width:100%;
+
+  background:white;
+
+  border-top:1px solid #edf1f5;
+
+  padding:15px 17px;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:13px;
+
+}
+
+
+.security-status{
+
+  margin-left:auto;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:5px;
+
+  font-size:9px;
+
+  font-weight:700;
+
+}
+
+
+.security-status i{
+
+  font-size:8px;
+
+}
+
+
+.security-status.verified{
+
+  margin-top:0;
+
+  background:transparent;
+
+  border:none;
+
+  padding:0;
 
 }
 
@@ -431,45 +633,56 @@ font-size:11px;
 
 .logout-button{
 
-width:100%;
+  width:100%;
 
-border:none;
+  border:1px solid #ffdcdc;
 
-background:var(--danger-bg);
+  background:var(--danger-bg);
 
-color:var(--danger);
+  color:var(--danger);
 
-padding:16px;
+  padding:16px;
 
-border-radius:14px;
+  border-radius:14px;
 
-font-size:12px;
+  font-size:12px;
 
-font-weight:800;
+  font-weight:800;
 
-display:flex;
+  display:flex;
 
-align-items:center;
+  align-items:center;
 
-justify-content:center;
+  justify-content:center;
 
-gap:8px;
+  gap:8px;
 
-margin-top:5px;
+  margin-top:5px;
+
+  transition:.2s ease;
 
 }
+
+
+.logout-button:hover{
+
+  background:#ffe7e7;
+
+}
+
 
 .logout-button:active{
 
-transform:scale(.98);
+  transform:scale(.98);
 
 }
 
+
 .logout-button:disabled{
 
-opacity:.6;
+  opacity:.6;
 
-cursor:not-allowed;
+  cursor:not-allowed;
 
 }
 
@@ -480,13 +693,13 @@ cursor:not-allowed;
 
 .version{
 
-text-align:center;
+  text-align:center;
 
-color:#a0aaba;
+  color:#a0aaba;
 
-font-size:9px;
+  font-size:9px;
 
-margin-top:20px;
+  margin-top:20px;
 
 }
 
@@ -497,237 +710,301 @@ margin-top:20px;
 
 .modal{
 
-position:fixed;
+  position:fixed;
 
-inset:0;
+  inset:0;
 
-background:rgba(7,31,64,.58);
+  background:rgba(7,31,64,.60);
 
-display:none;
+  display:none;
 
-align-items:flex-end;
+  align-items:flex-end;
 
-justify-content:center;
+  justify-content:center;
 
-z-index:100;
+  z-index:100;
 
-padding:15px;
+  padding:15px;
 
 }
+
 
 .modal.show{
 
-display:flex;
+  display:flex;
 
 }
+
 
 .modal-box{
 
-background:var(--white);
+  background:var(--white);
 
-width:100%;
+  width:100%;
 
-max-width:600px;
+  max-width:600px;
 
-border-radius:23px;
+  border-radius:23px;
 
-padding:21px;
+  padding:21px;
 
-box-shadow:
-0 -10px 40px rgba(0,0,0,.15);
+  box-shadow:
+    0 -10px 40px rgba(0,0,0,.15);
+
+  animation:
+    modalUp .22s ease;
 
 }
+
+
+@keyframes modalUp{
+
+  from{
+
+    transform:translateY(20px);
+
+    opacity:0;
+
+  }
+
+  to{
+
+    transform:translateY(0);
+
+    opacity:1;
+
+  }
+
+}
+
 
 .modal-header{
 
-display:flex;
+  display:flex;
 
-align-items:center;
+  align-items:center;
 
-justify-content:space-between;
+  justify-content:space-between;
 
-margin-bottom:20px;
+  margin-bottom:20px;
 
 }
+
 
 .modal-header h2{
 
-font-size:17px;
+  font-size:17px;
 
-font-weight:800;
+  font-weight:800;
 
-color:var(--blue-dark);
+  color:var(--blue-dark);
 
 }
+
 
 .close-button{
 
-width:34px;
+  width:35px;
 
-height:34px;
+  height:35px;
 
-border:none;
+  border:none;
 
-border-radius:50%;
+  border-radius:50%;
 
-background:#f1f3f6;
+  background:#f1f3f6;
 
-color:#555;
+  color:#555;
 
-display:flex;
+  display:flex;
 
-align-items:center;
+  align-items:center;
 
-justify-content:center;
+  justify-content:center;
+
+  transition:.2s ease;
 
 }
+
+
+.close-button:hover{
+
+  background:#e7ebf0;
+
+}
+
+
+/* ==========================================
+   MODAL FORM
+========================================== */
 
 .field{
 
-margin-bottom:15px;
+  margin-bottom:15px;
 
 }
+
 
 .field label{
 
-display:block;
+  display:block;
 
-font-size:10px;
+  font-size:10px;
 
-font-weight:700;
+  font-weight:700;
 
-color:var(--blue-dark);
+  color:var(--blue-dark);
 
-margin-bottom:7px;
+  margin-bottom:7px;
 
 }
+
 
 .password-wrap{
 
-position:relative;
+  position:relative;
 
 }
+
 
 .field input{
 
-width:100%;
+  width:100%;
 
-height:46px;
+  height:47px;
 
-border:1px solid #dce3ed;
+  border:1px solid #dce3ed;
 
-border-radius:11px;
+  border-radius:11px;
 
-background:#fbfcfe;
+  background:#fbfcfe;
 
-padding:0 43px 0 13px;
+  padding:0 43px 0 13px;
 
-font-size:12px;
+  font-size:12px;
 
-outline:none;
+  outline:none;
 
-color:var(--text);
+  color:var(--text);
+
+  transition:.2s ease;
 
 }
+
 
 .field input:focus{
 
-border-color:var(--blue);
+  border-color:var(--blue);
 
-background:var(--white);
+  background:var(--white);
 
-box-shadow:
-0 0 0 3px rgba(11,45,92,.06);
+  box-shadow:
+    0 0 0 3px rgba(11,45,92,.06);
 
 }
+
 
 .toggle-password{
 
-position:absolute;
+  position:absolute;
 
-right:12px;
+  right:12px;
 
-top:50%;
+  top:50%;
 
-transform:translateY(-50%);
+  transform:translateY(-50%);
 
-border:none;
+  border:none;
 
-background:transparent;
+  background:transparent;
 
-color:#7b8798;
+  color:#7b8798;
 
-font-size:13px;
+  font-size:13px;
 
-padding:4px;
+  padding:4px;
 
 }
+
 
 .modal-status{
 
-display:none;
+  display:none;
 
-padding:11px;
+  padding:11px;
 
-border-radius:10px;
+  border-radius:10px;
 
-font-size:10px;
+  font-size:10px;
 
-font-weight:700;
+  font-weight:700;
 
-line-height:1.5;
+  line-height:1.5;
 
-margin-bottom:13px;
+  margin-bottom:13px;
 
 }
+
 
 .modal-status.show{
 
-display:block;
+  display:block;
 
 }
+
 
 .modal-status.error{
 
-background:var(--danger-bg);
+  background:var(--danger-bg);
 
-color:var(--danger);
+  color:var(--danger);
 
 }
+
 
 .modal-status.success{
 
-background:var(--success-bg);
+  background:var(--success-bg);
 
-color:var(--success);
+  color:var(--success);
 
 }
+
 
 .save-button{
 
-width:100%;
+  width:100%;
 
-border:none;
+  border:none;
 
-background:var(--blue);
+  background:
+    linear-gradient(
+      135deg,
+      #0d3c78,
+      #071f40
+    );
 
-color:var(--white);
+  color:var(--white);
 
-height:46px;
+  height:47px;
 
-border-radius:11px;
+  border-radius:11px;
 
-font-size:12px;
+  font-size:12px;
 
-font-weight:800;
+  font-weight:800;
+
+  box-shadow:
+    0 9px 20px rgba(7,31,64,.15);
 
 }
 
+
 .save-button:disabled{
 
-opacity:.6;
+  opacity:.6;
 
-cursor:not-allowed;
+  cursor:not-allowed;
 
 }
 
@@ -738,61 +1015,77 @@ cursor:not-allowed;
 
 .bottom-nav{
 
-position:fixed;
+  position:fixed;
 
-left:0;
+  left:0;
 
-right:0;
+  right:0;
 
-bottom:0;
+  bottom:0;
 
-height:72px;
+  height:72px;
 
-background:var(--white);
+  background:rgba(255,255,255,.97);
 
-border-top:1px solid var(--border);
+  border-top:1px solid var(--border);
 
-display:flex;
+  display:flex;
 
-align-items:center;
+  align-items:center;
 
-justify-content:space-around;
+  justify-content:space-around;
 
-z-index:50;
+  z-index:50;
+
+  backdrop-filter:blur(14px);
+
+  -webkit-backdrop-filter:blur(14px);
 
 }
+
 
 .nav-item{
 
-display:flex;
+  display:flex;
 
-flex-direction:column;
+  flex-direction:column;
 
-align-items:center;
+  align-items:center;
 
-justify-content:center;
+  justify-content:center;
 
-gap:4px;
+  gap:4px;
 
-color:#8994a6;
+  color:#8994a6;
 
-font-size:9px;
+  font-size:9px;
 
-font-weight:600;
+  font-weight:600;
 
-min-width:55px;
+  min-width:55px;
+
+  transition:.2s ease;
 
 }
+
 
 .nav-item i{
 
-font-size:17px;
+  font-size:17px;
 
 }
 
+
 .nav-item.active{
 
-color:var(--blue);
+  color:var(--blue);
+
+}
+
+
+.nav-item:hover{
+
+  color:var(--blue);
 
 }
 
@@ -803,27 +1096,29 @@ color:var(--blue);
 
 .loading{
 
-text-align:center;
+  text-align:center;
 
-padding:45px 20px;
+  padding:45px 20px;
 
-color:var(--muted);
+  color:var(--muted);
 
 }
+
 
 .loading i{
 
-font-size:25px;
+  font-size:25px;
 
-color:var(--blue);
+  color:var(--blue);
 
-margin-bottom:12px;
+  margin-bottom:12px;
 
 }
 
+
 .loading p{
 
-font-size:11px;
+  font-size:11px;
 
 }
 
@@ -834,23 +1129,25 @@ font-size:11px;
 
 @media(min-width:600px){
 
-.modal{
+  .modal{
 
-align-items:center;
+    align-items:center;
 
-}
+  }
 
-.modal-box{
 
-border-radius:23px;
+  .modal-box{
 
-}
+    border-radius:23px;
+
+  }
 
 }
 
 </style>
 
 </head>
+
 
 <body>
 
@@ -875,16 +1172,15 @@ border-radius:23px;
 <header class="header">
 
 <div class="header-title">
-
 Profile
-
 </div>
 
 
 <button
-id="backButton"
-class="header-icon"
-type="button"
+  id="backButton"
+  class="header-icon"
+  type="button"
+  aria-label="Back to dashboard"
 >
 
 <i class="fa-solid fa-arrow-left"></i>
@@ -899,8 +1195,8 @@ type="button"
 ========================================== -->
 
 <main
-class="container"
-id="pageContent"
+  class="container"
+  id="pageContent"
 >
 
 <div class="loading">
@@ -921,8 +1217,8 @@ Loading your profile...
 ========================================== -->
 
 <div
-id="passwordModal"
-class="modal"
+  id="passwordModal"
+  class="modal"
 >
 
 <div class="modal-box">
@@ -936,9 +1232,10 @@ Change Password
 
 
 <button
-id="closePasswordButton"
-class="close-button"
-type="button"
+  id="closePasswordButton"
+  class="close-button"
+  type="button"
+  aria-label="Close"
 >
 
 <i class="fa-solid fa-xmark"></i>
@@ -949,30 +1246,33 @@ type="button"
 
 
 <div
-id="modalStatus"
-class="modal-status"
+  id="modalStatus"
+  class="modal-status"
 ></div>
 
 
 <div class="field">
 
-<label>
+<label for="currentPassword">
 Current Password
 </label>
 
+
 <div class="password-wrap">
 
 <input
-id="currentPassword"
-type="password"
-placeholder="Enter current password"
-autocomplete="current-password"
+  id="currentPassword"
+  type="password"
+  placeholder="Enter current password"
+  autocomplete="current-password"
 >
 
+
 <button
-class="toggle-password"
-type="button"
-data-password="currentPassword"
+  class="toggle-password"
+  type="button"
+  data-password="currentPassword"
+  aria-label="Show current password"
 >
 
 <i class="fa-solid fa-eye"></i>
@@ -986,23 +1286,26 @@ data-password="currentPassword"
 
 <div class="field">
 
-<label>
+<label for="newPassword">
 New Password
 </label>
 
+
 <div class="password-wrap">
 
 <input
-id="newPassword"
-type="password"
-placeholder="Enter new password"
-autocomplete="new-password"
+  id="newPassword"
+  type="password"
+  placeholder="Enter new password"
+  autocomplete="new-password"
 >
 
+
 <button
-class="toggle-password"
-type="button"
-data-password="newPassword"
+  class="toggle-password"
+  type="button"
+  data-password="newPassword"
+  aria-label="Show new password"
 >
 
 <i class="fa-solid fa-eye"></i>
@@ -1016,23 +1319,26 @@ data-password="newPassword"
 
 <div class="field">
 
-<label>
+<label for="confirmPassword">
 Confirm New Password
 </label>
+
 
 <div class="password-wrap">
 
 <input
-id="confirmPassword"
-type="password"
-placeholder="Confirm new password"
-autocomplete="new-password"
+  id="confirmPassword"
+  type="password"
+  placeholder="Confirm new password"
+  autocomplete="new-password"
 >
 
+
 <button
-class="toggle-password"
-type="button"
-data-password="confirmPassword"
+  class="toggle-password"
+  type="button"
+  data-password="confirmPassword"
+  aria-label="Show confirmation password"
 >
 
 <i class="fa-solid fa-eye"></i>
@@ -1045,9 +1351,9 @@ data-password="confirmPassword"
 
 
 <button
-id="savePasswordButton"
-class="save-button"
-type="button"
+  id="savePasswordButton"
+  class="save-button"
+  type="button"
 >
 
 Change Password
@@ -1066,9 +1372,10 @@ Change Password
 
 <nav class="bottom-nav">
 
+
 <a
-href="dashboard.html"
-class="nav-item"
+  href="dashboard.html"
+  class="nav-item"
 >
 
 <i class="fa-solid fa-house"></i>
@@ -1081,8 +1388,8 @@ Home
 
 
 <a
-href="dashboard.html#products"
-class="nav-item"
+  href="dashboard.html#products"
+  class="nav-item"
 >
 
 <i class="fa-solid fa-box"></i>
@@ -1095,8 +1402,8 @@ Products
 
 
 <a
-href="orders.html"
-class="nav-item"
+  href="orders.html"
+  class="nav-item"
 >
 
 <i class="fa-solid fa-receipt"></i>
@@ -1109,8 +1416,8 @@ Orders
 
 
 <a
-href="fund.html"
-class="nav-item"
+  href="fund.html"
+  class="nav-item"
 >
 
 <i class="fa-solid fa-wallet"></i>
@@ -1123,8 +1430,8 @@ Fund
 
 
 <a
-href="profile.html"
-class="nav-item active"
+  href="profile.html"
+  class="nav-item active"
 >
 
 <i class="fa-solid fa-user"></i>
@@ -1134,6 +1441,7 @@ Profile
 </span>
 
 </a>
+
 
 </nav>
 
@@ -1153,13 +1461,15 @@ let currentUser = null;
 
 const pageContent =
 document.getElementById(
-"pageContent"
+  "pageContent"
 );
+
 
 const passwordModal =
 document.getElementById(
-"passwordModal"
+  "passwordModal"
 );
+
 
 const logoutButtonId =
 "logoutButton";
@@ -1172,20 +1482,20 @@ const logoutButtonId =
 firebaseAuth.onAuthStateChanged(
 function(user){
 
-if(!user){
+  if(!user){
 
-window.location.replace(
-"login.html"
-);
+    window.location.replace(
+      "login.html"
+    );
 
-return;
+    return;
 
-}
+  }
 
 
-currentUser = user;
+  currentUser = user;
 
-renderProfile(user);
+  renderProfile(user);
 
 });
 
@@ -1196,298 +1506,317 @@ renderProfile(user);
 
 function renderProfile(user){
 
-const displayName =
-user.displayName ||
-(
-user.email
-? user.email.split("@")[0]
-: "Customer"
-);
+  const displayName =
+    user.displayName ||
+    (
+      user.email
+      ? user.email.split("@")[0]
+      : "Customer"
+    );
 
 
-const firstLetter =
-displayName
-.charAt(0)
-.toUpperCase();
+  const firstLetter =
+    displayName
+      .charAt(0)
+      .toUpperCase();
 
 
-pageContent.innerHTML = `
+  pageContent.innerHTML = `
 
-<div class="profile-card">
+    <div class="profile-card">
 
-<div class="profile-top">
+      <div class="profile-top">
 
-<div class="avatar">
+        <div class="avatar">
 
-${escapeHTML(firstLetter)}
+          ${escapeHTML(firstLetter)}
 
-</div>
+        </div>
 
 
-<div class="profile-info">
+        <div class="profile-info">
 
-<div class="profile-name">
+          <div class="profile-name">
 
-${escapeHTML(displayName)}
+            ${escapeHTML(displayName)}
 
-</div>
+          </div>
 
 
-<div class="profile-email">
+          <div class="profile-email">
 
-${escapeHTML(user.email || "")}
+            ${escapeHTML(user.email || "")}
 
-</div>
+          </div>
 
 
-<div class="verified">
+          <div class="verified">
 
-<i class="fa-solid ${
-user.emailVerified
-? "fa-circle-check"
-: "fa-circle-exclamation"
-}"></i>
+            <i class="fa-solid ${
+              user.emailVerified
+              ? "fa-circle-check"
+              : "fa-circle-exclamation"
+            }"></i>
 
-${
-user.emailVerified
-? "Email verified"
-: "Email not verified"
-}
+            ${
+              user.emailVerified
+              ? "Email verified"
+              : "Email not verified"
+            }
 
-</div>
+          </div>
 
-</div>
+        </div>
 
-</div>
+      </div>
 
-</div>
+    </div>
 
 
-<div class="section">
+    <div class="section">
 
-<div class="section-title">
+      <div class="section-title">
 
-Account
+        Account
 
-</div>
+      </div>
 
 
-<button
-id="changePasswordButton"
-class="menu-item"
-type="button"
->
+      <button
+        id="changePasswordButton"
+        class="menu-item"
+        type="button"
+      >
 
-<div class="menu-icon">
+        <div class="menu-icon">
 
-<i class="fa-solid fa-lock"></i>
+          <i class="fa-solid fa-lock"></i>
 
-</div>
+        </div>
 
 
-<div class="menu-content">
+        <div class="menu-content">
 
-<strong>
-Change Password
-</strong>
+          <strong>
+            Change Password
+          </strong>
 
-<span>
-Update your account password securely
-</span>
+          <span>
+            Update your account password securely
+          </span>
 
-</div>
+        </div>
 
 
-<div class="menu-arrow">
+        <div class="menu-arrow">
 
-<i class="fa-solid fa-chevron-right"></i>
+          <i class="fa-solid fa-chevron-right"></i>
 
-</div>
+        </div>
 
-</button>
+      </button>
 
 
-<button
-id="ordersButton"
-class="menu-item"
-type="button"
->
+      <button
+        id="ordersButton"
+        class="menu-item"
+        type="button"
+      >
 
-<div class="menu-icon">
+        <div class="menu-icon">
 
-<i class="fa-solid fa-receipt"></i>
+          <i class="fa-solid fa-receipt"></i>
 
-</div>
+        </div>
 
 
-<div class="menu-content">
+        <div class="menu-content">
 
-<strong>
-My Orders
-</strong>
+          <strong>
+            My Orders
+          </strong>
 
-<span>
-View your purchased products
-</span>
+          <span>
+            View your purchased products
+          </span>
 
-</div>
+        </div>
 
 
-<div class="menu-arrow">
+        <div class="menu-arrow">
 
-<i class="fa-solid fa-chevron-right"></i>
+          <i class="fa-solid fa-chevron-right"></i>
 
-</div>
+        </div>
 
-</button>
+      </button>
 
 
-<button
-id="walletButton"
-class="menu-item"
-type="button"
->
+      <button
+        id="walletButton"
+        class="menu-item"
+        type="button"
+      >
 
-<div class="menu-icon">
+        <div class="menu-icon">
 
-<i class="fa-solid fa-wallet"></i>
+          <i class="fa-solid fa-wallet"></i>
 
-</div>
+        </div>
 
 
-<div class="menu-content">
+        <div class="menu-content">
 
-<strong>
-Wallet
-</strong>
+          <strong>
+            Wallet
+          </strong>
 
-<span>
-View your wallet and add funds
-</span>
+          <span>
+            View your wallet and add funds
+          </span>
 
-</div>
+        </div>
 
 
-<div class="menu-arrow">
+        <div class="menu-arrow">
 
-<i class="fa-solid fa-chevron-right"></i>
+          <i class="fa-solid fa-chevron-right"></i>
 
-</div>
+        </div>
 
-</button>
+      </button>
 
-</div>
+    </div>
 
 
-<div class="section">
+    <div class="section">
 
-<div class="section-title">
+      <div class="section-title">
 
-Security
+        Security
 
-</div>
+      </div>
 
 
-<div class="menu-item">
+      <div class="security-row">
 
-<div class="menu-icon">
+        <div class="menu-icon">
 
-<i class="fa-solid fa-shield-halved"></i>
+          <i class="fa-solid fa-shield-halved"></i>
 
-</div>
+        </div>
 
 
-<div class="menu-content">
+        <div class="menu-content">
 
-<strong>
-Account Security
-</strong>
+          <strong>
+            Account Security
+          </strong>
 
-<span>
-Your account is protected by Firebase Authentication
-</span>
+          <span>
+            Your account is protected by Firebase Authentication
+          </span>
 
-</div>
+        </div>
 
-</div>
 
-</div>
+        <div class="security-status">
 
+          ${
+            user.emailVerified
+            ? `
+              <i class="fa-solid fa-circle-check"></i>
+              Verified
+            `
+            : `
+              <i class="fa-solid fa-circle-exclamation"></i>
+              Unverified
+            `
+          }
 
-<button
-id="${logoutButtonId}"
-class="logout-button"
-type="button"
->
+        </div>
 
-<i class="fa-solid fa-right-from-bracket"></i>
+      </div>
 
-<span>
-Log Out
-</span>
+    </div>
 
-</button>
 
+    <button
+      id="${logoutButtonId}"
+      class="logout-button"
+      type="button"
+    >
 
-<div class="version">
+      <i class="fa-solid fa-right-from-bracket"></i>
 
-Gentle Acct Store
+      <span>
+        Log Out
+      </span>
 
-</div>
+    </button>
 
-`;
 
+    <div class="version">
 
-/* BUTTON EVENTS */
+      Gentle Acct Store
 
-document
-.getElementById(
-"changePasswordButton"
-)
-.addEventListener(
-"click",
-openPasswordModal
-);
+    </div>
 
+  `;
 
-document
-.getElementById(
-"ordersButton"
-)
-.addEventListener(
-"click",
-function(){
 
-window.location.href =
-"orders.html";
+  /* ==========================================
+     BUTTON EVENTS
+  ========================================== */
 
-}
-);
+  document
+    .getElementById(
+      "changePasswordButton"
+    )
+    .addEventListener(
+      "click",
+      openPasswordModal
+    );
 
 
-document
-.getElementById(
-"walletButton"
-)
-.addEventListener(
-"click",
-function(){
+  document
+    .getElementById(
+      "ordersButton"
+    )
+    .addEventListener(
+      "click",
+      function(){
 
-window.location.href =
-"fund.html";
+        window.location.href =
+          "orders.html";
 
-}
-);
+      }
+    );
 
 
-document
-.getElementById(
-logoutButtonId
-)
-.addEventListener(
-"click",
-logoutUser
-);
+  document
+    .getElementById(
+      "walletButton"
+    )
+    .addEventListener(
+      "click",
+      function(){
+
+        window.location.href =
+          "fund.html";
+
+      }
+    );
+
+
+  document
+    .getElementById(
+      logoutButtonId
+    )
+    .addEventListener(
+      "click",
+      logoutUser
+    );
 
 }
 
@@ -1498,110 +1827,107 @@ logoutUser
 
 async function logoutUser(){
 
-const button =
-document.getElementById(
-logoutButtonId
-);
+  const button =
+    document.getElementById(
+      logoutButtonId
+    );
 
 
-if(button){
+  if(button){
 
-button.disabled=true;
+    button.disabled = true;
 
-button.innerHTML = `
+    button.innerHTML = `
 
-<i class="fa-solid fa-spinner fa-spin"></i>
+      <i class="fa-solid fa-spinner fa-spin"></i>
 
-<span>
-Logging out...
-</span>
+      <span>
+        Logging out...
+      </span>
 
-`;
+    `;
 
-}
-
-
-try{
-
-/* SIGN OUT FROM FIREBASE */
-
-await firebaseAuth.signOut();
+  }
 
 
-/* CLEAR LOCAL LOGIN SESSION */
+  try{
 
-const sessionKeys = [
-
-"currentUser",
-
-"firebaseUser",
-
-"user",
-
-"userSession",
-
-"loggedInUser",
-
-"gentleUser",
-
-"gentleAcctUser"
-
-];
+    await firebaseAuth.signOut();
 
 
-sessionKeys.forEach(
-function(key){
+    const sessionKeys = [
 
-try{
+      "currentUser",
 
-localStorage.removeItem(key);
+      "firebaseUser",
 
-}catch(error){
+      "user",
 
-console.log(error);
+      "userSession",
 
-}
+      "loggedInUser",
 
-});
+      "gentleUser",
 
+      "gentleAcctUser"
 
-/* GO TO LOGIN */
-
-window.location.replace(
-"login.html"
-);
+    ];
 
 
-}catch(error){
+    sessionKeys.forEach(
+      function(key){
 
-console.error(
-"LOGOUT ERROR:",
-error
-);
+        try{
 
+          localStorage.removeItem(
+            key
+          );
 
-if(button){
+        }catch(error){
 
-button.disabled=false;
+          console.log(error);
 
-button.innerHTML = `
+        }
 
-<i class="fa-solid fa-right-from-bracket"></i>
-
-<span>
-Log Out
-</span>
-
-`;
-
-}
+      }
+    );
 
 
-alert(
-"Logout failed. Please try again."
-);
+    window.location.replace(
+      "logout.html"
+    );
 
-}
+
+  }catch(error){
+
+    console.error(
+      "LOGOUT ERROR:",
+      error
+    );
+
+
+    if(button){
+
+      button.disabled = false;
+
+      button.innerHTML = `
+
+        <i class="fa-solid fa-right-from-bracket"></i>
+
+        <span>
+          Log Out
+        </span>
+
+      `;
+
+    }
+
+
+    alert(
+      "Logout failed. Please try again."
+    );
+
+  }
 
 }
 
@@ -1612,273 +1938,293 @@ alert(
 
 function openPasswordModal(){
 
-passwordModal.classList.add(
-"show"
-);
+  passwordModal.classList.add(
+    "show"
+  );
 
-document
-.getElementById(
-"currentPassword"
-)
-.value="";
 
-document
-.getElementById(
-"newPassword"
-)
-.value="";
+  document
+    .getElementById(
+      "currentPassword"
+    )
+    .value = "";
 
-document
-.getElementById(
-"confirmPassword"
-)
-.value="";
 
-clearModalStatus();
+  document
+    .getElementById(
+      "newPassword"
+    )
+    .value = "";
+
+
+  document
+    .getElementById(
+      "confirmPassword"
+    )
+    .value = "";
+
+
+  clearModalStatus();
 
 }
 
 
 function closePasswordModal(){
 
-passwordModal.classList.remove(
-"show"
-);
+  passwordModal.classList.remove(
+    "show"
+  );
 
 }
 
 
 function showModalStatus(
-message,
-type
+  message,
+  type
 ){
 
-const box =
-document.getElementById(
-"modalStatus"
-);
+  const box =
+    document.getElementById(
+      "modalStatus"
+    );
 
-box.className =
-"modal-status show " +
-type;
 
-box.textContent =
-message;
+  box.className =
+    "modal-status show " +
+    type;
+
+
+  box.textContent =
+    message;
 
 }
 
 
 function clearModalStatus(){
 
-const box =
-document.getElementById(
-"modalStatus"
-);
+  const box =
+    document.getElementById(
+      "modalStatus"
+    );
 
-box.className =
-"modal-status";
 
-box.textContent="";
+  box.className =
+    "modal-status";
+
+
+  box.textContent = "";
 
 }
 
 
 async function changePassword(){
 
-if(!currentUser){
+  if(!currentUser){
 
-return;
+    return;
 
-}
+  }
 
 
-const currentPassword =
-document
-.getElementById(
-"currentPassword"
-)
-.value;
+  const currentPassword =
+    document
+      .getElementById(
+        "currentPassword"
+      )
+      .value;
 
 
-const newPassword =
-document
-.getElementById(
-"newPassword"
-)
-.value;
+  const newPassword =
+    document
+      .getElementById(
+        "newPassword"
+      )
+      .value;
 
 
-const confirmPassword =
-document
-.getElementById(
-"confirmPassword"
-)
-.value;
+  const confirmPassword =
+    document
+      .getElementById(
+        "confirmPassword"
+      )
+      .value;
 
 
-if(!currentPassword){
+  if(!currentPassword){
 
-showModalStatus(
-"Please enter your current password.",
-"error"
-);
+    showModalStatus(
+      "Please enter your current password.",
+      "error"
+    );
 
-return;
+    return;
 
-}
+  }
 
 
-if(newPassword.length < 6){
+  if(newPassword.length < 6){
 
-showModalStatus(
-"Your new password must be at least 6 characters.",
-"error"
-);
+    showModalStatus(
+      "Your new password must be at least 6 characters.",
+      "error"
+    );
 
-return;
+    return;
 
-}
+  }
 
 
-if(newPassword !== confirmPassword){
+  if(newPassword !== confirmPassword){
 
-showModalStatus(
-"Your new passwords do not match.",
-"error"
-);
+    showModalStatus(
+      "Your new passwords do not match.",
+      "error"
+    );
 
-return;
+    return;
 
-}
+  }
 
 
-if(newPassword === currentPassword){
+  if(newPassword === currentPassword){
 
-showModalStatus(
-"Your new password must be different.",
-"error"
-);
+    showModalStatus(
+      "Your new password must be different.",
+      "error"
+    );
 
-return;
+    return;
 
-}
+  }
 
 
-const button =
-document.getElementById(
-"savePasswordButton"
-);
+  const button =
+    document.getElementById(
+      "savePasswordButton"
+    );
 
 
-try{
+  try{
 
-button.disabled=true;
+    button.disabled = true;
 
-button.textContent=
-"Changing Password...";
+    button.innerHTML =
+      '<i class="fa-solid fa-spinner fa-spin"></i> Changing...';
 
 
-const credential =
-firebase.auth.EmailAuthProvider
-.credential(
-currentUser.email,
-currentPassword
-);
+    const credential =
+      firebase.auth.EmailAuthProvider
+        .credential(
+          currentUser.email,
+          currentPassword
+        );
 
 
-await currentUser
-.reauthenticateWithCredential(
-credential
-);
+    await currentUser
+      .reauthenticateWithCredential(
+        credential
+      );
 
 
-await currentUser.updatePassword(
-newPassword
-);
+    await currentUser.updatePassword(
+      newPassword
+    );
 
 
-showModalStatus(
-"Password changed successfully.",
-"success"
-);
+    showModalStatus(
+      "Password changed successfully.",
+      "success"
+    );
 
 
-document
-.getElementById(
-"currentPassword"
-)
-.value="";
+    document
+      .getElementById(
+        "currentPassword"
+      )
+      .value = "";
 
 
-document
-.getElementById(
-"newPassword"
-)
-.value="";
+    document
+      .getElementById(
+        "newPassword"
+      )
+      .value = "";
 
 
-document
-.getElementById(
-"confirmPassword"
-)
-.value="";
+    document
+      .getElementById(
+        "confirmPassword"
+      )
+      .value = "";
 
 
-setTimeout(
-closePasswordModal,
-1200
-);
+    setTimeout(
+      closePasswordModal,
+      1200
+    );
 
 
-}catch(error){
+  }catch(error){
 
-console.error(
-"PASSWORD ERROR:",
-error
-);
+    console.error(
+      "PASSWORD ERROR:",
+      error
+    );
 
 
-let message =
-"Could not change your password.";
+    let message =
+      "Could not change your password.";
 
 
-if(
-error.code ===
-"auth/wrong-password" ||
-error.code ===
-"auth/invalid-credential"
-){
+    if(
+      error.code ===
+      "auth/wrong-password" ||
+      error.code ===
+      "auth/invalid-credential"
+    ){
 
-message =
-"Your current password is incorrect.";
+      message =
+        "Your current password is incorrect.";
 
-}
+    }
 
 
-if(
-error.code ===
-"auth/too-many-requests"
-){
+    if(
+      error.code ===
+      "auth/too-many-requests"
+    ){
 
-message =
-"Too many attempts. Please try again later.";
+      message =
+        "Too many attempts. Please try again later.";
 
-}
+    }
 
 
-showModalStatus(
-message,
-"error"
-);
+    if(
+      error.code ===
+      "auth/weak-password"
+    ){
 
-}finally{
+      message =
+        "Your new password is too weak.";
 
-button.disabled=false;
+    }
 
-button.textContent=
-"Change Password";
 
-}
+    showModalStatus(
+      message,
+      "error"
+    );
+
+
+  }finally{
+
+    button.disabled = false;
+
+    button.innerHTML =
+      "Change Password";
+
+  }
 
 }
 
@@ -1888,47 +2234,64 @@ button.textContent=
 ========================================== */
 
 document
-.querySelectorAll(
-".toggle-password"
-)
-.forEach(
-function(button){
+  .querySelectorAll(
+    ".toggle-password"
+  )
+  .forEach(
+    function(button){
 
-button.addEventListener(
-"click",
-function(){
+      button.addEventListener(
+        "click",
+        function(){
 
-const input =
-document.getElementById(
-button.dataset.password
-);
-
-const icon =
-button.querySelector("i");
+          const input =
+            document.getElementById(
+              button.dataset.password
+            );
 
 
-if(
-input.type === "password"
-){
+          const icon =
+            button.querySelector(
+              "i"
+            );
 
-input.type="text";
 
-icon.className =
-"fa-solid fa-eye-slash";
+          if(
+            input.type ===
+            "password"
+          ){
 
-}else{
+            input.type =
+              "text";
 
-input.type="password";
+            icon.className =
+              "fa-solid fa-eye-slash";
 
-icon.className =
-"fa-solid fa-eye";
+            button.setAttribute(
+              "aria-label",
+              "Hide password"
+            );
 
-}
+          }else{
 
-}
-);
+            input.type =
+              "password";
 
-});
+            icon.className =
+              "fa-solid fa-eye";
+
+            button.setAttribute(
+              "aria-label",
+              "Show password"
+            );
+
+          }
+
+        }
+      );
+
+    }
+  );
 
 
 /* ==========================================
@@ -1936,17 +2299,18 @@ icon.className =
 ========================================== */
 
 document
-.getElementById(
-"backButton"
-)
-.addEventListener(
-"click",
-function(){
+  .getElementById(
+    "backButton"
+  )
+  .addEventListener(
+    "click",
+    function(){
 
-window.location.href =
-"dashboard.html";
+      window.location.href =
+        "dashboard.html";
 
-});
+    }
+  );
 
 
 /* ==========================================
@@ -1954,43 +2318,45 @@ window.location.href =
 ========================================== */
 
 document
-.getElementById(
-"closePasswordButton"
-)
-.addEventListener(
-"click",
-closePasswordModal
-);
+  .getElementById(
+    "closePasswordButton"
+  )
+  .addEventListener(
+    "click",
+    closePasswordModal
+  );
 
 
 passwordModal
-.addEventListener(
-"click",
-function(event){
+  .addEventListener(
+    "click",
+    function(event){
 
-if(
-event.target === passwordModal
-){
+      if(
+        event.target ===
+        passwordModal
+      ){
 
-closePasswordModal();
+        closePasswordModal();
 
-}
+      }
 
-});
+    }
+  );
 
 
 /* ==========================================
-   SAVE PASSWORD BUTTON
+   SAVE PASSWORD
 ========================================== */
 
 document
-.getElementById(
-"savePasswordButton"
-)
-.addEventListener(
-"click",
-changePassword
-);
+  .getElementById(
+    "savePasswordButton"
+  )
+  .addEventListener(
+    "click",
+    changePassword
+  );
 
 
 /* ==========================================
@@ -1999,34 +2365,34 @@ changePassword
 
 function escapeHTML(value){
 
-return String(
-value ?? ""
-)
+  return String(
+    value ?? ""
+  )
 
-.replace(
-/&/g,
-"&amp;"
-)
+  .replace(
+    /&/g,
+    "&amp;"
+  )
 
-.replace(
-/</g,
-"&lt;"
-)
+  .replace(
+    /</g,
+    "&lt;"
+  )
 
-.replace(
-/>/g,
-"&gt;"
-)
+  .replace(
+    />/g,
+    "&gt;"
+  )
 
-.replace(
-/"/g,
-"&quot;"
-)
+  .replace(
+    /"/g,
+    "&quot;"
+  )
 
-.replace(
-/'/g,
-"&#039;"
-);
+  .replace(
+    /'/g,
+    "&#039;"
+  );
 
 }
 

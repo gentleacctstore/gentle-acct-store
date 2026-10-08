@@ -10,6 +10,11 @@
   content="width=device-width, initial-scale=1.0"
 >
 
+<meta
+  name="theme-color"
+  content="#0b2d5c"
+>
+
 <title>Customers - Gentle Acct Store</title>
 
 <link
@@ -41,10 +46,15 @@
   padding:0;
 }
 
+html{
+  scroll-behavior:smooth;
+}
+
 body{
   font-family:'Poppins',sans-serif;
   background:#f5f8fc;
   color:#071f40;
+  min-height:100vh;
 }
 
 /* =========================
@@ -52,49 +62,94 @@ body{
 ========================= */
 
 header{
-  background:white;
-  padding:16px;
-  border-bottom:1px solid #e5eaf1;
+  position:sticky;
+  top:0;
+  z-index:50;
+
+  background:rgba(255,255,255,.94);
+
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+
+  border-bottom:1px solid #e6ebf2;
+
+  height:68px;
+
   display:flex;
   align-items:center;
   justify-content:space-between;
-  position:sticky;
-  top:0;
-  z-index:20;
+
+  padding:0 16px;
 }
 
 .logo{
   display:flex;
   align-items:center;
-  gap:9px;
+  gap:10px;
+
   color:#0b2d5c;
-  font-size:18px;
+
+  font-size:17px;
   font-weight:800;
 }
 
-.logo i{
-  font-size:20px;
+.logo-icon{
+  width:38px;
+  height:38px;
+
+  border-radius:12px;
+
+  background:#0b2d5c;
+  color:white;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  box-shadow:0 7px 18px rgba(11,45,92,.18);
+}
+
+.logo-icon i{
+  font-size:15px;
 }
 
 .back{
   text-decoration:none;
-  color:#0b2d5c;
-  font-size:13px;
-  font-weight:700;
+
   display:flex;
   align-items:center;
-  gap:6px;
+  gap:7px;
+
+  color:#0b2d5c;
+
+  background:#edf3fa;
+
+  padding:9px 12px;
+
+  border-radius:11px;
+
+  font-size:11px;
+  font-weight:700;
+
+  transition:.2s;
+}
+
+.back:hover{
+  background:#e2ebf5;
+  transform:translateY(-1px);
 }
 
 /* =========================
-   CONTAINER
+   PAGE
 ========================= */
 
 .container{
   width:100%;
-  max-width:1050px;
+  max-width:1100px;
+
   margin:auto;
-  padding:24px 15px 50px;
+
+  padding:24px 15px 55px;
 }
 
 /* =========================
@@ -105,16 +160,44 @@ header{
   margin-bottom:18px;
 }
 
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+
+  background:#eaf1f9;
+  color:#0b2d5c;
+
+  padding:6px 9px;
+
+  border-radius:20px;
+
+  font-size:9px;
+  font-weight:700;
+
+  margin-bottom:9px;
+}
+
+.eyebrow i{
+  font-size:9px;
+}
+
 .hero h1{
+  color:#071f40;
+
   font-size:25px;
   line-height:1.2;
+
+  font-weight:800;
+
   margin-bottom:6px;
-  color:#071f40;
 }
 
 .hero p{
   color:#778196;
-  font-size:13px;
+
+  font-size:12px;
+  line-height:1.6;
 }
 
 /* =========================
@@ -122,52 +205,127 @@ header{
 ========================= */
 
 .summary{
-  background:linear-gradient(
-    135deg,
-    #0b2d5c,
-    #124681
-  );
+  position:relative;
+  overflow:hidden;
+
+  background:
+    linear-gradient(
+      135deg,
+      #0b2d5c,
+      #124b88
+    );
 
   color:white;
 
-  border-radius:20px;
+  border-radius:22px;
 
-  padding:20px;
+  padding:21px;
 
   margin-bottom:18px;
 
   box-shadow:
-    0 12px 28px rgba(11,45,92,.18);
+    0 15px 32px rgba(11,45,92,.18);
+}
+
+.summary::before{
+  content:"";
+
+  position:absolute;
+
+  width:150px;
+  height:150px;
+
+  border-radius:50%;
+
+  background:rgba(255,255,255,.05);
+
+  right:-55px;
+  top:-70px;
+}
+
+.summary::after{
+  content:"";
+
+  position:absolute;
+
+  width:90px;
+  height:90px;
+
+  border-radius:50%;
+
+  background:rgba(255,255,255,.04);
+
+  right:70px;
+  bottom:-55px;
+}
+
+.summary-content{
+  position:relative;
+  z-index:2;
+}
+
+.summary-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  margin-bottom:14px;
 }
 
 .summary-icon{
   width:44px;
   height:44px;
 
-  border-radius:13px;
+  border-radius:14px;
 
   background:rgba(255,255,255,.13);
 
   display:flex;
   align-items:center;
   justify-content:center;
-
-  margin-bottom:13px;
 }
 
 .summary-icon i{
-  font-size:19px;
+  font-size:18px;
+}
+
+.live{
+  display:flex;
+  align-items:center;
+  gap:6px;
+
+  font-size:9px;
+  font-weight:700;
+
+  background:rgba(255,255,255,.10);
+
+  padding:6px 9px;
+
+  border-radius:20px;
+}
+
+.live-dot{
+  width:6px;
+  height:6px;
+
+  border-radius:50%;
+
+  background:#79e6a5;
 }
 
 .summary h2{
-  font-size:28px;
+  font-size:31px;
   line-height:1;
-  margin-bottom:6px;
+
+  font-weight:800;
+
+  margin-bottom:5px;
 }
 
 .summary p{
-  font-size:12px;
-  opacity:.88;
+  font-size:11px;
+
+  opacity:.84;
 }
 
 /* =========================
@@ -177,45 +335,58 @@ header{
 .search-box{
   background:white;
 
-  border:1px solid #e4e9f0;
+  border:1px solid #e3e9f1;
 
   border-radius:15px;
 
-  padding:12px 14px;
+  min-height:50px;
+
+  padding:0 14px;
 
   display:flex;
   align-items:center;
 
   gap:10px;
 
-  margin-bottom:20px;
+  margin-bottom:21px;
 
   box-shadow:
-    0 5px 15px rgba(20,40,80,.03);
+    0 5px 16px rgba(20,40,80,.035);
+
+  transition:.2s;
+}
+
+.search-box:focus-within{
+  border-color:#8da9c8;
+
+  box-shadow:
+    0 0 0 4px rgba(11,45,92,.06);
 }
 
 .search-box i{
   color:#8c97a8;
-  font-size:14px;
+  font-size:13px;
 }
 
 .search-box input{
   border:0;
-  outline:none;
+  outline:0;
 
   width:100%;
 
-  font-family:'Poppins',sans-serif;
+  height:48px;
 
-  font-size:13px;
+  background:transparent;
 
   color:#172033;
 
-  background:transparent;
+  font-family:'Poppins',sans-serif;
+
+  font-size:12px;
 }
 
 .search-box input::placeholder{
-  color:#9aa4b3;
+  color:#a0a9b7;
 }
 
 /* =========================
@@ -227,70 +398,117 @@ header{
   align-items:center;
   justify-content:space-between;
 
+  gap:12px;
+
   margin-bottom:13px;
 }
 
-.list-head h2{
-  font-size:18px;
+.list-title{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.list-title h2{
+  color:#071f40;
+
+  font-size:17px;
+  font-weight:800;
+}
+
+.list-title i{
+  color:#0b2d5c;
+  font-size:14px;
 }
 
 .count{
   background:#edf3fa;
+
   color:#0b2d5c;
 
   padding:6px 10px;
 
   border-radius:20px;
 
-  font-size:10px;
+  font-size:9px;
   font-weight:700;
+
+  white-space:nowrap;
 }
 
 /* =========================
-   CUSTOMERS
+   CUSTOMER GRID
 ========================= */
 
 .customers{
   display:grid;
+  grid-template-columns:1fr;
   gap:13px;
 }
 
+/* =========================
+   CUSTOMER CARD
+========================= */
+
 .customer{
+  position:relative;
+
   background:white;
 
-  border:1px solid #e4e9f0;
+  border:1px solid #e3e9f1;
 
   border-radius:18px;
 
   padding:16px;
 
   box-shadow:
-    0 7px 20px rgba(20,40,80,.05);
+    0 7px 20px rgba(20,40,80,.045);
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    border-color .2s ease;
+}
+
+.customer:hover{
+  transform:translateY(-2px);
+
+  border-color:#d5dfeb;
+
+  box-shadow:
+    0 12px 26px rgba(20,40,80,.08);
 }
 
 .customer-top{
   display:flex;
   align-items:center;
+
   gap:11px;
 }
 
 .avatar{
-  width:48px;
-  height:48px;
+  width:47px;
+  height:47px;
+
+  flex-shrink:0;
 
   border-radius:14px;
 
-  background:#edf3fa;
+  background:
+    linear-gradient(
+      135deg,
+      #edf3fa,
+      #e4edf7
+    );
+
   color:#0b2d5c;
 
   display:flex;
   align-items:center;
   justify-content:center;
 
-  font-size:18px;
+  font-size:17px;
   font-weight:800;
-
-  flex-shrink:0;
 }
 
 .customer-info{
@@ -299,38 +517,65 @@ header{
 }
 
 .customer-info h3{
-  font-size:14px;
+  color:#162238;
+
+  font-size:13px;
   font-weight:700;
+
+  line-height:1.3;
 
   margin-bottom:4px;
 
   white-space:nowrap;
+
   overflow:hidden;
+
   text-overflow:ellipsis;
 }
 
 .email{
-  color:#778196;
+  color:#7c8798;
 
-  font-size:11px;
+  font-size:10px;
+
+  line-height:1.4;
 
   word-break:break-word;
 }
 
 .status{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+
   background:#eaf8f0;
+
   color:#168447;
 
   padding:5px 8px;
 
   border-radius:20px;
 
-  font-size:9px;
-
+  font-size:8px;
   font-weight:700;
 
   flex-shrink:0;
 }
+
+.status::before{
+  content:"";
+
+  width:5px;
+  height:5px;
+
+  border-radius:50%;
+
+  background:#27ae60;
+}
+
+/* =========================
+   DETAILS
+========================= */
 
 .details{
   border-top:1px solid #edf0f4;
@@ -343,31 +588,97 @@ header{
 
   grid-template-columns:1fr 1fr;
 
-  gap:12px;
+  gap:10px;
 }
 
 .detail{
-  display:flex;
-  flex-direction:column;
-  gap:4px;
+  min-width:0;
+
+  background:#f8fafc;
+
+  border-radius:11px;
+
+  padding:9px;
 }
 
 .detail span:first-child{
-  color:#929baa;
+  display:block;
 
-  font-size:9px;
+  color:#98a1af;
+
+  font-size:8px;
 
   text-transform:uppercase;
 
+  letter-spacing:.3px;
+
   font-weight:700;
+
+  margin-bottom:4px;
 }
 
 .detail span:last-child{
-  color:#303b4e;
+  display:block;
 
-  font-size:11px;
+  color:#344054;
+
+  font-size:10px;
 
   font-weight:600;
+
+  white-space:nowrap;
+
+  overflow:hidden;
+
+  text-overflow:ellipsis;
+}
+
+/* =========================
+   LOADING
+========================= */
+
+.loading{
+  background:white;
+
+  border:1px solid #e3e9f1;
+
+  border-radius:18px;
+
+  padding:45px 20px;
+
+  text-align:center;
+
+  grid-column:1/-1;
+
+  box-shadow:
+    0 7px 20px rgba(20,40,80,.04);
+}
+
+.loading-icon{
+  width:45px;
+  height:45px;
+
+  border-radius:14px;
+
+  background:#edf3fa;
+
+  color:#0b2d5c;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  margin:0 auto 12px;
+}
+
+.loading-icon i{
+  font-size:18px;
+}
+
+.loading p{
+  color:#7b8595;
+
+  font-size:11px;
 }
 
 /* =========================
@@ -384,18 +695,35 @@ header{
   padding:45px 20px;
 
   text-align:center;
+
+  grid-column:1/-1;
 }
 
-.empty i{
-  color:#aab5c4;
+.empty-icon{
+  width:55px;
+  height:55px;
 
-  font-size:35px;
+  border-radius:17px;
 
-  margin-bottom:13px;
+  background:#edf3fa;
+
+  color:#0b2d5c;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  margin:0 auto 13px;
+}
+
+.empty-icon i{
+  font-size:21px;
 }
 
 .empty h3{
-  font-size:16px;
+  color:#162238;
+
+  font-size:15px;
 
   margin-bottom:6px;
 }
@@ -403,39 +731,13 @@ header{
 .empty p{
   color:#7b8595;
 
-  font-size:12px;
+  font-size:11px;
 
   line-height:1.6;
-}
 
-/* =========================
-   LOADING
-========================= */
+  max-width:320px;
 
-.loading{
-  background:white;
-
-  border:1px solid #e5eaf1;
-
-  border-radius:18px;
-
-  padding:42px 20px;
-
-  text-align:center;
-
-  color:#7b8595;
-}
-
-.loading i{
-  color:#0b2d5c;
-
-  font-size:24px;
-
-  margin-bottom:10px;
-}
-
-.loading p{
-  font-size:12px;
+  margin:auto;
 }
 
 /* =========================
@@ -451,49 +753,119 @@ header{
 
   border-radius:18px;
 
-  padding:25px 18px;
+  padding:28px 18px;
 
   text-align:center;
+
+  grid-column:1/-1;
 }
 
-.error-box i{
-  font-size:30px;
+.error-icon{
+  width:52px;
+  height:52px;
 
-  margin-bottom:10px;
+  border-radius:16px;
+
+  background:#ffe9e9;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  margin:0 auto 12px;
+}
+
+.error-icon i{
+  font-size:21px;
 }
 
 .error-box h3{
-  font-size:15px;
+  font-size:14px;
 
-  margin-bottom:5px;
+  margin-bottom:6px;
 }
 
 .error-box p{
-  font-size:11px;
+  font-size:10px;
 
-  line-height:1.5;
+  line-height:1.6;
+
+  word-break:break-word;
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media(min-width:650px){
+
+  header{
+    padding:0 25px;
+  }
+
+  .container{
+    padding:30px 22px 60px;
+  }
+
+  .customers{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .hero h1{
+    font-size:29px;
+  }
+
 }
 
 /* =========================
    DESKTOP
 ========================= */
 
-@media(min-width:650px){
+@media(min-width:950px){
 
-  .customers{
-    grid-template-columns:repeat(2,1fr);
+  header{
+    padding:0 35px;
   }
 
-}
-
-@media(min-width:950px){
+  .container{
+    padding-top:38px;
+  }
 
   .customers{
     grid-template-columns:repeat(3,1fr);
   }
 
+  .summary{
+    padding:25px;
+  }
+
+  .summary h2{
+    font-size:34px;
+  }
+
+}
+
+/* =========================
+   SMALL PHONE
+========================= */
+
+@media(max-width:360px){
+
   .container{
-    padding-top:35px;
+    padding-left:12px;
+    padding-right:12px;
+  }
+
+  .customer{
+    padding:14px;
+  }
+
+  .status{
+    display:none;
+  }
+
+  .hero h1{
+    font-size:22px;
   }
 
 }
@@ -506,13 +878,23 @@ header{
 <body>
 
 
+<!-- =========================
+     HEADER
+========================= -->
+
 <header>
 
   <div class="logo">
 
-    <i class="fa-solid fa-users"></i>
+    <div class="logo-icon">
 
-    Customers
+      <i class="fa-solid fa-users"></i>
+
+    </div>
+
+    <span>
+      Customers
+    </span>
 
   </div>
 
@@ -524,68 +906,121 @@ header{
 
     <i class="fa-solid fa-arrow-left"></i>
 
-    Admin
+    <span>
+      Admin
+    </span>
 
   </a>
 
 </header>
 
 
-<div class="container">
+<!-- =========================
+     MAIN
+========================= -->
+
+<main class="container">
 
 
-  <div class="hero">
+  <section class="hero">
+
+    <div class="eyebrow">
+
+      <i class="fa-solid fa-shield-halved"></i>
+
+      ADMIN PANEL
+
+    </div>
+
 
     <h1>
       Customer Management
     </h1>
 
+
     <p>
-      View registered customers on your store.
+      View and manage registered customers on your store.
     </p>
 
-  </div>
+  </section>
 
 
-  <div class="summary">
+  <!-- =========================
+       SUMMARY
+  ========================= -->
 
-    <div class="summary-icon">
+  <section class="summary">
 
-      <i class="fa-solid fa-users"></i>
+    <div class="summary-content">
+
+      <div class="summary-top">
+
+        <div class="summary-icon">
+
+          <i class="fa-solid fa-user-group"></i>
+
+        </div>
+
+
+        <div class="live">
+
+          <span class="live-dot"></span>
+
+          Live
+
+        </div>
+
+      </div>
+
+
+      <h2 id="totalCustomers">
+        0
+      </h2>
+
+
+      <p>
+        Total Registered Customers
+      </p>
 
     </div>
 
-
-    <h2 id="totalCustomers">
-      0
-    </h2>
+  </section>
 
 
-    <p>
-      Total Registered Customers
-    </p>
-
-  </div>
-
+  <!-- =========================
+       SEARCH
+  ========================= -->
 
   <div class="search-box">
 
     <i class="fa-solid fa-magnifying-glass"></i>
 
+
     <input
       id="search"
       type="text"
+      autocomplete="off"
       placeholder="Search by name or email..."
     >
 
   </div>
 
 
+  <!-- =========================
+       LIST HEADER
+  ========================= -->
+
   <div class="list-head">
 
-    <h2>
-      Customers
-    </h2>
+    <div class="list-title">
+
+      <i class="fa-solid fa-address-book"></i>
+
+      <h2>
+        Customers
+      </h2>
+
+    </div>
 
 
     <span
@@ -598,6 +1033,10 @@ header{
   </div>
 
 
+  <!-- =========================
+       CUSTOMER LIST
+  ========================= -->
+
   <div
     id="customers"
     class="customers"
@@ -605,7 +1044,12 @@ header{
 
     <div class="loading">
 
-      <i class="fa-solid fa-spinner fa-spin"></i>
+      <div class="loading-icon">
+
+        <i class="fa-solid fa-spinner fa-spin"></i>
+
+      </div>
+
 
       <p>
         Loading customers...
@@ -616,7 +1060,7 @@ header{
   </div>
 
 
-</div>
+</main>
 
 
 <!-- =========================
@@ -750,7 +1194,11 @@ async function loadCustomers(){
 
     <div class="loading">
 
-      <i class="fa-solid fa-spinner fa-spin"></i>
+      <div class="loading-icon">
+
+        <i class="fa-solid fa-spinner fa-spin"></i>
+
+      </div>
 
       <p>
         Loading customers...
@@ -861,7 +1309,7 @@ document
 
 
 /* =========================
-   RENDER
+   RENDER CUSTOMERS
 ========================= */
 
 function renderCustomers(){
@@ -938,7 +1386,12 @@ function renderCustomers(){
 
       <div class="empty">
 
-        <i class="fa-solid fa-user-group"></i>
+        <div class="empty-icon">
+
+          <i class="fa-solid fa-user-group"></i>
+
+        </div>
+
 
         <h3>
 
@@ -949,6 +1402,7 @@ function renderCustomers(){
           }
 
         </h3>
+
 
         <p>
 
@@ -1108,11 +1562,17 @@ function showError(message){
 
     <div class="error-box">
 
-      <i class="fa-solid fa-triangle-exclamation"></i>
+      <div class="error-icon">
+
+        <i class="fa-solid fa-triangle-exclamation"></i>
+
+      </div>
+
 
       <h3>
         Unable to load customers
       </h3>
+
 
       <p>
         ${escapeHTML(message)}
@@ -1126,7 +1586,7 @@ function showError(message){
 
 
 /* =========================
-   DATE
+   FORMAT DATE
 ========================= */
 
 function formatDate(value){
