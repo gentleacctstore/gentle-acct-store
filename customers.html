@@ -13,6 +13,22 @@
 <title>Customers - Gentle Acct Store</title>
 
 <link
+  rel="preconnect"
+  href="https://fonts.googleapis.com"
+>
+
+<link
+  rel="preconnect"
+  href="https://fonts.gstatic.com"
+  crossorigin
+>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+  rel="stylesheet"
+>
+
+<link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 >
@@ -26,166 +42,254 @@
 }
 
 body{
-  font-family:Arial,sans-serif;
+  font-family:'Poppins',sans-serif;
   background:#f5f8fc;
-  color:#172033;
+  color:#071f40;
 }
+
+/* =========================
+   HEADER
+========================= */
 
 header{
   background:white;
-  padding:18px;
+  padding:16px;
   border-bottom:1px solid #e5eaf1;
   display:flex;
   align-items:center;
   justify-content:space-between;
   position:sticky;
   top:0;
-  z-index:10;
+  z-index:20;
 }
 
 .logo{
   display:flex;
   align-items:center;
-  gap:10px;
-  color:#0866ff;
-  font-size:19px;
+  gap:9px;
+  color:#0b2d5c;
+  font-size:18px;
   font-weight:800;
 }
 
 .logo i{
-  font-size:22px;
+  font-size:20px;
 }
 
 .back{
   text-decoration:none;
-  color:#596579;
-  font-size:14px;
+  color:#0b2d5c;
+  font-size:13px;
   font-weight:700;
+  display:flex;
+  align-items:center;
+  gap:6px;
 }
+
+/* =========================
+   CONTAINER
+========================= */
 
 .container{
-  max-width:1000px;
+  width:100%;
+  max-width:1050px;
   margin:auto;
-  padding:25px 16px 50px;
+  padding:24px 15px 50px;
 }
 
+/* =========================
+   HERO
+========================= */
+
 .hero{
-  margin-bottom:20px;
+  margin-bottom:18px;
 }
 
 .hero h1{
-  font-size:27px;
+  font-size:25px;
+  line-height:1.2;
   margin-bottom:6px;
+  color:#071f40;
 }
 
 .hero p{
-  color:#727c8d;
-  font-size:14px;
+  color:#778196;
+  font-size:13px;
 }
 
+/* =========================
+   SUMMARY
+========================= */
+
 .summary{
-  background:linear-gradient(135deg,#0866ff,#0754d6);
+  background:linear-gradient(
+    135deg,
+    #0b2d5c,
+    #124681
+  );
+
   color:white;
+
   border-radius:20px;
+
   padding:20px;
-  margin-bottom:20px;
-  box-shadow:0 10px 25px rgba(8,102,255,.18);
+
+  margin-bottom:18px;
+
+  box-shadow:
+    0 12px 28px rgba(11,45,92,.18);
 }
 
 .summary-icon{
-  width:45px;
-  height:45px;
-  border-radius:14px;
-  background:rgba(255,255,255,.16);
+  width:44px;
+  height:44px;
+
+  border-radius:13px;
+
+  background:rgba(255,255,255,.13);
+
   display:flex;
   align-items:center;
   justify-content:center;
+
   margin-bottom:13px;
 }
 
+.summary-icon i{
+  font-size:19px;
+}
+
 .summary h2{
-  font-size:27px;
-  margin-bottom:4px;
+  font-size:28px;
+  line-height:1;
+  margin-bottom:6px;
 }
 
 .summary p{
-  font-size:13px;
-  opacity:.9;
+  font-size:12px;
+  opacity:.88;
 }
+
+/* =========================
+   SEARCH
+========================= */
 
 .search-box{
   background:white;
-  border:1px solid #e5eaf1;
+
+  border:1px solid #e4e9f0;
+
   border-radius:15px;
+
   padding:12px 14px;
+
   display:flex;
   align-items:center;
+
   gap:10px;
+
   margin-bottom:20px;
+
+  box-shadow:
+    0 5px 15px rgba(20,40,80,.03);
 }
 
 .search-box i{
-  color:#8a95a6;
+  color:#8c97a8;
+  font-size:14px;
 }
 
 .search-box input{
   border:0;
   outline:none;
+
   width:100%;
-  font-size:14px;
+
+  font-family:'Poppins',sans-serif;
+
+  font-size:13px;
+
+  color:#172033;
+
   background:transparent;
 }
+
+.search-box input::placeholder{
+  color:#9aa4b3;
+}
+
+/* =========================
+   LIST HEADER
+========================= */
 
 .list-head{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  margin-bottom:14px;
+
+  margin-bottom:13px;
 }
 
 .list-head h2{
-  font-size:19px;
+  font-size:18px;
 }
 
 .count{
-  background:#edf4ff;
-  color:#0866ff;
-  padding:7px 10px;
+  background:#edf3fa;
+  color:#0b2d5c;
+
+  padding:6px 10px;
+
   border-radius:20px;
-  font-size:11px;
+
+  font-size:10px;
   font-weight:700;
 }
 
+/* =========================
+   CUSTOMERS
+========================= */
+
 .customers{
   display:grid;
-  gap:14px;
+  gap:13px;
 }
 
 .customer{
   background:white;
-  border:1px solid #e5eaf1;
+
+  border:1px solid #e4e9f0;
+
   border-radius:18px;
-  padding:17px;
-  box-shadow:0 7px 20px rgba(20,40,80,.05);
+
+  padding:16px;
+
+  box-shadow:
+    0 7px 20px rgba(20,40,80,.05);
 }
 
 .customer-top{
   display:flex;
   align-items:center;
-  gap:12px;
+  gap:11px;
 }
 
 .avatar{
-  width:50px;
-  height:50px;
-  border-radius:15px;
-  background:#edf4ff;
-  color:#0866ff;
+  width:48px;
+  height:48px;
+
+  border-radius:14px;
+
+  background:#edf3fa;
+  color:#0b2d5c;
+
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:19px;
+
+  font-size:18px;
   font-weight:800;
+
   flex-shrink:0;
 }
 
@@ -195,31 +299,50 @@ header{
 }
 
 .customer-info h3{
-  font-size:15px;
-  margin-bottom:5px;
+  font-size:14px;
+  font-weight:700;
+
+  margin-bottom:4px;
+
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
 .email{
-  color:#737e8f;
-  font-size:12px;
+  color:#778196;
+
+  font-size:11px;
+
   word-break:break-word;
 }
 
 .status{
-  background:#eaf9f0;
+  background:#eaf8f0;
   color:#168447;
-  padding:6px 9px;
+
+  padding:5px 8px;
+
   border-radius:20px;
-  font-size:10px;
+
+  font-size:9px;
+
   font-weight:700;
+
+  flex-shrink:0;
 }
 
 .details{
   border-top:1px solid #edf0f4;
-  margin-top:15px;
-  padding-top:13px;
+
+  margin-top:14px;
+
+  padding-top:12px;
+
   display:grid;
+
   grid-template-columns:1fr 1fr;
+
   gap:12px;
 }
 
@@ -231,55 +354,129 @@ header{
 
 .detail span:first-child{
   color:#929baa;
-  font-size:10px;
+
+  font-size:9px;
+
   text-transform:uppercase;
+
   font-weight:700;
 }
 
 .detail span:last-child{
   color:#303b4e;
-  font-size:12px;
+
+  font-size:11px;
+
   font-weight:600;
 }
 
+/* =========================
+   EMPTY
+========================= */
+
 .empty{
   background:white;
+
   border:1px dashed #cbd5e1;
+
   border-radius:18px;
+
   padding:45px 20px;
+
   text-align:center;
 }
 
 .empty i{
   color:#aab5c4;
-  font-size:38px;
+
+  font-size:35px;
+
   margin-bottom:13px;
 }
 
 .empty h3{
+  font-size:16px;
+
   margin-bottom:6px;
 }
 
 .empty p{
   color:#7b8595;
-  font-size:13px;
-  line-height:1.5;
+
+  font-size:12px;
+
+  line-height:1.6;
 }
+
+/* =========================
+   LOADING
+========================= */
 
 .loading{
   background:white;
+
   border:1px solid #e5eaf1;
+
   border-radius:18px;
-  padding:40px 20px;
+
+  padding:42px 20px;
+
   text-align:center;
+
   color:#7b8595;
 }
 
 .loading i{
-  color:#0866ff;
-  font-size:25px;
+  color:#0b2d5c;
+
+  font-size:24px;
+
   margin-bottom:10px;
 }
+
+.loading p{
+  font-size:12px;
+}
+
+/* =========================
+   ERROR
+========================= */
+
+.error-box{
+  background:#fff5f5;
+
+  border:1px solid #ffd5d5;
+
+  color:#b42318;
+
+  border-radius:18px;
+
+  padding:25px 18px;
+
+  text-align:center;
+}
+
+.error-box i{
+  font-size:30px;
+
+  margin-bottom:10px;
+}
+
+.error-box h3{
+  font-size:15px;
+
+  margin-bottom:5px;
+}
+
+.error-box p{
+  font-size:11px;
+
+  line-height:1.5;
+}
+
+/* =========================
+   DESKTOP
+========================= */
 
 @media(min-width:650px){
 
@@ -375,12 +572,10 @@ header{
 
     <i class="fa-solid fa-magnifying-glass"></i>
 
-
     <input
       id="search"
       type="text"
       placeholder="Search by name or email..."
-      oninput="renderCustomers()"
     >
 
   </div>
@@ -413,7 +608,7 @@ header{
       <i class="fa-solid fa-spinner fa-spin"></i>
 
       <p>
-        Checking Firebase...
+        Loading customers...
       </p>
 
     </div>
@@ -424,7 +619,9 @@ header{
 </div>
 
 
-<!-- FIREBASE -->
+<!-- =========================
+     FIREBASE
+========================= -->
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 
@@ -446,27 +643,55 @@ const ADMIN_UID =
 
 
 /* =========================
-   CUSTOMER STORAGE
+   CUSTOMER DATA
 ========================= */
 
-window.gentleCustomers = [];
+let gentleCustomers = [];
 
 
 /* =========================
-   START PAGE
+   START
 ========================= */
 
 document.addEventListener(
   "DOMContentLoaded",
   function(){
 
+    if(
+      typeof firebaseAuth ===
+      "undefined"
+    ){
+
+      showError(
+        "Firebase Authentication is not available."
+      );
+
+      return;
+
+    }
+
+
+    if(
+      typeof firebaseDB ===
+      "undefined"
+    ){
+
+      showError(
+        "Firebase Firestore is not available."
+      );
+
+      return;
+
+    }
+
+
     firebaseAuth.onAuthStateChanged(
       function(user){
 
         if(!user){
 
-          showError(
-            "No Firebase user is currently signed in."
+          window.location.replace(
+            "admin-login.html"
           );
 
           return;
@@ -474,42 +699,12 @@ document.addEventListener(
         }
 
 
-        /* =========================
-           DIAGNOSTIC CHECK
-        ========================= */
-
-        const currentUID =
-          user.uid;
-
-
-        const currentEmail =
-          user.email ||
-          "No email";
-
-
-        alert(
-          "Firebase account detected.\n\n" +
-          "Email:\n" +
-          currentEmail +
-          "\n\n" +
-          "Firebase UID:\n" +
-          currentUID +
-          "\n\n" +
-          "Expected Admin UID:\n" +
-          ADMIN_UID
-        );
-
-
-        /* =========================
-           ADMIN CHECK
-        ========================= */
-
         if(
-          currentUID !== ADMIN_UID
+          user.uid !== ADMIN_UID
         ){
 
           showError(
-            "The signed-in Firebase account does not match the admin account."
+            "You are not authorized to view customers."
           );
 
           return;
@@ -522,7 +717,7 @@ document.addEventListener(
         ){
 
           showError(
-            "The admin email address is not verified."
+            "Your admin email must be verified."
           );
 
           return;
@@ -545,19 +740,28 @@ document.addEventListener(
 
 async function loadCustomers(){
 
+  const container =
+    document.getElementById(
+      "customers"
+    );
+
+
+  container.innerHTML = `
+
+    <div class="loading">
+
+      <i class="fa-solid fa-spinner fa-spin"></i>
+
+      <p>
+        Loading customers...
+      </p>
+
+    </div>
+
+  `;
+
+
   try{
-
-    if(
-      typeof firebaseDB ===
-      "undefined"
-    ){
-
-      throw new Error(
-        "Firestore is not available."
-      );
-
-    }
-
 
     const snapshot =
       await firebaseDB
@@ -565,7 +769,7 @@ async function loadCustomers(){
         .get();
 
 
-    const customers = [];
+    gentleCustomers = [];
 
 
     snapshot.forEach(
@@ -575,7 +779,7 @@ async function loadCustomers(){
           doc.data();
 
 
-        customers.push({
+        gentleCustomers.push({
 
           id:
             doc.id,
@@ -588,13 +792,13 @@ async function loadCustomers(){
             data.email ||
             "No email",
 
-          createdAt:
-            data.createdAt ||
-            "",
-
           status:
             data.status ||
-            "Active"
+            "Active",
+
+          createdAt:
+            data.createdAt ||
+            ""
 
         });
 
@@ -602,8 +806,25 @@ async function loadCustomers(){
     );
 
 
-    window.gentleCustomers =
-      customers;
+    gentleCustomers.sort(
+      function(a,b){
+
+        const dateA =
+          getTimeValue(
+            a.createdAt
+          );
+
+
+        const dateB =
+          getTimeValue(
+            b.createdAt
+          );
+
+
+        return dateB - dateA;
+
+      }
+    );
 
 
     renderCustomers();
@@ -612,13 +833,14 @@ async function loadCustomers(){
   }catch(error){
 
     console.error(
-      "Customer loading error:",
+      "CUSTOMER LOAD ERROR:",
       error
     );
 
 
     showError(
-      error.message
+      error.message ||
+      "Could not load customers."
     );
 
   }
@@ -627,38 +849,53 @@ async function loadCustomers(){
 
 
 /* =========================
-   RENDER CUSTOMERS
+   SEARCH
+========================= */
+
+document
+  .getElementById("search")
+  .addEventListener(
+    "input",
+    renderCustomers
+  );
+
+
+/* =========================
+   RENDER
 ========================= */
 
 function renderCustomers(){
 
-  const customers =
-    window.gentleCustomers ||
-    [];
+  const searchInput =
+    document.getElementById(
+      "search"
+    );
 
 
   const search =
-    document
-      .getElementById("search")
-      .value
-      .toLowerCase()
-      .trim();
+    String(
+      searchInput.value || ""
+    )
+    .toLowerCase()
+    .trim();
 
 
   const filtered =
-    customers.filter(
+    gentleCustomers.filter(
       function(customer){
 
         const name =
           String(
             customer.name || ""
-          ).toLowerCase();
+          )
+          .toLowerCase();
 
 
         const email =
           String(
             customer.email || ""
-          ).toLowerCase();
+          )
+          .toLowerCase();
 
 
         return (
@@ -673,7 +910,7 @@ function renderCustomers(){
   document.getElementById(
     "totalCustomers"
   ).textContent =
-    customers.length;
+    gentleCustomers.length;
 
 
   document.getElementById(
@@ -717,8 +954,8 @@ function renderCustomers(){
 
           ${
             search
-            ? "Try a different name or email."
-            : "Registered customers will appear here."
+            ? "Try searching with another name or email."
+            : "New registered customers will appear here."
           }
 
         </p>
@@ -754,15 +991,15 @@ function renderCustomers(){
           .toUpperCase();
 
 
-      const date =
-        formatDate(
-          customer.createdAt
-        );
-
-
       const status =
         customer.status ||
         "Active";
+
+
+      const registered =
+        formatDate(
+          customer.createdAt
+        );
 
 
       const card =
@@ -835,7 +1072,7 @@ function renderCustomers(){
             </span>
 
             <span>
-              ${escapeHTML(date)}
+              ${escapeHTML(registered)}
             </span>
 
           </div>
@@ -856,7 +1093,7 @@ function renderCustomers(){
 
 
 /* =========================
-   ERROR DISPLAY
+   ERROR
 ========================= */
 
 function showError(message){
@@ -869,7 +1106,7 @@ function showError(message){
 
   container.innerHTML = `
 
-    <div class="empty">
+    <div class="error-box">
 
       <i class="fa-solid fa-triangle-exclamation"></i>
 
@@ -889,14 +1126,14 @@ function showError(message){
 
 
 /* =========================
-   FORMAT DATE
+   DATE
 ========================= */
 
 function formatDate(value){
 
   if(!value){
 
-    return "Registered account";
+    return "Not available";
 
   }
 
@@ -910,7 +1147,14 @@ function formatDate(value){
 
       return value
         .toDate()
-        .toLocaleDateString();
+        .toLocaleDateString(
+          undefined,
+          {
+            day:"numeric",
+            month:"short",
+            year:"numeric"
+          }
+        );
 
     }
 
@@ -926,45 +1170,104 @@ function formatDate(value){
     ){
 
       return date
-        .toLocaleDateString();
+        .toLocaleDateString(
+          undefined,
+          {
+            day:"numeric",
+            month:"short",
+            year:"numeric"
+          }
+        );
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "DATE ERROR:",
+      error
+    );
+
+  }
+
+
+  return "Not available";
+
+}
+
+
+/* =========================
+   DATE VALUE
+========================= */
+
+function getTimeValue(value){
+
+  try{
+
+    if(
+      value &&
+      typeof value.toDate ===
+      "function"
+    ){
+
+      return value
+        .toDate()
+        .getTime();
+
+    }
+
+
+    const date =
+      new Date(value);
+
+
+    if(
+      !isNaN(
+        date.getTime()
+      )
+    ){
+
+      return date.getTime();
 
     }
 
   }catch(error){}
 
 
-  return String(value);
+  return 0;
 
 }
 
 
 /* =========================
-   HTML SECURITY
+   SECURITY
 ========================= */
 
 function escapeHTML(value){
 
-  return String(value || "")
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-    .replace(
-      /</g,
-      "&lt;"
-    )
-    .replace(
-      />/g,
-      "&gt;"
-    )
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-    .replace(
-      /'/g,
-      "&#039;"
-    );
+  return String(
+    value || ""
+  )
+  .replace(
+    /&/g,
+    "&amp;"
+  )
+  .replace(
+    /</g,
+    "&lt;"
+  )
+  .replace(
+    />/g,
+    "&gt;"
+  )
+  .replace(
+    /"/g,
+    "&quot;"
+  )
+  .replace(
+    /'/g,
+    "&#039;"
+  );
 
 }
 

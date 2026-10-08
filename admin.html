@@ -6,1237 +6,959 @@
 <meta charset="UTF-8">
 
 <meta
-name="viewport"
-content="width=device-width, initial-scale=1.0"
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
 >
 
-<title>Admin Dashboard - Gentle Acct Store</title>
+<title>Admin Panel - Gentle Acct Store</title>
+
 
 <link
-rel="preconnect"
-href="https://fonts.googleapis.com"
->
-
-<link
-rel="preconnect"
-href="https://fonts.gstatic.com"
-crossorigin
+  rel="preconnect"
+  href="https://fonts.googleapis.com"
 >
 
 <link
-href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
-rel="stylesheet"
+  rel="preconnect"
+  href="https://fonts.gstatic.com"
 >
 
 <link
-rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+  rel="stylesheet"
 >
+
+
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+>
+
 
 <style>
 
-:root{
-
---blue:#0b2d5c;
---blue-dark:#071f40;
---blue-light:#eaf2fb;
---blue-soft:#f4f8fc;
-
---white:#ffffff;
-
---text:#172033;
---muted:#6f7a8b;
-
---border:#e5ebf3;
-
---danger:#dc2626;
---danger-bg:#fff0f0;
-
---shadow:
-0 8px 25px rgba(11,45,92,.06);
-
-}
-
 *{
-box-sizing:border-box;
-margin:0;
-padding:0;
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
 
 body{
-
-font-family:"Poppins",sans-serif;
-
-background:#f7f9fc;
-
-color:var(--text);
-
-min-height:100vh;
-
-}
-
-button,
-input,
-select,
-textarea{
-
-font-family:inherit;
-
-}
-
-button{
-
-cursor:pointer;
-
-}
-
-a{
-
-text-decoration:none;
-
-color:inherit;
-
+  background:#f5f8fc;
+  color:#071f40;
+  font-family:'Poppins',sans-serif;
 }
 
 
-/* ==========================================
+/* =========================
    HEADER
-========================================== */
+========================= */
 
 header{
-
-background:var(--white);
-
-padding:15px 18px;
-
-border-bottom:1px solid var(--border);
-
-display:flex;
-
-align-items:center;
-
-justify-content:space-between;
-
-gap:15px;
-
-position:sticky;
-
-top:0;
-
-z-index:20;
-
+  background:white;
+  border-bottom:1px solid #e2e8f0;
+  padding:18px 20px;
 }
 
-.logo{
+.header-inner{
+  max-width:1200px;
+  margin:auto;
 
-display:flex;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 
-align-items:center;
-
-gap:10px;
-
-color:var(--blue);
-
-font-size:18px;
-
-font-weight:800;
-
-white-space:nowrap;
-
+  gap:15px;
 }
 
-.logo i{
-
-width:40px;
-
-height:40px;
-
-border-radius:12px;
-
-background:var(--blue);
-
-color:var(--white);
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-font-size:17px;
-
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
 }
+
+.brand-icon{
+  width:56px;
+  height:56px;
+
+  border-radius:17px;
+
+  background:#0b2d5c;
+  color:white;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:24px;
+}
+
+.brand h1{
+  font-size:24px;
+  font-weight:800;
+}
+
+.brand p{
+  color:#7b8595;
+  font-size:11px;
+  margin-top:2px;
+}
+
+
+/* =========================
+   HEADER BUTTONS
+========================= */
 
 .header-actions{
-
-display:flex;
-
-align-items:center;
-
-gap:7px;
-
-flex-wrap:wrap;
-
-justify-content:flex-end;
-
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
 }
 
-.back,
-.logout{
+.header-btn{
+  border:0;
+  text-decoration:none;
 
-border:none;
+  background:#edf3fa;
+  color:#0b2d5c;
 
-text-decoration:none;
+  padding:11px 14px;
 
-font-size:11px;
+  border-radius:12px;
 
-font-weight:700;
+  font-family:'Poppins',sans-serif;
 
-cursor:pointer;
+  font-size:11px;
+  font-weight:700;
 
-border-radius:10px;
+  cursor:pointer;
 
-padding:9px 11px;
-
-display:inline-flex;
-
-align-items:center;
-
-gap:6px;
-
+  display:flex;
+  align-items:center;
+  gap:7px;
 }
 
-.back{
-
-color:var(--blue);
-
-background:var(--blue-light);
-
-}
-
-.logout{
-
-color:var(--danger);
-
-background:var(--danger-bg);
-
+.header-btn.logout{
+  background:#fff0f0;
+  color:#c62828;
 }
 
 
-/* ==========================================
-   CONTAINER
-========================================== */
+/* =========================
+   PAGE
+========================= */
 
 .container{
+  width:100%;
+  max-width:1200px;
 
-width:100%;
+  margin:auto;
 
-max-width:1100px;
-
-margin:auto;
-
-padding:25px 16px 50px;
-
+  padding:24px 16px 60px;
 }
 
 
-/* ==========================================
-   HERO
-========================================== */
+/* =========================
+   MESSAGE
+========================= */
 
-.hero{
+.message{
+  display:none;
 
-margin-bottom:20px;
+  margin-bottom:18px;
 
+  padding:13px 15px;
+
+  border-radius:13px;
+
+  font-size:11px;
+
+  line-height:1.5;
 }
 
-.hero h1{
+.message.success{
+  display:block;
 
-font-size:26px;
+  background:#eaf8f0;
+  color:#168447;
 
-font-weight:800;
-
-color:var(--blue-dark);
-
-margin-bottom:5px;
-
+  border:1px solid #ccebd9;
 }
 
-.hero p{
+.message.error{
+  display:block;
 
-color:var(--muted);
+  background:#fff0f0;
+  color:#c62828;
 
-font-size:12px;
-
-line-height:1.6;
-
-}
-
-
-/* ==========================================
-   FIREBASE STATUS
-========================================== */
-
-.firebase-status{
-
-display:flex;
-
-align-items:center;
-
-gap:8px;
-
-background:var(--blue-light);
-
-border:1px solid #d5e3f2;
-
-color:var(--blue);
-
-padding:11px 13px;
-
-border-radius:12px;
-
-font-size:11px;
-
-font-weight:700;
-
-margin-bottom:20px;
-
-}
-
-.firebase-status.error{
-
-background:var(--danger-bg);
-
-border-color:#ffd0d0;
-
-color:#c62828;
-
+  border:1px solid #ffd5d5;
 }
 
 
-/* ==========================================
+/* =========================
    STATS
-========================================== */
+========================= */
 
 .stats{
+  display:grid;
 
-display:grid;
+  grid-template-columns:
+    repeat(3,1fr);
 
-grid-template-columns:repeat(2,1fr);
+  gap:12px;
 
-gap:11px;
-
-margin-bottom:25px;
-
+  margin-bottom:20px;
 }
 
 .stat{
+  background:white;
 
-background:var(--white);
+  border:1px solid #e2e8f0;
 
-border-radius:17px;
+  border-radius:17px;
 
-padding:17px;
+  padding:16px;
 
-border:1px solid var(--border);
-
-box-shadow:var(--shadow);
-
+  box-shadow:
+    0 6px 18px rgba(20,40,80,.04);
 }
 
 .stat-icon{
+  width:36px;
+  height:36px;
 
-width:40px;
+  border-radius:11px;
 
-height:40px;
+  background:#edf3fa;
+  color:#0b2d5c;
 
-border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 
-background:var(--blue-light);
-
-color:var(--blue);
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-margin-bottom:11px;
-
-font-size:14px;
-
+  margin-bottom:10px;
 }
 
 .stat h3{
-
-font-size:21px;
-
-font-weight:800;
-
-color:var(--blue-dark);
-
-margin-bottom:3px;
-
+  font-size:22px;
+  margin-bottom:2px;
 }
 
 .stat p{
-
-color:var(--muted);
-
-font-size:10px;
-
+  color:#7b8595;
+  font-size:10px;
 }
 
 
-/* ==========================================
-   SECTION CARD
-========================================== */
+/* =========================
+   FORM CARD
+========================= */
 
-.section-card{
+.card{
+  background:white;
 
-background:var(--white);
+  border:1px solid #e2e8f0;
 
-border-radius:19px;
+  border-radius:21px;
 
-padding:19px;
+  padding:24px;
 
-border:1px solid var(--border);
+  margin-bottom:22px;
 
-box-shadow:var(--shadow);
-
-margin-bottom:27px;
-
+  box-shadow:
+    0 7px 22px rgba(20,40,80,.05);
 }
 
-.section-title{
+.card-title{
+  display:flex;
+  align-items:center;
+  gap:10px;
 
-display:flex;
-
-align-items:center;
-
-gap:9px;
-
-margin-bottom:18px;
-
+  margin-bottom:22px;
 }
 
-.section-title i{
+.card-title-icon{
+  width:38px;
+  height:38px;
 
-color:var(--blue);
+  border-radius:12px;
 
-font-size:16px;
+  background:#0b2d5c;
+  color:white;
 
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
-.section-title h2{
-
-font-size:17px;
-
-font-weight:800;
-
-color:var(--blue-dark);
-
+.card-title h2{
+  font-size:21px;
 }
 
 
-/* ==========================================
-   FIELDS
-========================================== */
+/* =========================
+   FORM GRID
+========================= */
+
+.form-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(2,1fr);
+
+  gap:16px;
+}
 
 .field{
-
-margin-bottom:15px;
-
+  margin-bottom:3px;
 }
 
-.field label{
-
-display:block;
-
-font-size:11px;
-
-font-weight:700;
-
-color:var(--blue-dark);
-
-margin-bottom:7px;
-
+.field.full{
+  grid-column:1 / -1;
 }
 
-.field input,
-.field select,
-.field textarea{
+label{
+  display:block;
 
-width:100%;
+  font-size:11px;
 
-border:1px solid #dce3ed;
+  font-weight:700;
 
-border-radius:11px;
+  color:#243650;
 
-padding:12px;
-
-font-size:12px;
-
-outline:none;
-
-background:#fbfcfe;
-
-color:var(--text);
-
-transition:.2s;
-
+  margin-bottom:7px;
 }
 
-.field textarea{
+input,
+select,
+textarea{
+  width:100%;
 
-min-height:105px;
+  border:1px solid #dce3ed;
 
-resize:vertical;
+  border-radius:12px;
 
+  background:#fbfcfe;
+
+  color:#172033;
+
+  outline:none;
+
+  font-family:'Poppins',sans-serif;
+
+  font-size:12px;
 }
 
-.field input:focus,
-.field select:focus,
-.field textarea:focus{
+input,
+select{
+  height:48px;
 
-border-color:var(--blue);
-
-background:var(--white);
-
-box-shadow:0 0 0 3px rgba(11,45,92,.06);
-
+  padding:0 13px;
 }
 
-.field small{
+textarea{
+  min-height:105px;
 
-display:block;
+  padding:13px;
 
-margin-top:6px;
+  resize:vertical;
+}
 
-color:var(--muted);
+input:focus,
+select:focus,
+textarea:focus{
+  border-color:#0b2d5c;
 
-font-size:9px;
+  background:white;
 
-line-height:1.5;
+  box-shadow:
+    0 0 0 3px rgba(11,45,92,.06);
+}
 
+input::placeholder,
+textarea::placeholder{
+  color:#a0a8b4;
 }
 
 
-/* ==========================================
-   ADD BUTTON
-========================================== */
+/* =========================
+   INVENTORY
+========================= */
 
-.add-btn{
+.inventory-help{
+  color:#7b8595;
 
-width:100%;
+  font-size:10px;
 
-border:none;
+  line-height:1.5;
 
-background:var(--blue);
-
-color:var(--white);
-
-padding:13px;
-
-border-radius:11px;
-
-font-weight:700;
-
-font-size:13px;
-
-cursor:pointer;
-
-transition:.2s;
-
+  margin-top:6px;
 }
 
-.add-btn:hover{
-
-background:var(--blue-dark);
-
+.inventory-box{
+  margin-top:8px;
 }
 
-.add-btn:disabled{
-
-opacity:.6;
-
-cursor:not-allowed;
-
+.inventory-box textarea{
+  min-height:150px;
 }
 
 
-/* ==========================================
-   PRODUCTS HEAD
-========================================== */
+/* =========================
+   BUTTONS
+========================= */
 
-.products-head,
-.orders-head{
+.form-actions{
+  display:flex;
 
-display:flex;
+  gap:10px;
 
-align-items:center;
-
-justify-content:space-between;
-
-margin-bottom:14px;
-
-gap:10px;
-
+  margin-top:20px;
 }
 
-.products-head h2,
-.orders-head h2{
+.primary-btn,
+.secondary-btn{
+  border:0;
 
-font-size:18px;
+  border-radius:12px;
 
-font-weight:800;
+  min-height:46px;
 
-color:var(--blue-dark);
+  padding:0 18px;
 
+  font-family:'Poppins',sans-serif;
+
+  font-size:11px;
+
+  font-weight:700;
+
+  cursor:pointer;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  gap:7px;
 }
 
-.product-count,
-.order-count{
+.primary-btn{
+  background:#0b2d5c;
+  color:white;
 
-background:var(--blue-light);
+  flex:1;
+}
 
-color:var(--blue);
+.secondary-btn{
+  background:#edf3fa;
+  color:#0b2d5c;
+}
 
-padding:6px 10px;
-
-border-radius:20px;
-
-font-size:10px;
-
-font-weight:700;
-
-white-space:nowrap;
-
+.primary-btn:disabled{
+  opacity:.6;
+  cursor:not-allowed;
 }
 
 
-/* ==========================================
+/* =========================
+   PRODUCTS HEADER
+========================= */
+
+.products-header{
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:12px;
+
+  margin-bottom:15px;
+}
+
+.products-header h2{
+  font-size:20px;
+}
+
+.product-count{
+  background:#edf3fa;
+
+  color:#0b2d5c;
+
+  padding:7px 11px;
+
+  border-radius:20px;
+
+  font-size:10px;
+
+  font-weight:700;
+}
+
+
+/* =========================
    PRODUCT GRID
-========================================== */
+========================= */
 
-.products,
-.orders{
+.products{
+  display:grid;
 
-display:grid;
+  grid-template-columns:
+    repeat(2,1fr);
 
-grid-template-columns:1fr;
-
-gap:14px;
-
+  gap:14px;
 }
+
+
+/* =========================
+   PRODUCT CARD
+========================= */
 
 .product{
+  background:white;
 
-background:var(--white);
+  border:1px solid #e2e8f0;
 
-border-radius:18px;
+  border-radius:18px;
 
-padding:15px;
+  overflow:hidden;
 
-border:1px solid var(--border);
-
-box-shadow:var(--shadow);
-
+  box-shadow:
+    0 7px 20px rgba(20,40,80,.05);
 }
 
-.product-top{
+.product-image{
+  width:100%;
 
-display:flex;
+  height:150px;
 
-gap:12px;
+  background:#edf3fa;
 
-align-items:center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 
+  overflow:hidden;
 }
 
-.product-img{
+.product-image img{
+  width:100%;
+  height:100%;
 
-width:60px;
-
-height:60px;
-
-border-radius:14px;
-
-background:var(--blue-light);
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-overflow:hidden;
-
-flex-shrink:0;
-
+  object-fit:cover;
 }
 
-.product-img img{
-
-width:100%;
-
-height:100%;
-
-object-fit:cover;
-
+.product-image i{
+  color:#9aa7b8;
+  font-size:35px;
 }
 
-.product-img i{
+.product-body{
+  padding:15px;
+}
 
-color:var(--blue);
+.product-category{
+  display:inline-block;
 
-font-size:21px;
+  background:#edf3fa;
 
+  color:#0b2d5c;
+
+  padding:5px 8px;
+
+  border-radius:20px;
+
+  font-size:8px;
+
+  font-weight:700;
+
+  margin-bottom:8px;
+}
+
+.product h3{
+  font-size:14px;
+
+  margin-bottom:5px;
+}
+
+.product-description{
+  color:#7b8595;
+
+  font-size:10px;
+
+  line-height:1.5;
+
+  min-height:30px;
+
+  margin-bottom:12px;
 }
 
 .product-info{
+  display:grid;
 
-flex:1;
+  grid-template-columns:
+    1fr 1fr;
 
-min-width:0;
+  gap:8px;
 
+  margin-bottom:13px;
 }
 
-.product-info h3{
+.info{
+  background:#f7f9fc;
 
-font-size:14px;
+  border-radius:9px;
 
-font-weight:700;
-
-color:var(--blue-dark);
-
-margin-bottom:5px;
-
-white-space:nowrap;
-
-overflow:hidden;
-
-text-overflow:ellipsis;
-
+  padding:8px;
 }
 
-.category{
+.info span{
+  display:block;
 
-display:inline-block;
+  color:#8b96a7;
 
-background:#f0f4f9;
+  font-size:8px;
 
-color:#64748b;
-
-padding:4px 8px;
-
-border-radius:7px;
-
-font-size:9px;
-
-font-weight:700;
-
-text-transform:capitalize;
-
+  margin-bottom:2px;
 }
 
-.product-price{
+.info strong{
+  color:#172033;
 
-color:var(--blue);
-
-font-size:17px;
-
-font-weight:800;
-
-margin-top:12px;
-
+  font-size:11px;
 }
 
-.stock{
-
-margin-top:7px;
-
-font-size:10px;
-
-font-weight:700;
-
+.stock-good{
+  color:#168447 !important;
 }
 
-.in-stock{
-
-color:var(--blue);
-
+.stock-low{
+  color:#c47a00 !important;
 }
 
-.out-stock{
-
-color:var(--danger);
-
-}
-
-.description{
-
-color:var(--muted);
-
-font-size:10px;
-
-line-height:1.6;
-
-margin-top:9px;
-
+.stock-empty{
+  color:#c62828 !important;
 }
 
 
-/* ==========================================
-   ACTION BUTTONS
-========================================== */
+/* =========================
+   PRODUCT ACTIONS
+========================= */
 
-.actions{
+.product-actions{
+  display:grid;
 
-display:grid;
+  grid-template-columns:
+    1fr 1fr;
 
-grid-template-columns:1fr 1fr;
-
-gap:8px;
-
-margin-top:14px;
-
+  gap:7px;
 }
 
-.action{
+.edit-btn,
+.delete-btn{
+  border:0;
 
-text-align:center;
+  min-height:38px;
 
-padding:10px;
+  border-radius:9px;
 
-border-radius:9px;
+  font-family:'Poppins',sans-serif;
 
-font-size:11px;
+  font-size:10px;
 
-font-weight:700;
+  font-weight:700;
 
-border:none;
-
-cursor:pointer;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-gap:6px;
-
+  cursor:pointer;
 }
 
-.edit{
+.edit-btn{
+  background:#edf3fa;
 
-background:var(--blue-light);
-
-color:var(--blue);
-
+  color:#0b2d5c;
 }
 
-.edit:hover{
+.delete-btn{
+  background:#fff0f0;
 
-background:#dce9f7;
-
-}
-
-.delete{
-
-background:var(--danger-bg);
-
-color:var(--danger);
-
-}
-
-.delete:hover{
-
-background:#ffe0e0;
-
+  color:#c62828;
 }
 
 
-/* ==========================================
-   INVENTORY
-========================================== */
+/* =========================
+   EMPTY
+========================= */
 
-.inventory-list{
+.empty{
+  grid-column:1 / -1;
 
-margin-top:14px;
+  background:white;
 
-padding-top:13px;
+  border:1px dashed #cbd5e1;
 
-border-top:1px solid #edf0f5;
+  border-radius:18px;
 
+  padding:45px 20px;
+
+  text-align:center;
 }
 
-.inventory-title{
+.empty i{
+  color:#aab5c4;
 
-font-size:10px;
+  font-size:35px;
 
-font-weight:800;
-
-margin-bottom:8px;
-
-color:#536074;
-
+  margin-bottom:12px;
 }
 
-.inventory-item{
+.empty h3{
+  font-size:16px;
 
-display:flex;
-
-align-items:center;
-
-gap:8px;
-
-padding:8px 9px;
-
-background:#f8fafc;
-
-border-radius:9px;
-
-margin-bottom:6px;
-
-font-size:9px;
-
-word-break:break-word;
-
+  margin-bottom:5px;
 }
 
-.inventory-number{
+.empty p{
+  color:#7b8595;
 
-width:22px;
-
-height:22px;
-
-border-radius:7px;
-
-background:var(--blue-light);
-
-color:var(--blue);
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-font-weight:800;
-
-flex-shrink:0;
-
-}
-
-.inventory-sold{
-
-opacity:.55;
-
-text-decoration:line-through;
-
-}
-
-.inventory-sold .inventory-number{
-
-background:#f1f1f1;
-
-color:#888;
-
+  font-size:11px;
 }
 
 
-/* ==========================================
-   EMPTY / LOADING
-========================================== */
+/* =========================
+   LOADING
+========================= */
 
-.empty,
 .loading{
+  grid-column:1 / -1;
 
-background:var(--white);
+  background:white;
 
-border:1px dashed #cfd8e5;
+  border:1px solid #e2e8f0;
 
-border-radius:17px;
+  border-radius:18px;
 
-padding:38px 20px;
+  padding:45px 20px;
 
-text-align:center;
+  text-align:center;
 
-color:#7a8493;
-
-grid-column:1/-1;
-
+  color:#7b8595;
 }
 
-.empty i,
 .loading i{
+  color:#0b2d5c;
 
-font-size:31px;
+  font-size:25px;
 
-color:#aab6c7;
-
-margin-bottom:11px;
-
-}
-
-.empty h3,
-.loading h3{
-
-color:var(--blue-dark);
-
-font-size:13px;
-
-margin-bottom:5px;
-
-}
-
-.empty p,
-.loading p{
-
-font-size:10px;
-
-line-height:1.5;
-
+  margin-bottom:10px;
 }
 
 
-/* ==========================================
+/* =========================
    MODAL
-========================================== */
+========================= */
 
 .modal{
+  position:fixed;
 
-position:fixed;
+  inset:0;
 
-inset:0;
+  background:rgba(7,31,64,.48);
 
-background:rgba(7,31,64,.58);
+  display:none;
 
-display:none;
+  align-items:center;
+  justify-content:center;
 
-align-items:center;
+  padding:20px;
 
-justify-content:center;
-
-padding:16px;
-
-z-index:100;
-
+  z-index:100;
 }
 
 .modal.show{
-
-display:flex;
-
+  display:flex;
 }
 
 .modal-box{
+  width:100%;
 
-background:var(--white);
+  max-width:400px;
 
-width:100%;
+  background:white;
 
-max-width:560px;
+  border-radius:20px;
 
-max-height:90vh;
+  padding:22px;
 
-overflow-y:auto;
-
-border-radius:21px;
-
-padding:21px;
-
+  box-shadow:
+    0 20px 50px rgba(0,0,0,.18);
 }
 
-.modal-head{
+.modal-box h2{
+  font-size:19px;
 
-display:flex;
-
-align-items:center;
-
-justify-content:space-between;
-
-margin-bottom:19px;
-
+  margin-bottom:7px;
 }
 
-.modal-head h2{
+.modal-box p{
+  color:#7b8595;
 
-font-size:18px;
+  font-size:11px;
 
-font-weight:800;
+  line-height:1.5;
 
-color:var(--blue-dark);
-
-}
-
-.close-modal{
-
-border:none;
-
-background:#f2f4f7;
-
-color:#555;
-
-width:35px;
-
-height:35px;
-
-border-radius:50%;
-
-cursor:pointer;
-
-font-size:14px;
-
+  margin-bottom:17px;
 }
 
 .modal-actions{
+  display:flex;
 
-display:grid;
+  gap:8px;
 
-grid-template-columns:1fr 1fr;
-
-gap:9px;
-
-margin-top:18px;
-
+  margin-top:17px;
 }
 
-.cancel-btn,
-.save-btn{
+.modal-actions button{
+  flex:1;
 
-border:none;
+  height:43px;
 
-padding:12px;
+  border:0;
 
-border-radius:10px;
+  border-radius:10px;
 
-font-weight:700;
+  font-family:'Poppins',sans-serif;
 
-font-size:12px;
+  font-size:11px;
 
-cursor:pointer;
+  font-weight:700;
 
+  cursor:pointer;
 }
 
 .cancel-btn{
-
-background:#f1f3f6;
-
-color:#555;
-
+  background:#edf3fa;
+  color:#0b2d5c;
 }
 
-.save-btn{
-
-background:var(--blue);
-
-color:var(--white);
-
-}
-
-.save-btn:hover{
-
-background:var(--blue-dark);
-
+.confirm-delete{
+  background:#c62828;
+  color:white;
 }
 
 
-/* ==========================================
-   DESKTOP
-========================================== */
+/* =========================
+   RESPONSIVE
+========================= */
 
-@media(min-width:650px){
+@media(max-width:700px){
 
-.stats{
+  header{
+    padding:14px;
+  }
 
-grid-template-columns:repeat(5,1fr);
+  .header-inner{
+    align-items:flex-start;
+  }
 
-}
+  .brand-icon{
+    width:48px;
+    height:48px;
 
-.products{
+    border-radius:15px;
+  }
 
-grid-template-columns:repeat(2,1fr);
+  .brand h1{
+    font-size:19px;
+  }
 
-}
+  .brand p{
+    display:none;
+  }
 
-.orders{
+  .header-actions{
+    gap:6px;
+  }
 
-grid-template-columns:repeat(2,1fr);
+  .header-btn{
+    padding:9px 10px;
 
-}
+    font-size:9px;
+  }
 
-}
+  .header-btn span{
+    display:none;
+  }
 
-@media(min-width:950px){
+  .stats{
+    grid-template-columns:
+      repeat(3,1fr);
 
-.products{
+    gap:8px;
+  }
 
-grid-template-columns:repeat(3,1fr);
+  .stat{
+    padding:12px 10px;
+  }
 
-}
+  .stat-icon{
+    width:31px;
+    height:31px;
 
-.container{
+    font-size:12px;
+  }
 
-padding-top:35px;
+  .stat h3{
+    font-size:18px;
+  }
 
-}
+  .stat p{
+    font-size:8px;
+  }
 
-}
+  .form-grid{
+    grid-template-columns:1fr;
+  }
 
+  .field.full{
+    grid-column:auto;
+  }
 
-/* ==========================================
-   MOBILE HEADER
-========================================== */
-
-@media(max-width:560px){
-
-header{
-
-align-items:flex-start;
-
-}
-
-.logo{
-
-font-size:15px;
-
-}
-
-.logo i{
-
-width:36px;
-
-height:36px;
-
-font-size:15px;
-
-}
-
-.header-actions{
-
-gap:5px;
-
-}
-
-.back,
-.logout{
-
-padding:8px;
-
-font-size:9px;
+  .products{
+    grid-template-columns:1fr;
+  }
 
 }
 
-.back i,
-.logout i{
+@media(max-width:450px){
 
-font-size:10px;
+  .container{
+    padding:18px 12px 40px;
+  }
 
-}
+  .card{
+    padding:18px;
+  }
+
+  .brand{
+    gap:8px;
+  }
+
+  .brand-icon{
+    width:43px;
+    height:43px;
+    font-size:19px;
+  }
+
+  .brand h1{
+    font-size:16px;
+  }
+
+  .header-btn{
+    padding:9px;
+  }
+
+  .products-header h2{
+    font-size:17px;
+  }
 
 }
 
@@ -1244,118 +966,112 @@ font-size:10px;
 
 </head>
 
+
 <body>
 
 
-<!-- ==================================================
-     FIREBASE
-================================================== -->
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-
-<script src="firebase.js"></script>
-
-
-<!-- ==================================================
+<!-- =========================
      HEADER
-================================================== -->
+========================= -->
 
 <header>
 
-<div class="logo">
+<div class="header-inner">
+
+
+<div class="brand">
+
+<div class="brand-icon">
 
 <i class="fa-solid fa-shield-halved"></i>
 
+</div>
+
+
+<div>
+
+<h1>
 Gentle Admin
+</h1>
+
+<p>
+Gentle Acct Store Management
+</p>
+
+</div>
 
 </div>
 
 
 <div class="header-actions">
 
+
 <a
-href="customers.html"
-class="back"
+  href="customers.html"
+  class="header-btn"
 >
 
 <i class="fa-solid fa-users"></i>
 
+<span>
 Customers
+</span>
 
 </a>
 
 
 <a
-href="dashboard.html"
-class="back"
+  href="dashboard.html"
+  class="header-btn"
 >
 
 <i class="fa-solid fa-arrow-left"></i>
 
+<span>
 Store
+</span>
 
 </a>
 
 
 <button
-class="logout"
-onclick="adminLogout()"
+  type="button"
+  id="logoutButton"
+  class="header-btn logout"
 >
 
 <i class="fa-solid fa-right-from-bracket"></i>
 
+<span>
 Logout
+</span>
 
 </button>
+
+
+</div>
 
 </div>
 
 </header>
 
 
-<div class="container">
+<!-- =========================
+     MAIN
+========================= -->
 
+<main class="container">
 
-<!-- ==================================================
-     HERO
-================================================== -->
-
-<div class="hero">
-
-<h1>
-Admin Dashboard
-</h1>
-
-<p>
-Manage your products, inventory, customers and store listings.
-</p>
-
-</div>
-
-
-<!-- ==================================================
-     FIREBASE STATUS
-================================================== -->
 
 <div
-id="firebaseStatus"
-class="firebase-status"
->
-
-<i class="fa-solid fa-spinner fa-spin"></i>
-
-Connecting to Firebase...
-
-</div>
+  id="message"
+  class="message"
+></div>
 
 
-<!-- ==================================================
+<!-- =========================
      STATS
-================================================== -->
+========================= -->
 
 <div class="stats">
 
@@ -1373,7 +1089,7 @@ Connecting to Firebase...
 </h3>
 
 <p>
-Total Products
+Products
 </p>
 
 </div>
@@ -1383,16 +1099,16 @@ Total Products
 
 <div class="stat-icon">
 
-<i class="fa-solid fa-circle-check"></i>
+<i class="fa-solid fa-layer-group"></i>
 
 </div>
 
-<h3 id="inStock">
+<h3 id="totalStock">
 0
 </h3>
 
 <p>
-In Stock
+Available Stock
 </p>
 
 </div>
@@ -1402,54 +1118,16 @@ In Stock
 
 <div class="stat-icon">
 
-<i class="fa-solid fa-circle-xmark"></i>
+<i class="fa-solid fa-tags"></i>
 
 </div>
 
-<h3 id="outStock">
+<h3 id="totalCategories">
 0
 </h3>
 
 <p>
-Out of Stock
-</p>
-
-</div>
-
-
-<div class="stat">
-
-<div class="stat-icon">
-
-<i class="fa-solid fa-naira-sign"></i>
-
-</div>
-
-<h3 id="inventoryValue">
-₦0
-</h3>
-
-<p>
-Inventory Value
-</p>
-
-</div>
-
-
-<div class="stat">
-
-<div class="stat-icon">
-
-<i class="fa-solid fa-users"></i>
-
-</div>
-
-<h3 id="totalCustomers">
-0
-</h3>
-
-<p>
-Customers
+Categories
 </p>
 
 </div>
@@ -1458,16 +1136,21 @@ Customers
 </div>
 
 
-<!-- ==================================================
+<!-- =========================
      ADD PRODUCT
-================================================== -->
+========================= -->
 
-<div class="section-card">
+<section class="card">
 
 
-<div class="section-title">
+<div class="card-title">
 
-<i class="fa-solid fa-plus-circle"></i>
+<div class="card-title-icon">
+
+<i class="fa-solid fa-plus"></i>
+
+</div>
+
 
 <h2>
 Add New Product
@@ -1476,16 +1159,19 @@ Add New Product
 </div>
 
 
+<div class="form-grid">
+
+
 <div class="field">
 
-<label>
+<label for="productName">
 Product Name
 </label>
 
 <input
-id="name"
-type="text"
-placeholder="Example: USA Number"
+  id="productName"
+  type="text"
+  placeholder="Example: USA Number"
 >
 
 </div>
@@ -1493,25 +1179,42 @@ placeholder="Example: USA Number"
 
 <div class="field">
 
-<label>
+<label for="category">
 Category
 </label>
 
+
 <select id="category">
 
-<option value="instagram">
+<option value="Giveaway Accounts">
+Giveaway Accounts
+</option>
+
+<option value="Instagram">
 Instagram
 </option>
 
-<option value="facebook">
-Facebook
-</option>
-
-<option value="tiktok">
+<option value="TikTok">
 TikTok
 </option>
 
-<option value="other">
+<option value="Facebook">
+Facebook
+</option>
+
+<option value="Gmail">
+Gmail
+</option>
+
+<option value="VPN">
+VPN
+</option>
+
+<option value="Discord">
+Discord
+</option>
+
+<option value="Other">
 Other
 </option>
 
@@ -1522,15 +1225,16 @@ Other
 
 <div class="field">
 
-<label>
+<label for="price">
 Price (₦)
 </label>
 
 <input
-id="price"
-type="number"
-min="1"
-placeholder="5000"
+  id="price"
+  type="number"
+  min="0"
+  step="1"
+  placeholder="500"
 >
 
 </div>
@@ -1538,57 +1242,64 @@ placeholder="5000"
 
 <div class="field">
 
-<label>
+<label for="image">
 Product Image URL
 </label>
 
 <input
-id="image"
-type="text"
-placeholder="https://example.com/image.jpg"
+  id="image"
+  type="url"
+  placeholder="https://example.com/image.jpg"
 >
 
 </div>
 
 
-<div class="field">
+<div class="field full">
 
-<label>
+<label for="description">
 Product Description
 </label>
 
 <textarea
-id="description"
-placeholder="Write a short description of the product..."
+  id="description"
+  placeholder="Write a short description of the product..."
 ></textarea>
 
 </div>
 
 
-<div class="field">
+<div class="field full inventory-box">
 
-<label>
+<label for="inventory">
 Inventory / Stock Items
 </label>
 
 <textarea
-id="inventory"
-placeholder="Enter one inventory item per line&#10;Item 1&#10;Item 2&#10;Item 3"
+  id="inventory"
+  placeholder="Enter one inventory item per line..."
 ></textarea>
 
-<small>
 
-Each line is stored separately in Firebase as one inventory item.
+<div class="inventory-help">
 
-</small>
+Each line becomes one available stock item. When a customer buys the product, the next available inventory item is used.
+
+</div>
 
 </div>
 
 
+</div>
+
+
+<div class="form-actions">
+
+
 <button
-id="addButton"
-class="add-btn"
-onclick="addProduct()"
+  type="button"
+  id="addProductButton"
+  class="primary-btn"
 >
 
 <i class="fa-solid fa-plus"></i>
@@ -1598,22 +1309,39 @@ Add Product
 </button>
 
 
+<button
+  type="button"
+  id="clearButton"
+  class="secondary-btn"
+>
+
+<i class="fa-solid fa-rotate-left"></i>
+
+Clear
+
+</button>
+
+
 </div>
 
 
-<!-- ==================================================
-     PRODUCTS
-================================================== -->
+</section>
 
-<div class="products-head">
+
+<!-- =========================
+     PRODUCTS
+========================= -->
+
+<div class="products-header">
 
 <h2>
-Products
+Your Products
 </h2>
 
+
 <span
-class="product-count"
-id="productCount"
+  id="productCount"
+  class="product-count"
 >
 0 Products
 </span>
@@ -1622,1737 +1350,1421 @@ id="productCount"
 
 
 <div
-id="products"
-class="products"
+  id="products"
+  class="products"
 >
 
 <div class="loading">
 
 <i class="fa-solid fa-spinner fa-spin"></i>
 
-<h3>
-Loading products...
-</h3>
-
-</div>
-
-</div>
-
-
-<!-- ==================================================
-     ORDERS
-================================================== -->
-
-<div
-class="section-card"
-style="margin-top:30px;"
->
-
-<div class="orders-head">
-
-<h2>
-Customer Orders
-</h2>
-
-<span
-class="order-count"
-id="orderCount"
->
-0 Orders
-</span>
-
-</div>
-
-
-<div
-id="orders"
-class="orders"
->
-
-<div class="empty">
-
-<i class="fa-solid fa-receipt"></i>
-
-<h3>
-Orders will appear here
-</h3>
-
 <p>
-Customer purchases will be connected next.
+Loading products...
 </p>
 
 </div>
 
 </div>
 
-</div>
+
+</main>
 
 
-</div>
-
-
-<!-- ==================================================
-     EDIT MODAL
-================================================== -->
+<!-- =========================
+     DELETE MODAL
+========================= -->
 
 <div
-id="editModal"
-class="modal"
+  id="deleteModal"
+  class="modal"
 >
+
 
 <div class="modal-box">
 
 
-<div class="modal-head">
-
 <h2>
-Edit Product
+Delete Product?
 </h2>
 
-<button
-class="close-modal"
-onclick="closeEditModal()"
->
 
-<i class="fa-solid fa-xmark"></i>
-
-</button>
-
-</div>
-
-
-<input
-type="hidden"
-id="editProductId"
->
-
-
-<div class="field">
-
-<label>
-Product Name
-</label>
-
-<input
-id="editName"
-type="text"
->
-
-</div>
-
-
-<div class="field">
-
-<label>
-Category
-</label>
-
-<select id="editCategory">
-
-<option value="instagram">
-Instagram
-</option>
-
-<option value="facebook">
-Facebook
-</option>
-
-<option value="tiktok">
-TikTok
-</option>
-
-<option value="other">
-Other
-</option>
-
-</select>
-
-</div>
-
-
-<div class="field">
-
-<label>
-Price (₦)
-</label>
-
-<input
-id="editPrice"
-type="number"
-min="1"
->
-
-</div>
-
-
-<div class="field">
-
-<label>
-Product Image URL
-</label>
-
-<input
-id="editImage"
-type="text"
->
-
-</div>
-
-
-<div class="field">
-
-<label>
-Description
-</label>
-
-<textarea
-id="editDescription"
-></textarea>
-
-</div>
-
-
-<div class="field">
-
-<label>
-Add More Inventory
-</label>
-
-<textarea
-id="editInventory"
-placeholder="Add one new item per line"
-></textarea>
-
-<small>
-
-Existing inventory will stay. New lines will be added to the end.
-
-</small>
-
-</div>
+<p>
+This will permanently delete the product and its inventory from Firebase.
+</p>
 
 
 <div class="modal-actions">
 
-<button
-class="cancel-btn"
-onclick="closeEditModal()"
->
 
+<button
+  type="button"
+  id="cancelDelete"
+  class="cancel-btn"
+>
 Cancel
-
 </button>
 
 
 <button
-id="saveEditButton"
-class="save-btn"
-onclick="saveProductEdit()"
+  type="button"
+  id="confirmDelete"
+  class="confirm-delete"
 >
-
-Save Changes
-
+Delete
 </button>
 
-</div>
-
 
 </div>
 
+
 </div>
+
+</div>
+
+
+<!-- =========================
+     FIREBASE
+========================= -->
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<script src="firebase.js"></script>
 
 
 <script>
 
-/* ==================================================
-   SETTINGS
-================================================== */
+/* =========================
+   ADMIN UID
+========================= */
 
 const ADMIN_UID =
 "UoEjCy99gbQKkGob59vGi3CunZi1";
 
+
+/* =========================
+   COLLECTION
+========================= */
+
 const PRODUCTS_COLLECTION =
 "products";
 
-let adminAuthorized = false;
+
+/* =========================
+   DATA
+========================= */
+
+let products =
+[];
+
+let productToDelete =
+null;
 
 
-/* ==================================================
-   FIREBASE STATUS
-================================================== */
+/* =========================
+   ELEMENTS
+========================= */
 
-function setFirebaseStatus(
-message,
-error = false
-){
-
-const box =
+const productName =
 document.getElementById(
-"firebaseStatus"
+  "productName"
 );
 
-box.className =
-error
-? "firebase-status error"
-: "firebase-status";
-
-box.innerHTML = `
-
-<i class="fa-solid ${
-error
-? "fa-circle-exclamation"
-: "fa-circle-check"
-}"></i>
-
-${escapeHTML(message)}
-
-`;
-
-}
-
-
-/* ==================================================
-   AUTH
-================================================== */
-
-firebaseAuth.onAuthStateChanged(
-async function(user){
-
-if(!user){
-
-location.href =
-"admin-login.html";
-
-return;
-
-}
-
-
-if(user.uid !== ADMIN_UID){
-
-await firebaseAuth.signOut();
-
-location.href =
-"admin-login.html";
-
-return;
-
-}
-
-
-if(!user.emailVerified){
-
-alert(
-"Please verify your admin email first."
+const category =
+document.getElementById(
+  "category"
 );
 
-await firebaseAuth.signOut();
+const price =
+document.getElementById(
+  "price"
+);
 
-location.href =
-"admin-login.html";
+const image =
+document.getElementById(
+  "image"
+);
 
-return;
+const description =
+document.getElementById(
+  "description"
+);
 
-}
+const inventory =
+document.getElementById(
+  "inventory"
+);
+
+const productsContainer =
+document.getElementById(
+  "products"
+);
+
+const messageBox =
+document.getElementById(
+  "message"
+);
+
+const deleteModal =
+document.getElementById(
+  "deleteModal"
+);
 
 
-if(
-typeof firebaseDB === "undefined" ||
-!firebaseDB
+/* =========================
+   MESSAGE
+========================= */
+
+function showMessage(
+  text,
+  type
 ){
 
-setFirebaseStatus(
-"Firestore is not available.",
-true
-);
+  messageBox.textContent =
+    text;
 
-return;
+  messageBox.className =
+    "message " + type;
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
 
 }
 
 
-adminAuthorized = true;
+/* =========================
+   AUTH CHECK
+========================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  function(){
+
+    if(
+      typeof firebaseAuth ===
+      "undefined"
+    ){
+
+      showMessage(
+        "Firebase Authentication is not available.",
+        "error"
+      );
+
+      return;
+
+    }
 
 
-setFirebaseStatus(
-"Firebase connected successfully."
+    if(
+      typeof firebaseDB ===
+      "undefined"
+    ){
+
+      showMessage(
+        "Firebase Firestore is not available.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    firebaseAuth.onAuthStateChanged(
+      function(user){
+
+        if(!user){
+
+          window.location.replace(
+            "admin-login.html"
+          );
+
+          return;
+
+        }
+
+
+        if(
+          user.uid !== ADMIN_UID
+        ){
+
+          firebaseAuth
+            .signOut()
+            .finally(
+              function(){
+
+                window.location.replace(
+                  "admin-login.html"
+                );
+
+              }
+            );
+
+          return;
+
+        }
+
+
+        if(
+          !user.emailVerified
+        ){
+
+          firebaseAuth
+            .signOut()
+            .finally(
+              function(){
+
+                window.location.replace(
+                  "admin-login.html"
+                );
+
+              }
+            );
+
+          return;
+
+        }
+
+
+        loadProducts();
+
+      }
+    );
+
+  }
 );
 
 
-await renderProducts();
+/* =========================
+   LOAD PRODUCTS
+========================= */
 
-});
+async function loadProducts(){
+
+  productsContainer.innerHTML = `
+
+    <div class="loading">
+
+      <i class="fa-solid fa-spinner fa-spin"></i>
+
+      <p>
+        Loading products...
+      </p>
+
+    </div>
+
+  `;
 
 
-/* ==================================================
+  try{
+
+    const snapshot =
+      await firebaseDB
+        .collection(
+          PRODUCTS_COLLECTION
+        )
+        .get();
+
+
+    products =
+      [];
+
+
+    snapshot.forEach(
+      function(doc){
+
+        const data =
+          doc.data();
+
+
+        products.push({
+
+          id:
+            doc.id,
+
+          name:
+            data.name ||
+            "Unnamed Product",
+
+          category:
+            data.category ||
+            "Other",
+
+          price:
+            Number(
+              data.price || 0
+            ),
+
+          image:
+            data.image ||
+            "",
+
+          description:
+            data.description ||
+            "",
+
+          stockCount:
+            Number(
+              data.stockCount || 0
+            ),
+
+          totalStock:
+            Number(
+              data.totalStock ||
+              data.stockCount ||
+              0
+            ),
+
+          createdAt:
+            data.createdAt ||
+            null
+
+        });
+
+      }
+    );
+
+
+    products.sort(
+      function(a,b){
+
+        return getTimeValue(
+          b.createdAt
+        )
+        -
+        getTimeValue(
+          a.createdAt
+        );
+
+      }
+    );
+
+
+    renderProducts();
+
+    updateStats();
+
+
+  }catch(error){
+
+    console.error(
+      "LOAD PRODUCTS ERROR:",
+      error
+    );
+
+
+    productsContainer.innerHTML = `
+
+      <div class="empty">
+
+        <i class="fa-solid fa-triangle-exclamation"></i>
+
+        <h3>
+          Unable to load products
+        </h3>
+
+        <p>
+          ${escapeHTML(
+            error.message ||
+            "Could not load products."
+          )}
+        </p>
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/* =========================
    ADD PRODUCT
-================================================== */
+========================= */
+
+document
+  .getElementById(
+    "addProductButton"
+  )
+  .addEventListener(
+    "click",
+    addProduct
+  );
+
 
 async function addProduct(){
 
-if(!adminAuthorized){
+  const name =
+    productName.value.trim();
 
-alert(
-"Admin authorization is still being verified."
-);
 
-return;
+  const selectedCategory =
+    category.value;
+
+
+  const productPrice =
+    Number(
+      price.value
+    );
+
+
+  const productImage =
+    image.value.trim();
+
+
+  const productDescription =
+    description.value.trim();
+
+
+  const inventoryText =
+    inventory.value.trim();
+
+
+  if(!name){
+
+    showMessage(
+      "Please enter a product name.",
+      "error"
+    );
+
+    productName.focus();
+
+    return;
+
+  }
+
+
+  if(
+    !productPrice ||
+    productPrice < 0
+  ){
+
+    showMessage(
+      "Please enter a valid product price.",
+      "error"
+    );
+
+    price.focus();
+
+    return;
+
+  }
+
+
+  const inventoryItems =
+    inventoryText
+      ? inventoryText
+          .split(/\r?\n/)
+          .map(
+            function(item){
+              return item.trim();
+            }
+          )
+          .filter(
+            function(item){
+              return item.length > 0;
+            }
+          )
+      : [];
+
+
+  const button =
+    document.getElementById(
+      "addProductButton"
+    );
+
+
+  try{
+
+    button.disabled =
+      true;
+
+
+    button.innerHTML =
+      '<i class="fa-solid fa-spinner fa-spin"></i> Adding...';
+
+
+    const user =
+      firebaseAuth.currentUser;
+
+
+    if(
+      !user ||
+      user.uid !== ADMIN_UID
+    ){
+
+      throw new Error(
+        "Admin authentication is required."
+      );
+
+    }
+
+
+    const productRef =
+      await firebaseDB
+        .collection(
+          PRODUCTS_COLLECTION
+        )
+        .add({
+
+          name:
+            name,
+
+          category:
+            selectedCategory,
+
+          price:
+            productPrice,
+
+          image:
+            productImage,
+
+          description:
+            productDescription,
+
+          stockCount:
+            inventoryItems.length,
+
+          totalStock:
+            inventoryItems.length,
+
+          createdBy:
+            user.uid,
+
+          createdAt:
+            firebase.firestore.FieldValue.serverTimestamp()
+
+        });
+
+
+    /* =========================
+       ADD INVENTORY
+    ========================= */
+
+    if(
+      inventoryItems.length > 0
+    ){
+
+      for(
+        let start = 0;
+        start < inventoryItems.length;
+        start += 400
+      ){
+
+        const batch =
+          firebaseDB.batch();
+
+
+        const chunk =
+          inventoryItems.slice(
+            start,
+            start + 400
+          );
+
+
+        chunk.forEach(
+          function(item,index){
+
+            const inventoryRef =
+              productRef
+                .collection(
+                  "inventory"
+                )
+                .doc();
+
+
+            batch.set(
+              inventoryRef,
+              {
+
+                value:
+                  item,
+
+                position:
+                  start + index,
+
+                sold:
+                  false,
+
+                soldTo:
+                  "",
+
+                soldAt:
+                  null,
+
+                createdAt:
+                  firebase.firestore.FieldValue.serverTimestamp()
+
+              }
+            );
+
+          }
+        );
+
+
+        await batch.commit();
+
+      }
+
+    }
+
+
+    showMessage(
+      "Product added successfully.",
+      "success"
+    );
+
+
+    clearForm();
+
+    await loadProducts();
+
+
+  }catch(error){
+
+    console.error(
+      "ADD PRODUCT ERROR:",
+      error
+    );
+
+
+    showMessage(
+      "Could not add product: " +
+      error.message,
+      "error"
+    );
+
+
+  }finally{
+
+    button.disabled =
+      false;
+
+    button.innerHTML =
+      '<i class="fa-solid fa-plus"></i> Add Product';
+
+  }
 
 }
 
 
-const button =
-document.getElementById(
-"addButton"
-);
-
-
-const name =
-document
-.getElementById("name")
-.value
-.trim();
-
-
-const category =
-document
-.getElementById("category")
-.value;
-
-
-const price =
-Number(
-document
-.getElementById("price")
-.value
-);
-
-
-const image =
-document
-.getElementById("image")
-.value
-.trim();
-
-
-const description =
-document
-.getElementById("description")
-.value
-.trim();
-
-
-const inventoryText =
-document
-.getElementById("inventory")
-.value
-.trim();
-
-
-if(!name){
-
-alert(
-"Please enter the product name."
-);
-
-return;
-
-}
-
-
-if(!price || price <= 0){
-
-alert(
-"Please enter a valid price."
-);
-
-return;
-
-}
-
-
-if(!inventoryText){
-
-alert(
-"Please enter at least one inventory item."
-);
-
-return;
-
-}
-
-
-const inventory =
-inventoryText
-.split("\n")
-.map(function(item){
-
-return item.trim();
-
-})
-.filter(function(item){
-
-return item.length > 0;
-
-});
-
-
-if(!inventory.length){
-
-alert(
-"Please enter at least one inventory item."
-);
-
-return;
-
-}
-
-
-try{
-
-button.disabled = true;
-
-button.innerHTML = `
-
-<i class="fa-solid fa-spinner fa-spin"></i>
-
-Saving...
-
-`;
-
-
-/* CREATE PRODUCT */
-
-const productRef =
-firebaseDB
-.collection(PRODUCTS_COLLECTION)
-.doc();
-
-
-await productRef.set({
-
-name:name,
-
-category:category,
-
-price:price,
-
-image:image,
-
-description:description,
-
-stockCount:inventory.length,
-
-totalStock:inventory.length,
-
-createdBy:ADMIN_UID,
-
-createdAt:
-firebase.firestore
-.FieldValue
-.serverTimestamp()
-
-});
-
-
-/* CREATE INVENTORY */
-
-const batch =
-firebaseDB.batch();
-
-
-inventory.forEach(
-function(item,index){
-
-const itemRef =
-productRef
-.collection("inventory")
-.doc();
-
-
-batch.set(
-itemRef,
-{
-
-value:item,
-
-position:index,
-
-sold:false,
-
-soldTo:null,
-
-soldAt:null,
-
-createdAt:
-firebase.firestore
-.FieldValue
-.serverTimestamp()
-
-}
-);
-
-});
-
-
-await batch.commit();
-
-
-alert(
-"Product added to Firebase successfully."
-);
-
-
-/* CLEAR */
-
-document
-.getElementById("name")
-.value="";
-
-
-document
-.getElementById("price")
-.value="";
-
-
-document
-.getElementById("image")
-.value="";
-
-
-document
-.getElementById("description")
-.value="";
-
-
-document
-.getElementById("inventory")
-.value="";
-
-
-await renderProducts();
-
-
-}catch(error){
-
-console.error(
-"ADD PRODUCT ERROR:",
-error
-);
-
-alert(
-"Could not add product.\n\n" +
-error.message
-);
-
-}finally{
-
-button.disabled=false;
-
-button.innerHTML = `
-
-<i class="fa-solid fa-plus"></i>
-
-Add Product
-
-`;
-
-}
-
-}
-
-
-/* ==================================================
-   GET PRODUCTS
-================================================== */
-
-async function getProducts(){
-
-const snapshot =
-await firebaseDB
-.collection(PRODUCTS_COLLECTION)
-.get();
-
-
-const products=[];
-
-
-for(
-const doc of snapshot.docs
-){
-
-const data =
-doc.data();
-
-
-const inventorySnapshot =
-await doc.ref
-.collection("inventory")
-.get();
-
-
-const inventory =
-inventorySnapshot.docs
-.map(
-function(itemDoc){
-
-return {
-
-id:itemDoc.id,
-
-...itemDoc.data()
-
-};
-
-})
-.sort(
-function(a,b){
-
-return Number(
-a.position || 0
-)
--
-Number(
-b.position || 0
-);
-
-});
-
-
-products.push({
-
-id:doc.id,
-
-name:data.name || "",
-
-category:
-data.category || "other",
-
-price:
-Number(data.price || 0),
-
-image:
-data.image || "",
-
-description:
-data.description || "",
-
-stockCount:
-Number(data.stockCount || 0),
-
-totalStock:
-Number(
-data.totalStock ||
-inventory.length
-),
-
-inventory:inventory,
-
-createdAt:
-data.createdAt || null
-
-});
-
-}
-
-
-/* NEWEST FIRST */
-
-products.sort(
-function(a,b){
-
-const aTime =
-a.createdAt &&
-typeof a.createdAt.toMillis ===
-"function"
-? a.createdAt.toMillis()
-: 0;
-
-
-const bTime =
-b.createdAt &&
-typeof b.createdAt.toMillis ===
-"function"
-? b.createdAt.toMillis()
-: 0;
-
-
-return bTime-aTime;
-
-});
-
-
-return products;
-
-}
-
-
-/* ==================================================
+/* =========================
    RENDER PRODUCTS
-================================================== */
+========================= */
 
-async function renderProducts(){
+function renderProducts(){
 
-const container =
-document.getElementById(
-"products"
-);
-
-
-container.innerHTML = `
-
-<div class="loading">
-
-<i class="fa-solid fa-spinner fa-spin"></i>
-
-<h3>
-Loading products...
-</h3>
-
-<p>
-Reading from Firebase.
-</p>
-
-</div>
-
-`;
+  document.getElementById(
+    "productCount"
+  ).textContent =
+    products.length +
+    (
+      products.length === 1
+      ? " Product"
+      : " Products"
+    );
 
 
-try{
+  if(
+    products.length === 0
+  ){
 
-const products =
-await getProducts();
+    productsContainer.innerHTML = `
+
+      <div class="empty">
+
+        <i class="fa-solid fa-box-open"></i>
+
+        <h3>
+          No products yet
+        </h3>
+
+        <p>
+          Add your first product above.
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
 
 
-document
-.getElementById(
-"productCount"
-)
-.textContent =
-products.length +
-(
-products.length === 1
-? " Product"
-: " Products"
-);
+  productsContainer.innerHTML =
+    "";
 
 
-updateStats(products);
+  products.forEach(
+    function(product){
+
+      const card =
+        document.createElement(
+          "div"
+        );
 
 
-if(!products.length){
+      card.className =
+        "product";
 
-container.innerHTML = `
 
-<div class="empty">
+      let imageHTML = `
 
-<i class="fa-solid fa-box-open"></i>
+        <i class="fa-solid fa-box"></i>
 
-<h3>
-No products yet
-</h3>
+      `;
 
-<p>
-Add your first product above.
-</p>
 
-</div>
+      if(product.image){
 
-`;
+        imageHTML = `
 
-return;
+          <img
+            src="${escapeAttribute(
+              product.image
+            )}"
+            alt="${escapeAttribute(
+              product.name
+            )}"
+            onerror="this.style.display='none';this.parentElement.querySelector('.fallback-icon').style.display='block';"
+          >
+
+          <i
+            class="fa-solid fa-box fallback-icon"
+            style="display:none;"
+          ></i>
+
+        `;
+
+      }
+
+
+      const stock =
+        Number(
+          product.stockCount || 0
+        );
+
+
+      let stockClass =
+        "stock-good";
+
+
+      if(stock <= 0){
+
+        stockClass =
+          "stock-empty";
+
+      }
+
+      else if(stock <= 5){
+
+        stockClass =
+          "stock-low";
+
+      }
+
+
+      card.innerHTML = `
+
+        <div class="product-image">
+
+          ${imageHTML}
+
+        </div>
+
+
+        <div class="product-body">
+
+
+          <span class="product-category">
+
+            ${escapeHTML(
+              product.category
+            )}
+
+          </span>
+
+
+          <h3>
+
+            ${escapeHTML(
+              product.name
+            )}
+
+          </h3>
+
+
+          <div class="product-description">
+
+            ${escapeHTML(
+              product.description ||
+              "No description."
+            )}
+
+          </div>
+
+
+          <div class="product-info">
+
+
+            <div class="info">
+
+              <span>
+                Price
+              </span>
+
+              <strong>
+                ₦${formatNumber(
+                  product.price
+                )}
+              </strong>
+
+            </div>
+
+
+            <div class="info">
+
+              <span>
+                Stock
+              </span>
+
+              <strong
+                class="${stockClass}"
+              >
+
+                ${stock}
+
+              </strong>
+
+            </div>
+
+
+          </div>
+
+
+          <div class="product-actions">
+
+
+            <button
+              type="button"
+              class="edit-btn"
+              data-id="${escapeAttribute(
+                product.id
+              )}"
+            >
+
+              <i class="fa-solid fa-pen"></i>
+
+              Edit
+
+            </button>
+
+
+            <button
+              type="button"
+              class="delete-btn"
+              data-id="${escapeAttribute(
+                product.id
+              )}"
+            >
+
+              <i class="fa-solid fa-trash"></i>
+
+              Delete
+
+            </button>
+
+
+          </div>
+
+
+        </div>
+
+      `;
+
+
+      const editButton =
+        card.querySelector(
+          ".edit-btn"
+        );
+
+
+      const deleteButton =
+        card.querySelector(
+          ".delete-btn"
+        );
+
+
+      editButton.addEventListener(
+        "click",
+        function(){
+
+          window.location.href =
+            "edit.html?id=" +
+            encodeURIComponent(
+              product.id
+            );
+
+        }
+      );
+
+
+      deleteButton.addEventListener(
+        "click",
+        function(){
+
+          openDeleteModal(
+            product.id
+          );
+
+        }
+      );
+
+
+      productsContainer.appendChild(
+        card
+      );
+
+    }
+  );
 
 }
 
 
-container.innerHTML="";
-
-
-products.forEach(
-function(product){
-
-const inventory =
-Array.isArray(product.inventory)
-? product.inventory
-: [];
-
-
-const available =
-inventory.filter(
-function(item){
-
-return item.sold !== true;
-
-}
-);
-
-
-const stock =
-available.length;
-
-
-const card =
-document.createElement("div");
-
-
-card.className="product";
-
-
-let imageHTML;
-
-
-if(product.image){
-
-imageHTML = `
-
-<img
-src="${escapeHTML(product.image)}"
-alt="${escapeHTML(product.name)}"
-onerror="this.style.display='none'"
->
-
-`;
-
-}else{
-
-imageHTML = `
-
-<i class="fa-solid fa-box"></i>
-
-`;
-
-}
-
-
-let inventoryHTML="";
-
-
-if(inventory.length){
-
-inventoryHTML = `
-
-<div class="inventory-list">
-
-<div class="inventory-title">
-
-<i class="fa-solid fa-layer-group"></i>
-
-Inventory
-
-</div>
-
-${inventory.map(
-function(item,index){
-
-const sold =
-item.sold === true;
-
-
-return `
-
-<div
-class="inventory-item ${
-sold
-? "inventory-sold"
-: ""
-}"
->
-
-<div class="inventory-number">
-
-${index+1}
-
-</div>
-
-<div>
-
-${escapeHTML(
-item.value || ""
-)}
-
-</div>
-
-</div>
-
-`;
-
-}
-).join("")}
-
-</div>
-
-`;
-
-}
-
-
-card.innerHTML = `
-
-<div class="product-top">
-
-<div class="product-img">
-
-${imageHTML}
-
-</div>
-
-
-<div class="product-info">
-
-<h3>
-
-${escapeHTML(
-product.name
-)}
-
-</h3>
-
-
-<span class="category">
-
-${escapeHTML(
-product.category
-)}
-
-</span>
-
-</div>
-
-</div>
-
-
-<div class="product-price">
-
-₦${Number(
-product.price || 0
-).toLocaleString(
-"en-NG"
-)}
-
-</div>
-
-
-<div
-class="stock ${
-stock > 0
-? "in-stock"
-: "out-stock"
-}"
->
-
-<i
-class="fa-solid ${
-stock > 0
-? "fa-circle-check"
-: "fa-circle-xmark"
-}"
-></i>
-
-
-${
-stock > 0
-
-?
-
-stock +
-" item" +
-(
-stock === 1
-? ""
-: "s"
-) +
-" available"
-
-:
-
-"Out of Stock"
-
-}
-
-</div>
-
-
-${
-product.description
-
-?
-
-`
-
-<div class="description">
-
-${escapeHTML(
-product.description
-)}
-
-</div>
-
-`
-
-:
-
-""
-
-}
-
-
-${inventoryHTML}
-
-
-<div class="actions">
-
-<button
-class="action edit"
-onclick="openEditProduct('${escapeHTML(product.id)}')"
->
-
-<i class="fa-solid fa-pen"></i>
-
-Edit
-
-</button>
-
-
-<a
-class="action delete"
-href="delete.html?id=${encodeURIComponent(product.id)}"
->
-
-<i class="fa-solid fa-trash"></i>
-
-Delete
-
-</a>
-
-</div>
-
-`;
-
-
-container.appendChild(card);
-
-});
-
-
-}catch(error){
-
-console.error(
-"LOAD PRODUCTS ERROR:",
-error
-);
-
-
-setFirebaseStatus(
-"Firebase connected, but products could not be loaded.",
-true
-);
-
-
-container.innerHTML = `
-
-<div class="empty">
-
-<i class="fa-solid fa-triangle-exclamation"></i>
-
-<h3>
-Could not load products
-</h3>
-
-<p>
-${escapeHTML(error.message)}
-</p>
-
-</div>
-
-`;
-
-}
-
-}
-
-
-/* ==================================================
+/* =========================
    STATS
-================================================== */
+========================= */
 
-function updateStats(products){
+function updateStats(){
 
-let inStock=0;
-
-let outStock=0;
-
-let inventoryValue=0;
+  let stock =
+    0;
 
 
-products.forEach(
-function(product){
+  products.forEach(
+    function(product){
 
-const inventory =
-Array.isArray(product.inventory)
-? product.inventory
-: [];
+      stock += Number(
+        product.stockCount || 0
+      );
 
-
-const available =
-inventory.filter(
-function(item){
-
-return item.sold !== true;
-
-}
-).length;
+    }
+  );
 
 
-if(available > 0){
+  const categories =
+    new Set(
+      products.map(
+        function(product){
 
-inStock++;
+          return product.category;
 
-}else{
-
-outStock++;
-
-}
-
-
-inventoryValue +=
-Number(product.price || 0) *
-available;
-
-});
+        }
+      )
+    );
 
 
-document
-.getElementById(
-"totalProducts"
-)
-.textContent =
-products.length;
+  document.getElementById(
+    "totalProducts"
+  ).textContent =
+    products.length;
 
 
-document
-.getElementById(
-"inStock"
-)
-.textContent =
-inStock;
+  document.getElementById(
+    "totalStock"
+  ).textContent =
+    stock;
 
 
-document
-.getElementById(
-"outStock"
-)
-.textContent =
-outStock;
-
-
-document
-.getElementById(
-"inventoryValue"
-)
-.textContent =
-"₦" +
-inventoryValue.toLocaleString(
-"en-NG"
-);
+  document.getElementById(
+    "totalCategories"
+  ).textContent =
+    categories.size;
 
 }
 
 
-/* ==================================================
-   EDIT PRODUCT
-================================================== */
+/* =========================
+   DELETE MODAL
+========================= */
 
-async function openEditProduct(
-productId
+function openDeleteModal(
+  productId
 ){
 
-try{
-
-const productRef =
-firebaseDB
-.collection(PRODUCTS_COLLECTION)
-.doc(productId);
+  productToDelete =
+    productId;
 
 
-const snapshot =
-await productRef.get();
-
-
-if(!snapshot.exists){
-
-alert(
-"Product not found."
-);
-
-return;
+  deleteModal.classList.add(
+    "show"
+  );
 
 }
 
 
-const product =
-snapshot.data();
+function closeDeleteModal(){
+
+  productToDelete =
+    null;
 
 
-document
-.getElementById(
-"editProductId"
-)
-.value =
-productId;
-
-
-document
-.getElementById(
-"editName"
-)
-.value =
-product.name || "";
-
-
-document
-.getElementById(
-"editCategory"
-)
-.value =
-product.category || "other";
-
-
-document
-.getElementById(
-"editPrice"
-)
-.value =
-product.price || "";
-
-
-document
-.getElementById(
-"editImage"
-)
-.value =
-product.image || "";
-
-
-document
-.getElementById(
-"editDescription"
-)
-.value =
-product.description || "";
-
-
-document
-.getElementById(
-"editInventory"
-)
-.value="";
-
-
-document
-.getElementById(
-"editModal"
-)
-.classList.add("show");
-
-
-}catch(error){
-
-console.error(error);
-
-alert(
-"Could not open product.\n\n" +
-error.message
-);
-
-}
+  deleteModal.classList.remove(
+    "show"
+  );
 
 }
 
 
-/* ==================================================
-   SAVE EDIT
-================================================== */
-
-async function saveProductEdit(){
-
-const productId =
 document
-.getElementById(
-"editProductId"
-)
-.value;
+  .getElementById(
+    "cancelDelete"
+  )
+  .addEventListener(
+    "click",
+    closeDeleteModal
+  );
 
-
-const name =
-document
-.getElementById(
-"editName"
-)
-.value
-.trim();
-
-
-const category =
-document
-.getElementById(
-"editCategory"
-)
-.value;
-
-
-const price =
-Number(
-document
-.getElementById(
-"editPrice"
-)
-.value
-);
-
-
-const image =
-document
-.getElementById(
-"editImage"
-)
-.value
-.trim();
-
-
-const description =
-document
-.getElementById(
-"editDescription"
-)
-.value
-.trim();
-
-
-const extraInventory =
-document
-.getElementById(
-"editInventory"
-)
-.value
-.trim();
-
-
-if(!name){
-
-alert(
-"Please enter a product name."
-);
-
-return;
-
-}
-
-
-if(!price || price<=0){
-
-alert(
-"Please enter a valid price."
-);
-
-return;
-
-}
-
-
-const button =
-document.getElementById(
-"saveEditButton"
-);
-
-
-try{
-
-button.disabled=true;
-
-button.textContent=
-"Saving...";
-
-
-const productRef =
-firebaseDB
-.collection(PRODUCTS_COLLECTION)
-.doc(productId);
-
-
-await productRef.update({
-
-name:name,
-
-category:category,
-
-price:price,
-
-image:image,
-
-description:description,
-
-updatedAt:
-firebase.firestore
-.FieldValue
-.serverTimestamp()
-
-});
-
-
-/* ADD NEW INVENTORY */
-
-if(extraInventory){
-
-const items =
-extraInventory
-.split("\n")
-.map(function(item){
-
-return item.trim();
-
-})
-.filter(function(item){
-
-return item.length>0;
-
-});
-
-
-if(items.length){
-
-const existingSnapshot =
-await productRef
-.collection("inventory")
-.get();
-
-
-let maxPosition=-1;
-
-
-existingSnapshot.docs.forEach(
-function(doc){
-
-const position =
-Number(
-doc.data().position || 0
-);
-
-
-if(position>maxPosition){
-
-maxPosition=position;
-
-}
-
-});
-
-
-const batch =
-firebaseDB.batch();
-
-
-items.forEach(
-function(item,index){
-
-const inventoryRef =
-productRef
-.collection("inventory")
-.doc();
-
-
-batch.set(
-inventoryRef,
-{
-
-value:item,
-
-position:
-maxPosition+index+1,
-
-sold:false,
-
-soldTo:null,
-
-soldAt:null,
-
-createdAt:
-firebase.firestore
-.FieldValue
-.serverTimestamp()
-
-}
-);
-
-});
-
-
-await batch.commit();
-
-
-await productRef.update({
-
-totalStock:
-firebase.firestore
-.FieldValue
-.increment(
-items.length
-),
-
-stockCount:
-firebase.firestore
-.FieldValue
-.increment(
-items.length
-)
-
-});
-
-}
-
-}
-
-
-closeEditModal();
-
-
-alert(
-"Product updated successfully."
-);
-
-
-await renderProducts();
-
-
-}catch(error){
-
-console.error(error);
-
-alert(
-"Could not update product.\n\n" +
-error.message
-);
-
-}finally{
-
-button.disabled=false;
-
-button.textContent=
-"Save Changes";
-
-}
-
-}
-
-
-/* ==================================================
-   CLOSE EDIT
-================================================== */
-
-function closeEditModal(){
 
 document
-.getElementById(
-"editModal"
-)
-.classList.remove("show");
+  .getElementById(
+    "confirmDelete"
+  )
+  .addEventListener(
+    "click",
+    deleteProduct
+  );
+
+
+/* =========================
+   DELETE PRODUCT
+========================= */
+
+async function deleteProduct(){
+
+  if(
+    !productToDelete
+  ){
+
+    return;
+
+  }
+
+
+  const productId =
+    productToDelete;
+
+
+  const button =
+    document.getElementById(
+      "confirmDelete"
+    );
+
+
+  try{
+
+    button.disabled =
+      true;
+
+
+    button.textContent =
+      "Deleting...";
+
+
+    const productRef =
+      firebaseDB
+        .collection(
+          PRODUCTS_COLLECTION
+        )
+        .doc(
+          productId
+        );
+
+
+    const inventorySnapshot =
+      await productRef
+        .collection(
+          "inventory"
+        )
+        .get();
+
+
+    const docs =
+      inventorySnapshot.docs;
+
+
+    for(
+      let i = 0;
+      i < docs.length;
+      i += 400
+    ){
+
+      const batch =
+        firebaseDB.batch();
+
+
+      const chunk =
+        docs.slice(
+          i,
+          i + 400
+        );
+
+
+      chunk.forEach(
+        function(doc){
+
+          batch.delete(
+            doc.ref
+          );
+
+        }
+      );
+
+
+      await batch.commit();
+
+    }
+
+
+    await productRef.delete();
+
+
+    closeDeleteModal();
+
+
+    showMessage(
+      "Product deleted successfully.",
+      "success"
+    );
+
+
+    await loadProducts();
+
+
+  }catch(error){
+
+    console.error(
+      "DELETE PRODUCT ERROR:",
+      error
+    );
+
+
+    showMessage(
+      "Could not delete product: " +
+      error.message,
+      "error"
+    );
+
+
+  }finally{
+
+    button.disabled =
+      false;
+
+    button.textContent =
+      "Delete";
+
+  }
 
 }
 
 
-/* ==================================================
+/* =========================
+   CLEAR FORM
+========================= */
+
+document
+  .getElementById(
+    "clearButton"
+  )
+  .addEventListener(
+    "click",
+    clearForm
+  );
+
+
+function clearForm(){
+
+  productName.value =
+    "";
+
+  category.value =
+    "Giveaway Accounts";
+
+  price.value =
+    "";
+
+  image.value =
+    "";
+
+  description.value =
+    "";
+
+  inventory.value =
+    "";
+
+}
+
+
+/* =========================
    LOGOUT
-================================================== */
-
-async function adminLogout(){
-
-if(
-!confirm(
-"Are you sure you want to logout?"
-)
-){
-
-return;
-
-}
-
-
-try{
-
-await firebaseAuth.signOut();
-
-}catch(error){
-
-console.error(error);
-
-}finally{
-
-location.href=
-"admin-login.html";
-
-}
-
-}
-
-
-/* ==================================================
-   HTML SAFETY
-================================================== */
-
-function escapeHTML(value){
-
-return String(
-value ?? ""
-)
-
-.replace(
-/&/g,
-"&amp;"
-)
-
-.replace(
-/</g,
-"&lt;"
-)
-
-.replace(
-/>/g,
-"&gt;"
-)
-
-.replace(
-/"/g,
-"&quot;"
-)
-
-.replace(
-/'/g,
-"&#039;"
-);
-
-}
-
-
-/* ==================================================
-   CLOSE MODAL OUTSIDE
-================================================== */
+========================= */
 
 document
-.getElementById(
-"editModal"
-)
-.addEventListener(
-"click",
-function(event){
+  .getElementById(
+    "logoutButton"
+  )
+  .addEventListener(
+    "click",
+    async function(){
 
-if(
-event.target === this
+      try{
+
+        await firebaseAuth.signOut();
+
+      }catch(error){
+
+        console.error(
+          "ADMIN LOGOUT ERROR:",
+          error
+        );
+
+      }
+
+
+      localStorage.removeItem(
+        "gentleAdminLoggedIn"
+      );
+
+
+      localStorage.removeItem(
+        "gentleAdminUID"
+      );
+
+
+      window.location.replace(
+        "admin-login.html"
+      );
+
+    }
+  );
+
+
+/* =========================
+   FORMAT NUMBER
+========================= */
+
+function formatNumber(
+  value
 ){
 
-closeEditModal();
+  return Number(
+    value || 0
+  ).toLocaleString();
 
 }
 
-});
+
+/* =========================
+   DATE VALUE
+========================= */
+
+function getTimeValue(
+  value
+){
+
+  try{
+
+    if(
+      value &&
+      typeof value.toDate ===
+      "function"
+    ){
+
+      return value
+        .toDate()
+        .getTime();
+
+    }
+
+
+    const date =
+      new Date(value);
+
+
+    if(
+      !isNaN(
+        date.getTime()
+      )
+    ){
+
+      return date.getTime();
+
+    }
+
+  }catch(error){}
+
+
+  return 0;
+
+}
+
+
+/* =========================
+   HTML SECURITY
+========================= */
+
+function escapeHTML(
+  value
+){
+
+  return String(
+    value || ""
+  )
+  .replace(
+    /&/g,
+    "&amp;"
+  )
+  .replace(
+    /</g,
+    "&lt;"
+  )
+  .replace(
+    />/g,
+    "&gt;"
+  )
+  .replace(
+    /"/g,
+    "&quot;"
+  )
+  .replace(
+    /'/g,
+    "&#039;"
+  );
+
+}
+
+
+/* =========================
+   ATTRIBUTE SECURITY
+========================= */
+
+function escapeAttribute(
+  value
+){
+
+  return escapeHTML(
+    value
+  );
+
+}
 
 </script>
 

@@ -19,7 +19,7 @@ href="https://fonts.googleapis.com"
 
 <link
 rel="preconnect"
-href="https://fonts.gstatic.com"
+href="https://fonts.googleapis.com"
 crossorigin
 >
 
@@ -49,6 +49,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 --danger:#d6362c;
 --danger-dark:#b52b23;
 --danger-bg:#fff1f1;
+
+--success:#16803c;
+--success-bg:#edf9f0;
 
 --border:#dfe7f1;
 
@@ -80,7 +83,7 @@ align-items:center;
 
 justify-content:center;
 
-padding:25px 16px;
+padding:20px;
 
 }
 
@@ -100,7 +103,7 @@ border:1px solid var(--border);
 
 border-radius:28px;
 
-padding:60px 42px;
+padding:55px 42px;
 
 box-shadow:
 0 15px 45px rgba(11,45,92,.08);
@@ -127,7 +130,7 @@ align-items:center;
 
 justify-content:center;
 
-margin:0 auto 45px;
+margin:0 auto 40px;
 
 font-size:52px;
 
@@ -141,19 +144,19 @@ font-weight:800;
 
 color:var(--blue-dark);
 
-margin-bottom:22px;
+margin-bottom:20px;
 
 }
 
 .subtitle{
 
-font-size:18px;
+font-size:17px;
 
 line-height:1.7;
 
 color:var(--muted);
 
-margin-bottom:35px;
+margin-bottom:32px;
 
 }
 
@@ -163,7 +166,7 @@ background:var(--blue-light);
 
 color:var(--blue);
 
-border-radius:18px;
+border-radius:17px;
 
 padding:18px;
 
@@ -171,7 +174,7 @@ font-size:21px;
 
 font-weight:800;
 
-margin-bottom:20px;
+margin-bottom:18px;
 
 word-break:break-word;
 
@@ -187,7 +190,9 @@ font-size:15px;
 
 font-weight:700;
 
-margin-bottom:28px;
+margin-bottom:24px;
+
+line-height:1.5;
 
 }
 
@@ -201,9 +206,9 @@ color:var(--blue);
 
 .status.success{
 
-background:#edf9f0;
+background:var(--success-bg);
 
-color:#16803c;
+color:var(--success);
 
 }
 
@@ -225,9 +230,9 @@ border:none;
 
 background:var(--danger);
 
-color:var(--white);
+color:white;
 
-padding:21px;
+padding:20px;
 
 border-radius:17px;
 
@@ -245,15 +250,13 @@ gap:9px;
 
 cursor:pointer;
 
-transition:.2s;
-
-margin-bottom:20px;
+margin-bottom:18px;
 
 }
 
-.delete-btn:hover{
+.delete-btn:active{
 
-background:var(--danger-dark);
+transform:scale(.98);
 
 }
 
@@ -287,29 +290,17 @@ cursor:pointer;
 
 }
 
-.cancel-btn:hover{
+.cancel-btn:active{
 
-background:#dce9f7;
-
-}
-
-.hidden{
-
-display:none;
+transform:scale(.98);
 
 }
 
 @media(max-width:600px){
 
-body{
-
-padding:15px;
-
-}
-
 .card{
 
-padding:60px 30px;
+padding:50px 25px;
 
 border-radius:25px;
 
@@ -323,7 +314,7 @@ height:120px;
 
 font-size:45px;
 
-margin-bottom:40px;
+margin-bottom:35px;
 
 }
 
@@ -341,7 +332,7 @@ font-size:15px;
 
 .product-name{
 
-font-size:17px;
+font-size:18px;
 
 }
 
@@ -362,8 +353,6 @@ padding:18px;
 
 <body>
 
-
-<!-- FIREBASE -->
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 
@@ -424,8 +413,8 @@ Checking admin authorization...
 <button
 id="deleteButton"
 class="delete-btn"
+type="button"
 disabled
-onclick="deleteProduct()"
 >
 
 <i class="fa-solid fa-trash"></i>
@@ -436,8 +425,9 @@ Delete Product
 
 
 <button
+id="cancelButton"
 class="cancel-btn"
-onclick="goBack()"
+type="button"
 >
 
 <i class="fa-solid fa-arrow-left"></i>
@@ -455,7 +445,7 @@ Cancel
 <script>
 
 /* ==========================================
-   ADMIN SETTINGS
+   ADMIN
 ========================================== */
 
 const ADMIN_UID =
@@ -463,7 +453,7 @@ const ADMIN_UID =
 
 
 /* ==========================================
-   GET PRODUCT ID
+   PRODUCT ID
 ========================================== */
 
 const params =
@@ -475,9 +465,13 @@ const productId =
 params.get("id");
 
 
-let adminAuthorized = false;
+/* ==========================================
+   VARIABLES
+========================================== */
 
-let productRef = null;
+let adminAuthorized=false;
+
+let productRef=null;
 
 
 /* ==========================================
@@ -499,6 +493,11 @@ document.getElementById(
 "deleteButton"
 );
 
+const cancelButton =
+document.getElementById(
+"cancelButton"
+);
+
 
 /* ==========================================
    STATUS
@@ -506,7 +505,7 @@ document.getElementById(
 
 function setStatus(
 message,
-type="loading"
+type
 ){
 
 statusBox.className =
@@ -519,7 +518,7 @@ message;
 
 
 /* ==========================================
-   AUTH CHECK
+   AUTH
 ========================================== */
 
 firebaseAuth.onAuthStateChanged(
@@ -528,7 +527,7 @@ async function(user){
 if(!user){
 
 setStatus(
-'<i class="fa-solid fa-circle-exclamation"></i> Please login as the admin first.',
+'<i class="fa-solid fa-circle-exclamation"></i> Please login as admin first.',
 "error"
 );
 
@@ -539,22 +538,20 @@ return;
 }
 
 
-/* EXACT ADMIN UID */
-
-if(
-String(user.uid).trim() !==
-String(ADMIN_UID).trim()
-){
-
-console.error(
-"Logged-in UID:",
+console.log(
+"Logged in UID:",
 user.uid
 );
 
-console.error(
-"Required admin UID:",
+console.log(
+"Required UID:",
 ADMIN_UID
 );
+
+
+if(
+user.uid !== ADMIN_UID
+){
 
 setStatus(
 " You are not authorized to delete this product.",
@@ -568,14 +565,13 @@ return;
 }
 
 
-/* ADMIN IS AUTHORIZED */
-
 adminAuthorized=true;
 
 setStatus(
 '<i class="fa-solid fa-circle-check"></i> Admin authorization confirmed.',
 "success"
 );
+
 
 await loadProduct();
 
@@ -623,7 +619,7 @@ productName.textContent =
 "Product not found";
 
 setStatus(
-" This product does not exist.",
+" This product no longer exists.",
 "error"
 );
 
@@ -639,8 +635,7 @@ snapshot.data();
 
 
 productName.textContent =
-data.name ||
-"Unnamed Product";
+data.name || "Unnamed Product";
 
 
 deleteButton.disabled=false;
@@ -657,7 +652,8 @@ productName.textContent =
 "Unable to load product";
 
 setStatus(
-"Could not load this product.",
+"Could not load product: " +
+error.message,
 "error"
 );
 
@@ -669,15 +665,16 @@ deleteButton.disabled=true;
 
 
 /* ==========================================
-   DELETE PRODUCT
+   DELETE
 ========================================== */
 
-async function deleteProduct(){
+async function performDelete(){
 
 if(!adminAuthorized){
 
-alert(
-"You are not authorized to delete this product."
+setStatus(
+"You are not authorized to delete this product.",
+"error"
 );
 
 return;
@@ -685,30 +682,17 @@ return;
 }
 
 
-if(!productId){
+if(!productRef){
 
-alert(
-"Product ID is missing."
+setStatus(
+"Product is not loaded yet.",
+"error"
 );
 
 return;
 
 }
 
-
-const confirmed =
-confirm(
-"Are you sure you want to permanently delete this product and all its inventory?"
-);
-
-if(!confirmed){
-
-return;
-
-}
-
-
-try{
 
 deleteButton.disabled=true;
 
@@ -721,15 +705,18 @@ Deleting...
 `;
 
 
+cancelButton.disabled=true;
+
+
+try{
+
+/* DELETE INVENTORY */
+
 setStatus(
 '<i class="fa-solid fa-spinner fa-spin"></i> Removing inventory...',
 "loading"
 );
 
-
-/* ==========================================
-   GET INVENTORY
-========================================== */
 
 const inventorySnapshot =
 await productRef
@@ -740,10 +727,6 @@ await productRef
 const inventoryDocs =
 inventorySnapshot.docs;
 
-
-/* ==========================================
-   DELETE INVENTORY
-========================================== */
 
 for(
 let i=0;
@@ -777,9 +760,7 @@ await batch.commit();
 }
 
 
-/* ==========================================
-   DELETE PRODUCT
-========================================== */
+/* DELETE PRODUCT */
 
 setStatus(
 '<i class="fa-solid fa-spinner fa-spin"></i> Removing product...',
@@ -790,22 +771,28 @@ setStatus(
 await productRef.delete();
 
 
-/* ==========================================
-   SUCCESS
-========================================== */
+/* SUCCESS */
 
 setStatus(
 '<i class="fa-solid fa-circle-check"></i> Product deleted successfully.',
 "success"
 );
 
+
 productName.textContent =
 "Product Deleted";
 
 
-deleteButton.style.display =
-"none";
+deleteButton.innerHTML = `
 
+<i class="fa-solid fa-check"></i>
+
+Deleted
+
+`;
+
+
+/* GO BACK */
 
 setTimeout(
 function(){
@@ -814,7 +801,7 @@ window.location.href =
 "admin.html";
 
 },
-1200
+1000
 );
 
 
@@ -828,6 +815,8 @@ error
 
 deleteButton.disabled=false;
 
+cancelButton.disabled=false;
+
 deleteButton.innerHTML = `
 
 <i class="fa-solid fa-trash"></i>
@@ -838,10 +827,10 @@ Delete Product
 
 
 setStatus(
-"Delete failed: " +
-(error.code || "") +
-" — " +
-(error.message || "Unknown error"),
+"Delete failed.<br><br>" +
+(error.code || "Unknown error") +
+"<br>" +
+(error.message || ""),
 "error"
 );
 
@@ -851,17 +840,26 @@ setStatus(
 
 
 /* ==========================================
-   CANCEL
+   BUTTON EVENTS
 ========================================== */
 
-function goBack(){
+deleteButton.addEventListener(
+"click",
+performDelete
+);
+
+
+cancelButton.addEventListener(
+"click",
+function(){
 
 window.location.href =
 "admin.html";
 
-}
+});
 
 </script>
+
 
 </body>
 

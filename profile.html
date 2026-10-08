@@ -1,1337 +1,2038 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Profile | Gentle Acct Store</title>
+<meta charset="UTF-8">
 
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
+<title>Profile - Gentle Acct Store</title>
 
-    body {
-      background: #f5f8ff;
-      color: #172033;
-      min-height: 100vh;
-    }
+<link
+rel="preconnect"
+href="https://fonts.googleapis.com"
+>
 
-    header {
-      height: 68px;
-      background: white;
-      padding: 0 18px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      border-bottom: 1px solid #e5eaf2;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
+<link
+rel="preconnect"
+href="https://fonts.googleapis.com"
+crossorigin
+>
 
-    .back {
-      width: 40px;
-      height: 40px;
-      border: none;
-      border-radius: 11px;
-      background: #eaf2ff;
-      color: #1261e8;
-      font-size: 16px;
-      cursor: pointer;
-    }
+<link
+href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+rel="stylesheet"
+>
 
-    header h2 {
-      font-size: 19px;
-      font-weight: 800;
-    }
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+>
 
-    .container {
-      max-width: 600px;
-      margin: auto;
-      padding: 22px 16px 45px;
-    }
+<style>
 
-    .profile-card {
-      background: white;
-      border: 1px solid #e1e7f0;
-      border-radius: 20px;
-      padding: 25px 20px;
-      text-align: center;
-      margin-bottom: 18px;
-      box-shadow: 0 5px 18px rgba(23,32,51,.04);
-    }
+:root{
 
-    .avatar {
-      width: 78px;
-      height: 78px;
-      margin: 0 auto 13px;
-      border-radius: 50%;
-      background: #eaf2ff;
-      color: #1261e8;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 29px;
-      border: 5px solid #f5f8ff;
-    }
+--blue:#0b2d5c;
+--blue-dark:#071f40;
+--blue-light:#eaf2fb;
 
-    .profile-card h1 {
-      font-size: 21px;
-      margin-bottom: 6px;
-      font-weight: 800;
-    }
+--white:#ffffff;
 
-    .email {
-      color: #7b8494;
-      font-size: 13px;
-    }
+--text:#172033;
+--muted:#778399;
 
-    .wallet-card {
-      background: linear-gradient(135deg, #1261e8, #0757d5);
-      color: white;
-      border-radius: 20px;
-      padding: 22px;
-      margin-bottom: 18px;
-      box-shadow: 0 10px 25px rgba(18,97,232,.20);
-    }
+--border:#e2e8f0;
 
-    .wallet-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+--danger:#dc2626;
+--danger-bg:#fff1f1;
 
-    .wallet-label {
-      font-size: 13px;
-      opacity: .85;
-      margin-bottom: 5px;
-    }
+--success:#16803c;
+--success-bg:#edf9f0;
 
-    .wallet-title {
-      font-size: 15px;
-      font-weight: 700;
-    }
+--shadow:
+0 8px 25px rgba(11,45,92,.07);
 
-    .wallet-icon {
-      width: 44px;
-      height: 44px;
-      background: rgba(255,255,255,.16);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 17px;
-    }
+}
 
-    .balance {
-      font-size: 30px;
-      font-weight: 800;
-      margin-top: 15px;
-      letter-spacing: .2px;
-    }
+*{
 
-    .fund-button {
-      width: 100%;
-      margin-top: 17px;
-      border: none;
-      background: white;
-      color: #1261e8;
-      padding: 14px;
-      border-radius: 12px;
-      font-weight: 800;
-      font-size: 14px;
-      cursor: pointer;
-    }
+box-sizing:border-box;
 
-    .fund-button i {
-      margin-right: 5px;
-    }
+margin:0;
 
-    .section-title {
-      font-size: 13px;
-      color: #7b8494;
-      font-weight: 700;
-      margin: 5px 4px 9px;
-      text-transform: uppercase;
-      letter-spacing: .4px;
-    }
+padding:0;
 
-    .menu {
-      background: white;
-      border: 1px solid #e1e7f0;
-      border-radius: 18px;
-      overflow: hidden;
-      box-shadow: 0 5px 18px rgba(23,32,51,.04);
-    }
+}
 
-    .menu-item {
-      width: 100%;
-      border: none;
-      background: white;
-      padding: 16px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      text-align: left;
-      border-bottom: 1px solid #edf0f5;
-      color: #172033;
-      font-size: 14px;
-      cursor: pointer;
-    }
+body{
 
-    .menu-item:last-child {
-      border-bottom: none;
-    }
+font-family:"Poppins",sans-serif;
 
-    .menu-item:active {
-      background: #f7faff;
-    }
+background:#f6f8fc;
 
-    .menu-icon {
-      width: 40px;
-      height: 40px;
-      background: #eaf2ff;
-      color: #1261e8;
-      border-radius: 11px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
+color:var(--text);
 
-    .menu-text {
-      flex: 1;
-    }
+min-height:100vh;
 
-    .menu-text strong {
-      display: block;
-      font-size: 14px;
-      margin-bottom: 3px;
-    }
+padding-bottom:90px;
 
-    .menu-text small {
-      color: #8992a2;
-      font-size: 11px;
-    }
+}
 
-    .arrow {
-      color: #a1a9b7;
-      font-size: 12px;
-    }
+button,
+input{
 
-    .logout {
-      color: #d63030;
-    }
+font-family:inherit;
 
-    .logout .menu-icon {
-      background: #fff0f0;
-      color: #d63030;
-    }
+}
 
-    .logout .menu-text small {
-      color: #b97878;
-    }
+button{
 
-    .footer-note {
-      text-align: center;
-      color: #9aa2b0;
-      font-size: 11px;
-      margin-top: 25px;
-    }
+cursor:pointer;
 
-    /* =========================
-       CHANGE PASSWORD MODAL
-    ========================= */
+}
 
-    .modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(10, 25, 55, .55);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 18px;
-      z-index: 100;
-    }
+a{
 
-    .modal.show {
-      display: flex;
-    }
+text-decoration:none;
 
-    .modal-card {
-      width: 100%;
-      max-width: 430px;
-      background: white;
-      border-radius: 20px;
-      padding: 22px;
-      box-shadow: 0 20px 50px rgba(0,0,0,.18);
-    }
+color:inherit;
 
-    .modal-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 18px;
-    }
+}
 
-    .modal-header h3 {
-      font-size: 18px;
-      font-weight: 800;
-    }
 
-    .close-btn {
-      width: 36px;
-      height: 36px;
-      border: none;
-      border-radius: 10px;
-      background: #f1f4f8;
-      color: #6f7887;
-      cursor: pointer;
-      font-size: 15px;
-    }
+/* ==========================================
+   HEADER
+========================================== */
 
-    .input-group {
-      margin-bottom: 14px;
-    }
+.header{
 
-    .input-group label {
-      display: block;
-      font-size: 12px;
-      font-weight: 700;
-      color: #5f6878;
-      margin-bottom: 7px;
-    }
+height:68px;
 
-    .input-wrap {
-      position: relative;
-    }
+background:var(--white);
 
-    .input-wrap input {
-      width: 100%;
-      padding: 13px 45px 13px 13px;
-      border: 1px solid #dce2eb;
-      border-radius: 11px;
-      outline: none;
-      font-size: 14px;
-      background: #fbfcfe;
-    }
+border-bottom:1px solid var(--border);
 
-    .input-wrap input:focus {
-      border-color: #1261e8;
-      background: white;
-    }
+display:flex;
 
-    .toggle-password {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      border: none;
-      background: transparent;
-      color: #7c8696;
-      cursor: pointer;
-    }
+align-items:center;
 
-    .password-help {
-      color: #8992a2;
-      font-size: 11px;
-      line-height: 1.5;
-      margin: 4px 0 15px;
-    }
+justify-content:space-between;
 
-    .password-message {
-      display: none;
-      padding: 11px 12px;
-      border-radius: 10px;
-      font-size: 12px;
-      margin-bottom: 14px;
-    }
+padding:0 17px;
 
-    .password-message.error {
-      display: block;
-      background: #fff0f0;
-      color: #c62828;
-    }
+position:sticky;
 
-    .password-message.success {
-      display: block;
-      background: #effbf3;
-      color: #198754;
-    }
+top:0;
 
-    .change-btn {
-      width: 100%;
-      border: none;
-      background: #1261e8;
-      color: white;
-      padding: 14px;
-      border-radius: 12px;
-      font-weight: 800;
-      font-size: 14px;
-      cursor: pointer;
-    }
+z-index:30;
 
-    .change-btn:disabled {
-      opacity: .65;
-      cursor: not-allowed;
-    }
+}
 
-    .forgot-link {
-      display: block;
-      text-align: center;
-      margin-top: 13px;
-      color: #1261e8;
-      font-size: 12px;
-      font-weight: 700;
-      text-decoration: none;
-    }
-  </style>
+.header-title{
+
+font-size:17px;
+
+font-weight:800;
+
+color:var(--blue-dark);
+
+}
+
+.header-icon{
+
+width:38px;
+
+height:38px;
+
+border:none;
+
+border-radius:11px;
+
+background:var(--blue-light);
+
+color:var(--blue);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:15px;
+
+}
+
+
+/* ==========================================
+   CONTAINER
+========================================== */
+
+.container{
+
+width:100%;
+
+max-width:600px;
+
+margin:auto;
+
+padding:20px 15px 35px;
+
+}
+
+
+/* ==========================================
+   PROFILE CARD
+========================================== */
+
+.profile-card{
+
+background:var(--blue);
+
+color:var(--white);
+
+border-radius:22px;
+
+padding:25px 20px;
+
+box-shadow:
+0 12px 30px rgba(11,45,92,.16);
+
+margin-bottom:15px;
+
+}
+
+.profile-top{
+
+display:flex;
+
+align-items:center;
+
+gap:14px;
+
+}
+
+.avatar{
+
+width:65px;
+
+height:65px;
+
+border-radius:20px;
+
+background:var(--white);
+
+color:var(--blue);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:25px;
+
+font-weight:800;
+
+flex-shrink:0;
+
+}
+
+.profile-info{
+
+min-width:0;
+
+}
+
+.profile-name{
+
+font-size:18px;
+
+font-weight:800;
+
+margin-bottom:4px;
+
+white-space:nowrap;
+
+overflow:hidden;
+
+text-overflow:ellipsis;
+
+}
+
+.profile-email{
+
+font-size:10px;
+
+opacity:.82;
+
+white-space:nowrap;
+
+overflow:hidden;
+
+text-overflow:ellipsis;
+
+}
+
+.verified{
+
+display:inline-flex;
+
+align-items:center;
+
+gap:5px;
+
+font-size:9px;
+
+font-weight:700;
+
+margin-top:8px;
+
+background:rgba(255,255,255,.14);
+
+padding:5px 8px;
+
+border-radius:8px;
+
+}
+
+
+/* ==========================================
+   SECTION
+========================================== */
+
+.section{
+
+background:var(--white);
+
+border:1px solid var(--border);
+
+border-radius:19px;
+
+box-shadow:var(--shadow);
+
+margin-bottom:15px;
+
+overflow:hidden;
+
+}
+
+.section-title{
+
+padding:17px 17px 12px;
+
+font-size:14px;
+
+font-weight:800;
+
+color:var(--blue-dark);
+
+}
+
+
+/* ==========================================
+   MENU
+========================================== */
+
+.menu-item{
+
+width:100%;
+
+background:var(--white);
+
+border:none;
+
+border-top:1px solid #edf1f5;
+
+padding:15px 17px;
+
+display:flex;
+
+align-items:center;
+
+gap:13px;
+
+text-align:left;
+
+}
+
+.menu-icon{
+
+width:40px;
+
+height:40px;
+
+border-radius:12px;
+
+background:var(--blue-light);
+
+color:var(--blue);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:14px;
+
+flex-shrink:0;
+
+}
+
+.menu-content{
+
+flex:1;
+
+min-width:0;
+
+}
+
+.menu-content strong{
+
+display:block;
+
+font-size:12px;
+
+font-weight:700;
+
+color:var(--blue-dark);
+
+margin-bottom:2px;
+
+}
+
+.menu-content span{
+
+display:block;
+
+font-size:9px;
+
+color:var(--muted);
+
+}
+
+.menu-arrow{
+
+color:#9aa5b5;
+
+font-size:11px;
+
+}
+
+
+/* ==========================================
+   LOGOUT
+========================================== */
+
+.logout-button{
+
+width:100%;
+
+border:none;
+
+background:var(--danger-bg);
+
+color:var(--danger);
+
+padding:16px;
+
+border-radius:14px;
+
+font-size:12px;
+
+font-weight:800;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+gap:8px;
+
+margin-top:5px;
+
+}
+
+.logout-button:active{
+
+transform:scale(.98);
+
+}
+
+.logout-button:disabled{
+
+opacity:.6;
+
+cursor:not-allowed;
+
+}
+
+
+/* ==========================================
+   VERSION
+========================================== */
+
+.version{
+
+text-align:center;
+
+color:#a0aaba;
+
+font-size:9px;
+
+margin-top:20px;
+
+}
+
+
+/* ==========================================
+   MODAL
+========================================== */
+
+.modal{
+
+position:fixed;
+
+inset:0;
+
+background:rgba(7,31,64,.58);
+
+display:none;
+
+align-items:flex-end;
+
+justify-content:center;
+
+z-index:100;
+
+padding:15px;
+
+}
+
+.modal.show{
+
+display:flex;
+
+}
+
+.modal-box{
+
+background:var(--white);
+
+width:100%;
+
+max-width:600px;
+
+border-radius:23px;
+
+padding:21px;
+
+box-shadow:
+0 -10px 40px rgba(0,0,0,.15);
+
+}
+
+.modal-header{
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+margin-bottom:20px;
+
+}
+
+.modal-header h2{
+
+font-size:17px;
+
+font-weight:800;
+
+color:var(--blue-dark);
+
+}
+
+.close-button{
+
+width:34px;
+
+height:34px;
+
+border:none;
+
+border-radius:50%;
+
+background:#f1f3f6;
+
+color:#555;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+}
+
+.field{
+
+margin-bottom:15px;
+
+}
+
+.field label{
+
+display:block;
+
+font-size:10px;
+
+font-weight:700;
+
+color:var(--blue-dark);
+
+margin-bottom:7px;
+
+}
+
+.password-wrap{
+
+position:relative;
+
+}
+
+.field input{
+
+width:100%;
+
+height:46px;
+
+border:1px solid #dce3ed;
+
+border-radius:11px;
+
+background:#fbfcfe;
+
+padding:0 43px 0 13px;
+
+font-size:12px;
+
+outline:none;
+
+color:var(--text);
+
+}
+
+.field input:focus{
+
+border-color:var(--blue);
+
+background:var(--white);
+
+box-shadow:
+0 0 0 3px rgba(11,45,92,.06);
+
+}
+
+.toggle-password{
+
+position:absolute;
+
+right:12px;
+
+top:50%;
+
+transform:translateY(-50%);
+
+border:none;
+
+background:transparent;
+
+color:#7b8798;
+
+font-size:13px;
+
+padding:4px;
+
+}
+
+.modal-status{
+
+display:none;
+
+padding:11px;
+
+border-radius:10px;
+
+font-size:10px;
+
+font-weight:700;
+
+line-height:1.5;
+
+margin-bottom:13px;
+
+}
+
+.modal-status.show{
+
+display:block;
+
+}
+
+.modal-status.error{
+
+background:var(--danger-bg);
+
+color:var(--danger);
+
+}
+
+.modal-status.success{
+
+background:var(--success-bg);
+
+color:var(--success);
+
+}
+
+.save-button{
+
+width:100%;
+
+border:none;
+
+background:var(--blue);
+
+color:var(--white);
+
+height:46px;
+
+border-radius:11px;
+
+font-size:12px;
+
+font-weight:800;
+
+}
+
+.save-button:disabled{
+
+opacity:.6;
+
+cursor:not-allowed;
+
+}
+
+
+/* ==========================================
+   BOTTOM NAV
+========================================== */
+
+.bottom-nav{
+
+position:fixed;
+
+left:0;
+
+right:0;
+
+bottom:0;
+
+height:72px;
+
+background:var(--white);
+
+border-top:1px solid var(--border);
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-around;
+
+z-index:50;
+
+}
+
+.nav-item{
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+justify-content:center;
+
+gap:4px;
+
+color:#8994a6;
+
+font-size:9px;
+
+font-weight:600;
+
+min-width:55px;
+
+}
+
+.nav-item i{
+
+font-size:17px;
+
+}
+
+.nav-item.active{
+
+color:var(--blue);
+
+}
+
+
+/* ==========================================
+   LOADING
+========================================== */
+
+.loading{
+
+text-align:center;
+
+padding:45px 20px;
+
+color:var(--muted);
+
+}
+
+.loading i{
+
+font-size:25px;
+
+color:var(--blue);
+
+margin-bottom:12px;
+
+}
+
+.loading p{
+
+font-size:11px;
+
+}
+
+
+/* ==========================================
+   DESKTOP
+========================================== */
+
+@media(min-width:600px){
+
+.modal{
+
+align-items:center;
+
+}
+
+.modal-box{
+
+border-radius:23px;
+
+}
+
+}
+
+</style>
+
 </head>
 
 <body>
 
-<header>
 
-  <button
-    class="back"
-    onclick="goDashboard()">
+<!-- ==========================================
+     FIREBASE
+========================================== -->
 
-    <i class="fa-solid fa-arrow-left"></i>
-
-  </button>
-
-  <h2>My Profile</h2>
-
-</header>
-
-
-<div class="container">
-
-  <div class="profile-card">
-
-    <div class="avatar">
-      <i class="fa-solid fa-user"></i>
-    </div>
-
-    <h1 id="userName">
-      User
-    </h1>
-
-    <p
-      class="email"
-      id="userEmail">
-    </p>
-
-  </div>
-
-
-  <div class="wallet-card">
-
-    <div class="wallet-top">
-
-      <div>
-
-        <div class="wallet-label">
-          Your Wallet
-        </div>
-
-        <div class="wallet-title">
-          Available Balance
-        </div>
-
-      </div>
-
-      <div class="wallet-icon">
-        <i class="fa-solid fa-wallet"></i>
-      </div>
-
-    </div>
-
-    <div
-      class="balance"
-      id="balance">
-      ₦0.00
-    </div>
-
-    <button
-      class="fund-button"
-      onclick="fundWallet()">
-
-      <i class="fa-solid fa-plus"></i>
-      Add Funds
-
-    </button>
-
-  </div>
-
-
-  <div class="section-title">
-    Account
-  </div>
-
-  <div class="menu">
-
-    <button
-      class="menu-item"
-      onclick="viewOrders()">
-
-      <div class="menu-icon">
-        <i class="fa-solid fa-receipt"></i>
-      </div>
-
-      <div class="menu-text">
-
-        <strong>
-          My Orders
-        </strong>
-
-        <small>
-          View your purchase history
-        </small>
-
-      </div>
-
-      <i class="fa-solid fa-chevron-right arrow"></i>
-
-    </button>
-
-
-    <button
-      class="menu-item"
-      onclick="fundWallet()">
-
-      <div class="menu-icon">
-        <i class="fa-solid fa-wallet"></i>
-      </div>
-
-      <div class="menu-text">
-
-        <strong>
-          Fund Wallet
-        </strong>
-
-        <small>
-          Add money to your wallet
-        </small>
-
-      </div>
-
-      <i class="fa-solid fa-chevron-right arrow"></i>
-
-    </button>
-
-
-    <button
-      class="menu-item"
-      onclick="openPasswordModal()">
-
-      <div class="menu-icon">
-        <i class="fa-solid fa-lock"></i>
-      </div>
-
-      <div class="menu-text">
-
-        <strong>
-          Change Password
-        </strong>
-
-        <small>
-          Update your account password
-        </small>
-
-      </div>
-
-      <i class="fa-solid fa-chevron-right arrow"></i>
-
-    </button>
-
-
-    <button
-      class="menu-item logout"
-      onclick="logout()">
-
-      <div class="menu-icon">
-        <i class="fa-solid fa-right-from-bracket"></i>
-      </div>
-
-      <div class="menu-text">
-
-        <strong>
-          Logout
-        </strong>
-
-        <small>
-          Sign out of your account
-        </small>
-
-      </div>
-
-      <i class="fa-solid fa-chevron-right arrow"></i>
-
-    </button>
-
-  </div>
-
-
-  <div class="footer-note">
-    Gentle Acct Store
-  </div>
-
-</div>
-
-
-<!-- =========================
-     CHANGE PASSWORD MODAL
-========================= -->
-
-<div
-  class="modal"
-  id="passwordModal">
-
-  <div class="modal-card">
-
-    <div class="modal-header">
-
-      <h3>
-        Change Password
-      </h3>
-
-      <button
-        class="close-btn"
-        onclick="closePasswordModal()">
-
-        <i class="fa-solid fa-xmark"></i>
-
-      </button>
-
-    </div>
-
-
-    <div
-      class="password-message"
-      id="passwordMessage">
-    </div>
-
-
-    <div class="input-group">
-
-      <label>
-        Current Password
-      </label>
-
-      <div class="input-wrap">
-
-        <input
-          type="password"
-          id="currentPassword"
-          placeholder="Enter current password"
-          autocomplete="current-password">
-
-        <button
-          class="toggle-password"
-          type="button"
-          onclick="togglePassword('currentPassword', this)">
-
-          <i class="fa-solid fa-eye"></i>
-
-        </button>
-
-      </div>
-
-    </div>
-
-
-    <div class="input-group">
-
-      <label>
-        New Password
-      </label>
-
-      <div class="input-wrap">
-
-        <input
-          type="password"
-          id="newPassword"
-          placeholder="Enter new password"
-          autocomplete="new-password">
-
-        <button
-          class="toggle-password"
-          type="button"
-          onclick="togglePassword('newPassword', this)">
-
-          <i class="fa-solid fa-eye"></i>
-
-        </button>
-
-      </div>
-
-    </div>
-
-
-    <div class="input-group">
-
-      <label>
-        Confirm New Password
-      </label>
-
-      <div class="input-wrap">
-
-        <input
-          type="password"
-          id="confirmPassword"
-          placeholder="Confirm new password"
-          autocomplete="new-password">
-
-        <button
-          class="toggle-password"
-          type="button"
-          onclick="togglePassword('confirmPassword', this)">
-
-          <i class="fa-solid fa-eye"></i>
-
-        </button>
-
-      </div>
-
-    </div>
-
-
-    <div class="password-help">
-      Your new password must be at least 6 characters long.
-    </div>
-
-
-    <button
-      class="change-btn"
-      id="changePasswordButton"
-      onclick="changePassword()">
-
-      Change Password
-
-    </button>
-
-
-    <a
-      href="forgot-password.html"
-      class="forgot-link">
-
-      Forgot your password?
-
-    </a>
-
-  </div>
-
-</div>
-
-
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
 <script src="firebase.js"></script>
+
+
+<!-- ==========================================
+     HEADER
+========================================== -->
+
+<header class="header">
+
+<div class="header-title">
+
+Profile
+
+</div>
+
+
+<button
+id="backButton"
+class="header-icon"
+type="button"
+>
+
+<i class="fa-solid fa-arrow-left"></i>
+
+</button>
+
+</header>
+
+
+<!-- ==========================================
+     MAIN
+========================================== -->
+
+<main
+class="container"
+id="pageContent"
+>
+
+<div class="loading">
+
+<i class="fa-solid fa-spinner fa-spin"></i>
+
+<p>
+Loading your profile...
+</p>
+
+</div>
+
+</main>
+
+
+<!-- ==========================================
+     CHANGE PASSWORD MODAL
+========================================== -->
+
+<div
+id="passwordModal"
+class="modal"
+>
+
+<div class="modal-box">
+
+
+<div class="modal-header">
+
+<h2>
+Change Password
+</h2>
+
+
+<button
+id="closePasswordButton"
+class="close-button"
+type="button"
+>
+
+<i class="fa-solid fa-xmark"></i>
+
+</button>
+
+</div>
+
+
+<div
+id="modalStatus"
+class="modal-status"
+></div>
+
+
+<div class="field">
+
+<label>
+Current Password
+</label>
+
+<div class="password-wrap">
+
+<input
+id="currentPassword"
+type="password"
+placeholder="Enter current password"
+autocomplete="current-password"
+>
+
+<button
+class="toggle-password"
+type="button"
+data-password="currentPassword"
+>
+
+<i class="fa-solid fa-eye"></i>
+
+</button>
+
+</div>
+
+</div>
+
+
+<div class="field">
+
+<label>
+New Password
+</label>
+
+<div class="password-wrap">
+
+<input
+id="newPassword"
+type="password"
+placeholder="Enter new password"
+autocomplete="new-password"
+>
+
+<button
+class="toggle-password"
+type="button"
+data-password="newPassword"
+>
+
+<i class="fa-solid fa-eye"></i>
+
+</button>
+
+</div>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Confirm New Password
+</label>
+
+<div class="password-wrap">
+
+<input
+id="confirmPassword"
+type="password"
+placeholder="Confirm new password"
+autocomplete="new-password"
+>
+
+<button
+class="toggle-password"
+type="button"
+data-password="confirmPassword"
+>
+
+<i class="fa-solid fa-eye"></i>
+
+</button>
+
+</div>
+
+</div>
+
+
+<button
+id="savePasswordButton"
+class="save-button"
+type="button"
+>
+
+Change Password
+
+</button>
+
+
+</div>
+
+</div>
+
+
+<!-- ==========================================
+     BOTTOM NAV
+========================================== -->
+
+<nav class="bottom-nav">
+
+<a
+href="dashboard.html"
+class="nav-item"
+>
+
+<i class="fa-solid fa-house"></i>
+
+<span>
+Home
+</span>
+
+</a>
+
+
+<a
+href="dashboard.html#products"
+class="nav-item"
+>
+
+<i class="fa-solid fa-box"></i>
+
+<span>
+Products
+</span>
+
+</a>
+
+
+<a
+href="orders.html"
+class="nav-item"
+>
+
+<i class="fa-solid fa-receipt"></i>
+
+<span>
+Orders
+</span>
+
+</a>
+
+
+<a
+href="fund.html"
+class="nav-item"
+>
+
+<i class="fa-solid fa-wallet"></i>
+
+<span>
+Fund
+</span>
+
+</a>
+
+
+<a
+href="profile.html"
+class="nav-item active"
+>
+
+<i class="fa-solid fa-user"></i>
+
+<span>
+Profile
+</span>
+
+</a>
+
+</nav>
 
 
 <script>
 
-/* =========================
-   SESSION PROTECTION
-========================= */
+/* ==========================================
+   USER
+========================================== */
 
-let firebaseUser = null;
-
-
-firebaseAuth.onAuthStateChanged(function(user) {
-
-  if (!user || !user.emailVerified) {
-
-    localStorage.removeItem("gentleLoggedIn");
-    localStorage.removeItem("gentleCurrentUserId");
-    localStorage.removeItem("gentleCheckoutProduct");
-
-    window.location.replace("login.html");
-
-    return;
-  }
+let currentUser = null;
 
 
-  firebaseUser = user;
+/* ==========================================
+   ELEMENTS
+========================================== */
+
+const pageContent =
+document.getElementById(
+"pageContent"
+);
+
+const passwordModal =
+document.getElementById(
+"passwordModal"
+);
+
+const logoutButtonId =
+"logoutButton";
 
 
-  /*
-    Keep compatibility with the
-    existing Gentle Acct Store pages.
-  */
+/* ==========================================
+   AUTH
+========================================== */
 
-  localStorage.setItem(
-    "gentleLoggedIn",
-    "true"
-  );
+firebaseAuth.onAuthStateChanged(
+function(user){
 
+if(!user){
 
-  localStorage.setItem(
-    "gentleCurrentUserId",
-    user.uid
-  );
+window.location.replace(
+"login.html"
+);
 
+return;
 
-  const savedUser =
-    localStorage.getItem("gentleUser");
+}
 
 
-  let localUser = {};
+currentUser = user;
 
-
-  if (savedUser) {
-
-    try {
-
-      localUser =
-        JSON.parse(savedUser);
-
-    } catch (error) {
-
-      localUser = {};
-
-    }
-
-  }
-
-
-  localUser.id = user.uid;
-  localUser.email = user.email || "";
-  localUser.name =
-    user.displayName ||
-    localUser.name ||
-    "User";
-
-
-  localStorage.setItem(
-    "gentleUser",
-    JSON.stringify(localUser)
-  );
-
-
-  document
-    .getElementById("userName")
-    .textContent =
-    localUser.name;
-
-
-  document
-    .getElementById("userEmail")
-    .textContent =
-    user.email || "";
-
-
-  updateBalance();
+renderProfile(user);
 
 });
 
 
-/* =========================
-   WALLET BALANCE
-========================= */
+/* ==========================================
+   RENDER PROFILE
+========================================== */
 
-function updateBalance() {
+function renderProfile(user){
 
-  const balance =
-    Number(
-      localStorage.getItem(
-        "gentleBalance"
-      )
-    ) || 0;
-
-
-  document
-    .getElementById("balance")
-    .textContent =
-    "₦" +
-    balance.toLocaleString(
-      "en-NG",
-      {
-        minimumFractionDigits: 2
-      }
-    );
-
-}
-
-
-/* =========================
-   REFRESH
-========================= */
-
-window.addEventListener(
-  "pageshow",
-  function() {
-
-    updateBalance();
-
-  }
+const displayName =
+user.displayName ||
+(
+user.email
+? user.email.split("@")[0]
+: "Customer"
 );
 
 
-/* =========================
-   NAVIGATION
-========================= */
+const firstLetter =
+displayName
+.charAt(0)
+.toUpperCase();
 
-function goDashboard() {
 
-  window.location.href =
-    "dashboard.html";
+pageContent.innerHTML = `
 
+<div class="profile-card">
+
+<div class="profile-top">
+
+<div class="avatar">
+
+${escapeHTML(firstLetter)}
+
+</div>
+
+
+<div class="profile-info">
+
+<div class="profile-name">
+
+${escapeHTML(displayName)}
+
+</div>
+
+
+<div class="profile-email">
+
+${escapeHTML(user.email || "")}
+
+</div>
+
+
+<div class="verified">
+
+<i class="fa-solid ${
+user.emailVerified
+? "fa-circle-check"
+: "fa-circle-exclamation"
+}"></i>
+
+${
+user.emailVerified
+? "Email verified"
+: "Email not verified"
 }
 
+</div>
 
-function fundWallet() {
+</div>
 
-  window.location.href =
-    "fund.html";
+</div>
 
-}
+</div>
 
 
-function viewOrders() {
+<div class="section">
 
-  window.location.href =
-    "orders.html";
+<div class="section-title">
 
-}
+Account
 
+</div>
 
-/* =========================
-   CHANGE PASSWORD
-========================= */
 
-function openPasswordModal() {
+<button
+id="changePasswordButton"
+class="menu-item"
+type="button"
+>
 
-  const modal =
-    document.getElementById(
-      "passwordModal"
-    );
+<div class="menu-icon">
 
+<i class="fa-solid fa-lock"></i>
 
-  document
-    .getElementById("passwordMessage")
-    .className =
-    "password-message";
+</div>
 
 
-  document
-    .getElementById("passwordMessage")
-    .textContent = "";
+<div class="menu-content">
 
+<strong>
+Change Password
+</strong>
 
-  document
-    .getElementById("currentPassword")
-    .value = "";
+<span>
+Update your account password securely
+</span>
 
+</div>
 
-  document
-    .getElementById("newPassword")
-    .value = "";
 
+<div class="menu-arrow">
 
-  document
-    .getElementById("confirmPassword")
-    .value = "";
+<i class="fa-solid fa-chevron-right"></i>
 
+</div>
 
-  modal.classList.add("show");
+</button>
 
-}
 
+<button
+id="ordersButton"
+class="menu-item"
+type="button"
+>
 
-function closePasswordModal() {
+<div class="menu-icon">
 
-  document
-    .getElementById("passwordModal")
-    .classList.remove("show");
+<i class="fa-solid fa-receipt"></i>
 
-}
+</div>
 
 
-function showPasswordMessage(
-  message,
-  type
-) {
+<div class="menu-content">
 
-  const box =
-    document.getElementById(
-      "passwordMessage"
-    );
+<strong>
+My Orders
+</strong>
 
+<span>
+View your purchased products
+</span>
 
-  box.textContent =
-    message;
+</div>
 
 
-  box.className =
-    "password-message " +
-    type;
+<div class="menu-arrow">
 
-}
+<i class="fa-solid fa-chevron-right"></i>
 
+</div>
 
-/* =========================
-   PASSWORD VISIBILITY
-========================= */
+</button>
 
-function togglePassword(
-  inputId,
-  button
-) {
 
-  const input =
-    document.getElementById(
-      inputId
-    );
+<button
+id="walletButton"
+class="menu-item"
+type="button"
+>
 
+<div class="menu-icon">
 
-  if (input.type === "password") {
+<i class="fa-solid fa-wallet"></i>
 
-    input.type = "text";
+</div>
 
-    button.innerHTML =
-      '<i class="fa-solid fa-eye-slash"></i>';
 
-  } else {
+<div class="menu-content">
 
-    input.type = "password";
+<strong>
+Wallet
+</strong>
 
-    button.innerHTML =
-      '<i class="fa-solid fa-eye"></i>';
+<span>
+View your wallet and add funds
+</span>
 
-  }
+</div>
 
-}
 
+<div class="menu-arrow">
 
-/* =========================
-   CHANGE PASSWORD WITH FIREBASE
-========================= */
+<i class="fa-solid fa-chevron-right"></i>
 
-async function changePassword() {
+</div>
 
-  if (!firebaseUser) {
+</button>
 
-    showPasswordMessage(
-      "Your session has expired. Please log in again.",
-      "error"
-    );
+</div>
 
-    return;
 
-  }
+<div class="section">
 
+<div class="section-title">
 
-  const currentPassword =
-    document
-      .getElementById("currentPassword")
-      .value
-      .trim();
+Security
 
+</div>
 
-  const newPassword =
-    document
-      .getElementById("newPassword")
-      .value;
 
+<div class="menu-item">
 
-  const confirmPassword =
-    document
-      .getElementById("confirmPassword")
-      .value;
+<div class="menu-icon">
 
+<i class="fa-solid fa-shield-halved"></i>
 
-  if (!currentPassword) {
+</div>
 
-    showPasswordMessage(
-      "Enter your current password.",
-      "error"
-    );
 
-    return;
+<div class="menu-content">
 
-  }
+<strong>
+Account Security
+</strong>
 
+<span>
+Your account is protected by Firebase Authentication
+</span>
 
-  if (!newPassword) {
+</div>
 
-    showPasswordMessage(
-      "Enter your new password.",
-      "error"
-    );
+</div>
 
-    return;
+</div>
 
-  }
 
+<button
+id="${logoutButtonId}"
+class="logout-button"
+type="button"
+>
 
-  if (newPassword.length < 6) {
+<i class="fa-solid fa-right-from-bracket"></i>
 
-    showPasswordMessage(
-      "Your new password must be at least 6 characters long.",
-      "error"
-    );
+<span>
+Log Out
+</span>
 
-    return;
+</button>
 
-  }
 
+<div class="version">
 
-  if (newPassword !== confirmPassword) {
+Gentle Acct Store
 
-    showPasswordMessage(
-      "The new passwords do not match.",
-      "error"
-    );
+</div>
 
-    return;
+`;
 
-  }
 
-
-  if (currentPassword === newPassword) {
-
-    showPasswordMessage(
-      "Your new password must be different from your current password.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  const button =
-    document.getElementById(
-      "changePasswordButton"
-    );
-
-
-  button.disabled = true;
-
-  button.textContent =
-    "Changing Password...";
-
-
-  try {
-
-    /*
-      Firebase requires recent
-      authentication before changing
-      a sensitive credential.
-
-      We re-authenticate using the
-      current password first.
-    */
-
-    const credential =
-      firebase.auth.EmailAuthProvider
-        .credential(
-          firebaseUser.email,
-          currentPassword
-        );
-
-
-    await firebaseUser.reauthenticateWithCredential(
-      credential
-    );
-
-
-    await firebaseUser.updatePassword(
-      newPassword
-    );
-
-
-    showPasswordMessage(
-      "Password changed successfully.",
-      "success"
-    );
-
-
-    document
-      .getElementById("currentPassword")
-      .value = "";
-
-
-    document
-      .getElementById("newPassword")
-      .value = "";
-
-
-    document
-      .getElementById("confirmPassword")
-      .value = "";
-
-
-    button.textContent =
-      "Password Changed";
-
-
-    setTimeout(function() {
-
-      closePasswordModal();
-
-      button.disabled = false;
-
-      button.textContent =
-        "Change Password";
-
-    }, 1500);
-
-
-  } catch (error) {
-
-    console.error(error);
-
-
-    let message =
-      "Unable to change your password. Please try again.";
-
-
-    if (
-      error.code ===
-      "auth/wrong-password"
-    ) {
-
-      message =
-        "Your current password is incorrect.";
-
-    }
-
-
-    if (
-      error.code ===
-      "auth/invalid-credential"
-    ) {
-
-      message =
-        "Your current password is incorrect.";
-
-    }
-
-
-    if (
-      error.code ===
-      "auth/weak-password"
-    ) {
-
-      message =
-        "Your new password is too weak.";
-
-    }
-
-
-    if (
-      error.code ===
-      "auth/requires-recent-login"
-    ) {
-
-      message =
-        "Please log in again before changing your password.";
-
-    }
-
-
-    if (
-      error.code ===
-      "auth/too-many-requests"
-    ) {
-
-      message =
-        "Too many attempts. Please wait and try again later.";
-
-    }
-
-
-    showPasswordMessage(
-      message,
-      "error"
-    );
-
-
-    button.disabled = false;
-
-    button.textContent =
-      "Change Password";
-
-  }
-
-}
-
-
-/* =========================
-   CLOSE MODAL OUTSIDE
-========================= */
+/* BUTTON EVENTS */
 
 document
-  .getElementById("passwordModal")
-  .addEventListener(
-    "click",
-    function(event) {
-
-      if (
-        event.target ===
-        this
-      ) {
-
-        closePasswordModal();
-
-      }
-
-    }
-  );
+.getElementById(
+"changePasswordButton"
+)
+.addEventListener(
+"click",
+openPasswordModal
+);
 
 
-/* =========================
-   SECURE LOGOUT
-========================= */
+document
+.getElementById(
+"ordersButton"
+)
+.addEventListener(
+"click",
+function(){
 
-async function logout() {
+window.location.href =
+"orders.html";
 
-  try {
-
-    await firebaseAuth.signOut();
-
-  } catch (error) {
-
-    console.error(error);
-
-  }
+}
+);
 
 
-  localStorage.removeItem(
-    "gentleLoggedIn"
-  );
+document
+.getElementById(
+"walletButton"
+)
+.addEventListener(
+"click",
+function(){
+
+window.location.href =
+"fund.html";
+
+}
+);
 
 
-  localStorage.removeItem(
-    "gentleCurrentUserId"
-  );
+document
+.getElementById(
+logoutButtonId
+)
+.addEventListener(
+"click",
+logoutUser
+);
+
+}
 
 
-  localStorage.removeItem(
-    "gentleCheckoutProduct"
-  );
+/* ==========================================
+   LOGOUT
+========================================== */
+
+async function logoutUser(){
+
+const button =
+document.getElementById(
+logoutButtonId
+);
 
 
-  window.location.replace(
-    "login.html"
-  );
+if(button){
+
+button.disabled=true;
+
+button.innerHTML = `
+
+<i class="fa-solid fa-spinner fa-spin"></i>
+
+<span>
+Logging out...
+</span>
+
+`;
+
+}
+
+
+try{
+
+/* SIGN OUT FROM FIREBASE */
+
+await firebaseAuth.signOut();
+
+
+/* CLEAR LOCAL LOGIN SESSION */
+
+const sessionKeys = [
+
+"currentUser",
+
+"firebaseUser",
+
+"user",
+
+"userSession",
+
+"loggedInUser",
+
+"gentleUser",
+
+"gentleAcctUser"
+
+];
+
+
+sessionKeys.forEach(
+function(key){
+
+try{
+
+localStorage.removeItem(key);
+
+}catch(error){
+
+console.log(error);
+
+}
+
+});
+
+
+/* GO TO LOGIN */
+
+window.location.replace(
+"login.html"
+);
+
+
+}catch(error){
+
+console.error(
+"LOGOUT ERROR:",
+error
+);
+
+
+if(button){
+
+button.disabled=false;
+
+button.innerHTML = `
+
+<i class="fa-solid fa-right-from-bracket"></i>
+
+<span>
+Log Out
+</span>
+
+`;
+
+}
+
+
+alert(
+"Logout failed. Please try again."
+);
+
+}
+
+}
+
+
+/* ==========================================
+   CHANGE PASSWORD
+========================================== */
+
+function openPasswordModal(){
+
+passwordModal.classList.add(
+"show"
+);
+
+document
+.getElementById(
+"currentPassword"
+)
+.value="";
+
+document
+.getElementById(
+"newPassword"
+)
+.value="";
+
+document
+.getElementById(
+"confirmPassword"
+)
+.value="";
+
+clearModalStatus();
+
+}
+
+
+function closePasswordModal(){
+
+passwordModal.classList.remove(
+"show"
+);
+
+}
+
+
+function showModalStatus(
+message,
+type
+){
+
+const box =
+document.getElementById(
+"modalStatus"
+);
+
+box.className =
+"modal-status show " +
+type;
+
+box.textContent =
+message;
+
+}
+
+
+function clearModalStatus(){
+
+const box =
+document.getElementById(
+"modalStatus"
+);
+
+box.className =
+"modal-status";
+
+box.textContent="";
+
+}
+
+
+async function changePassword(){
+
+if(!currentUser){
+
+return;
+
+}
+
+
+const currentPassword =
+document
+.getElementById(
+"currentPassword"
+)
+.value;
+
+
+const newPassword =
+document
+.getElementById(
+"newPassword"
+)
+.value;
+
+
+const confirmPassword =
+document
+.getElementById(
+"confirmPassword"
+)
+.value;
+
+
+if(!currentPassword){
+
+showModalStatus(
+"Please enter your current password.",
+"error"
+);
+
+return;
+
+}
+
+
+if(newPassword.length < 6){
+
+showModalStatus(
+"Your new password must be at least 6 characters.",
+"error"
+);
+
+return;
+
+}
+
+
+if(newPassword !== confirmPassword){
+
+showModalStatus(
+"Your new passwords do not match.",
+"error"
+);
+
+return;
+
+}
+
+
+if(newPassword === currentPassword){
+
+showModalStatus(
+"Your new password must be different.",
+"error"
+);
+
+return;
+
+}
+
+
+const button =
+document.getElementById(
+"savePasswordButton"
+);
+
+
+try{
+
+button.disabled=true;
+
+button.textContent=
+"Changing Password...";
+
+
+const credential =
+firebase.auth.EmailAuthProvider
+.credential(
+currentUser.email,
+currentPassword
+);
+
+
+await currentUser
+.reauthenticateWithCredential(
+credential
+);
+
+
+await currentUser.updatePassword(
+newPassword
+);
+
+
+showModalStatus(
+"Password changed successfully.",
+"success"
+);
+
+
+document
+.getElementById(
+"currentPassword"
+)
+.value="";
+
+
+document
+.getElementById(
+"newPassword"
+)
+.value="";
+
+
+document
+.getElementById(
+"confirmPassword"
+)
+.value="";
+
+
+setTimeout(
+closePasswordModal,
+1200
+);
+
+
+}catch(error){
+
+console.error(
+"PASSWORD ERROR:",
+error
+);
+
+
+let message =
+"Could not change your password.";
+
+
+if(
+error.code ===
+"auth/wrong-password" ||
+error.code ===
+"auth/invalid-credential"
+){
+
+message =
+"Your current password is incorrect.";
+
+}
+
+
+if(
+error.code ===
+"auth/too-many-requests"
+){
+
+message =
+"Too many attempts. Please try again later.";
+
+}
+
+
+showModalStatus(
+message,
+"error"
+);
+
+}finally{
+
+button.disabled=false;
+
+button.textContent=
+"Change Password";
+
+}
+
+}
+
+
+/* ==========================================
+   PASSWORD VISIBILITY
+========================================== */
+
+document
+.querySelectorAll(
+".toggle-password"
+)
+.forEach(
+function(button){
+
+button.addEventListener(
+"click",
+function(){
+
+const input =
+document.getElementById(
+button.dataset.password
+);
+
+const icon =
+button.querySelector("i");
+
+
+if(
+input.type === "password"
+){
+
+input.type="text";
+
+icon.className =
+"fa-solid fa-eye-slash";
+
+}else{
+
+input.type="password";
+
+icon.className =
+"fa-solid fa-eye";
+
+}
+
+}
+);
+
+});
+
+
+/* ==========================================
+   BACK BUTTON
+========================================== */
+
+document
+.getElementById(
+"backButton"
+)
+.addEventListener(
+"click",
+function(){
+
+window.location.href =
+"dashboard.html";
+
+});
+
+
+/* ==========================================
+   CLOSE MODAL
+========================================== */
+
+document
+.getElementById(
+"closePasswordButton"
+)
+.addEventListener(
+"click",
+closePasswordModal
+);
+
+
+passwordModal
+.addEventListener(
+"click",
+function(event){
+
+if(
+event.target === passwordModal
+){
+
+closePasswordModal();
+
+}
+
+});
+
+
+/* ==========================================
+   SAVE PASSWORD BUTTON
+========================================== */
+
+document
+.getElementById(
+"savePasswordButton"
+)
+.addEventListener(
+"click",
+changePassword
+);
+
+
+/* ==========================================
+   HTML SAFETY
+========================================== */
+
+function escapeHTML(value){
+
+return String(
+value ?? ""
+)
+
+.replace(
+/&/g,
+"&amp;"
+)
+
+.replace(
+/</g,
+"&lt;"
+)
+
+.replace(
+/>/g,
+"&gt;"
+)
+
+.replace(
+/"/g,
+"&quot;"
+)
+
+.replace(
+/'/g,
+"&#039;"
+);
 
 }
 
 </script>
 
+
 </body>
+
 </html>

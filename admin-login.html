@@ -13,6 +13,22 @@
 <title>Admin Login - Gentle Acct Store</title>
 
 <link
+  rel="preconnect"
+  href="https://fonts.googleapis.com"
+>
+
+<link
+  rel="preconnect"
+  href="https://fonts.gstatic.com"
+  crossorigin
+>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+  rel="stylesheet"
+>
+
+<link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 >
@@ -26,51 +42,74 @@
 }
 
 body{
-  font-family:Arial,sans-serif;
-  background:#f5f8fc;
-  color:#172033;
   min-height:100vh;
   display:flex;
   align-items:center;
   justify-content:center;
   padding:20px;
+
+  background:#f5f8fc;
+
+  font-family:'Poppins',sans-serif;
+
+  color:#071f40;
 }
 
 .login-card{
   width:100%;
-  max-width:430px;
+  max-width:410px;
+
   background:white;
-  border:1px solid #e6ebf2;
+
+  border:1px solid #e4e9f0;
+
   border-radius:24px;
+
   padding:30px 22px;
-  box-shadow:0 12px 35px rgba(20,40,80,.08);
+
+  box-shadow:
+    0 15px 40px rgba(7,31,64,.08);
 }
 
 .logo{
-  width:62px;
-  height:62px;
+  width:64px;
+  height:64px;
+
+  margin:0 auto 16px;
+
   border-radius:18px;
-  background:#edf4ff;
-  color:#0866ff;
+
+  background:#edf3fa;
+
+  color:#0b2d5c;
+
   display:flex;
   align-items:center;
   justify-content:center;
-  margin:0 auto 15px;
+
   font-size:27px;
 }
 
 h1{
   text-align:center;
-  font-size:25px;
+
+  font-size:24px;
+
   margin-bottom:7px;
+
+  color:#071f40;
 }
 
 .subtitle{
   text-align:center;
-  color:#7b8494;
-  font-size:13px;
-  line-height:1.5;
-  margin-bottom:25px;
+
+  color:#7b8595;
+
+  font-size:12px;
+
+  line-height:1.6;
+
+  margin-bottom:24px;
 }
 
 .field{
@@ -79,8 +118,11 @@ h1{
 
 label{
   display:block;
-  font-size:13px;
+
+  font-size:12px;
+
   font-weight:700;
+
   margin-bottom:7px;
 }
 
@@ -90,86 +132,146 @@ label{
 
 input{
   width:100%;
+
   border:1px solid #dce3ed;
+
   border-radius:12px;
+
   padding:13px 45px 13px 13px;
-  font-size:14px;
+
+  font-family:'Poppins',sans-serif;
+
+  font-size:13px;
+
   outline:none;
+
   background:#fbfcfe;
+
+  color:#172033;
 }
 
 input:focus{
-  border-color:#0866ff;
+  border-color:#0b2d5c;
+
   background:white;
+}
+
+input::placeholder{
+  color:#9aa4b3;
 }
 
 .password-toggle{
   position:absolute;
+
   right:13px;
   top:50%;
+
   transform:translateY(-50%);
+
   border:none;
-  background:none;
-  color:#7b8494;
+
+  background:transparent;
+
+  color:#7b8595;
+
   cursor:pointer;
+
   font-size:15px;
 }
 
 .login-btn{
   width:100%;
+
   border:none;
-  background:#0866ff;
+
+  background:#0b2d5c;
+
   color:white;
+
   padding:14px;
+
   border-radius:12px;
+
+  font-family:'Poppins',sans-serif;
+
   font-weight:700;
-  font-size:15px;
+
+  font-size:13px;
+
   cursor:pointer;
+
   margin-top:5px;
+
+  transition:.2s;
+}
+
+.login-btn:active{
+  transform:scale(.98);
 }
 
 .login-btn:disabled{
   opacity:.6;
+
   cursor:not-allowed;
 }
 
 .message{
   display:none;
+
   margin-bottom:15px;
+
   padding:12px;
+
   border-radius:11px;
-  font-size:12px;
-  line-height:1.5;
+
+  font-size:11px;
+
+  line-height:1.6;
 }
 
 .error{
   display:block;
+
   background:#fff0f0;
+
   color:#c62828;
+
   border:1px solid #ffd5d5;
 }
 
 .success{
   display:block;
+
   background:#eaf8f0;
+
   color:#16834b;
+
   border:1px solid #ccebd9;
 }
 
 .back{
   display:block;
+
   text-align:center;
-  margin-top:20px;
-  color:#0866ff;
+
+  margin-top:19px;
+
+  color:#0b2d5c;
+
   text-decoration:none;
-  font-size:13px;
+
+  font-size:12px;
+
   font-weight:700;
 }
 
 .security{
   text-align:center;
-  color:#8a94a6;
-  font-size:11px;
+
+  color:#929baa;
+
+  font-size:10px;
+
   margin-top:20px;
 }
 
@@ -184,106 +286,108 @@ input:focus{
 <div class="login-card">
 
 
-<div class="logo">
+  <div class="logo">
 
-<i class="fa-solid fa-shield-halved"></i>
+    <i class="fa-solid fa-shield-halved"></i>
 
-</div>
-
-
-<h1>
-Admin Login
-</h1>
+  </div>
 
 
-<p class="subtitle">
-Sign in with your authorized Firebase admin account.
-</p>
+  <h1>
+    Admin Login
+  </h1>
 
 
-<div
-id="message"
-class="message"
-></div>
+  <p class="subtitle">
+    Sign in with your authorized Gentle Acct Store admin account.
+  </p>
 
 
-<div class="field">
-
-<label>
-Email Address
-</label>
-
-<input
-id="email"
-type="email"
-placeholder="Admin email"
-autocomplete="username"
->
-
-</div>
+  <div
+    id="message"
+    class="message"
+  ></div>
 
 
-<div class="field">
+  <div class="field">
 
-<label>
-Password
-</label>
+    <label>
+      Email Address
+    </label>
 
-<div class="input-wrap">
+    <input
+      id="email"
+      type="email"
+      placeholder="Admin email"
+      autocomplete="username"
+    >
 
-<input
-id="password"
-type="password"
-placeholder="Enter your password"
-autocomplete="current-password"
->
-
-<button
-type="button"
-class="password-toggle"
-onclick="togglePassword()"
->
-
-<i
-id="eyeIcon"
-class="fa-solid fa-eye"
-></i>
-
-</button>
-
-</div>
-
-</div>
+  </div>
 
 
-<button
-id="loginButton"
-class="login-btn"
-onclick="adminLogin()"
->
+  <div class="field">
 
-<i class="fa-solid fa-right-to-bracket"></i>
-
-&nbsp; Login to Admin Panel
-
-</button>
+    <label>
+      Password
+    </label>
 
 
-<a
-href="forgot-password.html"
-class="back"
->
-Forgot password?
-</a>
+    <div class="input-wrap">
+
+      <input
+        id="password"
+        type="password"
+        placeholder="Enter your password"
+        autocomplete="current-password"
+      >
 
 
-<div class="security">
+      <button
+        type="button"
+        id="passwordToggle"
+        class="password-toggle"
+      >
 
-<i class="fa-solid fa-lock"></i>
+        <i
+          id="eyeIcon"
+          class="fa-solid fa-eye"
+        ></i>
 
-&nbsp; Secure Firebase authentication
+      </button>
 
-</div>
+    </div>
+
+  </div>
+
+
+  <button
+    type="button"
+    id="loginButton"
+    class="login-btn"
+  >
+
+    <i class="fa-solid fa-right-to-bracket"></i>
+
+    &nbsp; Login to Admin Panel
+
+  </button>
+
+
+  <a
+    href="forgot-password.html"
+    class="back"
+  >
+    Forgot password?
+  </a>
+
+
+  <div class="security">
+
+    <i class="fa-solid fa-lock"></i>
+
+    &nbsp; Secure Firebase authentication
+
+  </div>
 
 
 </div>
@@ -309,29 +413,26 @@ const ADMIN_UID =
 
 
 /* =========================
-   HANDLE LOGOUT REDIRECT
+   ELEMENTS
 ========================= */
 
-const urlParams =
-new URLSearchParams(
-  window.location.search
-);
+const emailInput =
+document.getElementById("email");
 
-const wasLoggedOut =
-urlParams.get("loggedout") === "1";
+const passwordInput =
+document.getElementById("password");
 
+const loginButton =
+document.getElementById("loginButton");
 
-if(wasLoggedOut){
+const passwordToggle =
+document.getElementById("passwordToggle");
 
-  localStorage.removeItem(
-    "gentleAdminLoggedIn"
-  );
+const eyeIcon =
+document.getElementById("eyeIcon");
 
-  localStorage.removeItem(
-    "gentleAdminUID"
-  );
-
-}
+const messageBox =
+document.getElementById("message");
 
 
 /* =========================
@@ -343,87 +444,66 @@ function showMessage(
   type
 ){
 
-  const box =
-  document.getElementById(
-    "message"
-  );
+  messageBox.textContent =
+    message;
 
-  box.textContent =
-  message;
-
-  box.className =
-  "message " +
-  type;
+  messageBox.className =
+    "message " + type;
 
 }
 
 
 /* =========================
-   PASSWORD VISIBILITY
+   PASSWORD TOGGLE
 ========================= */
 
-function togglePassword(){
+passwordToggle.addEventListener(
+  "click",
+  function(){
 
-  const password =
-  document.getElementById(
-    "password"
-  );
+    if(
+      passwordInput.type ===
+      "password"
+    ){
 
-  const icon =
-  document.getElementById(
-    "eyeIcon"
-  );
+      passwordInput.type =
+        "text";
 
+      eyeIcon.className =
+        "fa-solid fa-eye-slash";
 
-  if(
-    password.type === "password"
-  ){
+    }else{
 
-    password.type =
-    "text";
+      passwordInput.type =
+        "password";
 
-    icon.className =
-    "fa-solid fa-eye-slash";
+      eyeIcon.className =
+        "fa-solid fa-eye";
 
-  }else{
-
-    password.type =
-    "password";
-
-    icon.className =
-    "fa-solid fa-eye";
+    }
 
   }
-
-}
+);
 
 
 /* =========================
-   ADMIN LOGIN
+   LOGIN
 ========================= */
 
 async function adminLogin(){
 
   const email =
-  document
-  .getElementById("email")
-  .value
-  .trim();
-
+    emailInput.value
+      .trim();
 
   const password =
-  document
-  .getElementById("password")
-  .value;
+    passwordInput.value;
 
 
-  const button =
-  document.getElementById(
-    "loginButton"
-  );
-
-
-  if(!email || !password){
+  if(
+    !email ||
+    !password
+  ){
 
     showMessage(
       "Please enter your email and password.",
@@ -437,24 +517,28 @@ async function adminLogin(){
 
   try{
 
-    button.disabled =
-    true;
+    loginButton.disabled =
+      true;
 
-    button.innerHTML =
-    '<i class="fa-solid fa-spinner fa-spin"></i> Signing in...';
+    loginButton.innerHTML =
+      '<i class="fa-solid fa-spinner fa-spin"></i> Signing in...';
 
 
     const result =
-    await firebaseAuth
-    .signInWithEmailAndPassword(
-      email,
-      password
-    );
+      await firebaseAuth
+        .signInWithEmailAndPassword(
+          email,
+          password
+        );
 
 
     const user =
-    result.user;
+      result.user;
 
+
+    /* =========================
+       ADMIN CHECK
+    ========================= */
 
     if(
       user.uid !== ADMIN_UID
@@ -472,6 +556,10 @@ async function adminLogin(){
     }
 
 
+    /* =========================
+       EMAIL CHECK
+    ========================= */
+
     if(
       !user.emailVerified
     ){
@@ -479,7 +567,7 @@ async function adminLogin(){
       await firebaseAuth.signOut();
 
       showMessage(
-        "Please verify your email address before entering the admin panel.",
+        "Please verify your admin email address before logging in.",
         "error"
       );
 
@@ -488,11 +576,14 @@ async function adminLogin(){
     }
 
 
+    /* =========================
+       SAVE ADMIN SESSION
+    ========================= */
+
     localStorage.setItem(
       "gentleAdminLoggedIn",
       "true"
     );
-
 
     localStorage.setItem(
       "gentleAdminUID",
@@ -501,7 +592,7 @@ async function adminLogin(){
 
 
     showMessage(
-      "Admin login successful. Opening your panel...",
+      "Admin login successful. Opening admin panel...",
       "success"
     );
 
@@ -509,21 +600,25 @@ async function adminLogin(){
     setTimeout(
       function(){
 
-        window.location.href =
-        "admin.html";
+        window.location.replace(
+          "admin.html"
+        );
 
       },
-      500
+      600
     );
 
 
   }catch(error){
 
-    console.error(error);
+    console.error(
+      "ADMIN LOGIN ERROR:",
+      error
+    );
 
 
     let message =
-    "Login failed. Please check your email and password.";
+      "Login failed. Please check your email and password.";
 
 
     if(
@@ -532,7 +627,7 @@ async function adminLogin(){
     ){
 
       message =
-      "Incorrect email or password.";
+        "Incorrect email or password.";
 
     }
 
@@ -542,7 +637,7 @@ async function adminLogin(){
     ){
 
       message =
-      "No account was found with this email.";
+        "No account was found with this email.";
 
     }
 
@@ -552,7 +647,17 @@ async function adminLogin(){
     ){
 
       message =
-      "Incorrect password.";
+        "Incorrect password.";
+
+    }
+
+    else if(
+      error.code ===
+      "auth/invalid-email"
+    ){
+
+      message =
+        "Please enter a valid email address.";
 
     }
 
@@ -562,7 +667,17 @@ async function adminLogin(){
     ){
 
       message =
-      "Too many login attempts. Please try again later.";
+        "Too many login attempts. Please try again later.";
+
+    }
+
+    else if(
+      error.code ===
+      "auth/network-request-failed"
+    ){
+
+      message =
+        "Network error. Please check your internet connection.";
 
     }
 
@@ -575,15 +690,45 @@ async function adminLogin(){
 
   }finally{
 
-    button.disabled =
-    false;
+    loginButton.disabled =
+      false;
 
-    button.innerHTML =
-    '<i class="fa-solid fa-right-to-bracket"></i> &nbsp; Login to Admin Panel';
+    loginButton.innerHTML =
+      '<i class="fa-solid fa-right-to-bracket"></i> &nbsp; Login to Admin Panel';
 
   }
 
 }
+
+
+/* =========================
+   BUTTON
+========================= */
+
+loginButton.addEventListener(
+  "click",
+  adminLogin
+);
+
+
+/* =========================
+   ENTER KEY
+========================= */
+
+passwordInput.addEventListener(
+  "keydown",
+  function(event){
+
+    if(
+      event.key === "Enter"
+    ){
+
+      adminLogin();
+
+    }
+
+  }
+);
 
 </script>
 
