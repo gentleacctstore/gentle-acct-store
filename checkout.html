@@ -289,6 +289,12 @@ object-fit:cover;
 
 }
 
+.product-image i{
+
+font-size:23px;
+
+}
+
 .product-info{
 
 flex:1;
@@ -1266,21 +1272,83 @@ Number(
 selectedProduct.stockCount || 0
 );
 
+
+/* =====================================================
+   PRODUCT IMAGE
+===================================================== */
+
+const rawProductName =
+String(
+selectedProduct.name ||
+"Product"
+);
+
+const isFacebook =
+rawProductName
+.toLowerCase()
+.includes("facebook");
+
+
 let imageHTML = `
-<i class="fa-solid fa-box"></i>
+
+<i
+class="fa-solid fa-box"
+></i>
+
 `;
 
-if(selectedProduct.image){
+
+/*
+   Facebook product gets the Facebook icon
+   automatically.
+*/
+
+if(isFacebook){
 
 imageHTML = `
-<img
-src="${escapeAttribute(selectedProduct.image)}"
-alt="${productName}"
-onerror="this.style.display='none';"
->
+
+<i
+class="fa-brands fa-facebook"
+style="font-size:30px;"
+></i>
+
 `;
 
 }
+
+
+/*
+   If a product image URL exists,
+   try to display it.
+   If it fails, Facebook falls back
+   to the Facebook icon.
+*/
+
+if(selectedProduct.image){
+
+const fallbackIcon =
+isFacebook
+? "fa-brands fa-facebook"
+: "fa-solid fa-box";
+
+
+imageHTML = `
+
+<img
+src="${escapeAttribute(
+selectedProduct.image
+)}"
+alt="${productName}"
+onerror="
+this.style.display='none';
+this.parentElement.innerHTML='<i class=&quot;${fallbackIcon}&quot; style=&quot;font-size:30px;&quot;></i>';
+"
+>
+
+`;
+
+}
+
 
 const hasEnoughBalance =
 walletBalance >= price;

@@ -24,7 +24,7 @@ href="https://fonts.googleapis.com"
 
 <link
 rel="preconnect"
-href="https://fonts.gstatic.com"
+href="https://fonts.googleapis.com"
 crossorigin
 >
 
@@ -47,10 +47,6 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 <script src="firebase.js"></script>
 
 <style>
-
-/* =====================================================
-   ROOT
-===================================================== */
 
 :root{
 
@@ -84,10 +80,6 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
 }
 
-
-/* =====================================================
-   RESET
-===================================================== */
 
 *{
 
@@ -148,10 +140,6 @@ color:inherit;
 }
 
 
-/* =====================================================
-   PAGE
-===================================================== */
-
 .page{
 
 width:100%;
@@ -166,10 +154,6 @@ background:#f5f7fa;
 
 }
 
-
-/* =====================================================
-   HEADER
-===================================================== */
 
 .top-header{
 
@@ -361,20 +345,12 @@ white-space:nowrap;
 }
 
 
-/* =====================================================
-   MAIN
-===================================================== */
-
 main{
 
 padding:15px;
 
 }
 
-
-/* =====================================================
-   WALLET HERO
-===================================================== */
 
 .wallet-card{
 
@@ -721,10 +697,6 @@ border:1px solid rgba(255,255,255,.17);
 }
 
 
-/* =====================================================
-   QUICK STATS
-===================================================== */
-
 .stats-grid{
 
 display:grid;
@@ -817,10 +789,6 @@ margin-top:1px;
 }
 
 
-/* =====================================================
-   SECTION
-===================================================== */
-
 .section{
 
 margin-top:21px;
@@ -866,10 +834,6 @@ white-space:nowrap;
 
 }
 
-
-/* =====================================================
-   OFFER
-===================================================== */
 
 .offer-card{
 
@@ -1019,10 +983,6 @@ box-shadow:
 }
 
 
-/* =====================================================
-   SEARCH
-===================================================== */
-
 .search-box{
 
 background:var(--white);
@@ -1094,10 +1054,6 @@ color:#a2a9b3;
 }
 
 
-/* =====================================================
-   CATEGORIES
-===================================================== */
-
 .category-scroll{
 
 display:flex;
@@ -1163,10 +1119,6 @@ transform:scale(.96);
 
 }
 
-
-/* =====================================================
-   PRODUCT SECTION
-===================================================== */
 
 .product-section{
 
@@ -1281,13 +1233,21 @@ color:var(--blue-dark);
 
 font-weight:800;
 
-white-space:nowrap;
+line-height:1.4;
+
+white-space:normal;
 
 overflow:hidden;
 
 text-overflow:ellipsis;
 
-margin-bottom:4px;
+display:-webkit-box;
+
+-webkit-box-orient:vertical;
+
+-webkit-line-clamp:3;
+
+margin-bottom:6px;
 
 }
 
@@ -1301,6 +1261,8 @@ align-items:center;
 gap:7px;
 
 flex-wrap:wrap;
+
+min-height:17px;
 
 }
 
@@ -1316,6 +1278,8 @@ display:flex;
 align-items:center;
 
 gap:3px;
+
+white-space:nowrap;
 
 }
 
@@ -1340,6 +1304,8 @@ background:#f5f7fa;
 padding:3px 6px;
 
 border-radius:5px;
+
+white-space:nowrap;
 
 }
 
@@ -1395,10 +1361,6 @@ cursor:not-allowed;
 
 }
 
-
-/* =====================================================
-   EMPTY
-===================================================== */
 
 .empty-products{
 
@@ -1462,10 +1424,6 @@ line-height:1.6;
 }
 
 
-/* =====================================================
-   LOADING
-===================================================== */
-
 .loading{
 
 padding:35px 20px;
@@ -1491,10 +1449,6 @@ margin-bottom:9px;
 
 }
 
-
-/* =====================================================
-   FLOATING CONTACT
-===================================================== */
 
 .floating-contact{
 
@@ -1538,10 +1492,6 @@ transform:scale(.94);
 
 }
 
-
-/* =====================================================
-   BOTTOM NAV
-===================================================== */
 
 .bottom-nav{
 
@@ -1636,10 +1586,6 @@ transform:translateY(-1px);
 }
 
 
-/* =====================================================
-   TOAST
-===================================================== */
-
 .toast{
 
 position:fixed;
@@ -1690,10 +1636,6 @@ translate(-50%,0);
 
 }
 
-
-/* =====================================================
-   DESKTOP
-===================================================== */
 
 @media(min-width:700px){
 
@@ -1749,10 +1691,6 @@ right:calc(50% - 280px);
 
 <div class="page">
 
-
-<!-- =====================================================
-     HEADER
-===================================================== -->
 
 <header class="top-header">
 
@@ -1814,16 +1752,8 @@ Wallet
 </header>
 
 
-<!-- =====================================================
-     MAIN
-===================================================== -->
-
 <main>
 
-
-<!-- =====================================================
-     WALLET
-===================================================== -->
 
 <section class="wallet-card">
 
@@ -1947,10 +1877,6 @@ My Orders
 </section>
 
 
-<!-- =====================================================
-     STATS
-===================================================== -->
-
 <section class="stats-grid">
 
 
@@ -2014,10 +1940,6 @@ Referrals
 </section>
 
 
-<!-- =====================================================
-     OFFER
-===================================================== -->
-
 <section class="section">
 
 <div class="section-heading">
@@ -2065,10 +1987,6 @@ Browse available products and receive your purchase information immediately afte
 </section>
 
 
-<!-- =====================================================
-     SEARCH
-===================================================== -->
-
 <section class="section">
 
 <div class="search-box">
@@ -2086,10 +2004,6 @@ autocomplete="off"
 
 </section>
 
-
-<!-- =====================================================
-     CATEGORIES
-===================================================== -->
 
 <section class="section">
 
@@ -2122,10 +2036,6 @@ All
 </section>
 
 
-<!-- =====================================================
-     PRODUCTS
-===================================================== -->
-
 <section
 id="productsContainer"
 >
@@ -2146,10 +2056,6 @@ Loading products...
 </div>
 
 
-<!-- =====================================================
-     FLOATING CONTACT
-===================================================== -->
-
 <a
 class="floating-contact"
 href="https://t.me/"
@@ -2162,10 +2068,6 @@ aria-label="Contact"
 
 </a>
 
-
-<!-- =====================================================
-     BOTTOM NAV
-===================================================== -->
 
 <nav class="bottom-nav">
 
@@ -2248,10 +2150,6 @@ Menu
 </nav>
 
 
-<!-- =====================================================
-     TOAST
-===================================================== -->
-
 <div
 class="toast"
 id="toast"
@@ -2259,10 +2157,6 @@ id="toast"
 
 
 <script>
-
-/* =====================================================
-   DASHBOARD DATA
-===================================================== */
 
 let currentUser = null;
 
@@ -2274,10 +2168,6 @@ let orders = [];
 
 let activeCategory = "all";
 
-
-/* =====================================================
-   AUTH
-===================================================== */
 
 firebase.auth().onAuthStateChanged(
 async function(user){
@@ -2305,10 +2195,6 @@ await loadProducts();
 });
 
 
-/* =====================================================
-   USER
-===================================================== */
-
 async function loadUserInformation(){
 
 const displayName =
@@ -2323,10 +2209,6 @@ displayName;
 
 }
 
-
-/* =====================================================
-   MONEY
-===================================================== */
 
 function formatMoney(amount){
 
@@ -2344,10 +2226,6 @@ maximumFractionDigits:2
 
 }
 
-
-/* =====================================================
-   WALLET
-===================================================== */
 
 async function loadWallet(){
 
@@ -2412,10 +2290,6 @@ formatted;
 
 }
 
-
-/* =====================================================
-   ORDERS
-===================================================== */
 
 async function loadOrders(){
 
@@ -2498,10 +2372,6 @@ totalOrders;
 
 }
 
-
-/* =====================================================
-   PRODUCTS
-===================================================== */
 
 async function loadProducts(){
 
@@ -2586,7 +2456,7 @@ Please refresh the page and try again.
 
 
 /* =====================================================
-   CATEGORIES
+   CATEGORY BUTTONS
 ===================================================== */
 
 function buildCategoryButtons(){
@@ -2640,7 +2510,41 @@ categories.push(category);
 );
 
 
-categories.sort();
+/*
+   Giveaway Accounts always first.
+*/
+
+categories.sort(
+function(a,b){
+
+const aName =
+a.toLowerCase();
+
+const bName =
+b.toLowerCase();
+
+if(
+aName === "giveaway accounts" &&
+bName !== "giveaway accounts"
+){
+
+return -1;
+
+}
+
+if(
+aName !== "giveaway accounts" &&
+bName === "giveaway accounts"
+){
+
+return 1;
+
+}
+
+return aName.localeCompare(bName);
+
+}
+);
 
 
 categories.forEach(
@@ -2798,7 +2702,9 @@ return;
 }
 
 
-/* GROUP BY CATEGORY */
+/* =====================================================
+   GROUP BY CATEGORY
+===================================================== */
 
 const groups = {};
 
@@ -2828,11 +2734,54 @@ product
 );
 
 
+/* =====================================================
+   ORDER CATEGORIES
+===================================================== */
+
+const orderedCategories =
+Object.keys(groups)
+.sort(
+function(a,b){
+
+const aName =
+a.toLowerCase();
+
+const bName =
+b.toLowerCase();
+
+
+if(
+aName === "giveaway accounts" &&
+bName !== "giveaway accounts"
+){
+
+return -1;
+
+}
+
+
+if(
+aName !== "giveaway accounts" &&
+bName === "giveaway accounts"
+){
+
+return 1;
+
+}
+
+
+return aName.localeCompare(
+bName
+);
+
+}
+);
+
+
 let html = "";
 
 
-Object.keys(groups)
-.forEach(
+orderedCategories.forEach(
 function(category){
 
 const categoryProducts =
@@ -2919,10 +2868,16 @@ const productId =
 product.id;
 
 
-const name =
-escapeHtml(
+const productName =
+String(
 product.name ||
 "Product"
+);
+
+
+const name =
+escapeHtml(
+productName
 );
 
 
@@ -2947,6 +2902,16 @@ product.stockCount ||
 );
 
 
+/* =====================================================
+   PRODUCT IMAGE
+===================================================== */
+
+const isFacebook =
+productName
+.toLowerCase()
+.includes("facebook");
+
+
 let imageHTML = `
 
 <i
@@ -2956,7 +2921,27 @@ class="fa-solid fa-box"
 `;
 
 
+if(isFacebook){
+
+imageHTML = `
+
+<i
+class="fa-brands fa-facebook"
+style="font-size:24px;"
+></i>
+
+`;
+
+}
+
+
 if(product.image){
+
+const fallbackIcon =
+isFacebook
+? "fa-brands fa-facebook"
+: "fa-solid fa-box";
+
 
 imageHTML = `
 
@@ -2967,7 +2952,7 @@ product.image
 alt="${name}"
 onerror="
 this.style.display='none';
-this.parentElement.innerHTML='<i class=&quot;fa-solid fa-box&quot;></i>';
+this.parentElement.innerHTML='<i class=&quot;${fallbackIcon}&quot; style=&quot;font-size:24px;&quot;></i>';
 "
 >
 
@@ -2975,6 +2960,10 @@ this.parentElement.innerHTML='<i class=&quot;fa-solid fa-box&quot;></i>';
 
 }
 
+
+/* =====================================================
+   BUY BUTTON
+===================================================== */
 
 let buyButton = "";
 
@@ -3017,6 +3006,10 @@ Sold Out
 
 }
 
+
+/* =====================================================
+   RETURN PRODUCT CARD
+===================================================== */
 
 return `
 
