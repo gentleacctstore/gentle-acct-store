@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Gentle Acct Store | Digital Marketplace</title>
+
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #ffffff;
+      color: #10213b;
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    /* ================= NAVBAR ================= */
+
+    header {
+      background: rgba(255,255,255,.94);
+      border-bottom: 1px solid #e8eef7;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(14px);
+    }
+
+    .nav {
+      max-width: 1180px;
+      height: 70px;
+      margin: auto;
+      padding: 0 18px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+
+      color: #10213b;
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .logo-box {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: linear-gradient(135deg,#0757d5,#1780ff);
+      color: white;
+
+      font-weight: 900;
+      font-size: 18px;
+
+      box-shadow: 0 7px 16px rgba(7,87,213,.22);
+    }
+
+    .logo span {
+      color: #1264e8;
+    }
+
+    .nav-links {
+      display: none;
+      gap: 28px;
+    }
+
+    .nav-links a {
+      color: #52647c;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .nav-links a:hover {
+      color: #1264e8;
+    }
+
+    .sign-in {
+      color: #1264e8;
+      border: 1px solid #d7e5f8;
+      background: #f5f9ff;
+
+      padding: 9px 15px;
+      border-radius: 9px;
+
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    /* ================= HERO ================= */
+
+    .hero {
+      background:
+        radial-gradient(
+          circle at 90% 10%,
+          rgba(37,126,255,.18),
+          transparent 30%
+        ),
+        radial-gradient(
+          circle at 10% 80%,
+          rgba(18,100,232,.08),
+          transparent 28%
+        ),
+        linear-gradient(180deg,#f5f9ff,#ffffff);
+
+      min-height: 650px;
+
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-content {
+      max-width: 920px;
+      margin: auto;
+      padding: 82px 20px 70px;
+
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+
+      background: #eaf3ff;
+      color: #1264e8;
+
+      padding: 8px 13px;
+      border-radius: 30px;
+
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: .7px;
+
+      margin-bottom: 22px;
+    }
+
+    .eyebrow i {
+      font-size: 11px;
+    }
+
+    .hero h1 {
+      max-width: 820px;
+      margin: auto;
+
+      font-size: clamp(43px,10vw,76px);
+      line-height: .98;
+      letter-spacing: -3px;
+
+      color: #081d38;
+    }
+
+    .hero h1 span {
+      color: #1264e8;
+    }
+
+    .hero-description {
+      max-width: 610px;
+      margin: 27px auto 0;
+
+      color: #6b7b91;
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+
+      gap: 11px;
+      margin-top: 31px;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+
+      padding: 14px 21px;
+      border-radius: 11px;
+
+      font-size: 13px;
+      font-weight: 800;
+
+      transition: .2s;
+    }
+
+    .primary-btn {
+      background: #1264e8;
+      color: white;
+
+      box-shadow: 0 12px 28px rgba(18,100,232,.22);
+    }
+
+    .secondary-btn {
+      background: white;
+      color: #1264e8;
+      border: 1px solid #d7e2f1;
+    }
+
+    .primary-btn:hover,
+    .secondary-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .hero-trust {
+      margin-top: 34px;
+
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 18px;
+
+      color: #7b899d;
+      font-size: 11px;
+    }
+
+    .hero-trust span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hero-trust i {
+      color: #1264e8;
+    }
+
+    /* ================= GENERAL ================= */
+
+    .container {
+      max-width: 1180px;
+      margin: auto;
+      padding: 0 20px;
+    }
+
+    .section {
+      padding: 85px 0;
+    }
+
+    .section-label {
+      color: #1264e8;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-size: clamp(30px,6vw,45px);
+      line-height: 1.1;
+      color: #0b1d35;
+      letter-spacing: -1px;
+    }
+
+    .section-description {
+      color: #738196;
+      max-width: 570px;
+      margin-top: 15px;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    /* ================= ABOUT ================= */
+
+    .intro {
+      background: white;
+    }
+
+    .intro-grid {
+      display: grid;
+      gap: 35px;
+      align-items: center;
+    }
+
+    .intro-card {
+      background:
+        radial-gradient(
+          circle at 80% 20%,
+          rgba(18,100,232,.12),
+          transparent 35%
+        ),
+        #f1f6ff;
+
+      border-radius: 25px;
+      padding: 35px;
+      min-height: 300px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      text-align: center;
+    }
+
+    .intro-card-icon {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 18px;
+
+      border-radius: 20px;
+
+      background: white;
+      color: #1264e8;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 30px;
+
+      box-shadow: 0 10px 25px rgba(18,100,232,.10);
+    }
+
+    .intro-card h3 {
+      font-size: 20px;
+    }
+
+    .intro-card p {
+      color: #718096;
+      font-size: 13px;
+      margin-top: 7px;
+    }
+
+    /* ================= BENEFITS ================= */
+
+    .benefits {
+      background: #f7faff;
+    }
+
+    .benefit-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 15px;
+      margin-top: 40px;
+    }
+
+    .benefit {
+      background: white;
+      border: 1px solid #e5ebf4;
+      border-radius: 18px;
+      padding: 25px;
+
+      transition: .2s;
+    }
+
+    .benefit:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 25px rgba(16,33,59,.06);
+    }
+
+    .benefit-icon {
+      width: 48px;
+      height: 48px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: #eaf3ff;
+      color: #1264e8;
+
+      border-radius: 13px;
+
+      font-size: 20px;
+      margin-bottom: 17px;
+    }
+
+    .benefit h3 {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .benefit p {
+      color: #758399;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    /* ================= HOW IT WORKS ================= */
+
+    .steps {
+      margin-top: 45px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+
+      padding: 20px;
+
+      border: 1px solid #e5ebf4;
+      border-radius: 16px;
+
+      background: white;
+    }
+
+    .step-number {
+      flex-shrink: 0;
+
+      width: 43px;
+      height: 43px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 13px;
+
+      background: #1264e8;
+      color: white;
+
+      font-weight: 900;
+    }
+
+    .step h3 {
+      font-size: 15px;
+    }
+
+    .step p {
+      color: #748297;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    /* ================= STORE PREVIEW ================= */
+
+    .preview-section {
+      background: #f7faff;
+    }
+
+    .preview {
+      margin-top: 40px;
+
+      background: #071a35;
+      color: white;
+
+      border-radius: 25px;
+      padding: 27px;
+
+      overflow: hidden;
+
+      box-shadow: 0 18px 35px rgba(7,26,53,.12);
+    }
+
+    .preview-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      margin-bottom: 23px;
+    }
+
+    .preview-top strong {
+      font-size: 14px;
+    }
+
+    .preview-top small {
+      color: #8ea0b8;
+      font-size: 10px;
+    }
+
+    .preview-status {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+
+      color: #53d69d;
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .preview-boxes {
+      display: grid;
+      grid-template-columns: repeat(2,1fr);
+      gap: 12px;
+    }
+
+    .preview-box {
+      min-height: 130px;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.08);
+
+      border-radius: 15px;
+      text-align: center;
+
+      transition: .2s;
+    }
+
+    .preview-box:hover {
+      background: rgba(255,255,255,.1);
+    }
+
+    .preview-box div {
+      width: 43px;
+      height: 43px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: rgba(255,255,255,.09);
+      border-radius: 12px;
+
+      color: #69a9ff;
+      font-size: 17px;
+
+      margin-bottom: 10px;
+    }
+
+    .preview-box strong {
+      font-size: 12px;
+    }
+
+    .preview-box small {
+      color: #91a2ba;
+      font-size: 10px;
+      margin-top: 3px;
+    }
+
+    /* ================= ACCOUNT CTA ================= */
+
+    .account-section {
+      background: white;
+    }
+
+    .account-box {
+      background:
+        radial-gradient(
+          circle at 90% 10%,
+          rgba(255,255,255,.13),
+          transparent 30%
+        ),
+        linear-gradient(135deg,#0d55c7,#1264e8);
+
+      color: white;
+
+      border-radius: 25px;
+      padding: 48px 25px;
+
+      text-align: center;
+
+      box-shadow: 0 18px 35px rgba(18,100,232,.18);
+    }
+
+    .account-icon {
+      width: 48px;
+      height: 48px;
+
+      margin: 0 auto 17px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: rgba(255,255,255,.13);
+      border-radius: 14px;
+
+      font-size: 18px;
+    }
+
+    .account-box h2 {
+      font-size: clamp(30px,7vw,45px);
+      line-height: 1.1;
+    }
+
+    .account-box p {
+      max-width: 530px;
+      margin: 15px auto 0;
+
+      color: #dceaff;
+      font-size: 14px;
+    }
+
+    .account-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+
+      margin-top: 25px;
+
+      background: white;
+      color: #1264e8;
+
+      padding: 14px 22px;
+
+      border-radius: 11px;
+
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    /* ================= FAQ ================= */
+
+    .faq {
+      background: #f7faff;
+    }
+
+    .faq-list {
+      margin-top: 40px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .faq-item {
+      background: white;
+      border: 1px solid #e5ebf4;
+      border-radius: 14px;
+      padding: 20px;
+    }
+
+    .faq-question {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .faq-question i {
+      color: #1264e8;
+      font-size: 14px;
+    }
+
+    .faq-item h3 {
+      font-size: 14px;
+    }
+
+    .faq-item p {
+      color: #758399;
+      font-size: 12px;
+      margin-top: 8px;
+      line-height: 1.6;
+      padding-left: 24px;
+    }
+
+    /* ================= FOOTER ================= */
+
+    footer {
+      background: #071a35;
+      color: white;
+      padding: 55px 20px 25px;
+    }
+
+    .footer-grid {
+      max-width: 1180px;
+      margin: auto;
+
+      display: grid;
+      gap: 35px;
+    }
+
+    .footer-brand p {
+      color: #91a0b5;
+      font-size: 13px;
+      max-width: 330px;
+      margin-top: 12px;
+      line-height: 1.7;
+    }
+
+    footer h3 {
+      font-size: 14px;
+      margin-bottom: 13px;
+    }
+
+    footer a {
+      display: block;
+      color: #91a0b5;
+      font-size: 12px;
+      margin: 9px 0;
+    }
+
+    footer a:hover {
+      color: white;
+    }
+
+    .copyright {
+      max-width: 1180px;
+      margin: 40px auto 0;
+
+      border-top: 1px solid rgba(255,255,255,.1);
+      padding-top: 20px;
+
+      color: #718096;
+      font-size: 11px;
+    }
+
+    /* ================= DESKTOP ================= */
+
+    @media (min-width: 700px) {
+
+      .nav-links {
+        display: flex;
+      }
+
+      .intro-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .benefit-grid {
+        grid-template-columns: repeat(3,1fr);
+      }
+
+      .steps {
+        grid-template-columns: repeat(3,1fr);
+      }
+
+      .footer-grid {
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+
+  <!-- ================= NAVIGATION ================= -->
+
+  <header>
+
+    <nav class="nav">
+
+      <a href="index.html" class="logo">
+
+        <div class="logo-box">
+          G
+        </div>
+
+        Gentle <span>Acct</span> Store
+
+      </a>
+
+
+      <div class="nav-links">
+
+        <a href="#about">
+          About
+        </a>
+
+        <a href="#how">
+          How It Works
+        </a>
+
+        <a href="#faq">
+          FAQ
+        </a>
+
+      </div>
+
+
+      <a href="login.html" class="sign-in">
+        Sign In
+      </a>
+
+    </nav>
+
+  </header>
+
+
+  <!-- ================= HERO ================= -->
+
+  <section class="hero">
+
+    <div class="hero-content">
+
+      <div class="eyebrow">
+
+        <i class="fa-solid fa-store"></i>
+
+        WELCOME TO GENTLE ACCT STORE
+
+      </div>
+
+
+      <h1>
+
+        Your digital store,
+        <span>made simple.</span>
+
+      </h1>
+
+
+      <p class="hero-description">
+
+        Create your account and discover a simple,
+        modern marketplace built to make your
+        digital shopping experience easier.
+
+      </p>
+
+
+      <div class="hero-buttons">
+
+        <a
+          href="signup.html"
+          class="primary-btn">
+
+          Create Account
+
+          <i class="fa-solid fa-arrow-right"></i>
+
+        </a>
+
+
+        <a
+          href="login.html"
+          class="secondary-btn">
+
+          <i class="fa-solid fa-right-to-bracket"></i>
+
+          Sign In
+
+        </a>
+
+      </div>
+
+
+      <div class="hero-trust">
+
+        <span>
+          <i class="fa-solid fa-circle-check"></i>
+          Simple shopping
+        </span>
+
+        <span>
+          <i class="fa-solid fa-mobile-screen"></i>
+          Mobile friendly
+        </span>
+
+        <span>
+          <i class="fa-solid fa-bolt"></i>
+          Easy to use
+        </span>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================= ABOUT ================= -->
+
+  <section class="section intro" id="about">
+
+    <div class="container">
+
+      <div class="intro-grid">
+
+        <div>
+
+          <div class="section-label">
+            About us
+          </div>
+
+          <h2 class="section-title">
+            A better way to shop digitally.
+          </h2>
+
+          <p class="section-description">
+
+            Gentle Acct Store is being built as a clean,
+            convenient digital marketplace where customers
+            can create an account, access their dashboard
+            and browse available products in one place.
+
+          </p>
+
+        </div>
+
+
+        <div class="intro-card">
+
+          <div>
+
+            <div class="intro-card-icon">
+
+              <i class="fa-solid fa-bag-shopping"></i>
+
+            </div>
+
+            <h3>
+              Everything in one place
+            </h3>
+
+            <p>
+              Your account, products and shopping
+              experience will all be connected.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================= BENEFITS ================= -->
+
+  <section class="section benefits">
+
+    <div class="container">
+
+      <div class="section-label">
+        Why Gentle Acct Store
+      </div>
+
+      <h2 class="section-title">
+        Simple. Clean. Convenient.
+      </h2>
+
+      <p class="section-description">
+
+        We're creating the store around a straightforward
+        customer experience.
+
+      </p>
+
+
+      <div class="benefit-grid">
+
+
+        <div class="benefit">
+
+          <div class="benefit-icon">
+
+            <i class="fa-solid fa-user-shield"></i>
+
+          </div>
+
+          <h3>
+            Personal account
+          </h3>
+
+          <p>
+
+            Create your own account and access
+            your customer dashboard.
+
+          </p>
+
+        </div>
+
+
+        <div class="benefit">
+
+          <div class="benefit-icon">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+          </div>
+
+          <h3>
+            Easy browsing
+          </h3>
+
+          <p>
+
+            Find products easily through a clean
+            and organized store.
+
+          </p>
+
+        </div>
+
+
+        <div class="benefit">
+
+          <div class="benefit-icon">
+
+            <i class="fa-solid fa-mobile-screen-button"></i>
+
+          </div>
+
+          <h3>
+            Mobile friendly
+          </h3>
+
+          <p>
+
+            Designed to look good and work smoothly
+            on your phone.
+
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================= HOW IT WORKS ================= -->
+
+  <section class="section" id="how">
+
+    <div class="container">
+
+      <div class="section-label">
+        How it works
+      </div>
+
+      <h2 class="section-title">
+        Get started in three steps.
+      </h2>
+
+      <p class="section-description">
+
+        Your journey through Gentle Acct Store
+        starts with creating your account.
+
+      </p>
+
+
+      <div class="steps">
+
+
+        <div class="step">
+
+          <div class="step-number">
+            1
+          </div>
+
+          <div>
+
+            <h3>
+              Create your account
+            </h3>
+
+            <p>
+
+              Sign up with your details to
+              create your customer account.
+
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="step">
+
+          <div class="step-number">
+            2
+          </div>
+
+          <div>
+
+            <h3>
+              Sign in
+            </h3>
+
+            <p>
+
+              Use your account details to
+              enter your personal dashboard.
+
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="step">
+
+          <div class="step-number">
+            3
+          </div>
+
+          <div>
+
+            <h3>
+              Browse the store
+            </h3>
+
+            <p>
+
+              Explore available products from
+              inside your customer dashboard.
+
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================= STORE PREVIEW ================= -->
+
+  <section class="section preview-section">
+
+    <div class="container">
+
+      <div class="section-label">
+        Inside your account
+      </div>
+
+      <h2 class="section-title">
+        Your store experience starts here.
+      </h2>
+
+      <p class="section-description">
+
+        After signing in, customers will have access
+        to their own dashboard and store.
+
+      </p>
+
+
+      <div class="preview">
+
+        <div class="preview-top">
+
+          <div>
+
+            <strong>
+              Customer Dashboard
+            </strong>
+
+            <br>
+
+            <small>
+              Your personal shopping space
+            </small>
+
+          </div>
+
+
+          <div class="preview-status">
+
+            <i class="fa-solid fa-circle"></i>
+
+            READY
+
+          </div>
+
+        </div>
+
+
+        <div class="preview-boxes">
+
+
+          <div class="preview-box">
+
+            <div>
+              <i class="fa-solid fa-bag-shopping"></i>
+            </div>
+
+            <strong>
+              Browse Products
+            </strong>
+
+            <small>
+              Explore the store
+            </small>
+
+          </div>
+
+
+          <div class="preview-box">
+
+            <div>
+              <i class="fa-solid fa-cart-shopping"></i>
+            </div>
+
+            <strong>
+              Shopping
+            </strong>
+
+            <small>
+              Manage your purchases
+            </small>
+
+          </div>
+
+
+          <div class="preview-box">
+
+            <div>
+              <i class="fa-solid fa-user"></i>
+            </div>
+
+            <strong>
+              My Account
+            </strong>
+
+            <small>
+              Manage your profile
+            </small>
+
+          </div>
+
+
+          <div class="preview-box">
+
+            <div>
+              <i class="fa-solid fa-headset"></i>
+            </div>
+
+            <strong>
+              Support
+            </strong>
+
+            <small>
+              Get assistance
+            </small>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================= ACCOUNT CTA ================= -->
+
+  <section class="section account-section">
+
+    <div class="container">
+
+      <div class="account-box">
+
+        <div class="account-icon">
+
+          <i class="fa-solid fa-user-plus"></i>
+
+        </div>
+
+        <h2>
+          Ready to get started?
+        </h2>
+
+        <p>
+
+          Create your Gentle Acct Store account
+          and be ready to explore the marketplace.
+
+        </p>
+
+
+        <a
+          href="signup.html"
+          class="account-btn">
+
+          Create Your Account
+
+          <i class="fa-solid fa-arrow-right"></i>
+
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================= FAQ ================= -->
+
+  <section class="section faq" id="faq">
+
+    <div class="container">
+
+      <div class="section-label">
+        FAQ
+      </div>
+
+      <h2 class="section-title">
+        Frequently asked questions.
+      </h2>
+
+
+      <div class="faq-list">
+
+
+        <div class="faq-item">
+
+          <div class="faq-question">
+
+            <i class="fa-solid fa-circle-question"></i>
+
+            <h3>
+              Do I need an account to browse the store?
+            </h3>
+
+          </div>
+
+          <p>
+
+            Yes. Gentle Acct Store is being designed
+            so customers create an account before
+            accessing the store.
+
+          </p>
+
+        </div>
+
+
+        <div class="faq-item">
+
+          <div class="faq-question">
+
+            <i class="fa-solid fa-circle-question"></i>
+
+            <h3>
+              Where will I find the products?
+            </h3>
+
+          </div>
+
+          <p>
+
+            Products will appear inside your customer
+            dashboard after you sign in.
+
+          </p>
+
+        </div>
+
+
+        <div class="faq-item">
+
+          <div class="faq-question">
+
+            <i class="fa-solid fa-circle-question"></i>
+
+            <h3>
+              Can I use the website on my phone?
+            </h3>
+
+          </div>
+
+          <p>
+
+            Yes. The website is being designed
+            specifically to work well on mobile devices.
+
+          </p>
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================= FOOTER ================= -->
+
+  <footer>
+
+    <div class="footer-grid">
+
+
+      <div class="footer-brand">
+
+        <a href="index.html" class="logo">
+
+          <div class="logo-box">
+            G
+          </div>
+
+          Gentle <span>Acct</span> Store
+
+        </a>
+
+        <p>
+
+          A modern digital marketplace built
+          with simplicity and convenience in mind.
+
+        </p>
+
+      </div>
+
+
+      <div>
+
+        <h3>
+          Explore
+        </h3>
+
+        <a href="#about">
+          About
+        </a>
+
+        <a href="#how">
+          How It Works
+        </a>
+
+        <a href="#faq">
+          FAQ
+        </a>
+
+      </div>
+
+
+      <div>
+
+        <h3>
+          Account
+        </h3>
+
+        <a href="signup.html">
+          Create Account
+        </a>
+
+        <a href="login.html">
+          Sign In
+        </a>
+
+      </div>
+
+
+      <div>
+
+        <h3>
+          Help
+        </h3>
+
+        <a href="#faq">
+          FAQ
+        </a>
+
+        <a href="login.html">
+          Customer Account
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <div class="copyright">
+
+      © 2026 Gentle Acct Store. All rights reserved.
+
+    </div>
+
+  </footer>
+
+
+</body>
+</html>

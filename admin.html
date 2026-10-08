@@ -1,0 +1,1950 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>Admin Dashboard - Gentle Acct Store</title>
+
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+>
+
+<style>
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:Arial,sans-serif;
+  background:#f5f8fc;
+  color:#172033;
+}
+
+header{
+  background:white;
+  padding:18px;
+  border-bottom:1px solid #e6ebf2;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky;
+  top:0;
+  z-index:20;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color:#0866ff;
+  font-size:20px;
+  font-weight:800;
+}
+
+.logo i{
+  font-size:24px;
+}
+
+.header-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.back,
+.logout{
+  border:none;
+  text-decoration:none;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+  border-radius:10px;
+  padding:9px 11px;
+}
+
+.back{
+  color:#555;
+  background:#f2f4f7;
+}
+
+.logout{
+  color:#dc2626;
+  background:#fff0f0;
+}
+
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:25px 16px 50px;
+}
+
+.hero{
+  margin-bottom:22px;
+}
+
+.hero h1{
+  font-size:28px;
+  margin-bottom:7px;
+}
+
+.hero p{
+  color:#6b7280;
+  font-size:14px;
+}
+
+/* STATS */
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  margin-bottom:25px;
+}
+
+.stat{
+  background:white;
+  border-radius:18px;
+  padding:18px;
+  border:1px solid #e8edf4;
+  box-shadow:0 6px 20px rgba(20,40,80,.05);
+}
+
+.stat-icon{
+  width:42px;
+  height:42px;
+  border-radius:13px;
+  background:#edf4ff;
+  color:#0866ff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:12px;
+}
+
+.stat h3{
+  font-size:22px;
+  margin-bottom:4px;
+}
+
+.stat p{
+  color:#7b8494;
+  font-size:12px;
+}
+
+/* SECTION */
+
+.section-card{
+  background:white;
+  border-radius:20px;
+  padding:20px;
+  border:1px solid #e8edf4;
+  box-shadow:0 8px 25px rgba(20,40,80,.06);
+  margin-bottom:28px;
+}
+
+.section-title{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:18px;
+}
+
+.section-title i{
+  color:#0866ff;
+}
+
+.section-title h2{
+  font-size:19px;
+}
+
+/* ADD PRODUCT */
+
+.field{
+  margin-bottom:15px;
+}
+
+.field label{
+  display:block;
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:7px;
+}
+
+.field input,
+.field select,
+.field textarea{
+  width:100%;
+  border:1px solid #dce3ed;
+  border-radius:12px;
+  padding:13px;
+  font-size:14px;
+  outline:none;
+  background:#fbfcfe;
+}
+
+.field textarea{
+  min-height:110px;
+  resize:vertical;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+  border-color:#0866ff;
+  background:white;
+}
+
+.add-btn{
+  width:100%;
+  border:none;
+  background:#0866ff;
+  color:white;
+  padding:14px;
+  border-radius:12px;
+  font-weight:700;
+  font-size:15px;
+  cursor:pointer;
+}
+
+.add-btn:hover{
+  background:#0054d9;
+}
+
+/* PRODUCTS */
+
+.products-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:15px;
+}
+
+.products-head h2{
+  font-size:20px;
+}
+
+.product-count{
+  background:#edf4ff;
+  color:#0866ff;
+  padding:7px 11px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:700;
+}
+
+.products{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:16px;
+}
+
+.product{
+  background:white;
+  border-radius:20px;
+  padding:16px;
+  border:1px solid #e8edf4;
+  box-shadow:0 7px 22px rgba(20,40,80,.06);
+}
+
+.product-top{
+  display:flex;
+  gap:13px;
+  align-items:center;
+}
+
+.product-img{
+  width:62px;
+  height:62px;
+  border-radius:15px;
+  background:#edf4ff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  flex-shrink:0;
+}
+
+.product-img img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.product-img i{
+  color:#0866ff;
+  font-size:22px;
+}
+
+.product-info{
+  flex:1;
+  min-width:0;
+}
+
+.product-info h3{
+  font-size:16px;
+  margin-bottom:5px;
+}
+
+.category{
+  display:inline-block;
+  background:#f0f4f9;
+  color:#64748b;
+  padding:4px 8px;
+  border-radius:7px;
+  font-size:10px;
+  font-weight:700;
+  text-transform:capitalize;
+}
+
+.product-price{
+  color:#0866ff;
+  font-size:18px;
+  font-weight:800;
+  margin-top:13px;
+}
+
+.stock{
+  margin-top:8px;
+  font-size:12px;
+  font-weight:700;
+}
+
+.in-stock{
+  color:#159447;
+}
+
+.out-stock{
+  color:#dc2626;
+}
+
+.description{
+  color:#737d8c;
+  font-size:13px;
+  line-height:1.5;
+  margin-top:10px;
+}
+
+.actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+  margin-top:15px;
+}
+
+.action{
+  text-decoration:none;
+  text-align:center;
+  padding:11px;
+  border-radius:10px;
+  font-size:13px;
+  font-weight:700;
+}
+
+.edit{
+  background:#edf4ff;
+  color:#0866ff;
+}
+
+.delete{
+  background:#fff0f0;
+  color:#dc2626;
+}
+
+/* ORDERS */
+
+.orders-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:15px;
+}
+
+.orders-head h2{
+  font-size:20px;
+}
+
+.order-count{
+  background:#edf4ff;
+  color:#0866ff;
+  padding:7px 11px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:700;
+}
+
+.orders{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:14px;
+}
+
+.order{
+  background:white;
+  border:1px solid #e8edf4;
+  border-radius:18px;
+  padding:16px;
+  box-shadow:0 6px 20px rgba(20,40,80,.05);
+}
+
+.order-top{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+}
+
+.order-icon{
+  width:48px;
+  height:48px;
+  border-radius:13px;
+  background:#edf4ff;
+  color:#0866ff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+
+.order-main{
+  flex:1;
+  min-width:0;
+}
+
+.order-main h3{
+  font-size:15px;
+  margin-bottom:5px;
+}
+
+.order-email{
+  color:#7b8494;
+  font-size:11px;
+  word-break:break-word;
+}
+
+.order-status{
+  background:#e9f8f0;
+  color:#16834b;
+  border-radius:20px;
+  padding:5px 8px;
+  font-size:9px;
+  font-weight:800;
+  white-space:nowrap;
+}
+
+.order-details{
+  border-top:1px solid #edf0f5;
+  margin-top:14px;
+  padding-top:13px;
+}
+
+.order-row{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  margin-bottom:9px;
+  font-size:12px;
+}
+
+.order-row:last-child{
+  margin-bottom:0;
+}
+
+.order-row span:first-child{
+  color:#8a94a6;
+}
+
+.order-row span:last-child{
+  font-weight:700;
+  text-align:right;
+  word-break:break-word;
+}
+
+.order-amount{
+  color:#0866ff;
+}
+
+.purchase-info{
+  background:#f7faff;
+  border:1px solid #dfe8f5;
+  border-radius:13px;
+  padding:13px;
+  margin-top:14px;
+}
+
+.purchase-title{
+  color:#0866ff;
+  font-size:11px;
+  font-weight:800;
+  margin-bottom:8px;
+}
+
+.purchase-text{
+  background:white;
+  border:1px solid #e2e8f1;
+  border-radius:9px;
+  padding:10px;
+  color:#39465a;
+  font-size:12px;
+  line-height:1.5;
+  white-space:pre-wrap;
+  word-break:break-word;
+}
+
+/* EMPTY */
+
+.empty{
+  background:white;
+  border:1px dashed #cfd8e5;
+  border-radius:18px;
+  padding:40px 20px;
+  text-align:center;
+  color:#7a8493;
+}
+
+.empty i{
+  font-size:35px;
+  color:#aab6c7;
+  margin-bottom:12px;
+}
+
+.empty h3{
+  color:#263247;
+  margin-bottom:5px;
+}
+
+/* DESKTOP */
+
+@media(min-width:650px){
+
+  .stats{
+    grid-template-columns:repeat(5,1fr);
+  }
+
+  .products{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .orders{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+}
+
+@media(min-width:950px){
+
+  .products{
+    grid-template-columns:repeat(3,1fr);
+  }
+
+  .orders{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .container{
+    padding-top:35px;
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<script>
+
+/* =========================
+   ADMIN SESSION PROTECTION
+========================= */
+
+if(
+  localStorage.getItem(
+    "gentleAdminLoggedIn"
+  ) !== "true"
+){
+
+  window.location.replace(
+    "login.html"
+  );
+
+}
+
+</script>
+
+
+<header>
+
+  <div class="logo">
+
+    <i class="fa-solid fa-shield-halved"></i>
+
+    Gentle Admin
+
+  </div>
+
+
+  <div class="header-actions">
+
+    <a
+      href="customers.html"
+      class="back"
+    >
+
+      <i class="fa-solid fa-users"></i>
+
+      Customers
+
+    </a>
+
+
+    <a
+      href="dashboard.html"
+      class="back"
+    >
+
+      <i class="fa-solid fa-arrow-left"></i>
+
+      Store
+
+    </a>
+
+
+    <button
+      class="logout"
+      onclick="adminLogout()"
+    >
+
+      <i class="fa-solid fa-right-from-bracket"></i>
+
+      Logout
+
+    </button>
+
+  </div>
+
+</header>
+
+
+<div class="container">
+
+
+  <div class="hero">
+
+    <h1>
+      Admin Dashboard
+    </h1>
+
+    <p>
+      Manage your products, inventory, customers and store listings.
+    </p>
+
+  </div>
+
+
+  <!-- STATISTICS -->
+
+  <div class="stats">
+
+
+    <div class="stat">
+
+      <div class="stat-icon">
+
+        <i class="fa-solid fa-box"></i>
+
+      </div>
+
+      <h3 id="totalProducts">
+        0
+      </h3>
+
+      <p>
+        Total Products
+      </p>
+
+    </div>
+
+
+    <div class="stat">
+
+      <div class="stat-icon">
+
+        <i class="fa-solid fa-circle-check"></i>
+
+      </div>
+
+      <h3 id="inStock">
+        0
+      </h3>
+
+      <p>
+        In Stock
+      </p>
+
+    </div>
+
+
+    <div class="stat">
+
+      <div class="stat-icon">
+
+        <i class="fa-solid fa-circle-xmark"></i>
+
+      </div>
+
+      <h3 id="outStock">
+        0
+      </h3>
+
+      <p>
+        Out of Stock
+      </p>
+
+    </div>
+
+
+    <div class="stat">
+
+      <div class="stat-icon">
+
+        <i class="fa-solid fa-naira-sign"></i>
+
+      </div>
+
+      <h3 id="inventoryValue">
+        ₦0
+      </h3>
+
+      <p>
+        Inventory Value
+      </p>
+
+    </div>
+
+
+    <div class="stat">
+
+      <div class="stat-icon">
+
+        <i class="fa-solid fa-users"></i>
+
+      </div>
+
+      <h3 id="totalCustomers">
+        0
+      </h3>
+
+      <p>
+        Customers
+      </p>
+
+    </div>
+
+
+  </div>
+
+
+  <!-- ADD PRODUCT -->
+
+  <div class="section-card">
+
+
+    <div class="section-title">
+
+      <i class="fa-solid fa-plus-circle"></i>
+
+      <h2>
+        Add New Product
+      </h2>
+
+    </div>
+
+
+    <div class="field">
+
+      <label>
+        Product Name
+      </label>
+
+      <input
+        id="name"
+        type="text"
+        placeholder="Example: USA Number"
+      >
+
+    </div>
+
+
+    <div class="field">
+
+      <label>
+        Category
+      </label>
+
+      <select id="category">
+
+        <option value="instagram">
+          Instagram
+        </option>
+
+        <option value="facebook">
+          Facebook
+        </option>
+
+        <option value="tiktok">
+          TikTok
+        </option>
+
+        <option value="other">
+          Other
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <div class="field">
+
+      <label>
+        Price (₦)
+      </label>
+
+      <input
+        id="price"
+        type="number"
+        placeholder="5000"
+      >
+
+    </div>
+
+
+    <div class="field">
+
+      <label>
+        Product Image URL
+      </label>
+
+      <input
+        id="image"
+        type="text"
+        placeholder="https://example.com/image.jpg"
+      >
+
+    </div>
+
+
+    <div class="field">
+
+      <label>
+        Product Description
+      </label>
+
+      <textarea
+        id="description"
+        placeholder="Write a short description of the product..."
+      ></textarea>
+
+    </div>
+
+
+    <div class="field">
+
+      <label>
+        Inventory / Stock Items
+      </label>
+
+      <textarea
+        id="inventory"
+        placeholder="Enter one inventory item per line&#10;Item 1&#10;Item 2&#10;Item 3"
+      ></textarea>
+
+
+      <small
+        style="display:block;margin-top:7px;color:#7b8494;font-size:11px;"
+      >
+
+        Each line represents one inventory item that will be delivered after a successful purchase.
+
+      </small>
+
+    </div>
+
+
+    <button
+      class="add-btn"
+      onclick="addProduct()"
+    >
+
+      <i class="fa-solid fa-plus"></i>
+
+      Add Product
+
+    </button>
+
+
+  </div>
+
+
+  <!-- PRODUCTS -->
+
+  <div class="products-head">
+
+    <h2>
+      Products
+    </h2>
+
+
+    <span
+      class="product-count"
+      id="productCount"
+    >
+      0 Products
+    </span>
+
+  </div>
+
+
+  <div
+    id="products"
+    class="products"
+  ></div>
+
+
+  <!-- ORDERS -->
+
+  <div
+    class="section-card"
+    style="margin-top:30px;"
+  >
+
+
+    <div class="orders-head">
+
+      <h2>
+        Customer Orders
+      </h2>
+
+
+      <span
+        class="order-count"
+        id="orderCount"
+      >
+        0 Orders
+      </span>
+
+    </div>
+
+
+    <div
+      id="orders"
+      class="orders"
+    ></div>
+
+
+  </div>
+
+
+</div>
+
+
+<script>
+
+/* =========================
+   ADMIN LOGOUT
+========================= */
+
+function adminLogout(){
+
+  const confirmLogout =
+    confirm(
+      "Are you sure you want to logout?"
+    );
+
+
+  if(!confirmLogout){
+
+    return;
+
+  }
+
+
+  localStorage.removeItem(
+    "gentleAdminLoggedIn"
+  );
+
+
+  window.location.replace(
+    "login.html"
+  );
+
+}
+
+
+/* =========================
+   CUSTOMERS
+========================= */
+
+function getCustomers(){
+
+  const savedUsers =
+    localStorage.getItem(
+      "gentleUsers"
+    );
+
+
+  if(savedUsers){
+
+    try{
+
+      const users =
+        JSON.parse(
+          savedUsers
+        );
+
+
+      if(Array.isArray(users)){
+
+        return users;
+
+      }
+
+    }catch(error){}
+
+  }
+
+
+  const singleUser =
+    localStorage.getItem(
+      "gentleUser"
+    );
+
+
+  if(singleUser){
+
+    try{
+
+      const user =
+        JSON.parse(
+          singleUser
+        );
+
+
+      return [user];
+
+    }catch(error){}
+
+  }
+
+
+  return [];
+
+}
+
+
+function updateCustomerCount(){
+
+  const customers =
+    getCustomers();
+
+
+  document
+    .getElementById(
+      "totalCustomers"
+    )
+    .textContent =
+      customers.length;
+
+}
+
+
+/* =========================
+   PRODUCTS
+========================= */
+
+function getProducts(){
+
+  const saved =
+    localStorage.getItem(
+      "gentleProducts"
+    );
+
+
+  if(!saved){
+
+    return [];
+
+  }
+
+
+  try{
+
+    return JSON.parse(saved);
+
+  }catch(error){
+
+    return [];
+
+  }
+
+}
+
+
+function saveProducts(products){
+
+  localStorage.setItem(
+    "gentleProducts",
+    JSON.stringify(products)
+  );
+
+}
+
+
+/* =========================
+   ADD PRODUCT
+========================= */
+
+function addProduct(){
+
+  const name =
+    document
+      .getElementById("name")
+      .value
+      .trim();
+
+
+  const category =
+    document
+      .getElementById("category")
+      .value;
+
+
+  const price =
+    Number(
+      document
+        .getElementById("price")
+        .value
+    );
+
+
+  const image =
+    document
+      .getElementById("image")
+      .value
+      .trim();
+
+
+  const description =
+    document
+      .getElementById("description")
+      .value
+      .trim();
+
+
+  const inventoryText =
+    document
+      .getElementById("inventory")
+      .value
+      .trim();
+
+
+  if(
+    !name ||
+    !price ||
+    !inventoryText
+  ){
+
+    alert(
+      "Please enter the product name, price and inventory."
+    );
+
+    return;
+
+  }
+
+
+  const inventory =
+    inventoryText
+      .split("\n")
+      .map(
+        item => item.trim()
+      )
+      .filter(
+        item => item !== ""
+      );
+
+
+  if(inventory.length === 0){
+
+    alert(
+      "Please add at least one inventory item."
+    );
+
+    return;
+
+  }
+
+
+  const products =
+    getProducts();
+
+
+  const product = {
+
+    id: Date.now(),
+
+    name: name,
+
+    category: category,
+
+    price: price,
+
+    image: image,
+
+    description: description,
+
+    inventory: inventory
+
+  };
+
+
+  products.push(product);
+
+
+  saveProducts(products);
+
+
+  alert(
+    "Product added successfully."
+  );
+
+
+  document
+    .getElementById("name")
+    .value = "";
+
+
+  document
+    .getElementById("price")
+    .value = "";
+
+
+  document
+    .getElementById("image")
+    .value = "";
+
+
+  document
+    .getElementById("description")
+    .value = "";
+
+
+  document
+    .getElementById("inventory")
+    .value = "";
+
+
+  renderProducts();
+
+}
+
+
+/* =========================
+   RENDER PRODUCTS
+========================= */
+
+function renderProducts(){
+
+  const products =
+    getProducts();
+
+
+  const container =
+    document.getElementById(
+      "products"
+    );
+
+
+  document
+    .getElementById("productCount")
+    .textContent =
+      products.length +
+      (
+        products.length === 1
+        ? " Product"
+        : " Products"
+      );
+
+
+  updateStats(products);
+
+
+  if(products.length === 0){
+
+    container.innerHTML = `
+
+      <div class="empty">
+
+        <i class="fa-solid fa-box-open"></i>
+
+        <h3>
+          No products yet
+        </h3>
+
+        <p>
+          Add your first product above.
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  container.innerHTML = "";
+
+
+  products.forEach(
+    function(product){
+
+      const inventory =
+        Array.isArray(
+          product.inventory
+        )
+        ? product.inventory
+        : [];
+
+
+      const stock =
+        inventory.length;
+
+
+      const out =
+        stock === 0;
+
+
+      const card =
+        document.createElement(
+          "div"
+        );
+
+
+      card.className =
+        "product";
+
+
+      const imageHTML =
+        product.image
+
+        ?
+
+        `<img
+          src="${escapeHTML(product.image)}"
+          alt="${escapeHTML(product.name)}"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+        >
+
+        <i
+          class="fa-solid fa-box"
+          style="display:none;"
+        ></i>`
+
+        :
+
+        `<i class="fa-solid fa-box"></i>`;
+
+
+      card.innerHTML = `
+
+        <div class="product-top">
+
+          <div class="product-img">
+
+            ${imageHTML}
+
+          </div>
+
+
+          <div class="product-info">
+
+            <h3>
+              ${escapeHTML(product.name)}
+            </h3>
+
+
+            <span class="category">
+
+              ${escapeHTML(product.category)}
+
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="product-price">
+
+          ₦${Number(product.price)
+            .toLocaleString("en-NG")}
+
+        </div>
+
+
+        <div
+          class="stock ${out ? "out-stock" : "in-stock"}"
+        >
+
+          <i
+            class="fa-solid ${
+              out
+              ? "fa-circle-xmark"
+              : "fa-circle-check"
+            }"
+          ></i>
+
+          ${
+            out
+            ? "Out of Stock"
+            : stock +
+              " item" +
+              (stock === 1 ? "" : "s") +
+              " available"
+          }
+
+        </div>
+
+
+        ${
+          product.description
+
+          ?
+
+          `<div class="description">
+
+            ${escapeHTML(
+              product.description
+            )}
+
+          </div>`
+
+          :
+
+          ""
+        }
+
+
+        <div class="actions">
+
+          <a
+            class="action edit"
+            href="edit.html?id=${product.id}"
+          >
+
+            <i class="fa-solid fa-pen"></i>
+
+            Edit
+
+          </a>
+
+
+          <a
+            class="action delete"
+            href="delete.html?id=${product.id}"
+          >
+
+            <i class="fa-solid fa-trash"></i>
+
+            Delete
+
+          </a>
+
+        </div>
+
+      `;
+
+
+      container.appendChild(
+        card
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================
+   STATISTICS
+========================= */
+
+function updateStats(products){
+
+  let inStock = 0;
+
+  let outStock = 0;
+
+  let inventoryValue = 0;
+
+
+  products.forEach(
+    function(product){
+
+      const inventory =
+        Array.isArray(
+          product.inventory
+        )
+        ? product.inventory
+        : [];
+
+
+      const stock =
+        inventory.length;
+
+
+      if(stock > 0){
+
+        inStock++;
+
+      }else{
+
+        outStock++;
+
+      }
+
+
+      inventoryValue +=
+        Number(
+          product.price || 0
+        ) * stock;
+
+    }
+  );
+
+
+  document
+    .getElementById(
+      "totalProducts"
+    )
+    .textContent =
+      products.length;
+
+
+  document
+    .getElementById(
+      "inStock"
+    )
+    .textContent =
+      inStock;
+
+
+  document
+    .getElementById(
+      "outStock"
+    )
+    .textContent =
+      outStock;
+
+
+  document
+    .getElementById(
+      "inventoryValue"
+    )
+    .textContent =
+      "₦" +
+      inventoryValue
+        .toLocaleString(
+          "en-NG"
+        );
+
+}
+
+
+/* =========================
+   ORDERS
+========================= */
+
+function getOrders(){
+
+  const saved =
+    localStorage.getItem(
+      "gentleOrders"
+    );
+
+
+  if(!saved){
+
+    return [];
+
+  }
+
+
+  try{
+
+    const orders =
+      JSON.parse(saved);
+
+
+    return Array.isArray(orders)
+      ? orders
+      : [];
+
+  }catch(error){
+
+    return [];
+
+  }
+
+}
+
+
+/* =========================
+   RENDER ORDERS
+========================= */
+
+function renderOrders(){
+
+  const orders =
+    getOrders();
+
+
+  const container =
+    document.getElementById(
+      "orders"
+    );
+
+
+  const count =
+    document.getElementById(
+      "orderCount"
+    );
+
+
+  count.textContent =
+    orders.length +
+    (
+      orders.length === 1
+      ? " Order"
+      : " Orders"
+    );
+
+
+  if(orders.length === 0){
+
+    container.innerHTML = `
+
+      <div class="empty">
+
+        <i class="fa-solid fa-receipt"></i>
+
+        <h3>
+          No customer orders yet
+        </h3>
+
+        <p>
+          Completed customer purchases will appear here.
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  container.innerHTML = "";
+
+
+  const sortedOrders =
+    [...orders].reverse();
+
+
+  sortedOrders.forEach(
+    function(order){
+
+      const productName =
+        order.productName ||
+        "Digital Product";
+
+
+      const email =
+        order.userEmail ||
+        "Customer email unavailable";
+
+
+      const category =
+        order.category ||
+        "Other";
+
+
+      const price =
+        Number(
+          order.price || 0
+        )
+        .toLocaleString(
+          "en-NG"
+        );
+
+
+      const orderId =
+        order.id ||
+        "Order";
+
+
+      const date =
+        order.date ||
+        "Date unavailable";
+
+
+      const status =
+        order.status ||
+        "Completed";
+
+
+      const purchaseText =
+        order.purchaseText ||
+        "Purchase information unavailable.";
+
+
+      const card =
+        document.createElement(
+          "div"
+        );
+
+
+      card.className =
+        "order";
+
+
+      card.innerHTML = `
+
+        <div class="order-top">
+
+          <div class="order-icon">
+
+            <i class="fa-solid fa-receipt"></i>
+
+          </div>
+
+
+          <div class="order-main">
+
+            <h3>
+
+              ${escapeHTML(
+                productName
+              )}
+
+            </h3>
+
+
+            <div class="order-email">
+
+              ${escapeHTML(
+                email
+              )}
+
+            </div>
+
+          </div>
+
+
+          <div class="order-status">
+
+            <i class="fa-solid fa-check"></i>
+
+            ${escapeHTML(
+              status
+            )}
+
+          </div>
+
+
+        </div>
+
+
+        <div class="order-details">
+
+
+          <div class="order-row">
+
+            <span>
+              Order number
+            </span>
+
+            <span>
+              ${escapeHTML(
+                orderId
+              )}
+            </span>
+
+          </div>
+
+
+          <div class="order-row">
+
+            <span>
+              Product
+            </span>
+
+            <span>
+              ${escapeHTML(
+                productName
+              )}
+            </span>
+
+          </div>
+
+
+          <div class="order-row">
+
+            <span>
+              Category
+            </span>
+
+            <span>
+              ${escapeHTML(
+                category
+              )}
+            </span>
+
+          </div>
+
+
+          <div class="order-row">
+
+            <span>
+              Amount
+            </span>
+
+            <span class="order-amount">
+
+              ₦${price}
+
+            </span>
+
+          </div>
+
+
+          <div class="order-row">
+
+            <span>
+              Date
+            </span>
+
+            <span>
+              ${escapeHTML(
+                date
+              )}
+            </span>
+
+          </div>
+
+
+        </div>
+
+
+        <div class="purchase-info">
+
+          <div class="purchase-title">
+
+            <i class="fa-solid fa-file-lines"></i>
+
+            Purchase Information
+
+          </div>
+
+
+          <div class="purchase-text">
+
+            ${escapeHTML(
+              purchaseText
+            )}
+
+          </div>
+
+
+        </div>
+
+      `;
+
+
+      container.appendChild(
+        card
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================
+   HTML SAFETY
+========================= */
+
+function escapeHTML(value){
+
+  return String(
+    value || ""
+  )
+  .replace(
+    /&/g,
+    "&amp;"
+  )
+  .replace(
+    /</g,
+    "&lt;"
+  )
+  .replace(
+    />/g,
+    "&gt;"
+  )
+  .replace(
+    /"/g,
+    "&quot;"
+  )
+  .replace(
+    /'/g,
+    "&#039;"
+  );
+
+}
+
+
+/* =========================
+   LOAD
+========================= */
+
+renderProducts();
+
+renderOrders();
+
+updateCustomerCount();
+
+</script>
+
+
+</body>
+
+</html>

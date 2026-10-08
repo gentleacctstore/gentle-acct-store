@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>Sign In | Gentle Acct Store</title>
+
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+>
+
+<style>
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background: #f5f9ff;
+  color: #10213b;
+  min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+}
+
+header {
+  height: 70px;
+  background: rgba(255,255,255,.96);
+  border-bottom: 1px solid #e5ebf4;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(12px);
+}
+
+.nav {
+  max-width: 1100px;
+  height: 100%;
+  margin: auto;
+  padding: 0 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  color: #10213b;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.logo-box {
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(135deg,#0757d5,#1780ff);
+  color: white;
+
+  font-weight: 900;
+  font-size: 18px;
+
+  box-shadow: 0 7px 16px rgba(7,87,213,.20);
+}
+
+.logo span {
+  color: #1264e8;
+}
+
+.back {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  color: #1264e8;
+  background: #f1f6ff;
+
+  padding: 9px 13px;
+  border-radius: 9px;
+
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.page {
+  min-height: calc(100vh - 70px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 35px 16px 45px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 450px;
+
+  background: white;
+
+  border: 1px solid #e1e8f2;
+  border-radius: 22px;
+
+  padding: 32px 24px;
+
+  box-shadow: 0 18px 50px rgba(20,50,90,.08);
+}
+
+.title {
+  text-align: center;
+}
+
+.lock-icon {
+  width: 55px;
+  height: 55px;
+
+  margin: 0 auto 17px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #eaf3ff;
+  color: #1264e8;
+
+  border-radius: 16px;
+
+  font-size: 21px;
+}
+
+.title h1 {
+  font-size: 28px;
+  color: #0b1d35;
+  letter-spacing: -.5px;
+}
+
+.title p {
+  color: #718096;
+  font-size: 13px;
+  margin-top: 8px;
+  line-height: 1.6;
+}
+
+form {
+  margin-top: 28px;
+}
+
+.field {
+  margin-bottom: 18px;
+}
+
+label {
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+  margin-bottom: 7px;
+  color: #243650;
+}
+
+.input-wrap {
+  position: relative;
+}
+
+.input-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #7f91aa;
+  font-size: 13px;
+}
+
+input {
+  width: 100%;
+  height: 49px;
+
+  border: 1px solid #dbe4ef;
+  border-radius: 11px;
+
+  padding: 0 14px 0 40px;
+
+  outline: none;
+  font-size: 14px;
+
+  color: #10213b;
+  background: #fbfdff;
+
+  transition: .2s;
+}
+
+input:focus {
+  border-color: #1264e8;
+  background: white;
+
+  box-shadow:
+    0 0 0 3px rgba(18,100,232,.08);
+}
+
+input::placeholder {
+  color: #9aa7b8;
+}
+
+.login-btn {
+  width: 100%;
+  height: 50px;
+
+  border: 0;
+  border-radius: 11px;
+
+  background: linear-gradient(135deg,#0757d5,#1264e8);
+  color: white;
+
+  font-size: 14px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  box-shadow: 0 10px 22px rgba(18,100,232,.18);
+
+  transition: .2s;
+}
+
+.login-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 13px 25px rgba(18,100,232,.23);
+}
+
+.login-btn:active {
+  transform: scale(.98);
+}
+
+.login-btn i {
+  margin-right: 7px;
+}
+
+.message {
+  display: none;
+
+  margin-top: 14px;
+  padding: 12px;
+
+  border-radius: 10px;
+
+  background: #fff0f0;
+  border: 1px solid #f3d1d1;
+
+  color: #c53030;
+
+  font-size: 12px;
+  text-align: center;
+}
+
+.message i {
+  margin-right: 5px;
+}
+
+.signup-text {
+  text-align: center;
+
+  margin-top: 23px;
+
+  color: #718096;
+  font-size: 12px;
+}
+
+.signup-text a {
+  color: #1264e8;
+  font-weight: 800;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin: 25px 0;
+
+  color: #a0aabd;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  height: 1px;
+  background: #e5ebf4;
+  flex: 1;
+}
+
+.demo-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+
+  background: #f5f9ff;
+  border: 1px solid #e1ebfa;
+
+  padding: 13px;
+  border-radius: 11px;
+
+  color: #718096;
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.demo-note i {
+  color: #1264e8;
+  margin-top: 2px;
+}
+
+@media (max-width: 450px) {
+
+  .nav {
+    padding: 0 14px;
+  }
+
+  .logo {
+    font-size: 15px;
+  }
+
+  .logo-box {
+    width: 35px;
+    height: 35px;
+    font-size: 16px;
+  }
+
+  .back {
+    padding: 8px 10px;
+    font-size: 11px;
+  }
+
+  .login-card {
+    padding: 29px 19px;
+    border-radius: 19px;
+  }
+
+  .title h1 {
+    font-size: 25px;
+  }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+  <nav class="nav">
+
+    <a href="index.html" class="logo">
+
+      <div class="logo-box">
+        G
+      </div>
+
+      Gentle <span>Acct</span> Store
+
+    </a>
+
+    <a href="index.html" class="back">
+
+      <i class="fa-solid fa-arrow-left"></i>
+
+      Home
+
+    </a>
+
+  </nav>
+
+</header>
+
+
+<main class="page">
+
+  <div class="login-card">
+
+    <div class="title">
+
+      <div class="lock-icon">
+
+        <i class="fa-solid fa-lock"></i>
+
+      </div>
+
+      <h1>
+        Welcome back
+      </h1>
+
+      <p>
+        Sign in to access your Gentle Acct Store account.
+      </p>
+
+    </div>
+
+
+    <form id="loginForm">
+
+      <div class="field">
+
+        <label for="email">
+          Email Address
+        </label>
+
+        <div class="input-wrap">
+
+          <i class="fa-solid fa-envelope input-icon"></i>
+
+          <input
+            id="email"
+            type="email"
+            placeholder="Enter your email"
+            autocomplete="email"
+            required
+          >
+
+        </div>
+
+      </div>
+
+
+      <div class="field">
+
+        <label for="password">
+          Password
+        </label>
+
+        <div class="input-wrap">
+
+          <i class="fa-solid fa-lock input-icon"></i>
+
+          <input
+            id="password"
+            type="password"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            required
+          >
+
+        </div>
+
+      </div>
+
+
+      <button
+        type="submit"
+        class="login-btn"
+      >
+
+        <i class="fa-solid fa-right-to-bracket"></i>
+
+        Sign In
+
+      </button>
+
+
+      <div
+        class="message"
+        id="message"
+      ></div>
+
+    </form>
+
+
+    <div class="signup-text">
+
+      Don't have an account?
+
+      <a href="signup.html">
+        Create Account
+      </a>
+
+    </div>
+
+
+    <div class="divider">
+      Your account
+    </div>
+
+
+    <div class="demo-note">
+
+      <i class="fa-solid fa-circle-info"></i>
+
+      <span>
+        Your account details are currently stored locally while we build the website.
+      </span>
+
+    </div>
+
+  </div>
+
+</main>
+
+
+<script>
+
+/* =========================
+   CUSTOMER LOGIN
+========================= */
+
+const form =
+  document.getElementById(
+    "loginForm"
+  );
+
+
+const message =
+  document.getElementById(
+    "message"
+  );
+
+
+form.addEventListener(
+  "submit",
+  function(event) {
+
+    event.preventDefault();
+
+    message.style.display = "none";
+
+
+    const email =
+      document
+        .getElementById("email")
+        .value
+        .trim()
+        .toLowerCase();
+
+
+    const password =
+      document
+        .getElementById("password")
+        .value;
+
+
+    /*
+      Remove any previous admin
+      browser session.
+    */
+
+    localStorage.removeItem(
+      "gentleAdminLoggedIn"
+    );
+
+
+    let users = [];
+
+
+    const savedUsers =
+      localStorage.getItem(
+        "gentleUsers"
+      );
+
+
+    if(savedUsers) {
+
+      try {
+
+        const parsed =
+          JSON.parse(savedUsers);
+
+
+        if(Array.isArray(parsed)) {
+
+          users = parsed;
+
+        }
+
+      } catch(error) {
+
+        users = [];
+
+      }
+
+    }
+
+
+    /*
+      Find customer.
+    */
+
+    let loggedInUser =
+      users.find(
+        function(customer) {
+
+          const customerEmail =
+            String(
+              customer.email || ""
+            )
+            .trim()
+            .toLowerCase();
+
+
+          const customerPassword =
+            String(
+              customer.password || ""
+            );
+
+
+          return (
+            customerEmail === email &&
+            customerPassword === password
+          );
+
+        }
+      );
+
+
+    /*
+      Support older account format.
+    */
+
+    if(!loggedInUser) {
+
+      const oldUser =
+        localStorage.getItem(
+          "gentleUser"
+        );
+
+
+      if(oldUser) {
+
+        try {
+
+          const parsedOldUser =
+            JSON.parse(oldUser);
+
+
+          const oldEmail =
+            String(
+              parsedOldUser.email || ""
+            )
+            .trim()
+            .toLowerCase();
+
+
+          const oldPassword =
+            String(
+              parsedOldUser.password || ""
+            );
+
+
+          if(
+            oldEmail === email &&
+            oldPassword === password
+          ) {
+
+            loggedInUser =
+              parsedOldUser;
+
+          }
+
+        } catch(error) {
+
+          loggedInUser = null;
+
+        }
+
+      }
+
+    }
+
+
+    /*
+      Wrong login.
+    */
+
+    if(!loggedInUser) {
+
+      message.style.display =
+        "block";
+
+
+      message.innerHTML =
+        '<i class="fa-solid fa-circle-exclamation"></i> ' +
+        'Incorrect email or password.';
+
+
+      return;
+
+    }
+
+
+    /*
+      Make sure customer has
+      a unique ID.
+    */
+
+    if(
+      loggedInUser.id === undefined ||
+      loggedInUser.id === null ||
+      String(loggedInUser.id).trim() === ""
+    ) {
+
+      loggedInUser.id =
+        "USR-" + Date.now();
+
+    }
+
+
+    /*
+      Save current customer.
+    */
+
+    localStorage.setItem(
+      "gentleUser",
+      JSON.stringify(
+        loggedInUser
+      )
+    );
+
+
+    localStorage.setItem(
+      "gentleCurrentUserId",
+      String(
+        loggedInUser.id
+      )
+    );
+
+
+    localStorage.setItem(
+      "gentleLoggedIn",
+      "true"
+    );
+
+
+    /*
+      Customer wallet.
+    */
+
+    const customerBalance =
+      Number(
+        loggedInUser.balance
+      ) || 0;
+
+
+    localStorage.setItem(
+      "gentleBalance",
+      String(
+        customerBalance
+      )
+    );
+
+
+    /*
+      Remove old checkout selection.
+    */
+
+    localStorage.removeItem(
+      "gentleCheckoutProduct"
+    );
+
+
+    /*
+      Go to dashboard.
+    */
+
+    window.location.replace(
+      "dashboard.html"
+    );
+
+  }
+);
+
+</script>
+
+</body>
+</html>

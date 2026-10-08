@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>My Orders | Gentle Acct Store</title>
+
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f5f8ff;
+      color: #172033;
+      min-height: 100vh;
+      padding-bottom: 30px;
+    }
+
+    header {
+      height: 68px;
+      background: white;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 0 18px;
+      border-bottom: 1px solid #e5eaf2;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .back {
+      width: 40px;
+      height: 40px;
+      border: none;
+      background: #eaf2ff;
+      color: #1261e8;
+      border-radius: 11px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    header h2 {
+      font-size: 19px;
+      color: #172033;
+      font-weight: 800;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      padding: 22px 16px 45px;
+    }
+
+    .title {
+      margin-bottom: 17px;
+    }
+
+    .title h1 {
+      font-size: 24px;
+      font-weight: 800;
+    }
+
+    .title p {
+      color: #8a94a6;
+      font-size: 13px;
+      margin-top: 6px;
+    }
+
+    .summary {
+      background: linear-gradient(
+        135deg,
+        #1261e8,
+        #0849b9
+      );
+      color: white;
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 10px 25px rgba(18,97,232,.17);
+    }
+
+    .summary-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .summary small {
+      opacity: .78;
+      font-size: 12px;
+    }
+
+    .summary strong {
+      display: block;
+      font-size: 30px;
+      margin-top: 5px;
+    }
+
+    .summary-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 13px;
+      background: rgba(255,255,255,.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .order {
+      background: white;
+      border: 1px solid #e0e6ef;
+      border-radius: 19px;
+      padding: 16px;
+      margin-bottom: 14px;
+      box-shadow: 0 5px 18px rgba(23,32,51,.04);
+    }
+
+    .order-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .order-icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 15px;
+      background: #eaf2ff;
+      color: #1261e8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .order-name {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .order-name h3 {
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .order-category {
+      display: inline-block;
+      background: #eef4ff;
+      color: #1261e8;
+      padding: 4px 8px;
+      border-radius: 20px;
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: capitalize;
+    }
+
+    .status {
+      background: #e9f8f0;
+      color: #16834b;
+      border-radius: 20px;
+      padding: 6px 9px;
+      font-size: 9px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .details {
+      border-top: 1px solid #edf0f5;
+      margin-top: 15px;
+      padding-top: 14px;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 10px;
+      font-size: 12px;
+    }
+
+    .row:last-child {
+      margin-bottom: 0;
+    }
+
+    .row span:first-child {
+      color: #8a94a6;
+    }
+
+    .row span:last-child {
+      font-weight: 700;
+      text-align: right;
+      word-break: break-word;
+    }
+
+    .amount {
+      color: #1261e8;
+    }
+
+    .purchase {
+      background: #f7faff;
+      border: 1px solid #dfe8f5;
+      border-radius: 15px;
+      padding: 15px;
+      margin-top: 15px;
+    }
+
+    .purchase-title {
+      color: #1261e8;
+      font-weight: 800;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .purchase-text {
+      background: white;
+      border: 1px solid #e4eaf3;
+      border-radius: 11px;
+      padding: 12px;
+      color: #39465a;
+      font-size: 13px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .copy {
+      width: 100%;
+      margin-top: 11px;
+      padding: 11px;
+      border-radius: 11px;
+      background: white;
+      color: #1261e8;
+      border: 1px solid #cfdced;
+      font-weight: 800;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .copy:active {
+      transform: scale(.98);
+    }
+
+    .empty {
+      background: white;
+      border: 1px solid #e0e6ef;
+      border-radius: 19px;
+      text-align: center;
+      padding: 55px 20px;
+      box-shadow: 0 5px 18px rgba(23,32,51,.04);
+    }
+
+    .empty-icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: #eaf2ff;
+      color: #1261e8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      font-size: 27px;
+    }
+
+    .empty h3 {
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .empty p {
+      color: #8a94a6;
+      font-size: 13px;
+      line-height: 1.5;
+      margin-top: 7px;
+    }
+
+    .shop {
+      margin-top: 19px;
+      border: none;
+      background: #1261e8;
+      color: white;
+      padding: 13px 22px;
+      border-radius: 25px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    @media (max-width: 400px) {
+
+      .status {
+        padding: 5px 7px;
+        font-size: 8px;
+      }
+
+      .order-name h3 {
+        font-size: 14px;
+      }
+
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+
+<header>
+
+  <button
+    class="back"
+    onclick="window.location.href='dashboard.html'">
+
+    <i class="fa-solid fa-arrow-left"></i>
+
+  </button>
+
+  <h2>
+    My Orders
+  </h2>
+
+</header>
+
+
+<main class="container">
+
+
+  <div class="title">
+
+    <h1>
+      My Orders
+    </h1>
+
+    <p>
+      View your completed purchases and purchase information.
+    </p>
+
+  </div>
+
+
+  <div class="summary">
+
+    <div class="summary-top">
+
+      <div>
+
+        <small>
+          Your Total Orders
+        </small>
+
+        <strong id="totalOrders">
+          0
+        </strong>
+
+      </div>
+
+      <div class="summary-icon">
+
+        <i class="fa-solid fa-bag-shopping"></i>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div id="ordersList"></div>
+
+
+</main>
+
+
+<script>
+
+/* =========================
+   SECURITY / SESSION CHECK
+========================= */
+
+function checkSession() {
+
+  const loggedIn =
+    localStorage.getItem("gentleLoggedIn")
+    === "true";
+
+  const savedUser =
+    localStorage.getItem("gentleUser");
+
+  const savedCurrentUserId =
+    String(
+      localStorage.getItem(
+        "gentleCurrentUserId"
+      ) || ""
+    );
+
+
+  let user = null;
+
+
+  try {
+
+    user =
+      JSON.parse(savedUser);
+
+  } catch(error) {
+
+    user = null;
+
+  }
+
+
+  /*
+    User must have:
+    1. Active login
+    2. Saved account
+    3. Current user ID
+    4. Matching account ID
+  */
+
+  if (
+    !loggedIn ||
+    !user ||
+    !savedCurrentUserId ||
+    !user.id ||
+    String(user.id)
+      !== savedCurrentUserId
+  ) {
+
+    localStorage.removeItem(
+      "gentleLoggedIn"
+    );
+
+    localStorage.removeItem(
+      "gentleCurrentUserId"
+    );
+
+    localStorage.removeItem(
+      "gentleCheckoutProduct"
+    );
+
+    window.location.replace(
+      "login.html"
+    );
+
+    return null;
+
+  }
+
+
+  return user;
+
+}
+
+
+/* =========================
+   LOAD CURRENT USER
+========================= */
+
+const currentUser =
+  checkSession();
+
+
+if (!currentUser) {
+
+  throw new Error(
+    "No valid customer session."
+  );
+
+}
+
+
+/* =========================
+   CUSTOMER ID
+========================= */
+
+const currentUserId =
+  String(currentUser.id);
+
+
+const currentUserEmail =
+  String(
+    currentUser.email || ""
+  ).toLowerCase();
+
+
+/* =========================
+   GET ALL ORDERS
+========================= */
+
+function loadOrders() {
+
+  let allOrders = [];
+
+
+  try {
+
+    allOrders =
+      JSON.parse(
+        localStorage.getItem(
+          "gentleOrders"
+        )
+      ) || [];
+
+  } catch(error) {
+
+    allOrders = [];
+
+  }
+
+
+  /* =========================
+     CUSTOMER FILTER
+  ========================= */
+
+  const orders =
+    allOrders.filter(
+      function(order) {
+
+
+        /*
+          New secure orders:
+          Match customer ID.
+        */
+
+        if (
+          order.userId !== undefined &&
+          order.userId !== null &&
+          String(order.userId) !== ""
+        ) {
+
+          return String(
+            order.userId
+          ) === currentUserId;
+
+        }
+
+
+        /*
+          Older orders:
+          Match customer email only.
+        */
+
+        if (order.userEmail) {
+
+          return String(
+            order.userEmail
+          )
+          .toLowerCase()
+          === currentUserEmail;
+
+        }
+
+
+        /*
+          Orders without customer
+          information are hidden.
+        */
+
+        return false;
+
+      }
+    );
+
+
+  return orders;
+
+}
+
+
+/* =========================
+   DISPLAY ORDERS
+========================= */
+
+function displayOrders() {
+
+  const orders =
+    loadOrders();
+
+
+  const total =
+    document.getElementById(
+      "totalOrders"
+    );
+
+
+  const list =
+    document.getElementById(
+      "ordersList"
+    );
+
+
+  total.textContent =
+    orders.length;
+
+
+  list.innerHTML = "";
+
+
+  /* =========================
+     EMPTY
+  ========================= */
+
+  if (orders.length === 0) {
+
+    list.innerHTML = `
+
+      <div class="empty">
+
+        <div class="empty-icon">
+
+          <i class="fa-solid fa-bag-shopping"></i>
+
+        </div>
+
+        <h3>
+          No orders yet
+        </h3>
+
+        <p>
+          Your completed purchases will appear here.
+        </p>
+
+        <button
+          class="shop"
+          onclick="window.location.href='dashboard.html'">
+
+          <i class="fa-solid fa-store"></i>
+
+          Start Shopping
+
+        </button>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  /* =========================
+     DISPLAY ORDERS
+  ========================= */
+
+  orders.forEach(
+    function(order, index) {
+
+
+      const productName =
+        order.productName ||
+        "Digital Product";
+
+
+      const category =
+        order.category ||
+        "Other";
+
+
+      const price =
+        Number(
+          order.price || 0
+        )
+        .toLocaleString(
+          "en-NG"
+        );
+
+
+      const orderId =
+        order.id ||
+        "Order";
+
+
+      const date =
+        order.date ||
+        "Date unavailable";
+
+
+      const status =
+        order.status ||
+        "Completed";
+
+
+      const purchaseText =
+        order.purchaseText ||
+        "Purchase information unavailable.";
+
+
+      list.innerHTML += `
+
+        <div class="order">
+
+
+          <div class="order-top">
+
+            <div class="order-icon">
+
+              <i class="fa-solid fa-box"></i>
+
+            </div>
+
+
+            <div class="order-name">
+
+              <h3>
+                ${escapeHtml(productName)}
+              </h3>
+
+              <span class="order-category">
+                ${escapeHtml(category)}
+              </span>
+
+            </div>
+
+
+            <div class="status">
+
+              <i class="fa-solid fa-check"></i>
+
+              ${escapeHtml(status)}
+
+            </div>
+
+          </div>
+
+
+          <div class="details">
+
+
+            <div class="row">
+
+              <span>
+                Order number
+              </span>
+
+              <span>
+                ${escapeHtml(orderId)}
+              </span>
+
+            </div>
+
+
+            <div class="row">
+
+              <span>
+                Amount
+              </span>
+
+              <span class="amount">
+                ₦${price}
+              </span>
+
+            </div>
+
+
+            <div class="row">
+
+              <span>
+                Date
+              </span>
+
+              <span>
+                ${escapeHtml(date)}
+              </span>
+
+            </div>
+
+
+          </div>
+
+
+          <div class="purchase">
+
+            <div class="purchase-title">
+
+              <i class="fa-solid fa-file-lines"></i>
+
+              Purchase Information
+
+            </div>
+
+
+            <div
+              class="purchase-text"
+              id="purchase-${index}">
+
+              ${escapeHtml(purchaseText)}
+
+            </div>
+
+
+            <button
+              class="copy"
+              onclick="copyText(${index})">
+
+              <i class="fa-regular fa-copy"></i>
+
+              Copy Purchase Information
+
+            </button>
+
+          </div>
+
+
+        </div>
+
+      `;
+
+    }
+  );
+
+}
+
+
+/* =========================
+   COPY PURCHASE INFORMATION
+========================= */
+
+function copyText(index) {
+
+  const orders =
+    loadOrders();
+
+
+  const text =
+    orders[index]
+      ?.purchaseText || "";
+
+
+  if (!text) {
+
+    alert(
+      "No purchase information available."
+    );
+
+    return;
+
+  }
+
+
+  if (
+    navigator.clipboard &&
+    navigator.clipboard.writeText
+  ) {
+
+    navigator.clipboard
+      .writeText(text)
+      .then(function() {
+
+        alert(
+          "Purchase information copied."
+        );
+
+      })
+      .catch(function() {
+
+        alert(
+          "Unable to copy. Please copy it manually."
+        );
+
+      });
+
+  } else {
+
+    alert(
+      "Unable to copy. Please copy it manually."
+    );
+
+  }
+
+}
+
+
+/* =========================
+   HTML SAFETY
+========================= */
+
+function escapeHtml(text) {
+
+  const div =
+    document.createElement(
+      "div"
+    );
+
+
+  div.textContent =
+    String(text || "");
+
+
+  return div.innerHTML;
+
+}
+
+
+/* =========================
+   INITIAL LOAD
+========================= */
+
+displayOrders();
+
+
+/* =========================
+   RECHECK WHEN PAGE RETURNS
+========================= */
+
+window.addEventListener(
+  "pageshow",
+  function() {
+
+    const user =
+      checkSession();
+
+
+    if (!user) return;
+
+
+    displayOrders();
+
+  }
+);
+
+</script>
+
+
+</body>
+</html>

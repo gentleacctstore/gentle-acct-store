@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Customers - Gentle Acct Store</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:Arial,sans-serif;
+  background:#f5f8fc;
+  color:#172033;
+}
+
+header{
+  background:white;
+  padding:18px;
+  border-bottom:1px solid #e5eaf1;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color:#0866ff;
+  font-size:19px;
+  font-weight:800;
+}
+
+.logo i{
+  font-size:22px;
+}
+
+.back{
+  text-decoration:none;
+  color:#596579;
+  font-size:14px;
+  font-weight:700;
+}
+
+.container{
+  max-width:1000px;
+  margin:auto;
+  padding:25px 16px 50px;
+}
+
+.hero{
+  margin-bottom:20px;
+}
+
+.hero h1{
+  font-size:27px;
+  margin-bottom:6px;
+}
+
+.hero p{
+  color:#727c8d;
+  font-size:14px;
+}
+
+/* SUMMARY */
+
+.summary{
+  background:linear-gradient(135deg,#0866ff,#0754d6);
+  color:white;
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:20px;
+  box-shadow:0 10px 25px rgba(8,102,255,.18);
+}
+
+.summary-icon{
+  width:45px;
+  height:45px;
+  border-radius:14px;
+  background:rgba(255,255,255,.16);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:13px;
+}
+
+.summary h2{
+  font-size:27px;
+  margin-bottom:4px;
+}
+
+.summary p{
+  font-size:13px;
+  opacity:.9;
+}
+
+/* SEARCH */
+
+.search-box{
+  background:white;
+  border:1px solid #e5eaf1;
+  border-radius:15px;
+  padding:12px 14px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:20px;
+}
+
+.search-box i{
+  color:#8a95a6;
+}
+
+.search-box input{
+  border:0;
+  outline:none;
+  width:100%;
+  font-size:14px;
+  background:transparent;
+}
+
+/* CUSTOMER LIST */
+
+.list-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:14px;
+}
+
+.list-head h2{
+  font-size:19px;
+}
+
+.count{
+  background:#edf4ff;
+  color:#0866ff;
+  padding:7px 10px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:700;
+}
+
+.customers{
+  display:grid;
+  gap:14px;
+}
+
+.customer{
+  background:white;
+  border:1px solid #e5eaf1;
+  border-radius:18px;
+  padding:17px;
+  box-shadow:0 7px 20px rgba(20,40,80,.05);
+}
+
+.customer-top{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.avatar{
+  width:50px;
+  height:50px;
+  border-radius:15px;
+  background:#edf4ff;
+  color:#0866ff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:19px;
+  font-weight:800;
+  flex-shrink:0;
+}
+
+.customer-info{
+  min-width:0;
+  flex:1;
+}
+
+.customer-info h3{
+  font-size:15px;
+  margin-bottom:5px;
+}
+
+.email{
+  color:#737e8f;
+  font-size:12px;
+  word-break:break-word;
+}
+
+.status{
+  background:#eaf9f0;
+  color:#168447;
+  padding:6px 9px;
+  border-radius:20px;
+  font-size:10px;
+  font-weight:700;
+}
+
+.details{
+  border-top:1px solid #edf0f4;
+  margin-top:15px;
+  padding-top:13px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.detail{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+
+.detail span:first-child{
+  color:#929baa;
+  font-size:10px;
+  text-transform:uppercase;
+  font-weight:700;
+}
+
+.detail span:last-child{
+  color:#303b4e;
+  font-size:12px;
+  font-weight:600;
+}
+
+/* EMPTY */
+
+.empty{
+  background:white;
+  border:1px dashed #cbd5e1;
+  border-radius:18px;
+  padding:45px 20px;
+  text-align:center;
+}
+
+.empty i{
+  color:#aab5c4;
+  font-size:38px;
+  margin-bottom:13px;
+}
+
+.empty h3{
+  margin-bottom:6px;
+}
+
+.empty p{
+  color:#7b8595;
+  font-size:13px;
+}
+
+/* DESKTOP */
+
+@media(min-width:650px){
+
+  .customers{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+}
+
+@media(min-width:950px){
+
+  .customers{
+    grid-template-columns:repeat(3,1fr);
+  }
+
+  .container{
+    padding-top:35px;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+  <div class="logo">
+    <i class="fa-solid fa-users"></i>
+    Customers
+  </div>
+
+  <a href="admin.html" class="back">
+    <i class="fa-solid fa-arrow-left"></i>
+    Admin
+  </a>
+
+</header>
+
+
+<div class="container">
+
+  <div class="hero">
+    <h1>Customer Management</h1>
+    <p>View registered customers on your store.</p>
+  </div>
+
+
+  <div class="summary">
+
+    <div class="summary-icon">
+      <i class="fa-solid fa-users"></i>
+    </div>
+
+    <h2 id="totalCustomers">0</h2>
+
+    <p>Total Registered Customers</p>
+
+  </div>
+
+
+  <div class="search-box">
+
+    <i class="fa-solid fa-magnifying-glass"></i>
+
+    <input
+      id="search"
+      type="text"
+      placeholder="Search by name or email..."
+      oninput="renderCustomers()"
+    >
+
+  </div>
+
+
+  <div class="list-head">
+
+    <h2>Customers</h2>
+
+    <span class="count" id="customerCount">
+      0 Customers
+    </span>
+
+  </div>
+
+
+  <div id="customers" class="customers"></div>
+
+</div>
+
+
+<script>
+
+function getCustomers(){
+
+  const saved =
+    localStorage.getItem("gentleUsers");
+
+  /*
+    The current sign-up page stores one user
+    as "gentleUser".
+
+    This page also supports "gentleUsers"
+    so we can expand to multiple customers later.
+  */
+
+  if(saved){
+
+    try{
+
+      const users = JSON.parse(saved);
+
+      if(Array.isArray(users)){
+        return users;
+      }
+
+    }catch(error){}
+
+  }
+
+
+  const singleUser =
+    localStorage.getItem("gentleUser");
+
+
+  if(singleUser){
+
+    try{
+
+      const user =
+        JSON.parse(singleUser);
+
+      return [user];
+
+    }catch(error){}
+
+  }
+
+
+  return [];
+
+}
+
+
+function renderCustomers(){
+
+  const customers =
+    getCustomers();
+
+
+  const search =
+    document
+    .getElementById("search")
+    .value
+    .toLowerCase()
+    .trim();
+
+
+  const filtered =
+    customers.filter(customer => {
+
+      const name =
+        String(customer.name || "")
+        .toLowerCase();
+
+      const email =
+        String(customer.email || "")
+        .toLowerCase();
+
+      return (
+        name.includes(search) ||
+        email.includes(search)
+      );
+
+    });
+
+
+  document.getElementById("totalCustomers")
+    .textContent = customers.length;
+
+
+  document.getElementById("customerCount")
+    .textContent =
+      filtered.length +
+      (filtered.length === 1
+        ? " Customer"
+        : " Customers");
+
+
+  const container =
+    document.getElementById("customers");
+
+
+  if(filtered.length === 0){
+
+    container.innerHTML = `
+
+      <div class="empty">
+
+        <i class="fa-solid fa-user-group"></i>
+
+        <h3>
+          ${search ? "No customers found" : "No customers yet"}
+        </h3>
+
+        <p>
+          ${
+            search
+            ? "Try a different name or email."
+            : "Registered customers will appear here."
+          }
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  container.innerHTML = "";
+
+
+  filtered.forEach((customer,index) => {
+
+    const name =
+      customer.name || "Customer";
+
+
+    const email =
+      customer.email || "No email";
+
+
+    const initial =
+      name.charAt(0).toUpperCase();
+
+
+    const date =
+      customer.date ||
+      customer.createdAt ||
+      "Registered account";
+
+
+    const card =
+      document.createElement("div");
+
+
+    card.className = "customer";
+
+
+    card.innerHTML = `
+
+      <div class="customer-top">
+
+        <div class="avatar">
+          ${escapeHTML(initial)}
+        </div>
+
+        <div class="customer-info">
+
+          <h3>
+            ${escapeHTML(name)}
+          </h3>
+
+          <div class="email">
+            ${escapeHTML(email)}
+          </div>
+
+        </div>
+
+        <span class="status">
+          Active
+        </span>
+
+      </div>
+
+
+      <div class="details">
+
+        <div class="detail">
+
+          <span>
+            Account
+          </span>
+
+          <span>
+            Customer #${index + 1}
+          </span>
+
+        </div>
+
+
+        <div class="detail">
+
+          <span>
+            Registered
+          </span>
+
+          <span>
+            ${escapeHTML(date)}
+          </span>
+
+        </div>
+
+      </div>
+
+    `;
+
+
+    container.appendChild(card);
+
+  });
+
+}
+
+
+function escapeHTML(value){
+
+  return String(value || "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+renderCustomers();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Edit Product | Gentle Acct Store</title>
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f5f8ff;
+      color: #172033;
+      padding-bottom: 40px;
+    }
+
+    header {
+      background: white;
+      height: 68px;
+      padding: 0 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #e5eaf2;
+    }
+
+    .logo {
+      color: #1261e8;
+      font-size: 19px;
+      font-weight: 800;
+    }
+
+    .back {
+      border: none;
+      background: #eaf2ff;
+      color: #1261e8;
+      padding: 10px 13px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .container {
+      max-width: 650px;
+      margin: auto;
+      padding: 20px 16px;
+    }
+
+    h1 {
+      font-size: 25px;
+      margin-bottom: 7px;
+    }
+
+    .subtitle {
+      color: #7b8494;
+      font-size: 13px;
+      margin-bottom: 22px;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #e1e7f0;
+      border-radius: 18px;
+      padding: 20px;
+    }
+
+    .field {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 7px;
+    }
+
+    .hint {
+      color: #7b8494;
+      font-size: 11px;
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid #dce3ee;
+      border-radius: 11px;
+      padding: 13px;
+      outline: none;
+      font-size: 14px;
+      background: white;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #1261e8;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    #inventory {
+      min-height: 180px;
+      line-height: 1.6;
+    }
+
+    .save-button {
+      width: 100%;
+      border: none;
+      background: #1261e8;
+      color: white;
+      padding: 14px;
+      border-radius: 11px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .message {
+      margin-top: 12px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+
+  <div class="logo">
+    Gentle Acct Store
+  </div>
+
+  <button
+    class="back"
+    onclick="goBack()">
+
+    <i class="fa-solid fa-arrow-left"></i>
+    Products
+
+  </button>
+
+</header>
+
+
+<main class="container">
+
+  <h1>Edit Product</h1>
+
+  <p class="subtitle">
+    Update your product information and stock items.
+  </p>
+
+
+  <section class="card">
+
+    <div class="field">
+
+      <label>Product Name</label>
+
+      <input
+        type="text"
+        id="productName">
+
+    </div>
+
+
+    <div class="field">
+
+      <label>Category</label>
+
+      <select id="productCategory">
+
+        <option value="instagram">
+          Instagram
+        </option>
+
+        <option value="facebook">
+          Facebook
+        </option>
+
+        <option value="tiktok">
+          TikTok
+        </option>
+
+        <option value="other">
+          Other
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <div class="field">
+
+      <label>Price (₦)</label>
+
+      <input
+        type="number"
+        id="productPrice">
+
+    </div>
+
+
+    <div class="field">
+
+      <label>Product Image URL</label>
+
+      <input
+        type="url"
+        id="productImage">
+
+    </div>
+
+
+    <div class="field">
+
+      <label>Product Description</label>
+
+      <textarea
+        id="productDescription"></textarea>
+
+    </div>
+
+
+    <div class="field">
+
+      <label>
+        Inventory / Stock Items
+      </label>
+
+      <textarea
+        id="inventory"
+        placeholder="Enter one purchase item per line"></textarea>
+
+      <div class="hint">
+        Each line represents one item. When a customer buys,
+        the first available item will be delivered and removed
+        from your stock.
+      </div>
+
+    </div>
+
+
+    <button
+      class="save-button"
+      onclick="saveChanges()">
+
+      <i class="fa-solid fa-floppy-disk"></i>
+      Save Changes
+
+    </button>
+
+
+    <div
+      class="message"
+      id="message">
+    </div>
+
+  </section>
+
+</main>
+
+
+<script>
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  const productId =
+    params.get("id");
+
+
+  let products =
+    JSON.parse(
+      localStorage.getItem(
+        "gentleProducts"
+      )
+    ) || [];
+
+
+  const product =
+    products.find(
+      function(item) {
+
+        return String(item.id)
+          === String(productId);
+
+      }
+    );
+
+
+  if (!product) {
+
+    alert("Product not found.");
+
+    window.location.href =
+      "admin.html";
+
+  }
+
+
+  document
+    .getElementById("productName")
+    .value =
+    product.name || "";
+
+
+  document
+    .getElementById("productCategory")
+    .value =
+    product.category || "other";
+
+
+  document
+    .getElementById("productPrice")
+    .value =
+    product.price || "";
+
+
+  document
+    .getElementById("productImage")
+    .value =
+    product.image || "";
+
+
+  document
+    .getElementById("productDescription")
+    .value =
+    product.description || "";
+
+
+  const existingInventory =
+    Array.isArray(product.inventory)
+      ? product.inventory
+      : [];
+
+
+  document
+    .getElementById("inventory")
+    .value =
+    existingInventory.join("\n");
+
+
+  function saveChanges() {
+
+    const name =
+      document
+        .getElementById("productName")
+        .value
+        .trim();
+
+
+    const category =
+      document
+        .getElementById("productCategory")
+        .value;
+
+
+    const price =
+      Number(
+        document
+          .getElementById("productPrice")
+          .value
+      );
+
+
+    const image =
+      document
+        .getElementById("productImage")
+        .value
+        .trim();
+
+
+    const description =
+      document
+        .getElementById("productDescription")
+        .value
+        .trim();
+
+
+    const inventory =
+      document
+        .getElementById("inventory")
+        .value
+        .split("\n")
+        .map(function(item) {
+          return item.trim();
+        })
+        .filter(function(item) {
+          return item.length > 0;
+        });
+
+
+    if (!name) {
+
+      showMessage(
+        "Please enter a product name.",
+        "red"
+      );
+
+      return;
+
+    }
+
+
+    if (!price || price <= 0) {
+
+      showMessage(
+        "Please enter a valid price.",
+        "red"
+      );
+
+      return;
+
+    }
+
+
+    if (!description) {
+
+      showMessage(
+        "Please enter a description.",
+        "red"
+      );
+
+      return;
+
+    }
+
+
+    if (inventory.length === 0) {
+
+      showMessage(
+        "Please enter at least one stock item.",
+        "red"
+      );
+
+      return;
+
+    }
+
+
+    product.name =
+      name;
+
+    product.category =
+      category;
+
+    product.price =
+      price;
+
+    product.image =
+      image;
+
+    product.description =
+      description;
+
+    product.inventory =
+      inventory;
+
+
+    localStorage.setItem(
+      "gentleProducts",
+      JSON.stringify(products)
+    );
+
+
+    showMessage(
+      "Product updated successfully.",
+      "green"
+    );
+
+
+    setTimeout(
+      function() {
+
+        window.location.href =
+          "admin.html";
+
+      },
+      700
+    );
+
+  }
+
+
+  function showMessage(
+    text,
+    color
+  ) {
+
+    const message =
+      document.getElementById(
+        "message"
+      );
+
+    message.textContent =
+      text;
+
+    message.style.color =
+      color === "green"
+        ? "#16834b"
+        : "#d63030";
+
+  }
+
+
+  function goBack() {
+
+    window.location.href =
+      "admin.html";
+
+  }
+
+</script>
+
+</body>
+</html>

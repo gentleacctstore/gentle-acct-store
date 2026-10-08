@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Profile | Gentle Acct Store</title>
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f5f8ff;
+      color: #172033;
+      min-height: 100vh;
+    }
+
+    header {
+      height: 68px;
+      background: white;
+      padding: 0 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border-bottom: 1px solid #e5eaf2;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .back {
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 11px;
+      background: #eaf2ff;
+      color: #1261e8;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    header h2 {
+      font-size: 19px;
+      font-weight: 800;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 22px 16px 45px;
+    }
+
+    .profile-card {
+      background: white;
+      border: 1px solid #e1e7f0;
+      border-radius: 20px;
+      padding: 25px 20px;
+      text-align: center;
+      margin-bottom: 18px;
+      box-shadow: 0 5px 18px rgba(23,32,51,.04);
+    }
+
+    .avatar {
+      width: 78px;
+      height: 78px;
+      margin: 0 auto 13px;
+      border-radius: 50%;
+      background: #eaf2ff;
+      color: #1261e8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 29px;
+      border: 5px solid #f5f8ff;
+    }
+
+    .profile-card h1 {
+      font-size: 21px;
+      margin-bottom: 6px;
+      font-weight: 800;
+    }
+
+    .email {
+      color: #7b8494;
+      font-size: 13px;
+    }
+
+    .wallet-card {
+      background: linear-gradient(135deg, #1261e8, #0757d5);
+      color: white;
+      border-radius: 20px;
+      padding: 22px;
+      margin-bottom: 18px;
+      box-shadow: 0 10px 25px rgba(18,97,232,.20);
+    }
+
+    .wallet-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .wallet-label {
+      font-size: 13px;
+      opacity: .85;
+      margin-bottom: 5px;
+    }
+
+    .wallet-title {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .wallet-icon {
+      width: 44px;
+      height: 44px;
+      background: rgba(255,255,255,.16);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+    }
+
+    .balance {
+      font-size: 30px;
+      font-weight: 800;
+      margin-top: 15px;
+      letter-spacing: .2px;
+    }
+
+    .fund-button {
+      width: 100%;
+      margin-top: 17px;
+      border: none;
+      background: white;
+      color: #1261e8;
+      padding: 14px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .fund-button i {
+      margin-right: 5px;
+    }
+
+    .section-title {
+      font-size: 13px;
+      color: #7b8494;
+      font-weight: 700;
+      margin: 5px 4px 9px;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+
+    .menu {
+      background: white;
+      border: 1px solid #e1e7f0;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 5px 18px rgba(23,32,51,.04);
+    }
+
+    .menu-item {
+      width: 100%;
+      border: none;
+      background: white;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-align: left;
+      border-bottom: 1px solid #edf0f5;
+      color: #172033;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .menu-item:last-child {
+      border-bottom: none;
+    }
+
+    .menu-item:active {
+      background: #f7faff;
+    }
+
+    .menu-icon {
+      width: 40px;
+      height: 40px;
+      background: #eaf2ff;
+      color: #1261e8;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .menu-text {
+      flex: 1;
+    }
+
+    .menu-text strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 3px;
+    }
+
+    .menu-text small {
+      color: #8992a2;
+      font-size: 11px;
+    }
+
+    .arrow {
+      color: #a1a9b7;
+      font-size: 12px;
+    }
+
+    .logout {
+      color: #d63030;
+    }
+
+    .logout .menu-icon {
+      background: #fff0f0;
+      color: #d63030;
+    }
+
+    .logout .menu-text small {
+      color: #b97878;
+    }
+
+    .footer-note {
+      text-align: center;
+      color: #9aa2b0;
+      font-size: 11px;
+      margin-top: 25px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+
+  <button
+    class="back"
+    onclick="goDashboard()">
+
+    <i class="fa-solid fa-arrow-left"></i>
+
+  </button>
+
+  <h2>My Profile</h2>
+
+</header>
+
+
+<div class="container">
+
+  <div class="profile-card">
+
+    <div class="avatar">
+      <i class="fa-solid fa-user"></i>
+    </div>
+
+    <h1 id="userName">
+      User
+    </h1>
+
+    <p
+      class="email"
+      id="userEmail">
+    </p>
+
+  </div>
+
+
+  <div class="wallet-card">
+
+    <div class="wallet-top">
+
+      <div>
+
+        <div class="wallet-label">
+          Your Wallet
+        </div>
+
+        <div class="wallet-title">
+          Available Balance
+        </div>
+
+      </div>
+
+      <div class="wallet-icon">
+        <i class="fa-solid fa-wallet"></i>
+      </div>
+
+    </div>
+
+    <div
+      class="balance"
+      id="balance">
+      ₦0.00
+    </div>
+
+    <button
+      class="fund-button"
+      onclick="fundWallet()">
+
+      <i class="fa-solid fa-plus"></i>
+      Add Funds
+
+    </button>
+
+  </div>
+
+
+  <div class="section-title">
+    Account
+  </div>
+
+  <div class="menu">
+
+    <button
+      class="menu-item"
+      onclick="viewOrders()">
+
+      <div class="menu-icon">
+        <i class="fa-solid fa-receipt"></i>
+      </div>
+
+      <div class="menu-text">
+
+        <strong>
+          My Orders
+        </strong>
+
+        <small>
+          View your purchase history
+        </small>
+
+      </div>
+
+      <i class="fa-solid fa-chevron-right arrow"></i>
+
+    </button>
+
+
+    <button
+      class="menu-item"
+      onclick="fundWallet()">
+
+      <div class="menu-icon">
+        <i class="fa-solid fa-wallet"></i>
+      </div>
+
+      <div class="menu-text">
+
+        <strong>
+          Fund Wallet
+        </strong>
+
+        <small>
+          Add money to your wallet
+        </small>
+
+      </div>
+
+      <i class="fa-solid fa-chevron-right arrow"></i>
+
+    </button>
+
+
+    <button
+      class="menu-item logout"
+      onclick="logout()">
+
+      <div class="menu-icon">
+        <i class="fa-solid fa-right-from-bracket"></i>
+      </div>
+
+      <div class="menu-text">
+
+        <strong>
+          Logout
+        </strong>
+
+        <small>
+          Sign out of your account
+        </small>
+
+      </div>
+
+      <i class="fa-solid fa-chevron-right arrow"></i>
+
+    </button>
+
+  </div>
+
+
+  <div class="footer-note">
+    Gentle Acct Store
+  </div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   SESSION PROTECTION
+========================= */
+
+const loggedIn =
+  localStorage.getItem(
+    "gentleLoggedIn"
+  ) === "true";
+
+
+const currentUserId =
+  String(
+    localStorage.getItem(
+      "gentleCurrentUserId"
+    ) || ""
+  );
+
+
+let user = null;
+
+
+const savedUser =
+  localStorage.getItem(
+    "gentleUser"
+  );
+
+
+if (savedUser) {
+
+  try {
+
+    user =
+      JSON.parse(savedUser);
+
+  } catch (error) {
+
+    user = null;
+
+  }
+
+}
+
+
+/*
+  Make sure the current session
+  actually belongs to a valid user.
+*/
+
+if (
+  !loggedIn ||
+  !user ||
+  !currentUserId ||
+  String(user.id) !== currentUserId
+) {
+
+  localStorage.removeItem(
+    "gentleLoggedIn"
+  );
+
+  localStorage.removeItem(
+    "gentleCurrentUserId"
+  );
+
+  localStorage.removeItem(
+    "gentleCheckoutProduct"
+  );
+
+  window.location.replace(
+    "login.html"
+  );
+
+}
+
+
+/* =========================
+   USER INFORMATION
+========================= */
+
+if (user) {
+
+  document
+    .getElementById("userName")
+    .textContent =
+    user.name || "User";
+
+
+  document
+    .getElementById("userEmail")
+    .textContent =
+    user.email || "";
+
+}
+
+
+/* =========================
+   WALLET BALANCE
+========================= */
+
+function updateBalance() {
+
+  const balance =
+    Number(
+      localStorage.getItem(
+        "gentleBalance"
+      )
+    ) || 0;
+
+
+  document
+    .getElementById("balance")
+    .textContent =
+    "₦" +
+    balance.toLocaleString(
+      "en-NG",
+      {
+        minimumFractionDigits: 2
+      }
+    );
+
+}
+
+
+updateBalance();
+
+
+/* =========================
+   REFRESH
+========================= */
+
+window.addEventListener(
+  "pageshow",
+  function() {
+
+    const sessionActive =
+      localStorage.getItem(
+        "gentleLoggedIn"
+      ) === "true";
+
+
+    const sessionUserId =
+      String(
+        localStorage.getItem(
+          "gentleCurrentUserId"
+        ) || ""
+      );
+
+
+    if (
+      !sessionActive ||
+      !sessionUserId
+    ) {
+
+      window.location.replace(
+        "login.html"
+      );
+
+      return;
+
+    }
+
+
+    updateBalance();
+
+  }
+);
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+function goDashboard() {
+
+  window.location.href =
+    "dashboard.html";
+
+}
+
+
+function fundWallet() {
+
+  window.location.href =
+    "fund.html";
+
+}
+
+
+function viewOrders() {
+
+  window.location.href =
+    "orders.html";
+
+}
+
+
+/* =========================
+   SECURE LOGOUT
+========================= */
+
+function logout() {
+
+  /*
+    End the current customer session.
+  */
+
+  localStorage.removeItem(
+    "gentleLoggedIn"
+  );
+
+
+  localStorage.removeItem(
+    "gentleCurrentUserId"
+  );
+
+
+  /*
+    Remove the currently selected
+    checkout product so another
+    customer cannot continue it.
+  */
+
+  localStorage.removeItem(
+    "gentleCheckoutProduct"
+  );
+
+
+  /*
+    Do not delete gentleUser here.
+    It contains the registered account
+    information needed for the next login.
+  */
+
+
+  window.location.replace(
+    "login.html"
+  );
+
+}
+
+</script>
+
+</body>
+</html>

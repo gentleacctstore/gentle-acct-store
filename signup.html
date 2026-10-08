@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Create Account - Gentle Acct Store</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:Arial,sans-serif;
+  min-height:100vh;
+  background:#f5f8fc;
+  color:#172033;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.container{
+  width:100%;
+  max-width:440px;
+}
+
+.logo{
+  text-align:center;
+  color:#0866ff;
+  font-size:23px;
+  font-weight:800;
+  margin-bottom:20px;
+}
+
+.logo i{
+  margin-right:7px;
+}
+
+.card{
+  background:white;
+  border-radius:24px;
+  padding:26px 20px;
+  box-shadow:0 12px 35px rgba(20,40,80,.08);
+  border:1px solid #e7ecf3;
+}
+
+.header{
+  text-align:center;
+  margin-bottom:24px;
+}
+
+.header h1{
+  font-size:25px;
+  margin-bottom:7px;
+}
+
+.header p{
+  color:#748093;
+  font-size:13px;
+  line-height:1.5;
+}
+
+.field{
+  margin-bottom:16px;
+}
+
+.field label{
+  display:block;
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:7px;
+}
+
+.input-box{
+  position:relative;
+}
+
+.input-box i{
+  position:absolute;
+  left:14px;
+  top:50%;
+  transform:translateY(-50%);
+  color:#8b96a7;
+}
+
+.input-box input{
+  width:100%;
+  border:1px solid #dce3ed;
+  border-radius:12px;
+  padding:14px 14px 14px 42px;
+  outline:none;
+  font-size:14px;
+  background:#fbfcfe;
+}
+
+.input-box input:focus{
+  border-color:#0866ff;
+  background:white;
+}
+
+.signup-btn{
+  width:100%;
+  border:none;
+  border-radius:12px;
+  padding:14px;
+  background:#0866ff;
+  color:white;
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
+  margin-top:5px;
+}
+
+.signup-btn:hover{
+  background:#0054d9;
+}
+
+.login{
+  text-align:center;
+  margin-top:20px;
+  font-size:13px;
+  color:#727d8d;
+}
+
+.login a{
+  color:#0866ff;
+  text-decoration:none;
+  font-weight:700;
+}
+
+.note{
+  text-align:center;
+  color:#9aa4b2;
+  font-size:11px;
+  margin-top:18px;
+  line-height:1.5;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="logo">
+    <i class="fa-solid fa-store"></i>
+    Gentle Acct Store
+  </div>
+
+  <div class="card">
+
+    <div class="header">
+      <h1>Create Account</h1>
+      <p>Join Gentle Acct Store and start shopping.</p>
+    </div>
+
+    <form id="signupForm">
+
+      <div class="field">
+
+        <label>Full Name</label>
+
+        <div class="input-box">
+
+          <i class="fa-solid fa-user"></i>
+
+          <input
+            id="name"
+            type="text"
+            placeholder="Enter your full name"
+            required
+          >
+
+        </div>
+
+      </div>
+
+
+      <div class="field">
+
+        <label>Email Address</label>
+
+        <div class="input-box">
+
+          <i class="fa-solid fa-envelope"></i>
+
+          <input
+            id="email"
+            type="email"
+            placeholder="Enter your email"
+            required
+          >
+
+        </div>
+
+      </div>
+
+
+      <div class="field">
+
+        <label>Password</label>
+
+        <div class="input-box">
+
+          <i class="fa-solid fa-lock"></i>
+
+          <input
+            id="password"
+            type="password"
+            placeholder="Create a password"
+            required
+          >
+
+        </div>
+
+      </div>
+
+
+      <div class="field">
+
+        <label>Confirm Password</label>
+
+        <div class="input-box">
+
+          <i class="fa-solid fa-lock"></i>
+
+          <input
+            id="confirmPassword"
+            type="password"
+            placeholder="Confirm your password"
+            required
+          >
+
+        </div>
+
+      </div>
+
+
+      <button
+        type="submit"
+        class="signup-btn"
+      >
+        <i class="fa-solid fa-user-plus"></i>
+        Create Account
+      </button>
+
+    </form>
+
+
+    <div class="login">
+
+      Already have an account?
+
+      <a href="login.html">
+        Login
+      </a>
+
+    </div>
+
+  </div>
+
+
+  <div class="note">
+    By creating an account, you agree to use the store responsibly.
+  </div>
+
+</div>
+
+
+<script>
+
+document
+.getElementById("signupForm")
+.addEventListener("submit", function(event){
+
+  event.preventDefault();
+
+
+  const name =
+    document
+    .getElementById("name")
+    .value
+    .trim();
+
+
+  const email =
+    document
+    .getElementById("email")
+    .value
+    .trim()
+    .toLowerCase();
+
+
+  const password =
+    document
+    .getElementById("password")
+    .value;
+
+
+  const confirmPassword =
+    document
+    .getElementById("confirmPassword")
+    .value;
+
+
+  if(password !== confirmPassword){
+
+    alert("Passwords do not match.");
+
+    return;
+
+  }
+
+
+  if(password.length < 6){
+
+    alert("Password must be at least 6 characters.");
+
+    return;
+
+  }
+
+
+  let users = [];
+
+  const savedUsers =
+    localStorage.getItem("gentleUsers");
+
+
+  if(savedUsers){
+
+    try{
+
+      const parsed =
+        JSON.parse(savedUsers);
+
+      if(Array.isArray(parsed)){
+        users = parsed;
+      }
+
+    }catch(error){
+
+      users = [];
+
+    }
+
+  }
+
+
+  const emailExists =
+    users.some(user =>
+      String(user.email || "")
+      .toLowerCase() === email
+    );
+
+
+  if(emailExists){
+
+    alert("An account with this email already exists.");
+
+    return;
+
+  }
+
+
+  /*
+    Every new customer starts with
+    a completely separate ₦0 balance.
+  */
+
+  const newUser = {
+
+    id: Date.now(),
+
+    name: name,
+
+    email: email,
+
+    password: password,
+
+    balance: 0,
+
+    date: new Date().toLocaleDateString("en-NG")
+
+  };
+
+
+  users.push(newUser);
+
+
+  localStorage.setItem(
+    "gentleUsers",
+    JSON.stringify(users)
+  );
+
+
+  localStorage.setItem(
+    "gentleUser",
+    JSON.stringify(newUser)
+  );
+
+
+  /*
+    Start this newly registered customer
+    with ₦0 instead of the old ₦39,000.
+  */
+
+  localStorage.setItem(
+    "gentleBalance",
+    "0"
+  );
+
+
+  alert("Account created successfully.");
+
+
+  window.location.href = "login.html";
+
+});
+
+</script>
+
+</body>
+</html>

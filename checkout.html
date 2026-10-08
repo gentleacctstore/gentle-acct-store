@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Checkout | Gentle Acct Store</title>
+
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f5f8ff;
+      color: #172033;
+      min-height: 100vh;
+    }
+
+    .header {
+      height: 68px;
+      background: white;
+      color: #172033;
+      padding: 0 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border-bottom: 1px solid #e3e8f0;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .back {
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 11px;
+      background: #eaf2ff;
+      color: #1261e8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .header h2 {
+      font-size: 19px;
+      font-weight: 800;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px 16px 45px;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #e1e7f0;
+      border-radius: 20px;
+      padding: 19px;
+      margin-bottom: 15px;
+      box-shadow: 0 5px 18px rgba(23,32,51,.04);
+    }
+
+    .product-top {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 17px;
+    }
+
+    .product-image-box {
+      width: 82px;
+      height: 82px;
+      border-radius: 16px;
+      background: #eaf2ff;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #1261e8;
+      flex-shrink: 0;
+    }
+
+    .product-image-box i {
+      font-size: 29px;
+    }
+
+    .product-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .product-details {
+      min-width: 0;
+    }
+
+    .category {
+      display: inline-block;
+      background: #eef4ff;
+      color: #1261e8;
+      padding: 5px 9px;
+      border-radius: 20px;
+      font-size: 9px;
+      font-weight: 800;
+      margin-bottom: 7px;
+      text-transform: capitalize;
+    }
+
+    .product-name {
+      font-size: 19px;
+      font-weight: 800;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .description {
+      color: #7b8494;
+      line-height: 1.5;
+      font-size: 13px;
+      margin-bottom: 17px;
+    }
+
+    .price-box {
+      background: #f5f8ff;
+      border: 1px solid #e5ebf5;
+      border-radius: 14px;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .price-box span {
+      color: #7b8494;
+      font-size: 13px;
+    }
+
+    .price-box strong {
+      color: #1261e8;
+      font-size: 21px;
+      font-weight: 800;
+    }
+
+    .wallet {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .wallet-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .wallet-icon {
+      width: 45px;
+      height: 45px;
+      background: #eaf2ff;
+      color: #1261e8;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .wallet small {
+      color: #7b8494;
+      font-size: 11px;
+    }
+
+    .wallet strong {
+      display: block;
+      margin-top: 4px;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .wallet-status {
+      font-size: 11px;
+      color: #16834b;
+      font-weight: 700;
+    }
+
+    .insufficient,
+    .out-of-stock {
+      display: none;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 14px;
+      line-height: 1.5;
+      font-size: 13px;
+    }
+
+    .insufficient {
+      background: #fff1f2;
+      color: #be123c;
+      border: 1px solid #ffd6dc;
+    }
+
+    .out-of-stock {
+      background: #fff7ed;
+      color: #c2410c;
+      border: 1px solid #fed7aa;
+    }
+
+    .insufficient i,
+    .out-of-stock i {
+      margin-right: 5px;
+    }
+
+    .pay-btn {
+      width: 100%;
+      border: none;
+      background: #1261e8;
+      color: white;
+      padding: 16px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(18,97,232,.18);
+    }
+
+    .pay-btn:active {
+      transform: scale(.98);
+    }
+
+    .pay-btn:disabled {
+      background: #aeb7c5;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    .secure-note {
+      text-align: center;
+      color: #8a94a6;
+      font-size: 10px;
+      margin-top: 10px;
+    }
+
+    .secure-note i {
+      margin-right: 3px;
+    }
+
+    .success-page {
+      display: none;
+      text-align: center;
+    }
+
+    .success-icon {
+      width: 78px;
+      height: 78px;
+      background: #e9f9f0;
+      color: #0a8f4d;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 34px;
+      margin: 8px auto 18px;
+    }
+
+    .success-page h1 {
+      font-size: 24px;
+      margin-bottom: 8px;
+      font-weight: 800;
+    }
+
+    .success-page > p {
+      color: #7b8494;
+      font-size: 13px;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .purchase-label {
+      text-align: left;
+      font-size: 12px;
+      color: #7b8494;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .purchase-info {
+      background: #f7faff;
+      border: 1px solid #dce8fa;
+      border-radius: 14px;
+      padding: 17px;
+      text-align: left;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-size: 13px;
+    }
+
+    .copy-btn,
+    .orders-btn {
+      width: 100%;
+      margin-top: 12px;
+      padding: 14px;
+      border-radius: 13px;
+      font-weight: 800;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .copy-btn {
+      border: 1px solid #1261e8;
+      background: white;
+      color: #1261e8;
+    }
+
+    .orders-btn {
+      border: none;
+      background: #1261e8;
+      color: white;
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+
+<div class="header">
+
+  <button
+    class="back"
+    onclick="goBack()">
+
+    <i class="fa-solid fa-arrow-left"></i>
+
+  </button>
+
+  <h2>
+    Checkout
+  </h2>
+
+</div>
+
+
+<div class="container">
+
+
+  <div id="checkoutArea">
+
+
+    <div class="card">
+
+      <div class="product-top">
+
+        <div
+          class="product-image-box"
+          id="productImageBox">
+
+          <i class="fa-solid fa-box"></i>
+
+        </div>
+
+
+        <div class="product-details">
+
+          <div
+            id="productCategory"
+            class="category">
+          </div>
+
+          <h1
+            id="productName"
+            class="product-name">
+          </h1>
+
+        </div>
+
+      </div>
+
+
+      <p
+        id="productDescription"
+        class="description">
+      </p>
+
+
+      <div class="price-box">
+
+        <span>
+          Total
+        </span>
+
+        <strong id="productPrice">
+          ₦0.00
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="wallet">
+
+        <div class="wallet-left">
+
+          <div class="wallet-icon">
+
+            <i class="fa-solid fa-wallet"></i>
+
+          </div>
+
+          <div>
+
+            <small>
+              Wallet Balance
+            </small>
+
+            <strong id="walletBalance">
+              ₦0.00
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <div
+          class="wallet-status"
+          id="walletStatus">
+
+          Ready
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div
+      class="insufficient"
+      id="insufficient">
+
+      <i class="fa-solid fa-circle-exclamation"></i>
+
+      <strong>
+        Insufficient wallet balance.
+      </strong>
+
+      <br>
+
+      Please fund your wallet before making this purchase.
+
+    </div>
+
+
+    <div
+      class="out-of-stock"
+      id="outOfStock">
+
+      <i class="fa-solid fa-box-open"></i>
+
+      <strong>
+        Out of Stock.
+      </strong>
+
+      <br>
+
+      This product currently has no available items.
+
+    </div>
+
+
+    <button
+      class="pay-btn"
+      id="payButton"
+      onclick="confirmPayment()">
+
+      <i class="fa-solid fa-lock"></i>
+
+      Confirm Purchase
+
+    </button>
+
+
+    <div class="secure-note">
+
+      <i class="fa-solid fa-shield-halved"></i>
+
+      Purchase processed through your wallet
+
+    </div>
+
+
+  </div>
+
+
+  <div
+    class="card success-page"
+    id="successPage">
+
+
+    <div class="success-icon">
+
+      <i class="fa-solid fa-check"></i>
+
+    </div>
+
+
+    <h1>
+      Purchase Successful
+    </h1>
+
+
+    <p>
+      Your purchase has been completed.
+      Your item is shown below.
+    </p>
+
+
+    <div class="purchase-label">
+      Purchase Information
+    </div>
+
+
+    <div
+      class="purchase-info"
+      id="purchaseInfo">
+    </div>
+
+
+    <button
+      class="copy-btn"
+      onclick="copyPurchaseInfo()">
+
+      <i class="fa-solid fa-copy"></i>
+
+      Copy Purchase Information
+
+    </button>
+
+
+    <button
+      class="orders-btn"
+      onclick="viewOrders()">
+
+      <i class="fa-solid fa-receipt"></i>
+
+      View My Orders
+
+    </button>
+
+  </div>
+
+
+</div>
+
+
+<script>
+
+/* =========================
+   SESSION PROTECTION
+========================= */
+
+const loggedIn =
+  localStorage.getItem(
+    "gentleLoggedIn"
+  ) === "true";
+
+
+const savedUser =
+  localStorage.getItem(
+    "gentleUser"
+  );
+
+
+const savedUserId =
+  String(
+    localStorage.getItem(
+      "gentleCurrentUserId"
+    ) || ""
+  );
+
+
+let currentUser = null;
+
+
+if (savedUser) {
+
+  try {
+
+    currentUser =
+      JSON.parse(savedUser);
+
+  } catch (error) {
+
+    currentUser = null;
+
+  }
+
+}
+
+
+/*
+  Checkout requires a valid
+  logged-in customer session.
+*/
+
+if (
+  !loggedIn ||
+  !currentUser ||
+  !savedUserId ||
+  String(currentUser.id) !== savedUserId
+) {
+
+  localStorage.removeItem(
+    "gentleLoggedIn"
+  );
+
+  localStorage.removeItem(
+    "gentleCurrentUserId"
+  );
+
+  localStorage.removeItem(
+    "gentleCheckoutProduct"
+  );
+
+  window.location.replace(
+    "login.html"
+  );
+
+}
+
+
+/* =========================
+   CUSTOMER ID
+========================= */
+
+const currentUserId =
+  String(currentUser.id);
+
+
+const currentUserEmail =
+  String(currentUser.email || "")
+    .toLowerCase();
+
+
+/* =========================
+   PRODUCTS
+========================= */
+
+let products =
+  JSON.parse(
+    localStorage.getItem(
+      "gentleProducts"
+    )
+  ) || [];
+
+
+const selectedId =
+  localStorage.getItem(
+    "gentleCheckoutProduct"
+  );
+
+
+let product =
+  products.find(function(item) {
+
+    return String(item.id)
+      === String(selectedId);
+
+  });
+
+
+if (!product) {
+
+  alert(
+    "No product selected."
+  );
+
+  window.location.replace(
+    "dashboard.html"
+  );
+
+}
+
+
+/* =========================
+   WALLET
+========================= */
+
+let balance =
+  Number(
+    localStorage.getItem(
+      "gentleBalance"
+    )
+  ) || 0;
+
+
+/* =========================
+   MONEY
+========================= */
+
+function money(amount) {
+
+  return "₦" +
+    Number(amount)
+      .toLocaleString(
+        "en-NG",
+        {
+          minimumFractionDigits: 2
+        }
+      );
+
+}
+
+
+/* =========================
+   PRODUCT ICON
+========================= */
+
+function getProductIcon() {
+
+  const category =
+    String(
+      product.category || ""
+    ).toLowerCase();
+
+
+  if (category === "instagram") {
+    return "fa-instagram";
+  }
+
+  if (category === "facebook") {
+    return "fa-facebook";
+  }
+
+  if (category === "tiktok") {
+    return "fa-tiktok";
+  }
+
+  return "fa-box";
+
+}
+
+
+/* =========================
+   DISPLAY PRODUCT
+========================= */
+
+const imageBox =
+  document.getElementById(
+    "productImageBox"
+  );
+
+
+if (product.image) {
+
+  imageBox.innerHTML = `
+
+    <img
+      class="product-image"
+      src="${escapeHtml(product.image)}"
+      alt="${escapeHtml(product.name)}">
+
+  `;
+
+} else {
+
+  imageBox.innerHTML = `
+
+    <i class="fa-solid ${getProductIcon()}"></i>
+
+  `;
+
+}
+
+
+document.getElementById(
+  "productCategory"
+).textContent =
+  product.category || "Other";
+
+
+document.getElementById(
+  "productName"
+).textContent =
+  product.name || "Product";
+
+
+document.getElementById(
+  "productDescription"
+).textContent =
+  product.description ||
+  "Digital product";
+
+
+document.getElementById(
+  "productPrice"
+).textContent =
+  money(product.price);
+
+
+document.getElementById(
+  "walletBalance"
+).textContent =
+  money(balance);
+
+
+/* =========================
+   INVENTORY
+========================= */
+
+function getInventory() {
+
+  if (
+    Array.isArray(product.inventory)
+  ) {
+
+    return product.inventory;
+
+  }
+
+  return [];
+
+}
+
+
+/* =========================
+   AVAILABILITY
+========================= */
+
+function checkPurchaseAvailability() {
+
+  const price =
+    Number(product.price) || 0;
+
+  const inventory =
+    getInventory();
+
+
+  const insufficientBox =
+    document.getElementById(
+      "insufficient"
+    );
+
+  const outOfStockBox =
+    document.getElementById(
+      "outOfStock"
+    );
+
+  const payButton =
+    document.getElementById(
+      "payButton"
+    );
+
+  const walletStatus =
+    document.getElementById(
+      "walletStatus"
+    );
+
+
+  insufficientBox.style.display =
+    "none";
+
+  outOfStockBox.style.display =
+    "none";
+
+  payButton.disabled =
+    false;
+
+
+  if (inventory.length === 0) {
+
+    outOfStockBox.style.display =
+      "block";
+
+    payButton.disabled =
+      true;
+
+    walletStatus.textContent =
+      "Unavailable";
+
+    walletStatus.style.color =
+      "#d93025";
+
+    return;
+
+  }
+
+
+  if (balance < price) {
+
+    insufficientBox.style.display =
+      "block";
+
+    payButton.disabled =
+      true;
+
+    walletStatus.textContent =
+      "Insufficient";
+
+    walletStatus.style.color =
+      "#d93025";
+
+    return;
+
+  }
+
+
+  walletStatus.textContent =
+    "Ready";
+
+  walletStatus.style.color =
+    "#16834b";
+
+}
+
+
+/* =========================
+   CONFIRM PURCHASE
+========================= */
+
+function confirmPayment() {
+
+  const payButton =
+    document.getElementById(
+      "payButton"
+    );
+
+
+  if (payButton.disabled) {
+    return;
+  }
+
+
+  payButton.disabled = true;
+
+
+  /*
+    Reload everything from storage
+    immediately before purchase.
+  */
+
+  const currentProducts =
+    JSON.parse(
+      localStorage.getItem(
+        "gentleProducts"
+      )
+    ) || [];
+
+
+  const currentProduct =
+    currentProducts.find(
+      function(item) {
+
+        return String(item.id)
+          === String(product.id);
+
+      }
+    );
+
+
+  if (!currentProduct) {
+
+    alert(
+      "Product is no longer available."
+    );
+
+    payButton.disabled =
+      false;
+
+    return;
+
+  }
+
+
+  const inventory =
+    Array.isArray(
+      currentProduct.inventory
+    )
+      ? currentProduct.inventory
+      : [];
+
+
+  if (inventory.length === 0) {
+
+    alert(
+      "Sorry, this product is out of stock."
+    );
+
+    document.getElementById(
+      "outOfStock"
+    ).style.display =
+      "block";
+
+    return;
+
+  }
+
+
+  /*
+    Always read the latest wallet
+    balance before charging.
+  */
+
+  balance =
+    Number(
+      localStorage.getItem(
+        "gentleBalance"
+      )
+    ) || 0;
+
+
+  const price =
+    Number(currentProduct.price) || 0;
+
+
+  if (balance < price) {
+
+    alert(
+      "Insufficient wallet balance."
+    );
+
+    document.getElementById(
+      "insufficient"
+    ).style.display =
+      "block";
+
+    payButton.disabled =
+      false;
+
+    return;
+
+  }
+
+
+  /*
+    Deliver exactly one inventory item.
+  */
+
+  const deliveredItem =
+    inventory.shift();
+
+
+  currentProduct.inventory =
+    inventory;
+
+
+  /*
+    Save updated stock.
+  */
+
+  localStorage.setItem(
+    "gentleProducts",
+    JSON.stringify(
+      currentProducts
+    )
+  );
+
+
+  /*
+    Deduct the purchase price.
+  */
+
+  balance =
+    balance - price;
+
+
+  localStorage.setItem(
+    "gentleBalance",
+    String(balance)
+  );
+
+
+  /*
+    Create an order belonging
+    to THIS customer.
+  */
+
+  const order = {
+
+    id:
+      "ORD-" + Date.now(),
+
+    userId:
+      currentUserId,
+
+    userEmail:
+      currentUserEmail,
+
+    productId:
+      currentProduct.id,
+
+    productName:
+      currentProduct.name,
+
+    category:
+      currentProduct.category,
+
+    price:
+      price,
+
+    purchaseText:
+      deliveredItem,
+
+    date:
+      new Date().toLocaleString(),
+
+    status:
+      "Completed"
+
+  };
+
+
+  /*
+    Load existing orders safely.
+  */
+
+  let orders = [];
+
+
+  try {
+
+    const savedOrders =
+      JSON.parse(
+        localStorage.getItem(
+          "gentleOrders"
+        )
+      );
+
+
+    if (Array.isArray(savedOrders)) {
+
+      orders =
+        savedOrders;
+
+    }
+
+  } catch (error) {
+
+    orders = [];
+
+  }
+
+
+  orders.unshift(order);
+
+
+  localStorage.setItem(
+    "gentleOrders",
+    JSON.stringify(orders)
+  );
+
+
+  /*
+    Show the delivered item.
+  */
+
+  document.getElementById(
+    "purchaseInfo"
+  ).textContent =
+    deliveredItem;
+
+
+  document.getElementById(
+    "checkoutArea"
+  ).style.display =
+    "none";
+
+
+  document.getElementById(
+    "successPage"
+  ).style.display =
+    "block";
+
+
+  /*
+    Prevent the same selected
+    product from being purchased
+    again by refreshing checkout.
+  */
+
+  localStorage.removeItem(
+    "gentleCheckoutProduct"
+  );
+
+}
+
+
+/* =========================
+   COPY PURCHASE INFORMATION
+========================= */
+
+function copyPurchaseInfo() {
+
+  const text =
+    document.getElementById(
+      "purchaseInfo"
+    ).textContent;
+
+
+  if (
+    navigator.clipboard &&
+    navigator.clipboard.writeText
+  ) {
+
+    navigator.clipboard
+      .writeText(text)
+      .then(function() {
+
+        alert(
+          "Purchase information copied."
+        );
+
+      })
+      .catch(function() {
+
+        alert(
+          "Unable to copy. Please copy it manually."
+        );
+
+      });
+
+  } else {
+
+    alert(
+      "Unable to copy. Please copy it manually."
+    );
+
+  }
+
+}
+
+
+/* =========================
+   ORDERS
+========================= */
+
+function viewOrders() {
+
+  window.location.href =
+    "orders.html";
+
+}
+
+
+/* =========================
+   BACK
+========================= */
+
+function goBack() {
+
+  window.location.href =
+    "dashboard.html";
+
+}
+
+
+/* =========================
+   HTML SAFETY
+========================= */
+
+function escapeHtml(text) {
+
+  const div =
+    document.createElement(
+      "div"
+    );
+
+  div.textContent =
+    text || "";
+
+  return div.innerHTML;
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+checkPurchaseAvailability();
+
+
+/* =========================
+   PAGE REFRESH
+========================= */
+
+window.addEventListener(
+  "pageshow",
+  function() {
+
+    const sessionActive =
+      localStorage.getItem(
+        "gentleLoggedIn"
+      ) === "true";
+
+
+    const sessionUserId =
+      String(
+        localStorage.getItem(
+          "gentleCurrentUserId"
+        ) || ""
+      );
+
+
+    if (
+      !sessionActive ||
+      !sessionUserId
+    ) {
+
+      window.location.replace(
+        "login.html"
+      );
+
+    }
+
+  }
+);
+
+</script>
+
+</body>
+</html>
