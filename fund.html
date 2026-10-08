@@ -25,7 +25,6 @@ href="https://fonts.googleapis.com"
 <link
 rel="preconnect"
 href="https://fonts.gstatic.com"
-crossorigin
 >
 
 <link
@@ -63,6 +62,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 --border:#e4eaf2;
 
 --success:#15803d;
+
 --danger:#dc2626;
 
 --shadow:0 10px 30px rgba(11,45,92,.07);
@@ -70,13 +70,19 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 }
 
 *{
+
 box-sizing:border-box;
+
 margin:0;
+
 padding:0;
+
 }
 
 html{
+
 scroll-behavior:smooth;
+
 }
 
 body{
@@ -95,16 +101,23 @@ padding-bottom:82px;
 
 button,
 input{
+
 font-family:inherit;
+
 }
 
 button{
+
 cursor:pointer;
+
 }
 
 a{
+
 text-decoration:none;
+
 color:inherit;
+
 }
 
 .page{
@@ -128,7 +141,7 @@ header{
 
 height:68px;
 
-background:rgba(255,255,255,.96);
+background:rgba(255,255,255,.97);
 
 padding:0 17px;
 
@@ -187,7 +200,9 @@ transition:.2s;
 }
 
 .back-btn:active{
+
 transform:scale(.94);
+
 }
 
 .header-info h2{
@@ -295,6 +310,7 @@ padding:19px;
 margin-bottom:16px;
 
 box-shadow:
+
 0 12px 30px rgba(11,45,92,.18);
 
 position:relative;
@@ -444,13 +460,13 @@ CLOSED NOTICE
 
 .closed-notice{
 
-background:var(--white);
+background:#fff;
 
 border:1px solid var(--border);
 
 border-radius:19px;
 
-padding:17px;
+padding:18px;
 
 margin-bottom:15px;
 
@@ -464,23 +480,23 @@ display:flex;
 
 align-items:center;
 
-gap:9px;
+gap:10px;
 
-margin-bottom:9px;
+margin-bottom:10px;
 
 }
 
 .closed-icon{
 
-width:37px;
+width:39px;
 
-height:37px;
+height:39px;
 
-border-radius:11px;
+border-radius:12px;
 
-background:var(--blue-light);
+background:#fff1f1;
 
-color:var(--blue);
+color:var(--danger);
 
 display:flex;
 
@@ -490,15 +506,19 @@ justify-content:center;
 
 font-size:14px;
 
+flex-shrink:0;
+
 }
 
 .closed-top h3{
 
-font-size:14px;
+font-size:13px;
 
 font-weight:800;
 
 color:var(--blue-dark);
+
+line-height:1.3;
 
 }
 
@@ -514,7 +534,7 @@ color:var(--muted);
 
 
 /* =========================
-HOW IT WORKS
+CARD
 ========================= */
 
 .card{
@@ -541,7 +561,7 @@ align-items:center;
 
 gap:9px;
 
-margin-bottom:13px;
+margin-bottom:14px;
 
 }
 
@@ -744,6 +764,7 @@ background:#eef3f8;
 background:#f7f9fc;
 
 box-shadow:
+
 0 0 40px rgba(0,0,0,.04);
 
 }
@@ -777,6 +798,7 @@ font-size:22px;
 
 }
 
+.closed-notice,
 .card{
 
 padding:15px;
@@ -869,6 +891,8 @@ Manage your wallet balance and funding status.
 </div>
 
 
+<!-- WALLET BALANCE -->
+
 <div class="wallet">
 
 <div class="wallet-top">
@@ -909,11 +933,11 @@ Wallet Ready
 </div>
 
 
+<!-- CLOSED NOTICE -->
+
 <div class="closed-notice">
 
-
 <div class="closed-top">
-
 
 <div class="closed-icon">
 
@@ -921,25 +945,26 @@ Wallet Ready
 
 </div>
 
-
 <h3>
 Add Funds Temporarily Closed
 </h3>
-
 
 </div>
 
 
 <p>
+
 Wallet funding is currently unavailable.
 We’ll reopen Add Funds when the official
 payment system is ready. Your existing wallet
 balance remains visible and available for purchases.
-</p>
 
+</p>
 
 </div>
 
+
+<!-- HOW IT WORKS -->
 
 <div class="card">
 
@@ -1019,7 +1044,8 @@ Your existing wallet balance is still displayed on your account.
 <div class="step-text">
 
 <strong>
-Shop products</strong>
+Shop products
+</strong>
 
 <span>
 Use your available wallet balance when purchasing products.
@@ -1037,6 +1063,8 @@ Use your available wallet balance when purchasing products.
 
 </main>
 
+
+<!-- BOTTOM NAV -->
 
 <nav class="bottom-nav">
 
@@ -1129,6 +1157,7 @@ AUTH
 ========================= */
 
 firebaseAuth.onAuthStateChanged(
+
 async function(user){
 
 if(
@@ -1149,6 +1178,7 @@ firebaseUser = user;
 await loadWallet();
 
 }
+
 );
 
 
@@ -1159,7 +1189,9 @@ LOAD WALLET
 async function loadWallet(){
 
 if(!firebaseUser){
+
 return;
+
 }
 
 try{
@@ -1168,6 +1200,7 @@ const walletRef =
 firebaseDB
 .collection("wallets")
 .doc(firebaseUser.uid);
+
 
 const snapshot =
 await walletRef.get();
@@ -1178,6 +1211,7 @@ if(snapshot.exists){
 const data =
 snapshot.data();
 
+
 balance =
 Number(
 data.balance || 0
@@ -1186,6 +1220,7 @@ data.balance || 0
 }else{
 
 balance = 0;
+
 
 await walletRef.set({
 
@@ -1205,12 +1240,16 @@ firebase.firestore
 }
 
 
-/* Compatibility */
+/* SAVE FOR COMPATIBILITY */
 
 localStorage.setItem(
+
 "gentleBalance",
+
 String(balance)
+
 );
+
 
 updateBalance();
 
@@ -1218,8 +1257,11 @@ updateBalance();
 }catch(error){
 
 console.error(
+
 "WALLET LOADING ERROR:",
+
 error
+
 );
 
 }
@@ -1238,14 +1280,22 @@ document.getElementById(
 "balance"
 );
 
+
 if(!balanceElement){
+
 return;
+
 }
 
+
 balanceElement.textContent =
+
 "₦" +
+
 balance.toLocaleString(
+
 "en-NG",
+
 {
 
 minimumFractionDigits:2,
@@ -1253,6 +1303,7 @@ minimumFractionDigits:2,
 maximumFractionDigits:2
 
 }
+
 );
 
 }
@@ -1275,7 +1326,9 @@ PAGE SHOW
 ========================= */
 
 window.addEventListener(
+
 "pageshow",
+
 function(){
 
 if(firebaseUser){
@@ -1285,6 +1338,7 @@ loadWallet();
 }
 
 }
+
 );
 
 </script>
