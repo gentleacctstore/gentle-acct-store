@@ -1662,11 +1662,11 @@ const inventoryQuery =
    .get();
 
 if (inventoryQuery.empty) {
-   
+
    throw new Error(
       "This product has no available inventory."
    );
-   
+
 }
 
 
@@ -1678,19 +1678,19 @@ according to its position.
 const inventoryDocs =
    inventoryQuery.docs.sort(
       function(a, b) {
-         
+
          const positionA =
             Number(
                a.data().position || 0
             );
-         
+
          const positionB =
             Number(
                b.data().position || 0
             );
-         
+
          return positionA - positionB;
-         
+
       }
    );
 
@@ -1752,6 +1752,17 @@ await transaction.get(productRef);
 const inventorySnapshot =
 await transaction.get(inventoryRef);
 
+
+/* CHECK REQUIRED DOCUMENTS */
+
+if(!walletSnapshot.exists){
+
+throw new Error(
+"Your wallet has not been created yet. Please contact support."
+);
+
+}
+
 if(!productSnapshot.exists){
 
 throw new Error(
@@ -1768,16 +1779,16 @@ throw new Error(
 
 }
 
+
 const wallet =
-walletSnapshot.exists
-? walletSnapshot.data()
-: {};
+walletSnapshot.data();
 
 const product =
 productSnapshot.data();
 
 const inventory =
 inventorySnapshot.data();
+
 
 const currentBalance =
 Number(
@@ -1793,6 +1804,7 @@ const currentPrice =
 Number(
 product.price || 0
 );
+
 
 if(currentStock <= 0){
 
@@ -1838,7 +1850,7 @@ Number(
 );
 
 
-/* WALLET */
+/* WALLET — UPDATED */
 
 transaction.update(
 walletRef,
@@ -1849,13 +1861,16 @@ balance:newBalance,
 updatedAt:
 firebase.firestore
 .FieldValue
-.serverTimestamp()
+.serverTimestamp(),
+
+lastOrderId:
+orderRef.id
 
 }
 );
 
 
-/* PRODUCT STOCK */
+/* PRODUCT STOCK — UPDATED */
 
 transaction.update(
 productRef,
@@ -1867,7 +1882,10 @@ currentStock - 1,
 updatedAt:
 firebase.firestore
 .FieldValue
-.serverTimestamp()
+.serverTimestamp(),
+
+lastOrderId:
+orderRef.id
 
 }
 );
