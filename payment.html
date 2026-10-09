@@ -1,0 +1,719 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b2d5c">
+<title>Complete Payment - Gentle Acct Store</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase.js"></script>
+
+<style>
+:root{
+--blue:#0b2d5c;
+--dark:#071f40;
+--light:#eaf2fb;
+--text:#172033;
+--muted:#748093;
+--border:#e4eaf2;
+}
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+body{
+font-family:Poppins,sans-serif;
+background:linear-gradient(160deg,#edf4ff,#f8faff 50%,#edf3fa);
+color:var(--text);
+min-height:100vh;
+padding-bottom:35px;
+}
+
+button{
+font-family:inherit;
+cursor:pointer;
+}
+
+a{
+text-decoration:none;
+color:inherit;
+}
+
+.page{
+width:100%;
+max-width:600px;
+margin:auto;
+min-height:100vh;
+}
+
+header{
+height:68px;
+background:#ffffffed;
+border-bottom:1px solid var(--border);
+display:flex;
+align-items:center;
+gap:12px;
+padding:0 17px;
+position:sticky;
+top:0;
+z-index:5;
+backdrop-filter:blur(12px);
+}
+
+.back-btn{
+width:39px;
+height:39px;
+border:0;
+border-radius:12px;
+background:var(--light);
+color:var(--blue);
+}
+
+.header-info h2{
+font-size:15px;
+font-weight:800;
+color:var(--dark);
+}
+
+.header-info p{
+font-size:8px;
+color:var(--muted);
+margin-top:2px;
+}
+
+main{
+padding:24px 16px;
+}
+
+.heading{
+text-align:center;
+margin-bottom:22px;
+}
+
+.heading-icon{
+width:60px;
+height:60px;
+margin:0 auto 13px;
+border-radius:19px;
+background:var(--blue);
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:23px;
+box-shadow:0 10px 25px #0b2d5c35;
+}
+
+.heading h1{
+font-size:23px;
+font-weight:800;
+color:var(--dark);
+margin-bottom:6px;
+}
+
+.heading p{
+font-size:10px;
+color:var(--muted);
+line-height:1.8;
+}
+
+.floating-card{
+background:white;
+border:1px solid #e0e8f4;
+border-radius:23px;
+padding:20px;
+box-shadow:0 18px 45px #0b2d5c16;
+position:relative;
+overflow:hidden;
+}
+
+.floating-card:before{
+content:"";
+position:absolute;
+width:160px;
+height:160px;
+border-radius:50%;
+background:#eaf2fb;
+right:-75px;
+top:-85px;
+}
+
+.card-content{
+position:relative;
+z-index:1;
+}
+
+.eyebrow{
+font-size:9px;
+color:var(--muted);
+font-weight:700;
+letter-spacing:.5px;
+text-transform:uppercase;
+}
+
+.amount{
+font-size:31px;
+font-weight:800;
+letter-spacing:-.5px;
+color:var(--blue);
+margin:5px 0 18px;
+overflow-wrap:anywhere;
+}
+
+.divider{
+height:1px;
+background:var(--border);
+margin:14px 0;
+}
+
+.detail{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px;
+padding:10px 0;
+}
+
+.detail-label{
+font-size:10px;
+color:var(--muted);
+}
+
+.detail-value{
+font-size:11px;
+color:var(--dark);
+font-weight:800;
+text-align:right;
+overflow-wrap:anywhere;
+}
+
+.account-number{
+font-size:17px;
+letter-spacing:.4px;
+}
+
+.account-number-row{
+display:flex;
+align-items:center;
+gap:8px;
+}
+
+.copy-btn{
+border:0;
+border-radius:9px;
+padding:9px 10px;
+background:var(--light);
+color:var(--blue);
+font-size:9px;
+font-weight:800;
+white-space:nowrap;
+}
+
+.button{
+width:100%;
+min-height:47px;
+border:0;
+border-radius:13px;
+padding:12px;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:8px;
+font-size:11px;
+font-weight:800;
+margin-top:15px;
+}
+
+.complete-btn{
+background:var(--blue);
+color:white;
+box-shadow:0 8px 18px #0b2d5c25;
+}
+
+.whatsapp-btn{
+background:#168b48;
+color:white;
+}
+
+.secondary-btn{
+background:white;
+color:var(--blue);
+border:1px solid var(--border);
+}
+
+.note{
+font-size:9px;
+line-height:1.8;
+color:var(--muted);
+margin-top:14px;
+text-align:center;
+}
+
+.reference{
+background:var(--light);
+padding:13px;
+border-radius:12px;
+margin-top:15px;
+}
+
+.ref-label{
+font-size:9px;
+color:var(--muted);
+margin-bottom:5px;
+}
+
+.ref-value{
+font-size:11px;
+font-weight:800;
+color:var(--dark);
+overflow-wrap:anywhere;
+}
+
+.status{
+font-size:10px;
+line-height:1.8;
+margin-top:12px;
+overflow-wrap:anywhere;
+}
+
+.status.error{
+color:#dc2626;
+}
+
+.status.success{
+color:#15803d;
+}
+
+.hidden{
+display:none!important;
+}
+
+button:disabled{
+opacity:.6;
+cursor:not-allowed;
+}
+
+@media(max-width:360px){
+main{
+padding:20px 13px;
+}
+
+.floating-card{
+padding:16px;
+}
+
+.amount{
+font-size:27px;
+}
+
+.heading h1{
+font-size:21px;
+}
+}
+</style>
+</head>
+
+<body>
+<div class="page">
+
+<header>
+<button class="back-btn" type="button" onclick="goBack()" aria-label="Go back">
+<i class="fa-solid fa-arrow-left"></i>
+</button>
+
+<div class="header-info">
+<h2>Complete Payment</h2>
+<p>Gentle Acct Store</p>
+</div>
+</header>
+
+<main>
+
+<div class="heading">
+<div class="heading-icon">
+<i class="fa-solid fa-building-columns"></i>
+</div>
+
+<h1>Make Your Transfer</h1>
+
+<p>
+Transfer the exact amount shown below to the account details provided.
+</p>
+</div>
+
+<div class="floating-card">
+<div class="card-content">
+
+<div class="eyebrow">Amount to transfer</div>
+<div class="amount" id="amount">₦0.00</div>
+
+<div class="divider"></div>
+
+<div class="detail">
+<span class="detail-label">Bank</span>
+<span class="detail-value">Moniepoint MFB</span>
+</div>
+
+<div class="detail">
+<span class="detail-label">Account name</span>
+<span class="detail-value">Al-mustapha Abdulazeez</span>
+</div>
+
+<div class="detail">
+<span class="detail-label">Account number</span>
+
+<div class="account-number-row">
+<span class="detail-value account-number" id="accountNumber">
+5234526349
+</span>
+
+<button
+class="copy-btn"
+id="copyAccountButton"
+type="button"
+onclick="copyAccount()">
+<i class="fa-regular fa-copy"></i> Copy
+</button>
+</div>
+</div>
+
+<button
+class="button complete-btn hidden"
+id="completeButton"
+type="button"
+onclick="recordPayment()">
+<i class="fa-solid fa-check-circle"></i>
+I've Made the Payment
+</button>
+
+<div id="status" class="status hidden" role="status" aria-live="polite"></div>
+
+<div id="receiptSection" class="hidden">
+
+<div class="reference">
+<div class="ref-label">Your funding reference</div>
+<div class="ref-value" id="reference"></div>
+</div>
+
+<a
+id="whatsappButton"
+class="button whatsapp-btn"
+href="#"
+target="_blank"
+rel="noopener noreferrer">
+<i class="fa-brands fa-whatsapp"></i>
+Send Receipt on WhatsApp
+</a>
+
+<button
+class="button secondary-btn"
+type="button"
+onclick="copyReference()">
+<i class="fa-regular fa-copy"></i>
+Copy Funding Reference
+</button>
+
+</div>
+
+<p class="note">
+Submitting a request does not confirm that payment has arrived.
+Your wallet will only be credited after your payment is verified.
+</p>
+
+</div>
+</div>
+
+</main>
+</div>
+
+<script>
+"use strict";
+
+const ACCOUNT_NUMBER = "5234526349";
+const WHATSAPP_NUMBER = "2349131953030";
+const MIN_AMOUNT = 100;
+const MAX_AMOUNT = 10000000;
+const WAIT_TIME = 60000;
+
+let currentUser = null;
+let authReady = false;
+let amount = 0;
+let busy = false;
+let fundingReference = "";
+let copyTimer = null;
+
+const statusElement = document.getElementById("status");
+const completeButton = document.getElementById("completeButton");
+const copyAccountButton = document.getElementById("copyAccountButton");
+const receiptSection = document.getElementById("receiptSection");
+
+function formatNaira(value) {
+  return "₦" + Number(value).toLocaleString("en-NG", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+}
+
+function showStatus(message, type) {
+  statusElement.textContent = message;
+  statusElement.className = "status " + type;
+}
+
+function hideStatus() {
+  statusElement.textContent = "";
+  statusElement.className = "status hidden";
+}
+
+function goBack() {
+  window.location.href = "fund.html";
+}
+
+function validateAmount() {
+  const params = new URLSearchParams(window.location.search);
+  const requested = Number(params.get("amount"));
+
+  if (
+    !Number.isInteger(requested) ||
+    requested < MIN_AMOUNT ||
+    requested > MAX_AMOUNT
+  ) {
+    window.location.replace("fund.html");
+    return false;
+  }
+
+  amount = requested;
+  document.getElementById("amount").textContent = formatNaira(amount);
+
+  return true;
+}
+
+firebaseAuth.onAuthStateChanged(function(user) {
+  if (!user || !user.emailVerified) {
+    window.location.replace("login.html");
+    return;
+  }
+
+  currentUser = user;
+  authReady = true;
+});
+
+validateAmount();
+
+async function copyText(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+
+  const field = document.createElement("textarea");
+  field.value = text;
+  field.style.position = "fixed";
+  field.style.opacity = "0";
+
+  document.body.appendChild(field);
+  field.select();
+
+  const copied = document.execCommand("copy");
+  field.remove();
+
+  if (!copied) {
+    throw new Error("Copy failed");
+  }
+}
+
+async function copyAccount() {
+  if (!authReady || !currentUser) {
+    showStatus(
+      "Please wait for your account to load, then try again.",
+      "error"
+    );
+    return;
+  }
+
+  try {
+    await copyText(ACCOUNT_NUMBER);
+
+    showStatus("Account number copied.", "success");
+
+    copyAccountButton.innerHTML =
+      '<i class="fa-solid fa-check"></i> Copied';
+
+    if (copyTimer) {
+      clearTimeout(copyTimer);
+    }
+
+    completeButton.classList.add("hidden");
+
+    copyTimer = setTimeout(function() {
+      completeButton.classList.remove("hidden");
+    }, WAIT_TIME);
+
+  } catch (error) {
+    showStatus(
+      "Please copy the account number manually: " + ACCOUNT_NUMBER,
+      "error"
+    );
+  }
+}
+
+async function copyReference() {
+  if (!fundingReference) {
+    return;
+  }
+
+  try {
+    await copyText(fundingReference);
+    showStatus("Reference copied.", "success");
+  } catch (error) {
+    showStatus("Your reference is: " + fundingReference, "success");
+  }
+}
+
+async function recordPayment() {
+  if (busy) {
+    return;
+  }
+
+  if (!authReady || !currentUser || !currentUser.emailVerified) {
+    showStatus("Please log in again.", "error");
+    return;
+  }
+
+  if (!window.firebaseDB) {
+    showStatus(
+      "Firebase is not available. Please try again later.",
+      "error"
+    );
+    return;
+  }
+
+  if (
+    !Number.isInteger(amount) ||
+    amount < MIN_AMOUNT ||
+    amount > MAX_AMOUNT
+  ) {
+    showStatus(
+      "The amount is invalid. Return to Fund Wallet and try again.",
+      "error"
+    );
+    return;
+  }
+
+  const confirmed = window.confirm(
+    "Have you actually transferred " +
+    formatNaira(amount) +
+    " to the Moniepoint account shown on this page?"
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  busy = true;
+  completeButton.disabled = true;
+  copyAccountButton.disabled = true;
+
+  completeButton.innerHTML =
+    '<i class="fa-solid fa-spinner fa-spin"></i> Recording Request...';
+
+  hideStatus();
+  receiptSection.classList.add("hidden");
+
+  try {
+    const requestRef = firebaseDB
+      .collection("fundingRequests")
+      .doc();
+
+    fundingReference = "GENTLE-" + requestRef.id.toUpperCase();
+
+    const accountName =
+      (currentUser.displayName && currentUser.displayName.trim()) ||
+      currentUser.email ||
+      "Name not provided";
+
+    // Records a request only; it does not credit the wallet.
+    await requestRef.set({
+      userId: currentUser.uid,
+      accountName: accountName,
+      userEmail: currentUser.email || "",
+      amount: amount,
+      reference: fundingReference,
+      status: "pending",
+      paymentMethod: "moniepoint_manual_transfer",
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    document.getElementById("reference").textContent = fundingReference;
+
+    // Short WhatsApp message: no email and no extra blank lines.
+    const whatsappMessage =
+      "Please credit my wallet.\n" +
+      "Ref: " + fundingReference + "\n" +
+      "Name: " + accountName + "\n" +
+      "Amount: " + formatNaira(amount);
+
+    const whatsappURL =
+      "https://wa.me/" +
+      WHATSAPP_NUMBER +
+      "?text=" +
+      encodeURIComponent(whatsappMessage);
+
+    document.getElementById("whatsappButton").href = whatsappURL;
+    receiptSection.classList.remove("hidden");
+
+    showStatus(
+      "Your funding request has been recorded. This is not payment confirmation; your transfer must be verified.",
+      "success"
+    );
+
+    completeButton.innerHTML =
+      '<i class="fa-solid fa-check"></i> Request Recorded';
+
+    // Open WhatsApp only after Firestore has saved the request.
+    const whatsappWindow = window.open(whatsappURL, "_blank");
+
+    if (!whatsappWindow) {
+      showStatus(
+        "Request recorded. Tap Send Receipt on WhatsApp below to continue.",
+        "success"
+      );
+    }
+
+  } catch (error) {
+    console.error("FUNDING REQUEST ERROR:", error);
+
+    if (error && error.code === "permission-denied") {
+      showStatus(
+        "Firebase denied this request. Check that the published Firestore rules allow the fundingRequests fields and that you are signed in.",
+        "error"
+      );
+    } else {
+      showStatus(
+        "Could not save your request. Please check your connection and try again.",
+        "error"
+      );
+    }
+
+    completeButton.innerHTML =
+      '<i class="fa-solid fa-check-circle"></i> Try Again';
+
+  } finally {
+    busy = false;
+    completeButton.disabled = false;
+    copyAccountButton.disabled = false;
+  }
+}
+</script>
+
+</body>
+</html>
