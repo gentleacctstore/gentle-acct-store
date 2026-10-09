@@ -1,0 +1,1062 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<meta name="theme-color" content="#0b2d5c">
+
+<title>Wallet Funding - Gentle Admin</title>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+  rel="stylesheet"
+>
+
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<script src="firebase.js"></script>
+
+<style>
+
+:root{
+--blue:#0b2d5c;
+--dark:#071f40;
+--light:#eaf2fb;
+--background:#f5f8fc;
+--text:#172033;
+--muted:#748093;
+--border:#e1e8f0;
+--green:#15803d;
+--red:#dc2626;
+--orange:#b77900;
+--shadow:0 10px 30px rgba(11,45,92,.07);
+}
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+body{
+font-family:"Poppins",sans-serif;
+background:var(--background);
+color:var(--text);
+min-height:100vh;
+}
+
+button,a{
+font-family:inherit;
+}
+
+button{
+cursor:pointer;
+}
+
+a{
+text-decoration:none;
+color:inherit;
+}
+
+header{
+background:#fff;
+border-bottom:1px solid var(--border);
+padding:15px 18px;
+position:sticky;
+top:0;
+z-index:10;
+}
+
+.header-inner{
+max-width:1100px;
+margin:auto;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:12px;
+}
+
+.brand{
+display:flex;
+align-items:center;
+gap:11px;
+}
+
+.brand-icon{
+width:45px;
+height:45px;
+border-radius:14px;
+background:var(--blue);
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:19px;
+}
+
+.brand h1{
+font-size:18px;
+font-weight:800;
+color:var(--dark);
+}
+
+.brand p{
+font-size:9px;
+color:var(--muted);
+margin-top:3px;
+}
+
+.back-btn,
+.refresh-btn{
+border:0;
+background:var(--light);
+color:var(--blue);
+padding:11px 14px;
+border-radius:11px;
+font-size:10px;
+font-weight:700;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:7px;
+}
+
+.back-btn{
+white-space:nowrap;
+}
+
+.refresh-btn:disabled{
+opacity:.6;
+cursor:not-allowed;
+}
+
+.container{
+max-width:1100px;
+margin:auto;
+padding:24px 16px 50px;
+}
+
+.page-heading{
+margin-bottom:20px;
+}
+
+.page-heading h2{
+font-size:24px;
+font-weight:800;
+color:var(--dark);
+}
+
+.page-heading p{
+font-size:11px;
+color:var(--muted);
+line-height:1.7;
+margin-top:5px;
+}
+
+.notice{
+display:none;
+background:#fff8e6;
+border:1px solid #f2dfac;
+color:#805b00;
+padding:13px;
+border-radius:12px;
+font-size:10px;
+line-height:1.7;
+margin-bottom:16px;
+overflow-wrap:anywhere;
+}
+
+.notice.show{
+display:block;
+}
+
+.stats{
+display:grid;
+grid-template-columns:repeat(3,minmax(0,1fr));
+gap:12px;
+margin-bottom:20px;
+}
+
+.stat{
+background:white;
+border:1px solid var(--border);
+border-radius:17px;
+padding:16px;
+box-shadow:var(--shadow);
+min-width:0;
+}
+
+.stat-icon{
+width:36px;
+height:36px;
+border-radius:11px;
+background:var(--light);
+color:var(--blue);
+display:flex;
+align-items:center;
+justify-content:center;
+margin-bottom:10px;
+}
+
+.stat h3{
+font-size:21px;
+font-weight:800;
+color:var(--dark);
+overflow-wrap:anywhere;
+}
+
+.stat p{
+font-size:9px;
+color:var(--muted);
+margin-top:3px;
+}
+
+.panel{
+background:white;
+border:1px solid var(--border);
+border-radius:19px;
+padding:20px;
+box-shadow:var(--shadow);
+}
+
+.panel-heading{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:12px;
+flex-wrap:wrap;
+margin-bottom:17px;
+}
+
+.panel-heading h3{
+font-size:16px;
+font-weight:800;
+color:var(--dark);
+}
+
+.panel-heading p{
+font-size:9px;
+color:var(--muted);
+margin-top:4px;
+}
+
+.requests{
+display:grid;
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:13px;
+}
+
+.request{
+border:1px solid var(--border);
+border-radius:15px;
+padding:15px;
+min-width:0;
+}
+
+.request-top{
+display:flex;
+align-items:flex-start;
+justify-content:space-between;
+gap:10px;
+}
+
+.request h4{
+font-size:13px;
+font-weight:800;
+color:var(--dark);
+overflow-wrap:anywhere;
+}
+
+.request-email{
+font-size:10px;
+color:var(--muted);
+margin-top:4px;
+overflow-wrap:anywhere;
+}
+
+.amount{
+font-size:22px;
+font-weight:800;
+color:var(--blue);
+margin:14px 0;
+}
+
+.status{
+display:inline-flex;
+align-items:center;
+gap:5px;
+border-radius:20px;
+padding:6px 9px;
+font-size:9px;
+font-weight:700;
+background:#fff5d9;
+color:var(--orange);
+white-space:nowrap;
+}
+
+.status.approved,
+.status.completed,
+.status.paid{
+background:#eaf8f0;
+color:var(--green);
+}
+
+.status.rejected,
+.status.failed{
+background:#fff0f0;
+color:var(--red);
+}
+
+.details{
+display:grid;
+gap:8px;
+}
+
+.detail{
+background:#f7f9fc;
+border-radius:9px;
+padding:9px;
+min-width:0;
+}
+
+.detail span{
+display:block;
+font-size:8px;
+color:var(--muted);
+margin-bottom:4px;
+}
+
+.detail strong{
+display:block;
+font-size:10px;
+font-weight:600;
+overflow-wrap:anywhere;
+word-break:break-word;
+}
+
+.empty{
+grid-column:1/-1;
+text-align:center;
+padding:38px 15px;
+border:1px dashed #cbd5e1;
+border-radius:15px;
+}
+
+.empty i{
+font-size:29px;
+color:#aab5c4;
+margin-bottom:12px;
+}
+
+.empty h4{
+font-size:14px;
+color:var(--dark);
+margin-bottom:5px;
+}
+
+.empty p{
+font-size:10px;
+line-height:1.7;
+color:var(--muted);
+}
+
+@media(max-width:650px){
+
+.header-inner{
+gap:8px;
+}
+
+.brand h1{
+font-size:15px;
+}
+
+.brand p{
+display:none;
+}
+
+.brand-icon{
+width:39px;
+height:39px;
+}
+
+.back-btn{
+padding:10px;
+font-size:9px;
+}
+
+.container{
+padding:19px 12px 35px;
+}
+
+.page-heading h2{
+font-size:21px;
+}
+
+.stats{
+gap:8px;
+}
+
+.stat{
+padding:12px 10px;
+}
+
+.stat h3{
+font-size:17px;
+}
+
+.stat p{
+font-size:8px;
+}
+
+.panel{
+padding:14px;
+}
+
+.requests{
+grid-template-columns:1fr;
+}
+
+.panel-heading{
+align-items:stretch;
+flex-direction:column;
+}
+
+.refresh-btn{
+width:100%;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="header-inner">
+
+<div class="brand">
+
+<div class="brand-icon">
+<i class="fa-solid fa-wallet"></i>
+</div>
+
+<div>
+<h1>Gentle Admin</h1>
+<p>Wallet Funding Management</p>
+</div>
+
+</div>
+
+<a href="admin.html" class="back-btn">
+<i class="fa-solid fa-arrow-left"></i>
+Back to Admin
+</a>
+
+</div>
+
+</header>
+
+
+<main class="container">
+
+<div class="page-heading">
+
+<h2>Wallet Funding Requests</h2>
+
+<p>
+View funding requests submitted by customers to Gentle Acct Store.
+</p>
+
+</div>
+
+
+<div id="notice" class="notice"></div>
+
+
+<div class="stats">
+
+<div class="stat">
+
+<div class="stat-icon">
+<i class="fa-solid fa-file-invoice-dollar"></i>
+</div>
+
+<h3 id="totalRequests">0</h3>
+
+<p>Total Requests</p>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-icon">
+<i class="fa-solid fa-hourglass-half"></i>
+</div>
+
+<h3 id="pendingRequests">0</h3>
+
+<p>Pending Requests</p>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-icon">
+<i class="fa-solid fa-coins"></i>
+</div>
+
+<h3 id="totalAmount">₦0</h3>
+
+<p>Amount Requested</p>
+
+</div>
+
+</div>
+
+
+<section class="panel">
+
+<div class="panel-heading">
+
+<div>
+<h3>All Funding Requests</h3>
+<p>Newest requests appear first.</p>
+</div>
+
+<button
+type="button"
+id="refreshButton"
+class="refresh-btn"
+>
+<i class="fa-solid fa-rotate"></i>
+Refresh Requests
+</button>
+
+</div>
+
+
+<div id="requests" class="requests">
+
+<div class="empty">
+
+<i class="fa-solid fa-spinner fa-spin"></i>
+
+<h4>Loading requests</h4>
+
+<p>Please wait.</p>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+
+<script>
+
+const ADMIN_UID =
+"UoEjCy99gbQKkGob59vGi3CunZi1";
+
+const FUNDING_COLLECTION =
+"fundingRequests";
+
+const requestsContainer =
+document.getElementById("requests");
+
+const notice =
+document.getElementById("notice");
+
+const refreshButton =
+document.getElementById("refreshButton");
+
+let adminAuthorized = false;
+
+
+/* =========================
+AUTHENTICATION
+========================= */
+
+firebaseAuth.onAuthStateChanged(
+async function(user){
+
+if(!user){
+
+window.location.replace("admin-login.html");
+
+return;
+
+}
+
+if(
+user.uid !== ADMIN_UID ||
+!user.emailVerified
+){
+
+try{
+await firebaseAuth.signOut();
+}catch(error){
+console.error("SIGN OUT ERROR:",error);
+}
+
+window.location.replace("admin-login.html");
+
+return;
+
+}
+
+adminAuthorized = true;
+
+loadFundingRequests();
+
+}
+);
+
+
+/* =========================
+REFRESH
+========================= */
+
+refreshButton.addEventListener(
+"click",
+function(){
+
+if(adminAuthorized){
+loadFundingRequests();
+}
+
+}
+);
+
+
+/* =========================
+LOAD REQUESTS
+========================= */
+
+async function loadFundingRequests(){
+
+if(!adminAuthorized){
+return;
+}
+
+refreshButton.disabled = true;
+
+refreshButton.innerHTML =
+'<i class="fa-solid fa-spinner fa-spin"></i> Loading...';
+
+notice.classList.remove("show");
+
+requestsContainer.innerHTML = `
+
+<div class="empty">
+
+<i class="fa-solid fa-spinner fa-spin"></i>
+
+<h4>Loading requests</h4>
+
+<p>Please wait.</p>
+
+</div>
+
+`;
+
+try{
+
+const snapshot =
+await firebaseDB
+.collection(FUNDING_COLLECTION)
+.get();
+
+const requests = [];
+
+snapshot.forEach(function(doc){
+
+const data = doc.data() || {};
+
+requests.push({
+
+id:doc.id,
+
+userId:data.userId || "",
+
+accountName:data.accountName || "",
+
+userEmail:
+data.userEmail ||
+data.email ||
+"",
+
+amount:Number(data.amount || 0),
+
+reference:
+data.reference ||
+doc.id,
+
+status:
+String(data.status || "pending"),
+
+paymentMethod:
+data.paymentMethod ||
+"Manual bank transfer",
+
+createdAt:
+data.createdAt || null
+
+});
+
+});
+
+
+requests.sort(function(a,b){
+
+return getTimeValue(b.createdAt) -
+getTimeValue(a.createdAt);
+
+});
+
+
+renderRequests(requests);
+
+updateSummary(requests);
+
+
+}catch(error){
+
+console.error(
+"FUNDING REQUESTS ERROR:",
+error
+);
+
+requestsContainer.innerHTML = `
+
+<div class="empty">
+
+<i class="fa-solid fa-triangle-exclamation"></i>
+
+<h4>Unable to load requests</h4>
+
+<p>
+${escapeHTML(
+error.message ||
+"Something went wrong."
+)}
+</p>
+
+</div>
+
+`;
+
+notice.textContent =
+"Firestore must allow the authenticated admin UID to read the fundingRequests collection. If access is denied, we need to update your existing Firestore rules carefully.";
+
+notice.classList.add("show");
+
+
+}finally{
+
+refreshButton.disabled = false;
+
+refreshButton.innerHTML =
+'<i class="fa-solid fa-rotate"></i> Refresh Requests';
+
+}
+
+}
+
+
+/* =========================
+RENDER REQUESTS
+========================= */
+
+function renderRequests(requests){
+
+if(!requests.length){
+
+requestsContainer.innerHTML = `
+
+<div class="empty">
+
+<i class="fa-solid fa-wallet"></i>
+
+<h4>No funding requests yet</h4>
+
+<p>
+Customer requests will appear here when they are saved to Firebase.
+</p>
+
+</div>
+
+`;
+
+return;
+
+}
+
+requestsContainer.innerHTML = "";
+
+requests.forEach(function(request){
+
+const card =
+document.createElement("article");
+
+card.className = "request";
+
+const status =
+request.status.toLowerCase();
+
+let statusIcon = "fa-clock";
+
+if(
+["approved","completed","paid"].includes(status)
+){
+
+statusIcon = "fa-circle-check";
+
+}else if(
+["rejected","failed"].includes(status)
+){
+
+statusIcon = "fa-circle-xmark";
+
+}
+
+let statusClass = "pending";
+
+if(
+["approved","completed","paid"].includes(status)
+){
+
+statusClass = status;
+
+}else if(
+["rejected","failed"].includes(status)
+){
+
+statusClass = status;
+
+}
+
+card.innerHTML = `
+
+<div class="request-top">
+
+<div>
+
+<h4>
+${escapeHTML(
+request.accountName ||
+"Customer name not provided"
+)}
+</h4>
+
+<p class="request-email">
+${escapeHTML(
+request.userEmail ||
+"Email not provided"
+)}
+</p>
+
+</div>
+
+<span class="status ${statusClass}">
+
+<i class="fa-solid ${statusIcon}"></i>
+
+${escapeHTML(request.status)}
+
+</span>
+
+</div>
+
+
+<div class="amount">
+₦${formatNumber(request.amount)}
+</div>
+
+
+<div class="details">
+
+<div class="detail">
+<span>Funding Reference</span>
+<strong>${escapeHTML(request.reference)}</strong>
+</div>
+
+<div class="detail">
+<span>Customer User ID</span>
+<strong>${escapeHTML(request.userId || "Not provided")}</strong>
+</div>
+
+<div class="detail">
+<span>Payment Method</span>
+<strong>${escapeHTML(request.paymentMethod)}</strong>
+</div>
+
+<div class="detail">
+<span>Date Submitted</span>
+<strong>${escapeHTML(formatDate(request.createdAt))}</strong>
+</div>
+
+</div>
+
+`;
+
+requestsContainer.appendChild(card);
+
+});
+
+}
+
+
+/* =========================
+SUMMARY
+========================= */
+
+function updateSummary(requests){
+
+document.getElementById(
+"totalRequests"
+).textContent = requests.length;
+
+
+const pending = requests.filter(function(request){
+
+return request.status.toLowerCase() === "pending";
+
+}).length;
+
+
+document.getElementById(
+"pendingRequests"
+).textContent = pending;
+
+
+const total = requests.reduce(function(sum,request){
+
+return sum + (
+Number.isFinite(request.amount)
+? request.amount
+: 0
+);
+
+},0);
+
+
+document.getElementById(
+"totalAmount"
+).textContent =
+"₦" + formatNumber(total);
+
+}
+
+
+/* =========================
+DATE FORMAT
+========================= */
+
+function getTimeValue(value){
+
+try{
+
+if(
+value &&
+typeof value.toDate === "function"
+){
+
+return value.toDate().getTime();
+
+}
+
+if(
+value &&
+typeof value.seconds === "number"
+){
+
+return value.seconds * 1000;
+
+}
+
+const date = new Date(value);
+
+if(!isNaN(date.getTime())){
+
+return date.getTime();
+
+}
+
+}catch(error){
+
+console.error("DATE ERROR:",error);
+
+}
+
+return 0;
+
+}
+
+
+function formatDate(value){
+
+const time = getTimeValue(value);
+
+if(!time){
+return "Date not available";
+}
+
+return new Date(time).toLocaleString("en-NG");
+
+}
+
+
+/* =========================
+NUMBER FORMAT
+========================= */
+
+function formatNumber(value){
+
+return Number(value || 0).toLocaleString("en-NG");
+
+}
+
+
+/* =========================
+ESCAPE HTML
+========================= */
+
+function escapeHTML(value){
+
+return String(value == null ? "" : value)
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+</script>
+
+</body>
+</html>

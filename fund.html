@@ -1,1349 +1,146 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0"
->
-
-<meta
-name="theme-color"
-content="#0b2d5c"
->
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b2d5c">
 <title>Fund Wallet - Gentle Acct Store</title>
-
-<link
-rel="preconnect"
-href="https://fonts.googleapis.com"
->
-
-<link
-rel="preconnect"
-href="https://fonts.gstatic.com"
->
-
-<link
-href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
-rel="stylesheet"
->
-
-<link
-rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
->
-
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-
 <script src="firebase.js"></script>
-
 <style>
-
-:root{
-
---blue:#0b2d5c;
---blue-dark:#071f40;
---blue-light:#eaf2fb;
---blue-soft:#f5f8fc;
-
---white:#ffffff;
-
---text:#172033;
---muted:#748093;
-
---border:#e4eaf2;
-
---success:#15803d;
-
---danger:#dc2626;
-
---shadow:0 10px 30px rgba(11,45,92,.07);
-
-}
-
-*{
-
-box-sizing:border-box;
-
-margin:0;
-
-padding:0;
-
-}
-
-html{
-
-scroll-behavior:smooth;
-
-}
-
-body{
-
-font-family:"Poppins",sans-serif;
-
-background:#f7f9fc;
-
-color:var(--text);
-
-min-height:100vh;
-
-padding-bottom:82px;
-
-}
-
-button,
-input{
-
-font-family:inherit;
-
-}
-
-button{
-
-cursor:pointer;
-
-}
-
-a{
-
-text-decoration:none;
-
-color:inherit;
-
-}
-
-.page{
-
-width:100%;
-
-max-width:600px;
-
-margin:0 auto;
-
-min-height:100vh;
-
-}
-
-
-/* =========================
-HEADER
-========================= */
-
-header{
-
-height:68px;
-
-background:rgba(255,255,255,.97);
-
-padding:0 17px;
-
-border-bottom:1px solid var(--border);
-
-display:flex;
-
-align-items:center;
-
-justify-content:space-between;
-
-position:sticky;
-
-top:0;
-
-z-index:50;
-
-backdrop-filter:blur(12px);
-
-}
-
-.header-left{
-
-display:flex;
-
-align-items:center;
-
-gap:11px;
-
-}
-
-.back-btn{
-
-width:39px;
-
-height:39px;
-
-border:none;
-
-border-radius:12px;
-
-background:var(--blue-light);
-
-color:var(--blue);
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-font-size:14px;
-
-transition:.2s;
-
-}
-
-.back-btn:active{
-
-transform:scale(.94);
-
-}
-
-.header-info h2{
-
-font-size:15px;
-
-font-weight:800;
-
-color:var(--blue-dark);
-
-}
-
-.header-info p{
-
-font-size:8px;
-
-color:var(--muted);
-
-margin-top:2px;
-
-}
-
-.header-right{
-
-width:38px;
-
-height:38px;
-
-border-radius:11px;
-
-background:var(--blue-light);
-
-color:var(--blue);
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-font-size:15px;
-
-}
-
-
-/* =========================
-MAIN
-========================= */
-
-main{
-
-padding:20px 16px 30px;
-
-}
-
-.page-heading{
-
-margin-bottom:17px;
-
-}
-
-.page-heading h1{
-
-font-size:24px;
-
-font-weight:800;
-
-letter-spacing:-.4px;
-
-color:var(--blue-dark);
-
-margin-bottom:5px;
-
-}
-
-.page-heading p{
-
-font-size:10px;
-
-color:var(--muted);
-
-line-height:1.6;
-
-}
-
-
-/* =========================
-WALLET
-========================= */
-
-.wallet{
-
-background:linear-gradient(
-135deg,
-#0b2d5c,
-#123e78
-);
-
-color:var(--white);
-
-border-radius:21px;
-
-padding:19px;
-
-margin-bottom:16px;
-
-box-shadow:
-
-0 12px 30px rgba(11,45,92,.18);
-
-position:relative;
-
-overflow:hidden;
-
-}
-
-.wallet::before{
-
-content:"";
-
-position:absolute;
-
-width:190px;
-
-height:190px;
-
-border-radius:50%;
-
-background:rgba(255,255,255,.055);
-
-right:-85px;
-
-top:-100px;
-
-}
-
-.wallet::after{
-
-content:"";
-
-position:absolute;
-
-width:100px;
-
-height:100px;
-
-border-radius:50%;
-
-background:rgba(255,255,255,.035);
-
-left:-55px;
-
-bottom:-55px;
-
-}
-
-.wallet-top{
-
-display:flex;
-
-align-items:flex-start;
-
-justify-content:space-between;
-
-gap:15px;
-
-position:relative;
-
-z-index:2;
-
-}
-
-.wallet-label{
-
-font-size:9px;
-
-opacity:.7;
-
-margin-bottom:5px;
-
-}
-
-.wallet-balance{
-
-font-size:28px;
-
-font-weight:800;
-
-line-height:1.15;
-
-letter-spacing:-.5px;
-
-word-break:break-word;
-
-}
-
-.wallet-icon{
-
-width:45px;
-
-height:45px;
-
-border-radius:14px;
-
-background:rgba(255,255,255,.13);
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-font-size:17px;
-
-flex-shrink:0;
-
-}
-
-.wallet-status{
-
-display:inline-flex;
-
-align-items:center;
-
-gap:6px;
-
-margin-top:13px;
-
-background:rgba(255,255,255,.12);
-
-padding:6px 10px;
-
-border-radius:20px;
-
-font-size:8px;
-
-font-weight:600;
-
-position:relative;
-
-z-index:2;
-
-}
-
-.wallet-status i{
-
-font-size:8px;
-
-}
-
-
-/* =========================
-CLOSED NOTICE
-========================= */
-
-.closed-notice{
-
-background:#fff;
-
-border:1px solid var(--border);
-
-border-radius:19px;
-
-padding:18px;
-
-margin-bottom:15px;
-
-box-shadow:var(--shadow);
-
-}
-
-.closed-top{
-
-display:flex;
-
-align-items:center;
-
-gap:10px;
-
-margin-bottom:10px;
-
-}
-
-.closed-icon{
-
-width:39px;
-
-height:39px;
-
-border-radius:12px;
-
-background:#fff1f1;
-
-color:var(--danger);
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-font-size:14px;
-
-flex-shrink:0;
-
-}
-
-.closed-top h3{
-
-font-size:13px;
-
-font-weight:800;
-
-color:var(--blue-dark);
-
-line-height:1.3;
-
-}
-
-.closed-notice p{
-
-font-size:9px;
-
-line-height:1.7;
-
-color:var(--muted);
-
-}
-
-
-/* =========================
-CARD
-========================= */
-
-.card{
-
-background:var(--white);
-
-border:1px solid var(--border);
-
-border-radius:19px;
-
-padding:17px;
-
-margin-bottom:15px;
-
-box-shadow:var(--shadow);
-
-}
-
-.card-title{
-
-display:flex;
-
-align-items:center;
-
-gap:9px;
-
-margin-bottom:14px;
-
-}
-
-.card-title-icon{
-
-width:37px;
-
-height:37px;
-
-border-radius:11px;
-
-background:var(--blue-light);
-
-color:var(--blue);
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-font-size:14px;
-
-}
-
-.card-title h3{
-
-font-size:14px;
-
-font-weight:800;
-
-color:var(--blue-dark);
-
-}
-
-.steps{
-
-display:grid;
-
-gap:14px;
-
-}
-
-.step{
-
-display:flex;
-
-align-items:center;
-
-gap:10px;
-
-}
-
-.step-icon{
-
-width:37px;
-
-height:37px;
-
-min-width:37px;
-
-border-radius:11px;
-
-background:var(--blue-light);
-
-color:var(--blue);
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-font-size:13px;
-
-}
-
-.step-text{
-
-min-width:0;
-
-}
-
-.step strong{
-
-display:block;
-
-font-size:9px;
-
-font-weight:800;
-
-color:var(--blue-dark);
-
-margin-bottom:2px;
-
-}
-
-.step span{
-
-display:block;
-
-font-size:8px;
-
-color:var(--muted);
-
-line-height:1.5;
-
-}
-
-
-/* =========================
-BOTTOM NAV
-========================= */
-
-.bottom-nav{
-
-position:fixed;
-
-left:50%;
-
-bottom:0;
-
-transform:translateX(-50%);
-
-width:100%;
-
-max-width:600px;
-
-height:67px;
-
-background:rgba(255,255,255,.97);
-
-border-top:1px solid var(--border);
-
-display:flex;
-
-align-items:center;
-
-justify-content:space-around;
-
-z-index:100;
-
-backdrop-filter:blur(12px);
-
-}
-
-.nav-item{
-
-flex:1;
-
-height:100%;
-
-display:flex;
-
-flex-direction:column;
-
-align-items:center;
-
-justify-content:center;
-
-gap:4px;
-
-font-size:8px;
-
-font-weight:700;
-
-color:#8993a3;
-
-transition:.2s;
-
-}
-
-.nav-item i{
-
-font-size:16px;
-
-}
-
-.nav-item.active{
-
-color:var(--blue);
-
-}
-
-
-/* =========================
-DESKTOP
-========================= */
-
-@media(min-width:700px){
-
-body{
-
-background:#eef3f8;
-
-}
-
-.page{
-
-background:#f7f9fc;
-
-box-shadow:
-
-0 0 40px rgba(0,0,0,.04);
-
-}
-
-}
-
-
-/* =========================
-SMALL PHONES
-========================= */
-
-@media(max-width:360px){
-
-main{
-
-padding-left:13px;
-
-padding-right:13px;
-
-}
-
-.wallet-balance{
-
-font-size:25px;
-
-}
-
-.page-heading h1{
-
-font-size:22px;
-
-}
-
-.closed-notice,
-.card{
-
-padding:15px;
-
-}
-
-}
-
-
-/* =========================
-REDUCED MOTION
-========================= */
-
-@media(prefers-reduced-motion:reduce){
-
-*{
-
-scroll-behavior:auto !important;
-
-transition:none !important;
-
-}
-
-}
-
+:root{--blue:#0b2d5c;--dark:#071f40;--light:#eaf2fb;--text:#172033;--muted:#748093;--border:#e4eaf2}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Poppins,sans-serif;background:#f7f9fc;color:var(--text);min-height:100vh;padding-bottom:80px}
+button,input{font-family:inherit}button{cursor:pointer}a{text-decoration:none;color:inherit}
+.page{max-width:600px;margin:auto;min-height:100vh}
+header{height:68px;background:#fff;padding:0 17px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:5}
+.header-left{display:flex;align-items:center;gap:11px}
+.back-btn,.header-icon{width:39px;height:39px;border:0;border-radius:12px;background:var(--light);color:var(--blue);display:flex;align-items:center;justify-content:center}
+.header-info h2{font-size:15px;color:var(--dark);font-weight:800}
+.header-info p{font-size:8px;color:var(--muted);margin-top:2px}
+main{padding:22px 16px}
+.heading{margin-bottom:18px}
+.heading h1{font-size:24px;color:var(--dark);font-weight:800;margin-bottom:5px}
+.heading p{font-size:10px;line-height:1.7;color:var(--muted)}
+.wallet{background:linear-gradient(135deg,#0b2d5c,#123e78);color:white;border-radius:20px;padding:20px;margin-bottom:18px;box-shadow:0 12px 30px #0b2d5c20}
+.wallet-label{font-size:10px;opacity:.8;margin-bottom:6px}
+.wallet-balance{font-size:28px;font-weight:800;overflow-wrap:anywhere}
+.wallet-status{display:inline-block;margin-top:12px;padding:6px 10px;border-radius:20px;background:#ffffff20;font-size:9px}
+.card{background:white;border:1px solid var(--border);border-radius:19px;padding:18px;box-shadow:0 10px 30px #0b2d5c0c}
+.card-title{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.card-icon{width:38px;height:38px;border-radius:11px;background:var(--light);color:var(--blue);display:flex;align-items:center;justify-content:center}
+.card-title h3{font-size:14px;color:var(--dark);font-weight:800}
+label{display:block;font-size:10px;font-weight:700;margin-bottom:7px;color:var(--dark)}
+input{width:100%;height:49px;border:1px solid var(--border);border-radius:12px;padding:0 13px;font-size:15px;outline:none}
+input:focus{border-color:var(--blue)}
+.primary{width:100%;height:47px;margin-top:16px;border:0;border-radius:12px;background:var(--blue);color:white;font-size:11px;font-weight:800}
+.primary:disabled{opacity:.6}
+.message{font-size:10px;line-height:1.7;margin-top:12px;color:#dc2626}
+.bottom-nav{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:100%;max-width:600px;height:67px;background:#fffffffa;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-around;z-index:10}
+.nav-item{flex:1;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:8px;font-weight:700;color:#8993a3}
+.nav-item i{font-size:16px}.nav-item.active{color:var(--blue)}
+@media(max-width:360px){main{padding:18px 13px}.wallet-balance{font-size:25px}.heading h1{font-size:22px}}
 </style>
-
 </head>
-
-
 <body>
-
-
 <div class="page">
-
-
 <header>
-
 <div class="header-left">
-
-<button
-class="back-btn"
-type="button"
-onclick="goBack()"
-aria-label="Go back"
->
-
-<i class="fa-solid fa-arrow-left"></i>
-
-</button>
-
-
-<div class="header-info">
-
-<h2>
-Fund Wallet
-</h2>
-
-<p>
-Add money to your Gentle wallet
-</p>
-
+<button class="back-btn" type="button" onclick="goBack()" aria-label="Go back"><i class="fa-solid fa-arrow-left"></i></button>
+<div class="header-info"><h2>Fund Wallet</h2><p>Add money to your Gentle wallet</p></div>
 </div>
-
-</div>
-
-
-<div class="header-right">
-
-<i class="fa-solid fa-wallet"></i>
-
-</div>
-
+<div class="header-icon"><i class="fa-solid fa-wallet"></i></div>
 </header>
 
-
 <main>
-
-
-<div class="page-heading">
-
-<h1>
-Fund Wallet
-</h1>
-
-<p>
-Manage your wallet balance and funding status.
-</p>
-
+<div class="heading">
+<h1>Fund Wallet</h1>
+<p>Enter the amount you want to add to your wallet.</p>
 </div>
-
-
-<!-- WALLET BALANCE -->
 
 <div class="wallet">
-
-<div class="wallet-top">
-
-<div>
-
-<div class="wallet-label">
-Available Balance
+<div class="wallet-label">Available Balance</div>
+<div class="wallet-balance" id="balance">₦0.00</div>
+<div class="wallet-status"><i class="fa-solid fa-circle-check"></i> Wallet Ready</div>
 </div>
-
-<div
-class="wallet-balance"
-id="balance"
->
-₦0.00
-</div>
-
-</div>
-
-
-<div class="wallet-icon">
-
-<i class="fa-solid fa-wallet"></i>
-
-</div>
-
-</div>
-
-
-<div class="wallet-status">
-
-<i class="fa-solid fa-circle-check"></i>
-
-Wallet Ready
-
-</div>
-
-</div>
-
-
-<!-- CLOSED NOTICE -->
-
-<div class="closed-notice">
-
-<div class="closed-top">
-
-<div class="closed-icon">
-
-<i class="fa-solid fa-lock"></i>
-
-</div>
-
-<h3>
-Add Funds Temporarily Closed
-</h3>
-
-</div>
-
-
-<p>
-
-Wallet funding is currently unavailable.
-We’ll reopen Add Funds when the official
-payment system is ready. Your existing wallet
-balance remains visible and available for purchases.
-
-</p>
-
-</div>
-
-
-<!-- HOW IT WORKS -->
 
 <div class="card">
-
-
 <div class="card-title">
-
-<div class="card-title-icon">
-
-<i class="fa-solid fa-circle-question"></i>
-
+<div class="card-icon"><i class="fa-solid fa-wallet"></i></div>
+<h3>How Much Do You Want to Add?</h3>
 </div>
-
-<h3>
-How It Works
-</h3>
-
+<form id="fundForm">
+<label for="amount">Amount (₦)</label>
+<input id="amount" type="number" inputmode="numeric" min="100" max="10000000" step="1" placeholder="Enter amount, e.g. 5000" required>
+<button class="primary" id="addFundsButton" type="submit" disabled>Loading...</button>
+<div id="message" class="message" role="status"></div>
+</form>
 </div>
-
-
-<div class="steps">
-
-
-<div class="step">
-
-<div class="step-icon">
-
-<i class="fa-solid fa-lock"></i>
-
-</div>
-
-<div class="step-text">
-
-<strong>
-Add Funds is temporarily closed
-</strong>
-
-<span>
-Wallet funding will be available again when the official payment system is launched.
-</span>
-
-</div>
-
-</div>
-
-
-<div class="step">
-
-<div class="step-icon">
-
-<i class="fa-solid fa-wallet"></i>
-
-</div>
-
-<div class="step-text">
-
-<strong>
-Your balance remains available
-</strong>
-
-<span>
-Your existing wallet balance is still displayed on your account.
-</span>
-
-</div>
-
-</div>
-
-
-<div class="step">
-
-<div class="step-icon">
-
-<i class="fa-solid fa-cart-shopping"></i>
-
-</div>
-
-<div class="step-text">
-
-<strong>
-Shop products
-</strong>
-
-<span>
-Use your available wallet balance when purchasing products.
-</span>
-
-</div>
-
-</div>
-
-
-</div>
-
-</div>
-
-
 </main>
 
-
-<!-- BOTTOM NAV -->
-
 <nav class="bottom-nav">
-
-
-<a
-class="nav-item"
-href="dashboard.html"
->
-
-<i class="fa-solid fa-house"></i>
-
-<span>
-Home
-</span>
-
-</a>
-
-
-<a
-class="nav-item"
-href="dashboard.html#products"
->
-
-<i class="fa-solid fa-box"></i>
-
-<span>
-Products
-</span>
-
-</a>
-
-
-<a
-class="nav-item"
-href="orders.html"
->
-
-<i class="fa-solid fa-receipt"></i>
-
-<span>
-Orders
-</span>
-
-</a>
-
-
-<a
-class="nav-item active"
-href="fund.html"
->
-
-<i class="fa-solid fa-wallet"></i>
-
-<span>
-Fund
-</span>
-
-</a>
-
-
-<a
-class="nav-item"
-href="profile.html"
->
-
-<i class="fa-solid fa-user"></i>
-
-<span>
-Menu
-</span>
-
-</a>
-
-
+<a class="nav-item" href="dashboard.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+<a class="nav-item" href="dashboard.html#products"><i class="fa-solid fa-box"></i><span>Products</span></a>
+<a class="nav-item" href="orders.html"><i class="fa-solid fa-receipt"></i><span>Orders</span></a>
+<a class="nav-item active" href="fund.html"><i class="fa-solid fa-wallet"></i><span>Fund</span></a>
+<a class="nav-item" href="profile.html"><i class="fa-solid fa-user"></i><span>Menu</span></a>
 </nav>
-
-
 </div>
 
-
 <script>
+"use strict";
+let currentUser=null;
+let walletBalance=0;
+let authReady=false;
 
-let firebaseUser = null;
+const addFundsButton=document.getElementById("addFundsButton");
+const amountInput=document.getElementById("amount");
+const message=document.getElementById("message");
 
-let balance = 0;
-
-
-/* =========================
-AUTH
-========================= */
-
-firebaseAuth.onAuthStateChanged(
-
-async function(user){
-
-if(
-!user ||
-!user.emailVerified
-){
-
-window.location.replace(
-"login.html"
-);
-
-return;
-
-}
-
-firebaseUser = user;
-
+firebaseAuth.onAuthStateChanged(async function(user){
+if(!user||!user.emailVerified){window.location.replace("login.html");return;}
+currentUser=user;
+authReady=true;
+addFundsButton.disabled=false;
+addFundsButton.textContent="Add Funds";
 await loadWallet();
-
-}
-
-);
-
-
-/* =========================
-LOAD WALLET
-========================= */
-
-async function loadWallet(){
-
-if(!firebaseUser){
-
-return;
-
-}
-
-try{
-
-const walletRef =
-firebaseDB
-.collection("wallets")
-.doc(firebaseUser.uid);
-
-
-const snapshot =
-await walletRef.get();
-
-
-if(snapshot.exists){
-
-const data =
-snapshot.data();
-
-
-balance =
-Number(
-data.balance || 0
-);
-
-}else{
-
-balance = 0;
-
-
-await walletRef.set({
-
-userId:
-firebaseUser.uid,
-
-balance:
-0,
-
-updatedAt:
-firebase.firestore
-.FieldValue
-.serverTimestamp()
-
 });
 
+async function loadWallet(){
+if(!currentUser||!window.firebaseDB)return;
+try{
+const ref=firebaseDB.collection("wallets").doc(currentUser.uid);
+const snap=await ref.get();
+if(snap.exists){walletBalance=Number(snap.data().balance||0);}
+else{
+walletBalance=0;
+await ref.set({userId:currentUser.uid,balance:0,updatedAt:firebase.firestore.FieldValue.serverTimestamp()});
+}
+document.getElementById("balance").textContent="₦"+walletBalance.toLocaleString("en-NG",{minimumFractionDigits:2,maximumFractionDigits:2});
+localStorage.setItem("gentleBalance",String(walletBalance));
+}catch(error){console.error("WALLET LOADING ERROR:",error);}
 }
 
-
-/* SAVE FOR COMPATIBILITY */
-
-localStorage.setItem(
-
-"gentleBalance",
-
-String(balance)
-
-);
-
-
-updateBalance();
-
-
-}catch(error){
-
-console.error(
-
-"WALLET LOADING ERROR:",
-
-error
-
-);
-
-}
-
-}
-
-
-/* =========================
-DISPLAY BALANCE
-========================= */
-
-function updateBalance(){
-
-const balanceElement =
-document.getElementById(
-"balance"
-);
-
-
-if(!balanceElement){
-
+document.getElementById("fundForm").addEventListener("submit",function(event){
+event.preventDefault();
+message.textContent="";
+if(!authReady||!currentUser){message.textContent="Please wait for your account to load.";return;}
+const amount=Number(amountInput.value);
+if(!Number.isInteger(amount)||amount<100||amount>10000000){
+message.textContent="Enter a whole-number amount between ₦100 and ₦10,000,000.";
+amountInput.focus();
 return;
-
 }
+window.location.href="payment.html?amount="+encodeURIComponent(amount);
+});
 
-
-balanceElement.textContent =
-
-"₦" +
-
-balance.toLocaleString(
-
-"en-NG",
-
-{
-
-minimumFractionDigits:2,
-
-maximumFractionDigits:2
-
-}
-
-);
-
-}
-
-
-/* =========================
-BACK
-========================= */
-
-function goBack(){
-
-window.location.href =
-"dashboard.html";
-
-}
-
-
-/* =========================
-PAGE SHOW
-========================= */
-
-window.addEventListener(
-
-"pageshow",
-
-function(){
-
-if(firebaseUser){
-
-loadWallet();
-
-}
-
-}
-
-);
-
+function goBack(){window.location.href="dashboard.html";}
+window.addEventListener("pageshow",function(){if(currentUser)loadWallet();});
 </script>
-
-
 </body>
-
 </html>
