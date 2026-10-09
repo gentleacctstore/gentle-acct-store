@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,38 +6,19 @@
 
 <meta charset="UTF-8">
 
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0"
->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta
-name="theme-color"
-content="#0b2d5c"
->
+<meta name="theme-color" content="#0b2d5c">
 
 <title>Dashboard - Gentle Acct Store</title>
 
-<link
-rel="preconnect"
-href="https://fonts.googleapis.com"
->
+<link rel="preconnect" href="https://fonts.googleapis.com">
 
-<link
-rel="preconnect"
-href="https://fonts.googleapis.com"
-crossorigin
->
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
 
-<link
-href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
-rel="stylesheet"
->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-<link
-rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 
@@ -49,1768 +31,1023 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 <style>
 
 :root{
-
 --blue:#0b2d5c;
 --blue-dark:#071f40;
 --blue-mid:#123f76;
 --blue-light:#eaf2fb;
 --blue-soft:#f5f8fc;
-
 --white:#ffffff;
-
 --text:#172033;
 --muted:#7a8494;
 --muted-light:#a2aab6;
-
 --border:#e5eaf1;
-
 --green:#159447;
 --green-soft:#e9f8ef;
-
 --red:#dc3545;
 --red-soft:#fff0f2;
-
---shadow:
-0 8px 25px rgba(11,45,92,.07);
-
---shadow-lg:
-0 14px 35px rgba(11,45,92,.13);
-
+--shadow:0 8px 25px rgba(11,45,92,.07);
+--shadow-lg:0 14px 35px rgba(11,45,92,.13);
 --radius:18px;
-
 }
-
 
 *{
-
 box-sizing:border-box;
-
 margin:0;
-
 padding:0;
-
 }
-
 
 html{
-
 scroll-behavior:smooth;
-
 }
-
 
 body{
-
 font-family:"Poppins",sans-serif;
-
 background:#f5f7fa;
-
 color:var(--text);
-
 min-height:100vh;
-
 padding-bottom:86px;
-
 -webkit-font-smoothing:antialiased;
-
 }
-
 
 button,
 input{
-
 font-family:inherit;
-
 }
-
 
 button{
-
 cursor:pointer;
-
 }
-
 
 a{
-
 text-decoration:none;
-
 color:inherit;
-
 }
-
 
 .page{
-
 width:100%;
-
 max-width:600px;
-
 margin:0 auto;
-
 min-height:100vh;
-
 background:#f5f7fa;
-
 }
-
 
 .top-header{
-
 background:rgba(255,255,255,.97);
-
 backdrop-filter:blur(14px);
-
 -webkit-backdrop-filter:blur(14px);
-
 padding:16px 18px;
-
 border-bottom:1px solid var(--border);
-
 position:sticky;
-
 top:0;
-
 z-index:100;
-
 }
-
 
 .top-header-row{
-
 display:flex;
-
 align-items:center;
-
 justify-content:space-between;
-
 gap:12px;
-
 }
-
 
 .brand-area{
-
 display:flex;
-
 align-items:center;
-
 gap:11px;
-
 min-width:0;
-
 }
-
 
 .brand-logo{
-
 width:44px;
-
 height:44px;
-
 border-radius:13px;
-
-background:linear-gradient(
-135deg,
-var(--blue),
-var(--blue-mid)
-);
-
+background:linear-gradient(135deg,var(--blue),var(--blue-mid));
 color:var(--white);
-
 display:flex;
-
 align-items:center;
-
 justify-content:center;
-
 font-size:18px;
-
 flex-shrink:0;
-
-box-shadow:
-0 6px 15px rgba(11,45,92,.18);
-
+box-shadow:0 6px 15px rgba(11,45,92,.18);
 }
-
 
 .brand-text{
-
 min-width:0;
-
 }
-
 
 .brand-text h1{
-
 font-size:16px;
-
 font-weight:800;
-
 color:var(--blue-dark);
-
 white-space:nowrap;
-
 }
-
 
 .brand-text p{
-
 font-size:11px;
-
 color:var(--muted);
-
 margin-top:2px;
-
 }
-
 
 .header-actions{
-
 display:flex;
-
 align-items:center;
-
 gap:9px;
-
 }
-
 
 .header-icon{
-
 width:40px;
-
 height:40px;
-
 border-radius:11px;
-
 border:1px solid var(--border);
-
 background:var(--white);
-
 color:var(--blue);
-
 display:flex;
-
 align-items:center;
-
 justify-content:center;
-
 font-size:16px;
-
 transition:.2s;
-
 }
-
 
 .header-icon:active{
-
 transform:scale(.94);
-
 }
-
 
 .header-wallet{
-
 display:flex;
-
 flex-direction:column;
-
 align-items:flex-end;
-
 }
-
 
 .header-wallet span{
-
 color:var(--muted);
-
 font-size:10px;
-
 line-height:1;
-
 margin-bottom:4px;
-
 }
-
 
 .header-wallet strong{
-
 color:var(--blue-dark);
-
 font-size:13px;
-
 white-space:nowrap;
-
 }
-
 
 main{
-
 padding:17px;
-
 }
-
 
 .wallet-card{
-
-background:
-linear-gradient(
-135deg,
-var(--blue),
-var(--blue-mid)
-);
-
+background:linear-gradient(135deg,var(--blue),var(--blue-mid));
 color:var(--white);
-
 border-radius:22px;
-
 padding:21px;
-
 position:relative;
-
 overflow:hidden;
-
-box-shadow:
-0 14px 32px rgba(11,45,92,.20);
-
+box-shadow:0 14px 32px rgba(11,45,92,.20);
 }
-
 
 .wallet-card::before{
-
 content:"";
-
 position:absolute;
-
 width:220px;
-
 height:220px;
-
 border-radius:50%;
-
 border:1px solid rgba(255,255,255,.08);
-
 right:-105px;
-
 top:-110px;
-
 }
-
 
 .wallet-card::after{
-
 content:"";
-
 position:absolute;
-
 width:150px;
-
 height:150px;
-
 border-radius:50%;
-
 border:1px solid rgba(255,255,255,.07);
-
 right:-55px;
-
 bottom:-105px;
-
 }
-
 
 .wallet-glow{
-
 position:absolute;
-
 width:100px;
-
 height:100px;
-
 border-radius:50%;
-
 background:rgba(255,255,255,.035);
-
 left:-45px;
-
 bottom:-45px;
-
 }
-
 
 .wallet-top{
-
 position:relative;
-
 z-index:2;
-
 display:flex;
-
 justify-content:space-between;
-
 align-items:flex-start;
-
 gap:12px;
-
 }
-
 
 .user-info{
-
 display:flex;
-
 align-items:center;
-
 gap:11px;
-
 min-width:0;
-
 }
-
 
 .user-avatar{
-
 width:48px;
-
 height:48px;
-
 border-radius:50%;
-
 background:rgba(255,255,255,.15);
-
 border:1px solid rgba(255,255,255,.23);
-
 display:flex;
-
 align-items:center;
-
 justify-content:center;
-
 color:var(--white);
-
 font-size:18px;
-
 flex-shrink:0;
-
 }
-
 
 .user-info small{
-
 display:block;
-
 font-size:11px;
-
 opacity:.78;
-
 margin-bottom:3px;
-
 }
-
 
 .user-info strong{
-
 display:block;
-
 font-size:15px;
-
 font-weight:700;
-
 max-width:150px;
-
 overflow:hidden;
-
 text-overflow:ellipsis;
-
 white-space:nowrap;
-
 }
-
 
 .wallet-balance{
-
 text-align:right;
-
 position:relative;
-
 z-index:2;
-
 }
-
 
 .wallet-balance span{
-
 display:block;
-
 font-size:10px;
-
 opacity:.78;
-
 margin-bottom:4px;
-
 }
-
 
 .wallet-balance strong{
-
 font-size:18px;
-
 font-weight:800;
-
 white-space:nowrap;
-
 }
-
 
 .wallet-middle{
-
 position:relative;
-
 z-index:2;
-
 margin-top:22px;
-
 }
-
 
 .wallet-middle p{
-
 font-size:11px;
-
 opacity:.76;
-
 margin-bottom:4px;
-
 }
-
 
 .wallet-middle h2{
-
 font-size:28px;
-
 line-height:1.2;
-
 font-weight:800;
-
 letter-spacing:-.3px;
-
 overflow-wrap:anywhere;
-
 }
-
 
 .wallet-bottom{
-
 position:relative;
-
 z-index:2;
-
 display:flex;
-
 justify-content:space-between;
-
 align-items:flex-end;
-
 margin-top:21px;
-
 gap:10px;
-
 }
-
 
 .wallet-stats{
-
 display:flex;
-
 gap:20px;
-
 }
-
 
 .wallet-stat span{
-
 display:block;
-
 font-size:10px;
-
 opacity:.75;
-
 margin-bottom:3px;
-
 }
-
 
 .wallet-stat strong{
-
 font-size:13px;
-
 font-weight:700;
-
 }
-
 
 .wallet-buttons{
-
 display:flex;
-
 gap:7px;
-
 }
-
 
 .wallet-btn{
-
 border:none;
-
 background:var(--white);
-
 color:var(--blue);
-
 border-radius:9px;
-
 padding:10px 12px;
-
 font-size:10px;
-
 font-weight:700;
-
 white-space:nowrap;
-
 transition:.2s;
-
 }
-
 
 .wallet-btn:active{
-
 transform:scale(.96);
-
 }
-
 
 .wallet-btn.secondary{
-
 background:rgba(255,255,255,.12);
-
 color:var(--white);
-
 border:1px solid rgba(255,255,255,.17);
-
 }
-
 
 .stats-grid{
-
 display:grid;
-
-grid-template-columns:
-repeat(3,1fr);
-
+grid-template-columns:repeat(3,1fr);
 gap:10px;
-
 margin-top:14px;
-
 }
-
 
 .stat-card{
-
 background:var(--white);
-
 border:1px solid var(--border);
-
 border-radius:16px;
-
 padding:14px 8px;
-
 text-align:center;
-
-box-shadow:
-0 5px 17px rgba(20,30,50,.025);
-
+box-shadow:0 5px 17px rgba(20,30,50,.025);
 transition:.2s;
-
 }
-
 
 .stat-card:active{
-
 transform:translateY(1px);
-
 }
-
 
 .stat-icon{
-
 width:35px;
-
 height:35px;
-
 border-radius:10px;
-
 background:var(--blue-light);
-
 color:var(--blue);
-
 margin:0 auto 7px;
-
 display:flex;
-
 align-items:center;
-
 justify-content:center;
-
 font-size:14px;
-
 }
-
 
 .stat-card strong{
-
 display:block;
-
 font-size:16px;
-
 font-weight:800;
-
 color:var(--blue-dark);
-
 }
-
 
 .stat-card span{
-
 display:block;
-
 color:var(--muted);
-
 font-size:10px;
-
 margin-top:2px;
-
 }
-
 
 .section{
-
 margin-top:23px;
-
 }
-
 
 .section-heading{
-
 display:flex;
-
 align-items:center;
-
 justify-content:space-between;
-
 margin-bottom:11px;
-
 gap:10px;
-
 }
-
 
 .section-heading h2{
-
 font-size:16px;
-
 font-weight:800;
-
 color:var(--blue-dark);
-
 }
-
 
 .section-heading a{
-
 font-size:11px;
-
 color:var(--blue);
-
 font-weight:700;
-
 white-space:nowrap;
-
 }
 
+/* SPECIAL OFFER */
 
-.offer-card{
-
-background:
-linear-gradient(
-135deg,
-#ffffff,
-#f7faff
-);
-
-border:1px solid var(--border);
-
-border-radius:17px;
-
-padding:16px;
-
-display:flex;
-
-align-items:center;
-
-justify-content:space-between;
-
-gap:12px;
-
+.special-offer{
 position:relative;
-
 overflow:hidden;
-
-box-shadow:
-0 5px 18px rgba(20,30,50,.025);
-
-}
-
-
-.offer-card::after{
-
-content:"";
-
-position:absolute;
-
-width:90px;
-
-height:90px;
-
-border-radius:50%;
-
-background:var(--blue-light);
-
-right:-35px;
-
-bottom:-45px;
-
-}
-
-
-.offer-content{
-
-min-width:0;
-
-position:relative;
-
-z-index:2;
-
-}
-
-
-.offer-label{
-
-display:inline-flex;
-
-align-items:center;
-
-gap:5px;
-
-background:var(--blue-light);
-
-color:var(--blue);
-
-border-radius:20px;
-
-padding:6px 9px;
-
-font-size:9px;
-
-font-weight:700;
-
-margin-bottom:7px;
-
-}
-
-
-.offer-content h3{
-
-font-size:15px;
-
-color:var(--blue-dark);
-
-margin-bottom:4px;
-
-}
-
-
-.offer-content p{
-
-color:var(--muted);
-
-font-size:10px;
-
-line-height:1.65;
-
-max-width:280px;
-
-}
-
-
-.offer-icon{
-
-width:60px;
-
-height:60px;
-
-border-radius:15px;
-
-background:var(--blue);
-
-color:var(--white);
-
 display:flex;
-
 align-items:center;
-
-justify-content:center;
-
-font-size:21px;
-
-flex-shrink:0;
-
-transform:rotate(4deg);
-
-position:relative;
-
-z-index:2;
-
-box-shadow:
-0 7px 17px rgba(11,45,92,.17);
-
+justify-content:space-between;
+gap:12px;
+padding:19px;
+border-radius:18px;
+background:linear-gradient(135deg,#fff7e6,#fff0cb);
+border:1px solid #f3dfb0;
+box-shadow:0 5px 18px rgba(167,106,0,.06);
 }
 
+.special-offer-content{
+position:relative;
+z-index:2;
+flex:1;
+min-width:0;
+}
+
+.special-offer-label{
+display:inline-flex;
+align-items:center;
+gap:5px;
+font-size:9px;
+font-weight:800;
+color:#986000;
+background:rgba(255,255,255,.75);
+border:1px solid rgba(167,106,0,.12);
+border-radius:20px;
+padding:5px 9px;
+margin-bottom:9px;
+}
+
+.special-offer h3{
+font-size:16px;
+line-height:1.4;
+font-weight:800;
+color:#6e4600;
+margin-bottom:5px;
+}
+
+.special-offer p{
+font-size:10px;
+line-height:1.8;
+color:#80632e;
+}
+
+.special-offer-icon{
+width:65px;
+height:65px;
+flex-shrink:0;
+border-radius:17px;
+background:rgba(255,255,255,.7);
+display:flex;
+align-items:center;
+justify-content:center;
+color:#c58a16;
+font-size:29px;
+transform:rotate(5deg);
+}
 
 .search-box{
-
 background:var(--white);
-
 border:1px solid var(--border);
-
 border-radius:14px;
-
 height:49px;
-
 display:flex;
-
 align-items:center;
-
 padding:0 14px;
-
 gap:10px;
-
-box-shadow:
-0 4px 14px rgba(20,30,50,.025);
-
+box-shadow:0 4px 14px rgba(20,30,50,.025);
 transition:.2s;
-
 }
-
 
 .search-box:focus-within{
-
 border-color:rgba(11,45,92,.35);
-
-box-shadow:
-0 0 0 3px rgba(11,45,92,.06);
-
+box-shadow:0 0 0 3px rgba(11,45,92,.06);
 }
-
 
 .search-box i{
-
 color:var(--muted);
-
 font-size:15px;
-
 }
-
 
 .search-box input{
-
 width:100%;
-
 height:100%;
-
 border:none;
-
 outline:none;
-
 background:transparent;
-
 color:var(--text);
-
 font-size:12px;
-
 }
-
 
 .search-box input::placeholder{
-
 color:#a2a9b3;
-
 }
-
 
 .category-scroll{
-
 display:flex;
-
 gap:8px;
-
 overflow-x:auto;
-
 scrollbar-width:none;
-
 padding:2px 1px 4px;
-
 }
-
 
 .category-scroll::-webkit-scrollbar{
-
 display:none;
-
 }
-
 
 .category-btn{
-
 border:1px solid var(--border);
-
 background:var(--white);
-
 color:var(--muted);
-
 border-radius:20px;
-
 padding:9px 13px;
-
 font-size:10px;
-
 font-weight:600;
-
 white-space:nowrap;
-
 transition:.2s;
-
 }
-
 
 .category-btn.active{
-
 background:var(--blue);
-
 border-color:var(--blue);
-
 color:var(--white);
-
-box-shadow:
-0 5px 12px rgba(11,45,92,.15);
-
+box-shadow:0 5px 12px rgba(11,45,92,.15);
 }
-
 
 .category-btn:active{
-
 transform:scale(.96);
-
 }
-
 
 .product-section{
-
 margin-top:23px;
-
 scroll-margin-top:90px;
-
 }
-
 
 .product-list{
-
 display:flex;
-
 flex-direction:column;
-
 gap:10px;
-
 }
-
 
 .product-card{
-
 background:var(--white);
-
 border:1px solid var(--border);
-
 border-radius:16px;
-
 padding:11px;
-
 display:flex;
-
 align-items:center;
-
 gap:12px;
-
 min-height:86px;
-
-box-shadow:
-0 4px 15px rgba(20,30,50,.025);
-
+box-shadow:0 4px 15px rgba(20,30,50,.025);
 transition:.2s;
-
 }
-
 
 .product-card:active{
-
 transform:scale(.995);
-
 }
-
 
 .product-image{
-
 width:60px;
-
 height:60px;
-
 border-radius:13px;
-
 background:var(--blue-light);
-
 color:var(--blue);
-
 display:flex;
-
 align-items:center;
-
 justify-content:center;
-
 flex-shrink:0;
-
 overflow:hidden;
-
 }
-
 
 .product-image img{
-
 width:100%;
-
 height:100%;
-
 object-fit:cover;
-
 }
-
 
 .product-image i{
-
 font-size:20px;
-
 }
-
 
 .product-info{
-
 flex:1;
-
 min-width:0;
-
 }
-
 
 .product-info h3{
-
 font-size:12px;
-
 color:var(--blue-dark);
-
 font-weight:800;
-
 line-height:1.5;
-
 white-space:normal;
-
 overflow:hidden;
-
 text-overflow:ellipsis;
-
 display:-webkit-box;
-
 -webkit-box-orient:vertical;
-
 -webkit-line-clamp:3;
-
 margin-bottom:6px;
-
 }
-
 
 .product-meta{
-
 display:flex;
-
 align-items:center;
-
 gap:8px;
-
 flex-wrap:wrap;
-
 min-height:18px;
-
 }
-
 
 .product-stock{
-
 font-size:9px;
-
 color:var(--muted);
-
 display:flex;
-
 align-items:center;
-
 gap:4px;
-
 white-space:nowrap;
-
 }
-
 
 .product-stock i{
-
 font-size:6px;
-
 color:var(--green);
-
 }
-
 
 .product-category{
-
 font-size:9px;
-
 color:var(--muted);
-
 background:#f5f7fa;
-
 padding:4px 7px;
-
 border-radius:5px;
-
 white-space:nowrap;
-
 }
-
 
 .product-price{
-
 font-size:13px;
-
 color:var(--blue);
-
 font-weight:800;
-
 margin-top:5px;
-
 }
-
 
 .buy-btn{
-
 border:none;
-
 background:var(--blue);
-
 color:var(--white);
-
 border-radius:9px;
-
 padding:10px 13px;
-
 font-size:10px;
-
 font-weight:700;
-
 flex-shrink:0;
-
 transition:.2s;
-
 }
-
 
 .buy-btn:active{
-
 transform:scale(.94);
-
 }
-
 
 .buy-btn.disabled{
-
 background:#c8ced7;
-
 cursor:not-allowed;
-
 }
-
 
 .empty-products{
-
 background:var(--white);
-
 border:1px dashed #d7dde6;
-
 border-radius:17px;
-
 padding:32px 18px;
-
 text-align:center;
-
 color:var(--muted);
-
 }
-
 
 .empty-products i{
-
 width:46px;
-
 height:46px;
-
 border-radius:14px;
-
 background:var(--blue-light);
-
 color:var(--blue);
-
 display:flex;
-
 align-items:center;
-
 justify-content:center;
-
 margin:0 auto 10px;
-
 font-size:18px;
-
 }
-
 
 .empty-products h3{
-
 color:var(--blue-dark);
-
 font-size:14px;
-
 margin-bottom:5px;
-
 }
-
 
 .empty-products p{
-
 font-size:10px;
-
 line-height:1.7;
-
 }
-
 
 .loading{
-
 padding:38px 20px;
-
 text-align:center;
-
 color:var(--muted);
-
 font-size:11px;
-
 }
-
 
 .loading i{
-
 display:block;
-
 color:var(--blue);
-
 font-size:22px;
-
 margin-bottom:10px;
-
 }
 
+/* TUTORIAL AT THE BOTTOM */
+
+.tutorial-card{
+background:var(--white);
+border:1px solid var(--border);
+border-radius:17px;
+padding:16px;
+box-shadow:0 5px 18px rgba(20,30,50,.025);
+overflow:hidden;
+}
+
+.tutorial-card h3{
+font-size:14px;
+font-weight:800;
+color:var(--blue-dark);
+margin-bottom:6px;
+}
+
+.tutorial-card p{
+font-size:10px;
+line-height:1.75;
+color:var(--muted);
+margin-bottom:13px;
+}
+
+.tutorial-video{
+position:relative;
+width:100%;
+aspect-ratio:16 / 9;
+border-radius:13px;
+overflow:hidden;
+background:#071f40;
+}
+
+.tutorial-video iframe{
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
+border:0;
+}
+
+.tutorial-whatsapp{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:8px;
+width:100%;
+margin-top:13px;
+padding:12px;
+border-radius:10px;
+background:#e9f8ef;
+color:#137b3a;
+font-size:11px;
+font-weight:700;
+text-align:center;
+transition:.2s;
+}
+
+.tutorial-whatsapp:active{
+transform:scale(.98);
+}
 
 .floating-contact{
-
 position:fixed;
-
 right:17px;
-
 bottom:82px;
-
 width:49px;
-
 height:49px;
-
 border-radius:50%;
-
-background:var(--blue);
-
+background:#25d366;
 color:var(--white);
-
 display:flex;
-
 align-items:center;
-
 justify-content:center;
-
-box-shadow:
-0 8px 22px rgba(11,45,92,.25);
-
+box-shadow:0 8px 22px rgba(11,45,92,.25);
 z-index:150;
-
-font-size:21px;
-
+font-size:24px;
 transition:.2s;
-
 }
-
 
 .floating-contact:active{
-
 transform:scale(.94);
-
 }
-
 
 .bottom-nav{
-
 position:fixed;
-
 bottom:0;
-
 left:0;
-
 right:0;
-
 height:70px;
-
 background:rgba(255,255,255,.97);
-
 backdrop-filter:blur(14px);
-
 -webkit-backdrop-filter:blur(14px);
-
 border-top:1px solid var(--border);
-
 z-index:200;
-
 }
-
 
 .bottom-nav-inner{
-
 width:100%;
-
 max-width:600px;
-
 height:100%;
-
 margin:0 auto;
-
 display:grid;
-
-grid-template-columns:
-repeat(5,1fr);
-
+grid-template-columns:repeat(5,1fr);
 align-items:center;
-
 }
-
 
 .nav-item{
-
 height:100%;
-
 display:flex;
-
 flex-direction:column;
-
 align-items:center;
-
 justify-content:center;
-
 gap:4px;
-
 color:#9aa2ad;
-
 font-size:10px;
-
 font-weight:500;
-
 transition:.2s;
-
 }
-
 
 .nav-item i{
-
 font-size:17px;
-
 }
-
 
 .nav-item.active{
-
 color:var(--blue);
-
 font-weight:700;
-
 }
-
 
 .nav-item.active i{
-
 transform:translateY(-1px);
-
 }
-
 
 .toast{
-
 position:fixed;
-
 left:50%;
-
 bottom:82px;
-
-transform:
-translate(-50%,20px);
-
+transform:translate(-50%,20px);
 background:var(--blue-dark);
-
 color:var(--white);
-
 padding:11px 16px;
-
 border-radius:10px;
-
 font-size:11px;
-
 opacity:0;
-
 visibility:hidden;
-
 transition:.25s;
-
 z-index:500;
-
 max-width:calc(100% - 30px);
-
 text-align:center;
-
-box-shadow:
-0 8px 20px rgba(0,0,0,.15);
-
+box-shadow:0 8px 20px rgba(0,0,0,.15);
 }
-
 
 .toast.show{
-
 opacity:1;
-
 visibility:visible;
-
-transform:
-translate(-50%,0);
-
+transform:translate(-50%,0);
 }
-
 
 @media(max-width:360px){
 
 main{
-
 padding:13px;
-
 }
 
 .top-header{
-
 padding:14px;
-
 }
 
 .brand-area{
-
 gap:8px;
-
 }
 
 .brand-text h1{
-
 font-size:14px;
-
 }
 
 .header-actions{
-
 gap:6px;
-
 }
 
 .header-icon{
-
 width:36px;
-
 height:36px;
-
 }
 
 .header-wallet strong{
-
 font-size:11px;
-
 }
 
 .wallet-card{
-
 padding:16px;
-
 }
 
 .user-info{
-
 gap:8px;
-
 }
 
 .user-info strong{
-
 max-width:105px;
-
 font-size:13px;
-
 }
 
 .wallet-balance strong{
-
 font-size:15px;
-
 }
 
 .wallet-middle h2{
-
 font-size:24px;
-
 }
 
 .wallet-bottom{
-
 gap:6px;
-
 }
 
 .wallet-stats{
-
 gap:12px;
-
 }
 
 .wallet-btn{
-
 padding:9px 8px;
-
 font-size:9px;
-
 }
 
 .product-card{
-
 gap:9px;
-
 padding:9px;
-
 }
 
 .product-image{
-
 width:54px;
-
 height:54px;
-
 }
 
 .product-info h3{
-
 font-size:11px;
-
 }
 
 .buy-btn{
-
 padding:9px 10px;
-
 font-size:9px;
+}
 
+.tutorial-card{
+padding:13px;
+}
+
+.special-offer{
+padding:14px;
+gap:8px;
+}
+
+.special-offer h3{
+font-size:14px;
+}
+
+.special-offer-icon{
+width:52px;
+height:52px;
+font-size:24px;
 }
 
 }
-
 
 @media(min-width:700px){
 
 body{
-
 background:#eaf0f6;
-
 }
-
 
 .page{
-
 background:#f5f7fa;
-
-box-shadow:
-0 0 45px rgba(0,0,0,.05);
-
+box-shadow:0 0 45px rgba(0,0,0,.05);
 }
-
 
 .bottom-nav{
-
 left:50%;
-
 right:auto;
-
-transform:
-translateX(-50%);
-
+transform:translateX(-50%);
 width:600px;
-
 border-left:1px solid var(--border);
-
 border-right:1px solid var(--border);
-
 }
 
-
 .floating-contact{
-
 right:calc(50% - 280px);
-
 }
 
 }
@@ -1819,11 +1056,9 @@ right:calc(50% - 280px);
 
 </head>
 
-
 <body>
 
 <div class="page">
-
 
 <header class="top-header">
 
@@ -1832,25 +1067,15 @@ right:calc(50% - 280px);
 <div class="brand-area">
 
 <div class="brand-logo">
-
 <i class="fa-solid fa-store"></i>
-
 </div>
 
 <div class="brand-text">
-
-<h1>
-Gentle Acct Store
-</h1>
-
-<p>
-Welcome back
-</p>
-
+<h1>Gentle Acct Store</h1>
+<p>Welcome back</p>
 </div>
 
 </div>
-
 
 <div class="header-actions">
 
@@ -1860,22 +1085,12 @@ type="button"
 onclick="showToast('No new notifications')"
 aria-label="Notifications"
 >
-
 <i class="fa-regular fa-bell"></i>
-
 </button>
 
-
 <div class="header-wallet">
-
-<span>
-Wallet
-</span>
-
-<strong id="headerBalance">
-₦0.00
-</strong>
-
+<span>Wallet</span>
+<strong id="headerBalance">₦0.00</strong>
 </div>
 
 </div>
@@ -1884,99 +1099,56 @@ Wallet
 
 </header>
 
-
 <main>
 
+<!-- WALLET CARD -->
 
 <section class="wallet-card">
 
 <div class="wallet-glow"></div>
-
 
 <div class="wallet-top">
 
 <div class="user-info">
 
 <div class="user-avatar">
-
 <i class="fa-solid fa-user"></i>
-
 </div>
 
 <div>
-
-<small>
-Welcome back
-</small>
-
-<strong id="userName">
-Customer
-</strong>
-
+<small>Welcome back</small>
+<strong id="userName">Customer</strong>
 </div>
 
 </div>
-
 
 <div class="wallet-balance">
-
-<span>
-Available Balance
-</span>
-
-<strong id="walletBalance">
-₦0.00
-</strong>
-
+<span>Available Balance</span>
+<strong id="walletBalance">₦0.00</strong>
 </div>
 
 </div>
-
 
 <div class="wallet-middle">
-
-<p>
-Total Wallet Balance
-</p>
-
-<h2 id="walletLargeBalance">
-₦0.00
-</h2>
-
+<p>Total Wallet Balance</p>
+<h2 id="walletLargeBalance">₦0.00</h2>
 </div>
-
 
 <div class="wallet-bottom">
 
 <div class="wallet-stats">
 
 <div class="wallet-stat">
-
-<span>
-Orders
-</span>
-
-<strong id="ordersCount">
-0
-</strong>
-
+<span>Orders</span>
+<strong id="ordersCount">0</strong>
 </div>
-
 
 <div class="wallet-stat">
-
-<span>
-Completed
-</span>
-
-<strong id="completedCount">
-0
-</strong>
-
+<span>Completed</span>
+<strong id="completedCount">0</strong>
 </div>
 
 </div>
-
 
 <div class="wallet-buttons">
 
@@ -1985,22 +1157,16 @@ class="wallet-btn"
 type="button"
 onclick="window.location.href='fund.html'"
 >
-
 <i class="fa-solid fa-plus"></i>
-
 Fund Wallet
-
 </button>
-
 
 <button
 class="wallet-btn secondary"
 type="button"
 onclick="window.location.href='orders.html'"
 >
-
 My Orders
-
 </button>
 
 </div>
@@ -2009,116 +1175,70 @@ My Orders
 
 </section>
 
+<!-- STATISTICS -->
 
 <section class="stats-grid">
 
-
 <div class="stat-card">
-
 <div class="stat-icon">
-
 <i class="fa-solid fa-bag-shopping"></i>
-
 </div>
-
-<strong id="statOrders">
-0
-</strong>
-
-<span>
-Orders
-</span>
-
+<strong id="statOrders">0</strong>
+<span>Orders</span>
 </div>
-
 
 <div class="stat-card">
-
 <div class="stat-icon">
-
 <i class="fa-regular fa-heart"></i>
-
 </div>
-
-<strong id="statFavourites">
-0
-</strong>
-
-<span>
-Favourites
-</span>
-
+<strong id="statFavourites">0</strong>
+<span>Favourites</span>
 </div>
-
 
 <div class="stat-card">
-
 <div class="stat-icon">
-
 <i class="fa-solid fa-users"></i>
-
 </div>
-
-<strong id="statReferrals">
-0
-</strong>
-
-<span>
-Referrals
-</span>
-
+<strong id="statReferrals">0</strong>
+<span>Referrals</span>
 </div>
-
 
 </section>
 
+<!-- SPECIAL OFFER: KEEP IT NEAR THE TOP -->
 
-<section class="section">
+<section class="section" id="specialOffer">
 
 <div class="section-heading">
-
-<h2>
-Special Offer
-</h2>
-
+<h2>Special Offer</h2>
 </div>
 
+<div class="special-offer">
 
-<div class="offer-card">
+<div class="special-offer-content">
 
-<div class="offer-content">
-
-<div class="offer-label">
-
+<div class="special-offer-label">
 <i class="fa-solid fa-star"></i>
-
-Gentle Acct Store
-
+SPECIAL OFFER
 </div>
 
-
-<h3>
-Shop with confidence
-</h3>
-
+<h3>Shop with confidence</h3>
 
 <p>
-Browse available products and receive your purchase information immediately after a successful checkout.
+Explore our available products and enjoy a simple, convenient shopping experience with Gentle Acct Store.
 </p>
 
 </div>
 
-
-<div class="offer-icon">
-
+<div class="special-offer-icon">
 <i class="fa-solid fa-gift"></i>
-
 </div>
 
 </div>
 
 </section>
 
+<!-- SEARCH -->
 
 <section class="section">
 
@@ -2137,17 +1257,13 @@ autocomplete="off"
 
 </section>
 
+<!-- PRODUCT CATEGORIES -->
 
 <section class="section">
 
 <div class="section-heading">
-
-<h2>
-Popular
-</h2>
-
+<h2>Popular</h2>
 </div>
-
 
 <div
 class="category-scroll"
@@ -2159,135 +1275,138 @@ class="category-btn active"
 data-category="all"
 type="button"
 >
-
 All
-
 </button>
 
 </div>
 
 </section>
 
+<!-- PRODUCTS -->
 
-<section
-id="productsContainer"
->
+<section id="productsContainer">
 
 <div class="loading">
-
 <i class="fa-solid fa-spinner fa-spin"></i>
-
 Loading products...
+</div>
+
+</section>
+
+<!-- TUTORIAL: SEPARATE FROM SPECIAL OFFER, AT THE BOTTOM -->
+
+<section class="section" id="purchaseTutorial">
+
+<div class="section-heading">
+<h2>How to Purchase Logs</h2>
+</div>
+
+<div class="tutorial-card">
+
+<h3>HOW TO LOG IN TO FACEBOOK</h3>
+
+<p>
+Watch this video tutorial to learn how to log in. Join our WhatsApp community for more tutorials.
+</p>
+
+<div class="tutorial-video">
+
+<iframe
+src="https://www.youtube.com/embed/x3W0pz4TWq8"
+title="How to Log In to Facebook - Gentle Acct Store"
+loading="lazy"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+referrerpolicy="strict-origin-when-cross-origin"
+allowfullscreen>
+</iframe>
+
+</div>
+
+<a
+class="tutorial-whatsapp"
+href="https://chat.whatsapp.com/Lxiyp8HFoRI7w31bLDpN5V"
+target="_blank"
+rel="noopener noreferrer"
+>
+<i class="fa-brands fa-whatsapp"></i>
+Join WhatsApp Community for More Tutorials
+</a>
 
 </div>
 
 </section>
 
-
 </main>
 
 </div>
 
+<!-- FLOATING WHATSAPP BUTTON -->
 
 <a
 class="floating-contact"
-href="https://t.me/"
+href="https://chat.whatsapp.com/Lxiyp8HFoRI7w31bLDpN5V"
 target="_blank"
 rel="noopener noreferrer"
-aria-label="Contact"
+aria-label="Join our WhatsApp community"
 >
-
-<i class="fa-brands fa-telegram"></i>
-
+<i class="fa-brands fa-whatsapp"></i>
 </a>
 
+<!-- BOTTOM NAVIGATION -->
 
 <nav class="bottom-nav">
 
 <div class="bottom-nav-inner">
 
-
 <a
 href="dashboard.html"
 class="nav-item active"
 >
-
 <i class="fa-solid fa-house"></i>
-
-<span>
-Home
-</span>
-
+<span>Home</span>
 </a>
-
 
 <a
 href="#products"
 class="nav-item"
 onclick="scrollToProducts(event)"
 >
-
 <i class="fa-solid fa-box-open"></i>
-
-<span>
-Products
-</span>
-
+<span>Products</span>
 </a>
-
 
 <a
 href="orders.html"
 class="nav-item"
 >
-
 <i class="fa-solid fa-receipt"></i>
-
-<span>
-Orders
-</span>
-
+<span>Orders</span>
 </a>
-
 
 <a
 href="fund.html"
 class="nav-item"
 >
-
 <i class="fa-solid fa-wallet"></i>
-
-<span>
-Fund
-</span>
-
+<span>Fund</span>
 </a>
-
 
 <a
 href="profile.html"
 class="nav-item"
 >
-
 <i class="fa-solid fa-user"></i>
-
-<span>
-Menu
-</span>
-
+<span>Menu</span>
 </a>
-
 
 </div>
 
 </nav>
 
-
 <div
 class="toast"
 id="toast"
 ></div>
-
 
 <script>
 
@@ -2301,15 +1420,12 @@ let orders = [];
 
 let activeCategory = "all";
 
-
 firebase.auth().onAuthStateChanged(
 async function(user){
 
 if(!user){
 
-window.location.replace(
-"login.html"
-);
+window.location.replace("login.html");
 
 return;
 
@@ -2327,7 +1443,6 @@ await loadProducts();
 
 });
 
-
 async function loadUserInformation(){
 
 const displayName =
@@ -2335,18 +1450,14 @@ currentUser.displayName ||
 currentUser.email?.split("@")[0] ||
 "Customer";
 
-document.getElementById(
-"userName"
-).textContent =
+document.getElementById("userName").textContent =
 displayName;
 
 }
 
-
 function formatMoney(amount){
 
-const number =
-Number(amount || 0);
+const number = Number(amount || 0);
 
 return "₦" +
 number.toLocaleString(
@@ -2359,7 +1470,6 @@ maximumFractionDigits:2
 
 }
 
-
 async function loadWallet(){
 
 try{
@@ -2369,15 +1479,12 @@ window.firebaseDB
 .collection("wallets")
 .doc(currentUser.uid);
 
-const snapshot =
-await walletRef.get();
+const snapshot = await walletRef.get();
 
 if(snapshot.exists){
 
 walletBalance =
-Number(
-snapshot.data().balance || 0
-);
+Number(snapshot.data().balance || 0);
 
 }else{
 
@@ -2387,10 +1494,7 @@ walletBalance = 0;
 
 }catch(error){
 
-console.error(
-"Wallet loading error:",
-error
-);
+console.error("Wallet loading error:",error);
 
 walletBalance = 0;
 
@@ -2400,29 +1504,20 @@ updateWalletDisplay();
 
 }
 
-
 function updateWalletDisplay(){
 
-const formatted =
-formatMoney(walletBalance);
+const formatted = formatMoney(walletBalance);
 
-document.getElementById(
-"headerBalance"
-).textContent =
+document.getElementById("headerBalance").textContent =
 formatted;
 
-document.getElementById(
-"walletBalance"
-).textContent =
+document.getElementById("walletBalance").textContent =
 formatted;
 
-document.getElementById(
-"walletLargeBalance"
-).textContent =
+document.getElementById("walletLargeBalance").textContent =
 formatted;
 
 }
-
 
 async function loadOrders(){
 
@@ -2433,48 +1528,31 @@ try{
 const snapshot =
 await window.firebaseDB
 .collection("orders")
-.where(
-"userId",
-"==",
-currentUser.uid
-)
+.where("userId","==",currentUser.uid)
 .get();
 
-snapshot.forEach(
-function(doc){
+snapshot.forEach(function(doc){
 
 orders.push({
-
 id:doc.id,
-
 ...doc.data()
-
 });
 
 });
 
 }catch(error){
 
-console.error(
-"Orders loading error:",
-error
-);
+console.error("Orders loading error:",error);
 
 }
 
-
-const totalOrders =
-orders.length;
-
+const totalOrders = orders.length;
 
 const completedOrders =
-orders.filter(
-function(order){
+orders.filter(function(order){
 
 const status =
-String(
-order.status || ""
-).toLowerCase();
+String(order.status || "").toLowerCase();
 
 return(
 status === "completed" ||
@@ -2482,36 +1560,23 @@ status === "success" ||
 status === "successful"
 );
 
-}
-).length;
+}).length;
 
-
-document.getElementById(
-"ordersCount"
-).textContent =
+document.getElementById("ordersCount").textContent =
 totalOrders;
 
-
-document.getElementById(
-"completedCount"
-).textContent =
+document.getElementById("completedCount").textContent =
 completedOrders;
 
-
-document.getElementById(
-"statOrders"
-).textContent =
+document.getElementById("statOrders").textContent =
 totalOrders;
 
 }
-
 
 async function loadProducts(){
 
 const container =
-document.getElementById(
-"productsContainer"
-);
+document.getElementById("productsContainer");
 
 try{
 
@@ -2522,37 +1587,24 @@ await window.firebaseDB
 
 products = [];
 
-
-snapshot.forEach(
-function(doc){
+snapshot.forEach(function(doc){
 
 products.push({
-
 id:doc.id,
-
 ...doc.data()
-
 });
 
 });
 
+products.sort(function(a,b){
 
-products.sort(
-function(a,b){
+const aTime = a.createdAt?.seconds || 0;
 
-const aTime =
-a.createdAt?.seconds ||
-0;
-
-const bTime =
-b.createdAt?.seconds ||
-0;
+const bTime = b.createdAt?.seconds || 0;
 
 return bTime - aTime;
 
-}
-);
-
+});
 
 buildCategoryButtons();
 
@@ -2560,10 +1612,7 @@ renderProducts();
 
 }catch(error){
 
-console.error(
-"Products loading error:",
-error
-);
+console.error("Products loading error:",error);
 
 container.innerHTML = `
 
@@ -2571,13 +1620,9 @@ container.innerHTML = `
 
 <i class="fa-solid fa-triangle-exclamation"></i>
 
-<h3>
-Unable to load products
-</h3>
+<h3>Unable to load products</h3>
 
-<p>
-Please refresh the page and try again.
-</p>
+<p>Please refresh the page and try again.</p>
 
 </div>
 
@@ -2587,150 +1632,96 @@ Please refresh the page and try again.
 
 }
 
-
-/* =====================================================
-   CATEGORY BUTTONS
-===================================================== */
+/* CATEGORY BUTTONS */
 
 function buildCategoryButtons(){
 
 const container =
-document.getElementById(
-"categoryButtons"
-);
+document.getElementById("categoryButtons");
 
 container.innerHTML = `
 
 <button
 class="category-btn ${
-activeCategory === "all"
-? "active"
-: ""
+activeCategory === "all" ? "active" : ""
 }"
 type="button"
 onclick="selectCategory('all')"
 >
-
 All
-
 </button>
 
 `;
 
-
 const categories = [];
 
-
-products.forEach(
-function(product){
+products.forEach(function(product){
 
 const category =
-String(
-product.category || ""
-).trim();
+String(product.category || "").trim();
 
-
-if(
-category &&
-!categories.includes(category)
-){
-
+if(category && !categories.includes(category)){
 categories.push(category);
-
 }
 
-}
-);
+});
 
+/* GIVEAWAY ACCOUNTS ALWAYS FIRST */
 
-/*
-   Giveaway Accounts always first.
-*/
+categories.sort(function(a,b){
 
-categories.sort(
-function(a,b){
+const aName = a.toLowerCase();
 
-const aName =
-a.toLowerCase();
-
-const bName =
-b.toLowerCase();
+const bName = b.toLowerCase();
 
 if(
 aName === "giveaway accounts" &&
 bName !== "giveaway accounts"
 ){
-
 return -1;
-
 }
 
 if(
 aName !== "giveaway accounts" &&
 bName === "giveaway accounts"
 ){
-
 return 1;
-
 }
 
 return aName.localeCompare(bName);
 
-}
-);
+});
 
-
-categories.forEach(
-function(category){
+categories.forEach(function(category){
 
 const button =
-document.createElement(
-"button"
-);
+document.createElement("button");
 
 button.className =
 "category-btn " +
-(
-activeCategory === category
-? "active"
-: ""
-);
+(activeCategory === category ? "active" : "");
 
-button.type =
-"button";
+button.type = "button";
 
-button.textContent =
-category;
+button.textContent = category;
 
-button.addEventListener(
-"click",
-function(){
+button.addEventListener("click",function(){
 
-selectCategory(
-category
-);
+selectCategory(category);
 
-}
-);
+});
 
-container.appendChild(
-button
-);
+container.appendChild(button);
 
-}
-);
+});
 
 }
 
-
-/* =====================================================
-   SELECT CATEGORY
-===================================================== */
+/* SELECT CATEGORY */
 
 function selectCategory(category){
 
-activeCategory =
-category;
+activeCategory = category;
 
 buildCategoryButtons();
 
@@ -2738,83 +1729,52 @@ renderProducts();
 
 }
 
-
-/* =====================================================
-   RENDER PRODUCTS
-===================================================== */
+/* RENDER PRODUCTS */
 
 function renderProducts(){
 
 const container =
-document.getElementById(
-"productsContainer"
-);
+document.getElementById("productsContainer");
 
 const search =
-document.getElementById(
-"searchInput"
-)
+document.getElementById("searchInput")
 .value
 .trim()
 .toLowerCase();
 
-
 let filteredProducts =
-products.filter(
-function(product){
+products.filter(function(product){
 
 const productName =
-String(
-product.name || ""
-).toLowerCase();
-
+String(product.name || "").toLowerCase();
 
 const productCategory =
-String(
-product.category || ""
-).toLowerCase();
-
+String(product.category || "").toLowerCase();
 
 const matchesSearch =
 !search ||
-productName.includes(
-search
-) ||
-productCategory.includes(
-search
-);
-
+productName.includes(search) ||
+productCategory.includes(search);
 
 const matchesCategory =
 activeCategory === "all" ||
-productCategory ===
-activeCategory.toLowerCase();
+productCategory === activeCategory.toLowerCase();
 
+return matchesSearch && matchesCategory;
 
-return(
-matchesSearch &&
-matchesCategory
-);
-
-}
-);
-
+});
 
 if(!filteredProducts.length){
 
 container.innerHTML = `
 
-<section
-class="product-section"
->
+<section class="product-section">
 
 <div class="empty-products">
 
 <i class="fa-solid fa-box-open"></i>
 
-<h3>
-No products found
-</h3>
+<h3>No products found</h3>
 
 <p>
 ${
@@ -2834,92 +1794,55 @@ return;
 
 }
 
-
-/* =====================================================
-   GROUP BY CATEGORY
-===================================================== */
+/* GROUP PRODUCTS BY CATEGORY */
 
 const groups = {};
 
-
-filteredProducts.forEach(
-function(product){
+filteredProducts.forEach(function(product){
 
 const category =
-String(
-product.category ||
-"Products"
-).trim();
-
+String(product.category || "Products").trim();
 
 if(!groups[category]){
-
 groups[category] = [];
-
 }
 
+groups[category].push(product);
 
-groups[category].push(
-product
-);
+});
 
-}
-);
-
-
-/* =====================================================
-   ORDER CATEGORIES
-===================================================== */
+/* ORDER CATEGORIES */
 
 const orderedCategories =
-Object.keys(groups)
-.sort(
-function(a,b){
+Object.keys(groups).sort(function(a,b){
 
-const aName =
-a.toLowerCase();
+const aName = a.toLowerCase();
 
-const bName =
-b.toLowerCase();
-
+const bName = b.toLowerCase();
 
 if(
 aName === "giveaway accounts" &&
 bName !== "giveaway accounts"
 ){
-
 return -1;
-
 }
-
 
 if(
 aName !== "giveaway accounts" &&
 bName === "giveaway accounts"
 ){
-
 return 1;
-
 }
 
+return aName.localeCompare(bName);
 
-return aName.localeCompare(
-bName
-);
-
-}
-);
-
+});
 
 let html = "";
 
+orderedCategories.forEach(function(category){
 
-orderedCategories.forEach(
-function(category){
-
-const categoryProducts =
-groups[category];
-
+const categoryProducts = groups[category];
 
 html += `
 
@@ -2930,46 +1853,33 @@ id="products-${slugify(category)}"
 
 <div class="section-heading">
 
-<h2>
-${escapeHtml(category)}
-</h2>
+<h2>${escapeHtml(category)}</h2>
 
 <a
 href="#"
 onclick="
-showCategory(
-'${escapeAttribute(category)}'
-);
+showCategory('${escapeAttribute(category)}');
 return false;
 "
 >
 
 View All
 
-<i
-class="fa-solid fa-angle-right"
-></i>
+<i class="fa-solid fa-angle-right"></i>
 
 </a>
 
 </div>
 
-
 <div class="product-list">
 
 `;
 
+categoryProducts.forEach(function(product){
 
-categoryProducts.forEach(
-function(product){
-
-html +=
-createProductCard(
-product
-);
+html += createProductCard(product);
 
 });
-
 
 html += `
 
@@ -2979,80 +1889,38 @@ html += `
 
 `;
 
-}
-);
+});
 
-
-container.innerHTML =
-html;
+container.innerHTML = html;
 
 }
 
+/* PRODUCT CARD */
 
-/* =====================================================
-   PRODUCT CARD
-===================================================== */
+function createProductCard(product){
 
-function createProductCard(
-product
-){
+const productId = product.id;
 
-const productId =
-product.id;
+const productName = String(product.name || "Product");
 
+const name = escapeHtml(productName);
 
-const productName =
-String(
-product.name ||
-"Product"
-);
+const category = escapeHtml(product.category || "Product");
 
+const price = formatMoney(product.price || 0);
 
-const name =
-escapeHtml(
-productName
-);
+const stock = Number(product.stockCount || 0);
 
-
-const category =
-escapeHtml(
-product.category ||
-"Product"
-);
-
-
-const price =
-formatMoney(
-product.price ||
-0
-);
-
-
-const stock =
-Number(
-product.stockCount ||
-0
-);
-
-
-/* =====================================================
-   PRODUCT IMAGE
-===================================================== */
+/* PRODUCT IMAGE */
 
 const isFacebook =
-productName
-.toLowerCase()
-.includes("facebook");
-
+productName.toLowerCase().includes("facebook");
 
 let imageHTML = `
 
-<i
-class="fa-solid fa-box"
-></i>
+<i class="fa-solid fa-box"></i>
 
 `;
-
 
 if(isFacebook){
 
@@ -3067,7 +1935,6 @@ style="font-size:24px;"
 
 }
 
-
 if(product.image){
 
 const fallbackIcon =
@@ -3075,13 +1942,10 @@ isFacebook
 ? "fa-brands fa-facebook"
 : "fa-solid fa-box";
 
-
 imageHTML = `
 
 <img
-src="${escapeAttribute(
-product.image
-)}"
+src="${escapeAttribute(product.image)}"
 alt="${name}"
 onerror="
 this.style.display='none';
@@ -3093,13 +1957,9 @@ this.parentElement.innerHTML='<i class=&quot;${fallbackIcon}&quot; style=&quot;f
 
 }
 
-
-/* =====================================================
-   BUY BUTTON
-===================================================== */
+/* BUY BUTTON */
 
 let buyButton = "";
-
 
 if(stock > 0){
 
@@ -3108,11 +1968,7 @@ buyButton = `
 <button
 class="buy-btn"
 type="button"
-onclick="
-buyProduct(
-'${escapeAttribute(productId)}'
-)
-"
+onclick="buyProduct('${escapeAttribute(productId)}')"
 >
 
 Buy
@@ -3139,20 +1995,14 @@ Sold Out
 
 }
 
-
-/* =====================================================
-   RETURN PRODUCT CARD
-===================================================== */
+/* RETURN PRODUCT CARD */
 
 return `
 
 <div
 class="product-card"
-data-product-id="${escapeAttribute(
-productId
-)}"
+data-product-id="${escapeAttribute(productId)}"
 >
-
 
 <div class="product-image">
 
@@ -3160,44 +2010,31 @@ ${imageHTML}
 
 </div>
 
-
 <div class="product-info">
 
-<h3
-title="${name}"
->
+<h3 title="${name}">
 
 ${name}
 
 </h3>
 
-
 <div class="product-meta">
 
-<span
-class="product-stock"
->
+<span class="product-stock">
 
-<i
-class="fa-solid fa-circle"
-></i>
+<i class="fa-solid fa-circle"></i>
 
-${stock}
-available
+${stock} available
 
 </span>
 
-
-<span
-class="product-category"
->
+<span class="product-category">
 
 ${category}
 
 </span>
 
 </div>
-
 
 <div class="product-price">
 
@@ -3207,7 +2044,6 @@ ${price}
 
 </div>
 
-
 ${buyButton}
 
 </div>
@@ -3216,111 +2052,66 @@ ${buyButton}
 
 }
 
+/* BUY */
 
-/* =====================================================
-   BUY
-===================================================== */
-
-function buyProduct(
-productId
-){
+function buyProduct(productId){
 
 const product =
-products.find(
-function(item){
+products.find(function(item){
 
-return item.id ===
-productId;
+return item.id === productId;
 
-}
-);
-
+});
 
 if(!product){
 
-showToast(
-"Product could not be found."
-);
+showToast("Product could not be found.");
 
 return;
 
 }
 
-
-const stock =
-Number(
-product.stockCount ||
-0
-);
-
+const stock = Number(product.stockCount || 0);
 
 if(stock <= 0){
 
-showToast(
-"This product is sold out."
-);
+showToast("This product is sold out.");
 
 return;
 
 }
 
-
-localStorage.setItem(
-"gentleCheckoutProduct",
-productId
-);
-
+localStorage.setItem("gentleCheckoutProduct",productId);
 
 window.location.href =
-"checkout.html?id=" +
-encodeURIComponent(
-productId
-);
+"checkout.html?id=" + encodeURIComponent(productId);
 
 }
 
-
-/* =====================================================
-   SEARCH
-===================================================== */
+/* SEARCH */
 
 document
-.getElementById(
-"searchInput"
-)
-.addEventListener(
-"input",
-function(){
+.getElementById("searchInput")
+.addEventListener("input",function(){
 
 renderProducts();
 
-}
-);
+});
 
+/* SHOW CATEGORY */
 
-/* =====================================================
-   SHOW CATEGORY
-===================================================== */
+function showCategory(category){
 
-function showCategory(
-category
-){
-
-activeCategory =
-category;
+activeCategory = category;
 
 buildCategoryButtons();
 
 renderProducts();
 
-
-setTimeout(
-function(){
+setTimeout(function(){
 
 const firstSection =
-document.querySelector(
-".product-section"
-);
+document.querySelector("#productsContainer .product-section");
 
 if(firstSection){
 
@@ -3331,33 +2122,20 @@ block:"start"
 
 }
 
-},
-80
-);
+},80);
 
 }
 
+/* SCROLL TO PRODUCTS */
 
-/* =====================================================
-   SCROLL TO PRODUCTS
-===================================================== */
-
-function scrollToProducts(
-event
-){
+function scrollToProducts(event){
 
 if(event){
-
 event.preventDefault();
-
 }
 
-
 const element =
-document.getElementById(
-"productsContainer"
-);
-
+document.getElementById("productsContainer");
 
 if(element){
 
@@ -3370,145 +2148,62 @@ block:"start"
 
 }
 
-
-/* =====================================================
-   SLUGIFY
-===================================================== */
+/* SLUGIFY */
 
 function slugify(value){
 
 return String(value || "")
 .toLowerCase()
-.replace(
-/[^a-z0-9]+/g,
-"-"
-)
-.replace(
-/^-+|-+$/g,
-"");
+.replace(/[^a-z0-9]+/g,"-")
+.replace(/^-+|-+$/g,"");
 
 }
 
+/* TOAST */
 
-/* =====================================================
-   TOAST
-===================================================== */
+let toastTimer = null;
 
-let toastTimer =
-null;
+function showToast(message){
 
+const toast = document.getElementById("toast");
 
-function showToast(
-message
-){
+toast.textContent = message;
 
-const toast =
-document.getElementById(
-"toast"
-);
+toast.classList.add("show");
 
+clearTimeout(toastTimer);
 
-toast.textContent =
-message;
+toastTimer = setTimeout(function(){
 
+toast.classList.remove("show");
 
-toast.classList.add(
-"show"
-);
-
-
-clearTimeout(
-toastTimer
-);
-
-
-toastTimer =
-setTimeout(
-function(){
-
-toast.classList.remove(
-"show"
-);
-
-},
-2500
-);
+},2500);
 
 }
 
+/* ESCAPE HTML */
 
-/* =====================================================
-   ESCAPE HTML
-===================================================== */
-
-function escapeHtml(
-value
-){
+function escapeHtml(value){
 
 return String(value ?? "")
-
-.replace(
-/&/g,
-"&amp;"
-)
-
-.replace(
-/</g,
-"&lt;"
-)
-
-.replace(
-/>/g,
-"&gt;"
-)
-
-.replace(
-/"/g,
-"&quot;"
-)
-
-.replace(
-/'/g,
-"&#039;"
-);
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
 
 }
 
+/* ESCAPE ATTRIBUTE */
 
-/* =====================================================
-   ESCAPE ATTRIBUTE
-===================================================== */
-
-function escapeAttribute(
-value
-){
+function escapeAttribute(value){
 
 return String(value ?? "")
-
-.replace(
-/&/g,
-"&amp;"
-)
-
-.replace(
-/"/g,
-"&quot;"
-)
-
-.replace(
-/'/g,
-"&#039;"
-)
-
-.replace(
-/</g,
-"&lt;"
-)
-
-.replace(
-/>/g,
-"&gt;"
-);
+.replace(/&/g,"&amp;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;");
 
 }
 
