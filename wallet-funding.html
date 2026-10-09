@@ -1,40 +1,20 @@
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0"
->
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0b2d5c">
-
 <title>Wallet Funding - Gentle Admin</title>
 
-<link
-  href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
-  rel="stylesheet"
->
-
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-
 <script src="firebase.js"></script>
 
 <style>
-
 :root{
 --blue:#0b2d5c;
 --dark:#071f40;
@@ -49,1014 +29,614 @@
 --shadow:0 10px 30px rgba(11,45,92,.07);
 }
 
-*{
-box-sizing:border-box;
-margin:0;
-padding:0;
-}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Poppins",sans-serif;background:var(--background);color:var(--text);min-height:100vh}
+button,a{font-family:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
 
-body{
-font-family:"Poppins",sans-serif;
-background:var(--background);
-color:var(--text);
-min-height:100vh;
-}
+header{background:#fff;border-bottom:1px solid var(--border);padding:15px 18px;position:sticky;top:0;z-index:10}
+.header-inner{max-width:1100px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:11px}
+.brand-icon{width:45px;height:45px;border-radius:14px;background:var(--blue);color:white;display:flex;align-items:center;justify-content:center;font-size:19px}
+.brand h1{font-size:18px;font-weight:800;color:var(--dark)}
+.brand p{font-size:9px;color:var(--muted);margin-top:3px}
 
-button,a{
-font-family:inherit;
-}
+.back-btn,.refresh-btn{border:0;background:var(--light);color:var(--blue);padding:11px 14px;border-radius:11px;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:7px}
+.back-btn{white-space:nowrap}
+.refresh-btn:disabled,.action-btn:disabled{opacity:.6;cursor:not-allowed}
 
-button{
-cursor:pointer;
-}
+.container{max-width:1100px;margin:auto;padding:24px 16px 50px}
+.page-heading{margin-bottom:20px}
+.page-heading h2{font-size:24px;font-weight:800;color:var(--dark)}
+.page-heading p{font-size:11px;color:var(--muted);line-height:1.7;margin-top:5px}
 
-a{
-text-decoration:none;
-color:inherit;
-}
+.notice{display:none;background:#fff8e6;border:1px solid #f2dfac;color:#805b00;padding:13px;border-radius:12px;font-size:10px;line-height:1.7;margin-bottom:16px;overflow-wrap:anywhere}
+.notice.show{display:block}
+.notice.success{background:#eaf8f0;border-color:#b7e4c7;color:#166534}
+.notice.error{background:#fff0f0;border-color:#fecaca;color:#991b1b}
 
-header{
-background:#fff;
-border-bottom:1px solid var(--border);
-padding:15px 18px;
-position:sticky;
-top:0;
-z-index:10;
-}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:20px}
+.stat{background:white;border:1px solid var(--border);border-radius:17px;padding:16px;box-shadow:var(--shadow);min-width:0}
+.stat-icon{width:36px;height:36px;border-radius:11px;background:var(--light);color:var(--blue);display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.stat h3{font-size:21px;font-weight:800;color:var(--dark);overflow-wrap:anywhere}
+.stat p{font-size:9px;color:var(--muted);margin-top:3px}
 
-.header-inner{
-max-width:1100px;
-margin:auto;
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:12px;
-}
+.panel{background:white;border:1px solid var(--border);border-radius:19px;padding:20px;box-shadow:var(--shadow)}
+.panel-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:17px}
+.panel-heading h3{font-size:16px;font-weight:800;color:var(--dark)}
+.panel-heading p{font-size:9px;color:var(--muted);margin-top:4px}
 
-.brand{
-display:flex;
-align-items:center;
-gap:11px;
-}
+.requests{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.request{border:1px solid var(--border);border-radius:15px;padding:15px;min-width:0}
+.request-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.request h4{font-size:13px;font-weight:800;color:var(--dark);overflow-wrap:anywhere}
+.request-email{font-size:10px;color:var(--muted);margin-top:4px;overflow-wrap:anywhere}
+.amount{font-size:22px;font-weight:800;color:var(--blue);margin:14px 0}
 
-.brand-icon{
-width:45px;
-height:45px;
-border-radius:14px;
-background:var(--blue);
-color:white;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:19px;
-}
+.status{display:inline-flex;align-items:center;gap:5px;border-radius:20px;padding:6px 9px;font-size:9px;font-weight:700;background:#fff5d9;color:var(--orange);white-space:nowrap}
+.status.approved,.status.completed,.status.paid{background:#eaf8f0;color:var(--green)}
+.status.rejected,.status.failed{background:#fff0f0;color:var(--red)}
 
-.brand h1{
-font-size:18px;
-font-weight:800;
-color:var(--dark);
-}
+.details{display:grid;gap:8px}
+.detail{background:#f7f9fc;border-radius:9px;padding:9px;min-width:0}
+.detail span{display:block;font-size:8px;color:var(--muted);margin-bottom:4px}
+.detail strong{display:block;font-size:10px;font-weight:600;overflow-wrap:anywhere;word-break:break-word}
 
-.brand p{
-font-size:9px;
-color:var(--muted);
-margin-top:3px;
-}
+.request-actions{display:flex;gap:9px;margin-top:14px}
+.action-btn{flex:1;border:0;border-radius:10px;padding:11px 8px;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px}
+.accept-btn{background:#15803d;color:white}
+.reject-btn{background:#fff0f0;color:#dc2626;border:1px solid #fecaca}
+.action-btn:active{transform:scale(.98)}
+.action-btn:disabled{transform:none}
+.processed-note{margin-top:12px;font-size:10px;color:var(--muted);line-height:1.6}
 
-.back-btn,
-.refresh-btn{
-border:0;
-background:var(--light);
-color:var(--blue);
-padding:11px 14px;
-border-radius:11px;
-font-size:10px;
-font-weight:700;
-display:flex;
-align-items:center;
-justify-content:center;
-gap:7px;
-}
-
-.back-btn{
-white-space:nowrap;
-}
-
-.refresh-btn:disabled{
-opacity:.6;
-cursor:not-allowed;
-}
-
-.container{
-max-width:1100px;
-margin:auto;
-padding:24px 16px 50px;
-}
-
-.page-heading{
-margin-bottom:20px;
-}
-
-.page-heading h2{
-font-size:24px;
-font-weight:800;
-color:var(--dark);
-}
-
-.page-heading p{
-font-size:11px;
-color:var(--muted);
-line-height:1.7;
-margin-top:5px;
-}
-
-.notice{
-display:none;
-background:#fff8e6;
-border:1px solid #f2dfac;
-color:#805b00;
-padding:13px;
-border-radius:12px;
-font-size:10px;
-line-height:1.7;
-margin-bottom:16px;
-overflow-wrap:anywhere;
-}
-
-.notice.show{
-display:block;
-}
-
-.stats{
-display:grid;
-grid-template-columns:repeat(3,minmax(0,1fr));
-gap:12px;
-margin-bottom:20px;
-}
-
-.stat{
-background:white;
-border:1px solid var(--border);
-border-radius:17px;
-padding:16px;
-box-shadow:var(--shadow);
-min-width:0;
-}
-
-.stat-icon{
-width:36px;
-height:36px;
-border-radius:11px;
-background:var(--light);
-color:var(--blue);
-display:flex;
-align-items:center;
-justify-content:center;
-margin-bottom:10px;
-}
-
-.stat h3{
-font-size:21px;
-font-weight:800;
-color:var(--dark);
-overflow-wrap:anywhere;
-}
-
-.stat p{
-font-size:9px;
-color:var(--muted);
-margin-top:3px;
-}
-
-.panel{
-background:white;
-border:1px solid var(--border);
-border-radius:19px;
-padding:20px;
-box-shadow:var(--shadow);
-}
-
-.panel-heading{
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:12px;
-flex-wrap:wrap;
-margin-bottom:17px;
-}
-
-.panel-heading h3{
-font-size:16px;
-font-weight:800;
-color:var(--dark);
-}
-
-.panel-heading p{
-font-size:9px;
-color:var(--muted);
-margin-top:4px;
-}
-
-.requests{
-display:grid;
-grid-template-columns:repeat(2,minmax(0,1fr));
-gap:13px;
-}
-
-.request{
-border:1px solid var(--border);
-border-radius:15px;
-padding:15px;
-min-width:0;
-}
-
-.request-top{
-display:flex;
-align-items:flex-start;
-justify-content:space-between;
-gap:10px;
-}
-
-.request h4{
-font-size:13px;
-font-weight:800;
-color:var(--dark);
-overflow-wrap:anywhere;
-}
-
-.request-email{
-font-size:10px;
-color:var(--muted);
-margin-top:4px;
-overflow-wrap:anywhere;
-}
-
-.amount{
-font-size:22px;
-font-weight:800;
-color:var(--blue);
-margin:14px 0;
-}
-
-.status{
-display:inline-flex;
-align-items:center;
-gap:5px;
-border-radius:20px;
-padding:6px 9px;
-font-size:9px;
-font-weight:700;
-background:#fff5d9;
-color:var(--orange);
-white-space:nowrap;
-}
-
-.status.approved,
-.status.completed,
-.status.paid{
-background:#eaf8f0;
-color:var(--green);
-}
-
-.status.rejected,
-.status.failed{
-background:#fff0f0;
-color:var(--red);
-}
-
-.details{
-display:grid;
-gap:8px;
-}
-
-.detail{
-background:#f7f9fc;
-border-radius:9px;
-padding:9px;
-min-width:0;
-}
-
-.detail span{
-display:block;
-font-size:8px;
-color:var(--muted);
-margin-bottom:4px;
-}
-
-.detail strong{
-display:block;
-font-size:10px;
-font-weight:600;
-overflow-wrap:anywhere;
-word-break:break-word;
-}
-
-.empty{
-grid-column:1/-1;
-text-align:center;
-padding:38px 15px;
-border:1px dashed #cbd5e1;
-border-radius:15px;
-}
-
-.empty i{
-font-size:29px;
-color:#aab5c4;
-margin-bottom:12px;
-}
-
-.empty h4{
-font-size:14px;
-color:var(--dark);
-margin-bottom:5px;
-}
-
-.empty p{
-font-size:10px;
-line-height:1.7;
-color:var(--muted);
-}
+.empty{grid-column:1/-1;text-align:center;padding:38px 15px;border:1px dashed #cbd5e1;border-radius:15px}
+.empty i{font-size:29px;color:#aab5c4;margin-bottom:12px}
+.empty h4{font-size:14px;color:var(--dark);margin-bottom:5px}
+.empty p{font-size:10px;line-height:1.7;color:var(--muted)}
 
 @media(max-width:650px){
-
-.header-inner{
-gap:8px;
+.header-inner{gap:8px}
+.brand h1{font-size:15px}
+.brand p{display:none}
+.brand-icon{width:39px;height:39px}
+.back-btn{padding:10px;font-size:9px}
+.container{padding:19px 12px 35px}
+.page-heading h2{font-size:21px}
+.stats{gap:8px}
+.stat{padding:12px 10px}
+.stat h3{font-size:17px}
+.stat p{font-size:8px}
+.panel{padding:14px}
+.requests{grid-template-columns:1fr}
+.panel-heading{align-items:stretch;flex-direction:column}
+.refresh-btn{width:100%}
 }
-
-.brand h1{
-font-size:15px;
-}
-
-.brand p{
-display:none;
-}
-
-.brand-icon{
-width:39px;
-height:39px;
-}
-
-.back-btn{
-padding:10px;
-font-size:9px;
-}
-
-.container{
-padding:19px 12px 35px;
-}
-
-.page-heading h2{
-font-size:21px;
-}
-
-.stats{
-gap:8px;
-}
-
-.stat{
-padding:12px 10px;
-}
-
-.stat h3{
-font-size:17px;
-}
-
-.stat p{
-font-size:8px;
-}
-
-.panel{
-padding:14px;
-}
-
-.requests{
-grid-template-columns:1fr;
-}
-
-.panel-heading{
-align-items:stretch;
-flex-direction:column;
-}
-
-.refresh-btn{
-width:100%;
-}
-
-}
-
 </style>
-
 </head>
 
 <body>
-
 <header>
-
 <div class="header-inner">
-
 <div class="brand">
-
-<div class="brand-icon">
-<i class="fa-solid fa-wallet"></i>
-</div>
-
+<div class="brand-icon"><i class="fa-solid fa-wallet"></i></div>
 <div>
 <h1>Gentle Admin</h1>
 <p>Wallet Funding Management</p>
 </div>
-
 </div>
-
 <a href="admin.html" class="back-btn">
-<i class="fa-solid fa-arrow-left"></i>
-Back to Admin
+<i class="fa-solid fa-arrow-left"></i> Back to Admin
 </a>
-
 </div>
-
 </header>
 
-
 <main class="container">
-
 <div class="page-heading">
-
 <h2>Wallet Funding Requests</h2>
-
-<p>
-View funding requests submitted by customers to Gentle Acct Store.
-</p>
-
+<p>View funding requests submitted by customers to Gentle Acct Store.</p>
 </div>
-
 
 <div id="notice" class="notice"></div>
 
-
 <div class="stats">
-
 <div class="stat">
-
-<div class="stat-icon">
-<i class="fa-solid fa-file-invoice-dollar"></i>
-</div>
-
+<div class="stat-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
 <h3 id="totalRequests">0</h3>
-
 <p>Total Requests</p>
-
 </div>
-
-
 <div class="stat">
-
-<div class="stat-icon">
-<i class="fa-solid fa-hourglass-half"></i>
-</div>
-
+<div class="stat-icon"><i class="fa-solid fa-hourglass-half"></i></div>
 <h3 id="pendingRequests">0</h3>
-
 <p>Pending Requests</p>
-
 </div>
-
-
 <div class="stat">
-
-<div class="stat-icon">
-<i class="fa-solid fa-coins"></i>
-</div>
-
+<div class="stat-icon"><i class="fa-solid fa-coins"></i></div>
 <h3 id="totalAmount">₦0</h3>
-
 <p>Amount Requested</p>
-
 </div>
-
 </div>
-
 
 <section class="panel">
-
 <div class="panel-heading">
-
 <div>
 <h3>All Funding Requests</h3>
 <p>Newest requests appear first.</p>
 </div>
-
-<button
-type="button"
-id="refreshButton"
-class="refresh-btn"
->
-<i class="fa-solid fa-rotate"></i>
-Refresh Requests
+<button type="button" id="refreshButton" class="refresh-btn">
+<i class="fa-solid fa-rotate"></i> Refresh Requests
 </button>
-
 </div>
-
 
 <div id="requests" class="requests">
-
 <div class="empty">
-
 <i class="fa-solid fa-spinner fa-spin"></i>
-
 <h4>Loading requests</h4>
-
 <p>Please wait.</p>
-
 </div>
-
 </div>
-
 </section>
-
 </main>
 
-
 <script>
+const ADMIN_UID = "UoEjCy99gbQKkGob59vGi3CunZi1";
+const FUNDING_COLLECTION = "fundingRequests";
 
-const ADMIN_UID =
-"UoEjCy99gbQKkGob59vGi3CunZi1";
-
-const FUNDING_COLLECTION =
-"fundingRequests";
-
-const requestsContainer =
-document.getElementById("requests");
-
-const notice =
-document.getElementById("notice");
-
-const refreshButton =
-document.getElementById("refreshButton");
+const requestsContainer = document.getElementById("requests");
+const notice = document.getElementById("notice");
+const refreshButton = document.getElementById("refreshButton");
 
 let adminAuthorized = false;
+let currentAdmin = null;
+let processingRequests = new Set();
 
+/* AUTHENTICATION */
+firebaseAuth.onAuthStateChanged(async function(user){
+  if(!user){
+    window.location.replace("admin-login.html");
+    return;
+  }
 
-/* =========================
-AUTHENTICATION
-========================= */
+  if(user.uid !== ADMIN_UID || !user.emailVerified){
+    try{
+      await firebaseAuth.signOut();
+    }catch(error){
+      console.error("SIGN OUT ERROR:", error);
+    }
+    window.location.replace("admin-login.html");
+    return;
+  }
 
-firebaseAuth.onAuthStateChanged(
-async function(user){
+  currentAdmin = user;
+  adminAuthorized = true;
+  loadFundingRequests();
+});
 
-if(!user){
+/* REFRESH */
+refreshButton.addEventListener("click", function(){
+  if(adminAuthorized) loadFundingRequests();
+});
 
-window.location.replace("admin-login.html");
-
-return;
-
-}
-
-if(
-user.uid !== ADMIN_UID ||
-!user.emailVerified
-){
-
-try{
-await firebaseAuth.signOut();
-}catch(error){
-console.error("SIGN OUT ERROR:",error);
-}
-
-window.location.replace("admin-login.html");
-
-return;
-
-}
-
-adminAuthorized = true;
-
-loadFundingRequests();
-
-}
-);
-
-
-/* =========================
-REFRESH
-========================= */
-
-refreshButton.addEventListener(
-"click",
-function(){
-
-if(adminAuthorized){
-loadFundingRequests();
-}
-
-}
-);
-
-
-/* =========================
-LOAD REQUESTS
-========================= */
-
+/* LOAD REQUESTS */
 async function loadFundingRequests(){
+  if(!adminAuthorized) return;
 
-if(!adminAuthorized){
-return;
+  refreshButton.disabled = true;
+  refreshButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading...';
+  notice.classList.remove("show", "success", "error");
+
+  requestsContainer.innerHTML = `
+    <div class="empty">
+      <i class="fa-solid fa-spinner fa-spin"></i>
+      <h4>Loading requests</h4>
+      <p>Please wait.</p>
+    </div>`;
+
+  try{
+    const snapshot = await firebaseDB.collection(FUNDING_COLLECTION).get();
+    const requests = [];
+
+    snapshot.forEach(function(doc){
+      const data = doc.data() || {};
+
+      requests.push({
+        id: doc.id,
+        userId: data.userId || "",
+        accountName: data.accountName || "",
+        userEmail: data.userEmail || data.email || "",
+        amount: Number(data.amount || 0),
+        reference: data.reference || doc.id,
+        status: String(data.status || "pending"),
+        paymentMethod: data.paymentMethod || "Manual bank transfer",
+        createdAt: data.createdAt || null
+      });
+    });
+
+    requests.sort(function(a,b){
+      return getTimeValue(b.createdAt) - getTimeValue(a.createdAt);
+    });
+
+    renderRequests(requests);
+    updateSummary(requests);
+  }catch(error){
+    console.error("FUNDING REQUESTS ERROR:", error);
+
+    requestsContainer.innerHTML = `
+      <div class="empty">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <h4>Unable to load requests</h4>
+        <p>${escapeHTML(error.message || "Something went wrong.")}</p>
+      </div>`;
+
+    showNotice(
+      "Unable to load requests. Check your Firebase Firestore rules and admin access.",
+      "error"
+    );
+  }finally{
+    refreshButton.disabled = false;
+    refreshButton.innerHTML = '<i class="fa-solid fa-rotate"></i> Refresh Requests';
+  }
 }
 
-refreshButton.disabled = true;
-
-refreshButton.innerHTML =
-'<i class="fa-solid fa-spinner fa-spin"></i> Loading...';
-
-notice.classList.remove("show");
-
-requestsContainer.innerHTML = `
-
-<div class="empty">
-
-<i class="fa-solid fa-spinner fa-spin"></i>
-
-<h4>Loading requests</h4>
-
-<p>Please wait.</p>
-
-</div>
-
-`;
-
-try{
-
-const snapshot =
-await firebaseDB
-.collection(FUNDING_COLLECTION)
-.get();
-
-const requests = [];
-
-snapshot.forEach(function(doc){
-
-const data = doc.data() || {};
-
-requests.push({
-
-id:doc.id,
-
-userId:data.userId || "",
-
-accountName:data.accountName || "",
-
-userEmail:
-data.userEmail ||
-data.email ||
-"",
-
-amount:Number(data.amount || 0),
-
-reference:
-data.reference ||
-doc.id,
-
-status:
-String(data.status || "pending"),
-
-paymentMethod:
-data.paymentMethod ||
-"Manual bank transfer",
-
-createdAt:
-data.createdAt || null
-
-});
-
-});
-
-
-requests.sort(function(a,b){
-
-return getTimeValue(b.createdAt) -
-getTimeValue(a.createdAt);
-
-});
-
-
-renderRequests(requests);
-
-updateSummary(requests);
-
-
-}catch(error){
-
-console.error(
-"FUNDING REQUESTS ERROR:",
-error
-);
-
-requestsContainer.innerHTML = `
-
-<div class="empty">
-
-<i class="fa-solid fa-triangle-exclamation"></i>
-
-<h4>Unable to load requests</h4>
-
-<p>
-${escapeHTML(
-error.message ||
-"Something went wrong."
-)}
-</p>
-
-</div>
-
-`;
-
-notice.textContent =
-"Firestore must allow the authenticated admin UID to read the fundingRequests collection. If access is denied, we need to update your existing Firestore rules carefully.";
-
-notice.classList.add("show");
-
-
-}finally{
-
-refreshButton.disabled = false;
-
-refreshButton.innerHTML =
-'<i class="fa-solid fa-rotate"></i> Refresh Requests';
-
-}
-
-}
-
-
-/* =========================
-RENDER REQUESTS
-========================= */
-
+/* RENDER REQUESTS */
 function renderRequests(requests){
+  if(!requests.length){
+    requestsContainer.innerHTML = `
+      <div class="empty">
+        <i class="fa-solid fa-wallet"></i>
+        <h4>No funding requests yet</h4>
+        <p>Customer requests will appear here when saved to Firebase.</p>
+      </div>`;
+    return;
+  }
 
-if(!requests.length){
+  requestsContainer.innerHTML = "";
 
-requestsContainer.innerHTML = `
+  requests.forEach(function(request){
+    const card = document.createElement("article");
+    card.className = "request";
 
-<div class="empty">
+    const status = request.status.toLowerCase();
+    const isPending = ["pending", "pending_verification"].includes(status);
 
-<i class="fa-solid fa-wallet"></i>
+    let statusIcon = "fa-clock";
+    if(["approved","completed","paid"].includes(status)){
+      statusIcon = "fa-circle-check";
+    }else if(["rejected","failed"].includes(status)){
+      statusIcon = "fa-circle-xmark";
+    }
 
-<h4>No funding requests yet</h4>
+    let statusClass = "pending";
+    if(["approved","completed","paid"].includes(status)){
+      statusClass = status;
+    }else if(["rejected","failed"].includes(status)){
+      statusClass = status;
+    }
 
-<p>
-Customer requests will appear here when they are saved to Firebase.
-</p>
+    card.innerHTML = `
+      <div class="request-top">
+        <div>
+          <h4>${escapeHTML(request.accountName || "Customer name not provided")}</h4>
+          <p class="request-email">${escapeHTML(request.userEmail || "Email not provided")}</p>
+        </div>
+        <span class="status ${statusClass}">
+          <i class="fa-solid ${statusIcon}"></i>
+          ${escapeHTML(request.status)}
+        </span>
+      </div>
 
-</div>
+      <div class="amount">₦${formatNumber(request.amount)}</div>
 
-`;
+      <div class="details">
+        <div class="detail">
+          <span>Funding Reference</span>
+          <strong>${escapeHTML(request.reference)}</strong>
+        </div>
+        <div class="detail">
+          <span>Customer User ID</span>
+          <strong>${escapeHTML(request.userId || "Not provided")}</strong>
+        </div>
+        <div class="detail">
+          <span>Payment Method</span>
+          <strong>${escapeHTML(request.paymentMethod)}</strong>
+        </div>
+        <div class="detail">
+          <span>Date Submitted</span>
+          <strong>${escapeHTML(formatDate(request.createdAt))}</strong>
+        </div>
+      </div>
+    `;
 
-return;
+    if(isPending){
+      const actions = document.createElement("div");
+      actions.className = "request-actions";
 
+      const acceptButton = document.createElement("button");
+      acceptButton.type = "button";
+      acceptButton.className = "action-btn accept-btn";
+      acceptButton.innerHTML = '<i class="fa-solid fa-check"></i> Accept';
+
+      const rejectButton = document.createElement("button");
+      rejectButton.type = "button";
+      rejectButton.className = "action-btn reject-btn";
+      rejectButton.innerHTML = '<i class="fa-solid fa-xmark"></i> Reject';
+
+      acceptButton.addEventListener("click", function(){
+        acceptFundingRequest(request, acceptButton, rejectButton);
+      });
+
+      rejectButton.addEventListener("click", function(){
+        rejectFundingRequest(request, acceptButton, rejectButton);
+      });
+
+      actions.append(acceptButton, rejectButton);
+      card.appendChild(actions);
+    }else{
+      const processedNote = document.createElement("p");
+      processedNote.className = "processed-note";
+      processedNote.textContent = "This request has already been processed.";
+      card.appendChild(processedNote);
+    }
+
+    requestsContainer.appendChild(card);
+  });
 }
 
-requestsContainer.innerHTML = "";
+/* ACCEPT: CREDIT WALLET AND APPROVE REQUEST ATOMICALLY */
+async function acceptFundingRequest(request, acceptButton, rejectButton){
+  if(!adminAuthorized || !currentAdmin){
+    showNotice("Admin authorization is required.", "error");
+    return;
+  }
 
-requests.forEach(function(request){
+  if(processingRequests.has(request.id)) return;
 
-const card =
-document.createElement("article");
+  if(!request.userId){
+    showNotice("This request has no customer user ID. It cannot be accepted.", "error");
+    return;
+  }
 
-card.className = "request";
+  if(!Number.isSafeInteger(request.amount) || request.amount <= 0){
+    showNotice("The requested amount is invalid. This request cannot be accepted.", "error");
+    return;
+  }
 
-const status =
-request.status.toLowerCase();
+  const confirmed = window.confirm(
+    "Have you verified that ₦" + formatNumber(request.amount) +
+    " actually arrived in your bank account?\n\n" +
+    "Only accept after confirming the money in your account. " +
+    "This will credit the customer's wallet."
+  );
 
-let statusIcon = "fa-clock";
+  if(!confirmed) return;
 
-if(
-["approved","completed","paid"].includes(status)
-){
+  processingRequests.add(request.id);
+  acceptButton.disabled = true;
+  rejectButton.disabled = true;
+  acceptButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
 
-statusIcon = "fa-circle-check";
+  try{
+    const requestRef = firebaseDB.collection(FUNDING_COLLECTION).doc(request.id);
+    const walletRef = firebaseDB.collection("wallets").doc(request.userId);
+    const serverTimestamp = firebase.firestore.FieldValue.serverTimestamp;
 
-}else if(
-["rejected","failed"].includes(status)
-){
+    await firebaseDB.runTransaction(async function(transaction){
+      const requestSnapshot = await transaction.get(requestRef);
 
-statusIcon = "fa-circle-xmark";
+      if(!requestSnapshot.exists){
+        throw new Error("This funding request no longer exists.");
+      }
 
+      const latestRequest = requestSnapshot.data() || {};
+      const latestStatus = String(latestRequest.status || "pending").toLowerCase();
+
+      if(!["pending", "pending_verification"].includes(latestStatus)){
+        throw new Error("This request has already been processed. The wallet was not credited again.");
+      }
+
+      if(latestRequest.userId !== request.userId){
+        throw new Error("The customer ID has changed. No wallet was credited.");
+      }
+
+      const latestAmount = Number(latestRequest.amount);
+
+      if(!Number.isSafeInteger(latestAmount) || latestAmount <= 0){
+        throw new Error("The funding amount is invalid.");
+      }
+
+      const walletSnapshot = await transaction.get(walletRef);
+
+      if(!walletSnapshot.exists){
+        throw new Error("The customer's wallet does not exist. No money was added. Create the wallet first.");
+      }
+
+      const wallet = walletSnapshot.data() || {};
+      const currentBalance = Number(wallet.balance);
+
+      if(wallet.userId && wallet.userId !== request.userId){
+        throw new Error("The wallet belongs to a different user. No money was added.");
+      }
+
+      if(!Number.isSafeInteger(currentBalance) || currentBalance < 0){
+        throw new Error("The current wallet balance is invalid. No money was added.");
+      }
+
+      const newBalance = currentBalance + latestAmount;
+
+      if(!Number.isSafeInteger(newBalance)){
+        throw new Error("The resulting wallet balance is too large.");
+      }
+
+      transaction.update(walletRef, {
+        balance: newBalance,
+        updatedAt: serverTimestamp()
+      });
+
+      transaction.update(requestRef, {
+        status: "approved",
+        approvedAt: serverTimestamp(),
+        approvedBy: currentAdmin.uid
+      });
+    });
+
+    showNotice(
+      "Payment accepted. The customer's wallet has been credited successfully.",
+      "success"
+    );
+
+    await loadFundingRequests();
+
+  }catch(error){
+    console.error("ACCEPT FUNDING ERROR:", error);
+
+    showNotice(
+      error.message || "Could not accept this request. Check Firebase access and try again.",
+      "error"
+    );
+
+    acceptButton.disabled = false;
+    rejectButton.disabled = false;
+    acceptButton.innerHTML = '<i class="fa-solid fa-check"></i> Accept';
+  }finally{
+    processingRequests.delete(request.id);
+  }
 }
 
-let statusClass = "pending";
+/* REJECT: CHANGE REQUEST STATUS ONLY */
+async function rejectFundingRequest(request, acceptButton, rejectButton){
+  if(!adminAuthorized || !currentAdmin){
+    showNotice("Admin authorization is required.", "error");
+    return;
+  }
 
-if(
-["approved","completed","paid"].includes(status)
-){
+  if(processingRequests.has(request.id)) return;
 
-statusClass = status;
+  const confirmed = window.confirm(
+    "Reject this funding request from " +
+    (request.accountName || "this customer") +
+    " for ₦" + formatNumber(request.amount) + "?\n\n" +
+    "The customer's wallet balance will not change."
+  );
 
-}else if(
-["rejected","failed"].includes(status)
-){
+  if(!confirmed) return;
 
-statusClass = status;
+  processingRequests.add(request.id);
+  acceptButton.disabled = true;
+  rejectButton.disabled = true;
+  rejectButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
 
+  try{
+    const requestRef = firebaseDB.collection(FUNDING_COLLECTION).doc(request.id);
+
+    await firebaseDB.runTransaction(async function(transaction){
+      const snapshot = await transaction.get(requestRef);
+
+      if(!snapshot.exists){
+        throw new Error("This funding request no longer exists.");
+      }
+
+      const data = snapshot.data() || {};
+      const status = String(data.status || "pending").toLowerCase();
+
+      if(!["pending", "pending_verification"].includes(status)){
+        throw new Error("This request has already been processed.");
+      }
+
+      transaction.update(requestRef, {
+        status: "rejected",
+        rejectedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        rejectedBy: currentAdmin.uid
+      });
+    });
+
+    showNotice("Funding request rejected. The customer's wallet was not changed.", "success");
+    await loadFundingRequests();
+
+  }catch(error){
+    console.error("REJECT FUNDING ERROR:", error);
+
+    showNotice(
+      error.message || "Could not reject this request. Check Firebase access and try again.",
+      "error"
+    );
+
+    acceptButton.disabled = false;
+    rejectButton.disabled = false;
+    rejectButton.innerHTML = '<i class="fa-solid fa-xmark"></i> Reject';
+  }finally{
+    processingRequests.delete(request.id);
+  }
 }
 
-card.innerHTML = `
-
-<div class="request-top">
-
-<div>
-
-<h4>
-${escapeHTML(
-request.accountName ||
-"Customer name not provided"
-)}
-</h4>
-
-<p class="request-email">
-${escapeHTML(
-request.userEmail ||
-"Email not provided"
-)}
-</p>
-
-</div>
-
-<span class="status ${statusClass}">
-
-<i class="fa-solid ${statusIcon}"></i>
-
-${escapeHTML(request.status)}
-
-</span>
-
-</div>
-
-
-<div class="amount">
-₦${formatNumber(request.amount)}
-</div>
-
-
-<div class="details">
-
-<div class="detail">
-<span>Funding Reference</span>
-<strong>${escapeHTML(request.reference)}</strong>
-</div>
-
-<div class="detail">
-<span>Customer User ID</span>
-<strong>${escapeHTML(request.userId || "Not provided")}</strong>
-</div>
-
-<div class="detail">
-<span>Payment Method</span>
-<strong>${escapeHTML(request.paymentMethod)}</strong>
-</div>
-
-<div class="detail">
-<span>Date Submitted</span>
-<strong>${escapeHTML(formatDate(request.createdAt))}</strong>
-</div>
-
-</div>
-
-`;
-
-requestsContainer.appendChild(card);
-
-});
-
-}
-
-
-/* =========================
-SUMMARY
-========================= */
-
+/* SUMMARY */
 function updateSummary(requests){
+  document.getElementById("totalRequests").textContent = requests.length;
 
-document.getElementById(
-"totalRequests"
-).textContent = requests.length;
+  const pending = requests.filter(function(request){
+    return ["pending", "pending_verification"].includes(request.status.toLowerCase());
+  }).length;
 
+  document.getElementById("pendingRequests").textContent = pending;
 
-const pending = requests.filter(function(request){
+  const total = requests.reduce(function(sum, request){
+    return sum + (
+      Number.isFinite(request.amount) ? request.amount : 0
+    );
+  }, 0);
 
-return request.status.toLowerCase() === "pending";
-
-}).length;
-
-
-document.getElementById(
-"pendingRequests"
-).textContent = pending;
-
-
-const total = requests.reduce(function(sum,request){
-
-return sum + (
-Number.isFinite(request.amount)
-? request.amount
-: 0
-);
-
-},0);
-
-
-document.getElementById(
-"totalAmount"
-).textContent =
-"₦" + formatNumber(total);
-
+  document.getElementById("totalAmount").textContent = "₦" + formatNumber(total);
 }
 
+/* NOTICE */
+function showNotice(message, type){
+  notice.textContent = message;
+  notice.classList.remove("success", "error");
+  if(type) notice.classList.add(type);
+  notice.classList.add("show");
+  notice.scrollIntoView({behavior:"smooth", block:"nearest"});
+}
 
-/* =========================
-DATE FORMAT
-========================= */
-
+/* DATE FORMAT */
 function getTimeValue(value){
+  try{
+    if(value && typeof value.toDate === "function"){
+      return value.toDate().getTime();
+    }
 
-try{
+    if(value && typeof value.seconds === "number"){
+      return value.seconds * 1000;
+    }
 
-if(
-value &&
-typeof value.toDate === "function"
-){
+    const date = new Date(value);
+    if(!isNaN(date.getTime())) return date.getTime();
+  }catch(error){
+    console.error("DATE ERROR:", error);
+  }
 
-return value.toDate().getTime();
-
+  return 0;
 }
-
-if(
-value &&
-typeof value.seconds === "number"
-){
-
-return value.seconds * 1000;
-
-}
-
-const date = new Date(value);
-
-if(!isNaN(date.getTime())){
-
-return date.getTime();
-
-}
-
-}catch(error){
-
-console.error("DATE ERROR:",error);
-
-}
-
-return 0;
-
-}
-
 
 function formatDate(value){
-
-const time = getTimeValue(value);
-
-if(!time){
-return "Date not available";
+  const time = getTimeValue(value);
+  if(!time) return "Date not available";
+  return new Date(time).toLocaleString("en-NG");
 }
 
-return new Date(time).toLocaleString("en-NG");
-
-}
-
-
-/* =========================
-NUMBER FORMAT
-========================= */
-
+/* NUMBER FORMAT */
 function formatNumber(value){
-
-return Number(value || 0).toLocaleString("en-NG");
-
+  return Number(value || 0).toLocaleString("en-NG");
 }
 
-
-/* =========================
-ESCAPE HTML
-========================= */
-
+/* ESCAPE HTML */
 function escapeHTML(value){
-
-return String(value == null ? "" : value)
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
-
+  return String(value == null ? "" : value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
-
 </script>
-
 </body>
 </html>
