@@ -597,15 +597,17 @@ flex-direction:column;
 gap:10px;
 }
 
+/* SLIGHTLY LARGER PRODUCT CARDS */
+
 .product-card{
 background:var(--white);
 border:1px solid var(--border);
 border-radius:16px;
-padding:11px;
+padding:13px;
 display:flex;
 align-items:center;
 gap:12px;
-min-height:86px;
+min-height:94px;
 box-shadow:0 4px 15px rgba(20,30,50,.025);
 transition:.2s;
 }
@@ -615,8 +617,8 @@ transform:scale(.995);
 }
 
 .product-image{
-width:60px;
-height:60px;
+width:64px;
+height:64px;
 border-radius:13px;
 background:var(--blue-light);
 color:var(--blue);
@@ -634,7 +636,7 @@ object-fit:cover;
 }
 
 .product-image i{
-font-size:20px;
+font-size:22px;
 }
 
 .product-info{
@@ -643,10 +645,10 @@ min-width:0;
 }
 
 .product-info h3{
-font-size:12px;
+font-size:14px;
 color:var(--blue-dark);
 font-weight:800;
-line-height:1.5;
+line-height:1.45;
 white-space:normal;
 overflow:hidden;
 text-overflow:ellipsis;
@@ -661,25 +663,25 @@ display:flex;
 align-items:center;
 gap:8px;
 flex-wrap:wrap;
-min-height:18px;
+min-height:20px;
 }
 
 .product-stock{
-font-size:9px;
+font-size:11px;
 color:var(--muted);
 display:flex;
 align-items:center;
-gap:4px;
+gap:5px;
 white-space:nowrap;
 }
 
 .product-stock i{
-font-size:6px;
+font-size:7px;
 color:var(--green);
 }
 
 .product-category{
-font-size:9px;
+font-size:10px;
 color:var(--muted);
 background:#f5f7fa;
 padding:4px 7px;
@@ -688,10 +690,10 @@ white-space:nowrap;
 }
 
 .product-price{
-font-size:13px;
+font-size:15px;
 color:var(--blue);
 font-weight:800;
-margin-top:5px;
+margin-top:6px;
 }
 
 .buy-btn{
@@ -699,8 +701,8 @@ border:none;
 background:var(--blue);
 color:var(--white);
 border-radius:9px;
-padding:10px 13px;
-font-size:10px;
+padding:11px 13px;
+font-size:11px;
 font-weight:700;
 flex-shrink:0;
 transition:.2s;
@@ -921,6 +923,8 @@ visibility:visible;
 transform:translate(-50%,0);
 }
 
+/* SMALL PHONE ADJUSTMENTS */
+
 @media(max-width:360px){
 
 main{
@@ -988,21 +992,33 @@ font-size:9px;
 
 .product-card{
 gap:9px;
-padding:9px;
+padding:10px;
 }
 
 .product-image{
-width:54px;
-height:54px;
+width:56px;
+height:56px;
 }
 
 .product-info h3{
-font-size:11px;
+font-size:12px;
+}
+
+.product-stock{
+font-size:10px;
+}
+
+.product-category{
+font-size:9px;
+}
+
+.product-price{
+font-size:14px;
 }
 
 .buy-btn{
 padding:9px 10px;
-font-size:9px;
+font-size:10px;
 }
 
 .tutorial-card{
@@ -1205,7 +1221,7 @@ My Orders
 
 </section>
 
-<!-- SPECIAL OFFER: KEEP IT NEAR THE TOP -->
+<!-- SPECIAL OFFER -->
 
 <section class="section" id="specialOffer">
 
@@ -1293,7 +1309,7 @@ Loading products...
 
 </section>
 
-<!-- TUTORIAL: SEPARATE FROM SPECIAL OFFER, AT THE BOTTOM -->
+<!-- TUTORIAL -->
 
 <section class="section" id="purchaseTutorial">
 
@@ -1923,7 +1939,6 @@ const price = formatMoney(product.price || 0);
 
 const stock = Number(product.stockCount || 0);
 
-
 /* PRODUCT IMAGE */
 
 const isFacebook =
@@ -1981,7 +1996,6 @@ if (product.image && !isMessagingApp) {
   >
   `;
 }
-
 
 /* BUY BUTTON */
 
