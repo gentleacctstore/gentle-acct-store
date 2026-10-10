@@ -1912,51 +1912,65 @@ const price = formatMoney(product.price || 0);
 
 const stock = Number(product.stockCount || 0);
 
+
 /* PRODUCT IMAGE */
 
 const isFacebook =
 productName.toLowerCase().includes("facebook");
 
+const productCategoryName =
+String(product.category || "").trim().toLowerCase();
+
+const isMessagingApp =
+productCategoryName === "all texting app" ||
+productCategoryName === "all messaging apps";
+
 let imageHTML = `
-
 <i class="fa-solid fa-box"></i>
-
 `;
 
-if(isFacebook){
-
-imageHTML = `
-
-<i
-class="fa-brands fa-facebook"
-style="font-size:24px;"
-></i>
-
-`;
-
+if (isMessagingApp) {
+  imageHTML = `
+  <span style="
+    width:100%;
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(145deg,#55f879,#00bd32);
+    border-radius:13px;
+    color:white;
+    font-size:34px;
+  ">
+    <i class="fa-solid fa-comment"></i>
+  </span>
+  `;
+} else if (isFacebook) {
+  imageHTML = `
+  <i
+    class="fa-brands fa-facebook"
+    style="font-size:24px;"
+  ></i>
+  `;
 }
 
-if(product.image){
+if (product.image && !isMessagingApp) {
+  const fallbackIcon = isFacebook
+    ? "fa-brands fa-facebook"
+    : "fa-solid fa-box";
 
-const fallbackIcon =
-isFacebook
-? "fa-brands fa-facebook"
-: "fa-solid fa-box";
-
-imageHTML = `
-
-<img
-src="${escapeAttribute(product.image)}"
-alt="${name}"
-onerror="
-this.style.display='none';
-this.parentElement.innerHTML='<i class=&quot;${fallbackIcon}&quot; style=&quot;font-size:24px;&quot;></i>';
-"
->
-
-`;
-
+  imageHTML = `
+  <img
+    src="${escapeAttribute(product.image)}"
+    alt="${name}"
+    onerror="
+      this.style.display='none';
+      this.parentElement.innerHTML='<i class=&quot;${fallbackIcon}&quot; style=&quot;font-size:24px;&quot;></i>';
+    "
+  >
+  `;
 }
+
 
 /* BUY BUTTON */
 
