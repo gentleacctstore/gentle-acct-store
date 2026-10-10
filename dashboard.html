@@ -14,10 +14,9 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 
-<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
@@ -1667,29 +1666,34 @@ categories.push(category);
 
 });
 
-/* GIVEAWAY ACCOUNTS ALWAYS FIRST */
+/* CATEGORY ORDER:
+   GIVEAWAY, FACEBOOK, TIKTOK, INSTAGRAM, THEN THE REST */
 
 categories.sort(function(a,b){
 
-const aName = a.toLowerCase();
+function getCategoryPriority(category){
 
-const bName = b.toLowerCase();
+const name = String(category || "")
+.trim()
+.toLowerCase();
 
-if(
-aName === "giveaway accounts" &&
-bName !== "giveaway accounts"
-){
-return -1;
+if(name.includes("giveaway")) return 1;
+if(name.includes("facebook")) return 2;
+if(name.includes("tiktok") || name.includes("tik tok")) return 3;
+if(name.includes("instagram")) return 4;
+
+return 5;
+
 }
 
-if(
-aName !== "giveaway accounts" &&
-bName === "giveaway accounts"
-){
-return 1;
+const priorityA = getCategoryPriority(a);
+const priorityB = getCategoryPriority(b);
+
+if(priorityA !== priorityB){
+return priorityA - priorityB;
 }
 
-return aName.localeCompare(bName);
+return a.localeCompare(b);
 
 });
 
@@ -1700,7 +1704,9 @@ document.createElement("button");
 
 button.className =
 "category-btn " +
-(activeCategory === category ? "active" : "");
+(activeCategory.toLowerCase() === category.toLowerCase()
+? "active"
+: "");
 
 button.type = "button";
 
@@ -1812,30 +1818,35 @@ groups[category].push(product);
 
 });
 
-/* ORDER CATEGORIES */
+/* ORDER CATEGORIES:
+   GIVEAWAY, FACEBOOK, TIKTOK, INSTAGRAM, THEN THE REST */
 
 const orderedCategories =
 Object.keys(groups).sort(function(a,b){
 
-const aName = a.toLowerCase();
+function getCategoryPriority(category){
 
-const bName = b.toLowerCase();
+const name = String(category || "")
+.trim()
+.toLowerCase();
 
-if(
-aName === "giveaway accounts" &&
-bName !== "giveaway accounts"
-){
-return -1;
+if(name.includes("giveaway")) return 1;
+if(name.includes("facebook")) return 2;
+if(name.includes("tiktok") || name.includes("tik tok")) return 3;
+if(name.includes("instagram")) return 4;
+
+return 5;
+
 }
 
-if(
-aName !== "giveaway accounts" &&
-bName === "giveaway accounts"
-){
-return 1;
+const priorityA = getCategoryPriority(a);
+const priorityB = getCategoryPriority(b);
+
+if(priorityA !== priorityB){
+return priorityA - priorityB;
 }
 
-return aName.localeCompare(bName);
+return a.localeCompare(b);
 
 });
 
