@@ -13,288 +13,132 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
+<script>
+(function () {
+  try {
+    const uid = localStorage.getItem("gentleCurrentUserId");
+    const personalTheme = uid
+      ? localStorage.getItem("gentle-acct-store-theme-user-" + uid)
+      : null;
+    const theme = personalTheme ||
+      localStorage.getItem("gentle-acct-store-theme") || "light";
+    document.documentElement.dataset.theme =
+      ["light", "dark", "blue"].includes(theme) ? theme : "light";
+  } catch (e) {
+    document.documentElement.dataset.theme = "light";
+  }
+})();
+</script>
+
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="firebase.js"></script>
 
 <style>
-:root {
-  --blue: #2563EB;
-  --blue-dark: #1D4ED8;
-  --light: #EFF6FF;
-  --background: #F8FAFC;
-  --text: #172033;
-  --muted: #64748B;
-  --border: #E2E8F0;
-  --green: #15803D;
-  --red: #DC2626;
-  --orange: #B77900;
-  --shadow: 0 10px 30px rgba(37,99,235,.07);
+:root,
+html[data-theme="light"] {
+  color-scheme: light;
+  --blue:#2563EB; --blue-dark:#1D4ED8; --light:#EFF6FF;
+  --background:#F8FAFC; --text:#172033; --muted:#64748B;
+  --border:#E2E8F0; --green:#15803D; --red:#DC2626;
+  --orange:#B77900; --card:#FFFFFF; --header:#FFFFFF;
+  --heading:#1E3A8A; --detail:#F8FAFC;
+  --shadow:0 10px 30px rgba(37,99,235,.07);
+  --notice-info-bg:#EFF6FF; --notice-info-border:#BFDBFE; --notice-info-text:#1E40AF;
+  --notice-success-bg:#F0FDF4; --notice-success-border:#BBF7D0; --notice-success-text:#166534;
+  --notice-error-bg:#FEF2F2; --notice-error-border:#FECACA; --notice-error-text:#991B1B;
 }
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-  font-family: Poppins, sans-serif;
-  background: var(--background);
-  color: var(--text);
-  min-height: 100vh;
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --blue:#60A5FA; --blue-dark:#93C5FD; --light:#1E293B;
+  --background:#0B1120; --text:#F1F5F9; --muted:#A5B4C8;
+  --border:#29364B; --green:#4ADE80; --red:#FCA5A5;
+  --orange:#FCD34D; --card:#111B2E; --header:#111B2E;
+  --heading:#DBEAFE; --detail:#17243A;
+  --shadow:0 10px 30px rgba(0,0,0,.18);
+  --notice-info-bg:#172554; --notice-info-border:#1E40AF; --notice-info-text:#BFDBFE;
+  --notice-success-bg:#102C22; --notice-success-border:#22543D; --notice-success-text:#86EFAC;
+  --notice-error-bg:#3B1820; --notice-error-border:#71313D; --notice-error-text:#FCA5A5;
 }
-
-button, a { font-family: inherit; }
-button { cursor: pointer; }
-button:disabled { opacity: .6; cursor: not-allowed; }
-a { text-decoration: none; color: inherit; }
-
-header {
-  background: #fff;
-  border-bottom: 1px solid var(--border);
-  padding: 15px 18px;
-  position: sticky;
-  top: 0;
-  z-index: 10;
+html[data-theme="blue"] {
+  color-scheme: light;
+  --blue:#075985; --blue-dark:#0C4A6E; --light:#DFF4FF;
+  --background:#EAF6FC; --text:#123047; --muted:#54758B;
+  --border:#C9E4F2; --green:#166534; --red:#B91C1C;
+  --orange:#946200; --card:#F8FDFF; --header:#F8FDFF;
+  --heading:#0C4A6E; --detail:#EFF9FF;
+  --shadow:0 10px 30px rgba(7,89,133,.07);
+  --notice-info-bg:#DFF4FF; --notice-info-border:#BAE6FD; --notice-info-text:#075985;
+  --notice-success-bg:#F0FDF4; --notice-success-border:#BBF7D0; --notice-success-text:#166534;
+  --notice-error-bg:#FEF2F2; --notice-error-border:#FECACA; --notice-error-text:#991B1B;
 }
-
-.header-inner {
-  max-width: 1100px;
-  margin: auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.brand { display: flex; align-items: center; gap: 11px; min-width: 0; }
-
-.brand-icon {
-  width: 45px;
-  height: 45px;
-  flex-shrink: 0;
-  border-radius: 14px;
-  background: linear-gradient(135deg,var(--blue),var(--blue-dark));
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 19px;
-}
-
-.brand h1 { font-size: 18px; font-weight: 800; color: #1E3A8A; }
-.brand p { font-size: 9px; color: var(--muted); margin-top: 3px; }
-
-.back-btn, .refresh-btn {
-  border: 0;
-  background: var(--light);
-  color: var(--blue-dark);
-  padding: 11px 14px;
-  border-radius: 11px;
-  font-size: 10px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-}
-
-.back-btn { white-space: nowrap; }
-
-.container {
-  max-width: 1100px;
-  margin: auto;
-  padding: 24px 16px 50px;
-}
-
-.page-heading { margin-bottom: 20px; }
-.page-heading h2 { font-size: 24px; font-weight: 800; color: #1E3A8A; }
-.page-heading p { font-size: 11px; color: var(--muted); line-height: 1.8; margin-top: 5px; }
-
-.notice {
-  display: none;
-  padding: 13px;
-  border-radius: 12px;
-  font-size: 10px;
-  line-height: 1.8;
-  margin-bottom: 16px;
-  overflow-wrap: anywhere;
-}
-
-.notice.show { display: block; }
-.notice.info { background: #EFF6FF; border: 1px solid #BFDBFE; color: #1E40AF; }
-.notice.success { background: #F0FDF4; border: 1px solid #BBF7D0; color: #166534; }
-.notice.error { background: #FEF2F2; border: 1px solid #FECACA; color: #991B1B; }
-
-.stats {
-  display: grid;
-  grid-template-columns: repeat(3,minmax(0,1fr));
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.stat {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 17px;
-  padding: 16px;
-  box-shadow: var(--shadow);
-  min-width: 0;
-}
-
-.stat-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 11px;
-  background: var(--light);
-  color: var(--blue);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 10px;
-}
-
-.stat h3 { font-size: 21px; font-weight: 800; color: #1E3A8A; overflow-wrap: anywhere; }
-.stat p { font-size: 9px; color: var(--muted); margin-top: 3px; }
-
-.panel {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 19px;
-  padding: 20px;
-  box-shadow: var(--shadow);
-}
-
-.panel-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-bottom: 17px;
-}
-
-.panel-heading h3 { font-size: 16px; font-weight: 800; color: #1E3A8A; }
-.panel-heading p { font-size: 9px; color: var(--muted); margin-top: 4px; }
-
-.requests {
-  display: grid;
-  grid-template-columns: repeat(2,minmax(0,1fr));
-  gap: 13px;
-}
-
-.request {
-  border: 1px solid var(--border);
-  border-radius: 15px;
-  padding: 15px;
-  min-width: 0;
-}
-
-.request-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.request h4 { font-size: 13px; font-weight: 800; color: #1E3A8A; overflow-wrap: anywhere; }
-.request-email { font-size: 10px; color: var(--muted); margin-top: 4px; overflow-wrap: anywhere; }
-
-.amount { font-size: 22px; font-weight: 800; color: var(--blue); margin: 14px 0; overflow-wrap: anywhere; }
-
-.status {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  border-radius: 20px;
-  padding: 6px 9px;
-  font-size: 9px;
-  font-weight: 700;
-  background: #FFF7DB;
-  color: var(--orange);
-  white-space: normal;
-  overflow-wrap: anywhere;
-}
-
-.status.approved, .status.completed, .status.paid, .status.credited {
-  background: #DCFCE7;
-  color: var(--green);
-}
-
-.status.rejected, .status.failed {
-  background: #FEE2E2;
-  color: var(--red);
-}
-
-.status.verified_pending_credit {
-  background: #DBEAFE;
-  color: #1D4ED8;
-}
-
-.details { display: grid; gap: 8px; }
-
-.detail {
-  background: #F8FAFC;
-  border-radius: 9px;
-  padding: 9px;
-  min-width: 0;
-}
-
-.detail span { display: block; font-size: 8px; color: var(--muted); margin-bottom: 4px; }
-.detail strong { display: block; font-size: 10px; font-weight: 600; overflow-wrap: anywhere; word-break: break-word; }
-
-.request-actions { display: flex; gap: 9px; margin-top: 14px; }
-
-.action-btn {
-  flex: 1;
-  border: 0;
-  border-radius: 10px;
-  padding: 11px 8px;
-  font-size: 10px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-}
-
-.verify-btn { background: var(--blue); color: white; }
-.reject-btn { background: #FEF2F2; color: var(--red); border: 1px solid #FECACA; }
-
-.processed-note { margin-top: 12px; font-size: 10px; color: var(--muted); line-height: 1.7; }
-
-.empty {
-  grid-column: 1 / -1;
-  text-align: center;
-  padding: 38px 15px;
-  border: 1px dashed #CBD5E1;
-  border-radius: 15px;
-}
-
-.empty i { font-size: 29px; color: #AAB5C4; margin-bottom: 12px; }
-.empty h4 { font-size: 14px; color: #1E3A8A; margin-bottom: 5px; }
-.empty p { font-size: 10px; line-height: 1.8; color: var(--muted); overflow-wrap: anywhere; }
-
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:Poppins,sans-serif; background:var(--background); color:var(--text); min-height:100vh; }
+button,a { font-family:inherit; }
+button { cursor:pointer; }
+button:disabled { opacity:.6; cursor:not-allowed; }
+a { text-decoration:none; color:inherit; }
+header { background:var(--header); border-bottom:1px solid var(--border); padding:15px 18px; position:sticky; top:0; z-index:10; }
+.header-inner { max-width:1100px; margin:auto; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.brand { display:flex; align-items:center; gap:11px; min-width:0; }
+.brand-icon { width:45px; height:45px; flex-shrink:0; border-radius:14px; background:linear-gradient(135deg,var(--blue),var(--blue-dark)); color:white; display:flex; align-items:center; justify-content:center; font-size:19px; }
+.brand h1 { font-size:18px; font-weight:800; color:var(--heading); }
+.brand p { font-size:9px; color:var(--muted); margin-top:3px; }
+.back-btn,.refresh-btn { border:0; background:var(--light); color:var(--blue-dark); padding:11px 14px; border-radius:11px; font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center; gap:7px; }
+.back-btn { white-space:nowrap; }
+.container { max-width:1100px; margin:auto; padding:24px 16px 50px; }
+.page-heading { margin-bottom:20px; }
+.page-heading h2 { font-size:24px; font-weight:800; color:var(--heading); }
+.page-heading p { font-size:11px; color:var(--muted); line-height:1.8; margin-top:5px; }
+.notice { display:none; padding:13px; border-radius:12px; font-size:10px; line-height:1.8; margin-bottom:16px; overflow-wrap:anywhere; }
+.notice.show { display:block; }
+.notice.info { background:var(--notice-info-bg); border:1px solid var(--notice-info-border); color:var(--notice-info-text); }
+.notice.success { background:var(--notice-success-bg); border:1px solid var(--notice-success-border); color:var(--notice-success-text); }
+.notice.error { background:var(--notice-error-bg); border:1px solid var(--notice-error-border); color:var(--notice-error-text); }
+.stats { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-bottom:20px; }
+.stat { background:var(--card); border:1px solid var(--border); border-radius:17px; padding:16px; box-shadow:var(--shadow); min-width:0; }
+.stat-icon { width:36px; height:36px; border-radius:11px; background:var(--light); color:var(--blue); display:flex; align-items:center; justify-content:center; margin-bottom:10px; }
+.stat h3 { font-size:21px; font-weight:800; color:var(--heading); overflow-wrap:anywhere; }
+.stat p { font-size:9px; color:var(--muted); margin-top:3px; }
+.panel { background:var(--card); border:1px solid var(--border); border-radius:19px; padding:20px; box-shadow:var(--shadow); }
+.panel-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:17px; }
+.panel-heading h3 { font-size:16px; font-weight:800; color:var(--heading); }
+.panel-heading p { font-size:9px; color:var(--muted); margin-top:4px; }
+.requests { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:13px; }
+.request { border:1px solid var(--border); border-radius:15px; padding:15px; min-width:0; }
+.request-top { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+.request h4 { font-size:13px; font-weight:800; color:var(--heading); overflow-wrap:anywhere; }
+.request-email { font-size:10px; color:var(--muted); margin-top:4px; overflow-wrap:anywhere; }
+.amount { font-size:22px; font-weight:800; color:var(--blue); margin:14px 0; overflow-wrap:anywhere; }
+.status { display:inline-flex; align-items:center; gap:5px; border-radius:20px; padding:6px 9px; font-size:9px; font-weight:700; background:#FFF7DB; color:var(--orange); white-space:normal; overflow-wrap:anywhere; }
+.status.approved,.status.completed,.status.paid,.status.credited { background:#DCFCE7; color:var(--green); }
+.status.rejected,.status.failed { background:#FEE2E2; color:var(--red); }
+.status.verified_pending_credit { background:var(--light); color:var(--blue-dark); }
+.details { display:grid; gap:8px; }
+.detail { background:var(--detail); border-radius:9px; padding:9px; min-width:0; }
+.detail span { display:block; font-size:8px; color:var(--muted); margin-bottom:4px; }
+.detail strong { display:block; font-size:10px; font-weight:600; overflow-wrap:anywhere; word-break:break-word; }
+.request-actions { display:flex; gap:9px; margin-top:14px; }
+.action-btn { flex:1; border:0; border-radius:10px; padding:11px 8px; font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center; gap:6px; }
+.verify-btn { background:var(--blue); color:white; }
+.reject-btn { background:var(--notice-error-bg); color:var(--red); border:1px solid var(--notice-error-border); }
+.processed-note { margin-top:12px; font-size:10px; color:var(--muted); line-height:1.7; }
+.empty { grid-column:1/-1; text-align:center; padding:38px 15px; border:1px dashed var(--border); border-radius:15px; }
+.empty i { font-size:29px; color:var(--muted); margin-bottom:12px; }
+.empty h4 { font-size:14px; color:var(--heading); margin-bottom:5px; }
+.empty p { font-size:10px; line-height:1.8; color:var(--muted); overflow-wrap:anywhere; }
 @media(max-width:650px) {
-  .header-inner { gap: 8px; }
-  .brand h1 { font-size: 15px; }
-  .brand p { display: none; }
-  .brand-icon { width: 39px; height: 39px; }
-  .back-btn { padding: 10px; font-size: 9px; }
-  .container { padding: 19px 12px 35px; }
-  .page-heading h2 { font-size: 21px; }
-  .stats { gap: 8px; }
-  .stat { padding: 12px 10px; }
-  .stat h3 { font-size: 17px; }
-  .stat p { font-size: 8px; }
-  .panel { padding: 14px; }
-  .requests { grid-template-columns: 1fr; }
-  .panel-heading { align-items: stretch; flex-direction: column; }
-  .refresh-btn { width: 100%; }
+  .header-inner { gap:8px; } .brand h1 { font-size:15px; } .brand p { display:none; }
+  .brand-icon { width:39px; height:39px; } .back-btn { padding:10px; font-size:9px; }
+  .container { padding:19px 12px 35px; } .page-heading h2 { font-size:21px; }
+  .stats { gap:8px; } .stat { padding:12px 10px; } .stat h3 { font-size:17px; }
+  .stat p { font-size:8px; } .panel { padding:14px; } .requests { grid-template-columns:1fr; }
+  .panel-heading { align-items:stretch; flex-direction:column; } .refresh-btn { width:100%; }
 }
-
 @media(max-width:350px) {
-  .stats { grid-template-columns: 1fr; }
-  .stat { display: flex; align-items: center; gap: 12px; }
-  .stat-icon { margin: 0; flex-shrink: 0; }
+  .stats { grid-template-columns:1fr; } .stat { display:flex; align-items:center; gap:12px; }
+  .stat-icon { margin:0; flex-shrink:0; }
 }
 </style>
 </head>
@@ -304,21 +148,16 @@ header {
   <div class="header-inner">
     <div class="brand">
       <div class="brand-icon"><i class="fa-solid fa-wallet"></i></div>
-      <div>
-        <h1>Gentle Admin</h1>
-        <p>Wallet Funding Management</p>
-      </div>
+      <div><h1>Gentle Admin</h1><p>Wallet Funding Management</p></div>
     </div>
-    <a href="admin.html" class="back-btn">
-      <i class="fa-solid fa-arrow-left"></i> Back to Admin
-    </a>
+    <a href="admin.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Admin</a>
   </div>
 </header>
 
 <main class="container">
   <div class="page-heading">
     <h2>Wallet Funding Requests</h2>
-    <p>Review customer transfer requests and track their verification status.</p>
+    <p>Verify transfers to credit customer wallets immediately.</p>
   </div>
 
   <div id="notice" class="notice" role="status" aria-live="polite"></div>
@@ -326,38 +165,27 @@ header {
   <div class="stats">
     <div class="stat">
       <div class="stat-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
-      <h3 id="totalRequests">0</h3>
-      <p>Total Requests</p>
+      <h3 id="totalRequests">0</h3><p>Total Requests</p>
     </div>
     <div class="stat">
       <div class="stat-icon"><i class="fa-solid fa-hourglass-half"></i></div>
-      <h3 id="pendingRequests">0</h3>
-      <p>Pending Requests</p>
+      <h3 id="pendingRequests">0</h3><p>Pending Requests</p>
     </div>
     <div class="stat">
       <div class="stat-icon"><i class="fa-solid fa-coins"></i></div>
-      <h3 id="totalAmount">₦0</h3>
-      <p>Total Requested</p>
+      <h3 id="totalAmount">₦0</h3><p>Total Requested</p>
     </div>
   </div>
 
   <section class="panel">
     <div class="panel-heading">
-      <div>
-        <h3>All Funding Requests</h3>
-        <p>Newest requests appear first.</p>
-      </div>
+      <div><h3>All Funding Requests</h3><p>Newest requests appear first.</p></div>
       <button type="button" id="refreshButton" class="refresh-btn">
         <i class="fa-solid fa-rotate"></i> Refresh Requests
       </button>
     </div>
-
     <div id="requests" class="requests">
-      <div class="empty">
-        <i class="fa-solid fa-spinner fa-spin"></i>
-        <h4>Checking access</h4>
-        <p>Please wait.</p>
-      </div>
+      <div class="empty"><i class="fa-solid fa-spinner fa-spin"></i><h4>Checking access</h4><p>Please wait.</p></div>
     </div>
   </section>
 </main>
@@ -367,6 +195,7 @@ header {
 
 const ADMIN_UID = "UoEjCy99gbQKkGob59vGi3CunZi1";
 const FUNDING_COLLECTION = "fundingRequests";
+const WALLETS_COLLECTION = "wallets";
 
 const requestsContainer = document.getElementById("requests");
 const notice = document.getElementById("notice");
@@ -381,78 +210,42 @@ function showNotice(message, type) {
   notice.textContent = message;
   notice.className = "notice show " + (type || "info");
 }
-
 function clearNotice() {
   notice.textContent = "";
   notice.className = "notice";
 }
-
-function escapeHTML(value) {
-  return String(value == null ? "" : value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
-
 function formatNumber(value) {
-  return Number(value || 0).toLocaleString("en-NG", {
-    maximumFractionDigits: 2
-  });
+  return Number(value || 0).toLocaleString("en-NG", { maximumFractionDigits: 2 });
 }
-
 function getTimeValue(value) {
   try {
-    if (value && typeof value.toDate === "function") {
-      return value.toDate().getTime();
-    }
-    if (value && typeof value.seconds === "number") {
-      return value.seconds * 1000;
-    }
+    if (value && typeof value.toDate === "function") return value.toDate().getTime();
+    if (value && typeof value.seconds === "number") return value.seconds * 1000;
     const date = new Date(value);
     return Number.isNaN(date.getTime()) ? 0 : date.getTime();
-  } catch (_) {
-    return 0;
-  }
+  } catch (_) { return 0; }
 }
-
 function formatDate(value) {
   const time = getTimeValue(value);
   return time ? new Date(time).toLocaleString("en-NG") : "Date not available";
 }
-
 function showEmpty(title, message, icon) {
   requestsContainer.replaceChildren();
-
   const empty = document.createElement("div");
   empty.className = "empty";
-
-  const iconElement = document.createElement("i");
-  iconElement.className = "fa-solid " + icon;
-
-  const heading = document.createElement("h4");
-  heading.textContent = title;
-
-  const paragraph = document.createElement("p");
-  paragraph.textContent = message;
-
-  empty.append(iconElement, heading, paragraph);
+  const i = document.createElement("i");
+  i.className = "fa-solid " + icon;
+  const h = document.createElement("h4");
+  h.textContent = title;
+  const p = document.createElement("p");
+  p.textContent = message;
+  empty.append(i, h, p);
   requestsContainer.appendChild(empty);
 }
 
-/* Authenticate before reading funding requests. */
 function initializeAdminPage() {
-  if (
-    !window.firebaseAuth ||
-    !window.firebaseDB ||
-    !window.firebase
-  ) {
-    showEmpty(
-      "Firebase unavailable",
-      "Check that firebase.js and the Firebase SDK are loaded correctly.",
-      "fa-triangle-exclamation"
-    );
+  if (!window.firebaseAuth || !window.firebaseDB || !window.firebase) {
+    showEmpty("Firebase unavailable", "Check that firebase.js and Firebase SDK are loaded correctly.", "fa-triangle-exclamation");
     return;
   }
 
@@ -466,33 +259,23 @@ function initializeAdminPage() {
     }
 
     if (user.uid !== ADMIN_UID || !user.emailVerified) {
-      try {
-        await window.firebaseAuth.signOut();
-      } catch (error) {
-        console.error("Sign out error:", error);
-      }
-
+      try { await window.firebaseAuth.signOut(); } catch (error) { console.error(error); }
       window.location.replace("admin-login.html");
       return;
     }
 
     currentAdmin = user;
     adminAuthorized = true;
+    try { localStorage.setItem("gentleCurrentUserId", user.uid); } catch (_) {}
     await loadFundingRequests();
   }, function(error) {
     console.error("Auth state error:", error);
-    showEmpty(
-      "Authentication error",
-      "Unable to confirm your admin session. Please log in again.",
-      "fa-triangle-exclamation"
-    );
+    showEmpty("Authentication error", "Unable to confirm your admin session. Please log in again.", "fa-triangle-exclamation");
   });
 }
 
 refreshButton.addEventListener("click", function() {
-  if (adminAuthorized) {
-    loadFundingRequests();
-  }
+  if (adminAuthorized) loadFundingRequests();
 });
 
 async function loadFundingRequests() {
@@ -502,19 +285,14 @@ async function loadFundingRequests() {
   refreshButton.disabled = true;
   refreshButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading...';
   clearNotice();
-
   showEmpty("Loading requests", "Please wait.", "fa-spinner fa-spin");
 
   try {
-    const snapshot = await window.firebaseDB
-      .collection(FUNDING_COLLECTION)
-      .get();
-
+    const snapshot = await window.firebaseDB.collection(FUNDING_COLLECTION).get();
     const requests = [];
 
     snapshot.forEach(function(doc) {
       const data = doc.data() || {};
-
       requests.push({
         id: doc.id,
         userId: data.userId || "",
@@ -528,27 +306,13 @@ async function loadFundingRequests() {
       });
     });
 
-    requests.sort(function(a, b) {
-      return getTimeValue(b.createdAt) - getTimeValue(a.createdAt);
-    });
-
+    requests.sort((a, b) => getTimeValue(b.createdAt) - getTimeValue(a.createdAt));
     renderRequests(requests);
     updateSummary(requests);
-
   } catch (error) {
     console.error("Load funding requests error:", error);
-
-    showEmpty(
-      "Unable to load requests",
-      "Check your Firestore security rules and admin permissions, then refresh.",
-      "fa-triangle-exclamation"
-    );
-
-    showNotice(
-      "Funding requests could not be loaded. Confirm that Firestore rules allow the authorized admin to read this collection.",
-      "error"
-    );
-
+    showEmpty("Unable to load requests", "Check your Firestore security rules and admin permissions, then refresh.", "fa-triangle-exclamation");
+    showNotice("Funding requests could not be loaded. Check Firestore permissions.", "error");
   } finally {
     loadingRequests = false;
     refreshButton.disabled = false;
@@ -560,11 +324,7 @@ function renderRequests(requests) {
   requestsContainer.replaceChildren();
 
   if (!requests.length) {
-    showEmpty(
-      "No funding requests yet",
-      "Customer requests will appear here after they are saved to Firebase.",
-      "fa-wallet"
-    );
+    showEmpty("No funding requests yet", "Customer requests will appear here after they are saved to Firebase.", "fa-wallet");
     return;
   }
 
@@ -574,107 +334,80 @@ function renderRequests(requests) {
 
     const status = request.status;
     const pending = ["pending", "pending_verification"].includes(status);
-    const statusIcon =
-      ["approved", "completed", "paid", "credited"].includes(status)
-        ? "fa-circle-check"
-        : ["rejected", "failed"].includes(status)
-          ? "fa-circle-xmark"
-          : "fa-clock";
+    const iconName = ["approved", "completed", "paid", "credited"].includes(status)
+      ? "fa-circle-check"
+      : ["rejected", "failed"].includes(status) ? "fa-circle-xmark" : "fa-clock";
 
     const top = document.createElement("div");
     top.className = "request-top";
-
     const customer = document.createElement("div");
     const name = document.createElement("h4");
     name.textContent = request.accountName || "Customer name not provided";
-
     const email = document.createElement("p");
     email.className = "request-email";
     email.textContent = request.userEmail || "Email not provided";
-
     customer.append(name, email);
 
     const badge = document.createElement("span");
     badge.className = "status " + status.replace(/[^a-z0-9_-]/g, "");
     const badgeIcon = document.createElement("i");
-    badgeIcon.className = "fa-solid " + statusIcon;
+    badgeIcon.className = "fa-solid " + iconName;
     badge.append(badgeIcon, document.createTextNode(" " + status.replace(/_/g, " ")));
-
     top.append(customer, badge);
     card.appendChild(top);
 
     const amount = document.createElement("div");
     amount.className = "amount";
-    amount.textContent = Number.isFinite(request.amount)
-      ? "₦" + formatNumber(request.amount)
-      : "Invalid amount";
+    amount.textContent = Number.isFinite(request.amount) ? "₦" + formatNumber(request.amount) : "Invalid amount";
     card.appendChild(amount);
 
     const details = document.createElement("div");
     details.className = "details";
-
-    const fields = [
+    [
       ["Funding reference", request.reference],
       ["Customer user ID", request.userId || "Not provided"],
       ["Payment method", request.paymentMethod],
       ["Date submitted", formatDate(request.createdAt)]
-    ];
-
-    fields.forEach(function(field) {
+    ].forEach(function(field) {
       const detail = document.createElement("div");
       detail.className = "detail";
-
       const label = document.createElement("span");
       label.textContent = field[0];
-
       const value = document.createElement("strong");
       value.textContent = field[1];
-
       detail.append(label, value);
       details.appendChild(detail);
     });
-
     card.appendChild(details);
 
     if (pending) {
       const actions = document.createElement("div");
       actions.className = "request-actions";
-
       const verifyButton = document.createElement("button");
       verifyButton.type = "button";
       verifyButton.className = "action-btn verify-btn";
-      verifyButton.innerHTML = '<i class="fa-solid fa-shield-check"></i> Verify Transfer';
+      verifyButton.innerHTML = '<i class="fa-solid fa-check"></i> Verify & Credit Wallet';
 
       const rejectButton = document.createElement("button");
       rejectButton.type = "button";
       rejectButton.className = "action-btn reject-btn";
       rejectButton.innerHTML = '<i class="fa-solid fa-xmark"></i> Reject';
 
-      verifyButton.addEventListener("click", function() {
-        verifyFundingRequest(request, verifyButton, rejectButton);
-      });
-
-      rejectButton.addEventListener("click", function() {
-        rejectFundingRequest(request, verifyButton, rejectButton);
-      });
-
+      verifyButton.addEventListener("click", () => verifyFundingRequest(request, verifyButton, rejectButton));
+      rejectButton.addEventListener("click", () => rejectFundingRequest(request, verifyButton, rejectButton));
       actions.append(verifyButton, rejectButton);
       card.appendChild(actions);
-
     } else {
       const note = document.createElement("p");
       note.className = "processed-note";
 
       if (status === "verified_pending_credit") {
-        note.textContent =
-          "Transfer marked verified. The trusted wallet-crediting process must still complete.";
+        note.textContent = "This request was previously marked verified but not credited. Refresh and check your wallet records before taking further action.";
       } else if (["approved", "completed", "paid", "credited"].includes(status)) {
-        note.textContent =
-          "This request is marked as processed. Confirm wallet credit in the trusted processing records.";
+        note.textContent = "This request is marked processed. The wallet credit was recorded with the request.";
       } else {
         note.textContent = "This request has already been processed.";
       }
-
       card.appendChild(note);
     }
 
@@ -683,92 +416,99 @@ function renderRequests(requests) {
 }
 
 /*
- * This browser page does NOT update wallet balances.
- * A trusted backend must perform the actual credit, enforce idempotency,
- * and authorize the admin independently.
+ * Atomically increments wallets/{userId}.balance and changes the request
+ * status to approved. Firestore security rules MUST restrict these writes
+ * to the authenticated admin UID.
  */
 async function verifyFundingRequest(request, verifyButton, rejectButton) {
   if (!adminAuthorized || !currentAdmin) {
     showNotice("Admin authorization is required.", "error");
     return;
   }
-
   if (processingRequests.has(request.id)) return;
 
   if (!request.userId) {
-    showNotice("This request has no customer user ID and cannot be verified.", "error");
+    showNotice("This request has no customer user ID.", "error");
     return;
   }
-
   if (!Number.isSafeInteger(request.amount) || request.amount <= 0) {
     showNotice("This request has an invalid amount.", "error");
     return;
   }
 
   const confirmed = window.confirm(
-    "Have you independently confirmed that ₦" +
-    formatNumber(request.amount) +
-    " has arrived in your bank account?\n\n" +
-    "This action marks the request as verified. It does NOT credit the wallet."
+    "Only continue after confirming the transfer arrived in your bank account.\n\n" +
+    "Credit ₦" + formatNumber(request.amount) +
+    " to this customer's wallet now?"
   );
-
   if (!confirmed) return;
 
   processingRequests.add(request.id);
   verifyButton.disabled = true;
   rejectButton.disabled = true;
-  verifyButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+  verifyButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Crediting...';
 
   try {
-    const requestRef = window.firebaseDB
-      .collection(FUNDING_COLLECTION)
-      .doc(request.id);
+    const requestRef = window.firebaseDB.collection(FUNDING_COLLECTION).doc(request.id);
+    const walletRef = window.firebaseDB.collection(WALLETS_COLLECTION).doc(request.userId);
 
     await window.firebaseDB.runTransaction(async function(transaction) {
-      const snapshot = await transaction.get(requestRef);
+      const requestSnapshot = await transaction.get(requestRef);
 
-      if (!snapshot.exists) {
+      if (!requestSnapshot.exists) {
         throw new Error("This funding request no longer exists.");
       }
 
-      const data = snapshot.data() || {};
+      const data = requestSnapshot.data() || {};
       const latestStatus = String(data.status || "pending").toLowerCase();
 
       if (!["pending", "pending_verification"].includes(latestStatus)) {
-        throw new Error("This request has already been processed.");
+        throw new Error("This request has already been processed. It was not credited again.");
       }
 
-      if (data.userId !== request.userId ||
-          Number(data.amount) !== request.amount) {
-        throw new Error("The request details changed. Refresh and review it again.");
+      if (data.userId !== request.userId || Number(data.amount) !== request.amount) {
+        throw new Error("Request details changed. Refresh and review the request again.");
       }
+
+      const walletSnapshot = await transaction.get(walletRef);
+
+      if (!walletSnapshot.exists) {
+        throw new Error("This customer has no wallets/{userId} document. Create the customer's wallet before crediting.");
+      }
+
+      const walletData = walletSnapshot.data() || {};
+      const currentBalance = Number(walletData.balance);
+
+      if (!Number.isFinite(currentBalance) || currentBalance < 0) {
+        throw new Error("The customer's wallet balance is invalid. No credit was applied.");
+      }
+
+      transaction.update(walletRef, {
+        userId: request.userId,
+        balance: currentBalance + request.amount,
+        updatedAt: window.firebase.firestore.FieldValue.serverTimestamp()
+      });
 
       transaction.update(requestRef, {
-        status: "verified_pending_credit",
+        status: "approved",
+        creditedAt: window.firebase.firestore.FieldValue.serverTimestamp(),
         verifiedAt: window.firebase.firestore.FieldValue.serverTimestamp(),
         verifiedBy: currentAdmin.uid
       });
     });
 
-    showNotice(
-      "Transfer marked verified. Wallet credit has NOT happened on this page. Connect the trusted backend before treating the funds as available.",
-      "success"
-    );
-
+    showNotice("Transfer verified and wallet credited successfully.", "success");
     await loadFundingRequests();
 
   } catch (error) {
-    console.error("Verify funding request error:", error);
-
+    console.error("Verify and credit error:", error);
     showNotice(
-      error.message || "Could not update the request. Check Firestore permissions.",
+      error.message || "Could not credit the wallet. Check Firestore security rules and try again.",
       "error"
     );
-
     verifyButton.disabled = false;
     rejectButton.disabled = false;
-    verifyButton.innerHTML = '<i class="fa-solid fa-shield-check"></i> Verify Transfer';
-
+    verifyButton.innerHTML = '<i class="fa-solid fa-check"></i> Verify & Credit Wallet';
   } finally {
     processingRequests.delete(request.id);
   }
@@ -779,16 +519,12 @@ async function rejectFundingRequest(request, verifyButton, rejectButton) {
     showNotice("Admin authorization is required.", "error");
     return;
   }
-
   if (processingRequests.has(request.id)) return;
 
-  const confirmed = window.confirm(
-    "Reject this funding request for ₦" +
-    formatNumber(request.amount) +
+  if (!window.confirm(
+    "Reject this funding request for ₦" + formatNumber(request.amount) +
     "?\n\nThe customer's wallet will not be changed."
-  );
-
-  if (!confirmed) return;
+  )) return;
 
   processingRequests.add(request.id);
   verifyButton.disabled = true;
@@ -796,16 +532,11 @@ async function rejectFundingRequest(request, verifyButton, rejectButton) {
   rejectButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
 
   try {
-    const requestRef = window.firebaseDB
-      .collection(FUNDING_COLLECTION)
-      .doc(request.id);
+    const requestRef = window.firebaseDB.collection(FUNDING_COLLECTION).doc(request.id);
 
     await window.firebaseDB.runTransaction(async function(transaction) {
       const snapshot = await transaction.get(requestRef);
-
-      if (!snapshot.exists) {
-        throw new Error("This funding request no longer exists.");
-      }
+      if (!snapshot.exists) throw new Error("This funding request no longer exists.");
 
       const data = snapshot.data() || {};
       const latestStatus = String(data.status || "pending").toLowerCase();
@@ -821,25 +552,15 @@ async function rejectFundingRequest(request, verifyButton, rejectButton) {
       });
     });
 
-    showNotice(
-      "Request rejected. The customer's wallet balance was not changed.",
-      "success"
-    );
-
+    showNotice("Request rejected. Wallet balance was not changed.", "success");
     await loadFundingRequests();
 
   } catch (error) {
     console.error("Reject funding request error:", error);
-
-    showNotice(
-      error.message || "Could not reject this request. Check Firestore permissions.",
-      "error"
-    );
-
+    showNotice(error.message || "Could not reject this request.", "error");
     verifyButton.disabled = false;
     rejectButton.disabled = false;
     rejectButton.innerHTML = '<i class="fa-solid fa-xmark"></i> Reject';
-
   } finally {
     processingRequests.delete(request.id);
   }
@@ -848,20 +569,14 @@ async function rejectFundingRequest(request, verifyButton, rejectButton) {
 function updateSummary(requests) {
   document.getElementById("totalRequests").textContent = requests.length;
 
-  const pending = requests.filter(function(request) {
-    return ["pending", "pending_verification"].includes(request.status);
-  }).length;
-
+  const pending = requests.filter(request =>
+    ["pending", "pending_verification"].includes(request.status)
+  ).length;
   document.getElementById("pendingRequests").textContent = pending;
 
-  const total = requests.reduce(function(sum, request) {
-    return sum + (
-      Number.isFinite(request.amount) && request.amount > 0
-        ? request.amount
-        : 0
-    );
-  }, 0);
-
+  const total = requests.reduce((sum, request) =>
+    sum + (Number.isFinite(request.amount) && request.amount > 0 ? request.amount : 0), 0
+  );
   document.getElementById("totalAmount").textContent = "₦" + formatNumber(total);
 }
 
