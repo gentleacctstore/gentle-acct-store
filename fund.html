@@ -4,143 +4,913 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0b2d5c">
+<meta name="theme-color" content="#2563EB">
+<meta name="description" content="Fund your Gentle Acct Store wallet securely.">
+
 <title>Fund Wallet - Gentle Acct Store</title>
+
+<script>
+(function () {
+  try {
+    const uid = localStorage.getItem("gentleCurrentUserId");
+    const personalTheme = uid
+      ? localStorage.getItem("gentle-acct-store-theme-user-" + uid)
+      : null;
+    const theme = personalTheme ||
+      localStorage.getItem("gentle-acct-store-theme") ||
+      "light";
+
+    document.documentElement.dataset.theme = theme;
+  } catch (e) {
+    document.documentElement.dataset.theme = "light";
+  }
+})();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="firebase.js"></script>
+
 <style>
-:root{--blue:#0b2d5c;--dark:#071f40;--light:#eaf2fb;--text:#172033;--muted:#748093;--border:#e4eaf2}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Poppins,sans-serif;background:#f7f9fc;color:var(--text);min-height:100vh;padding-bottom:80px}
-button,input{font-family:inherit}button{cursor:pointer}a{text-decoration:none;color:inherit}
-.page{max-width:600px;margin:auto;min-height:100vh}
-header{height:68px;background:#fff;padding:0 17px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:5}
-.header-left{display:flex;align-items:center;gap:11px}
-.back-btn,.header-icon{width:39px;height:39px;border:0;border-radius:12px;background:var(--light);color:var(--blue);display:flex;align-items:center;justify-content:center}
-.header-info h2{font-size:15px;color:var(--dark);font-weight:800}
-.header-info p{font-size:8px;color:var(--muted);margin-top:2px}
-main{padding:22px 16px}
-.heading{margin-bottom:18px}
-.heading h1{font-size:24px;color:var(--dark);font-weight:800;margin-bottom:5px}
-.heading p{font-size:10px;line-height:1.7;color:var(--muted)}
-.wallet{background:linear-gradient(135deg,#0b2d5c,#123e78);color:white;border-radius:20px;padding:20px;margin-bottom:18px;box-shadow:0 12px 30px #0b2d5c20}
-.wallet-label{font-size:10px;opacity:.8;margin-bottom:6px}
-.wallet-balance{font-size:28px;font-weight:800;overflow-wrap:anywhere}
-.wallet-status{display:inline-block;margin-top:12px;padding:6px 10px;border-radius:20px;background:#ffffff20;font-size:9px}
-.card{background:white;border:1px solid var(--border);border-radius:19px;padding:18px;box-shadow:0 10px 30px #0b2d5c0c}
-.card-title{display:flex;align-items:center;gap:10px;margin-bottom:16px}
-.card-icon{width:38px;height:38px;border-radius:11px;background:var(--light);color:var(--blue);display:flex;align-items:center;justify-content:center}
-.card-title h3{font-size:14px;color:var(--dark);font-weight:800}
-label{display:block;font-size:10px;font-weight:700;margin-bottom:7px;color:var(--dark)}
-input{width:100%;height:49px;border:1px solid var(--border);border-radius:12px;padding:0 13px;font-size:15px;outline:none}
-input:focus{border-color:var(--blue)}
-.primary{width:100%;height:47px;margin-top:16px;border:0;border-radius:12px;background:var(--blue);color:white;font-size:11px;font-weight:800}
-.primary:disabled{opacity:.6}
-.message{font-size:10px;line-height:1.7;margin-top:12px;color:#dc2626}
-.bottom-nav{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:100%;max-width:600px;height:67px;background:#fffffffa;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-around;z-index:10}
-.nav-item{flex:1;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:8px;font-weight:700;color:#8993a3}
-.nav-item i{font-size:16px}.nav-item.active{color:var(--blue)}
-@media(max-width:360px){main{padding:18px 13px}.wallet-balance{font-size:25px}.heading h1{font-size:22px}}
+:root {
+  color-scheme: light;
+  --blue: #2563EB;
+  --blue-dark: #1D4ED8;
+  --blue-light: #EFF6FF;
+  --bg: #F8FAFC;
+  --white: #FFFFFF;
+  --text: #172033;
+  --muted: #748093;
+  --border: #E2E8F0;
+  --green: #15803D;
+  --red: #DC2626;
+  --shadow: 0 8px 25px rgba(37,99,235,.07);
+  --input-bg: #FFFFFF;
+  --nav-bg: rgba(255,255,255,.98);
+  --soft-bg: #EEF4FC;
+  --soft-red: #FEF2F2;
+  --soft-green: #F0FDF4;
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --blue: #60A5FA;
+  --blue-dark: #93C5FD;
+  --blue-light: #1E293B;
+  --bg: #0B1120;
+  --white: #111B2E;
+  --text: #F1F5F9;
+  --muted: #A5B4C8;
+  --border: #29364B;
+  --green: #4ADE80;
+  --red: #FCA5A5;
+  --shadow: 0 8px 25px rgba(0,0,0,.18);
+  --input-bg: #0F172A;
+  --nav-bg: rgba(17,27,46,.98);
+  --soft-bg: #0F172A;
+  --soft-red: #351C28;
+  --soft-green: #123124;
+}
+
+html[data-theme="blue"] {
+  color-scheme: light;
+  --blue: #075985;
+  --blue-dark: #0C4A6E;
+  --blue-light: #DFF4FF;
+  --bg: #EAF6FC;
+  --white: #F8FDFF;
+  --text: #123047;
+  --muted: #54758B;
+  --border: #C9E4F2;
+  --green: #166534;
+  --red: #B91C1C;
+  --shadow: 0 8px 25px rgba(7,89,133,.09);
+  --input-bg: #FFFFFF;
+  --nav-bg: rgba(248,253,255,.98);
+  --soft-bg: #DCEEF8;
+  --soft-red: #FEF2F2;
+  --soft-green: #F0FDF4;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding-bottom: 90px;
+  transition: background .2s ease, color .2s ease;
+}
+
+button, input {
+  font-family: inherit;
+}
+
+button, a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.page {
+  width: 100%;
+  max-width: 600px;
+  min-height: 100vh;
+  margin: 0 auto;
+  background: var(--bg);
+}
+
+/* HEADER */
+
+header {
+  height: 68px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.back-btn {
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--blue-light);
+  color: var(--blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+}
+
+.brand-name {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.brand-subtitle {
+  font-size: 9px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.header-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  color: var(--blue);
+  background: var(--blue-light);
+}
+
+/* MAIN */
+
+main {
+  padding: 23px 16px 35px;
+}
+
+.heading {
+  margin-bottom: 21px;
+}
+
+.heading h1 {
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: -.6px;
+  margin-bottom: 6px;
+}
+
+.heading p {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+/* BALANCE */
+
+.balance-card {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #2563EB, #1D4ED8);
+  color: #FFFFFF;
+  border-radius: 20px;
+  padding: 21px;
+  margin-bottom: 20px;
+  box-shadow: 0 12px 28px rgba(37,99,235,.17);
+}
+
+html[data-theme="blue"] .balance-card {
+  background: linear-gradient(135deg, #0369A1, #075985);
+}
+
+html[data-theme="dark"] .balance-card {
+  background: linear-gradient(135deg, #1D4ED8, #172554);
+}
+
+.balance-card::after {
+  content: "";
+  position: absolute;
+  width: 155px;
+  height: 155px;
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: 50%;
+  right: -65px;
+  top: -75px;
+}
+
+.balance-card::before {
+  content: "";
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 50%;
+  right: -30px;
+  top: -45px;
+}
+
+.balance-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.balance-label {
+  font-size: 11px;
+  opacity: .88;
+  margin-bottom: 7px;
+}
+
+.balance-value {
+  font-size: 29px;
+  font-weight: 800;
+  letter-spacing: -.5px;
+  overflow-wrap: anywhere;
+}
+
+.balance-icon {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,.16);
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 15px;
+  font-size: 20px;
+}
+
+.balance-bottom {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 17px;
+  font-size: 10px;
+  opacity: .92;
+}
+
+.balance-bottom i {
+  font-size: 11px;
+}
+
+/* FORM CARD */
+
+.fund-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 19px;
+  box-shadow: var(--shadow);
+}
+
+.card-heading {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 20px;
+}
+
+.card-heading-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--blue-light);
+  color: var(--blue);
+  font-size: 17px;
+}
+
+.card-heading h2 {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.card-heading p {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+
+label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.amount-wrap {
+  height: 57px;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  padding: 0 13px;
+  background: var(--input-bg);
+  transition: border-color .2s, box-shadow .2s;
+}
+
+.amount-wrap:focus-within {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(37,99,235,.08);
+}
+
+.currency {
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--blue);
+  margin-right: 10px;
+}
+
+.amount-wrap input {
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.amount-wrap input::placeholder {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* QUICK AMOUNTS */
+
+.quick-label {
+  margin: 18px 0 10px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.quick-amounts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 9px;
+}
+
+.quick-btn {
+  border: 1px solid var(--border);
+  background: var(--white);
+  color: var(--text);
+  border-radius: 11px;
+  padding: 12px 5px;
+  font-size: 11px;
+  font-weight: 700;
+  transition: .2s ease;
+}
+
+.quick-btn:hover,
+.quick-btn.selected {
+  background: var(--blue-light);
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+.primary-btn {
+  width: 100%;
+  min-height: 49px;
+  border: none;
+  border-radius: 12px;
+  background: var(--blue);
+  color: #FFFFFF;
+  margin-top: 20px;
+  font-size: 12px;
+  font-weight: 800;
+  transition: background .2s;
+}
+
+.primary-btn:hover {
+  background: var(--blue-dark);
+}
+
+.primary-btn:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+.primary-btn i {
+  margin-right: 7px;
+}
+
+/* NOTE */
+
+.security-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 13px;
+  margin-top: 15px;
+  border-radius: 12px;
+  background: var(--blue-light);
+  color: var(--blue-dark);
+  font-size: 10px;
+  line-height: 1.8;
+}
+
+.security-note i {
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+.message {
+  display: none;
+  margin-top: 13px;
+  padding: 11px 12px;
+  border-radius: 10px;
+  font-size: 10px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.message.error {
+  display: block;
+  background: var(--soft-red);
+  color: var(--red);
+}
+
+.message.success {
+  display: block;
+  background: var(--soft-green);
+  color: var(--green);
+}
+
+/* BOTTOM NAV */
+
+.bottom-nav {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 600px;
+  height: 70px;
+  background: var(--nav-bg);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 100;
+  padding-bottom: env(safe-area-inset-bottom);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.nav-item {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.nav-item i {
+  font-size: 16px;
+}
+
+.nav-item.active {
+  color: var(--blue);
+}
+
+.nav-item.active i {
+  background: var(--blue-light);
+  padding: 7px 12px;
+  border-radius: 10px;
+}
+
+@media (max-width: 370px) {
+  main {
+    padding: 19px 12px 30px;
+  }
+
+  .balance-value {
+    font-size: 25px;
+  }
+
+  .fund-card {
+    padding: 15px;
+  }
+
+  .quick-amounts {
+    gap: 6px;
+  }
+}
+
+@media (min-width: 700px) {
+  body {
+    background: var(--soft-bg);
+  }
+
+  .page {
+    box-shadow: 0 0 35px rgba(37,99,235,.05);
+  }
+}
 </style>
 </head>
+
 <body>
 <div class="page">
-<header>
-<div class="header-left">
-<button class="back-btn" type="button" onclick="goBack()" aria-label="Go back"><i class="fa-solid fa-arrow-left"></i></button>
-<div class="header-info"><h2>Fund Wallet</h2><p>Add money to your Gentle wallet</p></div>
-</div>
-<div class="header-icon"><i class="fa-solid fa-wallet"></i></div>
-</header>
 
-<main>
-<div class="heading">
-<h1>Fund Wallet</h1>
-<p>Enter the amount you want to add to your wallet.</p>
-</div>
+  <header>
+    <div class="header-left">
+      <button class="back-btn" type="button" id="backButton" aria-label="Go back">
+        <i class="fa-solid fa-arrow-left"></i>
+      </button>
 
-<div class="wallet">
-<div class="wallet-label">Available Balance</div>
-<div class="wallet-balance" id="balance">₦0.00</div>
-<div class="wallet-status"><i class="fa-solid fa-circle-check"></i> Wallet Ready</div>
-</div>
+      <div>
+        <div class="brand-name">Gentle Acct Store</div>
+        <div class="brand-subtitle">Wallet & payments</div>
+      </div>
+    </div>
 
-<div class="card">
-<div class="card-title">
-<div class="card-icon"><i class="fa-solid fa-wallet"></i></div>
-<h3>How Much Do You Want to Add?</h3>
-</div>
-<form id="fundForm">
-<label for="amount">Amount (₦)</label>
-<input id="amount" type="number" inputmode="numeric" min="100" max="10000000" step="1" placeholder="Enter amount, e.g. 5000" required>
-<button class="primary" id="addFundsButton" type="submit" disabled>Loading...</button>
-<div id="message" class="message" role="status"></div>
-</form>
-</div>
-</main>
+    <div class="header-icon">
+      <i class="fa-solid fa-wallet"></i>
+    </div>
+  </header>
 
-<nav class="bottom-nav">
-<a class="nav-item" href="dashboard.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
-<a class="nav-item" href="dashboard.html#products"><i class="fa-solid fa-box"></i><span>Products</span></a>
-<a class="nav-item" href="orders.html"><i class="fa-solid fa-receipt"></i><span>Orders</span></a>
-<a class="nav-item active" href="fund.html"><i class="fa-solid fa-wallet"></i><span>Fund</span></a>
-<a class="nav-item" href="profile.html"><i class="fa-solid fa-user"></i><span>Menu</span></a>
-</nav>
+  <main>
+    <div class="heading">
+      <h1>Fund your wallet</h1>
+      <p>Add money to your wallet and use your balance to purchase products.</p>
+    </div>
+
+    <section class="balance-card">
+      <div class="balance-top">
+        <div>
+          <div class="balance-label">Available Balance</div>
+          <div class="balance-value" id="balance">₦0.00</div>
+        </div>
+
+        <div class="balance-icon">
+          <i class="fa-solid fa-wallet"></i>
+        </div>
+      </div>
+
+      <div class="balance-bottom">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="walletStatus">Loading your wallet...</span>
+      </div>
+    </section>
+
+    <section class="fund-card">
+      <div class="card-heading">
+        <div class="card-heading-icon">
+          <i class="fa-solid fa-plus"></i>
+        </div>
+
+        <div>
+          <h2>Add money</h2>
+          <p>Choose an amount to continue.</p>
+        </div>
+      </div>
+
+      <form id="fundForm">
+        <label for="amount">Amount to add</label>
+
+        <div class="amount-wrap">
+          <span class="currency">₦</span>
+          <input
+            id="amount"
+            type="number"
+            inputmode="numeric"
+            min="100"
+            max="10000000"
+            step="1"
+            placeholder="Enter amount"
+            required
+          >
+        </div>
+
+        <div class="quick-label">Quick select</div>
+
+        <div class="quick-amounts">
+          <button class="quick-btn" type="button" data-amount="1000">₦1,000</button>
+          <button class="quick-btn" type="button" data-amount="5000">₦5,000</button>
+          <button class="quick-btn" type="button" data-amount="10000">₦10,000</button>
+        </div>
+
+        <div id="message" class="message" role="status" aria-live="polite"></div>
+
+        <button class="primary-btn" id="addFundsButton" type="submit" disabled>
+          <i class="fa-solid fa-spinner fa-spin"></i>
+          Loading wallet...
+        </button>
+      </form>
+
+      <div class="security-note">
+        <i class="fa-solid fa-shield-halved"></i>
+        <div>
+          <strong>Before you continue</strong><br>
+          Check your amount carefully. You will continue to the payment page to complete your funding.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav">
+    <a class="nav-item" href="dashboard.html">
+      <i class="fa-solid fa-house"></i>
+      <span>Home</span>
+    </a>
+
+    <a class="nav-item" href="dashboard.html#products">
+      <i class="fa-solid fa-box"></i>
+      <span>Products</span>
+    </a>
+
+    <a class="nav-item" href="orders.html">
+      <i class="fa-solid fa-receipt"></i>
+      <span>Orders</span>
+    </a>
+
+    <a class="nav-item active" href="fund.html" aria-current="page">
+      <i class="fa-solid fa-wallet"></i>
+      <span>Fund</span>
+    </a>
+
+    <a class="nav-item" href="profile.html">
+      <i class="fa-solid fa-user"></i>
+      <span>Menu</span>
+    </a>
+  </nav>
 </div>
 
 <script>
 "use strict";
-let currentUser=null;
-let walletBalance=0;
-let authReady=false;
 
-const addFundsButton=document.getElementById("addFundsButton");
-const amountInput=document.getElementById("amount");
-const message=document.getElementById("message");
+let currentUser = null;
+let walletBalance = 0;
+let authReady = false;
 
-firebaseAuth.onAuthStateChanged(async function(user){
-if(!user||!user.emailVerified){window.location.replace("login.html");return;}
-currentUser=user;
-authReady=true;
-addFundsButton.disabled=false;
-addFundsButton.textContent="Add Funds";
-await loadWallet();
+const addFundsButton = document.getElementById("addFundsButton");
+const amountInput = document.getElementById("amount");
+const message = document.getElementById("message");
+const balanceElement = document.getElementById("balance");
+const walletStatus = document.getElementById("walletStatus");
+
+/* THEME */
+
+function getSavedTheme() {
+  try {
+    const uid = currentUser?.uid ||
+      localStorage.getItem("gentleCurrentUserId");
+
+    const personalTheme = uid
+      ? localStorage.getItem("gentle-acct-store-theme-user-" + uid)
+      : null;
+
+    const theme = personalTheme ||
+      localStorage.getItem("gentle-acct-store-theme") ||
+      "light";
+
+    return ["light", "dark", "blue"].includes(theme) ? theme : "light";
+  } catch (error) {
+    return "light";
+  }
+}
+
+function applySavedTheme() {
+  const theme = getSavedTheme();
+  document.documentElement.dataset.theme = theme;
+
+  const themeColors = {
+    light: "#2563EB",
+    dark: "#0B1120",
+    blue: "#075985"
+  };
+
+  document.querySelector('meta[name="theme-color"]')
+    .setAttribute("content", themeColors[theme] || themeColors.light);
+}
+
+window.addEventListener("storage", function(event) {
+  if (
+    event.key === "gentle-acct-store-theme" ||
+    event.key === "gentleCurrentUserId" ||
+    (event.key && event.key.startsWith("gentle-acct-store-theme-user-"))
+  ) {
+    applySavedTheme();
+  }
 });
 
-async function loadWallet(){
-if(!currentUser||!window.firebaseDB)return;
-try{
-const ref=firebaseDB.collection("wallets").doc(currentUser.uid);
-const snap=await ref.get();
-if(snap.exists){walletBalance=Number(snap.data().balance||0);}
-else{
-walletBalance=0;
-await ref.set({userId:currentUser.uid,balance:0,updatedAt:firebase.firestore.FieldValue.serverTimestamp()});
-}
-document.getElementById("balance").textContent="₦"+walletBalance.toLocaleString("en-NG",{minimumFractionDigits:2,maximumFractionDigits:2});
-localStorage.setItem("gentleBalance",String(walletBalance));
-}catch(error){console.error("WALLET LOADING ERROR:",error);}
-}
+window.addEventListener("pageshow", function() {
+  applySavedTheme();
 
-document.getElementById("fundForm").addEventListener("submit",function(event){
-event.preventDefault();
-message.textContent="";
-if(!authReady||!currentUser){message.textContent="Please wait for your account to load.";return;}
-const amount=Number(amountInput.value);
-if(!Number.isInteger(amount)||amount<100||amount>10000000){
-message.textContent="Enter a whole-number amount between ₦100 and ₦10,000,000.";
-amountInput.focus();
-return;
-}
-window.location.href="payment.html?amount="+encodeURIComponent(amount);
+  if (currentUser) {
+    loadWallet();
+  }
 });
 
-function goBack(){window.location.href="dashboard.html";}
-window.addEventListener("pageshow",function(){if(currentUser)loadWallet();});
+document.addEventListener("visibilitychange", function() {
+  if (!document.hidden) {
+    applySavedTheme();
+  }
+});
+
+applySavedTheme();
+
+document.getElementById("backButton").addEventListener("click", goBack);
+
+/* AUTHENTICATION */
+
+firebaseAuth.onAuthStateChanged(async function(user) {
+  if (!user || !user.emailVerified) {
+    localStorage.removeItem("gentleLoggedIn");
+    localStorage.removeItem("gentleCurrentUserId");
+    window.location.replace("login.html");
+    return;
+  }
+
+  currentUser = user;
+  authReady = true;
+
+  localStorage.setItem("gentleLoggedIn", "true");
+  localStorage.setItem("gentleCurrentUserId", user.uid);
+
+  applySavedTheme();
+  await loadWallet();
+});
+
+/* LOAD WALLET */
+
+async function loadWallet() {
+  if (!currentUser || !window.firebaseDB) return;
+
+  walletStatus.textContent = "Loading your balance...";
+
+  try {
+    const ref = firebaseDB.collection("wallets").doc(currentUser.uid);
+    const snap = await ref.get();
+
+    if (snap.exists) {
+      walletBalance = Number(snap.data().balance || 0);
+    } else {
+      walletBalance = 0;
+
+      await ref.set({
+        userId: currentUser.uid,
+        balance: 0,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }
+
+    balanceElement.textContent = formatMoney(walletBalance);
+    localStorage.setItem("gentleBalance", String(walletBalance));
+
+    walletStatus.textContent = "Your wallet is ready";
+    addFundsButton.disabled = false;
+    addFundsButton.innerHTML = '<i class="fa-solid fa-arrow-right"></i> Continue to Payment';
+
+  } catch (error) {
+    console.error("Wallet loading error:", error);
+    walletStatus.textContent = "Balance could not be loaded";
+    showMessage("Unable to load your wallet. Check your connection and try again.", "error");
+
+    addFundsButton.disabled = true;
+    addFundsButton.textContent = "Wallet unavailable";
+  }
+}
+
+/* QUICK AMOUNTS */
+
+document.querySelectorAll(".quick-btn").forEach(function(button) {
+  button.addEventListener("click", function() {
+    amountInput.value = button.dataset.amount;
+
+    document.querySelectorAll(".quick-btn").forEach(function(item) {
+      item.classList.remove("selected");
+    });
+
+    button.classList.add("selected");
+    clearMessage();
+  });
+});
+
+amountInput.addEventListener("input", function() {
+  document.querySelectorAll(".quick-btn").forEach(function(button) {
+    button.classList.toggle(
+      "selected",
+      Number(button.dataset.amount) === Number(amountInput.value)
+    );
+  });
+
+  clearMessage();
+});
+
+/* SUBMIT FUNDING REQUEST */
+
+document.getElementById("fundForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+  clearMessage();
+
+  if (!authReady || !currentUser) {
+    showMessage("Please wait for your account to load.", "error");
+    return;
+  }
+
+  const amount = Number(amountInput.value);
+
+  if (!Number.isInteger(amount) || amount < 100 || amount > 10000000) {
+    showMessage("Enter a whole-number amount between ₦100 and ₦10,000,000.", "error");
+    amountInput.focus();
+    return;
+  }
+
+  window.location.href = "payment.html?amount=" + encodeURIComponent(amount);
+});
+
+/* HELPERS */
+
+function formatMoney(amount) {
+  return "₦" + Number(amount || 0).toLocaleString("en-NG", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+}
+
+function showMessage(text, type) {
+  message.textContent = text;
+  message.className = "message " + type;
+}
+
+function clearMessage() {
+  message.textContent = "";
+  message.className = "message";
+}
+
+function goBack() {
+  window.location.href = "dashboard.html";
+}
 </script>
 </body>
 </html>

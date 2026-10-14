@@ -1,45 +1,63 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
 <meta
   name="viewport"
   content="width=device-width, initial-scale=1.0"
 >
-
 <meta
   name="theme-color"
-  content="#0b2d5c"
+  content="#2563EB"
 >
-
+<meta
+  name="description"
+  content="Create your Gentle Acct Store account."
+>
 <title>Create Account | Gentle Acct Store</title>
 
-<link
-  rel="preconnect"
-  href="https://fonts.googleapis.com"
->
+<!-- APPLY SAVED WEBSITE THEME BEFORE RENDERING -->
+<script>
+(function(){
+  try{
+    if(
+      localStorage.getItem(
+        "gentle-acct-store-theme"
+      ) === "dark"
+    ){
+      document.documentElement.classList.add(
+        "dark-mode"
+      );
+    }
+  }catch(error){
+    console.warn("Theme preference unavailable.",error);
+  }
+})();
+</script>
 
+<!-- GOOGLE FONT -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link
   rel="preconnect"
   href="https://fonts.gstatic.com"
   crossorigin
 >
-
 <link
   href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
   rel="stylesheet"
 >
 
+<!-- FONT AWESOME -->
 <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 >
 
 <style>
-
+/* ==================================================
+   RESET
+================================================== */
 *{
   box-sizing:border-box;
   margin:0;
@@ -48,26 +66,36 @@
 
 html{
   scroll-behavior:smooth;
+  -webkit-text-size-adjust:100%;
 }
 
 body{
   min-height:100vh;
-
+  min-height:100dvh;
   font-family:"Poppins",sans-serif;
-
   background:
     radial-gradient(
-      circle at 90% 5%,
-      rgba(11,45,92,.07),
-      transparent 25%
+      ellipse at 8% 12%,
+      rgba(37,99,235,.10),
+      transparent 32%
+    ),
+    radial-gradient(
+      ellipse at 95% 90%,
+      rgba(96,165,250,.12),
+      transparent 32%
     ),
     linear-gradient(
-      180deg,
-      #ffffff 0%,
-      #f7faff 100%
+      145deg,
+      #FFFFFF 0%,
+      #F8FBFF 48%,
+      #EFF6FF 100%
     );
-
   color:#101828;
+  overflow-x:hidden;
+  position:relative;
+  transition:
+    background .25s ease,
+    color .25s ease;
 }
 
 a{
@@ -80,535 +108,613 @@ input{
   font-family:"Poppins",sans-serif;
 }
 
-/* =========================
-   HEADER
-========================= */
+button,
+a,
+input{
+  -webkit-tap-highlight-color:transparent;
+}
 
+button{
+  -webkit-appearance:none;
+  appearance:none;
+}
+
+::selection{
+  background:#DBEAFE;
+  color:#1D4ED8;
+}
+
+/* ==================================================
+   BRAND COLORS
+================================================== */
+:root{
+  color-scheme:light;
+  --blue:#2563EB;
+  --blue-dark:#1D4ED8;
+  --blue-light:#EFF6FF;
+  --blue-soft:#DBEAFE;
+  --blue-border:#BFDBFE;
+  --blue-hover:#1E40AF;
+  --text:#101828;
+  --muted:#667085;
+  --white:#FFFFFF;
+  --green:#16A34A;
+}
+
+/* ==================================================
+   HEADER
+================================================== */
 .header{
   position:sticky;
   top:0;
   z-index:1000;
-
   width:100%;
-
-  background:rgba(255,255,255,.94);
-
-  backdrop-filter:blur(15px);
-  -webkit-backdrop-filter:blur(15px);
-
-  border-bottom:1px solid #e7edf4;
+  background:rgba(255,255,255,.88);
+  backdrop-filter:blur(22px);
+  -webkit-backdrop-filter:blur(22px);
+  border-bottom:1px solid #E5EDFA;
+  box-shadow:0 4px 20px rgba(37,99,235,.035);
+  transition:
+    background .25s ease,
+    border-color .25s ease,
+    box-shadow .25s ease;
 }
 
 .header-inner{
-  max-width:1150px;
-
+  max-width:1180px;
   margin:auto;
-
-  min-height:68px;
-
-  padding:10px 18px;
-
+  min-height:76px;
+  padding:12px 22px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-
   gap:15px;
 }
 
+/* ==================================================
+   LOGO
+================================================== */
 .logo{
   display:flex;
   align-items:center;
-
-  gap:9px;
-
-  color:#0b2d5c;
-
-  font-size:18px;
+  gap:11px;
+  color:var(--blue);
+  font-size:19px;
   font-weight:800;
+  letter-spacing:-.7px;
+  white-space:nowrap;
+  transition:opacity .25s ease;
+}
 
-  letter-spacing:-.6px;
+.logo:hover{
+  opacity:.85;
 }
 
 .logo-icon{
-  width:35px;
-  height:35px;
-
-  border-radius:11px;
-
-  background:
-    linear-gradient(
-      145deg,
-      #0b2d5c,
-      #071f40
-    );
-
+  width:42px;
+  height:42px;
+  flex:none;
+  border-radius:14px;
+  background:linear-gradient(145deg,#3B82F6,#2563EB);
   color:white;
-
   display:flex;
   align-items:center;
   justify-content:center;
-
-  font-size:14px;
-
+  font-size:16px;
   box-shadow:
-    0 6px 16px rgba(11,45,92,.17);
+    0 8px 20px rgba(37,99,235,.22),
+    inset 0 1px 0 rgba(255,255,255,.25);
 }
 
+/* ==================================================
+   HOME LINK
+================================================== */
 .home-link{
   display:inline-flex;
   align-items:center;
-
-  gap:7px;
-
-  color:#0b2d5c;
-
+  justify-content:center;
+  gap:8px;
+  color:var(--blue);
   font-size:11px;
   font-weight:700;
-
-  border:1px solid #d6e1ee;
-
-  background:white;
-
-  padding:9px 13px;
-
-  border-radius:10px;
+  border:1px solid var(--blue-border);
+  background:rgba(255,255,255,.9);
+  padding:11px 16px;
+  border-radius:13px;
+  transition:
+    background .25s ease,
+    border-color .25s ease,
+    transform .25s ease,
+    box-shadow .25s ease;
 }
 
-/* =========================
+.home-link:hover{
+  background:var(--blue-light);
+  border-color:var(--blue);
+  transform:translateY(-2px);
+  box-shadow:0 7px 18px rgba(37,99,235,.08);
+}
+
+/* ==================================================
    MAIN
-========================= */
-
+================================================== */
 .main{
-  min-height:calc(100vh - 68px);
-
-  padding:48px 15px 60px;
-
+  min-height:calc(100vh - 76px);
+  min-height:calc(100dvh - 76px);
+  padding:40px 18px 45px;
   display:flex;
   justify-content:center;
-  align-items:flex-start;
+  align-items:center;
 }
 
 .auth-wrapper{
   width:100%;
-  max-width:460px;
+  max-width:465px;
+  margin:auto;
 }
 
-/* =========================
+/* ==================================================
    HEADING
-========================= */
-
+================================================== */
 .auth-heading{
   text-align:center;
-
   margin-bottom:25px;
 }
 
 .auth-icon{
   position:relative;
-
-  width:58px;
-  height:58px;
-
-  margin:0 auto 15px;
-
-  border-radius:17px;
-
-  background:
-    linear-gradient(
-      145deg,
-      #0b2d5c,
-      #071f40
-    );
-
+  width:64px;
+  height:64px;
+  margin:0 auto 17px;
+  border-radius:20px;
+  background:linear-gradient(145deg,#3B82F6,#2563EB);
   color:white;
-
   display:flex;
   align-items:center;
   justify-content:center;
-
-  font-size:20px;
-
+  font-size:22px;
   box-shadow:
-    0 12px 28px rgba(11,45,92,.18);
+    0 14px 30px rgba(37,99,235,.22),
+    inset 0 1px 0 rgba(255,255,255,.25);
+}
+
+.auth-icon::before{
+  content:"";
+  position:absolute;
+  inset:-6px;
+  border-radius:25px;
+  border:1px solid rgba(37,99,235,.12);
 }
 
 .auth-icon::after{
   content:"";
-
   position:absolute;
-
-  width:9px;
-  height:9px;
-
+  width:11px;
+  height:11px;
   border-radius:50%;
-
-  background:#22a06b;
-
+  background:#22C55E;
   right:-2px;
   top:-2px;
-
-  border:2px solid white;
+  border:3px solid #EFF6FF;
 }
 
 .auth-heading h1{
-  color:#071f40;
-
-  font-size:28px;
-  line-height:1.2;
-
+  color:#1D4ED8;
+  font-size:29px;
+  line-height:1.25;
   font-weight:800;
-
-  letter-spacing:-.8px;
+  letter-spacing:-.9px;
 }
 
 .auth-heading p{
   max-width:390px;
-
-  margin:9px auto 0;
-
-  color:#667085;
-
+  margin:10px auto 0;
+  color:var(--muted);
   font-size:11px;
-
-  line-height:1.8;
+  line-height:1.9;
 }
 
-/* =========================
-   CARD
-========================= */
+.heading-accent{
+  display:inline-block;
+  width:36px;
+  height:4px;
+  border-radius:20px;
+  margin-top:12px;
+  background:linear-gradient(90deg,#2563EB,#93C5FD);
+}
 
+/* ==================================================
+   SIGNUP CARD
+================================================== */
 .card{
-  background:rgba(255,255,255,.97);
-
-  border:1px solid #e0e8f2;
-
-  border-radius:22px;
-
-  padding:28px;
-
+  position:relative;
+  overflow:hidden;
+  background:rgba(255,255,255,.86);
+  border:1px solid rgba(255,255,255,.98);
+  border-radius:24px;
+  padding:30px;
   box-shadow:
-    0 20px 55px rgba(7,31,64,.08);
+    0 25px 70px rgba(37,99,235,.09),
+    0 4px 15px rgba(37,99,235,.025),
+    inset 0 1px 0 rgba(255,255,255,.98);
+  backdrop-filter:blur(22px);
+  -webkit-backdrop-filter:blur(22px);
+  transition:
+    background .25s ease,
+    border-color .25s ease,
+    box-shadow .25s ease;
+}
+
+.card::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:3px;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    #2563EB,
+    #93C5FD,
+    transparent
+  );
+}
+
+.card::after{
+  content:"";
+  position:absolute;
+  width:170px;
+  height:170px;
+  top:-110px;
+  right:-85px;
+  border-radius:50%;
+  background:rgba(59,130,246,.065);
+  pointer-events:none;
 }
 
 .card-title-row{
   display:flex;
   align-items:center;
   justify-content:space-between;
-
   gap:10px;
-
-  margin-bottom:5px;
+  margin-bottom:6px;
+  position:relative;
+  z-index:1;
 }
 
 .card-title{
-  font-size:19px;
+  font-size:20px;
   font-weight:800;
-
-  color:#071f40;
+  color:#1D4ED8;
+  letter-spacing:-.5px;
 }
 
 .card-badge{
   display:inline-flex;
   align-items:center;
-
-  gap:5px;
-
-  background:#eef4fb;
-
-  border:1px solid #d6e1ee;
-
-  color:#0b2d5c;
-
-  padding:5px 8px;
-
-  border-radius:20px;
-
-  font-size:8px;
+  gap:6px;
+  background:var(--blue-light);
+  border:1px solid var(--blue-border);
+  color:var(--blue);
+  padding:7px 10px;
+  border-radius:30px;
+  font-size:9px;
   font-weight:700;
+  white-space:nowrap;
 }
 
 .card-subtitle{
   font-size:10.5px;
-
-  color:#667085;
-
-  line-height:1.7;
-
+  color:var(--muted);
+  line-height:1.8;
   margin-bottom:23px;
+  position:relative;
+  z-index:1;
 }
 
-/* =========================
+/* ==================================================
    FORM
-========================= */
+================================================== */
+#signupForm{
+  position:relative;
+  z-index:1;
+}
 
 .form-group{
-  margin-bottom:16px;
+  margin-bottom:17px;
 }
 
 .form-group label{
   display:block;
-
   font-size:10.5px;
   font-weight:700;
-
   color:#344054;
-
-  margin-bottom:7px;
+  margin-bottom:8px;
 }
 
 .input-wrap{
   position:relative;
+  width:100%;
 }
 
 .input-icon{
   position:absolute;
-
-  left:14px;
+  left:15px;
   top:50%;
-
   transform:translateY(-50%);
-
-  color:#0b2d5c;
-
-  font-size:12px;
-
+  color:#60A5FA;
+  font-size:13px;
   pointer-events:none;
-
   z-index:2;
+  transition:color .2s ease;
+}
+
+.input-wrap:focus-within .input-icon{
+  color:var(--blue);
 }
 
 input{
   width:100%;
-
-  height:49px;
-
-  padding:0 43px 0 40px;
-
-  border:1px solid #d6e1ee;
-
-  border-radius:11px;
-
+  height:51px;
+  padding:0 45px 0 43px;
+  border:1px solid #DBE7F8;
+  border-radius:12px;
   outline:none;
-
-  background:#fafdff;
-
-  color:#101828;
-
+  background:rgba(255,255,255,.92);
+  color:var(--text);
   font-size:11.5px;
-
-  transition:.2s;
-}
-
-input:focus{
-  border-color:#0b2d5c;
-
-  background:white;
-
-  box-shadow:
-    0 0 0 3px rgba(11,45,92,.07);
+  font-weight:500;
+  transition:
+    border-color .22s ease,
+    background .22s ease,
+    box-shadow .22s ease,
+    color .22s ease;
 }
 
 input::placeholder{
-  color:#9aa7b8;
+  color:#9AA7B8;
+  font-weight:400;
 }
 
+input:hover{
+  border-color:#93C5FD;
+}
+
+input:focus{
+  border-color:var(--blue);
+  background:#FFFFFF;
+  box-shadow:
+    0 0 0 4px rgba(37,99,235,.09),
+    0 3px 10px rgba(37,99,235,.025);
+}
+
+input:disabled{
+  opacity:.7;
+  cursor:not-allowed;
+}
+
+/* ==================================================
+   PASSWORD TOGGLE
+================================================== */
 .password-toggle{
   position:absolute;
-
-  right:11px;
+  right:9px;
   top:50%;
-
   transform:translateY(-50%);
-
-  width:29px;
-  height:29px;
-
-  border:none;
-
+  width:34px;
+  height:34px;
+  padding:0;
+  border:1px solid transparent;
+  border-radius:9px;
   background:transparent;
-
-  color:#8995a6;
-
+  color:#93A4BC;
   display:flex;
   align-items:center;
   justify-content:center;
-
   cursor:pointer;
+  transition:
+    background .2s ease,
+    color .2s ease,
+    border-color .2s ease;
 }
 
-.password-note{
-  margin-top:6px;
+.password-toggle:hover{
+  background:var(--blue-light);
+  color:var(--blue);
+  border-color:var(--blue-border);
+}
 
+.password-toggle:focus-visible{
+  outline:2px solid var(--blue);
+  outline-offset:2px;
+}
+
+/* ==================================================
+   PASSWORD NOTE
+================================================== */
+.password-note{
+  margin-top:7px;
   display:flex;
   align-items:center;
-
-  gap:5px;
-
-  color:#8a96a7;
-
+  gap:6px;
+  color:#8491A3;
   font-size:8.5px;
+  line-height:1.7;
 }
 
 .password-note i{
-  color:#0b2d5c;
+  color:var(--blue);
 }
 
-/* =========================
-   BUTTON
-========================= */
-
+/* ==================================================
+   CREATE ACCOUNT BUTTON
+================================================== */
 .submit-button{
+  position:relative;
   width:100%;
-
-  height:49px;
-
-  border:none;
-
-  border-radius:11px;
-
-  background:
-    linear-gradient(
-      145deg,
-      #0b2d5c,
-      #071f40
-    );
-
+  min-height:51px;
+  height:51px;
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:12px;
+  background:linear-gradient(
+    135deg,
+    #3B82F6,
+    #2563EB 48%,
+    #1D4ED8
+  );
   color:white;
-
   font-size:11.5px;
-
   font-weight:700;
-
+  letter-spacing:.1px;
   cursor:pointer;
-
-  margin-top:6px;
-
+  overflow:hidden;
+  margin-top:5px;
   box-shadow:
-    0 9px 22px rgba(11,45,92,.17);
+    0 10px 24px rgba(37,99,235,.23),
+    inset 0 1px 0 rgba(255,255,255,.2);
+  transition:
+    transform .22s ease,
+    box-shadow .22s ease,
+    filter .22s ease;
+}
+
+.submit-button::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:-120%;
+  width:80%;
+  height:100%;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.18),
+    transparent
+  );
+  transform:skewX(-20deg);
+  transition:left .6s ease;
+  pointer-events:none;
+}
+
+.submit-button:hover::before{
+  left:140%;
+}
+
+.submit-button:hover{
+  transform:translateY(-2px);
+  box-shadow:0 14px 30px rgba(37,99,235,.29);
+  filter:brightness(1.04);
+}
+
+.submit-button:active{
+  transform:translateY(0);
 }
 
 .submit-button:disabled{
   opacity:.65;
-
   cursor:not-allowed;
+  transform:none;
+  filter:none;
 }
 
 .submit-button i{
-  margin-right:7px;
+  margin-right:8px;
 }
 
-/* =========================
+/* ==================================================
    MESSAGE
-========================= */
-
+================================================== */
 .message{
   display:none;
-
   margin-top:14px;
-
-  padding:11px 13px;
-
-  border-radius:10px;
-
+  padding:12px 13px;
+  border-radius:11px;
   font-size:9.5px;
-
-  line-height:1.65;
+  line-height:1.8;
+  overflow-wrap:anywhere;
 }
 
 .message.success{
   display:block;
-
-  background:#edf9f1;
-
-  border:1px solid #c9ecd4;
-
-  color:#18733a;
+  background:#F0FDF4;
+  border:1px solid #BBF7D0;
+  color:#18733A;
 }
 
 .message.error{
   display:block;
-
-  background:#fff3f3;
-
-  border:1px solid #f0cccc;
-
-  color:#b42318;
+  background:#FEF2F2;
+  border:1px solid #FECACA;
+  color:#B42318;
 }
 
-/* =========================
-   LOGIN
-========================= */
-
+/* ==================================================
+   LOGIN LINK
+================================================== */
 .login-link{
   text-align:center;
-
-  margin-top:20px;
-
-  color:#667085;
-
+  margin-top:21px;
+  color:var(--muted);
   font-size:10px;
+  line-height:1.8;
 }
 
 .login-link a{
-  color:#0b2d5c;
-
+  color:var(--blue);
   font-weight:800;
-
   margin-left:4px;
 }
 
-/* =========================
-   SECURITY
-========================= */
+.login-link a:hover{
+  color:var(--blue-hover);
+  text-decoration:underline;
+}
 
+/* ==================================================
+   SECURITY NOTE
+================================================== */
 .security-note{
-  margin-top:20px;
-
+  margin-top:22px;
   padding:14px;
-
-  border-radius:12px;
-
-  background:#f7faff;
-
-  border:1px solid #e8eef5;
-
+  border-radius:13px;
+  background:linear-gradient(
+    135deg,
+    rgba(239,246,255,.98),
+    rgba(219,234,254,.55)
+  );
+  border:1px solid #DBEAFE;
   display:flex;
   align-items:flex-start;
-
-  gap:9px;
+  gap:10px;
 }
 
 .security-icon{
-  width:27px;
-  height:27px;
-
+  width:30px;
+  height:30px;
   flex:none;
-
-  border-radius:8px;
-
-  background:#eef4fb;
-
-  color:#0b2d5c;
-
+  border-radius:9px;
+  background:#DBEAFE;
+  color:var(--blue);
   display:flex;
   align-items:center;
   justify-content:center;
-
-  font-size:10px;
+  font-size:11px;
 }
 
 .security-note p{
-  color:#7b8798;
-
+  color:#64748B;
   font-size:8.5px;
-
-  line-height:1.65;
+  line-height:1.85;
 }
 
-/* =========================
-   VERIFY SCREEN
-========================= */
+.security-note strong{
+  color:#1E40AF;
+}
 
+/* ==================================================
+   VERIFY SCREEN
+================================================== */
 .verify-screen{
   display:none;
 }
@@ -620,190 +726,194 @@ input::placeholder{
 .verify-icon{
   width:72px;
   height:72px;
-
   margin:0 auto 17px;
-
   border-radius:22px;
-
-  background:#eef4fb;
-
-  color:#0b2d5c;
-
+  background:linear-gradient(145deg,#DBEAFE,#EFF6FF);
+  color:var(--blue);
   display:flex;
   align-items:center;
   justify-content:center;
-
   font-size:29px;
+  box-shadow:0 10px 24px rgba(37,99,235,.08);
 }
 
 .verify-card{
-  background:white;
-
-  border:1px solid #e0e8f2;
-
-  border-radius:22px;
-
-  padding:28px 22px;
-
+  background:rgba(255,255,255,.88);
+  border:1px solid rgba(255,255,255,.98);
+  border-radius:23px;
+  padding:29px 24px;
   text-align:center;
-
-  box-shadow:
-    0 20px 55px rgba(7,31,64,.08);
+  box-shadow:0 20px 55px rgba(37,99,235,.09);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  transition:
+    background .25s ease,
+    border-color .25s ease,
+    box-shadow .25s ease;
 }
 
 .verify-card h2{
-  color:#071f40;
-
-  font-size:20px;
-
-  margin-bottom:8px;
+  color:#1D4ED8;
+  font-size:21px;
+  margin-bottom:9px;
 }
 
 .verify-card .verify-text{
   color:#667085;
-
   font-size:10px;
-
-  line-height:1.8;
-
+  line-height:1.9;
   margin-bottom:18px;
 }
 
 .email-box{
-  background:#f5f8fc;
-
-  border:1px solid #e2e9f1;
-
+  background:var(--blue-light);
+  border:1px solid var(--blue-border);
   border-radius:12px;
-
-  padding:12px;
-
-  color:#0b2d5c;
-
+  padding:13px;
+  color:var(--blue-dark);
   font-size:10px;
-
   font-weight:700;
-
   word-break:break-word;
-
-  margin-bottom:16px;
+  margin-bottom:17px;
 }
 
 .verify-status{
-  padding:11px;
-
+  padding:12px;
   border-radius:11px;
-
-  background:#f7faff;
-
+  background:#F8FAFC;
+  border:1px solid #E2E8F0;
   color:#667085;
-
   font-size:9px;
-
-  line-height:1.6;
-
-  margin-bottom:14px;
+  line-height:1.8;
+  margin-bottom:15px;
 }
 
 .verify-status.success{
-  background:#edf9f1;
-
-  color:#18733a;
-
-  border:1px solid #c9ecd4;
+  background:#F0FDF4;
+  color:#18733A;
+  border:1px solid #BBF7D0;
 }
 
 .verify-status.error{
-  background:#fff3f3;
-
-  color:#b42318;
-
-  border:1px solid #f0cccc;
+  background:#FEF2F2;
+  color:#B42318;
+  border:1px solid #FECACA;
 }
 
 .verify-button,
 .resend-button{
   width:100%;
-
-  height:46px;
-
+  min-height:47px;
   border:none;
-
-  border-radius:11px;
-
+  border-radius:12px;
   font-family:"Poppins",sans-serif;
-
   font-size:10.5px;
-
   font-weight:700;
-
   cursor:pointer;
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
 }
 
 .verify-button{
-  background:#0b2d5c;
-
+  background:linear-gradient(135deg,#3B82F6,#2563EB);
   color:white;
+  margin-bottom:10px;
+  box-shadow:0 8px 18px rgba(37,99,235,.18);
+}
 
-  margin-bottom:9px;
+.verify-button:hover{
+  transform:translateY(-1px);
+  box-shadow:0 11px 23px rgba(37,99,235,.23);
 }
 
 .resend-button{
-  background:#eef4fb;
+  background:var(--blue-light);
+  border:1px solid var(--blue-border);
+  color:var(--blue);
+}
 
-  color:#0b2d5c;
+.resend-button:hover{
+  background:var(--blue-soft);
 }
 
 .verify-button:disabled,
 .resend-button:disabled{
   opacity:.55;
-
   cursor:not-allowed;
+  transform:none;
 }
 
-/* =========================
+/* ==================================================
    FOOTER
-========================= */
-
+================================================== */
 .footer{
   text-align:center;
-
   padding:0 15px 25px;
-
-  color:#9aa5b5;
-
-  font-size:8.5px;
+  color:#9AA5B5;
+  font-size:9px;
+  line-height:1.9;
 }
 
-/* =========================
+.footer-brand{
+  color:var(--blue);
+  font-weight:700;
+}
+
+/* ==================================================
+   FOCUS ACCESSIBILITY
+================================================== */
+a:focus-visible{
+  outline:2px solid var(--blue);
+  outline-offset:3px;
+  border-radius:5px;
+}
+
+/* ==================================================
+   TABLET
+================================================== */
+@media(min-width:601px) and (max-width:900px){
+  .main{
+    padding:38px 22px 40px;
+  }
+
+  .auth-wrapper{
+    max-width:450px;
+  }
+
+  .card{
+    padding:29px;
+  }
+}
+
+/* ==================================================
    MOBILE
-========================= */
-
+================================================== */
 @media(max-width:600px){
-
   .header-inner{
-    min-height:62px;
-
-    padding:9px 12px;
+    min-height:65px;
+    padding:10px 14px;
+    gap:10px;
   }
 
   .logo{
     font-size:15px;
+    gap:8px;
+    letter-spacing:-.5px;
   }
 
   .logo-icon{
-    width:32px;
-    height:32px;
-
-    border-radius:9px;
-
-    font-size:13px;
+    width:35px;
+    height:35px;
+    border-radius:11px;
+    font-size:14px;
   }
 
   .home-link{
-    padding:8px 10px;
-
+    padding:9px 11px;
     font-size:10px;
+    gap:6px;
+    border-radius:11px;
   }
 
   .home-link span{
@@ -811,427 +921,675 @@ input::placeholder{
   }
 
   .main{
-    padding:34px 13px 48px;
+    min-height:calc(100vh - 65px);
+    min-height:calc(100dvh - 65px);
+    padding:30px 14px 35px;
+    align-items:flex-start;
+  }
+
+  .auth-wrapper{
+    max-width:430px;
   }
 
   .auth-heading{
-    margin-bottom:20px;
+    margin-bottom:22px;
   }
 
   .auth-icon{
-    width:53px;
-    height:53px;
-
-    border-radius:15px;
-
-    font-size:18px;
+    width:57px;
+    height:57px;
+    border-radius:17px;
+    font-size:20px;
+    margin-bottom:15px;
   }
 
   .auth-heading h1{
-    font-size:24px;
+    font-size:25px;
   }
 
   .auth-heading p{
     font-size:10px;
+    padding:0 7px;
+  }
 
-    padding:0 8px;
+  .heading-accent{
+    width:31px;
+    height:3px;
+    margin-top:10px;
   }
 
   .card{
-    padding:22px 17px;
+    padding:24px 19px;
+    border-radius:21px;
+  }
 
-    border-radius:18px;
+  .card-title{
+    font-size:18px;
+  }
+
+  .card-badge{
+    padding:6px 8px;
+    font-size:8px;
+  }
+
+  .card-subtitle{
+    font-size:10px;
+  }
+
+  .form-group{
+    margin-bottom:17px;
+  }
+
+  input{
+    height:49px;
+    font-size:11px;
+  }
+
+  .submit-button{
+    height:50px;
+    min-height:50px;
+  }
+
+  .security-note{
+    padding:13px;
   }
 
   .verify-card{
     padding:25px 17px;
-
-    border-radius:18px;
+    border-radius:19px;
   }
 
+  .verify-card h2{
+    font-size:19px;
+  }
+
+  .footer{
+    padding-bottom:21px;
+  }
 }
 
+/* ==================================================
+   SMALL PHONES
+================================================== */
 @media(max-width:370px){
+  .header-inner{
+    padding:9px 10px;
+  }
 
   .logo{
     font-size:13px;
+    gap:7px;
   }
 
-  .card-badge{
-    display:none;
+  .logo-icon{
+    width:32px;
+    height:32px;
+    border-radius:9px;
+    font-size:12px;
+  }
+
+  .home-link{
+    padding:8px 9px;
+  }
+
+  .main{
+    padding:26px 11px 30px;
   }
 
   .auth-heading h1{
     font-size:22px;
   }
 
+  .card{
+    padding:21px 15px;
+    border-radius:18px;
+  }
+
+  .card-badge{
+    display:none;
+  }
+
+  .card-title{
+    font-size:17px;
+  }
+
+  input{
+    font-size:10.5px;
+  }
+
+  .security-note p{
+    font-size:8px;
+  }
 }
 
+/* ==================================================
+   GLOBAL DARK MODE
+   No toggle button on this page.
+   Theme comes from homepage/dashboard.
+================================================== */
+html.dark-mode{
+  color-scheme:dark;
+  --blue:#60A5FA;
+  --blue-dark:#93C5FD;
+  --blue-light:#172B4D;
+  --blue-soft:#1E3A5F;
+  --blue-border:#345783;
+  --blue-hover:#BFDBFE;
+  --text:#F1F5F9;
+  --muted:#A7B4C8;
+  --white:#111827;
+}
+
+html.dark-mode body{
+  background:
+    radial-gradient(
+      ellipse at 8% 12%,
+      rgba(37,99,235,.18),
+      transparent 32%
+    ),
+    radial-gradient(
+      ellipse at 95% 90%,
+      rgba(96,165,250,.10),
+      transparent 32%
+    ),
+    linear-gradient(
+      145deg,
+      #080F1D 0%,
+      #0B1424 48%,
+      #101D32 100%
+    );
+  color:#F1F5F9;
+}
+
+html.dark-mode ::selection{
+  background:#1D4ED8;
+  color:#FFFFFF;
+}
+
+/* HEADER */
+html.dark-mode .header{
+  background:rgba(11,20,36,.94);
+  border-bottom-color:#243650;
+  box-shadow:0 4px 20px rgba(0,0,0,.18);
+}
+
+html.dark-mode .logo{
+  color:#60A5FA;
+}
+
+html.dark-mode .home-link{
+  background:#142238;
+  border-color:#345783;
+  color:#93C5FD;
+}
+
+html.dark-mode .home-link:hover{
+  background:#1B3150;
+  border-color:#60A5FA;
+}
+
+/* HEADINGS */
+html.dark-mode .auth-heading h1,
+html.dark-mode .card-title,
+html.dark-mode .verify-card h2{
+  color:#93C5FD;
+}
+
+html.dark-mode .auth-heading p,
+html.dark-mode .card-subtitle,
+html.dark-mode .login-link,
+html.dark-mode .verify-card .verify-text{
+  color:#A7B4C8;
+}
+
+html.dark-mode .auth-icon::before{
+  border-color:rgba(96,165,250,.25);
+}
+
+html.dark-mode .auth-icon::after{
+  border-color:#101D32;
+}
+
+/* CARDS */
+html.dark-mode .card{
+  background:rgba(17,29,48,.94);
+  border-color:#283B56;
+  box-shadow:
+    0 25px 70px rgba(0,0,0,.22),
+    0 4px 15px rgba(0,0,0,.12),
+    inset 0 1px 0 rgba(255,255,255,.025);
+}
+
+html.dark-mode .card::after{
+  background:rgba(59,130,246,.10);
+}
+
+html.dark-mode .card-badge{
+  background:#172B4D;
+  border-color:#345783;
+  color:#93C5FD;
+}
+
+/* FORM */
+html.dark-mode .form-group label{
+  color:#D5DFED;
+}
+
+html.dark-mode input{
+  background:#0C1728;
+  border-color:#2B405D;
+  color:#F1F5F9;
+}
+
+html.dark-mode input::placeholder{
+  color:#8292AA;
+}
+
+html.dark-mode input:hover{
+  border-color:#5278AB;
+}
+
+html.dark-mode input:focus{
+  background:#101F34;
+  border-color:#60A5FA;
+  box-shadow:
+    0 0 0 4px rgba(96,165,250,.12),
+    0 3px 10px rgba(0,0,0,.12);
+}
+
+html.dark-mode input:disabled{
+  background:#111C2C;
+}
+
+html.dark-mode .input-icon{
+  color:#7DADEB;
+}
+
+html.dark-mode .password-toggle{
+  color:#9CAEC5;
+}
+
+html.dark-mode .password-toggle:hover{
+  background:#172B4D;
+  color:#93C5FD;
+  border-color:#345783;
+}
+
+html.dark-mode .password-note{
+  color:#91A2B9;
+}
+
+html.dark-mode .password-note i{
+  color:#93C5FD;
+}
+
+/* LINKS */
+html.dark-mode .login-link a{
+  color:#93C5FD;
+}
+
+html.dark-mode .login-link a:hover{
+  color:#BFDBFE;
+}
+
+/* SECURITY NOTE */
+html.dark-mode .security-note{
+  background:linear-gradient(
+    135deg,
+    rgba(23,43,77,.95),
+    rgba(22,39,65,.85)
+  );
+  border-color:#304B70;
+}
+
+html.dark-mode .security-icon{
+  background:#223D63;
+  color:#93C5FD;
+}
+
+html.dark-mode .security-note p{
+  color:#B4C3D8;
+}
+
+html.dark-mode .security-note strong{
+  color:#BFDBFE;
+}
+
+/* VERIFICATION */
+html.dark-mode .verify-icon{
+  background:linear-gradient(145deg,#1D3A60,#172B4D);
+  color:#93C5FD;
+  box-shadow:0 10px 24px rgba(0,0,0,.15);
+}
+
+html.dark-mode .verify-card{
+  background:rgba(17,29,48,.94);
+  border-color:#283B56;
+  box-shadow:0 20px 55px rgba(0,0,0,.22);
+}
+
+html.dark-mode .email-box{
+  background:#172B4D;
+  border-color:#345783;
+  color:#BFDBFE;
+}
+
+html.dark-mode .verify-status{
+  background:#111E30;
+  border-color:#304158;
+  color:#B4C3D8;
+}
+
+html.dark-mode .verify-status.success{
+  background:#102C22;
+  color:#86EFAC;
+  border-color:#22543D;
+}
+
+html.dark-mode .verify-status.error{
+  background:#351B25;
+  color:#FCA5A5;
+  border-color:#71303B;
+}
+
+html.dark-mode .resend-button{
+  background:#172B4D;
+  border-color:#345783;
+  color:#93C5FD;
+}
+
+html.dark-mode .resend-button:hover{
+  background:#1E3A5F;
+}
+
+/* FOOTER */
+html.dark-mode .footer{
+  color:#8393AA;
+}
+
+html.dark-mode .footer-brand{
+  color:#93C5FD;
+}
+
+/* ACCESSIBILITY */
+html.dark-mode a:focus-visible{
+  outline-color:#93C5FD;
+}
+
+/* ==================================================
+   REDUCED MOTION
+================================================== */
+@media(prefers-reduced-motion:reduce){
+  *,
+  *::before,
+  *::after{
+    scroll-behavior:auto !important;
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+  }
+}
 </style>
-
 </head>
-
 
 <body>
 
-
-<!-- =========================
+<!-- ==================================================
      HEADER
-========================= -->
-
+================================================== -->
 <header class="header">
-
   <div class="header-inner">
-
     <a
       href="index.html"
       class="logo"
+      aria-label="Gentle Acct Store homepage"
     >
-
       <span class="logo-icon">
-
         <i class="fa-solid fa-store"></i>
-
       </span>
-
-      <span>
-        Gentle Acct Store
-      </span>
-
+      <span>Gentle Acct Store</span>
     </a>
-
 
     <a
       href="index.html"
       class="home-link"
     >
-
       <i class="fa-solid fa-arrow-left"></i>
-
-      <span>
-        Back to Home
-      </span>
-
+      <span>Back to Home</span>
     </a>
-
   </div>
-
 </header>
 
-
-<!-- =========================
+<!-- ==================================================
      MAIN
-========================= -->
-
+================================================== -->
 <main class="main">
-
   <div class="auth-wrapper">
 
-
-    <!-- =========================
+    <!-- ==================================================
          SIGNUP SCREEN
-    ========================= -->
-
+    ================================================== -->
     <div id="signupScreen">
 
+      <!-- INTRODUCTION -->
       <div class="auth-heading">
-
         <div class="auth-icon">
-
           <i class="fa-solid fa-user-plus"></i>
-
         </div>
 
-
-        <h1>
-          Create Your Account
-        </h1>
-
+        <h1>Create Your Account</h1>
 
         <p>
           Join Gentle Acct Store and manage your
           products, wallet and orders from one account.
         </p>
 
+        <span
+          class="heading-accent"
+          aria-hidden="true"
+        ></span>
       </div>
 
-
+      <!-- SIGNUP CARD -->
       <div class="card">
-
         <div class="card-title-row">
-
           <div class="card-title">
             Create Account
           </div>
 
-
           <div class="card-badge">
-
             <i class="fa-solid fa-shield-halved"></i>
-
-            Secure
-
+            Secure Signup
           </div>
-
         </div>
-
 
         <div class="card-subtitle">
-
           Enter your details below to create your
           Gentle Acct Store account.
-
         </div>
 
+        <!-- SIGNUP FORM -->
+        <form id="signupForm" novalidate>
 
-        <form id="signupForm">
-
-
-          <!-- NAME -->
-
+          <!-- FULL NAME -->
           <div class="form-group">
-
-            <label for="name">
-              Full Name
-            </label>
-
+            <label for="name">Full Name</label>
 
             <div class="input-wrap">
-
               <i class="fa-solid fa-user input-icon"></i>
-
 
               <input
                 type="text"
                 id="name"
+                name="name"
                 placeholder="Enter your full name"
                 autocomplete="name"
                 required
               >
-
             </div>
-
           </div>
 
-
           <!-- EMAIL -->
-
           <div class="form-group">
-
-            <label for="email">
-              Email Address
-            </label>
-
+            <label for="email">Email Address</label>
 
             <div class="input-wrap">
-
               <i class="fa-solid fa-envelope input-icon"></i>
-
 
               <input
                 type="email"
                 id="email"
+                name="email"
                 placeholder="Enter your email address"
                 autocomplete="email"
                 autocapitalize="none"
                 spellcheck="false"
+                inputmode="email"
                 required
               >
-
             </div>
-
           </div>
 
-
           <!-- PASSWORD -->
-
           <div class="form-group">
-
-            <label for="password">
-              Password
-            </label>
-
+            <label for="password">Password</label>
 
             <div class="input-wrap">
-
               <i class="fa-solid fa-lock input-icon"></i>
-
 
               <input
                 type="password"
                 id="password"
+                name="password"
                 placeholder="Create a password"
                 minlength="6"
                 autocomplete="new-password"
                 required
               >
 
-
               <button
                 type="button"
                 class="password-toggle"
                 id="passwordToggle"
                 aria-label="Show password"
+                aria-controls="password"
+                aria-pressed="false"
               >
-
                 <i class="fa-solid fa-eye"></i>
-
               </button>
-
             </div>
-
 
             <div class="password-note">
-
               <i class="fa-solid fa-circle-info"></i>
-
               Password must contain at least 6 characters.
-
             </div>
-
           </div>
 
-
           <!-- CONFIRM PASSWORD -->
-
           <div class="form-group">
-
             <label for="confirmPassword">
               Confirm Password
             </label>
 
-
             <div class="input-wrap">
-
               <i class="fa-solid fa-shield-halved input-icon"></i>
-
 
               <input
                 type="password"
                 id="confirmPassword"
+                name="confirmPassword"
                 placeholder="Confirm your password"
                 minlength="6"
                 autocomplete="new-password"
                 required
               >
 
-
               <button
                 type="button"
                 class="password-toggle"
                 id="confirmPasswordToggle"
                 aria-label="Show password"
+                aria-controls="confirmPassword"
+                aria-pressed="false"
               >
-
                 <i class="fa-solid fa-eye"></i>
-
               </button>
-
             </div>
-
           </div>
 
-
-          <!-- SUBMIT -->
-
+          <!-- CREATE ACCOUNT BUTTON -->
           <button
             type="submit"
             id="signupBtn"
             class="submit-button"
           >
-
             <i class="fa-solid fa-user-plus"></i>
-
             Create Account
-
           </button>
-
         </form>
 
-
+        <!-- SIGNUP MESSAGE -->
         <div
           id="message"
           class="message"
+          role="status"
+          aria-live="polite"
         ></div>
 
-
+        <!-- LOGIN LINK -->
         <div class="login-link">
-
           Already have an account?
-
-          <a href="login.html">
-            Login
-          </a>
-
+          <a href="login.html">Login</a>
         </div>
 
-
+        <!-- SECURITY NOTE -->
         <div class="security-note">
-
           <div class="security-icon">
-
             <i class="fa-solid fa-shield-halved"></i>
-
           </div>
 
-
           <p>
-
+            <strong>One more step after signup.</strong>
             You'll need to verify your email before
             accessing your Gentle Acct Store account.
-
           </p>
-
         </div>
-
       </div>
-
     </div>
 
-
-    <!-- =========================
+    <!-- ==================================================
          VERIFY SCREEN
-    ========================= -->
-
+    ================================================== -->
     <div
       id="verifyScreen"
       class="verify-screen"
     >
-
       <div class="auth-heading">
-
         <div class="verify-icon">
-
           <i class="fa-solid fa-envelope-circle-check"></i>
-
         </div>
 
-
-        <h1>
-          Check Your Email
-        </h1>
-
+        <h1>Check Your Email</h1>
 
         <p>
           Your account has been created successfully.
         </p>
 
+        <span
+          class="heading-accent"
+          aria-hidden="true"
+        ></span>
       </div>
 
-
+      <!-- VERIFICATION CARD -->
       <div class="verify-card">
-
-        <h2>
-          Verify Your Email
-        </h2>
-
+        <h2>Verify Your Email</h2>
 
         <p class="verify-text">
-
-          We've sent a verification link to:
-
+          We've sent a verification link to the email
+          address below. Open that email and follow
+          the instructions.
         </p>
-
 
         <div
           id="verificationEmail"
@@ -1240,265 +1598,258 @@ input::placeholder{
           -
         </div>
 
-
+        <!-- VERIFICATION STATUS -->
         <div
           id="verifyStatus"
           class="verify-status"
+          role="status"
+          aria-live="polite"
         >
-
           Open your email and tap the verification
           link. Then return here.
-
         </div>
 
-
+        <!-- CHECK VERIFICATION -->
         <button
           type="button"
           id="checkVerification"
           class="verify-button"
         >
-
           <i class="fa-solid fa-circle-check"></i>
-
           I've Verified My Email
-
         </button>
 
-
+        <!-- RESEND VERIFICATION -->
         <button
           type="button"
           id="resendVerification"
           class="resend-button"
         >
-
           <i class="fa-solid fa-paper-plane"></i>
-
           Resend Verification Email
-
         </button>
-
       </div>
-
     </div>
 
-
   </div>
-
 </main>
 
-
+<!-- ==================================================
+     FOOTER
+================================================== -->
 <footer class="footer">
-
-  © 2026 Gentle Acct Store. All rights reserved.
-
+  <p>
+    © 2026
+    <span class="footer-brand">Gentle Acct Store</span>.
+    All rights reserved.
+  </p>
 </footer>
 
-
-<!-- =========================
-     FIREBASE
-========================= -->
-
+<!-- ==================================================
+     FIREBASE SDK
+================================================== -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-
 <script src="firebase.js"></script>
 
-
 <script>
+/* ==================================================
+   SHARED WEBSITE THEME
+   No toggle button on signup.
+   Homepage/dashboard use the same storage key.
+================================================== */
+(function(){
+  const THEME_KEY =
+    "gentle-acct-store-theme";
 
-/* =========================
-   ELEMENTS
-========================= */
-
-const form =
-  document.getElementById(
-    "signupForm"
-  );
-
-const signupButton =
-  document.getElementById(
-    "signupBtn"
-  );
-
-const message =
-  document.getElementById(
-    "message"
-  );
-
-const password =
-  document.getElementById(
-    "password"
-  );
-
-const confirmPassword =
-  document.getElementById(
-    "confirmPassword"
-  );
-
-const passwordToggle =
-  document.getElementById(
-    "passwordToggle"
-  );
-
-const confirmPasswordToggle =
-  document.getElementById(
-    "confirmPasswordToggle"
-  );
-
-const signupScreen =
-  document.getElementById(
-    "signupScreen"
-  );
-
-const verifyScreen =
-  document.getElementById(
-    "verifyScreen"
-  );
-
-const verificationEmail =
-  document.getElementById(
-    "verificationEmail"
-  );
-
-const verifyStatus =
-  document.getElementById(
-    "verifyStatus"
-  );
-
-const checkVerification =
-  document.getElementById(
-    "checkVerification"
-  );
-
-const resendVerification =
-  document.getElementById(
-    "resendVerification"
-  );
-
-
-let verificationUser =
-  null;
-
-let verificationTimer =
-  null;
-
-
-/* =========================
-   MESSAGE
-========================= */
-
-function showMessage(
-  text,
-  type
-){
-
-  message.textContent =
-    text;
-
-  message.className =
-    "message " + type;
-
-}
-
-
-/* =========================
-   PASSWORD TOGGLE
-========================= */
-
-function togglePassword(
-  input,
-  button
-){
-
-  const icon =
-    button.querySelector(
-      "i"
+  const themeColorMeta =
+    document.querySelector(
+      'meta[name="theme-color"]'
     );
 
+  function syncTheme(){
+    let isDark = false;
 
-  if(
-    input.type ===
-    "password"
-  ){
+    try{
+      isDark =
+        localStorage.getItem(THEME_KEY) === "dark";
+    }catch(error){
+      console.warn(
+        "Unable to read saved website theme:",
+        error
+      );
+    }
 
-    input.type =
-      "text";
+    document.documentElement.classList.toggle(
+      "dark-mode",
+      isDark
+    );
 
-    icon.className =
-      "fa-solid fa-eye-slash";
+    document.body.classList.toggle(
+      "dark-mode",
+      isDark
+    );
+
+    document.documentElement.style.colorScheme =
+      isDark ? "dark" : "light";
+
+    if(themeColorMeta){
+      themeColorMeta.setAttribute(
+        "content",
+        isDark ? "#0B1424" : "#2563EB"
+      );
+    }
+  }
+
+  /* APPLY CURRENT SAVED THEME */
+  syncTheme();
+
+  /* FOLLOW CHANGES FROM OTHER OPEN TABS */
+  window.addEventListener(
+    "storage",
+    function(event){
+      if(
+        event.key === THEME_KEY ||
+        event.key === null
+      ){
+        syncTheme();
+      }
+    }
+  );
+
+  /* REFRESH THE THEME WHEN RETURNING TO THIS PAGE */
+  window.addEventListener(
+    "pageshow",
+    syncTheme
+  );
+
+  /* KEEP THE PAGE CURRENT WHEN IT BECOMES VISIBLE */
+  document.addEventListener(
+    "visibilitychange",
+    function(){
+      if(!document.hidden){
+        syncTheme();
+      }
+    }
+  );
+})();
+
+/* ==================================================
+   ELEMENTS
+================================================== */
+const form =
+  document.getElementById("signupForm");
+
+const signupButton =
+  document.getElementById("signupBtn");
+
+const message =
+  document.getElementById("message");
+
+const password =
+  document.getElementById("password");
+
+const confirmPassword =
+  document.getElementById("confirmPassword");
+
+const passwordToggle =
+  document.getElementById("passwordToggle");
+
+const confirmPasswordToggle =
+  document.getElementById("confirmPasswordToggle");
+
+const signupScreen =
+  document.getElementById("signupScreen");
+
+const verifyScreen =
+  document.getElementById("verifyScreen");
+
+const verificationEmail =
+  document.getElementById("verificationEmail");
+
+const verifyStatus =
+  document.getElementById("verifyStatus");
+
+const checkVerification =
+  document.getElementById("checkVerification");
+
+const resendVerification =
+  document.getElementById("resendVerification");
+
+let verificationUser = null;
+let verificationTimer = null;
+let verificationFinished = false;
+
+/* ==================================================
+   MESSAGE
+================================================== */
+function showMessage(text,type){
+  message.textContent = text;
+  message.className = "message " + type;
+}
+
+/* ==================================================
+   PASSWORD VISIBILITY
+================================================== */
+function togglePassword(input,button){
+  const icon = button.querySelector("i");
+
+  if(input.type === "password"){
+    input.type = "text";
+    icon.className = "fa-solid fa-eye-slash";
 
     button.setAttribute(
       "aria-label",
       "Hide password"
     );
 
+    button.setAttribute(
+      "aria-pressed",
+      "true"
+    );
   }else{
-
-    input.type =
-      "password";
-
-    icon.className =
-      "fa-solid fa-eye";
+    input.type = "password";
+    icon.className = "fa-solid fa-eye";
 
     button.setAttribute(
       "aria-label",
       "Show password"
     );
 
+    button.setAttribute(
+      "aria-pressed",
+      "false"
+    );
   }
-
 }
-
 
 passwordToggle.addEventListener(
   "click",
   function(){
-
-    togglePassword(
-      password,
-      passwordToggle
-    );
-
+    togglePassword(password,passwordToggle);
   }
 );
-
 
 confirmPasswordToggle.addEventListener(
   "click",
   function(){
-
     togglePassword(
       confirmPassword,
       confirmPasswordToggle
     );
-
   }
 );
 
+/* ==================================================
+   SHOW VERIFICATION SCREEN
+================================================== */
+function showVerifyScreen(user){
+  verificationUser = user;
+  verificationEmail.textContent = user.email || "";
 
-/* =========================
-   SHOW VERIFY SCREEN
-========================= */
-
-function showVerifyScreen(
-  user
-){
-
-  verificationUser =
-    user;
-
-  verificationEmail.textContent =
-    user.email || "";
-
-  signupScreen.style.display =
-    "none";
-
-  verifyScreen.classList.add(
-    "show"
-  );
+  signupScreen.style.display = "none";
+  verifyScreen.classList.add("show");
 
   startVerificationCheck();
 
@@ -1506,593 +1857,442 @@ function showVerifyScreen(
     top:0,
     behavior:"smooth"
   });
-
 }
 
-
-/* =========================
-   START AUTO CHECK
-========================= */
-
+/* ==================================================
+   START AUTOMATIC VERIFICATION CHECK
+================================================== */
 function startVerificationCheck(){
-
-  if(
-    verificationTimer
-  ){
-
-    clearInterval(
-      verificationTimer
-    );
-
+  if(verificationTimer){
+    clearInterval(verificationTimer);
   }
 
+  verificationTimer = setInterval(
+    async function(){
+      if(
+        !verificationUser ||
+        verificationFinished
+      ){
+        return;
+      }
 
-  verificationTimer =
-    setInterval(
-      async function(){
+      try{
+        await verificationUser.reload();
 
-        if(
-          !verificationUser
-        ){
+        const user = firebaseAuth.currentUser;
 
-          return;
-
+        if(user && user.emailVerified){
+          await verificationComplete();
         }
-
-
-        try{
-
-          await verificationUser.reload();
-
-
-          const user =
-            firebaseAuth.currentUser;
-
-
-          if(
-            user &&
-            user.emailVerified
-          ){
-
-            await verificationComplete();
-
-          }
-
-        }catch(error){
-
-          console.error(
-            "AUTO VERIFICATION ERROR:",
-            error
-          );
-
-        }
-
-      },
-      2000
-    );
-
+      }catch(error){
+        console.error(
+          "AUTO VERIFICATION ERROR:",
+          error
+        );
+      }
+    },
+    3000
+  );
 }
 
-
-/* =========================
+/* ==================================================
    VERIFICATION COMPLETE
-========================= */
-
+================================================== */
 async function verificationComplete(){
-
-  if(
-    verificationTimer
-  ){
-
-    clearInterval(
-      verificationTimer
-    );
-
-    verificationTimer =
-      null;
-
+  if(verificationFinished){
+    return;
   }
 
+  verificationFinished = true;
 
-  verifyStatus.className =
-    "verify-status success";
+  if(verificationTimer){
+    clearInterval(verificationTimer);
+    verificationTimer = null;
+  }
 
+  verifyStatus.className = "verify-status success";
 
-  verifyStatus.innerHTML =
-    '<i class="fa-solid fa-circle-check"></i> Email verified successfully. Redirecting to login...';
+  verifyStatus.textContent =
+    "Email verified successfully. Redirecting to login...";
 
-
-  checkVerification.disabled =
-    true;
-
-  resendVerification.disabled =
-    true;
-
+  checkVerification.disabled = true;
+  resendVerification.disabled = true;
 
   checkVerification.innerHTML =
     '<i class="fa-solid fa-spinner fa-spin"></i> Opening Login...';
 
-
   try{
-
     await firebaseAuth.signOut();
-
   }catch(error){
-
     console.error(
       "SIGNOUT AFTER VERIFICATION ERROR:",
       error
     );
-
   }
-
 
   setTimeout(
     function(){
-
-      window.location.replace(
-        "login.html"
-      );
-
+      window.location.replace("login.html");
     },
     800
   );
-
 }
 
-
-/* =========================
-   SIGN UP
-========================= */
-
+/* ==================================================
+   SIGNUP FORM
+================================================== */
 form.addEventListener(
   "submit",
   async function(event){
-
     event.preventDefault();
 
-
     const name =
-      document
-        .getElementById(
-          "name"
-        )
-        .value
-        .trim();
-
+      document.getElementById("name").value.trim();
 
     const email =
-      document
-        .getElementById(
-          "email"
-        )
+      document.getElementById("email")
         .value
-        .trim();
+        .trim()
+        .toLowerCase();
 
+    const passwordValue = password.value;
+    const confirmPasswordValue = confirmPassword.value;
 
-    const passwordValue =
-      password.value;
-
-
-    const confirmPasswordValue =
-      confirmPassword.value;
-
-
+    /* VALIDATE NAME */
     if(!name){
-
       showMessage(
         "Please enter your full name.",
         "error"
       );
-
       return;
-
     }
 
+    /* VALIDATE EMAIL */
+    if(!email){
+      showMessage(
+        "Please enter your email address.",
+        "error"
+      );
+      return;
+    }
 
-    if(
-      passwordValue !==
-      confirmPasswordValue
-    ){
-
+    /* VALIDATE PASSWORD MATCH */
+    if(passwordValue !== confirmPasswordValue){
       showMessage(
         "Passwords do not match.",
         "error"
       );
-
       return;
-
     }
 
-
-    if(
-      passwordValue.length < 6
-    ){
-
+    /* VALIDATE PASSWORD LENGTH */
+    if(passwordValue.length < 6){
       showMessage(
         "Password must contain at least 6 characters.",
         "error"
       );
-
       return;
-
     }
 
-
-    signupButton.disabled =
-      true;
-
+    /* PREPARE BUTTON */
+    signupButton.disabled = true;
 
     signupButton.innerHTML =
       '<i class="fa-solid fa-spinner fa-spin"></i> Creating Account...';
 
-
     try{
-
-      /* =========================
-         CREATE ACCOUNT
-      ========================= */
-
-      const result =
-        await firebaseAuth
-          .createUserWithEmailAndPassword(
-            email,
-            passwordValue
-          );
-
-
-      const user =
-        result.user;
-
-
-      /* =========================
-         SAVE NAME
-      ========================= */
-
-      await user.updateProfile({
-
-        displayName:
-          name
-
-      });
-
-
-      /* =========================
-         SAVE CUSTOMER
-      ========================= */
-
-      if(
-        typeof firebaseDB ===
-        "undefined"
-      ){
-
+      /* CHECK FIREBASE */
+      if(typeof firebaseAuth === "undefined"){
         throw new Error(
-          "Firestore is not available."
+          "Firebase Authentication is not configured. Check firebase.js."
         );
-
       }
 
+      /* CREATE FIREBASE ACCOUNT */
+      const result =
+        await firebaseAuth.createUserWithEmailAndPassword(
+          email,
+          passwordValue
+        );
+
+      const user = result.user;
+
+      if(!user){
+        throw new Error(
+          "The account could not be created."
+        );
+      }
+
+      /* SAVE DISPLAY NAME */
+      await user.updateProfile({
+        displayName:name
+      });
+
+      /* SAVE CUSTOMER PROFILE */
+      if(typeof firebaseDB === "undefined"){
+        throw new Error(
+          "ACCOUNT_CREATED_PROFILE_PENDING"
+        );
+      }
 
       await firebaseDB
         .collection("customers")
         .doc(user.uid)
         .set({
-
-          uid:
-            user.uid,
-
-          name:
-            name,
-
-          email:
-            user.email,
-
-          status:
-            "Active",
-
+          uid:user.uid,
+          name:name,
+          email:user.email,
+          status:"Active",
           createdAt:
-            firebase.firestore
-              .FieldValue
-              .serverTimestamp()
-
+            firebase.firestore.FieldValue.serverTimestamp()
         });
 
-
-      /* =========================
-         SEND VERIFICATION EMAIL
-      ========================= */
-
+      /* SEND VERIFICATION EMAIL */
       await user.sendEmailVerification();
 
+      /* CLEAR OLD CUSTOMER SESSION */
+      localStorage.removeItem("gentleLoggedIn");
+      localStorage.removeItem("gentleUser");
+      localStorage.removeItem("gentleCurrentUserId");
+      localStorage.removeItem("gentleAdminLoggedIn");
 
-      /* =========================
-         DO NOT LOGIN USER
-      ========================= */
-
-      localStorage.removeItem(
-        "gentleLoggedIn"
-      );
-
-      localStorage.removeItem(
-        "gentleUser"
-      );
-
-      localStorage.removeItem(
-        "gentleCurrentUserId"
-      );
-
-
-      /* =========================
-         SHOW VERIFY SCREEN
-      ========================= */
-
-      showVerifyScreen(
-        user
-      );
-
+      /* SHOW VERIFICATION SCREEN */
+      showVerifyScreen(user);
 
     }catch(error){
-
-      console.error(
-        "SIGNUP ERROR:",
-        error
-      );
-
+      console.error("SIGNUP ERROR:",error);
 
       let text =
-        "Unable to create your account.";
+        "Unable to complete signup. Please try again.";
 
-
-      if(
-        error.code ===
-        "auth/email-already-in-use"
-      ){
-
+      /* EMAIL ALREADY EXISTS */
+      if(error.code === "auth/email-already-in-use"){
         text =
-          "An account with this email already exists.";
-
+          "An account with this email already exists. Try logging in.";
       }
 
-      else if(
-        error.code ===
-        "auth/invalid-email"
-      ){
-
+      /* INVALID EMAIL */
+      else if(error.code === "auth/invalid-email"){
         text =
           "Please enter a valid email address.";
-
       }
 
-      else if(
-        error.code ===
-        "auth/weak-password"
-      ){
-
+      /* WEAK PASSWORD */
+      else if(error.code === "auth/weak-password"){
         text =
           "Your password is too weak. Use at least 6 characters.";
-
       }
 
-      else if(
-        error.code ===
-        "auth/network-request-failed"
-      ){
-
+      /* NETWORK ERROR */
+      else if(error.code === "auth/network-request-failed"){
         text =
           "Network error. Please check your internet connection.";
-
       }
 
-      else if(
-        error.message &&
-        error.message
-          .toLowerCase()
-          .includes("permission")
-      ){
-
+      /* RATE LIMIT */
+      else if(error.code === "auth/too-many-requests"){
         text =
-          "Your account was created, but your customer profile could not be saved.";
-
+          "Too many attempts. Please wait before trying again.";
       }
 
+      /* ACCOUNT CREATED BUT PROFILE FAILED */
+      else if(
+        error.message ===
+        "ACCOUNT_CREATED_PROFILE_PENDING"
+      ){
+        text =
+          "Your Firebase account was created, but the customer profile could not be saved. Please contact support before trying to register again.";
+      }
 
-      showMessage(
-        text,
-        "error"
-      );
+      /* FIRESTORE PERMISSION ERROR */
+      else if(error.code === "permission-denied"){
+        text =
+          "Your account may have been created, but saving the customer profile was blocked by database permissions. Check your Firestore rules before trying again.";
+      }
 
+      /* SHOW ERROR */
+      showMessage(text,"error");
 
-      signupButton.disabled =
-        false;
-
+      /* RESTORE BUTTON */
+      signupButton.disabled = false;
 
       signupButton.innerHTML =
         '<i class="fa-solid fa-user-plus"></i> Create Account';
-
     }
-
   }
 );
 
-
-/* =========================
-   MANUAL CHECK
-========================= */
-
+/* ==================================================
+   MANUAL EMAIL VERIFICATION CHECK
+================================================== */
 checkVerification.addEventListener(
   "click",
   async function(){
-
     if(
-      !verificationUser
+      !verificationUser ||
+      verificationFinished
     ){
-
       return;
-
     }
 
-
     try{
-
-      checkVerification.disabled =
-        true;
-
+      checkVerification.disabled = true;
 
       checkVerification.innerHTML =
         '<i class="fa-solid fa-spinner fa-spin"></i> Checking...';
 
-
       await verificationUser.reload();
 
+      const user = firebaseAuth.currentUser;
 
-      const user =
-        firebaseAuth.currentUser;
-
-
-      if(
-        user &&
-        user.emailVerified
-      ){
-
+      if(user && user.emailVerified){
         await verificationComplete();
-
       }else{
+        verifyStatus.className = "verify-status error";
 
-        verifyStatus.className =
-          "verify-status error";
+        verifyStatus.textContent =
+          "Your email has not been verified yet. Please check your inbox and spam folder, then try again.";
 
-
-        verifyStatus.innerHTML =
-          '<i class="fa-solid fa-circle-exclamation"></i> Your email has not been verified yet. Please check your inbox and spam folder, then try again.';
-
-
-        checkVerification.disabled =
-          false;
-
+        checkVerification.disabled = false;
 
         checkVerification.innerHTML =
           '<i class="fa-solid fa-circle-check"></i> I\'ve Verified My Email';
-
       }
-
-
     }catch(error){
-
       console.error(
         "VERIFICATION CHECK ERROR:",
         error
       );
 
-
-      verifyStatus.className =
-        "verify-status error";
-
+      verifyStatus.className = "verify-status error";
 
       verifyStatus.textContent =
         "Unable to check verification status. Please try again.";
 
-
-      checkVerification.disabled =
-        false;
-
+      checkVerification.disabled = false;
 
       checkVerification.innerHTML =
         '<i class="fa-solid fa-circle-check"></i> I\'ve Verified My Email';
-
     }
-
   }
 );
 
-
-/* =========================
-   RESEND EMAIL
-========================= */
-
+/* ==================================================
+   RESEND VERIFICATION EMAIL
+================================================== */
 resendVerification.addEventListener(
   "click",
   async function(){
-
     if(
-      !verificationUser
+      !verificationUser ||
+      verificationFinished
     ){
-
       return;
-
     }
 
-
     try{
-
-      resendVerification.disabled =
-        true;
-
+      resendVerification.disabled = true;
 
       resendVerification.innerHTML =
         '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
 
+      await verificationUser.sendEmailVerification();
 
-      await verificationUser
-        .sendEmailVerification();
-
-
-      verifyStatus.className =
-        "verify-status success";
-
+      verifyStatus.className = "verify-status success";
 
       verifyStatus.textContent =
         "A new verification email has been sent. Please check your inbox and spam folder.";
 
-
     }catch(error){
-
       console.error(
         "RESEND VERIFICATION ERROR:",
         error
       );
 
+      verifyStatus.className = "verify-status error";
 
-      verifyStatus.className =
-        "verify-status error";
-
-
-      if(
-        error.code ===
-        "auth/too-many-requests"
-      ){
-
+      if(error.code === "auth/too-many-requests"){
         verifyStatus.textContent =
-          "Too many verification emails were requested. Please wait a little before trying again.";
-
+          "Too many verification emails were requested. Please wait before trying again.";
       }else{
-
         verifyStatus.textContent =
           "Could not resend the verification email. Please try again.";
-
       }
-
     }
-
 
     setTimeout(
       function(){
+        if(!verificationFinished){
+          resendVerification.disabled = false;
 
-        resendVerification.disabled =
-          false;
-
-
-        resendVerification.innerHTML =
-          '<i class="fa-solid fa-paper-plane"></i> Resend Verification Email';
-
+          resendVerification.innerHTML =
+            '<i class="fa-solid fa-paper-plane"></i> Resend Verification Email';
+        }
       },
       3000
     );
-
   }
 );
 
+/* ==================================================
+   CLEAR ERRORS WHILE TYPING
+================================================== */
+document
+  .getElementById("name")
+  .addEventListener(
+    "input",
+    function(){
+      if(message.classList.contains("error")){
+        message.style.display = "none";
+        message.className = "message";
+      }
+    }
+  );
+
+document
+  .getElementById("email")
+  .addEventListener(
+    "input",
+    function(){
+      if(message.classList.contains("error")){
+        message.style.display = "none";
+        message.className = "message";
+      }
+    }
+  );
+
+password.addEventListener(
+  "input",
+  function(){
+    if(message.classList.contains("error")){
+      message.style.display = "none";
+      message.className = "message";
+    }
+  }
+);
+
+confirmPassword.addEventListener(
+  "input",
+  function(){
+    if(message.classList.contains("error")){
+      message.style.display = "none";
+      message.className = "message";
+    }
+  }
+);
+
+/* ==================================================
+   CLEAN UP VERIFICATION TIMER
+================================================== */
+window.addEventListener(
+  "pagehide",
+  function(){
+    if(verificationTimer){
+      clearInterval(verificationTimer);
+      verificationTimer = null;
+    }
+  }
+);
 </script>
-
 </body>
-
 </html>

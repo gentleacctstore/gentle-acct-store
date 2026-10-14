@@ -1,2605 +1,1043 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0"
->
-
-<meta
-name="theme-color"
-content="#0b2d5c"
->
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2563EB">
 <title>Edit Product - Gentle Acct Store</title>
 
-<link
-rel="preconnect"
-href="https://fonts.googleapis.com"
->
-
-<link
-rel="preconnect"
-href="https://fonts.gstatic.com"
-crossorigin
->
-
-<link
-href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
-rel="stylesheet"
->
-
-<link
-rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-
 <script src="firebase.js"></script>
 
 <style>
-
 :root{
-
---blue:#0b2d5c;
---blue-dark:#071f40;
---blue-light:#eaf2fb;
---blue-soft:#f5f8fc;
-
---white:#fff;
-
---text:#172033;
---muted:#748093;
-
---border:#e1e8f0;
-
---green:#15803d;
---green-bg:#edf8f1;
-
---red:#dc2626;
---red-bg:#fff1f1;
-
---warning:#a66b00;
---warning-bg:#fff8e8;
-
---shadow:
-0 10px 30px rgba(11,45,92,.07);
-
+  --blue:#2563EB;
+  --blue-dark:#1D4ED8;
+  --blue-light:#EFF6FF;
+  --blue-soft:#F8FAFC;
+  --white:#FFFFFF;
+  --text:#172033;
+  --muted:#748093;
+  --border:#E2E8F0;
+  --green:#15803D;
+  --green-bg:#EDF8F1;
+  --red:#DC2626;
+  --red-bg:#FFF1F1;
+  --shadow:0 8px 25px rgba(37,99,235,.07);
 }
 
-*{
-
-box-sizing:border-box;
-
-margin:0;
-
-padding:0;
-
-}
+*{box-sizing:border-box;margin:0;padding:0}
 
 body{
-
-font-family:"Poppins",sans-serif;
-
-background:#f5f8fc;
-
-color:var(--text);
-
-min-height:100vh;
-
+  font-family:"Poppins",sans-serif;
+  background:var(--blue-soft);
+  color:var(--text);
+  min-height:100vh;
 }
 
-button,
-input,
-select,
-textarea{
-
-font-family:inherit;
-
-}
-
-button{
-
-cursor:pointer;
-
-}
-
-a{
-
-text-decoration:none;
-
-color:inherit;
-
-}
-
-
-/* =========================
-HEADER
-========================= */
+button,input,select,textarea{font-family:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
 
 header{
-
-background:rgba(255,255,255,.97);
-
-border-bottom:1px solid var(--border);
-
-padding:13px 17px;
-
-position:sticky;
-
-top:0;
-
-z-index:50;
-
-backdrop-filter:blur(12px);
-
+  background:rgba(255,255,255,.97);
+  border-bottom:1px solid var(--border);
+  padding:13px 16px;
+  position:sticky;
+  top:0;
+  z-index:50;
+  backdrop-filter:blur(12px);
 }
 
 .header-inner{
-
-max-width:900px;
-
-margin:auto;
-
-display:flex;
-
-align-items:center;
-
-justify-content:space-between;
-
-gap:12px;
-
+  max-width:900px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
 }
 
-.header-left{
+.header-left{display:flex;align-items:center;gap:11px}
 
-display:flex;
-
-align-items:center;
-
-gap:10px;
-
+.back-btn,.header-right{
+  width:40px;
+  height:40px;
+  border:0;
+  border-radius:12px;
+  background:var(--blue-light);
+  color:var(--blue);
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
-.back-btn{
-
-width:39px;
-
-height:39px;
-
-border:0;
-
-border-radius:11px;
-
-background:var(--blue-light);
-
-color:var(--blue);
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-font-size:13px;
-
-transition:.2s;
-
-}
-
-.back-btn:active{
-
-transform:scale(.94);
-
-}
-
-.header-title{
-
-font-size:15px;
-
-font-weight:800;
-
-color:var(--blue-dark);
-
-}
-
-.header-right{
-
-width:37px;
-
-height:37px;
-
-border-radius:11px;
-
-background:var(--blue-light);
-
-color:var(--blue);
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-font-size:14px;
-
-}
-
-
-/* =========================
-PAGE
-========================= */
+.back-btn:active{transform:scale(.95)}
+.header-title{font-size:15px;font-weight:800;color:var(--blue-dark)}
+.header-right{font-size:15px}
 
 .container{
-
-width:100%;
-
-max-width:900px;
-
-margin:auto;
-
-padding:20px 15px 50px;
-
+  width:100%;
+  max-width:900px;
+  margin:auto;
+  padding:22px 15px 50px;
 }
 
-
-/* =========================
-HEADING
-========================= */
-
-.page-heading{
-
-margin-bottom:17px;
-
-}
-
+.page-heading{margin-bottom:19px}
 .page-heading h1{
-
-font-size:23px;
-
-font-weight:800;
-
-color:var(--blue-dark);
-
-margin-bottom:4px;
-
+  font-size:24px;
+  font-weight:800;
+  color:var(--text);
+  margin-bottom:5px;
+  letter-spacing:-.5px;
 }
-
-.page-heading p{
-
-font-size:10px;
-
-color:var(--muted);
-
-line-height:1.5;
-
-}
-
-
-/* =========================
-MESSAGE
-========================= */
+.page-heading p{font-size:11px;color:var(--muted);line-height:1.7}
 
 .message{
-
-display:none;
-
-padding:12px 14px;
-
-border-radius:12px;
-
-font-size:10px;
-
-font-weight:600;
-
-line-height:1.5;
-
-margin-bottom:15px;
-
+  display:none;
+  padding:13px 15px;
+  border-radius:12px;
+  font-size:11px;
+  font-weight:600;
+  line-height:1.6;
+  margin-bottom:16px;
+  overflow-wrap:anywhere;
 }
-
-.message.show{
-
-display:block;
-
-}
-
-.message.success{
-
-background:var(--green-bg);
-
-border:1px solid #ccebd9;
-
-color:var(--green);
-
-}
-
-.message.error{
-
-background:var(--red-bg);
-
-border:1px solid #ffd5d5;
-
-color:var(--red);
-
-}
-
-
-/* =========================
-CARD
-========================= */
+.message.show{display:block}
+.message.success{background:var(--green-bg);border:1px solid #CDEBD9;color:var(--green)}
+.message.error{background:var(--red-bg);border:1px solid #FFD5D5;color:var(--red)}
 
 .card{
-
-background:white;
-
-border:1px solid var(--border);
-
-border-radius:19px;
-
-padding:18px;
-
-margin-bottom:16px;
-
-box-shadow:var(--shadow);
-
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:19px;
+  padding:20px;
+  margin-bottom:17px;
+  box-shadow:var(--shadow);
 }
 
 .card-title{
-
-display:flex;
-
-align-items:center;
-
-gap:9px;
-
-font-size:14px;
-
-font-weight:800;
-
-color:var(--blue-dark);
-
-margin-bottom:17px;
-
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:14px;
+  font-weight:800;
+  color:var(--text);
+  margin-bottom:19px;
 }
 
 .card-title i{
-
-width:35px;
-
-height:35px;
-
-border-radius:10px;
-
-background:var(--blue);
-
-color:white;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-font-size:12px;
-
+  width:37px;
+  height:37px;
+  border-radius:11px;
+  background:var(--blue);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:13px;
+  flex-shrink:0;
 }
-
-
-/* =========================
-FORM
-========================= */
 
 .form-grid{
-
-display:grid;
-
-grid-template-columns:1fr 1fr;
-
-gap:14px;
-
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
 }
 
-.field.full{
-
-grid-column:1 / -1;
-
-}
+.field.full{grid-column:1/-1}
 
 label{
-
-display:block;
-
-font-size:10px;
-
-font-weight:700;
-
-color:#243650;
-
-margin-bottom:6px;
-
+  display:block;
+  font-size:11px;
+  font-weight:700;
+  color:#334155;
+  margin-bottom:7px;
 }
 
-input,
-select,
-textarea{
-
-width:100%;
-
-border:1px solid #dce3ed;
-
-border-radius:11px;
-
-background:#fbfcfe;
-
-color:var(--text);
-
-outline:none;
-
-font-size:11px;
-
-transition:.2s;
-
+input,select,textarea{
+  width:100%;
+  border:1px solid #DCE3ED;
+  border-radius:11px;
+  background:#FBFCFE;
+  color:var(--text);
+  outline:none;
+  font-size:12px;
+  transition:border-color .2s,box-shadow .2s,background .2s;
 }
 
-input,
-select{
+input,select{height:47px;padding:0 12px}
+textarea{min-height:105px;padding:12px;resize:vertical;line-height:1.6}
 
-height:46px;
-
-padding:0 12px;
-
+input:focus,select:focus,textarea:focus{
+  border-color:var(--blue);
+  background:white;
+  box-shadow:0 0 0 3px rgba(37,99,235,.09);
 }
 
-textarea{
+input::placeholder,textarea::placeholder{color:#A0A8B4}
 
-min-height:100px;
+.actions{display:flex;gap:10px;margin-top:20px}
 
-padding:12px;
-
-resize:vertical;
-
-line-height:1.5;
-
+.primary-btn,.secondary-btn{
+  border:0;
+  border-radius:11px;
+  min-height:46px;
+  padding:0 18px;
+  font-size:11px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  transition:.2s;
 }
 
-input:focus,
-select:focus,
-textarea:focus{
-
-border-color:var(--blue);
-
-background:white;
-
-box-shadow:
-0 0 0 3px rgba(11,45,92,.06);
-
-}
-
-input::placeholder,
-textarea::placeholder{
-
-color:#a0a8b4;
-
-}
-
-
-/* =========================
-ACTIONS
-========================= */
-
-.actions{
-
-display:flex;
-
-gap:9px;
-
-margin-top:18px;
-
-}
-
-.primary-btn,
-.secondary-btn{
-
-border:0;
-
-border-radius:11px;
-
-min-height:44px;
-
-padding:0 17px;
-
-font-size:10px;
-
-font-weight:700;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-gap:6px;
-
-transition:.2s;
-
-}
-
-.primary-btn{
-
-background:var(--blue);
-
-color:white;
-
-flex:1;
-
-}
-
-.primary-btn:hover{
-
-background:var(--blue-dark);
-
-}
-
-.primary-btn:disabled{
-
-opacity:.55;
-
-cursor:not-allowed;
-
-}
-
-.secondary-btn{
-
-background:var(--blue-light);
-
-color:var(--blue);
-
-}
-
-
-/* =========================
-INVENTORY HEADER
-========================= */
+.primary-btn{background:var(--blue);color:white;flex:1}
+.primary-btn:hover{background:var(--blue-dark)}
+.primary-btn:disabled{opacity:.55;cursor:not-allowed}
+.secondary-btn{background:var(--blue-light);color:var(--blue)}
+.secondary-btn:hover{background:#DBEAFE}
 
 .inventory-top{
-
-display:flex;
-
-align-items:center;
-
-justify-content:space-between;
-
-gap:10px;
-
-margin-bottom:12px;
-
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:12px;
 }
 
+.inventory-top .card-title{margin-bottom:0}
+
 .inventory-count{
-
-background:var(--blue-light);
-
-color:var(--blue);
-
-border-radius:20px;
-
-padding:6px 10px;
-
-font-size:8px;
-
-font-weight:700;
-
-white-space:nowrap;
-
+  background:var(--blue-light);
+  color:var(--blue);
+  border-radius:20px;
+  padding:7px 11px;
+  font-size:9px;
+  font-weight:700;
+  white-space:nowrap;
 }
 
 .inventory-help{
-
-font-size:9px;
-
-color:var(--muted);
-
-line-height:1.6;
-
-margin-bottom:13px;
-
+  font-size:10px;
+  color:var(--muted);
+  line-height:1.7;
+  margin-bottom:15px;
 }
 
-
-/* =========================
-INVENTORY LIST
-========================= */
-
-.inventory-list{
-
-display:flex;
-
-flex-direction:column;
-
-gap:8px;
-
-}
+.inventory-list{display:flex;flex-direction:column;gap:9px}
 
 .inventory-item{
-
-display:flex;
-
-align-items:center;
-
-gap:9px;
-
-padding:10px;
-
-border:1px solid var(--border);
-
-border-radius:12px;
-
-background:#fbfcfe;
-
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:11px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:#FBFCFE;
 }
 
 .inventory-number{
-
-width:28px;
-
-height:28px;
-
-border-radius:8px;
-
-background:var(--blue-light);
-
-color:var(--blue);
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-font-size:8px;
-
-font-weight:800;
-
-flex-shrink:0;
-
+  width:31px;
+  height:31px;
+  border-radius:9px;
+  background:var(--blue-light);
+  color:var(--blue);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:10px;
+  font-weight:800;
+  flex-shrink:0;
 }
 
 .inventory-value{
-
-flex:1;
-
-min-width:0;
-
-font-size:10px;
-
-color:var(--text);
-
-font-weight:600;
-
-word-break:break-word;
-
-line-height:1.45;
-
+  flex:1;
+  min-width:0;
+  font-size:11px;
+  color:var(--text);
+  font-weight:500;
+  overflow-wrap:anywhere;
+  line-height:1.6;
+  white-space:pre-wrap;
 }
 
 .inventory-status{
-
-font-size:7px;
-
-font-weight:700;
-
-padding:4px 7px;
-
-border-radius:6px;
-
-flex-shrink:0;
-
+  font-size:8px;
+  font-weight:700;
+  padding:5px 8px;
+  border-radius:7px;
+  flex-shrink:0;
 }
 
-.inventory-status.available{
-
-background:var(--green-bg);
-
-color:var(--green);
-
-}
-
-.inventory-status.sold{
-
-background:var(--red-bg);
-
-color:var(--red);
-
-}
+.inventory-status.available{background:var(--green-bg);color:var(--green)}
+.inventory-status.sold{background:var(--red-bg);color:var(--red)}
 
 .inventory-remove{
-
-width:30px;
-
-height:30px;
-
-border:0;
-
-border-radius:8px;
-
-background:var(--red-bg);
-
-color:var(--red);
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-font-size:9px;
-
-flex-shrink:0;
-
+  width:33px;
+  height:33px;
+  border:0;
+  border-radius:9px;
+  background:var(--red-bg);
+  color:var(--red);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:11px;
+  flex-shrink:0;
 }
 
-.inventory-remove:disabled{
-
-opacity:.35;
-
-cursor:not-allowed;
-
-}
-
-
-/* =========================
-ADD INVENTORY
-========================= */
+.inventory-remove:disabled{opacity:.35;cursor:not-allowed}
 
 .add-inventory{
-
-margin-top:15px;
-
-padding-top:15px;
-
-border-top:1px solid var(--border);
-
+  margin-top:18px;
+  padding-top:18px;
+  border-top:1px solid var(--border);
 }
 
-.add-row{
-
-display:flex;
-
-gap:8px;
-
-}
-
-.add-row textarea{
-
-min-height:80px;
-
-flex:1;
-
-}
+.add-row{display:flex;gap:9px;align-items:flex-start}
+.add-row textarea{min-height:95px;flex:1}
 
 .add-btn{
-
-width:44px;
-
-height:44px;
-
-border:0;
-
-border-radius:10px;
-
-background:var(--blue);
-
-color:white;
-
-font-size:13px;
-
-align-self:flex-start;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
+  width:47px;
+  height:47px;
+  border:0;
+  border-radius:11px;
+  background:var(--blue);
+  color:white;
+  font-size:15px;
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
-
-.add-btn:disabled{
-
-opacity:.55;
-
-cursor:not-allowed;
-
-}
-
-
-/* =========================
-LOADING
-========================= */
+.add-btn:hover{background:var(--blue-dark)}
+.add-btn:disabled{opacity:.55;cursor:not-allowed}
 
 .loading{
-
-background:white;
-
-border:1px solid var(--border);
-
-border-radius:18px;
-
-padding:45px 20px;
-
-text-align:center;
-
-color:var(--muted);
-
-font-size:10px;
-
+  background:white;
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:45px 20px;
+  text-align:center;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.8;
+  overflow-wrap:anywhere;
 }
 
-.loading i{
+.loading i{display:block;font-size:25px;color:var(--blue);margin-bottom:12px}
 
-display:block;
-
-font-size:24px;
-
-color:var(--blue);
-
-margin-bottom:10px;
-
+.empty-inventory{
+  padding:27px 15px;
+  border:1px dashed #CBD5E1;
+  border-radius:13px;
+  text-align:center;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.8;
 }
-
-
-/* =========================
-MODAL
-========================= */
+.empty-inventory i{display:block;font-size:24px;margin-bottom:9px;color:#AAB5C4}
 
 .modal{
-
-position:fixed;
-
-inset:0;
-
-background:rgba(7,31,64,.5);
-
-display:none;
-
-align-items:center;
-
-justify-content:center;
-
-padding:20px;
-
-z-index:100;
-
+  position:fixed;
+  inset:0;
+  background:rgba(15,23,42,.55);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index:100;
 }
-
-.modal.show{
-
-display:flex;
-
-}
+.modal.show{display:flex}
 
 .modal-box{
-
-width:100%;
-
-max-width:390px;
-
-background:white;
-
-border-radius:19px;
-
-padding:20px;
-
-box-shadow:
-0 20px 50px rgba(0,0,0,.18);
-
+  width:100%;
+  max-width:390px;
+  background:white;
+  border-radius:19px;
+  padding:22px;
+  box-shadow:0 20px 50px rgba(0,0,0,.18);
 }
 
 .modal-icon{
-
-width:42px;
-
-height:42px;
-
-border-radius:12px;
-
-background:var(--red-bg);
-
-color:var(--red);
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-font-size:15px;
-
-margin-bottom:12px;
-
+  width:44px;
+  height:44px;
+  border-radius:13px;
+  background:var(--red-bg);
+  color:var(--red);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:16px;
+  margin-bottom:13px;
 }
 
-.modal-box h2{
+.modal-box h2{font-size:18px;color:var(--text);margin-bottom:7px}
+.modal-box p{font-size:11px;color:var(--muted);line-height:1.7}
 
-font-size:17px;
-
-color:var(--blue-dark);
-
-margin-bottom:5px;
-
-}
-
-.modal-box p{
-
-font-size:10px;
-
-color:var(--muted);
-
-line-height:1.5;
-
-}
-
-.modal-actions{
-
-display:flex;
-
-gap:8px;
-
-margin-top:17px;
-
-}
-
+.modal-actions{display:flex;gap:9px;margin-top:19px}
 .modal-actions button{
-
-flex:1;
-
-height:42px;
-
-border:0;
-
-border-radius:10px;
-
-font-size:10px;
-
-font-weight:700;
-
+  flex:1;
+  min-height:44px;
+  border:0;
+  border-radius:10px;
+  font-size:11px;
+  font-weight:700;
 }
-
-.cancel-btn{
-
-background:var(--blue-light);
-
-color:var(--blue);
-
-}
-
-.delete-confirm{
-
-background:var(--red);
-
-color:white;
-
-}
-
-
-/* =========================
-RESPONSIVE
-========================= */
+.cancel-btn{background:var(--blue-light);color:var(--blue)}
+.delete-confirm{background:var(--red);color:white}
+.modal-actions button:disabled{opacity:.6;cursor:not-allowed}
 
 @media(max-width:600px){
-
-.form-grid{
-
-grid-template-columns:1fr;
-
-}
-
-.field.full{
-
-grid-column:auto;
-
-}
-
-.container{
-
-padding:17px 12px 40px;
-
-}
-
-.card{
-
-padding:16px;
-
-}
-
-.page-heading h1{
-
-font-size:21px;
-
-}
-
+  .form-grid{grid-template-columns:1fr}
+  .field.full{grid-column:auto}
+  .container{padding:18px 12px 40px}
+  .card{padding:17px}
+  .page-heading h1{font-size:22px}
 }
 
 @media(max-width:390px){
-
-.inventory-item{
-
-gap:6px;
-
-padding:8px;
-
+  .inventory-item{gap:7px;padding:8px}
+  .inventory-status{display:none}
+  .inventory-value{font-size:10px}
+  .actions{flex-direction:column}
+  .secondary-btn{width:100%}
+  .inventory-top{align-items:flex-start}
 }
-
-.inventory-status{
-
-display:none;
-
-}
-
-.inventory-value{
-
-font-size:9px;
-
-}
-
-.actions{
-
-flex-direction:column;
-
-}
-
-.secondary-btn{
-
-width:100%;
-
-}
-
-}
-
 </style>
-
 </head>
-
 
 <body>
 
-
 <header>
-
-<div class="header-inner">
-
-<div class="header-left">
-
-<button
-type="button"
-class="back-btn"
-onclick="window.location.href='admin.html'"
-aria-label="Back to admin"
->
-
-<i class="fa-solid fa-arrow-left"></i>
-
-</button>
-
-<div class="header-title">
-Edit Product
-</div>
-
-</div>
-
-<div class="header-right">
-
-<i class="fa-solid fa-pen-to-square"></i>
-
-</div>
-
-</div>
-
+  <div class="header-inner">
+    <div class="header-left">
+      <button type="button" class="back-btn" onclick="window.location.href='admin.html'" aria-label="Back to admin">
+        <i class="fa-solid fa-arrow-left"></i>
+      </button>
+      <div class="header-title">Edit Product</div>
+    </div>
+    <div class="header-right"><i class="fa-solid fa-pen-to-square"></i></div>
+  </div>
 </header>
-
 
 <main class="container">
 
-
-<div
-id="message"
-class="message"
-></div>
-
-
-<div
-id="loading"
-class="loading"
->
-
-<i class="fa-solid fa-spinner fa-spin"></i>
-
-Loading product...
-
-</div>
-
-
-<div
-id="editor"
-style="display:none;"
->
-
-
-<div class="page-heading">
-
-<h1>
-Edit Product
-</h1>
-
-<p>
-Update product information and manage available inventory.
-</p>
-
-</div>
-
-
-<section class="card">
-
-
-<div class="card-title">
-
-<i class="fa-solid fa-box"></i>
-
-Product Information
-
-</div>
-
-
-<div class="form-grid">
-
-
-<div>
-
-<label for="productName">
-Product Name
-</label>
-
-<input
-id="productName"
-type="text"
-placeholder="Product name"
->
-
-</div>
-
-
-<div>
-
-<label for="category">
-Category
-</label>
-
-<select id="category">
-
-<option value="Giveaway Accounts">
-Giveaway Accounts
-</option>
-
-<option value="Instagram">
-Instagram
-</option>
-
-<option value="TikTok">
-TikTok
-</option>
-
-<option value="Facebook">
-Facebook
-</option>
-
-<option value="Gmail">
-Gmail
-</option>
-
-<option value="VPN">
-VPN
-</option>
-
-<option value="Discord">
-Discord
-</option>
-
-<option value="Other">
-Other
-</option>
-
-</select>
-
-</div>
-
-
-<div>
-
-<label for="price">
-Price (₦)
-</label>
-
-<input
-id="price"
-type="number"
-min="0"
-step="1"
-inputmode="numeric"
-placeholder="500"
->
-
-</div>
-
-
-<div>
-
-<label for="image">
-Product Image URL
-</label>
-
-<input
-id="image"
-type="url"
-placeholder="https://example.com/image.jpg"
->
-
-</div>
-
-
-<div class="field full">
-
-<label for="description">
-Description
-</label>
-
-<textarea
-id="description"
-placeholder="Product description"
-></textarea>
-
-</div>
-
-
-</div>
-
-
-<div class="actions">
-
-
-<button
-type="button"
-class="primary-btn"
-id="saveButton"
->
-
-<i class="fa-solid fa-floppy-disk"></i>
-
-Save Changes
-
-</button>
-
-
-<button
-type="button"
-class="secondary-btn"
-onclick="window.location.href='admin.html'"
->
-
-Cancel
-
-</button>
-
-
-</div>
-
-
-</section>
-
-
-<section class="card">
-
-
-<div class="inventory-top">
-
-
-<div
-class="card-title"
-style="margin-bottom:0;"
->
-
-<i class="fa-solid fa-layer-group"></i>
-
-Inventory
-
-</div>
-
-
-<div
-id="inventoryCount"
-class="inventory-count"
->
-
-0 items available
-
-</div>
-
-
-</div>
-
-
-<p class="inventory-help">
-
-Available items can be removed. Sold items are kept for order history and cannot be removed.
-
-</p>
-
-
-<div
-id="inventoryList"
-class="inventory-list"
->
-
-</div>
-
-
-<div class="add-inventory">
-
-
-<label for="newInventory">
-Add Inventory Items
-</label>
-
-
-<div class="add-row">
-
-
-<textarea
-id="newInventory"
-placeholder="Enter one inventory item per line..."
-></textarea>
-
-
-<button
-type="button"
-class="add-btn"
-id="addInventoryButton"
-title="Add inventory"
->
-
-<i class="fa-solid fa-plus"></i>
-
-</button>
-
-
-</div>
-
-</div>
-
-
-</section>
-
-
-</div>
-
-
+  <div id="message" class="message" role="status" aria-live="polite"></div>
+
+  <div id="loading" class="loading">
+    <i class="fa-solid fa-spinner fa-spin"></i>
+    Loading product...
+  </div>
+
+  <div id="editor" style="display:none">
+
+    <div class="page-heading">
+      <h1>Edit Product</h1>
+      <p>Update your product details and manage your inventory in one place.</p>
+    </div>
+
+    <section class="card">
+      <div class="card-title">
+        <i class="fa-solid fa-box"></i>
+        Product Information
+      </div>
+
+      <div class="form-grid">
+
+        <div class="field">
+          <label for="productName">Product Name</label>
+          <input id="productName" type="text" maxlength="150" placeholder="Enter product name">
+        </div>
+
+        <div class="field">
+          <label for="category">Category</label>
+          <select id="category">
+            <option value="Giveaway Accounts">Giveaway Accounts</option>
+            <option value="Instagram">Instagram</option>
+            <option value="TikTok">TikTok</option>
+            <option value="Facebook">Facebook</option>
+            <option value="Gmail">Gmail</option>
+            <option value="VPN">VPN</option>
+            <option value="Discord">Discord</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="price">Price (₦)</label>
+          <input id="price" type="number" min="0" step="1" inputmode="numeric" placeholder="500">
+        </div>
+
+        <div class="field">
+          <label for="image">Product Image URL</label>
+          <input id="image" type="url" placeholder="https://example.com/image.jpg">
+        </div>
+
+        <div class="field full">
+          <label for="description">Description</label>
+          <textarea id="description" maxlength="3000" placeholder="Describe your product"></textarea>
+        </div>
+
+      </div>
+
+      <div class="actions">
+        <button type="button" class="primary-btn" id="saveButton">
+          <i class="fa-solid fa-floppy-disk"></i>
+          Save Changes
+        </button>
+        <button type="button" class="secondary-btn" onclick="window.location.href='admin.html'">
+          Cancel
+        </button>
+      </div>
+    </section>
+
+    <section class="card">
+
+      <div class="inventory-top">
+        <div class="card-title">
+          <i class="fa-solid fa-layer-group"></i>
+          Inventory
+        </div>
+        <div id="inventoryCount" class="inventory-count">0 items available</div>
+      </div>
+
+      <p class="inventory-help">
+        Add account details or other inventory items one per line. Available items can be removed. Sold items are preserved for order history.
+      </p>
+
+      <div id="inventoryList" class="inventory-list"></div>
+
+      <div class="add-inventory">
+        <label for="newInventory">Add Inventory Items</label>
+        <div class="add-row">
+          <textarea id="newInventory" placeholder="Enter one inventory item per line..."></textarea>
+          <button type="button" class="add-btn" id="addInventoryButton" title="Add inventory" aria-label="Add inventory">
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
 </main>
 
-
-<div
-id="deleteModal"
-class="modal"
->
-
-<div class="modal-box">
-
-
-<div class="modal-icon">
-
-<i class="fa-solid fa-trash"></i>
-
+<div id="deleteModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="deleteTitle">
+  <div class="modal-box">
+    <div class="modal-icon"><i class="fa-solid fa-trash"></i></div>
+    <h2 id="deleteTitle">Remove Inventory?</h2>
+    <p>This will permanently remove this available inventory item. Sold inventory cannot be removed.</p>
+    <div class="modal-actions">
+      <button type="button" class="cancel-btn" id="cancelDelete">Cancel</button>
+      <button type="button" class="delete-confirm" id="confirmDelete">Remove</button>
+    </div>
+  </div>
 </div>
-
-
-<h2>
-Remove Inventory?
-</h2>
-
-
-<p>
-This will permanently remove this available inventory item. Sold inventory cannot be removed.
-</p>
-
-
-<div class="modal-actions">
-
-
-<button
-type="button"
-class="cancel-btn"
-id="cancelDelete"
->
-
-Cancel
-
-</button>
-
-
-<button
-type="button"
-class="delete-confirm"
-id="confirmDelete"
->
-
-Remove
-
-</button>
-
-
-</div>
-
-
-</div>
-
-</div>
-
 
 <script>
+/* ADMIN CONFIGURATION */
+const ADMIN_UID = "UoEjCy99gbQKkGob59vGi3CunZi1";
 
-/* =====================================================
-ADMIN
-===================================================== */
+/* PRODUCT ID */
+const params = new URLSearchParams(window.location.search);
+const productId = params.get("id");
 
-const ADMIN_UID =
-"UoEjCy99gbQKkGob59vGi3CunZi1";
-
-
-/* =====================================================
-PRODUCT ID
-===================================================== */
-
-const params =
-new URLSearchParams(
-window.location.search
-);
-
-const productId =
-params.get("id");
-
-
-/* =====================================================
-STATE
-===================================================== */
-
+/* STATE */
 let productData = null;
-
 let inventoryItems = [];
-
 let inventoryToDelete = null;
+let messageTimer = null;
 
+/* ELEMENTS */
+const loading = document.getElementById("loading");
+const editor = document.getElementById("editor");
+const message = document.getElementById("message");
+const inventoryList = document.getElementById("inventoryList");
+const inventoryCount = document.getElementById("inventoryCount");
+const deleteModal = document.getElementById("deleteModal");
 
-/* =====================================================
-ELEMENTS
-===================================================== */
+/* SAFE HTML ESCAPING */
+function escapeHTML(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
 
-const loading =
-document.getElementById(
-"loading"
-);
+/* MESSAGES */
+function showMessage(text, type) {
+  message.textContent = text;
+  message.className = "message show " + type;
 
-const editor =
-document.getElementById(
-"editor"
-);
+  if (messageTimer) clearTimeout(messageTimer);
 
-const message =
-document.getElementById(
-"message"
-);
+  window.scrollTo({top: 0, behavior: "smooth"});
 
-const inventoryList =
-document.getElementById(
-"inventoryList"
-);
+  messageTimer = setTimeout(function() {
+    message.classList.remove("show");
+  }, 5000);
+}
 
-const inventoryCount =
-document.getElementById(
-"inventoryCount"
-);
+/* FATAL ERROR */
+function showFatalError(text) {
+  loading.innerHTML = "";
 
-const deleteModal =
-document.getElementById(
-"deleteModal"
-);
+  const icon = document.createElement("i");
+  icon.className = "fa-solid fa-triangle-exclamation";
+  icon.style.color = "#DC2626";
 
+  const paragraph = document.createElement("p");
+  paragraph.textContent = text;
 
-/* =====================================================
-MESSAGE
-===================================================== */
+  const backButton = document.createElement("button");
+  backButton.type = "button";
+  backButton.textContent = "Back to Admin";
+  backButton.style.cssText =
+    "margin-top:15px;border:0;background:#2563EB;color:white;" +
+    "padding:11px 16px;border-radius:10px;font-family:Poppins,sans-serif;" +
+    "font-size:11px;font-weight:700";
 
-function showMessage(
-text,
-type
-){
+  backButton.addEventListener("click", function() {
+    window.location.href = "admin.html";
+  });
 
-message.textContent =
-text;
+  loading.append(icon, paragraph, backButton);
+}
 
-message.className =
-"message show " +
-type;
+/* AUTHENTICATION AND ADMIN CHECK */
+firebaseAuth.onAuthStateChanged(async function(user) {
+  if (!user) {
+    window.location.replace("admin-login.html");
+    return;
+  }
 
-window.scrollTo({
-top:0,
-behavior:"smooth"
+  if (user.uid !== ADMIN_UID || !user.emailVerified) {
+    try {
+      await firebaseAuth.signOut();
+    } catch (error) {
+      console.error("SIGN OUT ERROR:", error);
+    }
+
+    window.location.replace("admin-login.html");
+    return;
+  }
+
+  if (!productId) {
+    showFatalError("No product was selected. Return to the admin page and select a product.");
+    return;
+  }
+
+  await loadProduct();
 });
 
+/* LOAD PRODUCT */
+async function loadProduct() {
+  try {
+    const productRef = firebaseDB.collection("products").doc(productId);
+    const snapshot = await productRef.get();
 
-setTimeout(
-function(){
+    if (!snapshot.exists) {
+      showFatalError("This product does not exist.");
+      return;
+    }
 
-message.classList.remove(
-"show"
-);
+    productData = snapshot.data();
 
-},
-5000
-);
+    document.getElementById("productName").value = productData.name || "";
 
+    const categorySelect = document.getElementById("category");
+    const category = productData.category || "Other";
+
+    if (![...categorySelect.options].some(function(option) {
+      return option.value === category;
+    })) {
+      categorySelect.add(new Option(category, category));
+    }
+
+    categorySelect.value = category;
+    document.getElementById("price").value = Number(productData.price || 0);
+    document.getElementById("image").value = productData.image || "";
+    document.getElementById("description").value = productData.description || "";
+
+    await loadInventory();
+
+    loading.style.display = "none";
+    editor.style.display = "block";
+
+  } catch (error) {
+    console.error("LOAD PRODUCT ERROR:", error);
+    showFatalError(error.message || "Unable to load product. Please try again.");
+  }
 }
 
+/* LOAD INVENTORY */
+async function loadInventory() {
+  const snapshot = await firebaseDB
+    .collection("products")
+    .doc(productId)
+    .collection("inventory")
+    .get();
 
-/* =====================================================
-AUTH
-===================================================== */
+  inventoryItems = [];
 
-firebaseAuth.onAuthStateChanged(
-async function(user){
+  snapshot.forEach(function(doc) {
+    inventoryItems.push({
+      id: doc.id,
+      ...doc.data()
+    });
+  });
 
-if(!user){
+  inventoryItems.sort(function(a, b) {
+    const positionDifference =
+      Number(a.position || 0) - Number(b.position || 0);
 
-window.location.replace(
-"admin-login.html"
-);
+    if (positionDifference !== 0) return positionDifference;
 
-return;
+    return String(a.id).localeCompare(String(b.id));
+  });
 
+  renderInventory();
 }
 
+/* RENDER INVENTORY */
+function renderInventory() {
+  const available = inventoryItems.filter(function(item) {
+    return item.sold !== true;
+  }).length;
 
-if(
-user.uid !== ADMIN_UID ||
-!user.emailVerified
-){
+  inventoryCount.textContent =
+    available + (available === 1 ? " item available" : " items available");
 
-await firebaseAuth.signOut();
+  inventoryList.innerHTML = "";
 
-window.location.replace(
-"admin-login.html"
-);
+  if (!inventoryItems.length) {
+    const empty = document.createElement("div");
+    empty.className = "empty-inventory";
 
-return;
+    const icon = document.createElement("i");
+    icon.className = "fa-solid fa-box-open";
 
+    const text = document.createElement("span");
+    text.textContent = "No inventory items yet.";
+
+    empty.append(icon, text);
+    inventoryList.appendChild(empty);
+    return;
+  }
+
+  inventoryItems.forEach(function(item, index) {
+    const row = document.createElement("div");
+    row.className = "inventory-item";
+
+    const number = document.createElement("div");
+    number.className = "inventory-number";
+    number.textContent = index + 1;
+
+    const value = document.createElement("div");
+    value.className = "inventory-value";
+    value.textContent = item.value || "";
+
+    const status = document.createElement("span");
+    const sold = item.sold === true;
+    status.className = "inventory-status " + (sold ? "sold" : "available");
+    status.textContent = sold ? "Sold" : "Available";
+
+    const removeButton = document.createElement("button");
+    removeButton.type = "button";
+    removeButton.className = "inventory-remove";
+    removeButton.title = sold
+      ? "Sold inventory cannot be removed"
+      : "Remove inventory";
+    removeButton.setAttribute("aria-label", "Remove inventory item " + (index + 1));
+    removeButton.disabled = sold;
+    removeButton.innerHTML = '<i class="fa-solid fa-trash"></i>';
+
+    if (!sold) {
+      removeButton.addEventListener("click", function() {
+        openDeleteModal(item.id);
+      });
+    }
+
+    row.append(number, value, status, removeButton);
+    inventoryList.appendChild(row);
+  });
 }
 
+/* SAVE PRODUCT */
+document.getElementById("saveButton").addEventListener("click", saveProduct);
 
-if(!productId){
+async function saveProduct() {
+  const button = document.getElementById("saveButton");
 
-showFatalError(
-"No product was selected."
-);
+  const name = document.getElementById("productName").value.trim();
+  const selectedCategory = document.getElementById("category").value;
+  const priceText = document.getElementById("price").value.trim();
+  const productPrice = Number(priceText);
+  const productImage = document.getElementById("image").value.trim();
+  const productDescription = document.getElementById("description").value.trim();
 
-return;
+  if (!name) {
+    showMessage("Please enter a product name.", "error");
+    return;
+  }
 
+  if (
+    priceText === "" ||
+    !Number.isFinite(productPrice) ||
+    productPrice < 0
+  ) {
+    showMessage("Please enter a valid price.", "error");
+    return;
+  }
+
+  if (productImage) {
+    try {
+      const parsedURL = new URL(productImage);
+
+      if (parsedURL.protocol !== "https:" && parsedURL.protocol !== "http:") {
+        throw new Error("Invalid protocol");
+      }
+    } catch (error) {
+      showMessage("Please enter a valid image URL beginning with https:// or http://.", "error");
+      return;
+    }
+  }
+
+  try {
+    button.disabled = true;
+    button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+
+    const availableCount = inventoryItems.filter(function(item) {
+      return item.sold !== true;
+    }).length;
+
+    await firebaseDB
+      .collection("products")
+      .doc(productId)
+      .update({
+        name: name,
+        category: selectedCategory,
+        price: productPrice,
+        image: productImage,
+        description: productDescription,
+        stockCount: availableCount,
+        totalStock: inventoryItems.length,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+    productData = {
+      ...productData,
+      name: name,
+      category: selectedCategory,
+      price: productPrice,
+      image: productImage,
+      description: productDescription,
+      stockCount: availableCount,
+      totalStock: inventoryItems.length
+    };
+
+    showMessage("Product updated successfully.", "success");
+
+  } catch (error) {
+    console.error("SAVE PRODUCT ERROR:", error);
+    showMessage("Could not save product: " + error.message, "error");
+  } finally {
+    button.disabled = false;
+    button.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save Changes';
+  }
 }
 
+/* ADD INVENTORY */
+document.getElementById("addInventoryButton").addEventListener("click", addInventory);
 
-await loadProduct();
+async function addInventory() {
+  const textarea = document.getElementById("newInventory");
+  const text = textarea.value.trim();
 
-}
-);
+  if (!text) {
+    showMessage("Enter at least one inventory item.", "error");
+    return;
+  }
 
+  const items = text
+    .split(/\r?\n/)
+    .map(function(item) {
+      return item.trim();
+    })
+    .filter(function(item) {
+      return item.length > 0;
+    });
 
-/* =====================================================
-LOAD PRODUCT
-===================================================== */
+  if (!items.length) {
+    showMessage("Enter at least one inventory item.", "error");
+    return;
+  }
 
-async function loadProduct(){
+  const button = document.getElementById("addInventoryButton");
 
-try{
+  try {
+    button.disabled = true;
+    button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
 
-const productRef =
-firebaseDB
-.collection("products")
-.doc(productId);
+    let maxPosition = inventoryItems.reduce(function(max, item) {
+      return Math.max(max, Number(item.position ?? -1));
+    }, -1);
 
+    for (let start = 0; start < items.length; start += 400) {
+      const batch = firebaseDB.batch();
+      const chunk = items.slice(start, start + 400);
 
-const snapshot =
-await productRef.get();
+      chunk.forEach(function(value) {
+        maxPosition++;
 
+        const ref = firebaseDB
+          .collection("products")
+          .doc(productId)
+          .collection("inventory")
+          .doc();
 
-if(!snapshot.exists){
+        batch.set(ref, {
+          value: value,
+          position: maxPosition,
+          sold: false,
+          soldTo: "",
+          soldAt: null,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      });
 
-showFatalError(
-"This product does not exist."
-);
+      await batch.commit();
+    }
 
-return;
+    textarea.value = "";
 
-}
+    await loadInventory();
+    await updateStock();
 
+    showMessage(
+      items.length +
+      (items.length === 1
+        ? " inventory item added successfully."
+        : " inventory items added successfully."),
+      "success"
+    );
 
-productData =
-snapshot.data();
-
-
-document.getElementById(
-"productName"
-).value =
-productData.name || "";
-
-
-document.getElementById(
-"category"
-).value =
-productData.category ||
-"Other";
-
-
-document.getElementById(
-"price"
-).value =
-Number(
-productData.price || 0
-);
-
-
-document.getElementById(
-"image"
-).value =
-productData.image || "";
-
-
-document.getElementById(
-"description"
-).value =
-productData.description || "";
-
-
-await loadInventory();
-
-
-loading.style.display =
-"none";
-
-editor.style.display =
-"block";
-
-
-}catch(error){
-
-console.error(
-"LOAD PRODUCT ERROR:",
-error
-);
-
-showFatalError(
-error.message ||
-"Unable to load product."
-);
-
+  } catch (error) {
+    console.error("ADD INVENTORY ERROR:", error);
+    showMessage("Could not add inventory: " + error.message, "error");
+  } finally {
+    button.disabled = false;
+    button.innerHTML = '<i class="fa-solid fa-plus"></i>';
+  }
 }
 
+/* UPDATE STOCK COUNTS */
+async function updateStock() {
+  const available = inventoryItems.filter(function(item) {
+    return item.sold !== true;
+  }).length;
+
+  await firebaseDB
+    .collection("products")
+    .doc(productId)
+    .update({
+      stockCount: available,
+      totalStock: inventoryItems.length,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+  if (productData) {
+    productData.stockCount = available;
+    productData.totalStock = inventoryItems.length;
+  }
 }
 
+/* DELETE MODAL */
+function openDeleteModal(inventoryId) {
+  inventoryToDelete = inventoryId;
+  deleteModal.classList.add("show");
+}
 
-/* =====================================================
-LOAD INVENTORY
-===================================================== */
+function closeDeleteModal() {
+  inventoryToDelete = null;
+  deleteModal.classList.remove("show");
+}
 
-async function loadInventory(){
+document.getElementById("cancelDelete").addEventListener("click", closeDeleteModal);
 
-const snapshot =
-await firebaseDB
-.collection("products")
-.doc(productId)
-.collection("inventory")
-.get();
-
-
-inventoryItems = [];
-
-
-snapshot.forEach(
-function(doc){
-
-inventoryItems.push({
-
-id:doc.id,
-
-...doc.data()
-
+deleteModal.addEventListener("click", function(event) {
+  if (event.target === deleteModal) {
+    closeDeleteModal();
+  }
 });
 
+document.addEventListener("keydown", function(event) {
+  if (event.key === "Escape" && deleteModal.classList.contains("show")) {
+    closeDeleteModal();
+  }
 });
 
+/* REMOVE INVENTORY */
+document.getElementById("confirmDelete").addEventListener("click", removeInventory);
 
-inventoryItems.sort(
-function(a,b){
+async function removeInventory() {
+  if (!inventoryToDelete) return;
 
-return Number(
-a.position || 0
-)
--
-Number(
-b.position || 0
-);
+  const button = document.getElementById("confirmDelete");
+  const selectedId = inventoryToDelete;
 
-});
+  try {
+    button.disabled = true;
+    button.textContent = "Removing...";
 
+    const item = inventoryItems.find(function(entry) {
+      return entry.id === selectedId;
+    });
 
-renderInventory();
+    if (!item) {
+      throw new Error("Inventory item not found. Refresh and try again.");
+    }
 
+    if (item.sold === true) {
+      throw new Error("Sold inventory cannot be removed.");
+    }
+
+    await firebaseDB
+      .collection("products")
+      .doc(productId)
+      .collection("inventory")
+      .doc(selectedId)
+      .delete();
+
+    closeDeleteModal();
+
+    await loadInventory();
+    await updateStock();
+
+    showMessage("Inventory item removed successfully.", "success");
+
+  } catch (error) {
+    console.error("REMOVE INVENTORY ERROR:", error);
+    showMessage("Could not remove inventory: " + error.message, "error");
+  } finally {
+    button.disabled = false;
+    button.textContent = "Remove";
+  }
 }
-
-
-/* =====================================================
-RENDER INVENTORY
-===================================================== */
-
-function renderInventory(){
-
-const available =
-inventoryItems.filter(
-function(item){
-
-return item.sold !== true;
-
-}
-).length;
-
-
-inventoryCount.textContent =
-available +
-(
-available === 1
-? " item available"
-: " items available"
-);
-
-
-if(!inventoryItems.length){
-
-inventoryList.innerHTML = `
-
-<div
-style="
-padding:25px 15px;
-border:1px dashed #cbd5e1;
-border-radius:13px;
-text-align:center;
-color:#748093;
-font-size:9px;
-"
->
-
-<i
-class="fa-solid fa-box-open"
-style="
-display:block;
-font-size:22px;
-margin-bottom:8px;
-color:#aab5c4;
-"
-></i>
-
-No inventory items yet.
-
-</div>
-
-`;
-
-return;
-
-}
-
-
-inventoryList.innerHTML =
-"";
-
-
-inventoryItems.forEach(
-function(item,index){
-
-const row =
-document.createElement(
-"div"
-);
-
-row.className =
-"inventory-item";
-
-
-const sold =
-item.sold === true;
-
-
-row.innerHTML = `
-
-<div class="inventory-number">
-
-${index + 1}
-
-</div>
-
-
-<div class="inventory-value">
-
-${escapeHTML(
-item.value || ""
-)}
-
-</div>
-
-
-<span
-class="inventory-status ${
-sold
-? "sold"
-: "available"
-}"
->
-
-${
-sold
-? "Sold"
-: "Available"
-}
-
-</span>
-
-
-<button
-type="button"
-class="inventory-remove"
-title="${
-sold
-? "Sold inventory cannot be removed"
-: "Remove inventory"
-}"
-${sold ? "disabled" : ""}
->
-
-<i class="fa-solid fa-trash"></i>
-
-</button>
-
-`;
-
-
-const removeButton =
-row.querySelector(
-".inventory-remove"
-);
-
-
-if(!sold){
-
-removeButton.addEventListener(
-"click",
-function(){
-
-openDeleteModal(
-item.id
-);
-
-}
-);
-
-}
-
-
-inventoryList.appendChild(
-row
-);
-
-}
-);
-
-}
-
-
-/* =====================================================
-SAVE PRODUCT
-===================================================== */
-
-document
-.getElementById(
-"saveButton"
-)
-.addEventListener(
-"click",
-saveProduct
-);
-
-
-async function saveProduct(){
-
-const button =
-document.getElementById(
-"saveButton"
-);
-
-
-const name =
-document.getElementById(
-"productName"
-).value.trim();
-
-
-const selectedCategory =
-document.getElementById(
-"category"
-).value;
-
-
-const productPrice =
-Number(
-document.getElementById(
-"price"
-).value
-);
-
-
-const productImage =
-document.getElementById(
-"image"
-).value.trim();
-
-
-const productDescription =
-document.getElementById(
-"description"
-).value.trim();
-
-
-if(!name){
-
-showMessage(
-"Please enter a product name.",
-"error"
-);
-
-return;
-
-}
-
-
-if(
-!Number.isFinite(productPrice) ||
-productPrice < 0
-){
-
-showMessage(
-"Please enter a valid price.",
-"error"
-);
-
-return;
-
-}
-
-
-try{
-
-button.disabled =
-true;
-
-button.innerHTML =
-'<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
-
-
-const availableCount =
-inventoryItems.filter(
-function(item){
-
-return item.sold !== true;
-
-}
-).length;
-
-
-await firebaseDB
-.collection("products")
-.doc(productId)
-.update({
-
-name:name,
-
-category:selectedCategory,
-
-price:productPrice,
-
-image:productImage,
-
-description:productDescription,
-
-stockCount:
-availableCount,
-
-totalStock:
-inventoryItems.length,
-
-updatedAt:
-firebase.firestore
-.FieldValue
-.serverTimestamp()
-
-});
-
-
-productData = {
-
-...productData,
-
-name:name,
-
-category:selectedCategory,
-
-price:productPrice,
-
-image:productImage,
-
-description:productDescription,
-
-stockCount:
-availableCount,
-
-totalStock:
-inventoryItems.length
-
-};
-
-
-showMessage(
-"Product updated successfully.",
-"success"
-);
-
-
-}catch(error){
-
-console.error(
-"SAVE PRODUCT ERROR:",
-error
-);
-
-showMessage(
-"Could not save product: " +
-error.message,
-"error"
-);
-
-}finally{
-
-button.disabled =
-false;
-
-button.innerHTML =
-'<i class="fa-solid fa-floppy-disk"></i> Save Changes';
-
-}
-
-}
-
-
-/* =====================================================
-ADD INVENTORY
-===================================================== */
-
-document
-.getElementById(
-"addInventoryButton"
-)
-.addEventListener(
-"click",
-addInventory
-);
-
-
-async function addInventory(){
-
-const textarea =
-document.getElementById(
-"newInventory"
-);
-
-
-const text =
-textarea.value.trim();
-
-
-if(!text){
-
-showMessage(
-"Enter at least one inventory item.",
-"error"
-);
-
-return;
-
-}
-
-
-const items =
-text
-.split(/\r?\n/)
-.map(
-function(item){
-
-return item.trim();
-
-}
-)
-.filter(
-function(item){
-
-return item.length > 0;
-
-}
-);
-
-
-if(!items.length){
-
-return;
-
-}
-
-
-const button =
-document.getElementById(
-"addInventoryButton"
-);
-
-
-try{
-
-button.disabled =
-true;
-
-button.innerHTML =
-'<i class="fa-solid fa-spinner fa-spin"></i>';
-
-
-let maxPosition =
-inventoryItems.reduce(
-function(max,item){
-
-return Math.max(
-max,
-Number(
-item.position || 0
-)
-);
-
-},
--1
-);
-
-
-for(
-let start = 0;
-start < items.length;
-start += 400
-){
-
-const batch =
-firebaseDB.batch();
-
-
-const chunk =
-items.slice(
-start,
-start + 400
-);
-
-
-chunk.forEach(
-function(value,index){
-
-maxPosition++;
-
-
-const ref =
-firebaseDB
-.collection("products")
-.doc(productId)
-.collection("inventory")
-.doc();
-
-
-batch.set(
-ref,
-{
-
-value:value,
-
-position:maxPosition,
-
-sold:false,
-
-soldTo:"",
-
-soldAt:null,
-
-createdAt:
-firebase.firestore
-.FieldValue
-.serverTimestamp()
-
-}
-);
-
-}
-);
-
-
-await batch.commit();
-
-}
-
-
-textarea.value =
-"";
-
-
-await loadInventory();
-
-await updateStock();
-
-
-showMessage(
-items.length +
-(
-items.length === 1
-? " inventory item"
-: " inventory items"
-) +
-" added successfully.",
-"success"
-);
-
-
-}catch(error){
-
-console.error(
-"ADD INVENTORY ERROR:",
-error
-);
-
-showMessage(
-"Could not add inventory: " +
-error.message,
-"error"
-);
-
-}finally{
-
-button.disabled =
-false;
-
-button.innerHTML =
-'<i class="fa-solid fa-plus"></i>';
-
-}
-
-}
-
-
-/* =====================================================
-UPDATE STOCK
-===================================================== */
-
-async function updateStock(){
-
-const available =
-inventoryItems.filter(
-function(item){
-
-return item.sold !== true;
-
-}
-).length;
-
-
-await firebaseDB
-.collection("products")
-.doc(productId)
-.update({
-
-stockCount:
-available,
-
-totalStock:
-inventoryItems.length,
-
-updatedAt:
-firebase.firestore
-.FieldValue
-.serverTimestamp()
-
-});
-
-}
-
-
-/* =====================================================
-DELETE MODAL
-===================================================== */
-
-function openDeleteModal(
-inventoryId
-){
-
-inventoryToDelete =
-inventoryId;
-
-deleteModal.classList.add(
-"show"
-);
-
-}
-
-
-function closeDeleteModal(){
-
-inventoryToDelete =
-null;
-
-deleteModal.classList.remove(
-"show"
-);
-
-}
-
-
-document
-.getElementById(
-"cancelDelete"
-)
-.addEventListener(
-"click",
-closeDeleteModal
-);
-
-
-deleteModal.addEventListener(
-"click",
-function(event){
-
-if(
-event.target ===
-deleteModal
-){
-
-closeDeleteModal();
-
-}
-
-}
-);
-
-
-/* =====================================================
-REMOVE INVENTORY
-===================================================== */
-
-document
-.getElementById(
-"confirmDelete"
-)
-.addEventListener(
-"click",
-removeInventory
-);
-
-
-async function removeInventory(){
-
-if(!inventoryToDelete){
-
-return;
-
-}
-
-
-const button =
-document.getElementById(
-"confirmDelete"
-);
-
-
-try{
-
-button.disabled =
-true;
-
-button.textContent =
-"Removing...";
-
-
-const item =
-inventoryItems.find(
-function(item){
-
-return item.id ===
-inventoryToDelete;
-
-}
-);
-
-
-if(!item){
-
-throw new Error(
-"Inventory item not found."
-);
-
-}
-
-
-if(item.sold === true){
-
-throw new Error(
-"Sold inventory cannot be removed."
-);
-
-}
-
-
-await firebaseDB
-.collection("products")
-.doc(productId)
-.collection("inventory")
-.doc(inventoryToDelete)
-.delete();
-
-
-closeDeleteModal();
-
-
-await loadInventory();
-
-await updateStock();
-
-
-showMessage(
-"Inventory item removed.",
-"success"
-);
-
-
-}catch(error){
-
-console.error(
-"REMOVE INVENTORY ERROR:",
-error
-);
-
-showMessage(
-"Could not remove inventory: " +
-error.message,
-"error"
-);
-
-}finally{
-
-button.disabled =
-false;
-
-button.textContent =
-"Remove";
-
-}
-
-}
-
-
-/* =====================================================
-FATAL ERROR
-===================================================== */
-
-function showFatalError(
-text
-){
-
-loading.innerHTML = `
-
-<i
-class="fa-solid fa-triangle-exclamation"
-style="color:#dc2626;"
-></i>
-
-<p>
-${escapeHTML(text)}
-</p>
-
-<button
-type="button"
-style="
-margin-top:15px;
-border:0;
-background:#0b2d5c;
-color:white;
-padding:10px 15px;
-border-radius:10px;
-font-family:Poppins,sans-serif;
-font-size:10px;
-font-weight:700;
-"
-onclick="window.location.href='admin.html'"
->
-
-Back to Admin
-
-</button>
-
-`;
-
-}
-
-
-/* =====================================================
-ESCAPE HTML
-===================================================== */
-
-function escapeHTML(
-value
-){
-
-return String(
-value ?? ""
-)
-
-.replace(
-/&/g,
-"&amp;"
-)
-
-.replace(
-/</g,
-"&lt;"
-)
-
-.replace(
-/>/g,
-"&gt;"
-)
-
-.replace(
-/"/g,
-"&quot;"
-)
-
-.replace(
-/'/g,
-"&#039;"
-);
-
-}
-
 </script>
 
-
 </body>
-
 </html>

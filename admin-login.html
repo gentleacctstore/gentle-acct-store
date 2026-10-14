@@ -1,990 +1,712 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-<meta charset="UTF-8">
-
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0"
->
-
-<meta
-  name="theme-color"
-  content="#0b2d5c"
->
-
-<title>Admin Login | Gentle Acct Store</title>
-
-<!-- GOOGLE FONT -->
-
-<link
-  rel="preconnect"
-  href="https://fonts.googleapis.com"
->
-
-<link
-  rel="preconnect"
-  href="https://fonts.gstatic.com"
-  crossorigin
->
-
-<link
-  href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
-  rel="stylesheet"
->
-
-<!-- FONT AWESOME -->
-
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
->
-
-<!-- FIREBASE -->
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-
-<script src="firebase.js"></script>
-
-
-<style>
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: "Poppins", sans-serif;
-  background:
-    radial-gradient(
-      circle at top left,
-      rgba(37, 99, 235, 0.08),
-      transparent 35%
-    ),
-    #f3f6fb;
-  color: #14213d;
-  min-height: 100vh;
-}
-
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-.header {
-  height: 72px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 24px;
-  background: rgba(255,255,255,0.94);
-  border-bottom: 1px solid #e5eaf2;
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  backdrop-filter: blur(14px);
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 19px;
-  font-weight: 800;
-  color: #12376d;
-}
-
-.logo-icon {
-  width: 38px;
-  height: 38px;
-  border-radius: 12px;
-  background: #12376d;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.back-store {
-  color: #64748b;
-  font-size: 13px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
-
-.back-store:hover {
-  color: #12376d;
-}
-
-.page {
-  min-height: calc(100vh - 72px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 45px 18px;
-}
-
-.card {
-  width: 100%;
-  max-width: 720px;
-  background: white;
-  border: 1px solid #dfe6f0;
-  border-radius: 38px;
-  padding: 58px 48px 48px;
-  box-shadow: 0 25px 70px rgba(20, 50, 90, 0.10);
-  text-align: center;
-}
-
-.shield {
-  width: 132px;
-  height: 132px;
-  margin: 0 auto 28px;
-  border-radius: 38px;
-  background: linear-gradient(
-    145deg,
-    #183b73,
-    #28599b
-  );
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 54px;
-  box-shadow: 0 18px 38px rgba(18,55,109,0.20);
-}
-
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 20px;
-  border-radius: 999px;
-  background: #eef4fb;
-  color: #183b73;
-  font-size: 14px;
-  font-weight: 800;
-  margin-bottom: 32px;
-}
-
-h1 {
-  font-size: 48px;
-  line-height: 1.1;
-  font-weight: 800;
-  letter-spacing: -1.5px;
-  color: #10284d;
-  margin-bottom: 15px;
-}
-
-.subtitle {
-  color: #7c879b;
-  font-size: 18px;
-  line-height: 1.7;
-  margin: 0 auto 38px;
-  max-width: 590px;
-}
-
-.message {
-  display: none;
-  text-align: left;
-  padding: 17px 20px;
-  border-radius: 18px;
-  margin-bottom: 25px;
-  font-size: 14px;
-  line-height: 1.6;
-  font-weight: 500;
-}
-
-.message.error {
-  display: block;
-  background: #fff1f1;
-  border: 1px solid #ffcaca;
-  color: #b83232;
-}
-
-.message.success {
-  display: block;
-  background: #effbf4;
-  border: 1px solid #bce8cb;
-  color: #20733c;
-}
-
-.form {
-  text-align: left;
-}
-
-.field {
-  margin-bottom: 24px;
-}
-
-label {
-  display: block;
-  margin-bottom: 10px;
-  color: #263650;
-  font-size: 15px;
-  font-weight: 700;
-}
-
-.input-wrap {
-  position: relative;
-}
-
-input {
-  width: 100%;
-  height: 68px;
-  border: 2px solid #dce4ef;
-  background: #f8fafc;
-  border-radius: 20px;
-  padding: 0 58px 0 20px;
-  font-family: "Poppins", sans-serif;
-  font-size: 16px;
-  color: #17233b;
-  outline: none;
-  transition: 0.2s ease;
-}
-
-input:focus {
-  border-color: #28599b;
-  background: white;
-  box-shadow: 0 0 0 4px rgba(40,89,155,0.08);
-}
-
-.toggle-password {
-  position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  border: none;
-  background: transparent;
-  color: #7f8a9c;
-  font-size: 20px;
-  cursor: pointer;
-  padding: 8px;
-}
-
-.login-btn {
-  width: 100%;
-  height: 68px;
-  border: none;
-  border-radius: 20px;
-  background: linear-gradient(
-    135deg,
-    #17396f,
-    #28599b
-  );
-  color: white;
-  font-family: "Poppins", sans-serif;
-  font-size: 17px;
-  font-weight: 800;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 8px;
-  box-shadow: 0 15px 30px rgba(18,55,109,0.20);
-  transition: 0.2s ease;
-}
-
-.login-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 18px 34px rgba(18,55,109,0.25);
-}
-
-.login-btn:disabled {
-  opacity: 0.65;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.forgot {
-  display: block;
-  text-align: center;
-  margin-top: 27px;
-  color: #17396f;
-  font-size: 15px;
-  font-weight: 800;
-}
-
-.security {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  margin-top: 45px;
-  color: #9aa4b5;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.security i {
-  color: #17396f;
-}
-
-.bottom-link {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 9px;
-  margin-top: 30px;
-  color: #7b8799;
-  font-size: 15px;
-  font-weight: 700;
-}
-
-.bottom-link:hover {
-  color: #17396f;
-}
-
-.loading {
-  display: inline-block;
-  width: 19px;
-  height: 19px;
-  border: 3px solid rgba(255,255,255,0.35);
-  border-top-color: white;
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (max-width: 600px) {
-
-  .header {
-    height: 64px;
-    padding: 0 16px;
-  }
-
-  .logo {
-    font-size: 16px;
-  }
-
-  .logo-icon {
-    width: 34px;
-    height: 34px;
-    border-radius: 10px;
-  }
-
-  .back-store {
-    font-size: 12px;
-  }
-
-  .page {
-    padding: 22px 10px 35px;
-    align-items: flex-start;
-  }
-
-  .card {
-    border-radius: 30px;
-    padding: 42px 24px 36px;
-  }
-
-  .shield {
-    width: 112px;
-    height: 112px;
-    border-radius: 32px;
-    font-size: 45px;
-    margin-bottom: 24px;
-  }
-
-  .badge {
-    font-size: 12px;
-    padding: 9px 16px;
-    margin-bottom: 25px;
-  }
-
-  h1 {
-    font-size: 36px;
-  }
-
-  .subtitle {
-    font-size: 15px;
-    line-height: 1.65;
-    margin-bottom: 30px;
-  }
-
-  input {
-    height: 62px;
-    border-radius: 17px;
-    font-size: 15px;
-  }
-
-  .login-btn {
-    height: 62px;
-    border-radius: 17px;
-    font-size: 15px;
-  }
-
-  .security {
-    margin-top: 34px;
-    font-size: 12px;
-  }
-
-  .bottom-link {
-    font-size: 13px;
-  }
-}
-
-</style>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2563EB">
+  <meta name="description" content="Secure administrator login for Gentle Acct Store.">
+  <title>Admin Login | Gentle Acct Store</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    :root {
+      --blue: #2563EB;
+      --blue-dark: #1D4ED8;
+      --blue-light: #EFF6FF;
+      --background: #F8FAFC;
+      --text: #172033;
+      --muted: #7B8798;
+      --border: #E5EAF2;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      color: var(--text);
+      font-family: 'Poppins', sans-serif;
+      background:
+        radial-gradient(circle at 5% 0%, rgba(37,99,235,.09), transparent 32%),
+        var(--background);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      height: 68px;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: rgba(255,255,255,.96);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text);
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -.4px;
+    }
+
+    .logo-icon {
+      width: 39px;
+      height: 39px;
+      display: grid;
+      place-items: center;
+      color: white;
+      background: var(--blue);
+      border-radius: 13px;
+      box-shadow: 0 6px 15px rgba(37,99,235,.18);
+    }
+
+    .logo-accent { color: var(--blue); }
+
+    .back-store {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 9px 12px;
+      color: var(--blue-dark);
+      background: var(--blue-light);
+      border: 1px solid #DBEAFE;
+      border-radius: 11px;
+      font-size: 11px;
+      font-weight: 700;
+      transition: .2s;
+    }
+
+    .back-store:hover { background: #DBEAFE; }
+
+    .page {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 38px 15px 45px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 480px;
+      padding: 35px 29px 29px;
+      text-align: center;
+      background: rgba(255,255,255,.98);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: 0 18px 48px rgba(15,23,42,.055);
+    }
+
+    .shield {
+      width: 76px;
+      height: 76px;
+      margin: 0 auto 19px;
+      display: grid;
+      place-items: center;
+      color: white;
+      background: linear-gradient(145deg, #3B82F6, #1D4ED8);
+      border-radius: 23px;
+      font-size: 29px;
+      box-shadow: 0 10px 23px rgba(37,99,235,.19);
+    }
+
+    .badge {
+      width: max-content;
+      max-width: 100%;
+      margin: 0 auto 17px;
+      padding: 7px 11px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--blue-dark);
+      background: var(--blue-light);
+      border: 1px solid #DBEAFE;
+      border-radius: 30px;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .4px;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      color: var(--text);
+      font-size: clamp(26px, 5vw, 32px);
+      line-height: 1.25;
+      letter-spacing: -.8px;
+      font-weight: 800;
+    }
+
+    .subtitle {
+      max-width: 340px;
+      margin: 0 auto 27px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.8;
+    }
+
+    .message {
+      display: none;
+      margin-bottom: 18px;
+      padding: 12px 13px;
+      border-radius: 12px;
+      text-align: left;
+      font-size: 10px;
+      line-height: 1.8;
+      overflow-wrap: anywhere;
+    }
+
+    .message.error {
+      display: block;
+      color: #B42318;
+      background: #FFF5F5;
+      border: 1px solid #FECACA;
+    }
+
+    .message.success {
+      display: block;
+      color: #166534;
+      background: #F0FDF4;
+      border: 1px solid #BBF7D0;
+    }
+
+    .message.info {
+      display: block;
+      color: #1D4ED8;
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+    }
+
+    .form { text-align: left; }
+
+    .field { margin-bottom: 18px; }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #344054;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .input-wrap { position: relative; }
+
+    input {
+      width: 100%;
+      height: 51px;
+      padding: 0 47px 0 15px;
+      color: var(--text);
+      background: #FBFCFE;
+      border: 1px solid #DCE3ED;
+      border-radius: 12px;
+      outline: none;
+      font-family: inherit;
+      font-size: 12px;
+      transition: .2s;
+    }
+
+    input:hover { border-color: #CBD5E1; }
+
+    input:focus {
+      background: white;
+      border-color: var(--blue);
+      box-shadow: 0 0 0 4px rgba(37,99,235,.09);
+    }
+
+    input::placeholder { color: #9AA5B5; }
+
+    .toggle-password {
+      position: absolute;
+      top: 50%;
+      right: 9px;
+      width: 34px;
+      height: 34px;
+      transform: translateY(-50%);
+      display: grid;
+      place-items: center;
+      color: #7B8798;
+      background: transparent;
+      border: 0;
+      border-radius: 9px;
+      cursor: pointer;
+    }
+
+    .toggle-password:hover {
+      color: var(--blue-dark);
+      background: var(--blue-light);
+    }
+
+    .login-btn {
+      width: 100%;
+      min-height: 51px;
+      margin-top: 4px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      color: white;
+      background: var(--blue);
+      border: 0;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(37,99,235,.17);
+      transition: .2s;
+    }
+
+    .login-btn:hover:not(:disabled) {
+      background: var(--blue-dark);
+      transform: translateY(-1px);
+    }
+
+    .login-btn:disabled {
+      opacity: .65;
+      cursor: not-allowed;
+    }
+
+    .loading {
+      width: 17px;
+      height: 17px;
+      border: 2px solid rgba(255,255,255,.4);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .forgot {
+      display: block;
+      margin-top: 19px;
+      color: var(--blue-dark);
+      text-align: center;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .forgot:hover { text-decoration: underline; }
+
+    .security {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 26px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .security i { color: var(--blue); }
+
+    .bottom-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      margin-top: 22px;
+      color: #64748B;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .bottom-link:hover { color: var(--blue-dark); }
+
+    .footer {
+      padding: 0 15px 22px;
+      color: #94A3B8;
+      text-align: center;
+      font-size: 9px;
+    }
+
+    @media (max-width: 450px) {
+      .header { height: 64px; padding: 0 13px; }
+      .logo { gap: 8px; font-size: 13px; }
+      .logo-icon { width: 35px; height: 35px; border-radius: 11px; }
+      .back-store { padding: 8px 10px; font-size: 10px; }
+      .page { padding: 27px 13px 35px; align-items: flex-start; }
+      .card { padding: 30px 20px 25px; border-radius: 21px; }
+      .shield { width: 68px; height: 68px; border-radius: 20px; font-size: 25px; }
+    }
+
+    @media (max-width: 350px) {
+      .logo { font-size: 11px; }
+      .back-store { gap: 5px; font-size: 9px; }
+      .card { padding: 25px 15px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
 </head>
 
-
 <body>
+  <header class="header">
+    <a href="index.html" class="logo">
+      <span class="logo-icon"><i class="fa-solid fa-store"></i></span>
+      <span>Gentle <span class="logo-accent">Acct</span> Store</span>
+    </a>
 
+    <a href="index.html" class="back-store">
+      <i class="fa-solid fa-arrow-left"></i>
+      Back to Store
+    </a>
+  </header>
 
-<header class="header">
+  <main class="page">
+    <section class="card">
+      <div class="shield">
+        <i class="fa-solid fa-shield-halved"></i>
+      </div>
 
-  <a href="index.html" class="logo">
+      <div class="badge">
+        <i class="fa-solid fa-lock"></i>
+        ADMIN ACCESS
+      </div>
 
-    <span class="logo-icon">
-      <i class="fa-solid fa-store"></i>
-    </span>
+      <h1>Admin Login</h1>
 
-    <span>Gentle Acct Store</span>
+      <p class="subtitle">
+        Sign in with your authorized Gentle Acct Store administrator account.
+      </p>
 
-  </a>
+      <div id="message" class="message" role="status" aria-live="polite"></div>
 
-  <a href="index.html" class="back-store">
-    <i class="fa-solid fa-arrow-left"></i>
-    Back to Store
-  </a>
-
-</header>
-
-
-<main class="page">
-
-  <section class="card">
-
-    <div class="shield">
-      <i class="fa-solid fa-shield-halved"></i>
-    </div>
-
-    <div class="badge">
-      <i class="fa-solid fa-lock"></i>
-      ADMIN ACCESS
-    </div>
-
-    <h1>Admin Login</h1>
-
-    <p class="subtitle">
-      Sign in with your authorized Gentle Acct Store admin account.
-    </p>
-
-
-    <div
-      id="message"
-      class="message"
-    ></div>
-
-
-    <form
-      id="loginForm"
-      class="form"
-    >
-
-      <div class="field">
-
-        <label for="email">
-          Email Address
-        </label>
-
-        <div class="input-wrap">
-
+      <form id="loginForm" class="form">
+        <div class="field">
+          <label for="email">Email Address</label>
           <input
             type="email"
             id="email"
+            name="email"
             placeholder="Enter admin email"
-            autocomplete="email"
+            autocomplete="username"
+            autocapitalize="none"
+            spellcheck="false"
             required
           >
-
         </div>
 
-      </div>
+        <div class="field">
+          <label for="password">Password</label>
 
+          <div class="input-wrap">
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter admin password"
+              autocomplete="current-password"
+              required
+            >
 
-      <div class="field">
-
-        <label for="password">
-          Password
-        </label>
-
-        <div class="input-wrap">
-
-          <input
-            type="password"
-            id="password"
-            placeholder="Enter admin password"
-            autocomplete="current-password"
-            required
-          >
-
-          <button
-            type="button"
-            class="toggle-password"
-            id="togglePassword"
-            aria-label="Show password"
-          >
-            <i class="fa-solid fa-eye"></i>
-          </button>
-
+            <button
+              type="button"
+              class="toggle-password"
+              id="togglePassword"
+              aria-label="Show password"
+              aria-pressed="false"
+            >
+              <i class="fa-solid fa-eye"></i>
+            </button>
+          </div>
         </div>
 
+        <button type="submit" class="login-btn" id="loginBtn">
+          <i class="fa-solid fa-right-to-bracket"></i>
+          <span>Login to Admin Panel</span>
+        </button>
+      </form>
+
+      <a href="forgot-password.html" class="forgot">
+        Forgot your password?
+      </a>
+
+      <div class="security">
+        <i class="fa-solid fa-lock"></i>
+        <span>Secure Firebase authentication</span>
       </div>
 
+      <a href="index.html" class="bottom-link">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Store
+      </a>
+    </section>
+  </main>
 
-      <button
-        type="submit"
-        class="login-btn"
-        id="loginBtn"
-      >
+  <footer class="footer">
+    © 2026 Gentle Acct Store. All rights reserved.
+  </footer>
 
-        <i class="fa-solid fa-right-to-bracket"></i>
+  <!-- Firebase SDKs: use one compatible version and initialize once -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="firebase.js"></script>
 
-        <span>Login to Admin Panel</span>
+  <script>
+    "use strict";
 
-      </button>
+    const ADMIN_UID = "UoEjCy99gbQKkGob59vGi3CunZi1";
 
-    </form>
+    const loginForm = document.getElementById("loginForm");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const loginBtn = document.getElementById("loginBtn");
+    const message = document.getElementById("message");
+    const togglePassword = document.getElementById("togglePassword");
 
+    let loginInProgress = false;
+    let redirectStarted = false;
+    let authListenerReady = false;
 
-    <a
-      href="forgot-password.html"
-      class="forgot"
-    >
-      Forgot your password?
-    </a>
+    function showMessage(text, type) {
+      message.textContent = text;
+      message.className = "message " + type;
+    }
 
+    function setBusy(busy) {
+      loginBtn.disabled = busy;
 
-    <div class="security">
+      loginBtn.innerHTML = busy
+        ? '<span class="loading"></span><span>Checking Access...</span>'
+        : '<i class="fa-solid fa-right-to-bracket"></i><span>Login to Admin Panel</span>';
+    }
 
-      <i class="fa-solid fa-lock"></i>
+    function clearAdminFlags() {
+      // Remove legacy flags; they are not used to grant access.
+      try {
+        localStorage.removeItem("gentleAdminLoggedIn");
+        localStorage.removeItem("gentleAdminUID");
+      } catch (error) {
+        // Authentication does not depend on localStorage.
+      }
+    }
 
-      <span>
-        Secure Firebase authentication
-      </span>
+    function friendlyLoginError(error) {
+      switch (error && error.code) {
+        case "auth/invalid-credential":
+        case "auth/wrong-password":
+        case "auth/user-not-found":
+          return "Incorrect email or password.";
 
-    </div>
+        case "auth/invalid-email":
+          return "Please enter a valid email address.";
 
+        case "auth/too-many-requests":
+          return "Too many login attempts. Please wait a while and try again.";
 
-    <a
-      href="index.html"
-      class="bottom-link"
-    >
+        case "auth/network-request-failed":
+          return "Network error. Check your internet connection and try again.";
 
-      <i class="fa-solid fa-arrow-left"></i>
+        case "auth/user-disabled":
+          return "This account has been disabled. Please contact the administrator.";
 
-      Back to Store
+        case "auth/operation-not-allowed":
+          return "Email and password sign-in is not enabled in Firebase Authentication.";
 
-    </a>
+        default:
+          return "Unable to sign in right now. Please try again.";
+      }
+    }
 
-  </section>
+    function goToAdmin() {
+      if (redirectStarted) return;
 
-</main>
+      redirectStarted = true;
+      window.location.replace("admin.html");
+    }
 
+    togglePassword.addEventListener("click", function () {
+      const show = passwordInput.type === "password";
+      passwordInput.type = show ? "text" : "password";
 
-<script>
-
-/* =========================================
-   ADMIN UID
-   ========================================= */
-
-const ADMIN_UID =
-  "UoEjCy99gbQKkGob59vGi3CunZi1";
-
-
-/* =========================================
-   ELEMENTS
-   ========================================= */
-
-const loginForm =
-  document.getElementById("loginForm");
-
-const emailInput =
-  document.getElementById("email");
-
-const passwordInput =
-  document.getElementById("password");
-
-const loginBtn =
-  document.getElementById("loginBtn");
-
-const message =
-  document.getElementById("message");
-
-const togglePassword =
-  document.getElementById("togglePassword");
-
-
-/* =========================================
-   MESSAGE
-   ========================================= */
-
-function showMessage(text, type) {
-
-  message.textContent = text;
-
-  message.className =
-    "message " + type;
-
-}
-
-
-/* =========================================
-   PASSWORD TOGGLE
-   ========================================= */
-
-togglePassword.addEventListener(
-  "click",
-  function () {
-
-    const icon =
-      togglePassword.querySelector("i");
-
-    if (
-      passwordInput.type === "password"
-    ) {
-
-      passwordInput.type = "text";
-
-      icon.className =
-        "fa-solid fa-eye-slash";
+      togglePassword.querySelector("i").className =
+        show ? "fa-solid fa-eye-slash" : "fa-solid fa-eye";
 
       togglePassword.setAttribute(
         "aria-label",
-        "Hide password"
+        show ? "Hide password" : "Show password"
       );
 
-    } else {
+      togglePassword.setAttribute("aria-pressed", String(show));
+    });
 
-      passwordInput.type = "password";
-
-      icon.className =
-        "fa-solid fa-eye";
-
-      togglePassword.setAttribute(
-        "aria-label",
-        "Show password"
-      );
-
-    }
-
-  }
-);
-
-
-/* =========================================
-   CHECK EXISTING SESSION
-   ========================================= */
-
-firebaseAuth.onAuthStateChanged(
-  async function (user) {
-
-    if (!user) {
-      return;
-    }
-
-    if (user.uid !== ADMIN_UID) {
-
-      await firebaseAuth.signOut();
-
-      localStorage.removeItem(
-        "gentleAdminLoggedIn"
-      );
-
-      localStorage.removeItem(
-        "gentleAdminUID"
-      );
-
-      return;
-    }
-
-    if (!user.emailVerified) {
-
-      await firebaseAuth.signOut();
-
-      localStorage.removeItem(
-        "gentleAdminLoggedIn"
-      );
-
-      localStorage.removeItem(
-        "gentleAdminUID"
-      );
-
-      showMessage(
-        "Please verify the admin email address before accessing the admin panel.",
-        "error"
-      );
-
-      return;
-    }
-
-    localStorage.setItem(
-      "gentleAdminLoggedIn",
-      "true"
-    );
-
-    localStorage.setItem(
-      "gentleAdminUID",
-      user.uid
-    );
-
-    window.location.href =
-      "admin.html";
-
-  }
-);
-
-
-/* =========================================
-   LOGIN
-   ========================================= */
-
-loginForm.addEventListener(
-  "submit",
-  async function (event) {
-
-    event.preventDefault();
-
-    const email =
-      emailInput.value.trim();
-
-    const password =
-      passwordInput.value;
-
-    if (!email || !password) {
-
-      showMessage(
-        "Please enter your email and password.",
-        "error"
-      );
-
-      return;
-    }
-
-
-    loginBtn.disabled = true;
-
-    loginBtn.innerHTML = `
-      <span class="loading"></span>
-      <span>Checking Access...</span>
-    `;
-
-
-    try {
-
-      const credential =
-        await firebaseAuth.signInWithEmailAndPassword(
-          email,
-          password
-        );
-
-      const user =
-        credential.user;
-
-
-      /* =========================================
-         CHECK ADMIN UID
-         ========================================= */
-
-      if (user.uid !== ADMIN_UID) {
-
-        await firebaseAuth.signOut();
-
-        localStorage.removeItem(
-          "gentleAdminLoggedIn"
-        );
-
-        localStorage.removeItem(
-          "gentleAdminUID"
-        );
-
+    function initializeLogin() {
+      if (
+        typeof firebaseAuth === "undefined" ||
+        !firebaseAuth ||
+        typeof firebaseAuth.onAuthStateChanged !== "function" ||
+        typeof firebaseAuth.signInWithEmailAndPassword !== "function"
+      ) {
         showMessage(
-          "This account is not authorized to access the admin panel.",
+          "Firebase Authentication is not initialized. Check firebase.js and try again.",
           "error"
         );
-
-        loginBtn.disabled = false;
-
-        loginBtn.innerHTML = `
-          <i class="fa-solid fa-right-to-bracket"></i>
-          <span>Login to Admin Panel</span>
-        `;
-
+        loginBtn.disabled = true;
         return;
       }
 
+      firebaseAuth.onAuthStateChanged(async function (user) {
+        authListenerReady = true;
 
-      /* =========================================
-         CHECK EMAIL VERIFICATION
-         ========================================= */
+        // The form handler performs its own checks after a new sign-in.
+        if (loginInProgress || redirectStarted) return;
 
-      if (!user.emailVerified) {
+        if (!user) return;
 
-        await firebaseAuth.signOut();
+        if (user.uid !== ADMIN_UID) {
+          clearAdminFlags();
 
-        localStorage.removeItem(
-          "gentleAdminLoggedIn"
-        );
+          try {
+            await firebaseAuth.signOut();
+          } catch (error) {
+            console.error("Unable to clear unauthorized session:", error);
+          }
 
-        localStorage.removeItem(
-          "gentleAdminUID"
-        );
+          showMessage(
+            "This signed-in account is not authorized for the admin panel.",
+            "error"
+          );
+          return;
+        }
 
-        showMessage(
-          "Please verify this admin email address before accessing the admin panel.",
-          "error"
-        );
+        if (!user.emailVerified) {
+          clearAdminFlags();
 
-        loginBtn.disabled = false;
+          try {
+            await firebaseAuth.signOut();
+          } catch (error) {
+            console.error("Unable to sign out unverified admin:", error);
+          }
 
-        loginBtn.innerHTML = `
-          <i class="fa-solid fa-right-to-bracket"></i>
-          <span>Login to Admin Panel</span>
-        `;
+          showMessage(
+            "Please verify the administrator email address before accessing the admin panel.",
+            "error"
+          );
+          return;
+        }
 
-        return;
-      }
+        goToAdmin();
+      });
+    }
 
+    loginForm.addEventListener("submit", async function (event) {
+      event.preventDefault();
 
-      /* =========================================
-         SAVE ADMIN SESSION
-         ========================================= */
-
-      localStorage.setItem(
-        "gentleAdminLoggedIn",
-        "true"
-      );
-
-      localStorage.setItem(
-        "gentleAdminUID",
-        user.uid
-      );
-
-
-      showMessage(
-        "Admin login successful. Opening dashboard...",
-        "success"
-      );
-
-
-      setTimeout(
-        function () {
-
-          window.location.href =
-            "admin.html";
-
-        },
-        700
-      );
-
-    } catch (error) {
-
-      console.error(
-        "Admin login error:",
-        error
-      );
-
-
-      let errorMessage =
-        "Unable to login. Please check your email and password.";
-
+      if (loginInProgress || redirectStarted) return;
 
       if (
-        error.code ===
-        "auth/invalid-credential"
+        typeof firebaseAuth === "undefined" ||
+        !firebaseAuth ||
+        typeof firebaseAuth.signInWithEmailAndPassword !== "function"
       ) {
-
-        errorMessage =
-          "Incorrect email or password.";
-
+        showMessage(
+          "Firebase Authentication is unavailable. Check firebase.js and reload the page.",
+          "error"
+        );
+        return;
       }
 
-      else if (
-        error.code ===
-        "auth/user-not-found"
-      ) {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
 
-        errorMessage =
-          "No account was found with this email.";
-
+      if (!email || !emailInput.validity.valid || !password) {
+        showMessage("Enter a valid email address and password.", "error");
+        return;
       }
 
-      else if (
-        error.code ===
-        "auth/wrong-password"
-      ) {
+      loginInProgress = true;
+      setBusy(true);
+      message.className = "message";
 
-        errorMessage =
-          "Incorrect password.";
+      try {
+        const credential =
+          await firebaseAuth.signInWithEmailAndPassword(email, password);
 
+        const user = credential.user;
+
+        if (!user || user.uid !== ADMIN_UID) {
+          clearAdminFlags();
+
+          try {
+            await firebaseAuth.signOut();
+          } catch (signOutError) {
+            console.error("Unauthorized sign-out error:", signOutError);
+          }
+
+          showMessage(
+            "This account is not authorized to access the admin panel.",
+            "error"
+          );
+          return;
+        }
+
+        if (!user.emailVerified) {
+          clearAdminFlags();
+
+          try {
+            await firebaseAuth.signOut();
+          } catch (signOutError) {
+            console.error("Unverified sign-out error:", signOutError);
+          }
+
+          showMessage(
+            "Please verify the admin email address before accessing the admin panel.",
+            "error"
+          );
+          return;
+        }
+
+        showMessage("Admin login successful. Opening dashboard...", "success");
+        goToAdmin();
+
+      } catch (error) {
+        console.error("Admin login error:", error);
+        showMessage(friendlyLoginError(error), "error");
+
+      } finally {
+        loginInProgress = false;
+
+        if (!redirectStarted) {
+          setBusy(false);
+        }
       }
+    });
 
-      else if (
-        error.code ===
-        "auth/invalid-email"
-      ) {
-
-        errorMessage =
-          "Please enter a valid email address.";
-
-      }
-
-      else if (
-        error.code ===
-        "auth/too-many-requests"
-      ) {
-
-        errorMessage =
-          "Too many login attempts. Please wait and try again.";
-
-      }
-
-      else if (
-        error.code ===
-        "auth/network-request-failed"
-      ) {
-
-        errorMessage =
-          "Network error. Please check your internet connection.";
-
-      }
-
-
-      showMessage(
-        errorMessage,
-        "error"
-      );
-
-
-      loginBtn.disabled = false;
-
-      loginBtn.innerHTML = `
-        <i class="fa-solid fa-right-to-bracket"></i>
-        <span>Login to Admin Panel</span>
-      `;
-
-    }
-
-  }
-);
-
-</script>
-
-
+    initializeLogin();
+  </script>
 </body>
-
 </html>

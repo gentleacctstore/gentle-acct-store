@@ -1,2235 +1,665 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0"
->
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2563EB">
+<meta name="description" content="Secure checkout at Gentle Acct Store.">
 <title>Checkout - Gentle Acct Store</title>
 
-<link
-rel="preconnect"
-href="https://fonts.googleapis.com"
->
+<script>
+(function(){
+  try {
+    const saved = localStorage.getItem("gentle-acct-store-theme");
+    if(saved === "dark") document.documentElement.classList.add("dark-mode");
+    if(saved === "blue") document.documentElement.classList.add("blue-mode");
+  } catch(e) {}
+})();
+</script>
 
-<link
-rel="preconnect"
-href="https://fonts.gstatic.com"
-crossorigin
->
-
-<link
-href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
-rel="stylesheet"
->
-
-<link
-rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-
 <script src="firebase.js"></script>
 
 <style>
-
 :root{
-
---blue:#0b2d5c;
---blue-dark:#071f40;
---blue-light:#eaf2fb;
---blue-soft:#f5f8fc;
-
---white:#ffffff;
-
---text:#172033;
---muted:#748093;
-
---border:#e4eaf2;
-
---danger:#dc2626;
-
---shadow:
-0 8px 25px rgba(11,45,92,.07);
-
+  --blue:#2563EB;
+  --blue-dark:#1D4ED8;
+  --blue-light:#EFF6FF;
+  --blue-soft:#F8FAFC;
+  --white:#FFFFFF;
+  --text:#172033;
+  --muted:#748093;
+  --border:#E2E8F0;
+  --danger:#DC2626;
+  --danger-bg:#FFF1F1;
+  --success:#15803D;
+  --success-bg:#EDF8F1;
+  --shadow:0 8px 25px rgba(37,99,235,.07);
 }
 
-*{
-
-box-sizing:border-box;
-
-margin:0;
-
-padding:0;
-
-}
-
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
 body{
-
-font-family:"Poppins",sans-serif;
-
-background:#f7f9fc;
-
-color:var(--text);
-
-min-height:100vh;
-
-padding-bottom:30px;
-
+  font-family:"Poppins",sans-serif;
+  background:#F8FAFC;
+  color:var(--text);
+  min-height:100vh;
+  padding-bottom:30px;
+  transition:background .2s,color .2s;
 }
-
-button,
-input{
-
-font-family:inherit;
-
-}
-
-button{
-
-cursor:pointer;
-
-}
-
-a{
-
-text-decoration:none;
-
-color:inherit;
-
-}
-
-.page{
-
-width:100%;
-
-max-width:600px;
-
-margin:0 auto;
-
-min-height:100vh;
-
-}
-
+button,input{font-family:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+.page{width:100%;max-width:600px;margin:0 auto;min-height:100vh}
 header{
-
-background:var(--white);
-
-height:68px;
-
-padding:0 17px;
-
-border-bottom:1px solid var(--border);
-
-display:flex;
-
-align-items:center;
-
-justify-content:space-between;
-
-position:sticky;
-
-top:0;
-
-z-index:50;
-
+  background:var(--white);height:68px;padding:0 17px;
+  border-bottom:1px solid var(--border);display:flex;align-items:center;
+  justify-content:space-between;position:sticky;top:0;z-index:50;
 }
-
-.header-left{
-
-display:flex;
-
-align-items:center;
-
-gap:11px;
-
-}
-
+.header-left{display:flex;align-items:center;gap:11px}
 .back-btn{
-
-width:38px;
-
-height:38px;
-
-border:none;
-
-border-radius:11px;
-
-background:var(--blue-light);
-
-color:var(--blue);
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-font-size:14px;
-
+  width:38px;height:38px;border:none;border-radius:11px;
+  background:var(--blue-light);color:var(--blue);
+  display:flex;align-items:center;justify-content:center;font-size:14px;
 }
-
-.header-title{
-
-font-size:15px;
-
-font-weight:800;
-
-color:var(--blue-dark);
-
-}
-
-.header-right{
-
-color:var(--blue);
-
-font-size:18px;
-
-}
-
-main{
-
-padding:18px 16px 35px;
-
-}
-
-.page-heading{
-
-margin-bottom:17px;
-
-}
-
-.page-heading h1{
-
-font-size:23px;
-
-font-weight:800;
-
-color:var(--blue-dark);
-
-margin-bottom:4px;
-
-}
-
-.page-heading p{
-
-font-size:10px;
-
-color:var(--muted);
-
-line-height:1.6;
-
-}
+.header-title{font-size:15px;font-weight:800;color:var(--blue-dark)}
+.header-right{color:var(--blue);font-size:18px}
+main{padding:18px 16px 35px}
+.page-heading{margin-bottom:17px}
+.page-heading h1{font-size:23px;font-weight:800;color:var(--blue-dark);margin-bottom:4px}
+.page-heading p{font-size:10px;color:var(--muted);line-height:1.6}
 
 .product-card{
-
-background:var(--white);
-
-border:1px solid var(--border);
-
-border-radius:19px;
-
-padding:15px;
-
-box-shadow:var(--shadow);
-
-display:flex;
-
-align-items:center;
-
-gap:12px;
-
-margin-bottom:14px;
-
+  background:var(--white);border:1px solid var(--border);
+  border-radius:19px;padding:15px;box-shadow:var(--shadow);
+  display:flex;align-items:center;gap:12px;margin-bottom:14px;
 }
-
 .product-image{
-
-width:68px;
-
-height:68px;
-
-border-radius:15px;
-
-background:var(--blue-light);
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-overflow:hidden;
-
-flex-shrink:0;
-
-color:var(--blue);
-
-font-size:23px;
-
+  width:68px;height:68px;border-radius:15px;background:var(--blue-light);
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+  flex-shrink:0;color:var(--blue);font-size:23px;
 }
-
-.product-image img{
-
-width:100%;
-
-height:100%;
-
-object-fit:cover;
-
-}
-
-.product-image i{
-
-font-size:23px;
-
-}
-
-.product-info{
-
-flex:1;
-
-min-width:0;
-
-}
-
+.product-image img{width:100%;height:100%;object-fit:cover}
+.product-info{flex:1;min-width:0}
 .product-info h2{
-
-font-size:14px;
-
-font-weight:800;
-
-color:var(--blue-dark);
-
-margin-bottom:5px;
-
-white-space:nowrap;
-
-overflow:hidden;
-
-text-overflow:ellipsis;
-
+  font-size:14px;font-weight:800;color:var(--blue-dark);margin-bottom:5px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
-
 .category{
-
-display:inline-block;
-
-background:#f0f4f9;
-
-color:#64748b;
-
-font-size:8px;
-
-font-weight:700;
-
-padding:4px 8px;
-
-border-radius:7px;
-
-text-transform:capitalize;
-
-margin-bottom:6px;
-
+  display:inline-block;background:#F0F4F9;color:#64748B;font-size:8px;
+  font-weight:700;padding:4px 8px;border-radius:7px;text-transform:capitalize;margin-bottom:6px;
 }
-
-.product-info p{
-
-font-size:9px;
-
-color:var(--muted);
-
-}
-
-.product-price{
-
-font-size:16px;
-
-font-weight:800;
-
-color:var(--blue);
-
-margin-top:4px;
-
-}
+.product-info p{font-size:9px;color:var(--muted)}
+.product-price{font-size:16px;font-weight:800;color:var(--blue);margin-top:4px}
 
 .checkout-card{
-
-background:var(--white);
-
-border:1px solid var(--border);
-
-border-radius:19px;
-
-padding:18px;
-
-box-shadow:var(--shadow);
-
-margin-bottom:14px;
-
+  background:var(--white);border:1px solid var(--border);
+  border-radius:19px;padding:18px;box-shadow:var(--shadow);margin-bottom:14px;
 }
-
 .card-title{
-
-display:flex;
-
-align-items:center;
-
-gap:9px;
-
-font-size:14px;
-
-font-weight:800;
-
-color:var(--blue-dark);
-
-margin-bottom:16px;
-
+  display:flex;align-items:center;gap:9px;font-size:14px;
+  font-weight:800;color:var(--blue-dark);margin-bottom:16px;
 }
-
-.card-title i{
-
-color:var(--blue);
-
-}
-
+.card-title i{color:var(--blue)}
 .wallet-box{
-
-background:var(--blue);
-
-color:var(--white);
-
-border-radius:16px;
-
-padding:15px;
-
-display:flex;
-
-align-items:center;
-
-justify-content:space-between;
-
-gap:12px;
-
-margin-bottom:17px;
-
+  background:linear-gradient(135deg,var(--blue),var(--blue-dark));
+  color:white;border-radius:16px;padding:15px;display:flex;align-items:center;
+  justify-content:space-between;gap:12px;margin-bottom:17px;
 }
-
-.wallet-label{
-
-font-size:9px;
-
-opacity:.75;
-
-margin-bottom:3px;
-
-}
-
-.wallet-balance{
-
-font-size:20px;
-
-font-weight:800;
-
-}
-
+.wallet-label{font-size:9px;opacity:.8;margin-bottom:3px}
+.wallet-balance{font-size:20px;font-weight:800}
 .wallet-icon{
-
-width:42px;
-
-height:42px;
-
-border-radius:12px;
-
-background:rgba(255,255,255,.13);
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-font-size:17px;
-
+  width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.13);
+  display:flex;align-items:center;justify-content:center;font-size:17px;
 }
-
 .summary-row{
-
-display:flex;
-
-align-items:center;
-
-justify-content:space-between;
-
-gap:10px;
-
-padding:11px 0;
-
-border-bottom:1px solid #edf0f5;
-
-font-size:11px;
-
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:11px 0;border-bottom:1px solid var(--border);font-size:11px;
 }
-
-.summary-row:last-child{
-
-border-bottom:none;
-
-}
-
-.summary-row span:first-child{
-
-color:var(--muted);
-
-}
-
-.summary-row span:last-child{
-
-font-weight:700;
-
-color:var(--text);
-
-}
-
-.total-row{
-
-padding-top:15px;
-
-margin-top:3px;
-
-}
-
-.total-row span:first-child{
-
-font-weight:800;
-
-color:var(--blue-dark);
-
-font-size:12px;
-
-}
-
-.total-row span:last-child{
-
-font-size:18px;
-
-font-weight:800;
-
-color:var(--blue);
-
-}
-
+.summary-row:last-child{border-bottom:none}
+.summary-row span:first-child{color:var(--muted)}
+.summary-row span:last-child{font-weight:700;color:var(--text);text-align:right;overflow-wrap:anywhere}
+.total-row{padding-top:15px;margin-top:3px}
+.total-row span:first-child{font-weight:800;color:var(--blue-dark);font-size:12px}
+.total-row span:last-child{font-size:18px;font-weight:800;color:var(--blue)}
 .stock-box{
-
-display:flex;
-
-align-items:center;
-
-gap:8px;
-
-background:var(--blue-light);
-
-color:var(--blue);
-
-border-radius:11px;
-
-padding:10px 11px;
-
-font-size:9px;
-
-font-weight:700;
-
-margin-top:13px;
-
+  display:flex;align-items:center;gap:8px;background:var(--blue-light);
+  color:var(--blue);border-radius:11px;padding:10px 11px;font-size:9px;
+  font-weight:700;margin-top:13px;
 }
-
-.stock-box i{
-
-font-size:11px;
-
-}
-
+.stock-box i{font-size:11px}
 .notice{
-
-display:flex;
-
-align-items:flex-start;
-
-gap:9px;
-
-background:#f7f9fc;
-
-border:1px solid var(--border);
-
-border-radius:12px;
-
-padding:11px;
-
-margin-top:14px;
-
-font-size:9px;
-
-line-height:1.6;
-
-color:var(--muted);
-
+  display:flex;align-items:flex-start;gap:9px;background:#F7F9FC;
+  border:1px solid var(--border);border-radius:12px;padding:11px;
+  margin-top:14px;font-size:9px;line-height:1.6;color:var(--muted);
 }
-
-.notice i{
-
-color:var(--blue);
-
-font-size:12px;
-
-margin-top:2px;
-
-}
-
+.notice i{color:var(--blue);font-size:12px;margin-top:2px}
 .pay-btn{
-
-width:100%;
-
-border:none;
-
-background:var(--blue);
-
-color:var(--white);
-
-border-radius:12px;
-
-padding:14px;
-
-font-size:13px;
-
-font-weight:800;
-
-margin-top:17px;
-
-transition:.2s;
-
+  width:100%;border:none;background:var(--blue);color:white;border-radius:12px;
+  padding:14px;font-size:13px;font-weight:800;margin-top:17px;transition:.2s;
 }
-
-.pay-btn:hover{
-
-background:var(--blue-dark);
-
-}
-
-.pay-btn:disabled{
-
-opacity:.55;
-
-cursor:not-allowed;
-
-}
-
-.pay-btn i{
-
-margin-right:5px;
-
-}
-
-.fund-link{
-
-display:block;
-
-text-align:center;
-
-margin-top:11px;
-
-font-size:10px;
-
-font-weight:700;
-
-color:var(--blue);
-
-}
+.pay-btn:hover{background:var(--blue-dark)}
+.pay-btn:disabled{opacity:.55;cursor:not-allowed}
+.pay-btn i{margin-right:5px}
+.fund-link{display:block;text-align:center;margin-top:11px;font-size:10px;font-weight:700;color:var(--blue)}
 
 .loading{
-
-background:var(--white);
-
-border:1px solid var(--border);
-
-border-radius:19px;
-
-padding:35px 20px;
-
-text-align:center;
-
-color:var(--muted);
-
+  background:var(--white);border:1px solid var(--border);border-radius:19px;
+  padding:35px 20px;text-align:center;color:var(--muted);
 }
-
-.loading i{
-
-font-size:25px;
-
-color:var(--blue);
-
-margin-bottom:10px;
-
-}
-
-.loading p{
-
-font-size:10px;
-
-}
-
+.loading i{font-size:25px;color:var(--blue);margin-bottom:10px}
+.loading p{font-size:10px}
 .error-box{
-
-background:var(--white);
-
-border:1px solid #f0d5d5;
-
-border-radius:19px;
-
-padding:30px 20px;
-
-text-align:center;
-
+  background:var(--white);border:1px solid #F0D5D5;border-radius:19px;
+  padding:30px 20px;text-align:center;
 }
-
 .error-box i{
-
-width:52px;
-
-height:52px;
-
-border-radius:50%;
-
-background:#fff0f0;
-
-color:var(--danger);
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-margin:0 auto 13px;
-
-font-size:20px;
-
+  width:52px;height:52px;border-radius:50%;background:#FFF0F0;color:var(--danger);
+  display:flex;align-items:center;justify-content:center;margin:0 auto 13px;font-size:20px;
 }
-
-.error-box h2{
-
-font-size:15px;
-
-color:var(--blue-dark);
-
-margin-bottom:5px;
-
-}
-
-.error-box p{
-
-font-size:10px;
-
-color:var(--muted);
-
-line-height:1.6;
-
-}
-
+.error-box h2{font-size:15px;color:var(--blue-dark);margin-bottom:5px}
+.error-box p{font-size:10px;color:var(--muted);line-height:1.6}
 .error-box button{
-
-margin-top:15px;
-
-border:none;
-
-background:var(--blue);
-
-color:var(--white);
-
-padding:11px 16px;
-
-border-radius:10px;
-
-font-size:10px;
-
-font-weight:700;
-
+  margin-top:15px;border:none;background:var(--blue);color:white;
+  padding:11px 16px;border-radius:10px;font-size:10px;font-weight:700;
 }
-
-.success{
-
-display:none;
-
-text-align:center;
-
-}
-
-.success.show{
-
-display:block;
-
-}
-
+.success{display:none;text-align:center}
+.success.show{display:block}
 .success-icon{
-
-width:72px;
-
-height:72px;
-
-border-radius:50%;
-
-background:var(--blue-light);
-
-color:var(--blue);
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-margin:0 auto 15px;
-
-font-size:30px;
-
+  width:72px;height:72px;border-radius:50%;background:var(--blue-light);color:var(--blue);
+  display:flex;align-items:center;justify-content:center;margin:0 auto 15px;font-size:30px;
 }
-
-.success h1{
-
-font-size:21px;
-
-font-weight:800;
-
-color:var(--blue-dark);
-
-margin-bottom:5px;
-
-}
-
-.success > p{
-
-font-size:10px;
-
-color:var(--muted);
-
-line-height:1.6;
-
-margin-bottom:17px;
-
-}
-
+.success h1{font-size:21px;font-weight:800;color:var(--blue-dark);margin-bottom:5px}
+.success>p{font-size:10px;color:var(--muted);line-height:1.6;margin-bottom:17px}
 .purchase-card{
-
-background:var(--white);
-
-border:1px solid var(--border);
-
-border-radius:18px;
-
-padding:18px;
-
-text-align:left;
-
-box-shadow:var(--shadow);
-
+  background:var(--white);border:1px solid var(--border);border-radius:18px;
+  padding:18px;text-align:left;box-shadow:var(--shadow);
 }
-
-.purchase-label{
-
-font-size:11px;
-
-font-weight:700;
-
-color:var(--muted);
-
-margin-bottom:9px;
-
-}
-
+.purchase-label{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:9px}
 .purchase-item{
-
-background:var(--blue-light);
-
-color:var(--blue-dark);
-
-border-radius:13px;
-
-padding:16px;
-
-font-size:15px;
-
-font-weight:800;
-
-line-height:1.6;
-
-word-break:break-word;
-
-white-space:pre-wrap;
-
+  background:var(--blue-light);color:var(--blue-dark);border-radius:13px;
+  padding:16px;font-size:15px;font-weight:800;line-height:1.6;
+  word-break:break-word;white-space:pre-wrap;
 }
-
-.success-buttons{
-
-display:grid;
-
-grid-template-columns:1fr 1fr;
-
-gap:9px;
-
-margin-top:15px;
-
-}
-
-.success-btn{
-
-border:none;
-
-border-radius:10px;
-
-padding:12px;
-
-font-size:10px;
-
-font-weight:700;
-
-}
-
-.success-btn.primary{
-
-background:var(--blue);
-
-color:var(--white);
-
-}
-
-.success-btn.secondary{
-
-background:var(--blue-light);
-
-color:var(--blue);
-
-}
-
+.success-buttons{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:15px}
+.success-btn{border:none;border-radius:10px;padding:12px;font-size:10px;font-weight:700}
+.success-btn.primary{background:var(--blue);color:white}
+.success-btn.secondary{background:var(--blue-light);color:var(--blue)}
 .toast{
-
-position:fixed;
-
-left:50%;
-
-bottom:25px;
-
-transform:translate(-50%,20px);
-
-background:var(--blue-dark);
-
-color:var(--white);
-
-padding:11px 16px;
-
-border-radius:10px;
-
-font-size:10px;
-
-opacity:0;
-
-visibility:hidden;
-
-transition:.25s;
-
-z-index:200;
-
-max-width:calc(100% - 30px);
-
-text-align:center;
-
+  position:fixed;left:50%;bottom:25px;transform:translate(-50%,20px);
+  background:var(--blue-dark);color:white;padding:11px 16px;border-radius:10px;
+  font-size:10px;opacity:0;visibility:hidden;transition:.25s;z-index:200;
+  max-width:calc(100% - 30px);text-align:center;
 }
+.toast.show{opacity:1;visibility:visible;transform:translate(-50%,0)}
 
-.toast.show{
-
-opacity:1;
-
-visibility:visible;
-
-transform:translate(-50%,0);
-
+/* DARK THEME */
+html.dark-mode,html.dark-mode body{background:#0B1120;color:#E5EAF5}
+html.dark-mode header{background:#0F172A;border-color:#26334A}
+html.dark-mode .header-title,html.dark-mode .page-heading h1,
+html.dark-mode .product-info h2,html.dark-mode .card-title,
+html.dark-mode .total-row span:first-child,html.dark-mode .error-box h2{color:#E5EAF5}
+html.dark-mode .header-right{color:#7DB2FF}
+html.dark-mode .back-btn{background:#1D2D49;color:#7DB2FF}
+html.dark-mode .product-card,html.dark-mode .checkout-card,
+html.dark-mode .loading,html.dark-mode .error-box,html.dark-mode .purchase-card{
+  background:#151F33;border-color:#2B3A54;
 }
+html.dark-mode .category{background:#26334A;color:#CBD5E1}
+html.dark-mode .summary-row{border-color:#2B3A54}
+html.dark-mode .summary-row span:last-child{color:#E5EAF5}
+html.dark-mode .notice{background:#101A2D;border-color:#344765;color:#B6C3D8}
+html.dark-mode .stock-box,html.dark-mode .purchase-item,html.dark-mode .success-btn.secondary,
+html.dark-mode .success-icon{background:#1D2D49;color:#9CC5FF}
+html.dark-mode .product-image{background:#1D2D49;color:#9CC5FF}
+html.dark-mode .error-box i{background:#351D2A;color:#FDA4AF}
+html.dark-mode .success h1{color:#E5EAF5}
+html.dark-mode .toast{background:#1D4ED8;color:#fff}
+
+/* BLUE THEME */
+html.blue-mode:not(.dark-mode),html.blue-mode:not(.dark-mode) body{background:#EAF2FF;color:#172033}
+html.blue-mode:not(.dark-mode) header{background:#EFF6FF}
+html.blue-mode:not(.dark-mode) .product-card,
+html.blue-mode:not(.dark-mode) .checkout-card,
+html.blue-mode:not(.dark-mode) .loading,
+html.blue-mode:not(.dark-mode) .error-box,
+html.blue-mode:not(.dark-mode) .purchase-card{border-color:#C8DAFA}
+html.blue-mode:not(.dark-mode) .notice{background:#F0F6FF;border-color:#C8DAFA}
+html.blue-mode:not(.dark-mode) .category{background:#DBEAFE;color:#1D4ED8}
 
 @media(min-width:700px){
-
-body{
-
-background:#eef3f8;
-
+  body{background:#EEF3F8}
+  .page{background:#F7F9FC;box-shadow:0 0 40px rgba(0,0,0,.04)}
+  html.dark-mode body{background:#0B1120}
+  html.dark-mode .page{background:#0B1120}
 }
-
-.page{
-
-background:#f7f9fc;
-
-box-shadow:0 0 40px rgba(0,0,0,.04);
-
-}
-
-}
-
 </style>
-
 </head>
 
 <body>
-
 <div class="page">
-
 <header>
-
-<div class="header-left">
-
-<button
-class="back-btn"
-type="button"
-onclick="goBack()"
->
-
-<i class="fa-solid fa-arrow-left"></i>
-
-</button>
-
-<div class="header-title">
-Checkout
-</div>
-
-</div>
-
-<div class="header-right">
-
-<i class="fa-solid fa-lock"></i>
-
-</div>
-
+  <div class="header-left">
+    <button class="back-btn" type="button" onclick="goBack()" aria-label="Go back">
+      <i class="fa-solid fa-arrow-left"></i>
+    </button>
+    <div class="header-title">Checkout</div>
+  </div>
+  <div class="header-right"><i class="fa-solid fa-lock"></i></div>
 </header>
 
 <main>
+  <div id="checkoutContent">
+    <div class="loading">
+      <i class="fa-solid fa-spinner fa-spin"></i>
+      <p>Loading checkout...</p>
+    </div>
+  </div>
 
-<div id="checkoutContent">
-
-<div class="loading">
-
-<i class="fa-solid fa-spinner fa-spin"></i>
-
-<p>
-Loading checkout...
-</p>
-
-</div>
-
-</div>
-
-<div
-id="successContent"
-class="success"
->
-
-<div class="success-icon">
-
-<i class="fa-solid fa-check"></i>
-
-</div>
-
-<h1>
-Purchase Successful
-</h1>
-
-<p>
-Your purchase information is below.
-</p>
-
-<div class="purchase-card">
-
-<div class="purchase-label">
-Purchase Information
-</div>
-
-<div
-id="successPurchaseItem"
-class="purchase-item"
->
--
-</div>
-
-</div>
-
-<div class="success-buttons">
-
-<button
-class="success-btn primary"
-type="button"
-onclick="window.location.href='orders.html'"
->
-
-<i class="fa-solid fa-receipt"></i>
-
-My Orders
-
-</button>
-
-<button
-class="success-btn secondary"
-type="button"
-onclick="window.location.href='dashboard.html'"
->
-
-Continue Shopping
-
-</button>
-
-</div>
-
-</div>
-
+  <div id="successContent" class="success">
+    <div class="success-icon"><i class="fa-solid fa-check"></i></div>
+    <h1>Purchase Successful</h1>
+    <p>Your purchase information is below.</p>
+    <div class="purchase-card">
+      <div class="purchase-label">Purchase Information</div>
+      <div id="successPurchaseItem" class="purchase-item">-</div>
+    </div>
+    <div class="success-buttons">
+      <button class="success-btn primary" type="button" onclick="window.location.href='orders.html'">
+        <i class="fa-solid fa-receipt"></i> My Orders
+      </button>
+      <button class="success-btn secondary" type="button" onclick="window.location.href='dashboard.html'">
+        Continue Shopping
+      </button>
+    </div>
+  </div>
 </main>
-
 </div>
 
-<div
-id="toast"
-class="toast"
-></div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
 
 <script>
+"use strict";
 
 let currentUser = null;
-
 let selectedProduct = null;
-
 let walletBalance = 0;
+let purchaseInProgress = false;
 
-const urlParams =
-new URLSearchParams(
-window.location.search
-);
+const urlParams = new URLSearchParams(window.location.search);
+const urlProductId = urlParams.get("id");
+let savedProductId = null;
 
-const urlProductId =
-urlParams.get("id");
+try {
+  savedProductId = localStorage.getItem("gentleCheckoutProduct");
+} catch(e) {}
 
-const savedProductId =
-localStorage.getItem(
-"gentleCheckoutProduct"
-);
+const selectedId = urlProductId || savedProductId;
+const THEME_KEY = "gentle-acct-store-theme";
 
-const selectedId =
-urlProductId ||
-savedProductId;
-
-
-/* =========================
-   AUTH
-========================= */
-
-firebaseAuth.onAuthStateChanged(
-async function(user){
-
-if(!user){
-
-window.location.replace(
-"login.html"
-);
-
-return;
-
+function getThemeKey(user){
+  return "gentle-acct-store-theme-user-" + user.uid;
 }
 
-currentUser = user;
-
-if(!selectedId){
-
-showError(
-"No product was selected."
-);
-
-return;
-
+function readSavedTheme(){
+  try {
+    if(currentUser){
+      const personal = localStorage.getItem(getThemeKey(currentUser));
+      if(["light","dark","blue"].includes(personal)) return personal;
+    }
+    const shared = localStorage.getItem(THEME_KEY);
+    if(["light","dark","blue"].includes(shared)) return shared;
+  } catch(e) {}
+  return "light";
 }
 
-await loadCheckout();
+function applyTheme(theme){
+  if(!["light","dark","blue"].includes(theme)) theme = "light";
 
+  const root = document.documentElement;
+  root.classList.toggle("dark-mode", theme === "dark");
+  root.classList.toggle("blue-mode", theme === "blue");
+
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if(meta){
+    meta.content = theme === "dark" ? "#0B1120" : theme === "blue" ? "#1D4ED8" : "#2563EB";
+  }
+}
+
+function syncTheme(){
+  applyTheme(readSavedTheme());
+}
+
+window.addEventListener("storage",function(event){
+  if(event.key === THEME_KEY || (currentUser && event.key === getThemeKey(currentUser)) || event.key === null){
+    syncTheme();
+  }
+});
+window.addEventListener("pageshow",syncTheme);
+document.addEventListener("visibilitychange",function(){
+  if(!document.hidden) syncTheme();
+});
+syncTheme();
+
+/* AUTH */
+firebaseAuth.onAuthStateChanged(async function(user){
+  if(!user){
+    window.location.replace("login.html");
+    return;
+  }
+
+  currentUser = user;
+  syncTheme();
+
+  if(!selectedId){
+    showError("No product was selected.");
+    return;
+  }
+
+  await loadCheckout();
 });
 
-
-/* =========================
-   LOAD CHECKOUT
-========================= */
-
+/* LOAD CHECKOUT */
 async function loadCheckout(){
+  try{
+    const productRef = firebaseDB.collection("products").doc(selectedId);
+    const productSnapshot = await productRef.get();
 
-try{
+    if(!productSnapshot.exists){
+      showError("This product is no longer available.");
+      return;
+    }
 
-const productRef =
-firebaseDB
-.collection("products")
-.doc(selectedId);
+    selectedProduct = {id:productSnapshot.id,...productSnapshot.data()};
 
-const productSnapshot =
-await productRef.get();
+    const walletSnapshot = await firebaseDB.collection("wallets").doc(currentUser.uid).get();
+    walletBalance = walletSnapshot.exists ? Number(walletSnapshot.data().balance || 0) : 0;
 
-if(!productSnapshot.exists){
-
-showError(
-"This product is no longer available."
-);
-
-return;
-
+    renderCheckout();
+  }catch(error){
+    console.error("CHECKOUT ERROR:",error);
+    showError(error.message || "Unable to load checkout.");
+  }
 }
 
-const product =
-productSnapshot.data();
-
-selectedProduct = {
-
-id:productSnapshot.id,
-
-...product
-
-};
-
-const walletSnapshot =
-await firebaseDB
-.collection("wallets")
-.doc(currentUser.uid)
-.get();
-
-if(walletSnapshot.exists){
-
-walletBalance =
-Number(
-walletSnapshot.data().balance || 0
-);
-
-}else{
-
-walletBalance = 0;
-
-}
-
-renderCheckout();
-
-}catch(error){
-
-console.error(
-"CHECKOUT ERROR:",
-error
-);
-
-showError(
-error.message ||
-"Unable to load checkout."
-);
-
-}
-
-}
-
-
-/* =========================
-   RENDER CHECKOUT
-========================= */
-
+/* RENDER CHECKOUT */
 function renderCheckout(){
+  const container = document.getElementById("checkoutContent");
+  const productName = escapeHTML(selectedProduct.name || "Product");
+  const category = escapeHTML(selectedProduct.category || "Product");
+  const price = Number(selectedProduct.price || 0);
+  const stock = Number(selectedProduct.stockCount || 0);
+  const rawProductName = String(selectedProduct.name || "Product");
+  const isFacebook = rawProductName.toLowerCase().includes("facebook");
 
-const container =
-document.getElementById(
-"checkoutContent"
-);
+  let imageHTML = `<i class="fa-solid fa-box"></i>`;
 
-const productName =
-escapeHTML(
-selectedProduct.name ||
-"Product"
-);
+  if(isFacebook){
+    imageHTML = `<i class="fa-brands fa-facebook" style="font-size:30px"></i>`;
+  }
 
-const category =
-escapeHTML(
-selectedProduct.category ||
-"Product"
-);
+  if(selectedProduct.image){
+    const fallbackIcon = isFacebook ? "fa-brands fa-facebook" : "fa-solid fa-box";
+    imageHTML = `
+      <img
+        src="${escapeAttribute(selectedProduct.image)}"
+        alt="${productName}"
+        onerror="this.style.display='none';this.parentElement.innerHTML='<i class=&quot;${fallbackIcon}&quot; style=&quot;font-size:30px;&quot;></i>'"
+      >
+    `;
+  }
 
-const price =
-Number(
-selectedProduct.price || 0
-);
+  const hasEnoughBalance = walletBalance >= price;
+  const canBuy = stock > 0 && hasEnoughBalance;
 
-const stock =
-Number(
-selectedProduct.stockCount || 0
-);
+  container.innerHTML = `
+    <div class="page-heading">
+      <h1>Complete Purchase</h1>
+      <p>Review your order before confirming payment.</p>
+    </div>
 
+    <div class="product-card">
+      <div class="product-image">${imageHTML}</div>
+      <div class="product-info">
+        <h2>${productName}</h2>
+        <span class="category">${category}</span>
+        <p>${escapeHTML(selectedProduct.description || "Digital product")}</p>
+        <div class="product-price">${formatMoney(price)}</div>
+      </div>
+    </div>
 
-/* =====================================================
-   PRODUCT IMAGE
-===================================================== */
+    <div class="checkout-card">
+      <div class="card-title"><i class="fa-solid fa-wallet"></i> Wallet</div>
+      <div class="wallet-box">
+        <div>
+          <div class="wallet-label">Available Balance</div>
+          <div class="wallet-balance">${formatMoney(walletBalance)}</div>
+        </div>
+        <div class="wallet-icon"><i class="fa-solid fa-wallet"></i></div>
+      </div>
 
-const rawProductName =
-String(
-selectedProduct.name ||
-"Product"
-);
+      <div class="card-title"><i class="fa-solid fa-file-invoice"></i> Order Summary</div>
+      <div class="summary-row"><span>Product</span><span>${productName}</span></div>
+      <div class="summary-row"><span>Quantity</span><span>1</span></div>
+      <div class="summary-row"><span>Price</span><span>${formatMoney(price)}</span></div>
+      <div class="summary-row total-row"><span>Total</span><span>${formatMoney(price)}</span></div>
 
-const isFacebook =
-rawProductName
-.toLowerCase()
-.includes("facebook");
+      <div class="stock-box">
+        <i class="fa-solid fa-box"></i>
+        ${stock > 0 ? stock + " item" + (stock === 1 ? "" : "s") + " available" : "This product is sold out"}
+      </div>
 
+      <div class="notice">
+        <i class="fa-solid fa-circle-info"></i>
+        <div>Your wallet balance will be used for this purchase. Make sure your balance is sufficient before confirming.</div>
+      </div>
 
-let imageHTML = `
+      ${!hasEnoughBalance ? `
+        <div class="notice">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <div>Your wallet balance is not enough for this purchase.</div>
+        </div>
+        <a href="fund.html" class="fund-link">Fund Wallet <i class="fa-solid fa-arrow-right"></i></a>
+      ` : ""}
 
-<i
-class="fa-solid fa-box"
-></i>
+      <button id="payButton" class="pay-btn" type="button" ${canBuy ? "" : "disabled"}>
+        <i class="fa-solid fa-lock"></i>
+        ${stock <= 0 ? "Sold Out" : !hasEnoughBalance ? "Insufficient Balance" : "Confirm & Pay " + formatMoney(price)}
+      </button>
+    </div>
+  `;
 
-`;
-
-
-/*
-   Facebook product gets the Facebook icon
-   automatically.
-*/
-
-if(isFacebook){
-
-imageHTML = `
-
-<i
-class="fa-brands fa-facebook"
-style="font-size:30px;"
-></i>
-
-`;
-
+  const payButton = document.getElementById("payButton");
+  if(payButton && canBuy) payButton.addEventListener("click",completePurchase);
 }
 
-
-/*
-   If a product image URL exists,
-   try to display it.
-   If it fails, Facebook falls back
-   to the Facebook icon.
-*/
-
-if(selectedProduct.image){
-
-const fallbackIcon =
-isFacebook
-? "fa-brands fa-facebook"
-: "fa-solid fa-box";
-
-
-imageHTML = `
-
-<img
-src="${escapeAttribute(
-selectedProduct.image
-)}"
-alt="${productName}"
-onerror="
-this.style.display='none';
-this.parentElement.innerHTML='<i class=&quot;${fallbackIcon}&quot; style=&quot;font-size:30px;&quot;></i>';
-"
->
-
-`;
-
-}
-
-
-const hasEnoughBalance =
-walletBalance >= price;
-
-const canBuy =
-stock > 0 &&
-hasEnoughBalance;
-
-container.innerHTML = `
-
-<div class="page-heading">
-
-<h1>
-Complete Purchase
-</h1>
-
-<p>
-Review your order before confirming payment.
-</p>
-
-</div>
-
-<div class="product-card">
-
-<div class="product-image">
-
-${imageHTML}
-
-</div>
-
-<div class="product-info">
-
-<h2>
-${productName}
-</h2>
-
-<span class="category">
-${category}
-</span>
-
-<p>
-${escapeHTML(
-selectedProduct.description ||
-"Digital product"
-)}
-</p>
-
-<div class="product-price">
-
-₦${price.toLocaleString("en-NG",{
-minimumFractionDigits:2,
-maximumFractionDigits:2
-})}
-
-</div>
-
-</div>
-
-</div>
-
-<div class="checkout-card">
-
-<div class="card-title">
-
-<i class="fa-solid fa-wallet"></i>
-
-Wallet
-
-</div>
-
-<div class="wallet-box">
-
-<div>
-
-<div class="wallet-label">
-Available Balance
-</div>
-
-<div class="wallet-balance">
-${formatMoney(walletBalance)}
-</div>
-
-</div>
-
-<div class="wallet-icon">
-
-<i class="fa-solid fa-wallet"></i>
-
-</div>
-
-</div>
-
-<div class="card-title">
-
-<i class="fa-solid fa-file-invoice"></i>
-
-Order Summary
-
-</div>
-
-<div class="summary-row">
-
-<span>
-Product
-</span>
-
-<span>
-${productName}
-</span>
-
-</div>
-
-<div class="summary-row">
-
-<span>
-Quantity
-</span>
-
-<span>
-1
-</span>
-
-</div>
-
-<div class="summary-row">
-
-<span>
-Price
-</span>
-
-<span>
-${formatMoney(price)}
-</span>
-
-</div>
-
-<div class="summary-row total-row">
-
-<span>
-Total
-</span>
-
-<span>
-${formatMoney(price)}
-</span>
-
-</div>
-
-<div class="stock-box">
-
-<i class="fa-solid fa-box"></i>
-
-${
-stock > 0
-? stock +
-" item" +
-(stock === 1 ? "" : "s") +
-" available"
-: "This product is sold out"
-}
-
-</div>
-
-<div class="notice">
-
-<i class="fa-solid fa-circle-info"></i>
-
-<div>
-Your wallet balance will be used for this purchase.
-Make sure your balance is sufficient before confirming.
-</div>
-
-</div>
-
-${
-!hasEnoughBalance
-?
-
-`
-
-<div class="notice">
-
-<i class="fa-solid fa-triangle-exclamation"></i>
-
-<div>
-Your wallet balance is not enough for this purchase.
-</div>
-
-</div>
-
-<a
-href="fund.html"
-class="fund-link"
->
-
-Fund Wallet
-
-<i class="fa-solid fa-arrow-right"></i>
-
-</a>
-
-`
-
-:
-
-""
-
-}
-
-<button
-id="payButton"
-class="pay-btn"
-type="button"
-${canBuy ? "" : "disabled"}
->
-
-<i class="fa-solid fa-lock"></i>
-
-${
-stock <= 0
-? "Sold Out"
-: !hasEnoughBalance
-? "Insufficient Balance"
-: "Confirm & Pay " +
-formatMoney(price)
-}
-
-</button>
-
-</div>
-
-`;
-
-const payButton =
-document.getElementById("payButton");
-
-if(payButton && canBuy){
-
-payButton.addEventListener(
-"click",
-completePurchase
-);
-
-}
-
-}
-
-
-/* =========================
-   COMPLETE PURCHASE
-========================= */
-
+/* COMPLETE PURCHASE */
 async function completePurchase(){
+  const button = document.getElementById("payButton");
+  if(purchaseInProgress) return;
 
-const button =
-document.getElementById("payButton");
+  if(!selectedProduct){
+    showToast("Product information is missing.");
+    return;
+  }
 
-if(!selectedProduct){
+  const price = Number(selectedProduct.price || 0);
+  if(walletBalance < price){
+    showToast("Insufficient wallet balance.");
+    return;
+  }
+  if(Number(selectedProduct.stockCount || 0) <= 0){
+    showToast("This product is sold out.");
+    return;
+  }
 
-showToast(
-"Product information is missing."
-);
+  purchaseInProgress = true;
 
-return;
+  try{
+    button.disabled = true;
+    button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
 
-}
+    const productRef = firebaseDB.collection("products").doc(selectedProduct.id);
+    const inventoryQuery = await productRef.collection("inventory").where("sold","==",false).get();
 
-const price =
-Number(
-selectedProduct.price || 0
-);
+    if(inventoryQuery.empty){
+      throw new Error("This product has no available inventory.");
+    }
 
-if(walletBalance < price){
+    const inventoryDocs = inventoryQuery.docs.sort(function(a,b){
+      return Number(a.data().position || 0) - Number(b.data().position || 0);
+    });
 
-showToast(
-"Insufficient wallet balance."
-);
+    const inventoryDoc = inventoryDocs[0];
+    const inventoryRef = inventoryDoc.ref;
+    const orderRef = firebaseDB.collection("orders").doc();
+    const walletRef = firebaseDB.collection("wallets").doc(currentUser.uid);
+    let newBalance = 0;
+    let purchaseItem = "";
 
-return;
+    await firebaseDB.runTransaction(async function(transaction){
+      const walletSnapshot = await transaction.get(walletRef);
+      const productSnapshot = await transaction.get(productRef);
+      const inventorySnapshot = await transaction.get(inventoryRef);
 
-}
-
-if(Number(selectedProduct.stockCount || 0) <= 0){
-
-showToast(
-"This product is sold out."
-);
-
-return;
-
-}
-
-try{
-
-button.disabled = true;
-
-button.innerHTML = `
-<i class="fa-solid fa-spinner fa-spin"></i>
-Processing...
-`;
-
-
-/* FIND NEXT INVENTORY ITEM */
-
-const inventoryQuery =
-   await firebaseDB
-   .collection("products")
-   .doc(selectedProduct.id)
-   .collection("inventory")
-   .where("sold", "==", false)
-   .get();
-
-if (inventoryQuery.empty) {
-
-   throw new Error(
-      "This product has no available inventory."
-   );
-
-}
-
-
-/*
-Get the first available inventory item
-according to its position.
-*/
-
-const inventoryDocs =
-   inventoryQuery.docs.sort(
-      function(a, b) {
-
-         const positionA =
-            Number(
-               a.data().position || 0
-            );
-
-         const positionB =
-            Number(
-               b.data().position || 0
-            );
-
-         return positionA - positionB;
-
+      if(!walletSnapshot.exists){
+        throw new Error("Your wallet has not been created yet. Please contact support.");
       }
-   );
+      if(!productSnapshot.exists) throw new Error("This product no longer exists.");
+      if(!inventorySnapshot.exists) throw new Error("The inventory item no longer exists.");
 
-const inventoryDoc =
-   inventoryDocs[0];
+      const wallet = walletSnapshot.data();
+      const product = productSnapshot.data();
+      const inventory = inventorySnapshot.data();
+      const currentBalance = Number(wallet.balance || 0);
+      const currentStock = Number(product.stockCount || 0);
+      const currentPrice = Number(product.price || 0);
 
-const inventoryRef =
-inventoryDoc.ref;
+      if(currentStock <= 0) throw new Error("This product is sold out.");
+      if(currentBalance < currentPrice) throw new Error("Insufficient wallet balance.");
+      if(inventory.sold === true) throw new Error("This inventory item has already been purchased. Please try again.");
 
-const inventoryData =
-inventoryDoc.data();
+      purchaseItem = String(inventory.value || "").trim();
+      if(!purchaseItem) throw new Error("The inventory item is empty.");
 
-const purchaseItem =
-String(
-inventoryData.value || ""
-).trim();
+      newBalance = Number((currentBalance-currentPrice).toFixed(2));
 
-if(!purchaseItem){
+      transaction.update(walletRef,{
+        balance:newBalance,
+        updatedAt:firebase.firestore.FieldValue.serverTimestamp(),
+        lastOrderId:orderRef.id
+      });
 
-throw new Error(
-"The available inventory item is empty."
-);
+      transaction.update(productRef,{
+        stockCount:currentStock-1,
+        updatedAt:firebase.firestore.FieldValue.serverTimestamp(),
+        lastOrderId:orderRef.id
+      });
 
+      transaction.update(inventoryRef,{
+        sold:true,
+        soldTo:currentUser.uid,
+        soldAt:firebase.firestore.FieldValue.serverTimestamp(),
+        orderId:orderRef.id
+      });
+
+      transaction.set(orderRef,{
+        userId:currentUser.uid,
+        userEmail:currentUser.email || "",
+        productId:selectedProduct.id,
+        productName:product.name || "",
+        amount:currentPrice,
+        status:"completed",
+        purchaseText:purchaseItem,
+        inventoryId:inventoryDoc.id,
+        createdAt:firebase.firestore.FieldValue.serverTimestamp()
+      });
+    });
+
+    walletBalance = newBalance;
+    selectedProduct.stockCount = Number(selectedProduct.stockCount || 0)-1;
+    showSuccess(purchaseItem);
+
+  }catch(error){
+    console.error("PURCHASE ERROR:",error);
+    button.disabled = false;
+    button.innerHTML = '<i class="fa-solid fa-lock"></i> Confirm & Pay ' + formatMoney(price);
+    showToast(error.message || "Purchase could not be completed.");
+  }finally{
+    purchaseInProgress = false;
+  }
 }
 
+/* SUCCESS */
+function showSuccess(purchaseItem){
+  document.getElementById("checkoutContent").style.display = "none";
+  document.getElementById("successContent").classList.add("show");
+  document.getElementById("successPurchaseItem").textContent = purchaseItem || "No purchase information found.";
 
-/* REFERENCES */
-
-const productRef =
-firebaseDB
-.collection("products")
-.doc(selectedProduct.id);
-
-const walletRef =
-firebaseDB
-.collection("wallets")
-.doc(currentUser.uid);
-
-const orderRef =
-firebaseDB
-.collection("orders")
-.doc();
-
-
-let newBalance = 0;
-
-
-/* ATOMIC PURCHASE */
-
-await firebaseDB.runTransaction(
-async function(transaction){
-
-const walletSnapshot =
-await transaction.get(walletRef);
-
-const productSnapshot =
-await transaction.get(productRef);
-
-const inventorySnapshot =
-await transaction.get(inventoryRef);
-
-
-/* CHECK REQUIRED DOCUMENTS */
-
-if(!walletSnapshot.exists){
-
-throw new Error(
-"Your wallet has not been created yet. Please contact support."
-);
-
+  try { localStorage.removeItem("gentleCheckoutProduct"); } catch(e) {}
 }
 
-if(!productSnapshot.exists){
-
-throw new Error(
-"This product no longer exists."
-);
-
+/* ERROR */
+function showError(message){
+  document.getElementById("checkoutContent").innerHTML = `
+    <div class="error-box">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+      <h2>Checkout unavailable</h2>
+      <p>${escapeHTML(message)}</p>
+      <button type="button" onclick="window.location.href='dashboard.html'">Back to Store</button>
+    </div>
+  `;
 }
-
-if(!inventorySnapshot.exists){
-
-throw new Error(
-"The inventory item no longer exists."
-);
-
-}
-
-
-const wallet =
-walletSnapshot.data();
-
-const product =
-productSnapshot.data();
-
-const inventory =
-inventorySnapshot.data();
-
-
-const currentBalance =
-Number(
-wallet.balance || 0
-);
-
-const currentStock =
-Number(
-product.stockCount || 0
-);
-
-const currentPrice =
-Number(
-product.price || 0
-);
-
-
-if(currentStock <= 0){
-
-throw new Error(
-"This product is sold out."
-);
-
-}
-
-if(currentBalance < currentPrice){
-
-throw new Error(
-"Insufficient wallet balance."
-);
-
-}
-
-if(inventory.sold === true){
-
-throw new Error(
-"This inventory item has already been purchased. Please try again."
-);
-
-}
-
-const currentItem =
-String(
-inventory.value || ""
-).trim();
-
-if(!currentItem){
-
-throw new Error(
-"The inventory item is empty."
-);
-
-}
-
-newBalance =
-Number(
-(currentBalance - currentPrice)
-.toFixed(2)
-);
-
-
-/* WALLET — UPDATED */
-
-transaction.update(
-walletRef,
-{
-
-balance:newBalance,
-
-updatedAt:
-firebase.firestore
-.FieldValue
-.serverTimestamp(),
-
-lastOrderId:
-orderRef.id
-
-}
-);
-
-
-/* PRODUCT STOCK — UPDATED */
-
-transaction.update(
-productRef,
-{
-
-stockCount:
-currentStock - 1,
-
-updatedAt:
-firebase.firestore
-.FieldValue
-.serverTimestamp(),
-
-lastOrderId:
-orderRef.id
-
-}
-);
-
-
-/* INVENTORY */
-
-transaction.update(
-inventoryRef,
-{
-
-sold:true,
-
-soldTo:
-currentUser.uid,
-
-soldAt:
-firebase.firestore
-.FieldValue
-.serverTimestamp(),
-
-orderId:
-orderRef.id
-
-}
-);
-
-
-/* ORDER */
-
-transaction.set(
-orderRef,
-{
-
-userId:
-currentUser.uid,
-
-userEmail:
-currentUser.email || "",
-
-productId:
-selectedProduct.id,
-
-productName:
-product.name || "",
-
-amount:
-currentPrice,
-
-status:
-"completed",
-
-purchaseText:
-currentItem,
-
-inventoryId:
-inventoryDoc.id,
-
-createdAt:
-firebase.firestore
-.FieldValue
-.serverTimestamp()
-
-}
-);
-
-}
-);
-
-
-/* UPDATE LOCAL DATA */
-
-walletBalance =
-newBalance;
-
-selectedProduct.stockCount =
-Number(
-selectedProduct.stockCount || 0
-) - 1;
-
-
-/* SHOW ONLY INVENTORY ITEM */
-
-showSuccess(
-purchaseItem
-);
-
-}catch(error){
-
-console.error(
-"PURCHASE ERROR:",
-error
-);
-
-button.disabled = false;
-
-button.innerHTML = `
-<i class="fa-solid fa-lock"></i>
-Confirm & Pay ${formatMoney(price)}
-`;
-
-showToast(
-error.message ||
-"Purchase could not be completed."
-);
-
-}
-
-}
-
-
-/* =========================
-   SUCCESS
-========================= */
-
-function showSuccess(
-purchaseItem
-){
-
-document
-.getElementById("checkoutContent")
-.style.display =
-"none";
-
-document
-.getElementById("successContent")
-.classList
-.add("show");
-
-document
-.getElementById("successPurchaseItem")
-.textContent =
-purchaseItem ||
-"No purchase information found.";
-
-localStorage.removeItem(
-"gentleCheckoutProduct"
-);
-
-}
-
-
-/* =========================
-   ERROR
-========================= */
-
-function showError(
-message
-){
-
-document
-.getElementById("checkoutContent")
-.innerHTML = `
-
-<div class="error-box">
-
-<i class="fa-solid fa-triangle-exclamation"></i>
-
-<h2>
-Checkout unavailable
-</h2>
-
-<p>
-${escapeHTML(message)}
-</p>
-
-<button
-type="button"
-onclick="window.location.href='dashboard.html'"
->
-
-Back to Store
-
-</button>
-
-</div>
-
-`;
-
-}
-
-
-/* =========================
-   GO BACK
-========================= */
 
 function goBack(){
-
-if(
-document
-.getElementById("successContent")
-.classList
-.contains("show")
-){
-
-window.location.href =
-"dashboard.html";
-
-return;
-
+  if(document.getElementById("successContent").classList.contains("show")){
+    window.location.href="dashboard.html";
+    return;
+  }
+  window.history.back();
 }
 
-window.history.back();
-
+function formatMoney(amount){
+  return "₦" + Number(amount || 0).toLocaleString("en-NG",{
+    minimumFractionDigits:2,
+    maximumFractionDigits:2
+  });
 }
-
-
-/* =========================
-   MONEY
-========================= */
-
-function formatMoney(
-amount
-){
-
-return "₦" +
-Number(amount || 0)
-.toLocaleString(
-"en-NG",
-{
-minimumFractionDigits:2,
-maximumFractionDigits:2
-}
-);
-
-}
-
-
-/* =========================
-   TOAST
-========================= */
 
 let toastTimer;
-
-function showToast(
-message
-){
-
-const toast =
-document.getElementById("toast");
-
-toast.textContent =
-message;
-
-toast.classList.add("show");
-
-clearTimeout(
-toastTimer
-);
-
-toastTimer =
-setTimeout(
-function(){
-
-toast.classList.remove("show");
-
-},
-3000
-);
-
+function showToast(message){
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){toast.classList.remove("show");},3000);
 }
 
-
-/* =========================
-   HTML SAFETY
-========================= */
-
-function escapeHTML(
-value
-){
-
-return String(
-value ?? ""
-)
-
-.replace(
-/&/g,
-"&amp;"
-)
-
-.replace(
-/</g,
-"&lt;"
-)
-
-.replace(
-/>/g,
-"&gt;"
-)
-
-.replace(
-/"/g,
-"&quot;"
-)
-
-.replace(
-/'/g,
-"&#039;"
-);
-
+function escapeHTML(value){
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 }
 
-
-/* =========================
-   ATTRIBUTE SAFETY
-========================= */
-
-function escapeAttribute(
-value
-){
-
-return String(
-value ?? ""
-)
-
-.replace(
-/&/g,
-"&amp;"
-)
-
-.replace(
-/"/g,
-"&quot;"
-)
-
-.replace(
-/'/g,
-"&#039;"
-)
-
-.replace(
-/</g,
-"&lt;"
-)
-
-.replace(
-/>/g,
-"&gt;"
-);
-
+function escapeAttribute(value){
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;");
 }
-
 </script>
-
 </body>
-
 </html>

@@ -1,1739 +1,754 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-<meta charset="UTF-8">
-
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0"
->
-
-<meta
-  name="theme-color"
-  content="#0b2d5c"
->
-
-<title>Customers - Gentle Acct Store</title>
-
-<link
-  rel="preconnect"
-  href="https://fonts.googleapis.com"
->
-
-<link
-  rel="preconnect"
-  href="https://fonts.gstatic.com"
-  crossorigin
->
-
-<link
-  href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
-  rel="stylesheet"
->
-
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
->
-
-<style>
-
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
-
-html{
-  scroll-behavior:smooth;
-}
-
-body{
-  font-family:'Poppins',sans-serif;
-  background:#f5f8fc;
-  color:#071f40;
-  min-height:100vh;
-}
-
-/* =========================
-   HEADER
-========================= */
-
-header{
-  position:sticky;
-  top:0;
-  z-index:50;
-
-  background:rgba(255,255,255,.94);
-
-  backdrop-filter:blur(14px);
-  -webkit-backdrop-filter:blur(14px);
-
-  border-bottom:1px solid #e6ebf2;
-
-  height:68px;
-
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-
-  padding:0 16px;
-}
-
-.logo{
-  display:flex;
-  align-items:center;
-  gap:10px;
-
-  color:#0b2d5c;
-
-  font-size:17px;
-  font-weight:800;
-}
-
-.logo-icon{
-  width:38px;
-  height:38px;
-
-  border-radius:12px;
-
-  background:#0b2d5c;
-  color:white;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  box-shadow:0 7px 18px rgba(11,45,92,.18);
-}
-
-.logo-icon i{
-  font-size:15px;
-}
-
-.back{
-  text-decoration:none;
-
-  display:flex;
-  align-items:center;
-  gap:7px;
-
-  color:#0b2d5c;
-
-  background:#edf3fa;
-
-  padding:9px 12px;
-
-  border-radius:11px;
-
-  font-size:11px;
-  font-weight:700;
-
-  transition:.2s;
-}
-
-.back:hover{
-  background:#e2ebf5;
-  transform:translateY(-1px);
-}
-
-/* =========================
-   PAGE
-========================= */
-
-.container{
-  width:100%;
-  max-width:1100px;
-
-  margin:auto;
-
-  padding:24px 15px 55px;
-}
-
-/* =========================
-   HERO
-========================= */
-
-.hero{
-  margin-bottom:18px;
-}
-
-.eyebrow{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-
-  background:#eaf1f9;
-  color:#0b2d5c;
-
-  padding:6px 9px;
-
-  border-radius:20px;
-
-  font-size:9px;
-  font-weight:700;
-
-  margin-bottom:9px;
-}
-
-.eyebrow i{
-  font-size:9px;
-}
-
-.hero h1{
-  color:#071f40;
-
-  font-size:25px;
-  line-height:1.2;
-
-  font-weight:800;
-
-  margin-bottom:6px;
-}
-
-.hero p{
-  color:#778196;
-
-  font-size:12px;
-  line-height:1.6;
-}
-
-/* =========================
-   SUMMARY
-========================= */
-
-.summary{
-  position:relative;
-  overflow:hidden;
-
-  background:
-    linear-gradient(
-      135deg,
-      #0b2d5c,
-      #124b88
-    );
-
-  color:white;
-
-  border-radius:22px;
-
-  padding:21px;
-
-  margin-bottom:18px;
-
-  box-shadow:
-    0 15px 32px rgba(11,45,92,.18);
-}
-
-.summary::before{
-  content:"";
-
-  position:absolute;
-
-  width:150px;
-  height:150px;
-
-  border-radius:50%;
-
-  background:rgba(255,255,255,.05);
-
-  right:-55px;
-  top:-70px;
-}
-
-.summary::after{
-  content:"";
-
-  position:absolute;
-
-  width:90px;
-  height:90px;
-
-  border-radius:50%;
-
-  background:rgba(255,255,255,.04);
-
-  right:70px;
-  bottom:-55px;
-}
-
-.summary-content{
-  position:relative;
-  z-index:2;
-}
-
-.summary-top{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-
-  margin-bottom:14px;
-}
-
-.summary-icon{
-  width:44px;
-  height:44px;
-
-  border-radius:14px;
-
-  background:rgba(255,255,255,.13);
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.summary-icon i{
-  font-size:18px;
-}
-
-.live{
-  display:flex;
-  align-items:center;
-  gap:6px;
-
-  font-size:9px;
-  font-weight:700;
-
-  background:rgba(255,255,255,.10);
-
-  padding:6px 9px;
-
-  border-radius:20px;
-}
-
-.live-dot{
-  width:6px;
-  height:6px;
-
-  border-radius:50%;
-
-  background:#79e6a5;
-}
-
-.summary h2{
-  font-size:31px;
-  line-height:1;
-
-  font-weight:800;
-
-  margin-bottom:5px;
-}
-
-.summary p{
-  font-size:11px;
-
-  opacity:.84;
-}
-
-/* =========================
-   SEARCH
-========================= */
-
-.search-box{
-  background:white;
-
-  border:1px solid #e3e9f1;
-
-  border-radius:15px;
-
-  min-height:50px;
-
-  padding:0 14px;
-
-  display:flex;
-  align-items:center;
-
-  gap:10px;
-
-  margin-bottom:21px;
-
-  box-shadow:
-    0 5px 16px rgba(20,40,80,.035);
-
-  transition:.2s;
-}
-
-.search-box:focus-within{
-  border-color:#8da9c8;
-
-  box-shadow:
-    0 0 0 4px rgba(11,45,92,.06);
-}
-
-.search-box i{
-  color:#8c97a8;
-  font-size:13px;
-}
-
-.search-box input{
-  border:0;
-  outline:0;
-
-  width:100%;
-
-  height:48px;
-
-  background:transparent;
-
-  color:#172033;
-
-  font-family:'Poppins',sans-serif;
-
-  font-size:12px;
-}
-
-.search-box input::placeholder{
-  color:#a0a9b7;
-}
-
-/* =========================
-   LIST HEADER
-========================= */
-
-.list-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-
-  gap:12px;
-
-  margin-bottom:13px;
-}
-
-.list-title{
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-
-.list-title h2{
-  color:#071f40;
-
-  font-size:17px;
-  font-weight:800;
-}
-
-.list-title i{
-  color:#0b2d5c;
-  font-size:14px;
-}
-
-.count{
-  background:#edf3fa;
-
-  color:#0b2d5c;
-
-  padding:6px 10px;
-
-  border-radius:20px;
-
-  font-size:9px;
-  font-weight:700;
-
-  white-space:nowrap;
-}
-
-/* =========================
-   CUSTOMER GRID
-========================= */
-
-.customers{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:13px;
-}
-
-/* =========================
-   CUSTOMER CARD
-========================= */
-
-.customer{
-  position:relative;
-
-  background:white;
-
-  border:1px solid #e3e9f1;
-
-  border-radius:18px;
-
-  padding:16px;
-
-  box-shadow:
-    0 7px 20px rgba(20,40,80,.045);
-
-  transition:
-    transform .2s ease,
-    box-shadow .2s ease,
-    border-color .2s ease;
-}
-
-.customer:hover{
-  transform:translateY(-2px);
-
-  border-color:#d5dfeb;
-
-  box-shadow:
-    0 12px 26px rgba(20,40,80,.08);
-}
-
-.customer-top{
-  display:flex;
-  align-items:center;
-
-  gap:11px;
-}
-
-.avatar{
-  width:47px;
-  height:47px;
-
-  flex-shrink:0;
-
-  border-radius:14px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #edf3fa,
-      #e4edf7
-    );
-
-  color:#0b2d5c;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  font-size:17px;
-  font-weight:800;
-}
-
-.customer-info{
-  min-width:0;
-  flex:1;
-}
-
-.customer-info h3{
-  color:#162238;
-
-  font-size:13px;
-  font-weight:700;
-
-  line-height:1.3;
-
-  margin-bottom:4px;
-
-  white-space:nowrap;
-
-  overflow:hidden;
-
-  text-overflow:ellipsis;
-}
-
-.email{
-  color:#7c8798;
-
-  font-size:10px;
-
-  line-height:1.4;
-
-  word-break:break-word;
-}
-
-.status{
-  display:inline-flex;
-  align-items:center;
-  gap:4px;
-
-  background:#eaf8f0;
-
-  color:#168447;
-
-  padding:5px 8px;
-
-  border-radius:20px;
-
-  font-size:8px;
-  font-weight:700;
-
-  flex-shrink:0;
-}
-
-.status::before{
-  content:"";
-
-  width:5px;
-  height:5px;
-
-  border-radius:50%;
-
-  background:#27ae60;
-}
-
-/* =========================
-   DETAILS
-========================= */
-
-.details{
-  border-top:1px solid #edf0f4;
-
-  margin-top:14px;
-
-  padding-top:12px;
-
-  display:grid;
-
-  grid-template-columns:1fr 1fr;
-
-  gap:10px;
-}
-
-.detail{
-  min-width:0;
-
-  background:#f8fafc;
-
-  border-radius:11px;
-
-  padding:9px;
-}
-
-.detail span:first-child{
-  display:block;
-
-  color:#98a1af;
-
-  font-size:8px;
-
-  text-transform:uppercase;
-
-  letter-spacing:.3px;
-
-  font-weight:700;
-
-  margin-bottom:4px;
-}
-
-.detail span:last-child{
-  display:block;
-
-  color:#344054;
-
-  font-size:10px;
-
-  font-weight:600;
-
-  white-space:nowrap;
-
-  overflow:hidden;
-
-  text-overflow:ellipsis;
-}
-
-/* =========================
-   LOADING
-========================= */
-
-.loading{
-  background:white;
-
-  border:1px solid #e3e9f1;
-
-  border-radius:18px;
-
-  padding:45px 20px;
-
-  text-align:center;
-
-  grid-column:1/-1;
-
-  box-shadow:
-    0 7px 20px rgba(20,40,80,.04);
-}
-
-.loading-icon{
-  width:45px;
-  height:45px;
-
-  border-radius:14px;
-
-  background:#edf3fa;
-
-  color:#0b2d5c;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  margin:0 auto 12px;
-}
-
-.loading-icon i{
-  font-size:18px;
-}
-
-.loading p{
-  color:#7b8595;
-
-  font-size:11px;
-}
-
-/* =========================
-   EMPTY
-========================= */
-
-.empty{
-  background:white;
-
-  border:1px dashed #cbd5e1;
-
-  border-radius:18px;
-
-  padding:45px 20px;
-
-  text-align:center;
-
-  grid-column:1/-1;
-}
-
-.empty-icon{
-  width:55px;
-  height:55px;
-
-  border-radius:17px;
-
-  background:#edf3fa;
-
-  color:#0b2d5c;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  margin:0 auto 13px;
-}
-
-.empty-icon i{
-  font-size:21px;
-}
-
-.empty h3{
-  color:#162238;
-
-  font-size:15px;
-
-  margin-bottom:6px;
-}
-
-.empty p{
-  color:#7b8595;
-
-  font-size:11px;
-
-  line-height:1.6;
-
-  max-width:320px;
-
-  margin:auto;
-}
-
-/* =========================
-   ERROR
-========================= */
-
-.error-box{
-  background:#fff5f5;
-
-  border:1px solid #ffd5d5;
-
-  color:#b42318;
-
-  border-radius:18px;
-
-  padding:28px 18px;
-
-  text-align:center;
-
-  grid-column:1/-1;
-}
-
-.error-icon{
-  width:52px;
-  height:52px;
-
-  border-radius:16px;
-
-  background:#ffe9e9;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  margin:0 auto 12px;
-}
-
-.error-icon i{
-  font-size:21px;
-}
-
-.error-box h3{
-  font-size:14px;
-
-  margin-bottom:6px;
-}
-
-.error-box p{
-  font-size:10px;
-
-  line-height:1.6;
-
-  word-break:break-word;
-}
-
-/* =========================
-   TABLET
-========================= */
-
-@media(min-width:650px){
-
-  header{
-    padding:0 25px;
-  }
-
-  .container{
-    padding:30px 22px 60px;
-  }
-
-  .customers{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .hero h1{
-    font-size:29px;
-  }
-
-}
-
-/* =========================
-   DESKTOP
-========================= */
-
-@media(min-width:950px){
-
-  header{
-    padding:0 35px;
-  }
-
-  .container{
-    padding-top:38px;
-  }
-
-  .customers{
-    grid-template-columns:repeat(3,1fr);
-  }
-
-  .summary{
-    padding:25px;
-  }
-
-  .summary h2{
-    font-size:34px;
-  }
-
-}
-
-/* =========================
-   SMALL PHONE
-========================= */
-
-@media(max-width:360px){
-
-  .container{
-    padding-left:12px;
-    padding-right:12px;
-  }
-
-  .customer{
-    padding:14px;
-  }
-
-  .status{
-    display:none;
-  }
-
-  .hero h1{
-    font-size:22px;
-  }
-
-}
-
-</style>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2563EB">
+  <title>Customers - Gentle Acct Store</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    :root {
+      --primary: #2563EB;
+      --primary-dark: #1D4ED8;
+      --primary-light: #EFF6FF;
+      --background: #F8FAFC;
+      --white: #FFFFFF;
+      --text: #172033;
+      --muted: #7B8798;
+      --border: #E5EAF2;
+      --success: #15803D;
+      --success-bg: #F0FDF4;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--background);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      min-height: 68px;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: rgba(255,255,255,.96);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text);
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .logo-icon {
+      width: 39px;
+      height: 39px;
+      display: grid;
+      place-items: center;
+      color: white;
+      background: var(--primary);
+      border-radius: 13px;
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 10px 13px;
+      color: var(--primary-dark);
+      background: var(--primary-light);
+      border: 1px solid #DBEAFE;
+      border-radius: 11px;
+      font-size: 11px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: .2s;
+    }
+
+    .back:hover { background: #DBEAFE; }
+
+    .container {
+      width: 100%;
+      max-width: 1120px;
+      margin: auto;
+      padding: 28px 16px 55px;
+    }
+
+    .hero { margin-bottom: 22px; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 11px;
+      padding: 7px 10px;
+      border-radius: 20px;
+      color: var(--primary-dark);
+      background: var(--primary-light);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .5px;
+    }
+
+    .hero h1 {
+      margin-bottom: 8px;
+      font-size: clamp(24px, 5vw, 32px);
+      line-height: 1.25;
+      font-weight: 800;
+      letter-spacing: -.7px;
+    }
+
+    .hero p {
+      max-width: 500px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    .summary {
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 20px;
+      padding: 23px;
+      color: white;
+      background: linear-gradient(125deg, #2563EB, #1D4ED8);
+      border-radius: 20px;
+      box-shadow: 0 12px 28px rgba(37,99,235,.13);
+    }
+
+    .summary::after {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      right: -65px;
+      top: -85px;
+      border: 28px solid rgba(255,255,255,.08);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .summary-content { position: relative; z-index: 1; }
+
+    .summary-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .summary-icon {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.13);
+      border-radius: 14px;
+      font-size: 18px;
+    }
+
+    .live {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 10px;
+      background: rgba(255,255,255,.13);
+      border-radius: 20px;
+      font-size: 9px;
+      font-weight: 600;
+    }
+
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #86EFAC;
+    }
+
+    .summary h2 {
+      margin-bottom: 7px;
+      font-size: 34px;
+      line-height: 1.1;
+      font-weight: 800;
+    }
+
+    .summary p { font-size: 11px; opacity: .9; }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 52px;
+      margin-bottom: 25px;
+      padding: 0 15px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 4px 14px rgba(15,23,42,.025);
+      transition: .2s;
+    }
+
+    .search-box:focus-within {
+      border-color: #93B4FC;
+      box-shadow: 0 0 0 4px rgba(37,99,235,.08);
+    }
+
+    .search-box i { color: #94A3B8; font-size: 14px; }
+
+    .search-box input {
+      width: 100%;
+      min-width: 0;
+      height: 50px;
+      color: var(--text);
+      background: transparent;
+      border: 0;
+      outline: 0;
+      font: inherit;
+      font-size: 12px;
+    }
+
+    .search-box input::placeholder { color: #9AA5B5; }
+
+    .list-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+
+    .list-title {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .list-title i { color: var(--primary); font-size: 15px; }
+    .list-title h2 { font-size: 17px; font-weight: 800; }
+
+    .count {
+      padding: 7px 10px;
+      color: var(--primary-dark);
+      background: var(--primary-light);
+      border: 1px solid #DBEAFE;
+      border-radius: 20px;
+      font-size: 9px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .customers {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 13px;
+    }
+
+    .customer {
+      min-width: 0;
+      padding: 17px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      box-shadow: 0 4px 14px rgba(15,23,42,.025);
+      transition: border-color .2s, box-shadow .2s, transform .2s;
+    }
+
+    .customer:hover {
+      transform: translateY(-2px);
+      border-color: #CBDCFC;
+      box-shadow: 0 9px 22px rgba(15,23,42,.055);
+    }
+
+    .customer-top {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .avatar {
+      width: 46px;
+      height: 46px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      color: var(--primary-dark);
+      background: var(--primary-light);
+      border: 1px solid #DBEAFE;
+      border-radius: 14px;
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .customer-info { flex: 1; min-width: 0; }
+
+    .customer-info h3 {
+      overflow: hidden;
+      margin-bottom: 4px;
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 700;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .email {
+      overflow-wrap: anywhere;
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.6;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      flex-shrink: 0;
+      padding: 6px 8px;
+      color: var(--success);
+      background: var(--success-bg);
+      border: 1px solid #DCFCE7;
+      border-radius: 20px;
+      font-size: 8px;
+      font-weight: 700;
+    }
+
+    .status::before {
+      content: "";
+      width: 5px;
+      height: 5px;
+      flex-shrink: 0;
+      background: #22C55E;
+      border-radius: 50%;
+    }
+
+    .details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+      margin-top: 15px;
+      padding-top: 13px;
+      border-top: 1px solid #EEF2F7;
+    }
+
+    .detail {
+      min-width: 0;
+      padding: 10px;
+      background: #F8FAFC;
+      border: 1px solid #F1F5F9;
+      border-radius: 11px;
+    }
+
+    .detail-label {
+      display: block;
+      margin-bottom: 5px;
+      color: #94A3B8;
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: .35px;
+      text-transform: uppercase;
+    }
+
+    .detail-value {
+      display: block;
+      overflow: hidden;
+      color: #344054;
+      font-size: 10px;
+      font-weight: 600;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .loading, .empty, .error-box {
+      grid-column: 1 / -1;
+      padding: 42px 18px;
+      text-align: center;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 17px;
+    }
+
+    .loading-icon, .empty-icon, .error-icon {
+      width: 49px;
+      height: 49px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 13px;
+      color: var(--primary);
+      background: var(--primary-light);
+      border-radius: 15px;
+      font-size: 19px;
+    }
+
+    .loading p, .empty p, .error-box p {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.8;
+      overflow-wrap: anywhere;
+    }
+
+    .empty { border-style: dashed; border-color: #CBD5E1; }
+    .empty h3, .error-box h3 { margin-bottom: 7px; font-size: 14px; }
+    .empty p { max-width: 320px; margin: auto; }
+
+    .error-box {
+      color: #B42318;
+      background: #FFF7F7;
+      border-color: #FECACA;
+    }
+
+    .error-icon { color: #B42318; background: #FEE2E2; }
+    .error-box p { color: #B42318; }
+
+    .retry {
+      margin-top: 14px;
+      padding: 10px 15px;
+      color: white;
+      background: var(--primary);
+      border: 0;
+      border-radius: 10px;
+      font: inherit;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .retry:hover { background: var(--primary-dark); }
+
+    @media (min-width: 650px) {
+      header { padding: 12px 26px; }
+      .container { padding: 32px 22px 60px; }
+      .customers { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .summary { padding: 26px; }
+    }
+
+    @media (min-width: 950px) {
+      header { padding-right: 36px; padding-left: 36px; }
+      .container { padding-top: 40px; }
+      .customers { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 360px) {
+      header { padding-right: 12px; padding-left: 12px; }
+      .container { padding-right: 12px; padding-left: 12px; }
+      .customer { padding: 13px; }
+      .status { display: none; }
+    }
+  </style>
 </head>
 
-
 <body>
-
-
-<!-- =========================
-     HEADER
-========================= -->
-
-<header>
-
-  <div class="logo">
-
-    <div class="logo-icon">
-
-      <i class="fa-solid fa-users"></i>
-
+  <header>
+    <div class="logo">
+      <div class="logo-icon"><i class="fa-solid fa-users"></i></div>
+      <span>Customers</span>
     </div>
 
-    <span>
-      Customers
-    </span>
+    <a href="admin.html" class="back">
+      <i class="fa-solid fa-arrow-left"></i>
+      <span>Admin</span>
+    </a>
+  </header>
 
-  </div>
-
-
-  <a
-    href="admin.html"
-    class="back"
-  >
-
-    <i class="fa-solid fa-arrow-left"></i>
-
-    <span>
-      Admin
-    </span>
-
-  </a>
-
-</header>
-
-
-<!-- =========================
-     MAIN
-========================= -->
-
-<main class="container">
-
-
-  <section class="hero">
-
-    <div class="eyebrow">
-
-      <i class="fa-solid fa-shield-halved"></i>
-
-      ADMIN PANEL
-
-    </div>
-
-
-    <h1>
-      Customer Management
-    </h1>
-
-
-    <p>
-      View and manage registered customers on your store.
-    </p>
-
-  </section>
-
-
-  <!-- =========================
-       SUMMARY
-  ========================= -->
-
-  <section class="summary">
-
-    <div class="summary-content">
-
-      <div class="summary-top">
-
-        <div class="summary-icon">
-
-          <i class="fa-solid fa-user-group"></i>
-
-        </div>
-
-
-        <div class="live">
-
-          <span class="live-dot"></span>
-
-          Live
-
-        </div>
-
+  <main class="container">
+    <section class="hero">
+      <div class="eyebrow">
+        <i class="fa-solid fa-shield-halved"></i>
+        ADMIN PANEL
       </div>
+      <h1>Customer Management</h1>
+      <p>View registered customers and check their account information in one place.</p>
+    </section>
 
-
-      <h2 id="totalCustomers">
-        0
-      </h2>
-
-
-      <p>
-        Total Registered Customers
-      </p>
-
-    </div>
-
-  </section>
-
-
-  <!-- =========================
-       SEARCH
-  ========================= -->
-
-  <div class="search-box">
-
-    <i class="fa-solid fa-magnifying-glass"></i>
-
-
-    <input
-      id="search"
-      type="text"
-      autocomplete="off"
-      placeholder="Search by name or email..."
-    >
-
-  </div>
-
-
-  <!-- =========================
-       LIST HEADER
-  ========================= -->
-
-  <div class="list-head">
-
-    <div class="list-title">
-
-      <i class="fa-solid fa-address-book"></i>
-
-      <h2>
-        Customers
-      </h2>
-
-    </div>
-
-
-    <span
-      class="count"
-      id="customerCount"
-    >
-      0 Customers
-    </span>
-
-  </div>
-
-
-  <!-- =========================
-       CUSTOMER LIST
-  ========================= -->
-
-  <div
-    id="customers"
-    class="customers"
-  >
-
-    <div class="loading">
-
-      <div class="loading-icon">
-
-        <i class="fa-solid fa-spinner fa-spin"></i>
-
+    <section class="summary">
+      <div class="summary-content">
+        <div class="summary-top">
+          <div class="summary-icon"><i class="fa-solid fa-user-group"></i></div>
+          <div class="live"><span class="live-dot"></span> Connected</div>
+        </div>
+        <h2 id="totalCustomers">0</h2>
+        <p>Total Registered Customers</p>
       </div>
+    </section>
 
+    <label class="search-box" for="search">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input
+        id="search"
+        type="search"
+        autocomplete="off"
+        placeholder="Search by name or email..."
+        aria-label="Search customers by name or email"
+      >
+    </label>
 
-      <p>
-        Loading customers...
-      </p>
-
+    <div class="list-head">
+      <div class="list-title">
+        <i class="fa-solid fa-address-book"></i>
+        <h2>All Customers</h2>
+      </div>
+      <span class="count" id="customerCount">0 customers</span>
     </div>
 
-  </div>
+    <div id="customers" class="customers" aria-live="polite">
+      <div class="loading">
+        <div class="loading-icon"><i class="fa-solid fa-spinner fa-spin"></i></div>
+        <p>Checking your customer records...</p>
+      </div>
+    </div>
+  </main>
 
+  <!-- Load Firebase once -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="firebase.js"></script>
 
-</main>
+  <script>
+    "use strict";
 
+    const ADMIN_UID = "UoEjCy99gbQKkGob59vGi3CunZi1";
 
-<!-- =========================
-     FIREBASE
-========================= -->
+    let gentleCustomers = [];
 
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    document.addEventListener("DOMContentLoaded", function () {
+      if (typeof firebaseAuth === "undefined" ||
+          typeof firebaseDB === "undefined") {
+        showError("Firebase could not be initialized. Check firebase.js and try again.");
+        return;
+      }
 
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-
-<script src="firebase.js"></script>
-
-
-<script>
-
-/* =========================
-   ADMIN UID
-========================= */
-
-const ADMIN_UID =
-"UoEjCy99gbQKkGob59vGi3CunZi1";
-
-
-/* =========================
-   CUSTOMER DATA
-========================= */
-
-let gentleCustomers = [];
-
-
-/* =========================
-   START
-========================= */
-
-document.addEventListener(
-  "DOMContentLoaded",
-  function(){
-
-    if(
-      typeof firebaseAuth ===
-      "undefined"
-    ){
-
-      showError(
-        "Firebase Authentication is not available."
-      );
-
-      return;
-
-    }
-
-
-    if(
-      typeof firebaseDB ===
-      "undefined"
-    ){
-
-      showError(
-        "Firebase Firestore is not available."
-      );
-
-      return;
-
-    }
-
-
-    firebaseAuth.onAuthStateChanged(
-      function(user){
-
-        if(!user){
-
-          window.location.replace(
-            "admin-login.html"
-          );
-
+      firebaseAuth.onAuthStateChanged(function (user) {
+        if (!user) {
+          window.location.replace("admin-login.html");
           return;
-
         }
 
-
-        if(
-          user.uid !== ADMIN_UID
-        ){
-
-          showError(
-            "You are not authorized to view customers."
-          );
-
+        if (user.uid !== ADMIN_UID) {
+          showError("You are not authorized to view this page.");
           return;
-
         }
 
-
-        if(
-          !user.emailVerified
-        ){
-
-          showError(
-            "Your admin email must be verified."
-          );
-
+        if (!user.emailVerified) {
+          showError("Please verify your admin email before viewing customers.");
           return;
-
         }
-
 
         loadCustomers();
+      });
+    });
 
-      }
-    );
+    async function loadCustomers() {
+      const container = document.getElementById("customers");
 
-  }
-);
+      container.innerHTML = `
+        <div class="loading">
+          <div class="loading-icon">
+            <i class="fa-solid fa-spinner fa-spin"></i>
+          </div>
+          <p>Loading customers...</p>
+        </div>`;
 
+      try {
+        const snapshot = await firebaseDB.collection("customers").get();
 
-/* =========================
-   LOAD CUSTOMERS
-========================= */
+        gentleCustomers = [];
 
-async function loadCustomers(){
+        snapshot.forEach(function (doc) {
+          const data = doc.data() || {};
 
-  const container =
-    document.getElementById(
-      "customers"
-    );
-
-
-  container.innerHTML = `
-
-    <div class="loading">
-
-      <div class="loading-icon">
-
-        <i class="fa-solid fa-spinner fa-spin"></i>
-
-      </div>
-
-      <p>
-        Loading customers...
-      </p>
-
-    </div>
-
-  `;
-
-
-  try{
-
-    const snapshot =
-      await firebaseDB
-        .collection("customers")
-        .get();
-
-
-    gentleCustomers = [];
-
-
-    snapshot.forEach(
-      function(doc){
-
-        const data =
-          doc.data();
-
-
-        gentleCustomers.push({
-
-          id:
-            doc.id,
-
-          name:
-            data.name ||
-            "Customer",
-
-          email:
-            data.email ||
-            "No email",
-
-          status:
-            data.status ||
-            "Active",
-
-          createdAt:
-            data.createdAt ||
-            ""
-
+          gentleCustomers.push({
+            id: doc.id,
+            name: data.name || "Customer",
+            email: data.email || "No email",
+            status: data.status || "Active",
+            createdAt: data.createdAt || null
+          });
         });
 
+        gentleCustomers.sort(function (a, b) {
+          return getTimeValue(b.createdAt) - getTimeValue(a.createdAt);
+        });
+
+        renderCustomers();
+      } catch (error) {
+        console.error("CUSTOMER LOAD ERROR:", error);
+        showError(getFriendlyError(error));
       }
-    );
+    }
 
+    document.getElementById("search").addEventListener("input", renderCustomers);
 
-    gentleCustomers.sort(
-      function(a,b){
+    function renderCustomers() {
+      const search = String(document.getElementById("search").value || "")
+        .toLowerCase()
+        .trim();
 
-        const dateA =
-          getTimeValue(
-            a.createdAt
-          );
+      const filtered = gentleCustomers.filter(function (customer) {
+        return String(customer.name).toLowerCase().includes(search) ||
+               String(customer.email).toLowerCase().includes(search);
+      });
 
+      document.getElementById("totalCustomers").textContent =
+        gentleCustomers.length.toLocaleString();
 
-        const dateB =
-          getTimeValue(
-            b.createdAt
-          );
+      document.getElementById("customerCount").textContent =
+        filtered.length + (filtered.length === 1 ? " customer" : " customers");
 
+      const container = document.getElementById("customers");
+      container.innerHTML = "";
 
-        return dateB - dateA;
-
-      }
-    );
-
-
-    renderCustomers();
-
-
-  }catch(error){
-
-    console.error(
-      "CUSTOMER LOAD ERROR:",
-      error
-    );
-
-
-    showError(
-      error.message ||
-      "Could not load customers."
-    );
-
-  }
-
-}
-
-
-/* =========================
-   SEARCH
-========================= */
-
-document
-  .getElementById("search")
-  .addEventListener(
-    "input",
-    renderCustomers
-  );
-
-
-/* =========================
-   RENDER CUSTOMERS
-========================= */
-
-function renderCustomers(){
-
-  const searchInput =
-    document.getElementById(
-      "search"
-    );
-
-
-  const search =
-    String(
-      searchInput.value || ""
-    )
-    .toLowerCase()
-    .trim();
-
-
-  const filtered =
-    gentleCustomers.filter(
-      function(customer){
-
-        const name =
-          String(
-            customer.name || ""
-          )
-          .toLowerCase();
-
-
-        const email =
-          String(
-            customer.email || ""
-          )
-          .toLowerCase();
-
-
-        return (
-          name.includes(search) ||
-          email.includes(search)
-        );
-
-      }
-    );
-
-
-  document.getElementById(
-    "totalCustomers"
-  ).textContent =
-    gentleCustomers.length;
-
-
-  document.getElementById(
-    "customerCount"
-  ).textContent =
-    filtered.length +
-    (
-      filtered.length === 1
-      ? " Customer"
-      : " Customers"
-    );
-
-
-  const container =
-    document.getElementById(
-      "customers"
-    );
-
-
-  if(
-    filtered.length === 0
-  ){
-
-    container.innerHTML = `
-
-      <div class="empty">
-
-        <div class="empty-icon">
-
-          <i class="fa-solid fa-user-group"></i>
-
-        </div>
-
-
-        <h3>
-
-          ${
-            search
-            ? "No customers found"
-            : "No customers yet"
-          }
-
-        </h3>
-
-
-        <p>
-
-          ${
-            search
-            ? "Try searching with another name or email."
-            : "New registered customers will appear here."
-          }
-
-        </p>
-
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-
-  container.innerHTML = "";
-
-
-  filtered.forEach(
-    function(customer,index){
-
-      const name =
-        customer.name ||
-        "Customer";
-
-
-      const email =
-        customer.email ||
-        "No email";
-
-
-      const initial =
-        name
-          .charAt(0)
-          .toUpperCase();
-
-
-      const status =
-        customer.status ||
-        "Active";
-
-
-      const registered =
-        formatDate(
-          customer.createdAt
-        );
-
-
-      const card =
-        document.createElement(
-          "div"
-        );
-
-
-      card.className =
-        "customer";
-
-
-      card.innerHTML = `
-
-        <div class="customer-top">
-
-          <div class="avatar">
-
-            ${escapeHTML(initial)}
-
-          </div>
-
-
-          <div class="customer-info">
-
-            <h3>
-
-              ${escapeHTML(name)}
-
-            </h3>
-
-
-            <div class="email">
-
-              ${escapeHTML(email)}
-
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="empty">
+            <div class="empty-icon">
+              <i class="fa-solid fa-user-group"></i>
             </div>
+            <h3>${search ? "No customers found" : "No customers yet"}</h3>
+            <p>${search
+              ? "Try another name or email address."
+              : "Registered customers saved in the customers collection will appear here."}</p>
+          </div>`;
+        return;
+      }
 
+      filtered.forEach(function (customer) {
+        const name = String(customer.name || "Customer");
+        const email = String(customer.email || "No email");
+        const initial = name.charAt(0).toUpperCase();
+        const status = String(customer.status || "Active");
+        const registered = formatDate(customer.createdAt);
+
+        const card = document.createElement("article");
+        card.className = "customer";
+
+        card.innerHTML = `
+          <div class="customer-top">
+            <div class="avatar">${escapeHTML(initial)}</div>
+            <div class="customer-info">
+              <h3 title="${escapeHTML(name)}">${escapeHTML(name)}</h3>
+              <div class="email">${escapeHTML(email)}</div>
+            </div>
+            <span class="status">${escapeHTML(status)}</span>
           </div>
 
+          <div class="details">
+            <div class="detail">
+              <span class="detail-label">Customer ID</span>
+              <span class="detail-value" title="${escapeHTML(customer.id)}">${escapeHTML(customer.id)}</span>
+            </div>
+            <div class="detail">
+              <span class="detail-label">Registered</span>
+              <span class="detail-value">${escapeHTML(registered)}</span>
+            </div>
+          </div>`;
 
-          <span class="status">
+        container.appendChild(card);
+      });
+    }
 
-            ${escapeHTML(status)}
+    function showError(message) {
+      const container = document.getElementById("customers");
 
-          </span>
-
-        </div>
-
-
-        <div class="details">
-
-          <div class="detail">
-
-            <span>
-              Account
-            </span>
-
-            <span>
-              Customer #${index + 1}
-            </span>
-
+      container.innerHTML = `
+        <div class="error-box">
+          <div class="error-icon">
+            <i class="fa-solid fa-triangle-exclamation"></i>
           </div>
-
-
-          <div class="detail">
-
-            <span>
-              Registered
-            </span>
-
-            <span>
-              ${escapeHTML(registered)}
-            </span>
-
-          </div>
-
-        </div>
-
-      `;
-
-
-      container.appendChild(
-        card
-      );
-
-    }
-  );
-
-}
-
-
-/* =========================
-   ERROR
-========================= */
-
-function showError(message){
-
-  const container =
-    document.getElementById(
-      "customers"
-    );
-
-
-  container.innerHTML = `
-
-    <div class="error-box">
-
-      <div class="error-icon">
-
-        <i class="fa-solid fa-triangle-exclamation"></i>
-
-      </div>
-
-
-      <h3>
-        Unable to load customers
-      </h3>
-
-
-      <p>
-        ${escapeHTML(message)}
-      </p>
-
-    </div>
-
-  `;
-
-}
-
-
-/* =========================
-   FORMAT DATE
-========================= */
-
-function formatDate(value){
-
-  if(!value){
-
-    return "Not available";
-
-  }
-
-
-  try{
-
-    if(
-      typeof value.toDate ===
-      "function"
-    ){
-
-      return value
-        .toDate()
-        .toLocaleDateString(
-          undefined,
-          {
-            day:"numeric",
-            month:"short",
-            year:"numeric"
-          }
-        );
-
+          <h3>Unable to load customers</h3>
+          <p>${escapeHTML(message)}</p>
+          <button class="retry" type="button" onclick="loadCustomers()">
+            Try again
+          </button>
+        </div>`;
     }
 
+    function getFriendlyError(error) {
+      if (error && error.code === "permission-denied") {
+        return "Firestore denied access. Check your Firestore security rules for the admin account.";
+      }
 
-    const date =
-      new Date(value);
+      if (error && error.code === "unavailable") {
+        return "The database is temporarily unavailable. Check your internet connection and try again.";
+      }
 
-
-    if(
-      !isNaN(
-        date.getTime()
-      )
-    ){
-
-      return date
-        .toLocaleDateString(
-          undefined,
-          {
-            day:"numeric",
-            month:"short",
-            year:"numeric"
-          }
-        );
-
+      return error && error.message
+        ? error.message
+        : "Something went wrong while loading customer records.";
     }
 
-  }catch(error){
+    function formatDate(value) {
+      if (!value) return "Not available";
 
-    console.error(
-      "DATE ERROR:",
-      error
-    );
+      try {
+        let date;
 
-  }
+        if (typeof value.toDate === "function") {
+          date = value.toDate();
+        } else if (typeof value === "number") {
+          date = new Date(value);
+        } else {
+          date = new Date(value);
+        }
 
+        if (isNaN(date.getTime())) return "Not available";
 
-  return "Not available";
-
-}
-
-
-/* =========================
-   DATE VALUE
-========================= */
-
-function getTimeValue(value){
-
-  try{
-
-    if(
-      value &&
-      typeof value.toDate ===
-      "function"
-    ){
-
-      return value
-        .toDate()
-        .getTime();
-
+        return date.toLocaleDateString("en-GB", {
+          day: "numeric",
+          month: "short",
+          year: "numeric"
+        });
+      } catch (error) {
+        return "Not available";
+      }
     }
 
+    function getTimeValue(value) {
+      if (!value) return 0;
 
-    const date =
-      new Date(value);
+      try {
+        const date = typeof value.toDate === "function"
+          ? value.toDate()
+          : new Date(value);
 
-
-    if(
-      !isNaN(
-        date.getTime()
-      )
-    ){
-
-      return date.getTime();
-
+        const time = date.getTime();
+        return isNaN(time) ? 0 : time;
+      } catch (error) {
+        return 0;
+      }
     }
 
-  }catch(error){}
-
-
-  return 0;
-
-}
-
-
-/* =========================
-   SECURITY
-========================= */
-
-function escapeHTML(value){
-
-  return String(
-    value || ""
-  )
-  .replace(
-    /&/g,
-    "&amp;"
-  )
-  .replace(
-    /</g,
-    "&lt;"
-  )
-  .replace(
-    />/g,
-    "&gt;"
-  )
-  .replace(
-    /"/g,
-    "&quot;"
-  )
-  .replace(
-    /'/g,
-    "&#039;"
-  );
-
-}
-
-</script>
-
-
+    function escapeHTML(value) {
+      return String(value == null ? "" : value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+  </script>
 </body>
-
 </html>

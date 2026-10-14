@@ -4,11 +4,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0b2d5c">
+<meta name="theme-color" content="#2563EB">
+<meta name="description" content="Complete your Gentle Acct Store wallet funding request.">
 <title>Complete Payment - Gentle Acct Store</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<script>
+(function () {
+  try {
+    const uid = localStorage.getItem("gentleCurrentUserId");
+    const personalTheme = uid
+      ? localStorage.getItem("gentle-acct-store-theme-user-" + uid)
+      : null;
+
+    const theme =
+      personalTheme ||
+      localStorage.getItem("gentle-acct-store-theme") ||
+      "light";
+
+    document.documentElement.dataset.theme =
+      ["light", "dark", "blue"].includes(theme) ? theme : "light";
+  } catch (e) {
+    document.documentElement.dataset.theme = "light";
+  }
+})();
+</script>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
@@ -16,309 +40,462 @@
 <script src="firebase.js"></script>
 
 <style>
-:root{
---blue:#0b2d5c;
---dark:#071f40;
---light:#eaf2fb;
---text:#172033;
---muted:#748093;
---border:#e4eaf2;
+:root,
+html[data-theme="light"] {
+  color-scheme: light;
+  --blue: #2563EB;
+  --blue-dark: #1D4ED8;
+  --light-blue: #EFF6FF;
+  --background: #F8FAFC;
+  --text: #172033;
+  --muted: #64748B;
+  --border: #E2E8F0;
+  --white: #FFFFFF;
+  --green: #15803D;
+  --red: #DC2626;
+  --card-border: #DBEAFE;
+  --heading-text: #1E3A8A;
+  --detail-text: #1E3A8A;
+  --notice-text: #1E40AF;
+  --ref-text: #1E3A8A;
+  --error-text: #991B1B;
+  --error-bg: #FEF2F2;
+  --error-border: #FECACA;
+  --success-text: #166534;
+  --success-bg: #F0FDF4;
+  --success-border: #BBF7D0;
+  --info-text: #1E40AF;
+  --info-bg: #EFF6FF;
+  --info-border: #BFDBFE;
+  --header-bg: rgba(255,255,255,.95);
+  --card-shadow: rgba(37,99,235,.10);
+  --button-shadow: rgba(37,99,235,.20);
+  --decoration: #EFF6FF;
 }
 
-*{
-box-sizing:border-box;
-margin:0;
-padding:0;
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --blue: #60A5FA;
+  --blue-dark: #93C5FD;
+  --light-blue: #1E293B;
+  --background: #0B1120;
+  --text: #F1F5F9;
+  --muted: #A5B4C8;
+  --border: #29364B;
+  --white: #111B2E;
+  --green: #4ADE80;
+  --red: #FCA5A5;
+  --card-border: #29364B;
+  --heading-text: #DBEAFE;
+  --detail-text: #DBEAFE;
+  --notice-text: #BFDBFE;
+  --ref-text: #DBEAFE;
+  --error-text: #FCA5A5;
+  --error-bg: #3B1820;
+  --error-border: #71313D;
+  --success-text: #86EFAC;
+  --success-bg: #102C22;
+  --success-border: #22543D;
+  --info-text: #BFDBFE;
+  --info-bg: #172554;
+  --info-border: #1E40AF;
+  --header-bg: rgba(17,27,46,.95);
+  --card-shadow: rgba(0,0,0,.25);
+  --button-shadow: rgba(0,0,0,.25);
+  --decoration: #17243A;
 }
 
-body{
-font-family:Poppins,sans-serif;
-background:linear-gradient(160deg,#edf4ff,#f8faff 50%,#edf3fa);
-color:var(--text);
-min-height:100vh;
-padding-bottom:35px;
+html[data-theme="blue"] {
+  color-scheme: light;
+  --blue: #075985;
+  --blue-dark: #0C4A6E;
+  --light-blue: #DFF4FF;
+  --background: #EAF6FC;
+  --text: #123047;
+  --muted: #54758B;
+  --border: #C9E4F2;
+  --white: #F8FDFF;
+  --green: #166534;
+  --red: #B91C1C;
+  --card-border: #C9E4F2;
+  --heading-text: #0C4A6E;
+  --detail-text: #0C4A6E;
+  --notice-text: #075985;
+  --ref-text: #0C4A6E;
+  --error-text: #991B1B;
+  --error-bg: #FEF2F2;
+  --error-border: #FECACA;
+  --success-text: #166534;
+  --success-bg: #F0FDF4;
+  --success-border: #BBF7D0;
+  --info-text: #075985;
+  --info-bg: #DFF4FF;
+  --info-border: #BAE6FD;
+  --header-bg: rgba(248,253,255,.95);
+  --card-shadow: rgba(7,89,133,.10);
+  --button-shadow: rgba(7,89,133,.18);
+  --decoration: #DFF4FF;
 }
 
-button{
-font-family:inherit;
-cursor:pointer;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-a{
-text-decoration:none;
-color:inherit;
+body {
+  font-family: Poppins, sans-serif;
+  color: var(--text);
+  background: linear-gradient(
+    160deg,
+    var(--light-blue),
+    var(--background) 55%,
+    var(--light-blue)
+  );
+  min-height: 100vh;
+  padding-bottom: 30px;
 }
 
-.page{
-width:100%;
-max-width:600px;
-margin:auto;
-min-height:100vh;
+button, input {
+  font-family: inherit;
 }
 
-header{
-height:68px;
-background:#ffffffed;
-border-bottom:1px solid var(--border);
-display:flex;
-align-items:center;
-gap:12px;
-padding:0 17px;
-position:sticky;
-top:0;
-z-index:5;
-backdrop-filter:blur(12px);
+button {
+  cursor: pointer;
 }
 
-.back-btn{
-width:39px;
-height:39px;
-border:0;
-border-radius:12px;
-background:var(--light);
-color:var(--blue);
+button:disabled {
+  opacity: .6;
+  cursor: not-allowed;
 }
 
-.header-info h2{
-font-size:15px;
-font-weight:800;
-color:var(--dark);
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
-.header-info p{
-font-size:8px;
-color:var(--muted);
-margin-top:2px;
+.page {
+  width: 100%;
+  max-width: 600px;
+  min-height: 100vh;
+  margin: auto;
 }
 
-main{
-padding:24px 16px;
+header {
+  height: 68px;
+  padding: 0 17px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: var(--header-bg);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(12px);
 }
 
-.heading{
-text-align:center;
-margin-bottom:22px;
+.back-btn {
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 13px;
+  background: var(--light-blue);
+  color: var(--blue);
+  font-size: 15px;
+  flex-shrink: 0;
 }
 
-.heading-icon{
-width:60px;
-height:60px;
-margin:0 auto 13px;
-border-radius:19px;
-background:var(--blue);
-color:white;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:23px;
-box-shadow:0 10px 25px #0b2d5c35;
+.header-info h2 {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--blue-dark);
 }
 
-.heading h1{
-font-size:23px;
-font-weight:800;
-color:var(--dark);
-margin-bottom:6px;
+.header-info p {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 9px;
 }
 
-.heading p{
-font-size:10px;
-color:var(--muted);
-line-height:1.8;
+main {
+  padding: 24px 16px;
 }
 
-.floating-card{
-background:white;
-border:1px solid #e0e8f4;
-border-radius:23px;
-padding:20px;
-box-shadow:0 18px 45px #0b2d5c16;
-position:relative;
-overflow:hidden;
+.heading {
+  text-align: center;
+  margin-bottom: 22px;
 }
 
-.floating-card:before{
-content:"";
-position:absolute;
-width:160px;
-height:160px;
-border-radius:50%;
-background:#eaf2fb;
-right:-75px;
-top:-85px;
+.heading-icon {
+  width: 62px;
+  height: 62px;
+  margin: 0 auto 13px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+  box-shadow: 0 10px 25px var(--button-shadow);
+  font-size: 23px;
 }
 
-.card-content{
-position:relative;
-z-index:1;
+.heading h1 {
+  font-size: 23px;
+  font-weight: 800;
+  margin-bottom: 7px;
+  color: var(--heading-text);
 }
 
-.eyebrow{
-font-size:9px;
-color:var(--muted);
-font-weight:700;
-letter-spacing:.5px;
-text-transform:uppercase;
+.heading p {
+  max-width: 350px;
+  margin: auto;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.8;
 }
 
-.amount{
-font-size:31px;
-font-weight:800;
-letter-spacing:-.5px;
-color:var(--blue);
-margin:5px 0 18px;
-overflow-wrap:anywhere;
+.floating-card {
+  position: relative;
+  overflow: hidden;
+  padding: 21px;
+  background: var(--white);
+  border: 1px solid var(--card-border);
+  border-radius: 23px;
+  box-shadow: 0 18px 45px var(--card-shadow);
 }
 
-.divider{
-height:1px;
-background:var(--border);
-margin:14px 0;
+.floating-card::before {
+  content: "";
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: var(--decoration);
+  right: -75px;
+  top: -85px;
+  pointer-events: none;
 }
 
-.detail{
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:10px;
-padding:10px 0;
+.card-content {
+  position: relative;
+  z-index: 1;
 }
 
-.detail-label{
-font-size:10px;
-color:var(--muted);
+.eyebrow {
+  font-size: 10px;
+  color: var(--muted);
+  font-weight: 700;
+  letter-spacing: .5px;
+  text-transform: uppercase;
 }
 
-.detail-value{
-font-size:11px;
-color:var(--dark);
-font-weight:800;
-text-align:right;
-overflow-wrap:anywhere;
+.amount {
+  margin: 6px 0 18px;
+  color: var(--blue);
+  font-size: 31px;
+  font-weight: 800;
+  letter-spacing: -.5px;
+  overflow-wrap: anywhere;
 }
 
-.account-number{
-font-size:17px;
-letter-spacing:.4px;
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 14px 0;
 }
 
-.account-number-row{
-display:flex;
-align-items:center;
-gap:8px;
+.detail {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
 }
 
-.copy-btn{
-border:0;
-border-radius:9px;
-padding:9px 10px;
-background:var(--light);
-color:var(--blue);
-font-size:9px;
-font-weight:800;
-white-space:nowrap;
+.detail-label {
+  color: var(--muted);
+  font-size: 11px;
+  flex-shrink: 0;
 }
 
-.button{
-width:100%;
-min-height:47px;
-border:0;
-border-radius:13px;
-padding:12px;
-display:flex;
-align-items:center;
-justify-content:center;
-gap:8px;
-font-size:11px;
-font-weight:800;
-margin-top:15px;
+.detail-value {
+  color: var(--detail-text);
+  font-size: 11px;
+  font-weight: 800;
+  text-align: right;
+  overflow-wrap: anywhere;
 }
 
-.complete-btn{
-background:var(--blue);
-color:white;
-box-shadow:0 8px 18px #0b2d5c25;
+.account-number-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  min-width: 0;
 }
 
-.whatsapp-btn{
-background:#168b48;
-color:white;
+.account-number {
+  font-size: 16px;
+  letter-spacing: .3px;
+  overflow-wrap: normal;
+  white-space: nowrap;
 }
 
-.secondary-btn{
-background:white;
-color:var(--blue);
-border:1px solid var(--border);
+.copy-btn {
+  flex-shrink: 0;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--light-blue);
+  color: var(--blue-dark);
+  font-size: 10px;
+  font-weight: 800;
 }
 
-.note{
-font-size:9px;
-line-height:1.8;
-color:var(--muted);
-margin-top:14px;
-text-align:center;
+.button {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 14px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 13px;
+  font-size: 11px;
+  font-weight: 800;
+  text-align: center;
 }
 
-.reference{
-background:var(--light);
-padding:13px;
-border-radius:12px;
-margin-top:15px;
+.complete-btn {
+  background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+  color: #FFFFFF;
+  box-shadow: 0 8px 18px var(--button-shadow);
 }
 
-.ref-label{
-font-size:9px;
-color:var(--muted);
-margin-bottom:5px;
+.whatsapp-btn {
+  background: #168B48;
+  color: #FFFFFF;
 }
 
-.ref-value{
-font-size:11px;
-font-weight:800;
-color:var(--dark);
-overflow-wrap:anywhere;
+.secondary-btn {
+  background: var(--white);
+  color: var(--blue);
+  border: 1px solid var(--border);
 }
 
-.status{
-font-size:10px;
-line-height:1.8;
-margin-top:12px;
-overflow-wrap:anywhere;
+.note {
+  margin-top: 16px;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.9;
+  text-align: center;
 }
 
-.status.error{
-color:#dc2626;
+.notice {
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--light-blue);
+  color: var(--notice-text);
+  font-size: 10px;
+  line-height: 1.8;
 }
 
-.status.success{
-color:#15803d;
+.notice i {
+  margin-right: 5px;
 }
 
-.hidden{
-display:none!important;
+.reference {
+  margin-top: 15px;
+  padding: 14px;
+  background: var(--light-blue);
+  border: 1px solid var(--card-border);
+  border-radius: 13px;
 }
 
-button:disabled{
-opacity:.6;
-cursor:not-allowed;
+.ref-label {
+  margin-bottom: 5px;
+  color: var(--muted);
+  font-size: 10px;
 }
 
-@media(max-width:360px){
-main{
-padding:20px 13px;
+.ref-value {
+  color: var(--ref-text);
+  font-size: 12px;
+  font-weight: 800;
+  overflow-wrap: anywhere;
 }
 
-.floating-card{
-padding:16px;
+.status {
+  margin-top: 13px;
+  padding: 11px 12px;
+  border-radius: 11px;
+  font-size: 10px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
 }
 
-.amount{
-font-size:27px;
+.status.error {
+  color: var(--error-text);
+  background: var(--error-bg);
+  border: 1px solid var(--error-border);
 }
 
-.heading h1{
-font-size:21px;
+.status.success {
+  color: var(--success-text);
+  background: var(--success-bg);
+  border: 1px solid var(--success-border);
 }
+
+.status.info {
+  color: var(--info-text);
+  background: var(--info-bg);
+  border: 1px solid var(--info-border);
+}
+
+.hidden {
+  display: none !important;
+}
+
+footer {
+  padding: 0 20px;
+  color: var(--muted);
+  font-size: 9px;
+  text-align: center;
+}
+
+@media (max-width: 360px) {
+  main {
+    padding: 20px 12px;
+  }
+
+  .floating-card {
+    padding: 16px;
+  }
+
+  .amount {
+    font-size: 27px;
+  }
+
+  .heading h1 {
+    font-size: 21px;
+  }
+
+  .detail {
+    gap: 7px;
+  }
+
+  .account-number {
+    font-size: 14px;
+  }
+
+  .copy-btn {
+    padding: 8px;
+  }
 }
 </style>
 </head>
@@ -326,114 +503,99 @@ font-size:21px;
 <body>
 <div class="page">
 
-<header>
-<button class="back-btn" type="button" onclick="goBack()" aria-label="Go back">
-<i class="fa-solid fa-arrow-left"></i>
-</button>
+  <header>
+    <button class="back-btn" id="backButton" type="button" aria-label="Go back">
+      <i class="fa-solid fa-arrow-left"></i>
+    </button>
 
-<div class="header-info">
-<h2>Complete Payment</h2>
-<p>Gentle Acct Store</p>
-</div>
-</header>
+    <div class="header-info">
+      <h2>Complete Payment</h2>
+      <p>Gentle Acct Store</p>
+    </div>
+  </header>
 
-<main>
+  <main>
+    <div class="heading">
+      <div class="heading-icon">
+        <i class="fa-solid fa-building-columns"></i>
+      </div>
+      <h1>Make Your Transfer</h1>
+      <p>Transfer the exact amount displayed below to the account provided.</p>
+    </div>
 
-<div class="heading">
-<div class="heading-icon">
-<i class="fa-solid fa-building-columns"></i>
-</div>
+    <section class="floating-card" aria-label="Payment details">
+      <div class="card-content">
 
-<h1>Make Your Transfer</h1>
+        <div class="eyebrow">Amount to transfer</div>
+        <div class="amount" id="amount">₦0.00</div>
 
-<p>
-Transfer the exact amount shown below to the account details provided.
-</p>
-</div>
+        <div class="divider"></div>
 
-<div class="floating-card">
-<div class="card-content">
+        <div class="detail">
+          <span class="detail-label">Bank</span>
+          <span class="detail-value">Moniepoint MFB</span>
+        </div>
 
-<div class="eyebrow">Amount to transfer</div>
-<div class="amount" id="amount">₦0.00</div>
+        <div class="detail">
+          <span class="detail-label">Account name</span>
+          <span class="detail-value">Al-mustapha Abdulazeez</span>
+        </div>
 
-<div class="divider"></div>
+        <div class="detail">
+          <span class="detail-label">Account number</span>
+          <div class="account-number-row">
+            <span class="detail-value account-number" id="accountNumber">5234526349</span>
+            <button class="copy-btn" id="copyAccountButton" type="button">
+              <i class="fa-regular fa-copy"></i> Copy
+            </button>
+          </div>
+        </div>
 
-<div class="detail">
-<span class="detail-label">Bank</span>
-<span class="detail-value">Moniepoint MFB</span>
-</div>
+        <div class="notice">
+          <i class="fa-solid fa-shield-halved"></i>
+          Confirm the account name and number in your banking app before sending money. Keep your transfer receipt.
+        </div>
 
-<div class="detail">
-<span class="detail-label">Account name</span>
-<span class="detail-value">Al-mustapha Abdulazeez</span>
-</div>
+        <button class="button complete-btn hidden" id="completeButton" type="button">
+          <i class="fa-solid fa-check-circle"></i>
+          I've Made the Payment
+        </button>
 
-<div class="detail">
-<span class="detail-label">Account number</span>
+        <div id="status" class="status hidden" role="status" aria-live="polite"></div>
 
-<div class="account-number-row">
-<span class="detail-value account-number" id="accountNumber">
-5234526349
-</span>
+        <section id="receiptSection" class="hidden" aria-label="Funding receipt">
+          <div class="reference">
+            <div class="ref-label">Your funding reference</div>
+            <div class="ref-value" id="reference"></div>
+          </div>
 
-<button
-class="copy-btn"
-id="copyAccountButton"
-type="button"
-onclick="copyAccount()">
-<i class="fa-regular fa-copy"></i> Copy
-</button>
-</div>
-</div>
+          <a
+            id="whatsappButton"
+            class="button whatsapp-btn"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer">
+            <i class="fa-brands fa-whatsapp"></i>
+            Send Receipt on WhatsApp
+          </a>
 
-<button
-class="button complete-btn hidden"
-id="completeButton"
-type="button"
-onclick="recordPayment()">
-<i class="fa-solid fa-check-circle"></i>
-I've Made the Payment
-</button>
+          <button class="button secondary-btn" id="copyReferenceButton" type="button">
+            <i class="fa-regular fa-copy"></i>
+            Copy Funding Reference
+          </button>
+        </section>
 
-<div id="status" class="status hidden" role="status" aria-live="polite"></div>
+        <p class="note">
+          Your request is not proof of payment. Your wallet will only be credited after an authorized verification process confirms your transfer.
+        </p>
 
-<div id="receiptSection" class="hidden">
+      </div>
+    </section>
+  </main>
 
-<div class="reference">
-<div class="ref-label">Your funding reference</div>
-<div class="ref-value" id="reference"></div>
-</div>
-
-<a
-id="whatsappButton"
-class="button whatsapp-btn"
-href="#"
-target="_blank"
-rel="noopener noreferrer">
-<i class="fa-brands fa-whatsapp"></i>
-Send Receipt on WhatsApp
-</a>
-
-<button
-class="button secondary-btn"
-type="button"
-onclick="copyReference()">
-<i class="fa-regular fa-copy"></i>
-Copy Funding Reference
-</button>
-
-</div>
-
-<p class="note">
-Submitting a request does not confirm that payment has arrived.
-Your wallet will only be credited after your payment is verified.
-</p>
-
-</div>
-</div>
-
-</main>
+  <footer>
+    Gentle Acct Store · Secure funding request
+  </footer>
 </div>
 
 <script>
@@ -451,11 +613,15 @@ let amount = 0;
 let busy = false;
 let fundingReference = "";
 let copyTimer = null;
+let accountCopied = false;
+let requestSubmitted = false;
 
 const statusElement = document.getElementById("status");
 const completeButton = document.getElementById("completeButton");
 const copyAccountButton = document.getElementById("copyAccountButton");
+const copyReferenceButton = document.getElementById("copyReferenceButton");
 const receiptSection = document.getElementById("receiptSection");
+const whatsappButton = document.getElementById("whatsappButton");
 
 function formatNaira(value) {
   return "₦" + Number(value).toLocaleString("en-NG", {
@@ -478,12 +644,24 @@ function goBack() {
   window.location.href = "fund.html";
 }
 
+document.getElementById("backButton").addEventListener("click", goBack);
+
 function validateAmount() {
   const params = new URLSearchParams(window.location.search);
-  const requested = Number(params.get("amount"));
+  const rawAmount = params.get("amount");
 
   if (
-    !Number.isInteger(requested) ||
+    rawAmount === null ||
+    !/^\d+$/.test(rawAmount)
+  ) {
+    window.location.replace("fund.html");
+    return false;
+  }
+
+  const requested = Number(rawAmount);
+
+  if (
+    !Number.isSafeInteger(requested) ||
     requested < MIN_AMOUNT ||
     requested > MAX_AMOUNT
   ) {
@@ -493,21 +671,37 @@ function validateAmount() {
 
   amount = requested;
   document.getElementById("amount").textContent = formatNaira(amount);
-
   return true;
 }
 
-firebaseAuth.onAuthStateChanged(function(user) {
-  if (!user || !user.emailVerified) {
-    window.location.replace("login.html");
-    return;
+function setCompleteButtonVisible() {
+  if (
+    accountCopied &&
+    authReady &&
+    currentUser &&
+    !requestSubmitted
+  ) {
+    completeButton.classList.remove("hidden");
+  }
+}
+
+function startCopyWait() {
+  if (copyTimer) {
+    clearTimeout(copyTimer);
   }
 
-  currentUser = user;
-  authReady = true;
-});
+  accountCopied = true;
+  completeButton.classList.add("hidden");
 
-validateAmount();
+  showStatus(
+    "copied",
+    "info"
+  );
+
+  copyTimer = setTimeout(function() {
+    setCompleteButtonVisible();
+  }, WAIT_TIME);
+}
 
 async function copyText(text) {
   if (navigator.clipboard && window.isSecureContext) {
@@ -517,11 +711,14 @@ async function copyText(text) {
 
   const field = document.createElement("textarea");
   field.value = text;
+  field.setAttribute("readonly", "");
   field.style.position = "fixed";
-  field.style.opacity = "0";
+  field.style.left = "-9999px";
+  field.style.top = "0";
 
   document.body.appendChild(field);
   field.select();
+  field.setSelectionRange(0, field.value.length);
 
   const copied = document.execCommand("copy");
   field.remove();
@@ -533,34 +730,21 @@ async function copyText(text) {
 
 async function copyAccount() {
   if (!authReady || !currentUser) {
-    showStatus(
-      "Please wait for your account to load, then try again.",
-      "error"
-    );
+    showStatus("Please wait for your account to load.", "info");
     return;
   }
 
   try {
     await copyText(ACCOUNT_NUMBER);
 
-    showStatus("Account number copied.", "success");
-
     copyAccountButton.innerHTML =
       '<i class="fa-solid fa-check"></i> Copied';
 
-    if (copyTimer) {
-      clearTimeout(copyTimer);
-    }
-
-    completeButton.classList.add("hidden");
-
-    copyTimer = setTimeout(function() {
-      completeButton.classList.remove("hidden");
-    }, WAIT_TIME);
+    startCopyWait();
 
   } catch (error) {
     showStatus(
-      "Please copy the account number manually: " + ACCOUNT_NUMBER,
+      "Automatic copying failed. Please copy this account number manually: " + ACCOUNT_NUMBER,
       "error"
     );
   }
@@ -568,125 +752,191 @@ async function copyAccount() {
 
 async function copyReference() {
   if (!fundingReference) {
+    showStatus("There is no funding reference to copy yet.", "error");
     return;
   }
 
   try {
     await copyText(fundingReference);
-    showStatus("Reference copied.", "success");
+    showStatus("Funding reference copied.", "success");
   } catch (error) {
-    showStatus("Your reference is: " + fundingReference, "success");
+    showStatus(
+      "Copy failed. Your funding reference is: " + fundingReference,
+      "error"
+    );
   }
 }
 
-async function recordPayment() {
-  if (busy) {
-    return;
-  }
+copyAccountButton.addEventListener("click", copyAccount);
+copyReferenceButton.addEventListener("click", copyReference);
+completeButton.addEventListener("click", recordPayment);
 
-  if (!authReady || !currentUser || !currentUser.emailVerified) {
-    showStatus("Please log in again.", "error");
-    return;
-  }
+function redirectToLogin() {
+  window.location.replace("login.html");
+}
 
-  if (!window.firebaseDB) {
-    showStatus(
-      "Firebase is not available. Please try again later.",
-      "error"
-    );
+function initializePaymentPage() {
+  if (!validateAmount()) {
     return;
   }
 
   if (
-    !Number.isInteger(amount) ||
+    !window.firebaseAuth ||
+    typeof window.firebaseAuth.onAuthStateChanged !== "function" ||
+    !window.firebaseDB
+  ) {
+    showStatus(
+      "The payment service could not initialize. Refresh the page or try again later.",
+      "error"
+    );
+    completeButton.classList.add("hidden");
+    copyAccountButton.disabled = true;
+    return;
+  }
+
+  try {
+    window.firebaseAuth.onAuthStateChanged(
+      function(user) {
+        if (!user || !user.emailVerified) {
+          redirectToLogin();
+          return;
+        }
+
+        currentUser = user;
+        authReady = true;
+
+        setCompleteButtonVisible();
+      },
+      function(error) {
+        console.error("AUTH STATE ERROR:", error);
+        authReady = false;
+        currentUser = null;
+
+        showStatus(
+          "We could not verify your sign-in. Please refresh or log in again.",
+          "error"
+        );
+      }
+    );
+  } catch (error) {
+    console.error("AUTH INITIALIZATION ERROR:", error);
+
+    showStatus(
+      "Authentication could not be initialized. Please refresh the page.",
+      "error"
+    );
+  }
+}
+
+async function recordPayment() {
+  if (busy || requestSubmitted) {
+    return;
+  }
+
+  if (!authReady || !currentUser || !currentUser.emailVerified) {
+    showStatus("Your login session is not ready. Please log in again.", "error");
+    return;
+  }
+
+  if (!accountCopied) {
+    showStatus("Please copy the displayed account number first.", "error");
+    return;
+  }
+
+  if (
+    !Number.isSafeInteger(amount) ||
     amount < MIN_AMOUNT ||
     amount > MAX_AMOUNT
   ) {
-    showStatus(
-      "The amount is invalid. Return to Fund Wallet and try again.",
-      "error"
-    );
+    showStatus("The requested amount is invalid. Return to Fund Wallet.", "error");
     return;
   }
 
   const confirmed = window.confirm(
-    "Have you actually transferred " +
+    "Only continue if you have actually transferred " +
     formatNaira(amount) +
-    " to the Moniepoint account shown on this page?"
+    " to the account displayed on this page. Have you made the transfer?"
   );
 
   if (!confirmed) {
     return;
   }
 
+  if (!window.firebaseDB || !window.firebase) {
+    showStatus("The payment service is unavailable. Please try again later.", "error");
+    return;
+  }
+
   busy = true;
   completeButton.disabled = true;
   copyAccountButton.disabled = true;
+  copyReferenceButton.disabled = true;
 
   completeButton.innerHTML =
     '<i class="fa-solid fa-spinner fa-spin"></i> Recording Request...';
 
   hideStatus();
-  receiptSection.classList.add("hidden");
 
   try {
-    const requestRef = firebaseDB
+    const requestRef = window.firebaseDB
       .collection("fundingRequests")
       .doc();
 
-    fundingReference = "GENTLE-" + requestRef.id.toUpperCase();
+    const reference = "GENTLE-" + requestRef.id.toUpperCase();
 
     const accountName =
       (currentUser.displayName && currentUser.displayName.trim()) ||
       currentUser.email ||
       "Name not provided";
 
-    // Records a request only; it does not credit the wallet.
+    // This creates a pending request only.
+    // It does NOT verify a transfer or credit a wallet.
     await requestRef.set({
       userId: currentUser.uid,
       accountName: accountName,
       userEmail: currentUser.email || "",
       amount: amount,
-      reference: fundingReference,
+      reference: reference,
       status: "pending",
       paymentMethod: "moniepoint_manual_transfer",
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      createdAt: window.firebase.firestore.FieldValue.serverTimestamp()
     });
+
+    fundingReference = reference;
+    requestSubmitted = true;
 
     document.getElementById("reference").textContent = fundingReference;
 
-    // Short WhatsApp message: no email and no extra blank lines.
     const whatsappMessage =
-      "Please credit my wallet.\n" +
-      "Ref: " + fundingReference + "\n" +
+      "Gentle Acct Store wallet funding request\n" +
+      "Reference: " + fundingReference + "\n" +
       "Name: " + accountName + "\n" +
-      "Amount: " + formatNaira(amount);
+      "Amount: " + formatNaira(amount) + "\n" +
+      "Status: Awaiting payment verification";
 
-    const whatsappURL =
+    whatsappButton.href =
       "https://wa.me/" +
       WHATSAPP_NUMBER +
       "?text=" +
       encodeURIComponent(whatsappMessage);
 
-    document.getElementById("whatsappButton").href = whatsappURL;
     receiptSection.classList.remove("hidden");
 
     showStatus(
-      "Your funding request has been recorded. This is not payment confirmation; your transfer must be verified.",
+      "Your funding request was saved. Now send the receipt on WhatsApp. Your wallet will remain unchanged until an authorized person verifies the transfer.",
       "success"
     );
 
     completeButton.innerHTML =
       '<i class="fa-solid fa-check"></i> Request Recorded';
 
-    // Open WhatsApp only after Firestore has saved the request.
-    const whatsappWindow = window.open(whatsappURL, "_blank");
+    completeButton.disabled = true;
+    copyAccountButton.disabled = true;
+    copyReferenceButton.disabled = false;
 
-    if (!whatsappWindow) {
-      showStatus(
-        "Request recorded. Tap Send Receipt on WhatsApp below to continue.",
-        "success"
-      );
+    if (copyTimer) {
+      clearTimeout(copyTimer);
+      copyTimer = null;
     }
 
   } catch (error) {
@@ -694,12 +944,17 @@ async function recordPayment() {
 
     if (error && error.code === "permission-denied") {
       showStatus(
-        "Firebase denied this request. Check that the published Firestore rules allow the fundingRequests fields and that you are signed in.",
+        "Firebase denied this request. Check your Firestore security rules for fundingRequests and confirm that you are signed in.",
+        "error"
+      );
+    } else if (error && error.code === "unavailable") {
+      showStatus(
+        "The funding service is temporarily unavailable. Check your connection and try again.",
         "error"
       );
     } else {
       showStatus(
-        "Could not save your request. Please check your connection and try again.",
+        "We could not save your funding request. No success has been confirmed. Please check your connection and try again.",
         "error"
       );
     }
@@ -709,11 +964,16 @@ async function recordPayment() {
 
   } finally {
     busy = false;
-    completeButton.disabled = false;
-    copyAccountButton.disabled = false;
+
+    if (!requestSubmitted) {
+      completeButton.disabled = false;
+      copyAccountButton.disabled = false;
+      copyReferenceButton.disabled = false;
+    }
   }
 }
-</script>
 
+initializePaymentPage();
+</script>
 </body>
 </html>

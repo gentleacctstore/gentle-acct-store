@@ -1,1003 +1,648 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0"
->
-
-<meta
-name="theme-color"
-content="#0b2d5c"
->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2563EB">
+<meta name="description" content="Admin product deletion - Gentle Acct Store">
 
 <title>Delete Product - Gentle Acct Store</title>
 
-<link
-rel="preconnect"
-href="https://fonts.googleapis.com"
->
-
-<link
-rel="preconnect"
-href="https://fonts.gstatic.com"
-crossorigin
->
-
-<link
-href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
-rel="stylesheet"
->
-
-<link
-rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-
 <script src="firebase.js"></script>
 
 <style>
-
-:root{
-
---blue:#0b2d5c;
---blue-dark:#071f40;
---blue-light:#eaf2fb;
---blue-soft:#f5f8fc;
-
---white:#ffffff;
-
---text:#172033;
---muted:#748093;
-
---danger:#dc2626;
---danger-dark:#b91c1c;
---danger-bg:#fff1f1;
-
---success:#15803d;
---success-bg:#edf8f1;
-
---border:#e1e8f0;
-
---shadow:
-0 15px 45px rgba(11,45,92,.09);
-
+:root {
+  --blue: #2563EB;
+  --blue-dark: #1D4ED8;
+  --blue-light: #EFF6FF;
+  --bg: #F8FAFC;
+  --white: #FFFFFF;
+  --text: #172033;
+  --muted: #748093;
+  --border: #E2E8F0;
+  --red: #DC2626;
+  --red-dark: #B91C1C;
+  --red-light: #FEF2F2;
+  --green: #15803D;
+  --green-light: #F0FDF4;
+  --shadow: 0 12px 35px rgba(37,99,235,.08);
 }
 
-*{
-
-box-sizing:border-box;
-
-margin:0;
-
-padding:0;
-
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-body{
-
-font-family:"Poppins",sans-serif;
-
-background:#f5f8fc;
-
-color:var(--text);
-
-min-height:100vh;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-padding:18px;
-
+body {
+  font-family: "Poppins", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-.container{
-
-width:100%;
-
-max-width:560px;
-
+button {
+  font-family: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.card{
-
-background:var(--white);
-
-border:1px solid var(--border);
-
-border-radius:24px;
-
-padding:34px 28px;
-
-box-shadow:var(--shadow);
-
-text-align:center;
-
+.topbar {
+  height: 67px;
+  padding: 0 18px;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.icon{
-
-width:78px;
-
-height:78px;
-
-border-radius:22px;
-
-background:var(--danger-bg);
-
-color:var(--danger);
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-margin:0 auto 22px;
-
-font-size:28px;
-
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
 }
 
-h1{
-
-font-size:27px;
-
-font-weight:800;
-
-color:var(--blue-dark);
-
-margin-bottom:9px;
-
+.brand-icon {
+  width: 39px;
+  height: 39px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: var(--blue-light);
+  color: var(--blue);
 }
 
-.subtitle{
-
-font-size:11px;
-
-line-height:1.7;
-
-color:var(--muted);
-
-margin-bottom:20px;
-
+.brand-name {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text);
 }
 
-.product-name{
-
-background:var(--blue-light);
-
-color:var(--blue);
-
-border-radius:13px;
-
-padding:14px;
-
-font-size:15px;
-
-font-weight:800;
-
-margin-bottom:12px;
-
-word-break:break-word;
-
+.brand-label {
+  font-size: 9px;
+  color: var(--muted);
+  margin-top: 2px;
 }
 
-.status{
-
-border-radius:12px;
-
-padding:11px;
-
-font-size:9px;
-
-font-weight:700;
-
-margin-bottom:16px;
-
-line-height:1.6;
-
+.admin-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--blue-light);
+  color: var(--blue);
+  padding: 7px 10px;
+  border-radius: 9px;
+  font-size: 10px;
+  font-weight: 700;
 }
 
-.status.loading{
-
-background:var(--blue-light);
-
-color:var(--blue);
-
+main {
+  width: 100%;
+  max-width: 540px;
+  margin: auto;
+  padding: 30px 16px;
 }
 
-.status.success{
-
-background:var(--success-bg);
-
-color:var(--success);
-
-border:1px solid #ccebd9;
-
+.breadcrumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 11px;
+  margin-bottom: 19px;
 }
 
-.status.error{
-
-background:var(--danger-bg);
-
-color:var(--danger);
-
-border:1px solid #f2d2d2;
-
+.breadcrumb i {
+  color: var(--blue);
 }
 
-.delete-btn{
-
-width:100%;
-
-border:none;
-
-background:var(--danger);
-
-color:white;
-
-padding:13px;
-
-border-radius:12px;
-
-font-size:11px;
-
-font-weight:800;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-gap:7px;
-
-cursor:pointer;
-
-margin-bottom:9px;
-
-transition:.2s;
-
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 27px;
+  box-shadow: var(--shadow);
 }
 
-.delete-btn:hover{
-
-background:var(--danger-dark);
-
+.warning-icon {
+  width: 68px;
+  height: 68px;
+  border-radius: 20px;
+  background: var(--red-light);
+  color: var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+  margin-bottom: 20px;
 }
 
-.delete-btn:active{
-
-transform:scale(.98);
-
+h1 {
+  color: var(--text);
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -.5px;
+  margin-bottom: 8px;
 }
 
-.delete-btn:disabled{
-
-opacity:.55;
-
-cursor:not-allowed;
-
+.subtitle {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.9;
+  margin-bottom: 21px;
 }
 
-.cancel-btn{
-
-width:100%;
-
-border:none;
-
-background:var(--blue-light);
-
-color:var(--blue);
-
-padding:13px;
-
-border-radius:12px;
-
-font-size:11px;
-
-font-weight:800;
-
-cursor:pointer;
-
-transition:.2s;
-
+.product-box {
+  background: var(--blue-light);
+  border: 1px solid #D8E6FF;
+  border-radius: 13px;
+  padding: 14px;
+  margin-bottom: 14px;
 }
 
-.cancel-btn:hover{
-
-background:#dce9f7;
-
+.product-label {
+  color: var(--blue);
+  font-size: 9px;
+  font-weight: 700;
+  margin-bottom: 5px;
 }
 
-.cancel-btn:active{
-
-transform:scale(.98);
-
+.product-name {
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 800;
+  overflow-wrap: anywhere;
 }
 
-.warning{
-
-display:flex;
-
-align-items:flex-start;
-
-gap:8px;
-
-text-align:left;
-
-background:#fff8e8;
-
-border:1px solid #f0dfad;
-
-color:#8a6200;
-
-border-radius:12px;
-
-padding:11px;
-
-font-size:8px;
-
-line-height:1.6;
-
-margin-bottom:16px;
-
+.warning-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: #FFFBEB;
+  border: 1px solid #FDE68A;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 17px;
+  color: #92400E;
+  font-size: 10px;
+  line-height: 1.8;
 }
 
-.warning i{
-
-margin-top:2px;
-
+.warning-box i {
+  margin-top: 3px;
+  flex-shrink: 0;
 }
 
-@media(max-width:480px){
-
-body{
-
-padding:12px;
-
+.status {
+  padding: 12px;
+  border-radius: 11px;
+  font-size: 10px;
+  line-height: 1.8;
+  margin-bottom: 17px;
+  overflow-wrap: anywhere;
 }
 
-.card{
-
-padding:29px 19px;
-
-border-radius:21px;
-
+.status.loading {
+  background: var(--blue-light);
+  color: var(--blue);
 }
 
-.icon{
-
-width:70px;
-
-height:70px;
-
-border-radius:19px;
-
-font-size:25px;
-
-margin-bottom:19px;
-
+.status.success {
+  background: var(--green-light);
+  color: var(--green);
+  border: 1px solid #BBF7D0;
 }
 
-h1{
-
-font-size:24px;
-
+.status.error {
+  background: var(--red-light);
+  color: var(--red);
+  border: 1px solid #FECACA;
 }
 
-.subtitle{
-
-font-size:10px;
-
+.status i {
+  margin-right: 5px;
 }
 
-.product-name{
-
-font-size:14px;
-
+.delete-btn,
+.cancel-btn {
+  width: 100%;
+  min-height: 47px;
+  border: none;
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  transition: background .2s, transform .2s;
 }
 
+.delete-btn {
+  background: var(--red);
+  color: var(--white);
+  margin-bottom: 10px;
 }
 
+.delete-btn:hover {
+  background: var(--red-dark);
+}
+
+.delete-btn:active,
+.cancel-btn:active {
+  transform: scale(.99);
+}
+
+.delete-btn:disabled,
+.cancel-btn:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+.cancel-btn {
+  background: var(--blue-light);
+  color: var(--blue);
+}
+
+.cancel-btn:hover {
+  background: #DBEAFE;
+}
+
+.footer-note {
+  text-align: center;
+  color: var(--muted);
+  font-size: 9px;
+  line-height: 1.8;
+  margin-top: 18px;
+}
+
+@media (max-width: 420px) {
+  .topbar {
+    padding: 0 13px;
+  }
+
+  main {
+    padding: 23px 13px;
+  }
+
+  .card {
+    padding: 22px 18px;
+    border-radius: 17px;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+
+  .admin-label {
+    font-size: 9px;
+    padding: 7px;
+  }
+}
 </style>
-
 </head>
-
 
 <body>
 
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-icon">
+      <i class="fa-solid fa-store"></i>
+    </div>
+    <div>
+      <div class="brand-name">Gentle Acct Store</div>
+      <div class="brand-label">Product management</div>
+    </div>
+  </div>
 
-<div class="container">
+  <div class="admin-label">
+    <i class="fa-solid fa-shield-halved"></i>
+    Admin
+  </div>
+</header>
 
-<div class="card">
+<main>
+  <div class="breadcrumb">
+    <i class="fa-solid fa-house"></i>
+    <span>Admin</span>
+    <i class="fa-solid fa-chevron-right"></i>
+    <span>Delete product</span>
+  </div>
 
+  <section class="card">
+    <div class="warning-icon">
+      <i class="fa-solid fa-trash-can"></i>
+    </div>
 
-<div class="icon">
+    <h1>Delete product</h1>
 
-<i class="fa-solid fa-trash"></i>
+    <p class="subtitle">
+      Review the selected product before confirming its removal from your store.
+    </p>
 
-</div>
+    <div class="product-box">
+      <div class="product-label">SELECTED PRODUCT</div>
+      <div id="productName" class="product-name">Loading product...</div>
+    </div>
 
+    <div class="warning-box">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+      <span>
+        <strong>This action cannot be undone.</strong>
+        Deleting the product will also remove its inventory items. Review the product carefully before continuing.
+      </span>
+    </div>
 
-<h1>
-Delete Product?
-</h1>
+    <div id="status" class="status loading" role="status" aria-live="polite">
+      <i class="fa-solid fa-spinner fa-spin"></i>
+      Checking admin authorization...
+    </div>
 
+    <button id="deleteButton" class="delete-btn" type="button" disabled>
+      <i class="fa-solid fa-trash-can"></i>
+      Delete product
+    </button>
 
-<p class="subtitle">
+    <button id="cancelButton" class="cancel-btn" type="button">
+      <i class="fa-solid fa-arrow-left"></i>
+      Cancel and return to admin
+    </button>
+  </section>
 
-Are you sure you want to delete this product?
-The product and all of its inventory will be permanently removed.
-
-</p>
-
-
-<div
-id="productName"
-class="product-name"
->
-
-Loading product...
-
-</div>
-
-
-<div class="warning">
-
-<i class="fa-solid fa-triangle-exclamation"></i>
-
-<span>
-This action cannot be undone. Make sure you really want to remove this product before continuing.
-</span>
-
-</div>
-
-
-<div
-id="status"
-class="status loading"
->
-
-<i class="fa-solid fa-spinner fa-spin"></i>
-
-Checking admin authorization...
-
-</div>
-
-
-<button
-id="deleteButton"
-class="delete-btn"
-type="button"
-disabled
->
-
-<i class="fa-solid fa-trash"></i>
-
-Delete Product
-
-</button>
-
-
-<button
-id="cancelButton"
-class="cancel-btn"
-type="button"
->
-
-<i class="fa-solid fa-arrow-left"></i>
-
-Cancel
-
-</button>
-
-
-</div>
-
-</div>
-
+  <div class="footer-note">
+    Gentle Acct Store · Admin product management
+  </div>
+</main>
 
 <script>
+"use strict";
 
-/* =========================
-ADMIN
-========================= */
+/* ADMIN SETTINGS */
 
-const ADMIN_UID =
-"UoEjCy99gbQKkGob59vGi3CunZi1";
+const ADMIN_UID = "UoEjCy99gbQKkGob59vGi3CunZi1";
 
+/* PRODUCT ID */
 
-/* =========================
-PRODUCT ID
-========================= */
+const params = new URLSearchParams(window.location.search);
+const productId = params.get("id");
 
-const params =
-new URLSearchParams(
-window.location.search
-);
-
-const productId =
-params.get("id");
-
-
-/* =========================
-VARIABLES
-========================= */
+/* STATE */
 
 let adminAuthorized = false;
-
 let productRef = null;
+let deleting = false;
 
+/* ELEMENTS */
 
-/* =========================
-ELEMENTS
-========================= */
+const productName = document.getElementById("productName");
+const statusBox = document.getElementById("status");
+const deleteButton = document.getElementById("deleteButton");
+const cancelButton = document.getElementById("cancelButton");
 
-const productName =
-document.getElementById(
-"productName"
-);
+/* STATUS */
 
-const statusBox =
-document.getElementById(
-"status"
-);
-
-const deleteButton =
-document.getElementById(
-"deleteButton"
-);
-
-const cancelButton =
-document.getElementById(
-"cancelButton"
-);
-
-
-/* =========================
-STATUS
-========================= */
-
-function setStatus(
-message,
-type
-){
-
-statusBox.className =
-"status " + type;
-
-statusBox.innerHTML =
-message;
-
+function setStatus(message, type) {
+  statusBox.className = "status " + type;
+  statusBox.innerHTML = message;
 }
 
+/* AUTHORIZATION */
 
-/* =========================
-AUTH CHECK
-========================= */
+firebaseAuth.onAuthStateChanged(async function(user) {
+  adminAuthorized = false;
+  deleteButton.disabled = true;
 
-firebaseAuth.onAuthStateChanged(
-async function(user){
+  if (!user) {
+    setStatus(
+      '<i class="fa-solid fa-circle-exclamation"></i> Please sign in as the admin.',
+      "error"
+    );
+    return;
+  }
 
-if(!user){
+  if (user.uid !== ADMIN_UID) {
+    setStatus(
+      '<i class="fa-solid fa-shield-halved"></i> You are not authorized to delete products.',
+      "error"
+    );
+    return;
+  }
 
-setStatus(
-'<i class="fa-solid fa-circle-exclamation"></i> Please log in as admin first.',
-"error"
-);
+  if (!user.emailVerified) {
+    setStatus(
+      '<i class="fa-solid fa-envelope"></i> Verify the admin email before continuing.',
+      "error"
+    );
+    return;
+  }
 
-deleteButton.disabled = true;
+  adminAuthorized = true;
 
-return;
+  setStatus(
+    '<i class="fa-solid fa-circle-check"></i> Admin authorization confirmed.',
+    "success"
+  );
 
+  await loadProduct();
+});
+
+/* LOAD PRODUCT */
+
+async function loadProduct() {
+  if (!adminAuthorized) return;
+
+  if (!productId) {
+    productName.textContent = "No product selected";
+
+    setStatus(
+      '<i class="fa-solid fa-circle-exclamation"></i> The product ID is missing from the URL.',
+      "error"
+    );
+    return;
+  }
+
+  try {
+    if (!window.firebaseDB) {
+      throw new Error("Firestore is not available.");
+    }
+
+    productRef = firebaseDB.collection("products").doc(productId);
+
+    const snapshot = await productRef.get();
+
+    if (!snapshot.exists) {
+      productName.textContent = "Product not found";
+
+      setStatus(
+        '<i class="fa-solid fa-circle-exclamation"></i> This product no longer exists.',
+        "error"
+      );
+      return;
+    }
+
+    productName.textContent = snapshot.data().name || "Unnamed product";
+
+    setStatus(
+      '<i class="fa-solid fa-circle-check"></i> Product loaded. You can continue if you are sure.',
+      "success"
+    );
+
+    deleteButton.disabled = false;
+
+  } catch (error) {
+    console.error("Load product error:", error);
+
+    productName.textContent = "Unable to load product";
+
+    setStatus(
+      '<i class="fa-solid fa-circle-exclamation"></i> ' +
+      escapeHTML(error.message || "Unable to load product."),
+      "error"
+    );
+  }
 }
 
+/* DELETE PRODUCT AND INVENTORY */
 
-if(
-user.uid !== ADMIN_UID
-){
+async function performDelete() {
+  if (deleting) return;
 
-setStatus(
-'<i class="fa-solid fa-shield-halved"></i> You are not authorized to delete this product.',
-"error"
-);
+  if (!adminAuthorized || !productRef) {
+    setStatus(
+      '<i class="fa-solid fa-shield-halved"></i> Admin authorization or product information is missing.',
+      "error"
+    );
+    return;
+  }
 
-deleteButton.disabled = true;
+  const user = firebaseAuth.currentUser;
 
-return;
+  if (
+    !user ||
+    user.uid !== ADMIN_UID ||
+    !user.emailVerified
+  ) {
+    adminAuthorized = false;
 
+    setStatus(
+      '<i class="fa-solid fa-shield-halved"></i> Admin authorization is no longer valid. Please sign in again.',
+      "error"
+    );
+    deleteButton.disabled = true;
+    return;
+  }
+
+  const confirmed = window.confirm(
+    "Are you sure you want to permanently delete this product and all its inventory?"
+  );
+
+  if (!confirmed) return;
+
+  deleting = true;
+  deleteButton.disabled = true;
+  cancelButton.disabled = true;
+
+  deleteButton.innerHTML =
+    '<i class="fa-solid fa-spinner fa-spin"></i> Deleting...';
+
+  try {
+    /* REMOVE INVENTORY IN BATCHES */
+
+    setStatus(
+      '<i class="fa-solid fa-spinner fa-spin"></i> Removing inventory...',
+      "loading"
+    );
+
+    while (true) {
+      const inventorySnapshot = await productRef
+        .collection("inventory")
+        .limit(400)
+        .get();
+
+      if (inventorySnapshot.empty) break;
+
+      const batch = firebaseDB.batch();
+
+      inventorySnapshot.docs.forEach(function(doc) {
+        batch.delete(doc.ref);
+      });
+
+      await batch.commit();
+    }
+
+    /* REMOVE PRODUCT */
+
+    setStatus(
+      '<i class="fa-solid fa-spinner fa-spin"></i> Removing product...',
+      "loading"
+    );
+
+    await productRef.delete();
+
+    productName.textContent = "Product deleted";
+
+    setStatus(
+      '<i class="fa-solid fa-circle-check"></i> Product and inventory deleted successfully.',
+      "success"
+    );
+
+    deleteButton.innerHTML =
+      '<i class="fa-solid fa-check"></i> Deleted';
+
+    setTimeout(function() {
+      window.location.replace("admin.html");
+    }, 1000);
+
+  } catch (error) {
+    console.error("Delete product error:", error);
+
+    deleting = false;
+    deleteButton.disabled = false;
+    cancelButton.disabled = false;
+
+    deleteButton.innerHTML =
+      '<i class="fa-solid fa-trash-can"></i> Delete product';
+
+    setStatus(
+      '<i class="fa-solid fa-circle-exclamation"></i> Deletion failed: ' +
+      escapeHTML(error.message || error.code || "Please try again."),
+      "error"
+    );
+  }
 }
 
+/* BUTTONS */
 
-if(
-!user.emailVerified
-){
+deleteButton.addEventListener("click", performDelete);
 
-setStatus(
-'<i class="fa-solid fa-envelope"></i> Please verify the admin email before continuing.',
-"error"
-);
+cancelButton.addEventListener("click", function() {
+  window.location.replace("admin.html");
+});
 
-deleteButton.disabled = true;
+/* HTML SAFETY */
 
-return;
-
+function escapeHTML(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
-
-
-adminAuthorized = true;
-
-
-setStatus(
-'<i class="fa-solid fa-circle-check"></i> Admin authorization confirmed.',
-"success"
-);
-
-
-await loadProduct();
-
-}
-);
-
-
-/* =========================
-LOAD PRODUCT
-========================= */
-
-async function loadProduct(){
-
-if(!productId){
-
-productName.textContent =
-"No product selected.";
-
-setStatus(
-'<i class="fa-solid fa-circle-exclamation"></i> Product ID is missing.',
-"error"
-);
-
-deleteButton.disabled = true;
-
-return;
-
-}
-
-
-try{
-
-productRef =
-firebaseDB
-.collection("products")
-.doc(productId);
-
-
-const snapshot =
-await productRef.get();
-
-
-if(!snapshot.exists){
-
-productName.textContent =
-"Product not found";
-
-setStatus(
-'<i class="fa-solid fa-circle-exclamation"></i> This product no longer exists.',
-"error"
-);
-
-deleteButton.disabled = true;
-
-return;
-
-}
-
-
-const data =
-snapshot.data();
-
-
-productName.textContent =
-data.name ||
-"Unnamed Product";
-
-
-deleteButton.disabled = false;
-
-
-}catch(error){
-
-console.error(
-"LOAD PRODUCT ERROR:",
-error
-);
-
-productName.textContent =
-"Unable to load product";
-
-setStatus(
-'<i class="fa-solid fa-circle-exclamation"></i> Could not load product: ' +
-escapeHTML(
-error.message
-),
-"error"
-);
-
-deleteButton.disabled = true;
-
-}
-
-}
-
-
-/* =========================
-DELETE PRODUCT
-========================= */
-
-async function performDelete(){
-
-if(!adminAuthorized){
-
-setStatus(
-'<i class="fa-solid fa-shield-halved"></i> You are not authorized to delete this product.',
-"error"
-);
-
-return;
-
-}
-
-
-if(!productRef){
-
-setStatus(
-'<i class="fa-solid fa-circle-exclamation"></i> Product is not loaded yet.',
-"error"
-);
-
-return;
-
-}
-
-
-deleteButton.disabled = true;
-
-cancelButton.disabled = true;
-
-deleteButton.innerHTML = `
-
-<i class="fa-solid fa-spinner fa-spin"></i>
-
-Deleting...
-
-`;
-
-
-try{
-
-
-/* =========================
-REMOVE INVENTORY
-========================= */
-
-setStatus(
-'<i class="fa-solid fa-spinner fa-spin"></i> Removing inventory...',
-"loading"
-);
-
-
-const inventorySnapshot =
-await productRef
-.collection("inventory")
-.get();
-
-
-const inventoryDocs =
-inventorySnapshot.docs;
-
-
-for(
-let i = 0;
-i < inventoryDocs.length;
-i += 400
-){
-
-const batch =
-firebaseDB.batch();
-
-
-const chunk =
-inventoryDocs.slice(
-i,
-i + 400
-);
-
-
-chunk.forEach(
-function(doc){
-
-batch.delete(
-doc.ref
-);
-
-}
-);
-
-
-await batch.commit();
-
-}
-
-
-/* =========================
-REMOVE PRODUCT
-========================= */
-
-setStatus(
-'<i class="fa-solid fa-spinner fa-spin"></i> Removing product...',
-"loading"
-);
-
-
-await productRef.delete();
-
-
-/* =========================
-SUCCESS
-========================= */
-
-productName.textContent =
-"Product Deleted";
-
-
-setStatus(
-'<i class="fa-solid fa-circle-check"></i> Product deleted successfully.',
-"success"
-);
-
-
-deleteButton.innerHTML = `
-
-<i class="fa-solid fa-check"></i>
-
-Deleted
-
-`;
-
-
-/* =========================
-REDIRECT
-========================= */
-
-setTimeout(
-function(){
-
-window.location.replace(
-"admin.html"
-);
-
-},
-1000
-);
-
-
-}catch(error){
-
-console.error(
-"DELETE ERROR:",
-error
-);
-
-
-deleteButton.disabled = false;
-
-cancelButton.disabled = false;
-
-deleteButton.innerHTML = `
-
-<i class="fa-solid fa-trash"></i>
-
-Delete Product
-
-`;
-
-
-setStatus(
-'<i class="fa-solid fa-circle-exclamation"></i> Delete failed.<br><br>' +
-escapeHTML(
-error.code ||
-"Unknown error"
-) +
-"<br>" +
-escapeHTML(
-error.message ||
-"Please try again."
-),
-"error"
-);
-
-}
-
-}
-
-
-/* =========================
-DELETE BUTTON
-========================= */
-
-deleteButton.addEventListener(
-"click",
-performDelete
-);
-
-
-/* =========================
-CANCEL
-========================= */
-
-cancelButton.addEventListener(
-"click",
-function(){
-
-window.location.replace(
-"admin.html"
-);
-
-}
-);
-
-
-/* =========================
-ESCAPE HTML
-========================= */
-
-function escapeHTML(
-value
-){
-
-return String(
-value || ""
-)
-.replace(
-/&/g,
-"&amp;"
-)
-.replace(
-/</g,
-"&lt;"
-)
-.replace(
-/>/g,
-"&gt;"
-)
-.replace(
-/"/g,
-"&quot;"
-)
-.replace(
-/'/g,
-"&#039;"
-);
-
-}
-
 </script>
 
-
 </body>
-
 </html>
