@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f3f7fc">
 <title>Gentle Acct Store — Digital Marketplace</title>
-<meta name="description" content="Get your affordable social media accounts here at gentle acct store.">
+<meta name="description" content="Discover digital products, social accounts, virtual numbers and eSIM services at Gentle Acct Store.">
 <link rel="icon" href="8B913797-25F1-4233-B33B-CE371E2B66DF.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,923 +14,403 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <script>
-(function () {
-  try {
-    if (localStorage.getItem("gentle-acct-store-theme") === "dark") {
-      document.documentElement.classList.add("dark-mode");
-    }
-  } catch (e) {}
+(function(){
+ try{
+  if(localStorage.getItem("gentle-acct-store-theme")==="dark"){
+   document.documentElement.classList.add("dark-mode");
+  }
+ }catch(e){}
 })();
 </script>
 
 <style>
-:root {
-  color-scheme: light;
-  --blue:#0786cf;
-  --blue2:#3157e8;
-  --ink:#111827;
-  --muted:#4d5b70;
-  --line:rgba(91,132,183,.09);
-  --page:#f3f7fc;
-  --surface:#ffffff;
-  --border:#dce4ef;
-  --copy:#657187;
-  --navcopy:#45536a;
+:root{
+ color-scheme:light;
+ --blue:#0786cf;
+ --blue2:#3157e8;
+ --ink:#111827;
+ --muted:#4d5b70;
+ --line:rgba(91,132,183,.09);
+ --page:#f3f7fc;
+ --surface:#fff;
+ --border:#dce4ef;
+ --copy:#657187;
+ --navcopy:#45536a;
 }
-
-html.dark-mode {
-  color-scheme: dark;
-  --ink:#edf3ff;
-  --muted:#b5c0d2;
-  --line:rgba(145,171,210,.055);
-  --page:#111827;
-  --surface:#1b2638;
-  --border:#35445a;
-  --copy:#b5c0d2;
-  --navcopy:#d9e5f7;
+html.dark-mode{
+ color-scheme:dark;
+ --ink:#edf3ff;
+ --muted:#b5c0d2;
+ --line:rgba(145,171,210,.055);
+ --page:#111827;
+ --surface:#1b2638;
+ --border:#35445a;
+ --copy:#b5c0d2;
+ --navcopy:#d9e5f7;
 }
-
-* { box-sizing:border-box; }
-
-html {
-  scroll-behavior:smooth;
-  scroll-padding-top:80px;
-  background:var(--page);
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:75px;background:var(--page)}
+body{
+ margin:0;font-family:"DM Sans",Arial,sans-serif;color:var(--ink);
+ background:
+  linear-gradient(var(--line) 1px,transparent 1px),
+  linear-gradient(90deg,var(--line) 1px,transparent 1px),
+  radial-gradient(ellipse at 50% 32%,#e5f0ff 0%,#f2f7fd 52%,#f8f9fc 100%);
+ background-size:56px 56px,56px 56px,100% 100%;
+ background-attachment:fixed;overflow-x:hidden;
+ transition:background-color .2s,color .2s;
+ -webkit-font-smoothing:antialiased;
 }
-
-body {
-  margin:0;
-  font-family:"DM Sans",Arial,sans-serif;
-  color:var(--ink);
-  background:
-    linear-gradient(var(--line) 1px,transparent 1px),
-    linear-gradient(90deg,var(--line) 1px,transparent 1px),
-    radial-gradient(ellipse at 50% 32%,#e5f0ff 0%,#f2f7fd 52%,#f8f9fc 100%);
-  background-size:56px 56px,56px 56px,100% 100%;
-  background-attachment:fixed;
-  overflow-x:hidden;
-  transition:background-color .2s,color .2s;
+html.dark-mode body{
+ background:
+  linear-gradient(var(--line) 1px,transparent 1px),
+  linear-gradient(90deg,var(--line) 1px,transparent 1px),
+  radial-gradient(ellipse at 50% 18%,#1d3656 0%,#111827 72%);
+ background-size:56px 56px,56px 56px,100% 100%;
+ background-attachment:fixed;
 }
-
-html.dark-mode body {
-  background:
-    linear-gradient(var(--line) 1px,transparent 1px),
-    linear-gradient(90deg,var(--line) 1px,transparent 1px),
-    radial-gradient(ellipse at 50% 18%,#1d3656 0%,#111827 72%);
-  background-size:56px 56px,56px 56px,100% 100%;
-  background-attachment:fixed;
-}
-
-a { color:inherit; text-decoration:none; }
-button,input { font:inherit; }
-button { cursor:pointer; }
-
-.container {
-  width:100%;
-  max-width:1100px;
-  margin:auto;
-  padding-left:22px;
-  padding-right:22px;
-}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit}
+button{cursor:pointer}
+.container{width:100%;max-width:1000px;margin:auto;padding-left:20px;padding-right:20px}
 
 /* HEADER */
-.header {
-  position:relative;
-  z-index:20;
-  background:rgba(244,248,253,.32);
-  border-bottom:1px solid rgba(255,255,255,.3);
+.header{
+ position:relative;z-index:20;background:rgba(244,248,253,.55);
+ border-bottom:1px solid rgba(255,255,255,.4);
+ backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
 }
-
-html.dark-mode .header {
-  background:rgba(17,24,39,.88);
-  border-color:var(--border);
+html.dark-mode .header{background:rgba(17,24,39,.88);border-color:var(--border)}
+.nav{min-height:78px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand img{width:42px;height:42px;object-fit:contain;flex-shrink:0}
+.brand-fallback{
+ display:none;align-items:center;justify-content:center;width:42px;height:42px;
+ border-radius:12px;background:var(--blue);color:#fff;
 }
-
-.nav {
-  min-height:100px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:14px;
+.brand-name{font-size:clamp(17px,4.5vw,25px);font-weight:800;letter-spacing:-.9px;white-space:nowrap}
+.brand-name span{
+ background:linear-gradient(100deg,#087bc5,#3157e8);
+ -webkit-background-clip:text;background-clip:text;color:transparent;
 }
-
-.brand {
-  display:flex;
-  align-items:center;
-  gap:12px;
-  min-width:0;
+.nav-right{display:flex;align-items:center;gap:8px}
+.nav-icon{
+ display:flex;align-items:center;justify-content:center;width:43px;height:43px;
+ background:rgba(255,255,255,.87);border:1px solid #dce4ef;
+ border-radius:13px;color:#27364c;font-size:17px;box-shadow:0 1px 2px #12213a08;
 }
-
-.brand img {
-  width:48px;
-  height:48px;
-  object-fit:contain;
-  flex-shrink:0;
+html.dark-mode .nav-icon{background:#1b2638;color:#edf3ff;border-color:#35445a}
+.menu-button{width:47px;height:47px;border-radius:15px;font-size:21px}
+.nav-icon:hover{border-color:#9fc8e8;color:var(--blue)}
+.desktop-links{display:none}
+.desktop-links a{font-size:12px;color:var(--navcopy);font-weight:700}
+.desktop-links a:hover{color:var(--blue)}
+.mobile-menu{
+ display:none;padding:12px 20px 16px;background:rgba(255,255,255,.94);
+ border-top:1px solid #e5ebf3;
 }
-
-.brand-fallback {
-  display:none;
-  align-items:center;
-  justify-content:center;
-  width:48px;
-  height:48px;
-  border-radius:10px;
-  background:var(--blue);
-  color:#fff;
+html.dark-mode .mobile-menu{background:#1b2638;border-color:#35445a}
+.mobile-menu.open{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.mobile-menu a{
+ padding:11px;border:1px solid #e4eaf2;border-radius:10px;
+ background:#fff;font-size:12px;font-weight:700;
 }
+html.dark-mode .mobile-menu a{background:#111827;color:#edf3ff;border-color:#35445a}
 
-.brand-name {
-  font-size:clamp(21px,5vw,30px);
-  font-weight:800;
-  letter-spacing:-1.2px;
-  white-space:nowrap;
+/* ORIGINAL HERO */
+.hero{padding:30px 0;position:relative;text-align:center}
+.hero-inner{max-width:1000px;margin:auto;text-align:center}
+.trust-pill{
+ display:inline-flex;align-items:center;justify-content:center;gap:9px;
+ min-height:36px;padding:8px 13px;border:1px solid #bfe4fb;
+ border-radius:40px;background:rgba(244,250,255,.83);color:#215b82;
+ font-size:clamp(10px,2.8vw,13px);font-weight:600;
+ box-shadow:0 2px 4px rgba(16,89,146,.025);margin:0 auto 28px;
 }
-
-.brand-name span {
-  background:linear-gradient(100deg,#087bc5,#3157e8);
-  -webkit-background-clip:text;
-  background-clip:text;
-  color:transparent;
+html.dark-mode .trust-pill,html.dark-mode .trust-badge{
+ background:#1b2638;border-color:#35445a;color:#d9e5f7;
 }
-
-.nav-right {
-  display:flex;
-  align-items:center;
-  gap:10px;
+.trust-dot{width:8px;height:8px;flex-shrink:0;border-radius:50%;background:#138acb}
+.hero h1{
+ margin:0 auto 24px;max-width:760px;
+ font-size:clamp(30px,7.1vw,58px);line-height:1.12;
+ letter-spacing:-1.5px;font-weight:800;text-align:center;
 }
-
-.nav-icon {
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  width:54px;
-  height:54px;
-  background:rgba(255,255,255,.87);
-  border:1px solid #dce4ef;
-  border-radius:17px;
-  color:#27364c;
-  font-size:21px;
-  box-shadow:0 1px 2px #12213a08;
+.hero h1 span{
+ display:block;
+ background:linear-gradient(95deg,#087fc9 8%,#176fe0 53%,#4939dd 100%);
+ -webkit-background-clip:text;background-clip:text;color:transparent;
 }
-
-html.dark-mode .nav-icon {
-  background:#1b2638;
-  color:#edf3ff;
-  border-color:#35445a;
+.hero h1 .typing-text{
+ display:inline;border-right:3px solid #176fe0;padding-right:4px;
+ animation:cursorBlink .75s step-end infinite;
 }
-
-.menu-button {
-  width:64px;
-  height:64px;
-  border-radius:21px;
-  font-size:27px;
+@keyframes cursorBlink{50%{border-color:transparent}}
+.hero-description{
+ max-width:720px;margin:0 auto 23px;color:#4c5b70;
+ font-size:clamp(13px,3.3vw,18px);line-height:1.75;
+ font-weight:400;text-align:center;
 }
+html.dark-mode .hero-description{color:#b5c0d2}
 
-.nav-icon:hover {
-  border-color:#9fc8e8;
-  color:var(--blue);
+/* ORIGINAL BUTTONS */
+.hero-actions{
+ display:flex;flex-direction:column;align-items:stretch;
+ gap:12px;width:100%;margin:0 auto;
 }
-
-.desktop-links { display:none; }
-
-.desktop-links a {
-  font-size:12px;
-  color:var(--navcopy);
-  font-weight:700;
+.hero-button{
+ width:100%;min-height:55px;display:flex;align-items:center;
+ justify-content:center;gap:10px;padding:13px 18px;
+ border-radius:15px;font-size:15px;font-weight:700;
+ transition:transform .2s,box-shadow .2s;
 }
-
-.desktop-links a:hover { color:var(--blue); }
-
-.mobile-menu {
-  display:none;
-  padding:12px 20px 18px;
-  background:rgba(255,255,255,.94);
-  border-top:1px solid #e5ebf3;
+.hero-button:hover{transform:translateY(-2px)}
+.hero-button.primary{
+ color:#fff;background:linear-gradient(110deg,#0787cf,#168ed0);
+ border:1px solid #168bc9;
+ box-shadow:0 0 10px #0787cf70,0 0 20px #0787cf35,inset 0 1px 0 #ffffff25;
+ animation:blueGlow 1.8s ease-in-out infinite alternate;
 }
-
-html.dark-mode .mobile-menu {
-  background:#1b2638;
-  border-color:#35445a;
+@keyframes blueGlow{
+ from{box-shadow:0 0 7px #0787cf65,0 0 14px #0787cf35,inset 0 1px 0 #ffffff40}
+ to{box-shadow:0 0 13px #0787cf9e,0 0 26px #0787cf65,inset 0 1px 0 #ffffff60}
 }
-
-.mobile-menu.open {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:9px;
+.hero-button.secondary{
+ color:#202b3e;background:rgba(255,255,255,.88);
+ border:1px solid #dbe3ed;box-shadow:0 1px 2px #1a2c450b;
 }
-
-.mobile-menu a {
-  padding:12px;
-  border:1px solid #e4eaf2;
-  border-radius:10px;
-  background:#fff;
-  font-size:12px;
-  font-weight:700;
+html.dark-mode .hero-button.secondary{background:#1b2638;color:#fff;border-color:#35445a}
+.hero-button.secondary:hover{border-color:#b8d8ef}
+.hero-button i{font-size:.92em}
+.trust-badges{
+ display:flex;align-items:center;justify-content:center;flex-wrap:wrap;
+ gap:9px;margin:30px auto 0;max-width:680px;
 }
-
-html.dark-mode .mobile-menu a {
-  background:#111827;
-  color:#edf3ff;
-  border-color:#35445a;
+.trust-badge{
+ display:inline-flex;align-items:center;justify-content:center;gap:8px;
+ min-height:36px;padding:8px 12px;border:1px solid #dce4ef;
+ background:rgba(255,255,255,.72);border-radius:40px;color:#435167;
+ font-size:11px;font-weight:500;box-shadow:0 1px 2px #172d4809;white-space:nowrap;
 }
+.trust-badge i{color:#2586c7;font-size:13px}
 
-/* HERO */
-.hero {
-  min-height:auto;
-  padding:35px 0 45px;
-  text-align:center;
-  position:relative;
+/* STATS */
+.stats-section{padding:15px 0 40px}
+.stats-grid{
+ display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+ background:rgba(255,255,255,.45);border:1px solid #e4eaf2;
+ border-radius:16px;padding:17px 10px;text-align:center;
 }
-
-.hero-inner {
-  max-width:850px;
-  margin:auto;
-}
-
-.trust-pill {
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:11px;
-  min-height:45px;
-  padding:9px 18px;
-  border:1px solid #bfe4fb;
-  border-radius:40px;
-  background:rgba(244,250,255,.83);
-  color:#215b82;
-  font-size:clamp(11px,3.15vw,16px);
-  font-weight:600;
-  box-shadow:0 2px 4px rgba(16,89,146,.025);
-  margin-bottom:48px;
-}
-
-html.dark-mode .trust-pill,
-html.dark-mode .trust-badge {
-  background:#1b2638;
-  border-color:#35445a;
-  color:#d9e5f7;
-}
-
-.trust-dot {
-  width:10px;
-  height:10px;
-  flex-shrink:0;
-  border-radius:50%;
-  background:#138acb;
-}
-
-.hero h1 {
-  margin:0 auto 42px;
-  max-width:820px;
-  font-size:clamp(35px,8.7vw,68px);
-  line-height:1.12;
-  letter-spacing:-1.8px;
-  font-weight:800;
-}
-
-.hero h1 span {
-  display:block;
-  background:linear-gradient(95deg,#087fc9 8%,#176fe0 53%,#4939dd 100%);
-  -webkit-background-clip:text;
-  background-clip:text;
-  color:transparent;
-}
-
-.hero-description {
-  max-width:750px;
-  margin:0 auto 35px;
-  color:#4c5b70;
-  font-size:clamp(15px,4.1vw,24px);
-  line-height:1.7;
-  font-weight:400;
-}
-
-html.dark-mode .hero-description { color:#b5c0d2; }
-
-.hero-actions {
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:22px;
-}
-
-.hero-button {
-  width:min(100%,385px);
-  min-height:72px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:12px;
-  padding:17px 22px;
-  border-radius:21px;
-  font-size:clamp(15px,4vw,23px);
-  font-weight:700;
-  transition:transform .2s,box-shadow .2s;
-}
-
-.hero-button:hover { transform:translateY(-2px); }
-
-.hero-button.primary {
-  color:#fff;
-  background:linear-gradient(110deg,#0787cf,#078bd0);
-  border:1px solid #168bc9;
-  box-shadow:0 3px 5px rgba(8,102,169,.17),inset 0 1px 0 #ffffff25;
-}
-
-.hero-button.secondary {
-  color:#202b3e;
-  background:rgba(255,255,255,.82);
-  border:1px solid #dbe3ed;
-  box-shadow:0 1px 2px #1a2c450b;
-}
-
-html.dark-mode .hero-button.secondary {
-  background:#1b2638;
-  color:#fff;
-  border-color:#35445a;
-}
-
-.hero-button.secondary:hover { border-color:#b8d8ef; }
-.hero-button i { font-size:.92em; }
-
-.trust-badges {
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-wrap:wrap;
-  gap:13px;
-  margin:55px auto 0;
-  max-width:680px;
-}
-
-.trust-badge {
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  min-height:45px;
-  padding:10px 17px;
-  border:1px solid #dce4ef;
-  background:rgba(255,255,255,.72);
-  border-radius:40px;
-  color:#435167;
-  font-size:clamp(11px,3.4vw,16px);
-  font-weight:500;
-  box-shadow:0 1px 2px #172d4809;
-  white-space:nowrap;
-}
-
-.trust-badge i {
-  color:#2586c7;
-  font-size:16px;
-}
-
-/* STATISTICS */
-.stats-section { padding:25px 0 60px; }
-
-.stats-grid {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-  background:rgba(255,255,255,.45);
-  border:1px solid #e4eaf2;
-  border-radius:20px;
-  padding:22px 12px;
-  text-align:center;
-}
-
-html.dark-mode .stats-grid {
-  background:rgba(27,38,56,.88);
-  border-color:#35445a;
-}
-
-.stat-number {
-  font-size:clamp(20px,4vw,31px);
-  font-weight:800;
-  letter-spacing:-1px;
-}
-
-.stat-label {
-  font-size:11px;
-  color:#748096;
-  margin-top:5px;
-}
-
-html.dark-mode .stat-label { color:#b5c0d2; }
+html.dark-mode .stats-grid{background:rgba(27,38,56,.88);border-color:#35445a}
+.stat-number{font-size:clamp(18px,3.8vw,27px);font-weight:800;letter-spacing:-.7px}
+.stat-label{font-size:10px;color:#748096;margin-top:4px}
+html.dark-mode .stat-label{color:#b5c0d2}
 
 /* SECTIONS */
-.section { padding:68px 0; }
+.section{padding:48px 0}
+.section-heading{text-align:center;max-width:650px;margin:0 auto 27px}
+.eyebrow{color:#087bc5;font-size:10px;font-weight:800;letter-spacing:1.6px;margin-bottom:10px;text-transform:uppercase}
+.section-heading h2{font-size:clamp(24px,4.7vw,36px);letter-spacing:-.9px;line-height:1.2;margin:0 0 11px}
+.section-heading p{font-size:13px;line-height:1.8;color:#657187}
+html.dark-mode .section-heading p{color:#b5c0d2}
+.section-white{background:rgba(255,255,255,.64);border-top:1px solid #e7edf5;border-bottom:1px solid #e7edf5}
+html.dark-mode .section-white{background:rgba(17,24,39,.88);border-color:#35445a}
 
-.section-heading {
-  text-align:center;
-  max-width:650px;
-  margin:0 auto 35px;
+/* FEATURE CARDS */
+.features-grid{display:grid;grid-template-columns:1fr;gap:12px}
+.feature-card{
+ padding:20px;background:rgba(255,255,255,.92);border:1px solid #e3eaf3;
+ border-radius:15px;box-shadow:0 4px 16px rgba(25,53,90,.025);
 }
-
-.eyebrow {
-  color:#087bc5;
-  font-size:11px;
-  font-weight:800;
-  letter-spacing:1.8px;
-  margin-bottom:12px;
-  text-transform:uppercase;
+html.dark-mode .feature-card,html.dark-mode .step-card,html.dark-mode .faq-item{
+ background:#1b2638;border-color:#35445a;
 }
-
-.section-heading h2 {
-  font-size:clamp(27px,5vw,42px);
-  letter-spacing:-1.2px;
-  line-height:1.2;
-  margin:0 0 13px;
+.feature-icon{
+ display:flex;align-items:center;justify-content:center;width:41px;height:41px;
+ background:#e9f5ff;color:#087bc5;border-radius:12px;font-size:16px;margin-bottom:14px;
 }
+.feature-card h3{font-size:15px;margin:0 0 8px}
+.feature-card p{font-size:12px;line-height:1.8;color:#6a768a;margin:0}
+html.dark-mode .feature-card h3,html.dark-mode .step-card h3{color:#edf3ff}
+html.dark-mode .feature-card p,html.dark-mode .step-card p{color:#b5c0d2}
 
-.section-heading p {
-  font-size:14px;
-  line-height:1.8;
-  color:#657187;
+/* SEARCH */
+.search-box{
+ display:flex;align-items:center;gap:10px;max-width:650px;margin:0 auto 17px;
+ background:#fff;border:1px solid #dce5f0;border-radius:12px;padding:7px 8px 7px 13px;
+ box-shadow:0 4px 15px #1d3e6808;
 }
-
-html.dark-mode .section-heading p { color:#b5c0d2; }
-
-.section-white {
-  background:rgba(255,255,255,.64);
-  border-top:1px solid #e7edf5;
-  border-bottom:1px solid #e7edf5;
+html.dark-mode .search-box{background:#1b2638;border-color:#35445a}
+.search-box>i{color:#8794a8}
+.search-box input{min-width:0;flex:1;border:0;outline:0;background:transparent;color:var(--ink);font-size:12px}
+.search-box button{border:0;border-radius:8px;background:#0786cf;color:#fff;padding:10px 13px;font-weight:700;font-size:11px}
+.filters{display:flex;gap:8px;overflow-x:auto;padding:3px 0 14px;margin-bottom:12px}
+.filter-btn{
+ flex-shrink:0;padding:9px 12px;border:1px solid #dfe6f0;border-radius:9px;
+ background:#fff;color:#58667a;font-size:10px;font-weight:700;
 }
+html.dark-mode .filter-btn:not(.active){background:#1b2638;color:#d9e5f7;border-color:#35445a}
+.filter-btn.active{background:#087bc5;border-color:#087bc5;color:#fff}
 
-html.dark-mode .section-white {
-  background:rgba(17,24,39,.88);
-  border-color:#35445a;
+/* PRODUCT CARDS */
+.product-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.product-card{
+ overflow:hidden;display:flex;flex-direction:column;min-width:0;background:#fff;
+ border:1px solid #e1e8f1;border-radius:13px;box-shadow:0 4px 16px #233c6006;
+ transition:transform .25s,border-color .25s,box-shadow .25s;
 }
-
-.features-grid {
-  display:grid;
-  grid-template-columns:1fr;
-  gap:16px;
+.product-card:hover{transform:translateY(-3px);border-color:#b8d7ef;box-shadow:0 9px 22px #233c6010}
+html.dark-mode .product-card{background:#1b2638;border-color:#35445a}
+.product-art{height:100px;display:flex;align-items:center;justify-content:center;font-size:29px}
+.art-blue{background:#e7f1ff;color:#087bc5}
+.art-pink{background:#fff0f6;color:#d53c80}
+.art-purple{background:#f0ebff;color:#7751d9}
+.art-green{background:#e5f8ef;color:#139767}
+.art-orange{background:#fff2e4;color:#bd7625}
+.art-cyan{background:#e4f8fd;color:#138ca8}
+.product-content{padding:12px;display:flex;flex-direction:column;flex:1}
+.product-category{font-size:9px;color:#087bc5;font-weight:800;margin-bottom:6px}
+.product-content h3{font-size:12px;margin:0 0 7px}
+html.dark-mode .product-content h3{color:#edf3ff}
+.product-content p{font-size:10px;line-height:1.7;color:#6a7689;flex:1;margin:0 0 12px}
+html.dark-mode .product-content p{color:#b5c0d2}
+.product-link{
+ display:block;text-align:center;padding:9px 7px;background:#edf6ff;border-radius:8px;
+ color:#087bc5;font-size:10px;font-weight:800;transition:background .2s,color .2s;
 }
-
-.feature-card {
-  padding:25px;
-  background:rgba(255,255,255,.92);
-  border:1px solid #e3eaf3;
-  border-radius:17px;
-  box-shadow:0 4px 16px rgba(25,53,90,.025);
+.product-link:hover{background:#087bc5;color:#fff}
+html.dark-mode .product-link{background:#233b59;color:#a9d7ff}
+.empty-state{
+ display:none;text-align:center;padding:25px;background:#fff;border:1px dashed #d6e0ec;
+ border-radius:13px;color:#647187;font-size:13px;
 }
+html.dark-mode .empty-state{background:#1b2638;color:#b5c0d2;border-color:#35445a}
 
-html.dark-mode .feature-card,
-html.dark-mode .step-card,
-html.dark-mode .faq-item {
-  background:#1b2638;
-  border-color:#35445a;
+/* HOW IT WORKS */
+.steps-grid{display:grid;grid-template-columns:1fr;gap:12px}
+.step-card{position:relative;background:#fff;border:1px solid #e2e9f2;border-radius:13px;padding:19px}
+.step-number{font-size:11px;color:#087bc5;font-weight:800;margin-bottom:13px}
+.step-icon{
+ width:39px;height:39px;border-radius:11px;display:flex;align-items:center;
+ justify-content:center;background:#eaf5ff;color:#087bc5;font-size:15px;margin-bottom:12px;
 }
-
-.feature-icon {
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  width:46px;
-  height:46px;
-  background:#e9f5ff;
-  color:#087bc5;
-  border-radius:13px;
-  font-size:18px;
-  margin-bottom:18px;
-}
-
-.feature-card h3 { font-size:16px; margin-bottom:8px; }
-
-.feature-card p {
-  font-size:13px;
-  line-height:1.8;
-  color:#6a768a;
-}
-
-html.dark-mode .feature-card h3,
-html.dark-mode .step-card h3 { color:#edf3ff; }
-
-html.dark-mode .feature-card p,
-html.dark-mode .step-card p { color:#b5c0d2; }
-
-/* SEARCH AND PRODUCT CARDS */
-.search-box {
-  display:flex;
-  align-items:center;
-  gap:12px;
-  max-width:650px;
-  margin:0 auto 20px;
-  background:#fff;
-  border:1px solid #dce5f0;
-  border-radius:13px;
-  padding:8px 9px 8px 16px;
-  box-shadow:0 4px 15px #1d3e6808;
-}
-
-html.dark-mode .search-box {
-  background:#1b2638;
-  border-color:#35445a;
-}
-
-.search-box>i { color:#8794a8; }
-
-.search-box input {
-  min-width:0;
-  flex:1;
-  border:0;
-  outline:0;
-  background:transparent;
-  color:var(--ink);
-  font-size:13px;
-}
-
-.search-box button {
-  border:0;
-  border-radius:9px;
-  background:#0786cf;
-  color:#fff;
-  padding:12px 16px;
-  font-weight:700;
-  font-size:12px;
-}
-
-.filters {
-  display:flex;
-  gap:9px;
-  overflow-x:auto;
-  padding:3px 0 17px;
-  margin-bottom:15px;
-}
-
-.filter-btn {
-  flex-shrink:0;
-  padding:10px 15px;
-  border:1px solid #dfe6f0;
-  border-radius:10px;
-  background:#fff;
-  color:#58667a;
-  font-size:11px;
-  font-weight:700;
-}
-
-html.dark-mode .filter-btn:not(.active) {
-  background:#1b2638;
-  color:#d9e5f7;
-  border-color:#35445a;
-}
-
-.filter-btn.active {
-  background:#087bc5;
-  border-color:#087bc5;
-  color:#fff;
-}
-
-.product-grid {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:13px;
-}
-
-.product-card {
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
-  background:#fff;
-  border:1px solid #e1e8f1;
-  border-radius:15px;
-  box-shadow:0 4px 16px #233c6006;
-}
-
-html.dark-mode .product-card {
-  background:#1b2638;
-  border-color:#35445a;
-}
-
-.product-art {
-  height:120px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:33px;
-}
-
-.art-blue { background:#e7f1ff; color:#087bc5; }
-.art-pink { background:#fff0f6; color:#d53c80; }
-.art-purple { background:#f0ebff; color:#7751d9; }
-.art-green { background:#e5f8ef; color:#139767; }
-.art-orange { background:#fff2e4; color:#bd7625; }
-.art-cyan { background:#e4f8fd; color:#138ca8; }
-
-.product-content {
-  padding:15px;
-  display:flex;
-  flex-direction:column;
-  flex:1;
-}
-
-.product-category {
-  font-size:9px;
-  color:#087bc5;
-  font-weight:800;
-  margin-bottom:7px;
-}
-
-.product-content h3 { font-size:14px; margin-bottom:7px; }
-
-html.dark-mode .product-content h3 { color:#edf3ff; }
-
-.product-content p {
-  font-size:11px;
-  line-height:1.8;
-  color:#6a7689;
-  flex:1;
-  margin-bottom:13px;
-}
-
-html.dark-mode .product-content p { color:#b5c0d2; }
-
-.product-link {
-  display:block;
-  text-align:center;
-  padding:10px;
-  background:#edf6ff;
-  border-radius:8px;
-  color:#087bc5;
-  font-size:11px;
-  font-weight:800;
-}
-
-html.dark-mode .product-link {
-  background:#233b59;
-  color:#a9d7ff;
-}
-
-.product-link:hover {
-  background:#087bc5;
-  color:#fff;
-}
-
-.empty-state {
-  display:none;
-  text-align:center;
-  padding:30px;
-  background:#fff;
-  border:1px dashed #d6e0ec;
-  border-radius:14px;
-  color:#647187;
-}
-
-html.dark-mode .empty-state {
-  background:#1b2638;
-  color:#b5c0d2;
-  border-color:#35445a;
-}
-
-/* PROCESS */
-.steps-grid {
-  display:grid;
-  grid-template-columns:1fr;
-  gap:14px;
-}
-
-.step-card {
-  position:relative;
-  background:#fff;
-  border:1px solid #e2e9f2;
-  border-radius:15px;
-  padding:23px;
-}
-
-.step-number {
-  font-size:12px;
-  color:#087bc5;
-  font-weight:800;
-  margin-bottom:17px;
-}
-
-.step-icon {
-  width:43px;
-  height:43px;
-  border-radius:12px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#eaf5ff;
-  color:#087bc5;
-  font-size:17px;
-  margin-bottom:14px;
-}
-
-.step-card h3 { font-size:15px; margin-bottom:8px; }
-
-.step-card p {
-  font-size:12px;
-  line-height:1.8;
-  color:#69758a;
-}
+.step-card h3{font-size:14px;margin:0 0 7px}
+.step-card p{font-size:11px;line-height:1.8;color:#69758a;margin:0}
 
 /* FAQ */
-.faq-list {
-  max-width:750px;
-  margin:auto;
-  display:grid;
-  gap:10px;
+.faq-list{max-width:750px;margin:auto;display:grid;gap:9px}
+.faq-item{background:#fff;border:1px solid #e0e7f0;border-radius:11px;overflow:hidden}
+.faq-item summary{
+ list-style:none;cursor:pointer;padding:15px;display:flex;justify-content:space-between;
+ align-items:center;gap:15px;font-size:12px;font-weight:700;
+}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary i{color:#087bc5;transition:transform .2s}
+.faq-item[open] summary i{transform:rotate(45deg)}
+.faq-answer{padding:0 15px 15px;color:#667287;font-size:11px;line-height:1.8}
+html.dark-mode .faq-item summary{color:#edf3ff}
+html.dark-mode .faq-answer{color:#b5c0d2}
+
+/* CTA */
+.cta-section{padding:25px 0 45px}
+.cta-box{
+ padding:28px 20px;text-align:center;
+ background:linear-gradient(125deg,#e5f2ff,#f5f8ff);
+ border:1px solid #d8e7f8;border-radius:16px;
+}
+html.dark-mode .cta-box{background:linear-gradient(125deg,#1d3656,#1b2638);border-color:#354d6b}
+.cta-box h2{font-size:24px;letter-spacing:-.6px;margin:0 0 9px}
+.cta-box p{font-size:12px;line-height:1.7;color:#657187;margin:0 0 17px}
+html.dark-mode .cta-box p{color:#b5c0d2}
+.cta-button{
+ display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:12px 17px;
+ border-radius:10px;background:#0786cf;color:white;font-size:12px;font-weight:800;
 }
 
-.faq-item {
-  background:#fff;
-  border:1px solid #e0e7f0;
-  border-radius:12px;
+/* FOOTER */
+.footer{background:rgba(255,255,255,.7);border-top:1px solid #e3eaf3;padding:28px 0 18px}
+html.dark-mode .footer{background:rgba(17,24,39,.92);border-color:#35445a}
+.footer-main{display:grid;grid-template-columns:1fr 1fr;gap:23px;padding-bottom:22px}
+.footer-description{max-width:310px;font-size:10px;line-height:1.9;color:#69768b;margin-top:11px}
+html.dark-mode .footer-description,html.dark-mode .footer-links a{color:#b5c0d2}
+.footer-heading{font-size:11px;margin:0 0 12px}
+.footer-links{display:grid;gap:9px}
+.footer-links a{font-size:10px;color:#657187}
+.footer-links a:hover{color:#087bc5}
+.footer-bottom{
+ display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;
+ border-top:1px solid #e5eaf2;padding-top:15px;color:#8994a5;font-size:9px;
 }
+.footer-bottom a{color:#087bc5;font-weight:700}
 
-.faq-item summary {
-  list-style:none;
-  cursor:pointer;
-  padding:17px;
-  display:flex;
-  justify-content:space-between;
-  gap:15px;
-  font-size:13px;
-  font-weight:700;
+/* SCROLL ANIMATION */
+.reveal{
+ opacity:0;
+ transform:translateY(14px);
+ transition:opacity .55s ease,transform .55s ease;
 }
-
-.faq-item summary::-webkit-details-marker { display:none; }
-.faq-item summary i { color:#087bc5; }
-.faq-item[open] summary i { transform:rotate(45deg); }
-
-.faq-answer {
-  padding:0 17px 17px;
-  color:#667287;
-  font-size:12px;
-  line-height:1.8;
-}
-
-html.dark-mode .faq-item summary { color:#edf3ff; }
-html.dark-mode .faq-answer { color:#b5c0d2; }
-
-/* CTA AND FOOTER */
-.cta-section { padding:30px 0 65px; }
-
-.cta-box {
-  padding:35px 24px;
-  text-align:center;
-  background:linear-gradient(125deg,#e5f2ff,#f5f8ff);
-  border:1px solid #d8e7f8;
-  border-radius:19px;
-}
-
-html.dark-mode .cta-box {
-  background:linear-gradient(125deg,#1d3656,#1b2638);
-  border-color:#354d6b;
-}
-
-.cta-box h2 {
-  font-size:27px;
-  letter-spacing:-.7px;
-  margin-bottom:10px;
-}
-
-.cta-box p {
-  font-size:13px;
-  color:#657187;
-  margin-bottom:20px;
-}
-
-html.dark-mode .cta-box p { color:#b5c0d2; }
-
-.cta-button {
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:9px;
-  padding:14px 20px;
-  border-radius:11px;
-  background:#0786cf;
-  color:white;
-  font-size:13px;
-  font-weight:800;
-}
-
-.footer {
-  background:rgba(255,255,255,.7);
-  border-top:1px solid #e3eaf3;
-  padding:36px 0 20px;
-}
-
-html.dark-mode .footer {
-  background:rgba(17,24,39,.92);
-  border-color:#35445a;
-}
-
-.footer-main {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:28px;
-  padding-bottom:25px;
-}
-
-.footer-description {
-  max-width:310px;
-  font-size:11px;
-  line-height:1.9;
-  color:#69768b;
-  margin-top:13px;
-}
-
-html.dark-mode .footer-description,
-html.dark-mode .footer-links a { color:#b5c0d2; }
-
-.footer-heading { font-size:12px; margin-bottom:13px; }
-
-.footer-links {
-  display:grid;
-  gap:10px;
-}
-
-.footer-links a {
-  font-size:11px;
-  color:#657187;
-}
-
-.footer-links a:hover { color:#087bc5; }
-
-.footer-bottom {
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:space-between;
-  gap:10px;
-  border-top:1px solid #e5eaf2;
-  padding-top:17px;
-  color:#8994a5;
-  font-size:10px;
-}
-
-.footer-bottom a {
-  color:#087bc5;
-  font-weight:700;
-}
+.reveal.is-visible{opacity:1;transform:translateY(0)}
 
 /* DESKTOP */
-@media(min-width:700px) {
-  .container { padding-left:30px; padding-right:30px; }
-  .nav { min-height:100px; }
-  .desktop-links { display:flex; gap:24px; align-items:center; }
-  .menu-button { display:none; }
-  .hero { padding-top:65px; min-height:auto; }
-  .hero h1 { font-size:65px; }
-  .hero-description { font-size:20px; }
-  .hero-button {
-    min-height:64px;
-    width:300px;
-    font-size:17px;
-    border-radius:15px;
-  }
-  .hero-actions { flex-direction:row; justify-content:center; gap:12px; }
-  .trust-badges { margin-top:45px; }
-  .features-grid { grid-template-columns:repeat(3,1fr); }
-  .product-grid { grid-template-columns:repeat(4,1fr); gap:16px; }
-  .product-art { height:145px; }
-  .steps-grid { grid-template-columns:repeat(4,1fr); }
-  .footer-main { grid-template-columns:2fr 1fr 1fr; }
-  .stats-grid { max-width:900px; margin:auto; }
+@media(min-width:700px){
+ .container{padding-left:28px;padding-right:28px}
+ .nav{min-height:82px}
+ .desktop-links{display:flex;gap:21px;align-items:center}
+ .menu-button{display:none}
+ .hero{padding-top:48px;padding-bottom:36px}
+ .hero h1{font-size:58px}
+ .hero-description{font-size:17px}
+ .hero-actions{flex-direction:row;justify-content:center;gap:12px}
+ .hero-button{min-height:53px;width:245px;font-size:14px;border-radius:13px}
+ .trust-badges{margin-top:28px}
+ .features-grid{grid-template-columns:repeat(3,1fr)}
+ .product-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+ .product-art{height:125px}
+ .steps-grid{grid-template-columns:repeat(4,1fr)}
+ .footer-main{grid-template-columns:2fr 1fr 1fr}
+ .stats-grid{max-width:850px;margin:auto}
+ .section{padding:55px 0}
 }
-
-@media(max-width:699px) {
-  .hero { padding-top:35px; }
-  .hero h1 { margin-bottom:42px; }
-  .hero-description { margin-bottom:35px; }
-  .hero-button { width:min(100%,385px); }
-  .trust-badges { margin-top:55px; }
+@media(max-width:699px){
+ .hero{padding-top:27px}
+ .hero h1{margin-bottom:22px}
+ .hero-description{margin-bottom:21px}
+ .hero-actions{width:100%}
+ .hero-button{width:100%}
+ .trust-badges{margin-top:27px}
 }
-
-@media(max-width:390px) {
-  .container { padding-left:17px; padding-right:17px; }
-  .nav { min-height:82px; }
-  .brand { gap:9px; }
-  .brand img,.brand-fallback { width:40px; height:40px; }
-  .brand-name { font-size:18px; letter-spacing:-.8px; }
-  .nav-right { gap:7px; }
-  .nav-icon { width:43px; height:43px; border-radius:14px; font-size:19px; }
-  .menu-button { width:53px; height:53px; }
-  .hero { padding-top:30px; }
-  .trust-pill { padding:8px 12px; margin-bottom:37px; font-size:11px; }
-  .hero h1 { font-size:34px; letter-spacing:-1.3px; margin-bottom:32px; }
-  .hero-description { font-size:14px; line-height:1.7; margin-bottom:30px; }
-  .hero-button { min-height:61px; border-radius:16px; }
-  .hero-actions { gap:17px; }
-  .trust-badges { gap:9px; margin-top:45px; }
-  .trust-badge { padding:9px 12px; font-size:10px; }
-  .product-grid { gap:8px; }
-  .product-content { padding:10px; }
-  .product-content h3 { font-size:12px; }
-  .product-art { height:100px; }
-  .footer-main { gap:22px; }
+@media(max-width:390px){
+ .container{padding-left:15px;padding-right:15px}
+ .nav{min-height:72px}
+ .brand{gap:7px}
+ .brand img,.brand-fallback{width:35px;height:35px}
+ .brand-name{font-size:16px;letter-spacing:-.7px}
+ .nav-right{gap:6px}
+ .nav-icon{width:38px;height:38px;border-radius:12px;font-size:16px}
+ .menu-button{width:42px;height:42px}
+ .hero{padding-top:24px}
+ .trust-pill{padding:7px 10px;margin-bottom:23px;font-size:10px;max-width:100%}
+ .hero h1{font-size:30px;letter-spacing:-1.1px;margin-bottom:20px}
+ .hero-description{font-size:13px;line-height:1.7;margin-bottom:20px}
+ .hero-button{min-height:50px;border-radius:13px;font-size:14px}
+ .hero-actions{gap:10px}
+ .trust-badges{gap:7px;margin-top:23px}
+ .trust-badge{padding:8px 10px;font-size:9px}
+ .product-grid{gap:8px}
+ .product-content{padding:9px}
+ .product-content h3{font-size:11px}
+ .product-art{height:90px}
+ .footer-main{gap:18px}
 }
-
-@media(max-width:350px) {
-  .stats-grid { grid-template-columns:1fr; }
+@media(max-width:350px){
+ .stats-grid{grid-template-columns:1fr}
+ .brand-name{font-size:15px}
 }
-
-@media(prefers-reduced-motion:reduce) {
-  html { scroll-behavior:auto; }
-  *,*::before,*::after { transition:none!important; }
+@media(prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto}
+ .hero h1 .typing-text,.hero-button.primary{animation:none!important}
+ .reveal{opacity:1;transform:none;transition:none}
+ *,*::before,*::after{transition:none!important}
 }
 </style>
 </head>
@@ -943,14 +424,13 @@ html.dark-mode .footer-links a { color:#b5c0d2; }
    <span class="brand-name">Gentle<span>Acct Store</span></span>
   </a>
 
-
-<nav class="desktop-links">
-   <a href="login.html">Features</a>
-   <a href="login.html">Marketplace</a>
-   <a href="login.html">How It Works</a>
-   <a href="login.html">FAQ</a>
-</nav>
-
+  <nav class="desktop-links">
+   <a href="#features">Features</a>
+   <a href="#categories">Marketplace</a>
+   <a href="#process">How It Works</a>
+   <a href="#reviews">Reviews</a>
+   <a href="#faq">FAQ</a>
+  </nav>
 
   <div class="nav-right">
    <button class="nav-icon" id="themeToggle" type="button" aria-label="Switch to dark mode">
@@ -963,10 +443,12 @@ html.dark-mode .footer-links a { color:#b5c0d2; }
  </div>
 
  <nav class="mobile-menu" id="mobileMenu">
+  <a href="#home">Home</a>
   <a href="#features">Features</a>
   <a href="#categories">Marketplace</a>
   <a href="#process">How It Works</a>
   <a href="#about">About</a>
+  <a href="#reviews">Reviews</a>
   <a href="#faq">FAQ</a>
   <a href="login.html">Sign In</a>
   <a href="signup.html">Create Account</a>
@@ -978,15 +460,15 @@ html.dark-mode .footer-links a { color:#b5c0d2; }
  <div class="container">
   <div class="hero-inner">
    <div class="trust-pill"><span class="trust-dot"></span> Trusted by 18,000+ traders across 90+ countries</div>
-   <h1>Your Trusted Marketplace for Digital Products &amp; <span>Services.</span></h1>
+
+   <h1>Your Trusted Marketplace for Digital Products &amp; <span class="typing-text" id="typingText">Services.</span></h1>
+
    <p class="hero-description">Buy strong Instagram, Facebook, TikTok, Gmail and Outlook accounts, plus virtual numbers, USA numbers, social boosting, proxies and VPNs — all with instant delivery. Fund a wallet, then spend on numbers, logs, boosts, data and airtime — one desk.</p>
 
-   
-<div class="hero-actions">
-  <a href="signup.html" class="hero-button primary">Get started free <i class="fa-solid fa-arrow-right"></i></a>
-  <a href="login.html" class="hero-button secondary">Login <i class="fa-solid fa-right-to-bracket"></i></a>
-</div>
-
+   <div class="hero-actions">
+    <a href="signup.html" class="hero-button primary">Get started free <i class="fa-solid fa-arrow-right"></i></a>
+    <a href="login.html" class="hero-button secondary">Login <i class="fa-solid fa-right-to-bracket"></i></a>
+   </div>
 
    <div class="trust-badges">
     <span class="trust-badge"><i class="fa-solid fa-shield-halved"></i> Secure account access</span>
@@ -999,7 +481,7 @@ html.dark-mode .footer-links a { color:#b5c0d2; }
 
 <section class="stats-section">
  <div class="container">
-  <div class="stats-grid">
+  <div class="stats-grid reveal">
    <div class="stat"><div class="stat-number">19K+</div><div class="stat-label">Active traders</div></div>
    <div class="stat"><div class="stat-number">48K+</div><div class="stat-label">Escrow deals</div></div>
    <div class="stat"><div class="stat-number">99.8%</div><div class="stat-label">Delivery rate</div></div>
@@ -1009,62 +491,96 @@ html.dark-mode .footer-links a { color:#b5c0d2; }
 
 <section class="section" id="features">
  <div class="container">
-  <div class="section-heading">
+  <div class="section-heading reveal">
    <div class="eyebrow">WHY GENTLE ACCT STORE</div>
    <h2>Everything in one place</h2>
    <p>Discover a straightforward way to explore social media and manage your shopping.</p>
   </div>
 
   <div class="features-grid">
-   <article class="feature-card"><div class="feature-icon"><i class="fa-solid fa-shield-halved"></i></div><h3>Secure Account</h3><p>Sign in to your own account and access your personal dashboard.</p></article>
-   <article class="feature-card"><div class="feature-icon"><i class="fa-solid fa-layer-group"></i></div><h3>Organised Marketplace</h3><p>Explore clearly arranged categories to find digital products and services.</p></article>
-   <article class="feature-card"><div class="feature-icon"><i class="fa-solid fa-wallet"></i></div><h3>Wallet Overview</h3><p>View your available balance through your customer account when wallet features are enabled.</p></article>
-   <article class="feature-card"><div class="feature-icon"><i class="fa-solid fa-receipt"></i></div><h3>Order Management</h3><p>Keep your purchase details organised and review order information in your account.</p></article>
-   <article class="feature-card"><div class="feature-icon"><i class="fa-solid fa-mobile-screen-button"></i></div><h3>Mobile Friendly</h3><p>Browse on your phone, tablet or desktop with a responsive design.</p></article>
-   <article class="feature-card"><div class="feature-icon"><i class="fa-solid fa-headset"></i></div><h3>Customer Help</h3><p>Find help with product information, account questions and order details.</p></article>
+   <article class="feature-card reveal"><div class="feature-icon"><i class="fa-solid fa-shield-halved"></i></div><h3>Secure Account</h3><p>Sign in to your own account and access your personal dashboard.</p></article>
+   <article class="feature-card reveal"><div class="feature-icon"><i class="fa-solid fa-layer-group"></i></div><h3>Organised Marketplace</h3><p>Explore clearly arranged categories to find digital products and services.</p></article>
+   <article class="feature-card reveal"><div class="feature-icon"><i class="fa-solid fa-wallet"></i></div><h3>Wallet Overview</h3><p>View your available balance through your customer account when wallet features are enabled.</p></article>
+   <article class="feature-card reveal"><div class="feature-icon"><i class="fa-solid fa-receipt"></i></div><h3>Order Management</h3><p>Keep your purchase details organised and review order information in your account.</p></article>
+   <article class="feature-card reveal"><div class="feature-icon"><i class="fa-solid fa-mobile-screen-button"></i></div><h3>Mobile Friendly</h3><p>Browse on your phone, tablet or desktop with a responsive design.</p></article>
+   <article class="feature-card reveal"><div class="feature-icon"><i class="fa-solid fa-headset"></i></div><h3>Customer Help</h3><p>Find help with product information, account questions and order details.</p></article>
   </div>
  </div>
 </section>
 
 <section class="section section-white" id="categories">
  <div class="container">
-  <div class="section-heading">
+  <div class="section-heading reveal">
    <div class="eyebrow">THE MARKETPLACE</div>
    <h2>Explore digital services</h2>
-   <p>Search available categories and discover products that fit your needs.</p>
+   <p>Explore social accounts, virtual numbers, eSIM services and other digital products.</p>
   </div>
 
-  <form class="search-box" id="searchForm">
+  <form class="search-box reveal" id="searchForm">
    <i class="fa-solid fa-magnifying-glass"></i>
-   <input id="searchInput" type="search" placeholder="Search products and services..." aria-label="Search products">
+   <input id="searchInput" type="search" placeholder="Search accounts, numbers, eSIM..." aria-label="Search products">
    <button type="submit">Search</button>
   </form>
 
-  <div class="filters">
+  <div class="filters reveal">
    <button class="filter-btn active" data-filter="all" type="button" aria-pressed="true">All</button>
-   <button class="filter-btn" data-filter="social" type="button" aria-pressed="false">Social Media</button>
-   <button class="filter-btn" data-filter="design" type="button" aria-pressed="false">Design</button>
+   <button class="filter-btn" data-filter="social" type="button" aria-pressed="false">Accounts</button>
+   <button class="filter-btn" data-filter="numbers" type="button" aria-pressed="false">Numbers</button>
+   <button class="filter-btn" data-filter="esim" type="button" aria-pressed="false">eSIM</button>
    <button class="filter-btn" data-filter="web" type="button" aria-pressed="false">Web Services</button>
-   <button class="filter-btn" data-filter="communication" type="button" aria-pressed="false">Communication</button>
    <button class="filter-btn" data-filter="other" type="button" aria-pressed="false">Other</button>
   </div>
 
   <div class="product-grid" id="productGrid">
-   <article class="product-card" data-category="social" data-search="instagram promotion social media content"><div class="product-art art-pink"><i class="fa-brands fa-instagram"></i></div><div class="product-content"><div class="product-category">SOCIAL MEDIA</div><h3>Instagram Accounts</h3><p>Get aged high quality instagram accounts at a very afordable price</p><a href="signup.html" class="product-link">Explore options <i class="fa-solid fa-arrow-right"></i></a></div></article>
+   <article class="product-card reveal" data-category="social" data-search="instagram social media accounts">
+    <div class="product-art art-pink"><i class="fa-brands fa-instagram"></i></div>
+    <div class="product-content"><div class="product-category">SOCIAL ACCOUNTS</div><h3>Instagram Accounts</h3><p>Browse available Instagram-related listings and account options.</p><a href="signup.html" class="product-link">Explore options <i class="fa-solid fa-arrow-right"></i></a></div>
+   </article>
 
-   <article class="product-card" data-category="social" data-search="facebook promotion social media"><div class="product-art art-blue"><i class="fa-brands fa-facebook-f"></i></div><div class="product-content"><div class="product-category">SOCIAL MEDIA</div><h3>Facebook Accounts</h3><p>Buy your very affordable facebook account that creates pages and available for all country</p><a href="signup.html" class="product-link">Explore options <i class="fa-solid fa-arrow-right"></i></a></div></article>
+   <article class="product-card reveal" data-category="social" data-search="facebook social media accounts">
+    <div class="product-art art-blue"><i class="fa-brands fa-facebook-f"></i></div>
+    <div class="product-content"><div class="product-category">SOCIAL ACCOUNTS</div><h3>Facebook Accounts</h3><p>Explore available Facebook-related products and services.</p><a href="signup.html" class="product-link">Explore options <i class="fa-solid fa-arrow-right"></i></a></div>
+   </article>
 
-   <article class="product-card" data-category="social" data-search="tiktok video social media content"><div class="product-art art-purple"><i class="fa-brands fa-tiktok"></i></div><div class="product-content"><div class="product-category">SOCIAL MEDIA</div><h3>TikTok Services</h3><p>Explore content and creative services for TikTok.</p><a href="signup.html" class="product-link">Explore options <i class="fa-solid fa-arrow-right"></i></a></div></article>
+   <article class="product-card reveal" data-category="social" data-search="tiktok social media accounts">
+    <div class="product-art art-purple"><i class="fa-brands fa-tiktok"></i></div>
+    <div class="product-content"><div class="product-category">SOCIAL ACCOUNTS</div><h3>TikTok Accounts</h3><p>Browse TikTok-related listings and services.</p><a href="signup.html" class="product-link">Explore options <i class="fa-solid fa-arrow-right"></i></a></div>
+   </article>
 
-   <article class="product-card" data-category="design" data-search="graphic design flyers branding templates"><div class="product-art art-orange"><i class="fa-solid fa-palette"></i></div><div class="product-content"><div class="product-category">CREATIVE</div><h3>Design &amp; Templates</h3><p>Discover creative resources for digital projects.</p><a href="signup.html" class="product-link">Explore options <i class="fa-solid fa-arrow-right"></i></a></div></article>
+   <article class="product-card reveal" data-category="social" data-search="gmail outlook email accounts">
+    <div class="product-art art-orange"><i class="fa-solid fa-envelope"></i></div>
+    <div class="product-content"><div class="product-category">EMAIL SERVICES</div><h3>Email Services</h3><p>Explore email-related services and legitimate account solutions.</p><a href="signup.html" class="product-link">Explore options <i class="fa-solid fa-arrow-right"></i></a></div>
+   </article>
 
-   <article class="product-card" data-category="web" data-search="website domain hosting web tools"><div class="product-art art-cyan"><i class="fa-solid fa-globe"></i></div><div class="product-content"><div class="product-category">WEB SERVICES</div><h3>Website Tools</h3><p>Explore tools for websites and online projects.</p><a href="signup.html" class="product-link">Explore options <i class="fa-solid fa-arrow-right"></i></a></div></article>
+   <article class="product-card reveal" data-category="numbers" data-search="virtual phone numbers foreign numbers sms">
+    <div class="product-art art-green"><i class="fa-solid fa-phone"></i></div>
+    <div class="product-content"><div class="product-category">VIRTUAL NUMBERS</div><h3>Virtual Numbers</h3><p>Explore virtual-number options for supported communication uses.</p><a href="signup.html" class="product-link">Explore options <i class="fa-solid fa-arrow-right"></i></a></div>
+   </article>
 
-   <article class="product-card" data-category="communication" data-search="communication phone messaging virtual number"><div class="product-art art-green"><i class="fa-solid fa-comments"></i></div><div class="product-content"><div class="product-category">COMMUNICATION</div><h3>Communication Tools</h3><p>Discover communication services for eligible personal and business use.</p><a href="signup.html" class="product-link">Explore options <i class="fa-solid fa-arrow-right"></i></a></div></article>
+   <article class="product-card reveal" data-category="numbers" data-search="USA UK foreign international phone numbers">
+    <div class="product-art art-cyan"><i class="fa-solid fa-earth-americas"></i></div>
+    <div class="product-content"><div class="product-category">INTERNATIONAL</div><h3>Foreign Numbers</h3><p>Browse available international number options and coverage details.</p><a href="signup.html" class="product-link">Explore options <i class="fa-solid fa-arrow-right"></i></a></div>
+   </article>
 
-   <article class="product-card" data-category="other" data-search="productivity tools online utilities"><div class="product-art art-blue"><i class="fa-solid fa-wand-magic-sparkles"></i></div><div class="product-content"><div class="product-category">DIGITAL TOOLS</div><h3>Productivity Tools</h3><p>Find useful tools for everyday online tasks.</p><a href="signup.html" class="product-link">Explore options <i class="fa-solid fa-arrow-right"></i></a></div></article>
+   <article class="product-card reveal" data-category="esim" data-search="eSIM travel mobile data international connectivity">
+    <div class="product-art art-blue"><i class="fa-solid fa-sim-card"></i></div>
+    <div class="product-content"><div class="product-category">MOBILE CONNECTIVITY</div><h3>eSIM Services</h3><p>Explore eSIM options, supported devices, coverage and data plans.</p><a href="signup.html" class="product-link">Explore options <i class="fa-solid fa-arrow-right"></i></a></div>
+   </article>
 
-   <article class="product-card" data-category="other" data-search="privacy security vpn internet"><div class="product-art art-purple"><i class="fa-solid fa-lock"></i></div><div class="product-content"><div class="product-category">ONLINE SERVICES</div><h3>Privacy Tools</h3><p>Explore legitimate services for online privacy and security.</p><a href="signup.html" class="product-link">Explore options <i class="fa-solid fa-arrow-right"></i></a></div></article>
+   <article class="product-card reveal" data-category="web" data-search="website domain hosting web services">
+    <div class="product-art art-purple"><i class="fa-solid fa-globe"></i></div>
+    <div class="product-content"><div class="product-category">WEB SERVICES</div><h3>Website Services</h3><p>Discover website-related services and online project tools.</p><a href="signup.html" class="product-link">Explore options <i class="fa-solid fa-arrow-right"></i></a></div>
+   </article>
+
+   <article class="product-card reveal" data-category="other" data-search="vpn privacy online security">
+    <div class="product-art art-green"><i class="fa-solid fa-lock"></i></div>
+    <div class="product-content"><div class="product-category">ONLINE SERVICES</div><h3>Privacy Tools</h3><p>Explore legitimate tools for online privacy and security.</p><a href="signup.html" class="product-link">Explore options <i class="fa-solid fa-arrow-right"></i></a></div>
+   </article>
+
+   <article class="product-card reveal" data-category="other" data-search="social boosting engagement promotion">
+    <div class="product-art art-pink"><i class="fa-solid fa-chart-line"></i></div>
+    <div class="product-content"><div class="product-category">SOCIAL SERVICES</div><h3>Social Boosting</h3><p>Browse available social media promotion and engagement services.</p><a href="signup.html" class="product-link">Explore options <i class="fa-solid fa-arrow-right"></i></a></div>
+   </article>
   </div>
 
   <div class="empty-state" id="emptyState">No matching products found. Try another search.</div>
@@ -1073,51 +589,93 @@ html.dark-mode .footer-links a { color:#b5c0d2; }
 
 <section class="section" id="process">
  <div class="container">
-  <div class="section-heading">
+  <div class="section-heading reveal">
    <div class="eyebrow">HOW IT WORKS</div>
    <h2>Simple from start to finish</h2>
    <p>Follow a straightforward process to explore the store.</p>
   </div>
-
   <div class="steps-grid">
-   <article class="step-card"><div class="step-number">STEP 01</div><div class="step-icon"><i class="fa-solid fa-user-plus"></i></div><h3>Create an account</h3><p>Register to access your own customer dashboard.</p></article>
-   <article class="step-card"><div class="step-number">STEP 02</div><div class="step-icon"><i class="fa-solid fa-magnifying-glass"></i></div><h3>Explore the store</h3><p>Search products and review available service details.</p></article>
-   <article class="step-card"><div class="step-number">STEP 03</div><div class="step-icon"><i class="fa-solid fa-bag-shopping"></i></div><h3>Place an order</h3><p>Follow the checkout instructions for an available product.</p></article>
-   <article class="step-card"><div class="step-number">STEP 04</div><div class="step-icon"><i class="fa-solid fa-receipt"></i></div><h3>Review your order</h3><p>Check order information through your account.</p></article>
+   <article class="step-card reveal"><div class="step-number">STEP 01</div><div class="step-icon"><i class="fa-solid fa-user-plus"></i></div><h3>Create an account</h3><p>Register to access your own customer dashboard.</p></article>
+   <article class="step-card reveal"><div class="step-number">STEP 02</div><div class="step-icon"><i class="fa-solid fa-magnifying-glass"></i></div><h3>Explore the store</h3><p>Search products and review available service details.</p></article>
+   <article class="step-card reveal"><div class="step-number">STEP 03</div><div class="step-icon"><i class="fa-solid fa-bag-shopping"></i></div><h3>Place an order</h3><p>Follow the checkout instructions for an available product.</p></article>
+   <article class="step-card reveal"><div class="step-number">STEP 04</div><div class="step-icon"><i class="fa-solid fa-receipt"></i></div><h3>Review your order</h3><p>Check order information through your account.</p></article>
   </div>
  </div>
 </section>
 
 <section class="section section-white" id="about">
  <div class="container">
-  <div class="section-heading">
+  <div class="section-heading reveal">
    <div class="eyebrow">ABOUT US</div>
    <h2>Your digital marketplace</h2>
-   <p>Gentle Acct Store is designed to make discovering products, accessing your account and reviewing orders straightforward.</p>
+   <p>Gentle Acct Store brings digital accounts, communication services and online products together in one convenient place.</p>
   </div>
  </div>
 </section>
 
-<section class="section" id="faq">
+<!-- FIVE CUSTOMER FEEDBACK PLACEHOLDERS -->
+<section class="section" id="reviews">
  <div class="container">
-  <div class="section-heading">
+  <div class="section-heading reveal">
+   <div class="eyebrow">CUSTOMER FEEDBACK</div>
+   <h2>What customers say</h2>
+   <p>Experiences with accounts, virtual numbers and eSIM services.</p>
+   <p style="margin-top:10px;font-weight:700;color:var(--blue)">40K+ Customers Worldwide</p>
+  </div>
+
+  <div class="features-grid">
+   <article class="feature-card reveal">
+    <div class="feature-icon"><i class="fa-solid fa-user-check"></i></div>
+    <h3>Account Services</h3>
+    <p>Replace this with genuine customer feedback about your account-related services.</p>
+   </article>
+   <article class="feature-card reveal">
+    <div class="feature-icon"><i class="fa-solid fa-phone"></i></div>
+    <h3>Virtual Numbers</h3>
+    <p>Add a real customer comment about virtual numbers and supported communication services.</p>
+   </article>
+   <article class="feature-card reveal">
+    <div class="feature-icon"><i class="fa-solid fa-sim-card"></i></div>
+    <h3>eSIM Services</h3>
+    <p>Add genuine feedback about eSIM setup, device compatibility or connectivity.</p>
+   </article>
+   <article class="feature-card reveal">
+    <div class="feature-icon"><i class="fa-solid fa-envelope"></i></div>
+    <h3>Email Services</h3>
+    <p>Use this space for authentic customer feedback about email-related products.</p>
+   </article>
+   <article class="feature-card reveal">
+    <div class="feature-icon"><i class="fa-solid fa-headset"></i></div>
+    <h3>Customer Support</h3>
+    <p>Add real feedback about a support experience, with the customer's permission.</p>
+   </article>
+  </div>
+  <p style="text-align:center;font-size:10px;line-height:1.8;color:var(--copy);margin-top:18px">
+   These are placeholders. Replace them with genuine reviews before publishing.
+  </p>
+ </div>
+</section>
+
+<section class="section section-white" id="faq">
+ <div class="container">
+  <div class="section-heading reveal">
    <div class="eyebrow">HELP CENTRE</div>
    <h2>Frequently asked questions</h2>
    <p>Quick answers about using Gentle Acct Store.</p>
   </div>
-
   <div class="faq-list">
-   <details class="faq-item"><summary>How do I sign up? <i class="fa-solid fa-plus"></i></summary><div class="faq-answer">Tap the menu button and select Create Account, or use the Get Started button on this page.</div></details>
-   <details class="faq-item"><summary>How do I search for products? <i class="fa-solid fa-plus"></i></summary><div class="faq-answer">Use the search box and category filters in the marketplace section.</div></details>
-   <details class="faq-item"><summary>How do I view my orders? <i class="fa-solid fa-plus"></i></summary><div class="faq-answer">Sign in and open the orders section of your dashboard if that feature is enabled.</div></details>
-   <details class="faq-item"><summary>Does the site work on mobile? <i class="fa-solid fa-plus"></i></summary><div class="faq-answer">Yes. The layout adjusts to mobile phones, tablets and desktop screens.</div></details>
+   <details class="faq-item reveal"><summary>How do I sign up? <i class="fa-solid fa-plus"></i></summary><div class="faq-answer">Tap the menu button and select Create Account, or use the Get Started button on this page.</div></details>
+   <details class="faq-item reveal"><summary>How do I search for products? <i class="fa-solid fa-plus"></i></summary><div class="faq-answer">Use the search box and category filters in the marketplace section.</div></details>
+   <details class="faq-item reveal"><summary>Do you offer virtual numbers and eSIMs? <i class="fa-solid fa-plus"></i></summary><div class="faq-answer">Check the marketplace for currently available options, supported countries, device compatibility and service terms.</div></details>
+   <details class="faq-item reveal"><summary>How do I view my orders? <i class="fa-solid fa-plus"></i></summary><div class="faq-answer">Sign in and open the orders section of your dashboard if that feature is enabled.</div></details>
+   <details class="faq-item reveal"><summary>Does the site work on mobile? <i class="fa-solid fa-plus"></i></summary><div class="faq-answer">Yes. The layout adjusts to mobile phones, tablets and desktop screens.</div></details>
   </div>
  </div>
 </section>
 
 <section class="cta-section">
  <div class="container">
-  <div class="cta-box">
+  <div class="cta-box reveal">
    <h2>Ready to get started?</h2>
    <p>Create your account and explore the Gentle Acct Store marketplace.</p>
    <a class="cta-button" href="signup.html">Get started free <i class="fa-solid fa-arrow-right"></i></a>
@@ -1137,16 +695,15 @@ html.dark-mode .footer-links a { color:#b5c0d2; }
     </a>
     <p class="footer-description">Discover digital products and online services in one convenient marketplace.</p>
    </div>
-
    <div>
     <h3 class="footer-heading">Explore</h3>
     <div class="footer-links">
      <a href="#features">Features</a>
      <a href="#categories">Marketplace</a>
      <a href="#process">How It Works</a>
+     <a href="#reviews">Customer Feedback</a>
     </div>
    </div>
-
    <div>
     <h3 class="footer-heading">Account</h3>
     <div class="footer-links">
@@ -1156,7 +713,6 @@ html.dark-mode .footer-links a { color:#b5c0d2; }
     </div>
    </div>
   </div>
-
   <div class="footer-bottom">
    <span>© <span id="year"></span> Gentle Acct Store. All rights reserved.</span>
    <a href="#home">Back to top ↑</a>
@@ -1165,148 +721,174 @@ html.dark-mode .footer-links a { color:#b5c0d2; }
 </footer>
 
 <script>
-(function () {
-  "use strict";
+(function(){
+"use strict";
 
-  const THEME_KEY = "gentle-acct-store-theme";
-  const themeButton = document.getElementById("themeToggle");
-  const menuButton = document.getElementById("menuToggle");
-  const mobileMenu = document.getElementById("mobileMenu");
+const THEME_KEY="gentle-acct-store-theme";
 
-  function applyTheme(theme) {
-    const dark = theme === "dark";
+/* TYPING HEADLINE */
+const typingText=document.getElementById("typingText");
 
-    document.documentElement.classList.toggle("dark-mode", dark);
-    document.body.classList.toggle("dark-mode", dark);
-    document.documentElement.style.colorScheme = dark ? "dark" : "light";
+if(typingText){
+ const phrases=["Services.","Foreign Numbers.","Social Media Accounts.","eSIM Services."];
+ let phraseIndex=0;
+ let charIndex=phrases[0].length;
+ let deleting=true;
 
-    const icon = themeButton.querySelector("i");
+ function typeNextPhrase(){
+  const phrase=phrases[phraseIndex];
 
-    if (icon) {
-      icon.className = dark
-        ? "fa-regular fa-sun"
-        : "fa-regular fa-moon";
-    }
-
-    themeButton.setAttribute(
-      "aria-label",
-      dark ? "Switch to light mode" : "Switch to dark mode"
-    );
-
-    const meta = document.querySelector('meta[name="theme-color"]');
-
-    if (meta) {
-      meta.content = dark ? "#111827" : "#f3f7fc";
-    }
+  if(deleting){
+   charIndex--;
+   typingText.textContent=phrase.substring(0,charIndex);
+   if(charIndex<=0){
+    deleting=false;
+    phraseIndex=(phraseIndex+1)%phrases.length;
+    setTimeout(typeNextPhrase,350);
+    return;
+   }
+   setTimeout(typeNextPhrase,45);
+  }else{
+   const nextPhrase=phrases[phraseIndex];
+   charIndex++;
+   typingText.textContent=nextPhrase.substring(0,charIndex);
+   if(charIndex>=nextPhrase.length){
+    deleting=true;
+    setTimeout(typeNextPhrase,1500);
+    return;
+   }
+   setTimeout(typeNextPhrase,75);
   }
+ }
+ setTimeout(typeNextPhrase,1500);
+}
 
-  function getSavedTheme() {
-    try {
-      return localStorage.getItem(THEME_KEY) === "dark" ? "dark" : "light";
-    } catch (error) {
-      return document.documentElement.classList.contains("dark-mode")
-        ? "dark"
-        : "light";
-    }
-  }
+/* DARK MODE */
+const themeButton=document.getElementById("themeToggle");
 
-  applyTheme(getSavedTheme());
+function applyTheme(theme){
+ const dark=theme==="dark";
+ document.documentElement.classList.toggle("dark-mode",dark);
+ document.body.classList.toggle("dark-mode",dark);
+ document.documentElement.style.colorScheme=dark?"dark":"light";
 
-  themeButton.addEventListener("click", function () {
-    const nextTheme = document.documentElement.classList.contains("dark-mode")
-      ? "light"
-      : "dark";
+ const icon=themeButton.querySelector("i");
+ if(icon) icon.className=dark?"fa-regular fa-sun":"fa-regular fa-moon";
 
-    try {
-      localStorage.setItem(THEME_KEY, nextTheme);
-    } catch (error) {
-      console.warn("Theme preference could not be saved in this browser.");
-    }
+ themeButton.setAttribute("aria-label",dark?"Switch to light mode":"Switch to dark mode");
 
-    applyTheme(nextTheme);
+ const meta=document.querySelector('meta[name="theme-color"]');
+ if(meta) meta.content=dark?"#111827":"#f3f7fc";
+}
+
+function getSavedTheme(){
+ try{
+  return localStorage.getItem(THEME_KEY)==="dark"?"dark":"light";
+ }catch(error){
+  return document.documentElement.classList.contains("dark-mode")?"dark":"light";
+ }
+}
+
+applyTheme(getSavedTheme());
+
+themeButton.addEventListener("click",function(){
+ const nextTheme=document.documentElement.classList.contains("dark-mode")?"light":"dark";
+ try{localStorage.setItem(THEME_KEY,nextTheme);}catch(error){}
+ applyTheme(nextTheme);
+});
+
+window.addEventListener("storage",function(event){
+ if(event.key===THEME_KEY){
+  applyTheme(event.newValue==="dark"?"dark":"light");
+ }
+});
+
+/* MOBILE MENU */
+const menuButton=document.getElementById("menuToggle");
+const mobileMenu=document.getElementById("mobileMenu");
+
+menuButton.addEventListener("click",function(){
+ const open=mobileMenu.classList.toggle("open");
+ menuButton.setAttribute("aria-expanded",String(open));
+ menuButton.setAttribute("aria-label",open?"Close menu":"Open menu");
+ menuButton.innerHTML=open
+  ?'<i class="fa-solid fa-xmark"></i>'
+  :'<i class="fa-solid fa-bars"></i>';
+});
+
+mobileMenu.querySelectorAll("a").forEach(function(link){
+ link.addEventListener("click",function(){
+  mobileMenu.classList.remove("open");
+  menuButton.setAttribute("aria-expanded","false");
+  menuButton.setAttribute("aria-label","Open menu");
+  menuButton.innerHTML='<i class="fa-solid fa-bars"></i>';
+ });
+});
+
+/* PRODUCT SEARCH AND FILTERS */
+const searchInput=document.getElementById("searchInput");
+const cards=Array.from(document.querySelectorAll(".product-card"));
+const filters=document.querySelectorAll(".filter-btn");
+const grid=document.getElementById("productGrid");
+const empty=document.getElementById("emptyState");
+let selected="all";
+
+function updateProducts(){
+ const query=searchInput.value.trim().toLowerCase();
+ let visible=0;
+
+ cards.forEach(function(card){
+  const matchesCategory=selected==="all"||card.dataset.category===selected;
+  const content=((card.dataset.search||"")+" "+card.textContent).toLowerCase();
+  const show=matchesCategory&&content.includes(query);
+  card.style.display=show?"flex":"none";
+  if(show) visible++;
+ });
+
+ grid.style.display=visible?"grid":"none";
+ empty.style.display=visible?"none":"block";
+}
+
+filters.forEach(function(button){
+ button.addEventListener("click",function(){
+  selected=button.dataset.filter;
+  filters.forEach(function(other){
+   const active=other===button;
+   other.classList.toggle("active",active);
+   other.setAttribute("aria-pressed",String(active));
   });
+  updateProducts();
+ });
+});
 
-  window.addEventListener("storage", function (event) {
-    if (event.key === THEME_KEY) {
-      applyTheme(event.newValue === "dark" ? "dark" : "light");
-    }
+searchInput.addEventListener("input",updateProducts);
+
+document.getElementById("searchForm").addEventListener("submit",function(event){
+ event.preventDefault();
+ updateProducts();
+ document.getElementById("categories").scrollIntoView({behavior:"smooth"});
+});
+
+/* FOOTER YEAR */
+document.getElementById("year").textContent=new Date().getFullYear();
+
+/* SCROLL REVEAL */
+const revealItems=document.querySelectorAll(".reveal");
+
+if("IntersectionObserver" in window){
+ const observer=new IntersectionObserver(function(entries){
+  entries.forEach(function(entry){
+   if(entry.isIntersecting){
+    entry.target.classList.add("is-visible");
+    observer.unobserve(entry.target);
+   }
   });
+ },{threshold:0.12,rootMargin:"0px 0px -25px 0px"});
 
-  menuButton.addEventListener("click", function () {
-    const open = mobileMenu.classList.toggle("open");
-
-    menuButton.setAttribute("aria-expanded", String(open));
-    menuButton.setAttribute("aria-label", open ? "Close menu" : "Open menu");
-
-    menuButton.innerHTML = open
-      ? '<i class="fa-solid fa-xmark"></i>'
-      : '<i class="fa-solid fa-bars"></i>';
-  });
-
-  mobileMenu.querySelectorAll("a").forEach(function (link) {
-    link.addEventListener("click", function () {
-      mobileMenu.classList.remove("open");
-      menuButton.setAttribute("aria-expanded", "false");
-      menuButton.innerHTML = '<i class="fa-solid fa-bars"></i>';
-    });
-  });
-
-  const searchInput = document.getElementById("searchInput");
-  const cards = Array.from(document.querySelectorAll(".product-card"));
-  const filters = document.querySelectorAll(".filter-btn");
-  const grid = document.getElementById("productGrid");
-  const empty = document.getElementById("emptyState");
-  let selected = "all";
-
-  function updateProducts() {
-    const query = searchInput.value.trim().toLowerCase();
-    let visible = 0;
-
-    cards.forEach(function (card) {
-      const matchesCategory =
-        selected === "all" || card.dataset.category === selected;
-
-      const content =
-        ((card.dataset.search || "") + " " + card.textContent).toLowerCase();
-
-      const show = matchesCategory && content.includes(query);
-
-      card.style.display = show ? "flex" : "none";
-
-      if (show) visible++;
-    });
-
-    grid.style.display = visible ? "grid" : "none";
-    empty.style.display = visible ? "none" : "block";
-  }
-
-  filters.forEach(function (button) {
-    button.addEventListener("click", function () {
-      selected = button.dataset.filter;
-
-      filters.forEach(function (other) {
-        const active = other === button;
-
-        other.classList.toggle("active", active);
-        other.setAttribute("aria-pressed", String(active));
-      });
-
-      updateProducts();
-    });
-  });
-
-  searchInput.addEventListener("input", updateProducts);
-
-  document.getElementById("searchForm").addEventListener("submit", function (event) {
-    event.preventDefault();
-    updateProducts();
-
-    document.getElementById("categories").scrollIntoView({
-      behavior: "smooth"
-    });
-  });
-
-  document.getElementById("year").textContent = new Date().getFullYear();
+ revealItems.forEach(function(item){observer.observe(item);});
+}else{
+ revealItems.forEach(function(item){item.classList.add("is-visible");});
+}
 })();
 </script>
 </body>

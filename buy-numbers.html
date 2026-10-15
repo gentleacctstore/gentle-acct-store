@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2563EB">
+<meta name="description" content="Buy foreign phone numbers at Gentle Acct Store.">
+<title>Buy Numbers | Gentle Acct Store</title>
+<script>
+(function () {
+  try {
+    if (localStorage.getItem("gentle-acct-store-theme") === "dark") {
+      document.documentElement.classList.add("dark-mode");
+    }
+  } catch (error) {}
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase.js"></script>
+<style>
+:root {
+  --blue: #2563EB;
+  --white: #FFFFFF;
+  --light: #EFF6FF;
+  --text: #172033;
+  --muted: #718096;
+  --border: #DCE7F6;
+  --green: #159447;
+  --shadow: 0 6px 24px rgba(37,99,235,.07);
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  color: var(--text);
+  background: var(--light);
+  min-height: 100vh;
+  padding-bottom: 35px;
+  -webkit-font-smoothing: antialiased;
+}
+button, input, select {
+  font: inherit;
+}
+button, a {
+  -webkit-tap-highlight-color: transparent;
+}
+button {
+  cursor: pointer;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+.page {
+  width: 100%;
+  max-width: 620px;
+  min-height: 100vh;
+  margin: 0 auto;
+  background: var(--light);
+}
+header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 17px;
+  background: rgba(255,255,255,.97);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(16px);
+}
+.back-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--white);
+  color: var(--blue);
+  font-size: 16px;
+}
+.header-title {
+  flex: 1;
+}
+.header-title h1 {
+  color: var(--blue);
+  font-size: 16px;
+  font-weight: 800;
+}
+.header-title p {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 10px;
+}
+.wallet-pill {
+  padding: 9px 10px;
+  border-radius: 10px;
+  background: var(--light);
+  color: var(--blue);
+  font-size: 11px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+main {
+  padding: 17px;
+}
+.intro {
+  margin: 5px 0 18px;
+}
+.intro h2 {
+  margin-bottom: 7px;
+  font-size: 23px;
+  font-weight: 800;
+  letter-spacing: -.7px;
+}
+.intro p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.8;
+}
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 22px;
+  border-radius: 23px;
+  background: linear-gradient(135deg,#2563EB,#1746B8);
+  color: white;
+  box-shadow: 0 12px 30px rgba(37,99,235,.18);
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  top: -100px;
+  right: -70px;
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: 50%;
+}
+.hero-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 17px;
+  border-radius: 15px;
+  background: rgba(255,255,255,.15);
+  font-size: 22px;
+}
+.hero h2 {
+  margin-bottom: 8px;
+  font-size: 21px;
+  font-weight: 800;
+}
+.hero p {
+  max-width: 340px;
+  font-size: 11px;
+  line-height: 1.8;
+  opacity: .9;
+}
+.section-title {
+  margin: 24px 0 12px;
+  color: var(--blue);
+  font-size: 15px;
+  font-weight: 800;
+}
+.form-card {
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 19px;
+  background: var(--white);
+  box-shadow: var(--shadow);
+}
+.field {
+  margin-bottom: 17px;
+}
+.field label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 11px;
+  font-weight: 800;
+}
+.field select,
+.field input {
+  display: block;
+  width: 100%;
+  min-height: 49px;
+  padding: 0 13px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  outline: none;
+  background: var(--white);
+  color: var(--text);
+  font-size: 16px;
+}
+.field select:focus,
+.field input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(37,99,235,.1);
+}
+.help-text {
+  margin-top: 7px;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.7;
+}
+.primary-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: 100%;
+  min-height: 49px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--blue);
+  color: white;
+  font-size: 12px;
+  font-weight: 800;
+}
+.primary-button:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+.notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 15px;
+  padding: 13px;
+  border: 1px solid #C9DEFF;
+  border-radius: 13px;
+  background: #F8FBFF;
+  color: #375278;
+  font-size: 10px;
+  line-height: 1.8;
+}
+.notice i {
+  margin-top: 2px;
+  color: var(--blue);
+}
+.status-card {
+  margin-top: 18px;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 17px;
+  background: var(--white);
+}
+.status-card h3 {
+  margin-bottom: 7px;
+  color: var(--blue);
+  font-size: 13px;
+}
+.status-card p {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.8;
+}
+.status-card .status-icon {
+  margin-bottom: 10px;
+  color: var(--blue);
+  font-size: 22px;
+}
+footer {
+  padding: 25px 15px;
+  color: var(--muted);
+  font-size: 10px;
+  text-align: center;
+}
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  z-index: 50;
+  width: max-content;
+  max-width: calc(100% - 30px);
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: var(--blue);
+  color: white;
+  font-size: 11px;
+  line-height: 1.6;
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%,10px);
+  transition: .2s;
+}
+.toast.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%,0);
+}
+/* DARK MODE */
+html.dark-mode,
+html.dark-mode body,
+html.dark-mode .page {
+  background: #0B1120;
+  color: #E5EAF5;
+}
+html.dark-mode header {
+  background: rgba(15,23,42,.97);
+  border-color: #26334A;
+}
+html.dark-mode .back-button,
+html.dark-mode .form-card,
+html.dark-mode .status-card {
+  background: #151F33;
+  border-color: #2B3A54;
+  color: #E5EAF5;
+}
+html.dark-mode .header-title h1,
+html.dark-mode .section-title,
+html.dark-mode .status-card h3 {
+  color: #7DB2FF;
+}
+html.dark-mode .header-title p,
+html.dark-mode .intro p,
+html.dark-mode .help-text,
+html.dark-mode .status-card p,
+html.dark-mode footer {
+  color: #A5B4CC;
+}
+html.dark-mode .wallet-pill {
+  background: #1D2D49;
+  color: #7DB2FF;
+}
+html.dark-mode .field select,
+html.dark-mode .field input {
+  background: #0B1120;
+  border-color: #344765;
+  color: #F1F5F9;
+}
+html.dark-mode .notice {
+  background: #151F33;
+  border-color: #2B3A54;
+  color: #C6D4E9;
+}
+html.dark-mode .notice i {
+  color: #7DB2FF;
+}
+@media(max-width:370px) {
+  main {
+    padding: 13px;
+  }
+  header {
+    padding: 12px;
+    gap: 8px;
+  }
+  .header-title h1 {
+    font-size: 13px;
+  }
+  .wallet-pill {
+    padding: 8px;
+    font-size: 10px;
+  }
+  .hero {
+    padding: 18px;
+  }
+  .intro h2 {
+    font-size: 21px;
+  }
+}
+</style>
+</head>
+<body>
+<div class="page">
+<header>
+  <a href="dashboard.html" class="back-button" aria-label="Back to dashboard">
+    <i class="fa-solid fa-arrow-left"></i>
+  </a>
+  <div class="header-title">
+    <h1>Buy Numbers</h1>
+    <p>Gentle Acct Store</p>
+  </div>
+  <div class="wallet-pill" id="walletBalance">₦0.00</div>
+</header>
+<main>
+  <section class="intro">
+    <h2>Foreign Numbers</h2>
+    <p>Choose your country and service to explore the number options available through our supplier.</p>
+  </section>
+  <section class="hero">
+    <div class="hero-icon">
+      <i class="fa-solid fa-mobile-screen-button"></i>
+    </div>
+    <h2>Your number, made simple.</h2>
+    <p>Browse supported countries and services. Availability and prices will appear after the supplier API is connected.</p>
+  </section>
+  <h2 class="section-title">Choose Your Number</h2>
+  <section class="form-card">
+    <div class="field">
+      <label for="country">Select country</label>
+      <select id="country">
+        <option value="">Choose a country</option>
+        <option value="US">United States</option>
+        <option value="GB">United Kingdom</option>
+        <option value="CA">Canada</option>
+        <option value="FR">France</option>
+        <option value="DE">Germany</option>
+      </select>
+      <p class="help-text">The final country list will depend on supplier availability.</p>
+    </div>
+    <div class="field">
+      <label for="service">Select service</label>
+      <select id="service">
+        <option value="">Choose a service</option>
+        <option value="sms">SMS reception</option>
+        <option value="virtual">Virtual number</option>
+      </select>
+      <p class="help-text">Available services will be confirmed from the supplier's API.</p>
+    </div>
+    <button class="primary-button" id="checkButton" type="button">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      Check Availability
+    </button>
+    <div class="notice">
+      <i class="fa-solid fa-circle-info"></i>
+      <span>This page is not connected to the supplier yet. No numbers can be ordered from this preview, and your wallet will not be charged.</span>
+    </div>
+  </section>
+  <section class="status-card" id="availabilityResult" aria-live="polite">
+    <div class="status-icon">
+      <i class="fa-solid fa-plug"></i>
+    </div>
+    <h3>Supplier connection pending</h3>
+    <p>Once the XtraLogsTools API is configured securely, this area can display supported countries, prices, availability, and order status.</p>
+  </section>
+</main>
+<footer>
+  Gentle Acct Store · Buy Numbers
+</footer>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+"use strict";
+let currentUser = null;
+let toastTimer = null;
+function formatMoney(amount) {
+  const number = Number(amount || 0);
+  return "₦" + number.toLocaleString("en-NG", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+}
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function() {
+    toast.classList.remove("show");
+  }, 2800);
+}
+async function loadWallet() {
+  try {
+    const db = window.firebaseDB || firebase.firestore();
+    const snapshot = await db
+      .collection("wallets")
+      .doc(currentUser.uid)
+      .get();
+    const balance = snapshot.exists
+      ? Number(snapshot.data().balance || 0)
+      : 0;
+    document.getElementById("walletBalance").textContent =
+      formatMoney(Number.isFinite(balance) ? balance : 0);
+  } catch (error) {
+    console.error("Wallet loading error:", error);
+    document.getElementById("walletBalance").textContent = "Unavailable";
+  }
+}
+firebase.auth().onAuthStateChanged(async function(user) {
+  if (!user) {
+    window.location.replace("login.html");
+    return;
+  }
+  currentUser = user;
+  await loadWallet();
+});
+document.getElementById("checkButton").addEventListener("click", function() {
+  const country = document.getElementById("country").value;
+  const service = document.getElementById("service").value;
+  if (!country || !service) {
+    showToast("Please choose a country and service first.");
+    return;
+  }
+  showToast("Supplier API is not connected yet. No order was placed.");
+});
+</script>
+</body>
+</html>
