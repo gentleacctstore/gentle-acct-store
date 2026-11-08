@@ -435,6 +435,15 @@ th { color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.
 @media(max-width:900px){.supplier-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:420px){.supplier-card-grid{gap:8px;padding:10px}.supplier-card{padding:10px}.supplier-card-name{font-size:11px}.supplier-card .btn{padding:7px 6px;font-size:10px}}
 
+/* SUPPLIER IMPORT PROGRESS */
+.supplier-import-progress{display:none;margin:0 15px 15px;padding:13px;border:1px solid var(--border);border-radius:12px;background:var(--surface-2)}
+.supplier-import-progress.active{display:block}
+.supplier-import-progress-top{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px;font-weight:800}
+.supplier-import-progress-count{color:var(--blue);white-space:nowrap}
+.supplier-import-progress-track{height:8px;margin-top:10px;border-radius:99px;background:var(--border);overflow:hidden}
+.supplier-import-progress-fill{height:100%;width:0;background:var(--blue);border-radius:99px;transition:width .2s}
+.supplier-import-progress-meta{display:flex;justify-content:space-between;gap:8px;margin-top:7px;color:var(--muted);font-size:10px}
+
 </style>
 </head>
 <body>
@@ -601,6 +610,11 @@ th { color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.
               <button class="btn btn-primary" id="supplierImportSelected" type="button">Import selected</button>
               <button class="btn" id="supplierRestockAll" type="button">↻ Restock all imported</button>
               <button class="btn" id="supplierClearAll" type="button" style="border:1px solid #DC2626;color:#DC2626">Clear all Spencer products</button>
+            </div>
+            <div class="supplier-import-progress" id="supplierImportProgress" role="status" aria-live="polite">
+              <div class="supplier-import-progress-top"><span id="supplierImportProgressLabel">Preparing import…</span><span class="supplier-import-progress-count" id="supplierImportProgressCount">0 / 0</span></div>
+              <div class="supplier-import-progress-track"><div class="supplier-import-progress-fill" id="supplierImportProgressFill"></div></div>
+              <div class="supplier-import-progress-meta"><span id="supplierImportProgressDone">Imported: 0</span><span id="supplierImportProgressRemaining">Remaining: 0</span></div>
             </div>
             <div class="supplier-note">Supplier prices are your costs, not your store selling prices. Enter the price customers should pay before importing. Product stock is synced from Spencer when you fetch products. Supplier API requests are made through the Cloudflare Worker; the API key is never sent to this browser.</div>
           </div>
@@ -1191,54 +1205,111 @@ $("supplierProductsTable").addEventListener("click",event=>{
   if(button) editSupplierProduct(button.dataset.supplierEdit);
 });
 
+function updateSupplierImportProgress(label,done,total) {
+  const remaining=Math.max(0,total-done);
+  const percent=total?Math.round(done/total*100):0;
+  $("supplierImportProgress").classList.add("active");
+  $("supplierImportProgressLabel").textContent=label;
+  $("supplierImportProgressCount").textContent=done+" / "+total;
+  $("supplierImportProgressFill").style.width=percent+"%";
+  $("supplierImportProgressDone").textContent="Imported: "+done;
+  $("supplierImportProgressRemaining").textContent="Remaining: "+remaining;
+}
+
 async function importSelectedSupplierProducts() {
   const selected=[...document.querySelectorAll(".supplier-product-check:checked")];
   if(!selected.length) return showSupplierMessage("Select at least one supplier product to import.");
+
   const button=$("supplierImportSelected");
-  button.disabled=true;button.textContent="Importing…";
-  let imported=0;
-  try {
-    for(const checkbox of selected) {
-      const supplierProduct=supplierProducts.find(item=>Number(item.product_id)===Number(checkbox.value));
-      const row=checkbox.closest("[data-supplier-row]");
-      const priceInput=row?.querySelector(".supplier-selling-price");
-      const sellingPrice=Number(priceInput?.value);
-      if(!supplierProduct||!priceInput||!Number.isFinite(sellingPrice)||sellingPrice<0) throw new Error("Enter a valid selling price for every selected product.");
-      const category=supplierCategories.find(item=>Number(item.category_id)===Number(supplierProduct.category_id)) || supplierCategories.find(item=>Number(item.category_id)===Number(supplierSelectedCategoryId));
-      const productRef=db.collection("products").doc("spencer_"+Number(supplierProduct.product_id));
-      const existing=await productRef.get();
-      const oldData=existing.exists?existing.data():{};
-      await productRef.set({
-        name:supplierProduct.name||"Supplier product",
-        category:category?.category_name||"Supplier Products",
-        categoryLogo:category?.category_icon||"",
-        image:category?.category_icon||oldData.image||"",
-        description:oldData.description||"Automatically fulfilled through Spencer Acc Store.",
-        price:sellingPrice,
-        stockCount:Math.max(0,Number(supplierProduct.stock_count||0)),
-        supplierStockCount:Math.max(0,Number(supplierProduct.stock_count||0)),
-        supplierProvider:"spenceraccstore",
-        supplierProductId:Number(supplierProduct.product_id),
-        supplierCost:Number(supplierProduct.price||0),
-        supplierCurrency:supplierProduct.currency||"NGN",
-        supplierMinOrder:Number(supplierProduct.min_order||1),
-        supplierMaxOrder:Number(supplierProduct.max_order||1),
-        supplierInStock:supplierProduct.in_stock===true,
-        supplierSyncedAt:firebase.firestore.FieldValue.serverTimestamp(),
-        isSupplierProduct:true,
-        updatedAt:firebase.firestore.FieldValue.serverTimestamp(),
-        ...(existing.exists?{}:{createdAt:firebase.firestore.FieldValue.serverTimestamp()})
-      },{merge:true});
-      imported++;
+  const chosen=[];
+  const seen=new Set();
+
+  // Validate all selected items before any database writes.
+  for(const checkbox of selected) {
+    const id=Number(checkbox.value);
+    if(seen.has(id)) continue;
+    seen.add(id);
+    const supplierProduct=supplierProducts.find(item=>Number(item.product_id)===id);
+    const row=checkbox.closest("[data-supplier-row]");
+    const priceInput=row?.querySelector(".supplier-selling-price");
+    const sellingPrice=Number(priceInput?.value);
+    if(!supplierProduct||!priceInput||priceInput.value.trim()===""||!Number.isFinite(sellingPrice)||sellingPrice<0) {
+      return showSupplierMessage("Enter a valid selling price for every selected product. No products were imported.");
     }
-    showSupplierMessage("Imported or updated "+imported+" product(s) in Gentle Acct Store.","success");
-    await loadProducts();
-    renderSupplierProducts();
+    const category=supplierCategories.find(item=>Number(item.category_id)===Number(supplierProduct.category_id))
+      || supplierCategories.find(item=>Number(item.category_id)===Number(supplierSelectedCategoryId));
+    chosen.push({supplierProduct,sellingPrice,category,id});
+  }
+
+  const total=chosen.length;
+  let imported=0;
+  button.disabled=true;
+  $("supplierLoadProducts").disabled=true;
+  button.textContent="Importing 0/"+total;
+  updateSupplierImportProgress("Checking existing products…",0,total);
+
+  try {
+    // Fetch existing documents concurrently, avoiding one network wait per product.
+    const prepared=await Promise.all(chosen.map(async item=>{
+      const ref=db.collection("products").doc("spencer_"+item.id);
+      const snapshot=await ref.get();
+      return {...item,ref,oldData:snapshot.exists?(snapshot.data()||{}):{},exists:snapshot.exists};
+    }));
+
+    updateSupplierImportProgress("Saving products…",0,total);
+    for(let start=0;start<prepared.length;start+=400) {
+      const chunk=prepared.slice(start,start+400);
+      const batch=db.batch();
+
+      chunk.forEach(({supplierProduct,sellingPrice,category,id,ref,oldData,exists})=>{
+        const supplierStock=Math.max(0,Number(supplierProduct.stock_count||0));
+        batch.set(ref,{
+          name:supplierProduct.name||oldData.name||"Supplier product",
+          category:category?.category_name||oldData.category||"Supplier Products",
+          categoryLogo:category?.category_icon||oldData.categoryLogo||"",
+          image:category?.category_icon||oldData.image||"",
+          description:oldData.description||"Automatically fulfilled through Spencer Acc Store.",
+          price:sellingPrice,
+          stockCount:supplierStock,
+          supplierStockCount:supplierStock,
+          supplierProvider:"spenceraccstore",
+          supplierProductId:id,
+          supplierCost:Number(supplierProduct.price||0),
+          supplierCurrency:supplierProduct.currency||"NGN",
+          supplierMinOrder:Number(supplierProduct.min_order||1),
+          supplierMaxOrder:Number(supplierProduct.max_order||1),
+          supplierInStock:supplierProduct.in_stock===true,
+          supplierSyncedAt:firebase.firestore.FieldValue.serverTimestamp(),
+          isSupplierProduct:true,
+          updatedAt:firebase.firestore.FieldValue.serverTimestamp(),
+          ...(exists?{}:{createdAt:firebase.firestore.FieldValue.serverTimestamp()})
+        },{merge:true});
+      });
+
+      await batch.commit();
+      imported+=chunk.length;
+      button.textContent="Importing "+imported+"/"+total;
+      updateSupplierImportProgress("Importing products…",imported,total);
+    }
+
+    updateSupplierImportProgress("Import complete",total,total);
+    showSupplierMessage("Successfully imported or updated "+imported+" of "+total+" selected products in Gentle Acct Store.","success");
   } catch(error) {
-    showSupplierMessage("Imported "+imported+" product(s). "+(error.message||"The remaining products could not be imported."));
-    await loadProducts();
-    renderSupplierProducts();
-  } finally {button.disabled=false;button.textContent="Import selected";}
+    console.error("Supplier product import failed:",error);
+    updateSupplierImportProgress("Import stopped — "+(total-imported)+" remaining",imported,total);
+    showSupplierMessage("Imported "+imported+" of "+total+" products. "+(total-imported)+" remaining. "+(error.message||"The remaining products could not be imported."));
+  } finally {
+    button.disabled=false;
+    $("supplierLoadProducts").disabled=false;
+    button.textContent="Import selected";
+    try {
+      await loadProducts();
+      renderSupplierProducts();
+    } catch(error) {
+      console.error("Refreshing products after supplier import failed:",error);
+      showToast("Import finished, but the product list could not refresh. Tap Refresh data.");
+    }
+  }
 }
 
 /* BULK SUPPLIER STOCK REFRESH AND SAFE CLEAR */
