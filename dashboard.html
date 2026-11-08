@@ -1984,7 +1984,8 @@ function renderProducts() {
 /* COMPACT PRODUCT NAMES
    Keep important details, use familiar short forms, and display in capitals. */
 function getDisplayProductName(product) {
-  let original = String(product.name || "Product").trim();
+  // An admin-entered displayName takes priority over the automatic shortened name.
+  let original = String(product.displayName || product.name || "Product").trim();
   const entityDecoder = document.createElement("textarea");
   entityDecoder.innerHTML = original;
   original = entityDecoder.value.trim();
