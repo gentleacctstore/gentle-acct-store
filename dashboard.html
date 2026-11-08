@@ -1944,10 +1944,40 @@ function renderProducts() {
   container.innerHTML = html;
 }
 
+
+/* SHORT DISPLAY NAMES FOR SPENCER SUPPLIER PRODUCTS */
+function getDisplayProductName(product) {
+  const original = String(product.name || "Product").trim();
+  const isSpencerProduct =
+    String(product.supplierProvider || "").toLowerCase() === "spenceraccstore" ||
+    String(product.id || "").startsWith("spencer_") ||
+    Boolean(product.supplierProductId);
+
+  if (!isSpencerProduct) return original;
+
+  const abbreviations = [
+    [/\bACCOUNTS\b/gi, "ACCS"],
+    [/\bACCOUNT\b/gi, "ACC"],
+    [/\bMONTHS\b/gi, "MOS"],
+    [/\bMONTH\b/gi, "MO"],
+    [/\bYEARS\b/gi, "YRS"],
+    [/\bYEAR\b/gi, "YR"],
+    [/\bDAYS\b/gi, "DAYS"],
+    [/\bVERIFIED\b/gi, "VERIFIED"]
+  ];
+
+  let name = original.replace(/\s+/g, " ").trim();
+  abbreviations.forEach(([pattern, replacement]) => {
+    name = name.replace(pattern, replacement);
+  });
+
+  return name.toUpperCase();
+}
+
 /* PRODUCT CARD */
 function createProductCard(product) {
   const id = String(product.id || "");
-  const productName = String(product.name || "Product");
+  const productName = getDisplayProductName(product);
   const name = escapeHtml(productName);
   const price = formatMoney(product.price || 0);
   const stock = Math.max(0,Number(product.stockCount || 0));
