@@ -693,8 +693,10 @@ th { color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.
               <button class="btn" id="supplierLoadCategories" type="button">Load categories</button>
               <button class="btn btn-primary" id="supplierLoadProducts" type="button">Fetch products</button>
               <button class="btn btn-primary" id="supplierImportSelected" type="button">Import selected</button>
+              <button class="btn" id="supplierRestockAll" type="button">↻ Refresh Spencer stock</button>
+              <button class="btn" id="supplierClearAll" type="button" style="border:1px solid #dc2626;color:#dc2626">Clear Spencer products</button>
             </div>
-            <div class="supplier-note">Supplier prices are your costs, not your store selling prices. Enter the price customers should pay before importing. Product stock is synced from Spencer when you fetch products. Supplier API requests are made through the Cloudflare Worker; the API key is never sent to this browser.</div>
+            <div class="supplier-note">Supplier prices are your costs, not your store selling prices. Refresh Spencer stock to fetch the latest supplier quantities for all imported products. Gentle display stock adds 1,000 to the supplier quantity; the original Spencer stock is stored separately. This extra 1,000 is a display adjustment, not real supplier inventory. Supplier API requests are made through the Cloudflare Worker; the API key is never sent to this browser.</div>
           </div>
           <div class="panel-head" style="border-top:1px solid var(--border)">
             <div><div class="panel-title">Fetched supplier products</div><div class="panel-desc">Search above, review each product card and choose what to import.</div></div>
@@ -747,6 +749,7 @@ th { color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.
 "use strict";
 
 const ADMIN_UID = "UoEjCy99gbQKkGob59vGi3CunZi1";
+const SPENCER_STOCK_BONUS = 1000; // Additional Gentle display stock; not real supplier inventory.
 const VAPID_KEY = "BBK7boItExQx1LlAngzvuu38HWGFxuDLGYg8o2LDezCmNJuoGRkPUkZe8_OYMdszdsfbR6Cg9fbFHLXN2eKlx9o";
 const auth = window.firebaseAuth;
 const db = window.firebaseDB;
@@ -860,8 +863,8 @@ function productImage(p) { return p.image||p.imageUrl||p.productImage||""; }
 function productDescription(p) { return p.description||p.productDescription||""; }
 function stockCount(id) {
   const product=products.find(item=>item.id===id);
-  if(product&&product.supplierProvider==="spenceraccstore") {
-    return {available:Math.max(0,Number(product.supplierStockCount??product.stockCount??0)),sold:Number(product.supplierSoldCount||0)};
+  if(product&&(product.supplierProvider==="spenceraccstore" || String(product.id||"").startsWith("spencer_"))) {
+    return {available:Math.max(0,Number(product.stockCount??(Number(product.supplierStockCount||0)+SPENCER_STOCK_BONUS))),sold:Number(product.supplierSoldCount||0)};
   }
   return productStock[id]||{available:0,sold:0};
 }
@@ -1257,7 +1260,7 @@ async function editSupplierProduct(productId) {
       image:oldData.image||category?.category_icon||"",
       description:oldData.description||"Automatically fulfilled through Spencer Acc Store.",
       price:Number.isFinite(Number(oldData.price))?Number(oldData.price):initialSellingPrice,
-      stockCount:Math.max(0,Number(supplierProduct.stock_count||0)),
+      stockCount:Math.max(0,Number(supplierProduct.stock_count||0))+SPENCER_STOCK_BONUS,
       supplierStockCount:Math.max(0,Number(supplierProduct.stock_count||0)),
       supplierProvider:"spenceraccstore",
       supplierProductId:Number(supplierProduct.product_id),
@@ -1308,7 +1311,7 @@ async function importSelectedSupplierProducts() {
         image:category?.category_icon||oldData.image||"",
         description:oldData.description||"Automatically fulfilled through Spencer Acc Store.",
         price:sellingPrice,
-        stockCount:Math.max(0,Number(supplierProduct.stock_count||0)),
+        stockCount:Math.max(0,Number(supplierProduct.stock_count||0))+SPENCER_STOCK_BONUS,
         supplierStockCount:Math.max(0,Number(supplierProduct.stock_count||0)),
         supplierProvider:"spenceraccstore",
         supplierProductId:Number(supplierProduct.product_id),
@@ -1334,10 +1337,99 @@ async function importSelectedSupplierProducts() {
   } finally {button.disabled=false;button.textContent="Import selected";}
 }
 
+/* BULK SPENCER STOCK REFRESH AND SAFE CLEAR */
+async function restockAllSpencerProducts() {
+  const button=$("supplierRestockAll");
+  if(!button) return;
+  const imported=products.filter(item=>item.supplierProvider==="spenceraccstore" || String(item.id||"").startsWith("spencer_"));
+  if(!imported.length) return showSupplierMessage("There are no Spencer products imported into Gentle Acct Store yet.");
+  if(!window.confirm("Refresh all "+imported.length+" imported Spencer products using Spencer's latest stock, then add 1,000 to Gentle display stock? Original Spencer stock and your selling prices will be preserved.")) return;
+  if(lastSupplierProductsFetch && Date.now()-lastSupplierProductsFetch<60000) {
+    const seconds=Math.ceil((60000-(Date.now()-lastSupplierProductsFetch))/1000);
+    return showSupplierMessage("Spencer's product endpoint has a one-minute refresh limit. Please try again in "+seconds+" seconds.");
+  }
+  button.disabled=true;button.textContent="Refreshing stock…";
+  try {
+    const result=await supplierRequest("products");
+    const latest=Array.isArray(result.products)?result.products:(Array.isArray(result.data)?result.data:[]);
+    if(!latest.length) throw new Error("Spencer returned an empty product list. No stock was changed.");
+    lastSupplierProductsFetch=Date.now();
+    const byId=new Map(latest.map(item=>[Number(item.product_id),item]).filter(([id,item])=>Number.isFinite(id)&&id>0&&item));
+    const batchUpdates=[];
+    for(const product of imported) {
+      const supplierId=Number(product.supplierProductId||String(product.id).replace(/^spencer_/,""));
+      const current=byId.get(supplierId);
+      if(!current || current.stock_count===undefined || current.stock_count===null || !Number.isFinite(Number(current.stock_count))) continue;
+      const stock=Math.max(0,Math.floor(Number(current.stock_count)));
+      const inStock=typeof current.in_stock==="boolean"?current.in_stock:stock>0;
+      batchUpdates.push({ref:db.collection("products").doc(product.id),data:{
+        stockCount:stock+SPENCER_STOCK_BONUS,
+        supplierStockCount:stock,
+        supplierInStock:inStock,
+        supplierCost:current.price!==undefined?Number(current.price):Number(product.supplierCost||0),
+        supplierMinOrder:current.min_order!==undefined?Number(current.min_order):Number(product.supplierMinOrder||1),
+        supplierMaxOrder:current.max_order!==undefined?Number(current.max_order):Number(product.supplierMaxOrder||1),
+        supplierSyncedAt:firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+      }});
+    }
+    if(!batchUpdates.length) throw new Error("No matching imported products had valid stock data. Nothing was changed.");
+    for(let start=0;start<batchUpdates.length;start+=400) {
+      const batch=db.batch();
+      batchUpdates.slice(start,start+400).forEach(update=>batch.update(update.ref,update.data));
+      await batch.commit();
+    }
+    await loadProducts();
+    if(supplierProducts.length) renderSupplierProducts();
+    showSupplierMessage("Refreshed "+batchUpdates.length+" of "+imported.length+" imported Spencer products using the latest supplier stock. Gentle display stock includes +1,000; original supplier quantities and your selling prices were preserved.","success");
+  } catch(error) {
+    console.error("BULK SPENCER RESTOCK ERROR:",error);
+    showSupplierMessage(error.message||"Could not refresh Spencer product stock.");
+  } finally {
+    button.disabled=false;button.textContent="↻ Refresh Spencer stock";
+  }
+}
+
+async function clearAllSpencerProducts() {
+  const button=$("supplierClearAll");
+  if(!button) return;
+  button.disabled=true;button.textContent="Checking products…";
+  try {
+    const snapshot=await db.collection("products").get();
+    const importedDocs=snapshot.docs.filter(doc=>{
+      const data=doc.data()||{};
+      return data.supplierProvider==="spenceraccstore" || String(doc.id).startsWith("spencer_");
+    });
+    if(!importedDocs.length) {
+      showSupplierMessage("No imported Spencer products were found.","success");
+      return;
+    }
+    const confirmed=window.confirm("Delete all "+importedDocs.length+" Spencer products imported into Gentle Acct Store? This removes those product listings from your store. Normal products and existing orders/order history will be kept. This cannot be undone.");
+    if(!confirmed) return;
+    button.textContent="Removing products…";
+    for(let start=0;start<importedDocs.length;start+=400) {
+      const batch=db.batch();
+      importedDocs.slice(start,start+400).forEach(doc=>batch.delete(doc.ref));
+      await batch.commit();
+    }
+    supplierDrafts.clear();
+    await loadProducts();
+    if(supplierProducts.length) renderSupplierProducts();
+    showSupplierMessage("Removed "+importedDocs.length+" imported Spencer product listings. Normal products and order history were kept.","success");
+  } catch(error) {
+    console.error("CLEAR SPENCER PRODUCTS ERROR:",error);
+    showSupplierMessage(error.message||"Could not clear imported Spencer products.");
+  } finally {
+    button.disabled=false;button.textContent="Clear Spencer products";
+  }
+}
+
 $("supplierRefreshBalance").addEventListener("click",()=>loadSupplierBalance().catch(()=>{}));
 $("supplierLoadCategories").addEventListener("click",loadSupplierCategories);
 $("supplierLoadProducts").addEventListener("click",loadSupplierProducts);
 $("supplierImportSelected").addEventListener("click",importSelectedSupplierProducts);
+$("supplierRestockAll").addEventListener("click",restockAllSpencerProducts);
+$("supplierClearAll").addEventListener("click",clearAllSpencerProducts);
 $("supplierSearch").addEventListener("input",renderSupplierProducts);
 $("supplierCategoryFilter").addEventListener("change",loadSupplierProducts);
 $("supplierSelectAll").addEventListener("change",event=>{
