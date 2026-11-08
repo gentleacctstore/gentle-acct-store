@@ -1291,136 +1291,78 @@ async function importSelectedSupplierProducts() {
   const selected=[...document.querySelectorAll(".supplier-product-check:checked")];
   if(!selected.length) return showSupplierMessage("Select at least one supplier product to import.");
   const button=$("supplierImportSelected");
-  button.disabled=true;button.textContent="Importing…";
+  button.disabled=true;
+  button.textContent="Preparing import…";
   let imported=0;
   try {
-    for(const checkbox of selected) {
+    // Validate and prepare all selected products together instead of waiting
+    // for one Firestore read/write to finish before starting the next.
+    const prepared=selected.map(checkbox=>{
       const supplierProduct=supplierProducts.find(item=>Number(item.product_id)===Number(checkbox.value));
       const row=checkbox.closest("[data-supplier-row]");
       const priceInput=row?.querySelector(".supplier-selling-price");
       const sellingPrice=Number(priceInput?.value);
-      if(!supplierProduct||!priceInput||!Number.isFinite(sellingPrice)||sellingPrice<0) throw new Error("Enter a valid selling price for every selected product.");
-      const category=supplierCategories.find(item=>Number(item.category_id)===Number(supplierProduct.category_id)) || supplierCategories.find(item=>Number(item.category_id)===Number(supplierSelectedCategoryId));
-      const productRef=db.collection("products").doc("spencer_"+Number(supplierProduct.product_id));
-      const existing=await productRef.get();
-      const oldData=existing.exists?existing.data():{};
-      await productRef.set({
-        name:supplierProduct.name||"Supplier product",
-        category:category?.category_name||"Supplier Products",
-        categoryLogo:category?.category_icon||"",
-        image:category?.category_icon||oldData.image||"",
-        description:oldData.description||"Automatically fulfilled through Spencer Acc Store.",
-        price:sellingPrice,
-        stockCount:Math.max(0,Number(supplierProduct.stock_count||0))+SPENCER_STOCK_BONUS,
-        supplierStockCount:Math.max(0,Number(supplierProduct.stock_count||0)),
-        supplierProvider:"spenceraccstore",
-        supplierProductId:Number(supplierProduct.product_id),
-        supplierCost:Number(supplierProduct.price||0),
-        supplierCurrency:supplierProduct.currency||"NGN",
-        supplierMinOrder:Number(supplierProduct.min_order||1),
-        supplierMaxOrder:Number(supplierProduct.max_order||1),
-        supplierInStock:supplierProduct.in_stock===true,
-        supplierSyncedAt:firebase.firestore.FieldValue.serverTimestamp(),
-        isSupplierProduct:true,
-        updatedAt:firebase.firestore.FieldValue.serverTimestamp(),
-        ...(existing.exists?{}:{createdAt:firebase.firestore.FieldValue.serverTimestamp()})
-      },{merge:true});
-      imported++;
-    }
-    showSupplierMessage("Imported or updated "+imported+" product(s) in Gentle Acct Store.","success");
-    await loadProducts();
-    renderSupplierProducts();
-  } catch(error) {
-    showSupplierMessage("Imported "+imported+" product(s). "+(error.message||"The remaining products could not be imported."));
-    await loadProducts();
-    renderSupplierProducts();
-  } finally {button.disabled=false;button.textContent="Import selected";}
-}
-
-/* BULK SPENCER STOCK REFRESH AND SAFE CLEAR */
-async function restockAllSpencerProducts() {
-  const button=$("supplierRestockAll");
-  if(!button) return;
-  const imported=products.filter(item=>item.supplierProvider==="spenceraccstore" || String(item.id||"").startsWith("spencer_"));
-  if(!imported.length) return showSupplierMessage("There are no Spencer products imported into Gentle Acct Store yet.");
-  if(!window.confirm("Refresh all "+imported.length+" imported Spencer products using Spencer's latest stock, then add 1,000 to Gentle display stock? Original Spencer stock and your selling prices will be preserved.")) return;
-  if(lastSupplierProductsFetch && Date.now()-lastSupplierProductsFetch<60000) {
-    const seconds=Math.ceil((60000-(Date.now()-lastSupplierProductsFetch))/1000);
-    return showSupplierMessage("Spencer's product endpoint has a one-minute refresh limit. Please try again in "+seconds+" seconds.");
-  }
-  button.disabled=true;button.textContent="Refreshing stock…";
-  try {
-    const result=await supplierRequest("products");
-    const latest=Array.isArray(result.products)?result.products:(Array.isArray(result.data)?result.data:[]);
-    if(!latest.length) throw new Error("Spencer returned an empty product list. No stock was changed.");
-    lastSupplierProductsFetch=Date.now();
-    const byId=new Map(latest.map(item=>[Number(item.product_id),item]).filter(([id,item])=>Number.isFinite(id)&&id>0&&item));
-    const batchUpdates=[];
-    for(const product of imported) {
-      const supplierId=Number(product.supplierProductId||String(product.id).replace(/^spencer_/,""));
-      const current=byId.get(supplierId);
-      if(!current || current.stock_count===undefined || current.stock_count===null || !Number.isFinite(Number(current.stock_count))) continue;
-      const stock=Math.max(0,Math.floor(Number(current.stock_count)));
-      const inStock=typeof current.in_stock==="boolean"?current.in_stock:stock>0;
-      batchUpdates.push({ref:db.collection("products").doc(product.id),data:{
-        stockCount:stock+SPENCER_STOCK_BONUS,
-        supplierStockCount:stock,
-        supplierInStock:inStock,
-        supplierCost:current.price!==undefined?Number(current.price):Number(product.supplierCost||0),
-        supplierMinOrder:current.min_order!==undefined?Number(current.min_order):Number(product.supplierMinOrder||1),
-        supplierMaxOrder:current.max_order!==undefined?Number(current.max_order):Number(product.supplierMaxOrder||1),
-        supplierSyncedAt:firebase.firestore.FieldValue.serverTimestamp(),
-        updatedAt:firebase.firestore.FieldValue.serverTimestamp()
-      }});
-    }
-    if(!batchUpdates.length) throw new Error("No matching imported products had valid stock data. Nothing was changed.");
-    for(let start=0;start<batchUpdates.length;start+=400) {
-      const batch=db.batch();
-      batchUpdates.slice(start,start+400).forEach(update=>batch.update(update.ref,update.data));
-      await batch.commit();
-    }
-    await loadProducts();
-    if(supplierProducts.length) renderSupplierProducts();
-    showSupplierMessage("Refreshed "+batchUpdates.length+" of "+imported.length+" imported Spencer products using the latest supplier stock. Gentle display stock includes +1,000; original supplier quantities and your selling prices were preserved.","success");
-  } catch(error) {
-    console.error("BULK SPENCER RESTOCK ERROR:",error);
-    showSupplierMessage(error.message||"Could not refresh Spencer product stock.");
-  } finally {
-    button.disabled=false;button.textContent="↻ Refresh Spencer stock";
-  }
-}
-
-async function clearAllSpencerProducts() {
-  const button=$("supplierClearAll");
-  if(!button) return;
-  button.disabled=true;button.textContent="Checking products…";
-  try {
-    const snapshot=await db.collection("products").get();
-    const importedDocs=snapshot.docs.filter(doc=>{
-      const data=doc.data()||{};
-      return data.supplierProvider==="spenceraccstore" || String(doc.id).startsWith("spencer_");
+      if(!supplierProduct||!priceInput||!Number.isFinite(sellingPrice)||sellingPrice<0) {
+        throw new Error("Enter a valid selling price for every selected product.");
+      }
+      const category=supplierCategories.find(item=>Number(item.category_id)===Number(supplierProduct.category_id))
+        || supplierCategories.find(item=>Number(item.category_id)===Number(supplierSelectedCategoryId));
+      return {supplierProduct,sellingPrice,category};
     });
-    if(!importedDocs.length) {
-      showSupplierMessage("No imported Spencer products were found.","success");
-      return;
-    }
-    const confirmed=window.confirm("Delete all "+importedDocs.length+" Spencer products imported into Gentle Acct Store? This removes those product listings from your store. Normal products and existing orders/order history will be kept. This cannot be undone.");
-    if(!confirmed) return;
-    button.textContent="Removing products…";
-    for(let start=0;start<importedDocs.length;start+=400) {
+
+    button.textContent="Checking existing products…";
+    const existingDocs=await Promise.all(prepared.map(item=>{
+      const ref=db.collection("products").doc("spencer_"+Number(item.supplierProduct.product_id));
+      return ref.get().then(snapshot=>({ref,snapshot,item}));
+    }));
+
+    button.textContent="Saving products…";
+    // Firestore batch writes are much faster than individual sequential writes.
+    for(let start=0;start<existingDocs.length;start+=400) {
       const batch=db.batch();
-      importedDocs.slice(start,start+400).forEach(doc=>batch.delete(doc.ref));
+      const chunk=existingDocs.slice(start,start+400);
+      chunk.forEach(({ref,snapshot,item})=>{
+        const supplierProduct=item.supplierProduct;
+        const oldData=snapshot.exists?snapshot.data():{};
+        const stock=Math.max(0,Number(supplierProduct.stock_count||0));
+        batch.set(ref,{
+          name:supplierProduct.name||"Supplier product",
+          category:item.category?.category_name||"Supplier Products",
+          categoryLogo:item.category?.category_icon||"",
+          image:item.category?.category_icon||oldData.image||"",
+          description:oldData.description||"Automatically fulfilled through Spencer Acc Store.",
+          price:item.sellingPrice,
+          stockCount:stock+SPENCER_STOCK_BONUS,
+          supplierStockCount:stock,
+          supplierProvider:"spenceraccstore",
+          supplierProductId:Number(supplierProduct.product_id),
+          supplierCost:Number(supplierProduct.price||0),
+          supplierCurrency:supplierProduct.currency||"NGN",
+          supplierMinOrder:Number(supplierProduct.min_order||1),
+          supplierMaxOrder:Number(supplierProduct.max_order||1),
+          supplierInStock:supplierProduct.in_stock===true,
+          supplierSyncedAt:firebase.firestore.FieldValue.serverTimestamp(),
+          isSupplierProduct:true,
+          updatedAt:firebase.firestore.FieldValue.serverTimestamp(),
+          ...(snapshot.exists?{}:{createdAt:firebase.firestore.FieldValue.serverTimestamp()})
+        },{merge:true});
+      });
       await batch.commit();
+      imported+=chunk.length;
+      button.textContent="Saved "+imported+" of "+prepared.length+"…";
     }
-    supplierDrafts.clear();
+
+    showSupplierMessage("Successfully imported or updated "+imported+" product(s) in Gentle Acct Store.","success");
     await loadProducts();
-    if(supplierProducts.length) renderSupplierProducts();
-    showSupplierMessage("Removed "+importedDocs.length+" imported Spencer product listings. Normal products and order history were kept.","success");
+    renderSupplierProducts();
   } catch(error) {
-    console.error("CLEAR SPENCER PRODUCTS ERROR:",error);
-    showSupplierMessage(error.message||"Could not clear imported Spencer products.");
+    console.error("Supplier bulk import failed:",error);
+    showSupplierMessage("Imported "+imported+" product(s). "+(error.message||"The remaining products could not be imported."));
+    await loadProducts().catch(loadError=>console.error("Product reload failed:",loadError));
+    renderSupplierProducts();
   } finally {
-    button.disabled=false;button.textContent="Clear Spencer products";
+    button.disabled=false;
+    button.textContent="Import selected";
   }
 }
 
