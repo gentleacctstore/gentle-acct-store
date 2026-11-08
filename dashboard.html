@@ -570,13 +570,10 @@ main {padding:22px 22px 30px}
 /* CATEGORY FILTERS */
 
 .category-scroll {
-  display:flex;
-  gap:9px;
-  overflow-x:auto;
-  padding:3px 1px 8px;
-  scrollbar-width:none;
-  -webkit-overflow-scrolling:touch;
+  display:flex;flex-direction:column;gap:8px;overflow:visible;padding:3px 1px 8px;
 }
+.category-row {display:flex;gap:9px;overflow-x:auto;padding:1px 0 5px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.category-row::-webkit-scrollbar {display:none}
 .category-scroll::-webkit-scrollbar {display:none}
 .category-btn {
   padding:10px 16px;
@@ -1480,6 +1477,7 @@ html.dark-mode .back-btn,html[data-theme="dark"] .back-btn {color:#B7E4BE !impor
 
 let currentUser = null;
 let products = [];
+let savedCategoryLayoutRows = [];
 let walletBalance = 0;
 let orders = [];
 let activeCategory = "all";
@@ -1786,6 +1784,7 @@ async function loadProducts() {
   const container = document.getElementById("productsContainer");
 
   try {
+    await loadSavedCategoryLayout();
     const db = window.firebaseDB || firebase.firestore();
     const snapshot = await db.collection("products").get();
 
@@ -1863,7 +1862,26 @@ function sortCategories(a, b) {
 }
 
 function getOrderedCategories(categories) {
-  return [...categories].sort(sortCategories);
+  const available=[...categories];
+  const ordered=[];
+  savedCategoryLayoutRows.forEach(row=>row.forEach(name=>{
+    const match=available.find(item=>item.toLowerCase()===String(name).toLowerCase());
+    if(match&&!ordered.some(item=>item.toLowerCase()===match.toLowerCase())) ordered.push(match);
+  }));
+  const remaining=available.filter(item=>!ordered.some(name=>name.toLowerCase()===item.toLowerCase())).sort(sortCategories);
+  return [...ordered,...remaining];
+}
+
+async function loadSavedCategoryLayout() {
+  try {
+    const db=window.firebaseDB || firebase.firestore();
+    const snapshot=await db.collection("storeSettings").doc("categoryLayout").get();
+    const rows=snapshot.exists?snapshot.data().rows:[];
+    savedCategoryLayoutRows=Array.isArray(rows)?rows.filter(Array.isArray):[];
+  } catch(error) {
+    console.warn("Category layout could not be loaded; using default order.",error);
+    savedCategoryLayoutRows=[];
+  }
 }
 
 function buildCategoryButtons() {
@@ -1890,18 +1908,23 @@ function buildCategoryButtons() {
     }
   });
 
-  getOrderedCategories(categories).forEach(category => {
-    const button = document.createElement("button");
-
-    button.className = "category-btn" +
-      (activeCategory.toLowerCase() === category.toLowerCase()
-        ? " active" : "");
-
-    button.type = "button";
-    button.textContent = category;
-    button.addEventListener("click",() => selectCategory(category));
-    container.appendChild(button);
+  const ordered=getOrderedCategories(categories);
+  const configuredRows=savedCategoryLayoutRows.length?savedCategoryLayoutRows:[ordered];
+  const assigned=new Set();
+  configuredRows.forEach(row=>{
+    const rowCategories=row.map(name=>ordered.find(item=>item.toLowerCase()===String(name).toLowerCase())).filter(Boolean);
+    if(!rowCategories.length)return;
+    const rowElement=document.createElement("div");rowElement.className="category-row";
+    rowCategories.forEach(category=>{
+      assigned.add(category.toLowerCase());
+      const button=document.createElement("button");
+      button.className="category-btn"+(activeCategory.toLowerCase()===category.toLowerCase()?" active":"");
+      button.type="button";button.textContent=category;button.addEventListener("click",()=>selectCategory(category));rowElement.appendChild(button);
+    });
+    container.appendChild(rowElement);
   });
+  const remaining=ordered.filter(category=>!assigned.has(category.toLowerCase()));
+  if(remaining.length){const rowElement=document.createElement("div");rowElement.className="category-row";remaining.forEach(category=>{const button=document.createElement("button");button.className="category-btn"+(activeCategory.toLowerCase()===category.toLowerCase()?" active":"");button.type="button";button.textContent=category;button.addEventListener("click",()=>selectCategory(category));rowElement.appendChild(button);});container.appendChild(rowElement);}
 }
 
 function selectCategory(category) {
