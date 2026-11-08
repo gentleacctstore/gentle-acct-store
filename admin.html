@@ -412,8 +412,9 @@ th { color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.
 .supplier-toolbar select,.supplier-toolbar input{min-width:0;min-height:42px;padding:10px 12px;border:1px solid var(--border);border-radius:9px;background:var(--input-bg);color:var(--text);font-size:14px}
 .supplier-toolbar input{flex:1 1 180px}
 .supplier-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
-.supplier-table{min-width:760px}
+.supplier-table{min-width:980px}
 .supplier-table input[type=number]{width:110px;min-height:38px;padding:8px;border:1px solid var(--border);border-radius:8px;background:var(--input-bg);color:var(--text);font-size:16px}
+.supplier-table input.supplier-store-name{width:220px;min-width:190px;min-height:38px;padding:8px;border:1px solid var(--border);border-radius:8px;background:var(--input-bg);color:var(--text);font-size:16px}
 .supplier-product-name{font-weight:800;font-size:12px}.supplier-product-meta{font-size:10px;color:var(--muted);margin-top:4px}
 .supplier-note{margin:15px;padding:12px;border-radius:10px;background:var(--hover);color:var(--muted);font-size:11px;line-height:1.6}
 @media(max-width:760px){.supplier-summary{grid-template-columns:1fr}.supplier-stat{padding:12px}.supplier-stat strong{font-size:18px}.supplier-toolbar>*{width:100%}.supplier-toolbar input{flex-basis:100%}.supplier-toolbar select,.supplier-toolbar input{font-size:16px}}
@@ -585,7 +586,7 @@ th { color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.
             <div class="supplier-note">Supplier prices are your costs, not your store selling prices. Enter the price customers should pay before importing. Product stock is synced from Spencer when you fetch products. Supplier API requests are made through the Cloudflare Worker; the API key is never sent to this browser.</div>
           </div>
           <div class="supplier-table-wrap">
-            <table class="supplier-table"><thead><tr><th><input id="supplierSelectAll" type="checkbox" aria-label="Select all products"></th><th>Supplier product</th><th>Supplier cost</th><th>Stock</th><th>Min / Max</th><th>Your selling price (₦)</th><th>Status</th></tr></thead><tbody id="supplierProductsTable"><tr><td colspan="7" class="empty-state">Load supplier products to begin.</td></tr></tbody></table>
+            <table class="supplier-table"><thead><tr><th><input id="supplierSelectAll" type="checkbox" aria-label="Select all products"></th><th>Supplier product</th><th>Your Gentle product name</th><th>Supplier cost</th><th>Stock</th><th>Min / Max</th><th>Your selling price (₦)</th><th>Status</th></tr></thead><tbody id="supplierProductsTable"><tr><td colspan="8" class="empty-state">Load supplier products to begin.</td></tr></tbody></table>
           </div>
         </div>
       </section>
@@ -1038,22 +1039,30 @@ async function loadSupplierCategories() {
 
 function renderSupplierProducts() {
   const search=$("supplierSearch").value.trim().toLowerCase();
-  const filtered=supplierProducts.filter(product=>String(product.name||"").toLowerCase().includes(search));
+  const filtered=supplierProducts.filter(product=>{
+    const supplierName=String(product.name||"").toLowerCase();
+    const existing=products.find(item=>item.id==="spencer_"+Number(product.product_id));
+    const storeName=String(existing?.name||supplierName).toLowerCase();
+    return !search||supplierName.includes(search)||storeName.includes(search);
+  });
   $("supplierProductsTable").innerHTML=filtered.length?filtered.map(product=>{
     const id=Number(product.product_id);
     const category=supplierCategories.find(item=>Number(item.category_id)===Number(product.category_id)) || supplierCategories.find(item=>Number(item.category_id)===Number(supplierSelectedCategoryId));
     const supplierPrice=Number(product.price||0);
     const suggested=Math.ceil(supplierPrice*1.15/10)*10;
     const inStock=product.in_stock===true&&Number(product.stock_count||0)>0;
+    const existing=products.find(item=>item.id==="spencer_"+id);
+    const storeName=existing?.name||product.name||"Supplier product";
     return `<tr data-supplier-row="${id}">
       <td><input type="checkbox" class="supplier-product-check" value="${id}" aria-label="Select ${escapeHTML(product.name||"product")}"></td>
       <td><div class="supplier-product-name">${escapeHTML(product.name||"Unnamed product")}</div><div class="supplier-product-meta">ID: ${id} · ${escapeHTML(category?.category_name||"Uncategorised")}</div></td>
+      <td><input type="text" maxlength="120" class="supplier-store-name" value="${escapeHTML(storeName)}" aria-label="Your Gentle product name for ${escapeHTML(product.name||"product")}" placeholder="Enter your store name"></td>
       <td>${money(supplierPrice)}</td><td>${Number(product.stock_count||0).toLocaleString("en-NG")}</td>
       <td>${Number(product.min_order||1)} / ${Number(product.max_order||1)}</td>
       <td><input type="number" min="0" step="0.01" class="supplier-selling-price" value="${suggested}" aria-label="Your selling price for ${escapeHTML(product.name||"product")}"></td>
       <td><span class="status ${inStock?"success":"failed"}">${inStock?"In stock":"Out of stock"}</span></td>
     </tr>`;
-  }).join(""):'<tr><td colspan="7" class="empty-state">No supplier products found.</td></tr>';
+  }).join(""):'<tr><td colspan="8" class="empty-state">No supplier products found.</td></tr>';
 }
 
 async function loadSupplierProducts() {
@@ -1065,7 +1074,7 @@ async function loadSupplierProducts() {
   }
   const button=$("supplierLoadProducts");
   button.disabled=true;button.textContent="Fetching…";
-  $("supplierProductsTable").innerHTML='<tr><td colspan="7" class="loading">Fetching supplier products…</td></tr>';
+  $("supplierProductsTable").innerHTML='<tr><td colspan="8" class="loading">Fetching supplier products…</td></tr>';
   try {
     if(!supplierCategories.length) await loadSupplierCategories();
     const categoryId=$("supplierCategoryFilter").value;
@@ -1076,7 +1085,7 @@ async function loadSupplierProducts() {
     renderSupplierProducts();
     showSupplierMessage("Fetched "+supplierProducts.length+" supplier products. Set your selling prices and select what to import.","success");
   } catch(error) {
-    $("supplierProductsTable").innerHTML='<tr><td colspan="7" class="empty-state">Could not load supplier products.</td></tr>';
+    $("supplierProductsTable").innerHTML='<tr><td colspan="8" class="empty-state">Could not load supplier products.</td></tr>';
     showSupplierMessage(error.message||"Could not load supplier products.");
   } finally {button.disabled=false;button.textContent="Fetch products";}
 }
@@ -1091,14 +1100,18 @@ async function importSelectedSupplierProducts() {
     for(const checkbox of selected) {
       const supplierProduct=supplierProducts.find(item=>Number(item.product_id)===Number(checkbox.value));
       const row=checkbox.closest("tr");
+      const storeName=row.querySelector(".supplier-store-name").value.trim();
       const sellingPrice=Number(row.querySelector(".supplier-selling-price").value);
-      if(!supplierProduct||!Number.isFinite(sellingPrice)||sellingPrice<0) throw new Error("Enter a valid selling price for every selected product.");
+      if(!supplierProduct) throw new Error("A selected supplier product could not be found. Fetch products again.");
+      if(!storeName) throw new Error("Enter your Gentle product name for every selected product.");
+      if(!Number.isFinite(sellingPrice)||sellingPrice<0) throw new Error("Enter a valid selling price for every selected product.");
       const category=supplierCategories.find(item=>Number(item.category_id)===Number(supplierProduct.category_id)) || supplierCategories.find(item=>Number(item.category_id)===Number(supplierSelectedCategoryId));
       const productRef=db.collection("products").doc("spencer_"+Number(supplierProduct.product_id));
       const existing=await productRef.get();
       const oldData=existing.exists?existing.data():{};
       await productRef.set({
-        name:supplierProduct.name||"Supplier product",
+        name:storeName,
+        supplierOriginalName:supplierProduct.name||"Supplier product",
         category:category?.category_name||"Supplier Products",
         categoryLogo:category?.category_icon||"",
         image:category?.category_icon||oldData.image||"",
