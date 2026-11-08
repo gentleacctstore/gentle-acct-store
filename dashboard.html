@@ -640,9 +640,11 @@ main {padding:22px 22px 30px}
   box-shadow:var(--shadow);
 }
 .product-card {
-  gap:15px;
-  min-height:112px;
-  padding:17px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-height:104px;
+  padding:12px 14px;
   border:0;
   border-bottom:1px solid #F5E8E9;
   border-radius:0;
@@ -654,8 +656,8 @@ main {padding:22px 22px 30px}
   display:flex;
   align-items:center;
   justify-content:center;
-  width:82px;height:82px;
-  flex:0 0 82px;
+  width:58px;height:58px;
+  flex:0 0 58px;
   overflow:hidden;
   border-radius:15px;
   background:transparent;
@@ -674,16 +676,18 @@ main {padding:22px 22px 30px}
 }
 .product-image>i {font-size:37px}
 .product-info {flex:1;min-width:0}
+.product-actions {flex:0 0 auto;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:0}
 .product-info h3 {
   margin:0 0 7px;
   color:#171917;
-  font-size:16px;
-  font-weight:1000;
-  line-height:1.4;
-  letter-spacing:-.3px;
-  display:block;
-  overflow:visible;
-  white-space:normal;
+  font-size:15px;
+  font-weight:900;
+  line-height:1.25;
+  letter-spacing:0;
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+  overflow:hidden;
   overflow-wrap:anywhere;
 }
 .product-meta {flex-wrap:wrap;gap:7px}
@@ -692,7 +696,7 @@ main {padding:22px 22px 30px}
   align-items:center;
   gap:6px;
   color:#747985;
-  font-size:12px;
+  font-size:11px;
   font-weight:700;
   white-space:nowrap;
 }
@@ -713,9 +717,9 @@ main {padding:22px 22px 30px}
   white-space:nowrap;
 }
 .product-price {
-  margin-top:7px;
+  margin-top:0;
   color:var(--green);
-  font-size:18px;
+  font-size:16px;
   font-weight:1000;
   line-height:1.25;
   overflow-wrap:anywhere;
@@ -723,9 +727,9 @@ main {padding:22px 22px 30px}
 }
 .buy-btn {
   flex:0 0 auto;
-  min-width:94px;
-  min-height:43px;
-  padding:10px 14px;
+  min-width:76px;
+  min-height:38px;
+  padding:8px 11px;
   border:1px solid var(--green);
   border-radius:25px;
   background:var(--green);
@@ -1060,17 +1064,17 @@ html.dark-mode .toast {
   .category-logo {width:32px;height:32px;flex-basis:32px}
   .product-list {border-radius:20px}
   .product-card {
-    gap:11px;
-    min-height:98px;
-    padding:13px 11px;
+    gap:10px;
+    min-height:88px;
+    padding:11px 10px;
   }
-  .product-image {width:66px;height:66px;flex-basis:66px}
-  .product-image>i {font-size:30px}
-  .product-info h3 {font-size:14px;line-height:1.4;margin-bottom:6px}
-  .product-stock {font-size:11px}
-  .product-price {font-size:16px;margin-top:6px}
-  .buy-btn {min-width:76px;min-height:39px;padding:8px 10px;font-size:12px}
-  .buy-btn.disabled,.buy-btn:disabled {min-width:68px;padding:8px;font-size:11px}
+  .product-image {width:48px;height:48px;flex-basis:48px}
+  .product-image>i {font-size:25px}
+  .product-info h3 {font-size:13px;line-height:1.25;margin-bottom:5px}
+  .product-stock {font-size:10px}
+  .product-price {font-size:14px;margin:0 0 5px;text-align:right}
+  .buy-btn {min-width:66px;min-height:34px;padding:7px 9px;font-size:11px}
+  .buy-btn.disabled,.buy-btn:disabled {min-width:60px;padding:7px;font-size:10px}
   .nav-item {font-size:10px}
   .nav-item i {font-size:21px}
   .floating-contact {width:54px;height:54px;right:14px}
@@ -1100,13 +1104,13 @@ html.dark-mode .toast {
   .wallet-stat strong {font-size:12px}
   .wallet-btn {padding:7px;font-size:9px}
   .wallet-art {right:4px;transform:scale(.67)}
-  .product-card {gap:7px;padding:10px 8px}
-  .product-image {width:52px;height:52px;flex-basis:52px}
+  .product-card {gap:7px;padding:9px 8px;min-height:80px}
+  .product-image {width:42px;height:42px;flex-basis:42px}
   .product-info h3 {font-size:12px}
   .product-stock {font-size:9px}
-  .product-price {font-size:13px}
-  .buy-btn {min-width:61px;padding:7px;font-size:10px}
-  .buy-btn.disabled,.buy-btn:disabled {min-width:57px;font-size:9px}
+  .product-price {font-size:12px}
+  .buy-btn {min-width:58px;min-height:31px;padding:6px;font-size:10px}
+  .buy-btn.disabled,.buy-btn:disabled {min-width:52px;font-size:9px}
   .nav-item {font-size:9px}
   .nav-item i {font-size:19px}
 }
@@ -1815,15 +1819,37 @@ async function loadProducts() {
   }
 }
 
+const CATEGORY_ORDER = [
+  "Giveaway Accounts",
+  "All Texting Apps",
+  "USA Facebook",
+  "Aged Facebook",
+  "Instagram",
+  "Aged Instagram",
+  "TikTok Accounts",
+  "Twitter",
+  "Twitter Followers",
+  "VPN Premium",
+  "9 Proxy",
+  "Working Tools",
+  "Netflix Accounts",
+  "Snapchat",
+  "USA iCloud",
+  "USA Facebook Dating (Female)",
+  "USA Facebook Dating (Male)",
+  "Email Services",
+  "LinkedIn",
+  "Reddit Accounts",
+  "Advertising Facebook",
+  "Verified Profiles",
+  "Aged Instagram with Followers and Old Posts",
+  "Plenty of Fish (POF) Dating Sites"
+];
+
 function getCategoryPriority(category) {
   const name = String(category || "").trim().toLowerCase();
-
-  if (name.includes("giveaway")) return 1;
-  if (name.includes("facebook")) return 2;
-  if (name.includes("tiktok") || name.includes("tik tok")) return 3;
-  if (name.includes("instagram")) return 4;
-
-  return 5;
+  const index = CATEGORY_ORDER.findIndex(item => item.toLowerCase() === name);
+  return index === -1 ? CATEGORY_ORDER.length : index;
 }
 
 function sortCategories(a,b) {
@@ -2017,9 +2043,11 @@ function createProductCard(product) {
           <i class="fa-solid fa-circle"></i>${stockText}
         </span>
       </div>
-      <div class="product-price">${price}</div>
     </div>
-    ${button}
+    <div class="product-actions">
+      <div class="product-price">${price}</div>
+      ${button}
+    </div>
   </article>`;
 }
 
