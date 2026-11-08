@@ -254,7 +254,7 @@ th { color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.
 }
 .toast.show { display:block; }
 .login-screen {
-  min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;
+  min-height:100vh;display:none;align-items:center;justify-content:center;padding:20px;
   background:linear-gradient(135deg,#0b1120,#1d4ed8);
 }
 .login-card { width:min(100%,410px);background:white;color:#182230;border-radius:22px;padding:28px; }
@@ -435,120 +435,26 @@ th { color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.
 @media(max-width:900px){.supplier-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:420px){.supplier-card-grid{gap:8px;padding:10px}.supplier-card{padding:10px}.supplier-card-name{font-size:11px}.supplier-card .btn{padding:7px 6px;font-size:10px}}
 
-
-/* GENTLE ACCT STORE ADMIN LOGIN — compact reference-matched design */
-.login-screen{
-  min-height:100svh;display:flex;align-items:center;justify-content:center;
-  padding:22px 16px;background:linear-gradient(135deg,#f2f8f4 0%,#e8f2eb 52%,#f5faf6 100%);
-}
-.login-card{
-  width:min(100%,440px);background:#fff;color:#151a17;border:1px solid #d8e8dc;
-  border-radius:26px;padding:30px 32px 27px;box-shadow:0 14px 38px rgba(25,77,40,.10);
-  text-align:center;
-}
-.login-brand-icon{
-  width:68px;height:68px;margin:0 auto 17px;border-radius:19px;
-  display:grid;place-items:center;background:linear-gradient(145deg,#1d6334,#124b27);
-  color:#fff;box-shadow:0 10px 24px rgba(25,77,40,.18);
-}
-.login-brand-icon svg{width:34px;height:34px;display:block}
-.login-card h1{margin:0;color:#111;font-size:25px;line-height:1.2;font-weight:900;letter-spacing:-.9px}
-.login-card h1 span{color:#245b34}
-.login-badge{
-  width:max-content;margin:10px auto 18px;padding:7px 17px;border:2px solid #b6d8c1;
-  border-radius:30px;background:#eaf4ed;color:#245b34;font-size:11px;font-weight:850;letter-spacing:1.7px;
-  display:flex;align-items:center;gap:8px;
-}
-.login-badge svg{width:14px;height:14px}
-.login-card .login-intro{margin:0 0 20px;color:#78847c;font-size:12px;line-height:1.5}
-.login-card .field{margin-bottom:17px;text-align:left;gap:7px}
-.login-card .field label{font-size:11px;color:#555e58;font-weight:850;letter-spacing:1.1px}
-.login-input-wrap{
-  min-height:52px;display:flex;align-items:center;gap:12px;padding:0 13px;
-  border:2px solid #dce9df;border-radius:13px;background:#f9fbf9;
-}
-.login-input-wrap:focus-within{border-color:#83b995;box-shadow:0 0 0 3px rgba(41,83,42,.08)}
-.login-field-icon{width:18px;height:18px;flex:0 0 18px;color:#a5b0a8;display:grid;place-items:center}
-.login-field-icon svg{width:18px;height:18px;display:block}
-.login-card .login-input-wrap input{
-  width:100%;min-width:0;border:0;outline:0;background:transparent;color:#17251b;
-  font-size:16px;padding:12px 0;box-shadow:none;
-}
-.login-card .login-input-wrap input::placeholder{color:#aeb5b0;opacity:1}
-.login-password-toggle{
-  width:34px;height:34px;flex:0 0 34px;display:grid;place-items:center;
-  border:0;border-radius:8px;background:transparent;color:#89968d;padding:6px;
-}
-.login-password-toggle svg{width:19px;height:19px;display:block}
-.login-card #loginButton{
-  width:100%;min-height:56px;margin-top:2px;border:0;border-radius:14px;
-  background:linear-gradient(110deg,#15552d,#1d6335);color:#fff;
-  box-shadow:0 9px 22px rgba(25,77,40,.17);font-size:16px;font-weight:850;
-}
-.login-card #loginButton:hover{background:linear-gradient(110deg,#104725,#19572f)}
-.login-card #loginButton svg{width:18px;height:18px;vertical-align:middle;margin-right:7px}
-.login-security{
-  display:flex;align-items:center;gap:10px;margin-top:20px;padding:12px 13px;
-  border:1.5px solid #b8d9c2;border-radius:13px;background:#eaf4ed;color:#245b34;
-  text-align:left;font-size:11px;font-weight:650;line-height:1.5;
-}
-.login-security-icon{width:20px;height:20px;flex:0 0 20px;display:grid;place-items:center}
-.login-security-icon svg{width:20px;height:20px;display:block}
-.login-back-link{
-  display:inline-flex;align-items:center;gap:6px;margin-top:20px;color:#9aa39d;text-decoration:none;font-size:12px;
-}
-.login-back-link svg{width:14px;height:14px}
-.login-back-link:hover{color:#245b34}
-.login-card .error-box{margin:0 0 14px;text-align:left}
-@media(max-width:600px){
-  .login-screen{padding:18px 14px}
-  .login-card{width:min(100%,420px);padding:27px 23px 24px;border-radius:23px}
-  .login-brand-icon{width:62px;height:62px;border-radius:17px;margin-bottom:15px}
-  .login-brand-icon svg{width:31px;height:31px}
-  .login-card h1{font-size:23px}
-  .login-badge{margin:9px auto 16px;font-size:10px;padding:7px 15px}
-  .login-card .login-intro{margin-bottom:18px}
-  .login-card .field{margin-bottom:15px}
-  .login-input-wrap{min-height:50px;border-radius:12px;padding:0 12px;gap:10px}
-  .login-card .login-input-wrap input{font-size:16px}
-  .login-card #loginButton{min-height:53px;font-size:15px}
-  .login-security{font-size:10.5px;padding:11px;gap:9px;margin-top:17px}
-  .login-back-link{margin-top:17px;font-size:12px}
-}
 </style>
 </head>
 <body>
 
 <div class="login-screen" id="loginScreen">
   <div class="login-card">
-    <div class="login-brand-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2.8 20 6v5.2c0 5.1-3.4 8.7-8 10-4.6-1.3-8-4.9-8-10V6l8-3.2Z" fill="currentColor"/></svg></div>
-    <h1>Gentle <span>Acct</span> Store</h1>
-    <div class="login-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg> ADMIN PANEL</div>
-    <p class="login-intro">Sign in with your authorised administrator account.</p>
+    <h1>Gentle Admin</h1>
+    <p>Sign in with the authorised administrator account.</p>
     <div id="loginError" class="error-box hidden"></div>
     <form id="loginForm">
       <div class="field">
-        <label for="loginEmail">EMAIL ADDRESS</label>
-        <div class="login-input-wrap">
-          <span class="login-field-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
-          <input id="loginEmail" type="email" autocomplete="username" placeholder="admin@yoursite.com" required>
-        </div>
+        <label for="loginEmail">Email address</label>
+        <input id="loginEmail" type="email" autocomplete="username" required>
       </div>
       <div class="field">
-        <label for="loginPassword">PASSWORD</label>
-        <div class="login-input-wrap">
-          <span class="login-field-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span>
-          <input id="loginPassword" type="password" autocomplete="current-password" placeholder="Enter admin password" required>
-          <button class="login-password-toggle" id="toggleLoginPassword" type="button" aria-label="Show password" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></button>
-        </div>
+        <label for="loginPassword">Password</label>
+        <input id="loginPassword" type="password" autocomplete="current-password" required>
       </div>
-      <button class="btn btn-primary" id="loginButton" type="submit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 17l5-5-5-5M15 12H3"/><path d="M12 3h6a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3h-6"/></svg>Sign In to Admin</button>
+      <button class="btn btn-primary" id="loginButton" type="submit">Sign in</button>
     </form>
-    <div class="login-security">
-      <span class="login-security-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.8 20 6v5.2c0 5.1-3.4 8.7-8 10-4.6-1.3-8-4.9-8-10V6l8-3.2Z"/><path d="m8.5 12 2.2 2.2 4.8-4.8"/></svg></span>
-      <span>This area is restricted to authorised administrators only. Access attempts are logged.</span>
-    </div>
-    <a class="login-back-link" href="./"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6M9 12h12"/></svg>Back to main site</a>
   </div>
 </div>
 
@@ -693,10 +599,10 @@ th { color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.
               <button class="btn" id="supplierLoadCategories" type="button">Load categories</button>
               <button class="btn btn-primary" id="supplierLoadProducts" type="button">Fetch products</button>
               <button class="btn btn-primary" id="supplierImportSelected" type="button">Import selected</button>
-              <button class="btn" id="supplierRestockAll" type="button">↻ Refresh Spencer stock</button>
-              <button class="btn" id="supplierClearAll" type="button" style="border:1px solid #dc2626;color:#dc2626">Clear Spencer products</button>
+              <button class="btn" id="supplierRestockAll" type="button">↻ Restock all imported</button>
+              <button class="btn" id="supplierClearAll" type="button" style="border:1px solid #DC2626;color:#DC2626">Clear all Spencer products</button>
             </div>
-            <div class="supplier-note">Supplier prices are your costs, not your store selling prices. Refresh Spencer stock to fetch the latest supplier quantities for all imported products. Gentle display stock adds 1,000 to the supplier quantity; the original Spencer stock is stored separately. This extra 1,000 is a display adjustment, not real supplier inventory. Supplier API requests are made through the Cloudflare Worker; the API key is never sent to this browser.</div>
+            <div class="supplier-note">Supplier prices are your costs, not your store selling prices. Enter the price customers should pay before importing. Product stock is synced from Spencer when you fetch products. Supplier API requests are made through the Cloudflare Worker; the API key is never sent to this browser.</div>
           </div>
           <div class="panel-head" style="border-top:1px solid var(--border)">
             <div><div class="panel-title">Fetched supplier products</div><div class="panel-desc">Search above, review each product card and choose what to import.</div></div>
@@ -717,7 +623,6 @@ th { color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.
         <div id="productFormMessage" class="hidden"></div>
         <div class="form-grid">
           <div class="field full"><label for="productName">Product name *</label><input id="productName" maxlength="120" required></div>
-          <div class="field full"><label for="productDisplayName">Store display name (optional)</label><input id="productDisplayName" maxlength="180" placeholder="Example: 🇺🇸 USA 2021 FB ACCT 🔥 | CREATE PAGE ⚡ | SHARP & READY ✅"><div class="help-text">This is the shortened name customers will see. Leave blank to use the automatic short name.</div></div>
           <div class="field full"><label>Product category *</label><input id="productCategory" type="hidden"><div class="category-picker" id="categoryPicker"><button class="category-trigger" id="productCategoryButton" type="button"><span id="selectedCategory">Choose a category</span><span>⌄</span></button><div class="category-options" id="categoryOptions"></div></div></div>
           <div class="field"><label for="productPrice">Price (₦) *</label><input id="productPrice" type="number" min="0" step="0.01" required></div>
           <div class="field"><label for="productImage">Image URL</label><input id="productImage" type="url"></div>
@@ -749,7 +654,6 @@ th { color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.
 "use strict";
 
 const ADMIN_UID = "UoEjCy99gbQKkGob59vGi3CunZi1";
-const SPENCER_STOCK_BONUS = 1000; // Additional Gentle display stock; not real supplier inventory.
 const VAPID_KEY = "BBK7boItExQx1LlAngzvuu38HWGFxuDLGYg8o2LDezCmNJuoGRkPUkZe8_OYMdszdsfbR6Cg9fbFHLXN2eKlx9o";
 const auth = window.firebaseAuth;
 const db = window.firebaseDB;
@@ -834,25 +738,12 @@ function hideMessage(id) {
 }
 
 function readableError(error) {
-  const code=String(error && error.code || "");
-  const messages={
-    "auth/invalid-email":"That email address is not valid. Check the spelling and try again.",
-    "auth/user-not-found":"No Firebase account exists for that email address.",
-    "auth/wrong-password":"The password is incorrect. Check it and try again.",
-    "auth/invalid-credential":"The email or password is incorrect. Check both and try again.",
-    "auth/too-many-requests":"Firebase temporarily blocked sign-in attempts. Wait a while, then try again.",
-    "auth/network-request-failed":"Network error. Check your internet connection and try again.",
-    "auth/operation-not-allowed":"Email/password sign-in is disabled in Firebase Authentication settings.",
-    "auth/invalid-api-key":"The Firebase API key is invalid. Check firebase.js.",
-    "auth/app-not-authorized":"This website domain is not authorised in Firebase Authentication settings.",
-    "auth/user-disabled":"This Firebase account has been disabled."
-  };
-  if(messages[code]) return messages[code];
+  const code=error && error.code ? error.code : "";
   if(code.includes("permission-denied")) return "Firebase denied access. Check Firestore rules and the signed-in admin account.";
-  if(code.includes("unavailable")) return "Firebase is temporarily unavailable. Check your internet connection and try again.";
+  if(code.includes("unavailable")) return "Firestore is temporarily unavailable. Check your internet connection and try again.";
   if(code.includes("unauthenticated")) return "Your session has expired. Sign in again.";
-  if(code.includes("failed-precondition")) return "Firebase reported a configuration or index issue.";
-  return (error && error.message) ? error.message : "An unknown error occurred. Check the browser console for details.";
+  if(code.includes("failed-precondition")) return "Firestore reported a configuration or index issue.";
+  return (error && error.message) ? error.message : "An unknown error occurred.";
 }
 
 function showLogin(message="") {
@@ -876,8 +767,8 @@ function productImage(p) { return p.image||p.imageUrl||p.productImage||""; }
 function productDescription(p) { return p.description||p.productDescription||""; }
 function stockCount(id) {
   const product=products.find(item=>item.id===id);
-  if(product&&(product.supplierProvider==="spenceraccstore" || String(product.id||"").startsWith("spencer_"))) {
-    return {available:Math.max(0,Number(product.stockCount??(Number(product.supplierStockCount||0)+SPENCER_STOCK_BONUS))),sold:Number(product.supplierSoldCount||0)};
+  if(product&&product.supplierProvider==="spenceraccstore") {
+    return {available:Math.max(0,Number(product.supplierStockCount??product.stockCount??0)),sold:Number(product.supplierSoldCount||0)};
   }
   return productStock[id]||{available:0,sold:0};
 }
@@ -1273,7 +1164,7 @@ async function editSupplierProduct(productId) {
       image:oldData.image||category?.category_icon||"",
       description:oldData.description||"Automatically fulfilled through Spencer Acc Store.",
       price:Number.isFinite(Number(oldData.price))?Number(oldData.price):initialSellingPrice,
-      stockCount:Math.max(0,Number(supplierProduct.stock_count||0))+SPENCER_STOCK_BONUS,
+      stockCount:Math.max(0,Number(supplierProduct.stock_count||0)),
       supplierStockCount:Math.max(0,Number(supplierProduct.stock_count||0)),
       supplierProvider:"spenceraccstore",
       supplierProductId:Number(supplierProduct.product_id),
@@ -1304,78 +1195,136 @@ async function importSelectedSupplierProducts() {
   const selected=[...document.querySelectorAll(".supplier-product-check:checked")];
   if(!selected.length) return showSupplierMessage("Select at least one supplier product to import.");
   const button=$("supplierImportSelected");
-  button.disabled=true;
-  button.textContent="Preparing import…";
+  button.disabled=true;button.textContent="Importing…";
   let imported=0;
   try {
-    // Validate and prepare all selected products together instead of waiting
-    // for one Firestore read/write to finish before starting the next.
-    const prepared=selected.map(checkbox=>{
+    for(const checkbox of selected) {
       const supplierProduct=supplierProducts.find(item=>Number(item.product_id)===Number(checkbox.value));
       const row=checkbox.closest("[data-supplier-row]");
       const priceInput=row?.querySelector(".supplier-selling-price");
       const sellingPrice=Number(priceInput?.value);
-      if(!supplierProduct||!priceInput||!Number.isFinite(sellingPrice)||sellingPrice<0) {
-        throw new Error("Enter a valid selling price for every selected product.");
-      }
-      const category=supplierCategories.find(item=>Number(item.category_id)===Number(supplierProduct.category_id))
-        || supplierCategories.find(item=>Number(item.category_id)===Number(supplierSelectedCategoryId));
-      return {supplierProduct,sellingPrice,category};
-    });
-
-    button.textContent="Checking existing products…";
-    const existingDocs=await Promise.all(prepared.map(item=>{
-      const ref=db.collection("products").doc("spencer_"+Number(item.supplierProduct.product_id));
-      return ref.get().then(snapshot=>({ref,snapshot,item}));
-    }));
-
-    button.textContent="Saving products…";
-    // Firestore batch writes are much faster than individual sequential writes.
-    for(let start=0;start<existingDocs.length;start+=400) {
-      const batch=db.batch();
-      const chunk=existingDocs.slice(start,start+400);
-      chunk.forEach(({ref,snapshot,item})=>{
-        const supplierProduct=item.supplierProduct;
-        const oldData=snapshot.exists?snapshot.data():{};
-        const stock=Math.max(0,Number(supplierProduct.stock_count||0));
-        batch.set(ref,{
-          name:supplierProduct.name||"Supplier product",
-          category:item.category?.category_name||"Supplier Products",
-          categoryLogo:item.category?.category_icon||"",
-          image:item.category?.category_icon||oldData.image||"",
-          description:oldData.description||"Automatically fulfilled through Spencer Acc Store.",
-          price:item.sellingPrice,
-          stockCount:stock+SPENCER_STOCK_BONUS,
-          supplierStockCount:stock,
-          supplierProvider:"spenceraccstore",
-          supplierProductId:Number(supplierProduct.product_id),
-          supplierCost:Number(supplierProduct.price||0),
-          supplierCurrency:supplierProduct.currency||"NGN",
-          supplierMinOrder:Number(supplierProduct.min_order||1),
-          supplierMaxOrder:Number(supplierProduct.max_order||1),
-          supplierInStock:supplierProduct.in_stock===true,
-          supplierSyncedAt:firebase.firestore.FieldValue.serverTimestamp(),
-          isSupplierProduct:true,
-          updatedAt:firebase.firestore.FieldValue.serverTimestamp(),
-          ...(snapshot.exists?{}:{createdAt:firebase.firestore.FieldValue.serverTimestamp()})
-        },{merge:true});
-      });
-      await batch.commit();
-      imported+=chunk.length;
-      button.textContent="Saved "+imported+" of "+prepared.length+"…";
+      if(!supplierProduct||!priceInput||!Number.isFinite(sellingPrice)||sellingPrice<0) throw new Error("Enter a valid selling price for every selected product.");
+      const category=supplierCategories.find(item=>Number(item.category_id)===Number(supplierProduct.category_id)) || supplierCategories.find(item=>Number(item.category_id)===Number(supplierSelectedCategoryId));
+      const productRef=db.collection("products").doc("spencer_"+Number(supplierProduct.product_id));
+      const existing=await productRef.get();
+      const oldData=existing.exists?existing.data():{};
+      await productRef.set({
+        name:supplierProduct.name||"Supplier product",
+        category:category?.category_name||"Supplier Products",
+        categoryLogo:category?.category_icon||"",
+        image:category?.category_icon||oldData.image||"",
+        description:oldData.description||"Automatically fulfilled through Spencer Acc Store.",
+        price:sellingPrice,
+        stockCount:Math.max(0,Number(supplierProduct.stock_count||0)),
+        supplierStockCount:Math.max(0,Number(supplierProduct.stock_count||0)),
+        supplierProvider:"spenceraccstore",
+        supplierProductId:Number(supplierProduct.product_id),
+        supplierCost:Number(supplierProduct.price||0),
+        supplierCurrency:supplierProduct.currency||"NGN",
+        supplierMinOrder:Number(supplierProduct.min_order||1),
+        supplierMaxOrder:Number(supplierProduct.max_order||1),
+        supplierInStock:supplierProduct.in_stock===true,
+        supplierSyncedAt:firebase.firestore.FieldValue.serverTimestamp(),
+        isSupplierProduct:true,
+        updatedAt:firebase.firestore.FieldValue.serverTimestamp(),
+        ...(existing.exists?{}:{createdAt:firebase.firestore.FieldValue.serverTimestamp()})
+      },{merge:true});
+      imported++;
     }
-
-    showSupplierMessage("Successfully imported or updated "+imported+" product(s) in Gentle Acct Store.","success");
+    showSupplierMessage("Imported or updated "+imported+" product(s) in Gentle Acct Store.","success");
     await loadProducts();
     renderSupplierProducts();
   } catch(error) {
-    console.error("Supplier bulk import failed:",error);
     showSupplierMessage("Imported "+imported+" product(s). "+(error.message||"The remaining products could not be imported."));
-    await loadProducts().catch(loadError=>console.error("Product reload failed:",loadError));
+    await loadProducts();
     renderSupplierProducts();
+  } finally {button.disabled=false;button.textContent="Import selected";}
+}
+
+/* BULK SUPPLIER STOCK REFRESH AND SAFE CLEAR */
+async function restockAllSpencerProducts() {
+  const button=$("supplierRestockAll");
+  if(!button) return;
+  const imported=products.filter(item=>item.supplierProvider==="spenceraccstore" || String(item.id||"").startsWith("spencer_"));
+  if(!imported.length) return showSupplierMessage("There are no Spencer products imported into Gentle Acct Store yet.");
+  if(!window.confirm("Refresh stock for all "+imported.length+" imported Spencer products using Spencer's latest available stock? Your selling prices will not change.")) return;
+  if(lastSupplierProductsFetch && Date.now()-lastSupplierProductsFetch<60000) {
+    const seconds=Math.ceil((60000-(Date.now()-lastSupplierProductsFetch))/1000);
+    return showSupplierMessage("Spencer's product endpoint has a one-minute refresh limit. Please try again in "+seconds+" seconds.");
+  }
+  button.disabled=true;button.textContent="Refreshing stock…";
+  try {
+    const result=await supplierRequest("products");
+    const latest=Array.isArray(result.products)?result.products:(Array.isArray(result.data)?result.data:[]);
+    if(!latest.length) throw new Error("Spencer returned an empty product list. No stock was changed.");
+    lastSupplierProductsFetch=Date.now();
+    const byId=new Map(latest.map(item=>[Number(item.product_id),item]).filter(([id,item])=>Number.isFinite(id)&&id>0&&item));
+    const batchUpdates=[];
+    for(const product of imported) {
+      const supplierId=Number(product.supplierProductId||String(product.id).replace(/^spencer_/,""));
+      const current=byId.get(supplierId);
+      if(!current || current.stock_count===undefined || current.stock_count===null || !Number.isFinite(Number(current.stock_count))) continue;
+      const stock=Math.max(0,Math.floor(Number(current.stock_count)));
+      const inStock=typeof current.in_stock==="boolean"?current.in_stock:stock>0;
+      batchUpdates.push({ref:db.collection("products").doc(product.id),data:{
+        stockCount:stock,
+        supplierStockCount:stock,
+        supplierInStock:inStock,
+        supplierCost:current.price!==undefined?Number(current.price):Number(product.supplierCost||0),
+        supplierMinOrder:current.min_order!==undefined?Number(current.min_order):Number(product.supplierMinOrder||1),
+        supplierMaxOrder:current.max_order!==undefined?Number(current.max_order):Number(product.supplierMaxOrder||1),
+        supplierSyncedAt:firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+      }});
+    }
+    if(!batchUpdates.length) throw new Error("No matching imported products had valid stock data. Nothing was changed.");
+    for(let start=0;start<batchUpdates.length;start+=400) {
+      const batch=db.batch();
+      batchUpdates.slice(start,start+400).forEach(update=>batch.update(update.ref,update.data));
+      await batch.commit();
+    }
+    await loadProducts();
+    if(supplierProducts.length) renderSupplierProducts();
+    showSupplierMessage("Stock refreshed for "+batchUpdates.length+" of "+imported.length+" imported Spencer products. Selling prices were preserved.","success");
+  } catch(error) {
+    console.error("BULK SPENCER RESTOCK ERROR:",error);
+    showSupplierMessage(error.message||"Could not refresh Spencer product stock.");
   } finally {
-    button.disabled=false;
-    button.textContent="Import selected";
+    button.disabled=false;button.textContent="↻ Restock all imported";
+  }
+}
+
+async function clearAllSpencerProducts() {
+  const button=$("supplierClearAll");
+  if(!button) return;
+  button.disabled=true;button.textContent="Checking products…";
+  try {
+    const snapshot=await db.collection("products").get();
+    const importedDocs=snapshot.docs.filter(doc=>{
+      const data=doc.data()||{};
+      return data.supplierProvider==="spenceraccstore" || String(doc.id).startsWith("spencer_");
+    });
+    if(!importedDocs.length) {
+      showSupplierMessage("No imported Spencer products were found.","success");
+      return;
+    }
+    const confirmed=window.confirm("Delete all "+importedDocs.length+" Spencer products imported into Gentle Acct Store? This removes those product listings from your store. Normal products and existing orders/order history will be kept. This cannot be undone.");
+    if(!confirmed) return;
+    button.textContent="Removing products…";
+    for(let start=0;start<importedDocs.length;start+=400) {
+      const batch=db.batch();
+      importedDocs.slice(start,start+400).forEach(doc=>batch.delete(doc.ref));
+      await batch.commit();
+    }
+    supplierDrafts.clear();
+    await loadProducts();
+    if(supplierProducts.length) renderSupplierProducts();
+    showSupplierMessage("Removed "+importedDocs.length+" imported Spencer product listings. Normal products and order history were kept.","success");
+  } catch(error) {
+    console.error("CLEAR SPENCER PRODUCTS ERROR:",error);
+    showSupplierMessage(error.message||"Could not clear imported Spencer products.");
+  } finally {
+    button.disabled=false;button.textContent="Clear all Spencer products";
   }
 }
 
@@ -1584,7 +1533,6 @@ $("productForm").addEventListener("submit",async event=>{
   if(isSavingProduct)return;
 
   const name=$("productName").value.trim();
-  const displayName=$("productDisplayName").value.trim();
   const category=$("productCategory").value;
   const price=Number($("productPrice").value);
   const image=$("productImage").value.trim();
@@ -1605,7 +1553,7 @@ $("productForm").addEventListener("submit",async event=>{
   try {
     const ref=db.collection("products").doc();
     await ref.set({
-      name,displayName,category,price,image,description,
+      name,category,price,image,description,
       productLink,defaultLink:productLink,categoryLogo:categoryMeta(category).logo,
       createdAt:firebase.firestore.FieldValue.serverTimestamp(),
       updatedAt:firebase.firestore.FieldValue.serverTimestamp()
@@ -1826,78 +1774,56 @@ $("logoutButton").addEventListener("click",async()=>{
   }
 });
 
-/* LOGIN PASSWORD VISIBILITY */
-$("toggleLoginPassword").addEventListener("click",()=>{
-  const input=$("loginPassword");
-  const showing=input.type==="password";
-  input.type=showing?"text":"password";
-  $("toggleLoginPassword").setAttribute("aria-label",showing?"Hide password":"Show password");
-  $("toggleLoginPassword").setAttribute("aria-pressed",String(showing));
-});
-
 /* LOGIN */
 
 $("loginForm").addEventListener("submit",async event=>{
   event.preventDefault();
-  if(!window.firebase || !auth) return showLogin("Firebase Authentication is not ready. Check that firebase.js loads after the Firebase SDK scripts.");
-  const email=$("loginEmail").value.trim();
-  const password=$("loginPassword").value;
-  if(!email || !password) return showLogin("Enter both your admin email and password.");
+  if(!auth)return showLogin("Firebase authentication is not configured.");
+
   const button=$("loginButton");
   button.disabled=true;
-  button.textContent="Signing in…";
-  hideMessage("loginError");
+  button.textContent="Signing in...";
+
   try {
-    await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-    const credential=await auth.signInWithEmailAndPassword(email,password);
-    const user=credential && credential.user;
-    if(!user) throw new Error("Firebase did not return an account after sign-in. Please try again.");
-    if(user.uid!==ADMIN_UID) {
-      const actualUid=user.uid;
+    const credential=await auth.signInWithEmailAndPassword(
+      $("loginEmail").value.trim(),
+      $("loginPassword").value
+    );
+    if(credential.user.uid!==ADMIN_UID) {
       await auth.signOut();
-      showLogin("Your email and password are valid, but this account is not authorised. Account UID: "+actualUid+". Only change ADMIN_UID if this is the correct admin account.");
-      return;
+      showLogin("This account is not authorised to access the admin dashboard.");
     }
-    showAdmin(user);
-    await refreshAll();
   } catch(error) {
     console.error("Admin sign-in failed:",error);
     showLogin("Sign-in failed: "+readableError(error));
   } finally {
     button.disabled=false;
-    button.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 17l5-5-5-5M15 12H3"/><path d="M12 3h6a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3h-6"/></svg>Sign In to Admin';
+    button.textContent="Sign in";
   }
 });
 
 /* AUTHENTICATION */
 
-try { applyTheme(document.documentElement.dataset.theme||"dark"); }
-catch(error) { console.warn("Admin theme could not be applied:",error); }
-try { buildCategoryOptions(); }
-catch(error) { console.error("Admin categories could not be prepared:",error); }
+applyTheme(document.documentElement.dataset.theme||"dark");
+buildCategoryOptions();
 
 if(!window.firebase) {
   showLogin("Firebase SDK did not load. Check your internet connection and the Firebase SDK script URLs.");
-} else if(!auth || !db) {
-  showLogin("Firebase SDK loaded, but firebase.js did not create window.firebaseAuth and window.firebaseDB. Make sure firebase.js is uploaded beside admin.html.");
+} else if(!auth||!db) {
+  showLogin("Firebase SDK loaded, but firebase.js did not create window.firebaseAuth and window.firebaseDB. Check firebase.js and make sure it loads before this dashboard script.");
 } else {
   auth.onAuthStateChanged(async user=>{
-    if(!user) { showLogin(); return; }
+    if(!user) {
+      showLogin();
+      return;
+    }
     if(user.uid!==ADMIN_UID) {
-      const actualUid=user.uid;
       await auth.signOut();
-      showLogin("This account is signed in but is not authorised. Account UID: "+actualUid+". Only change ADMIN_UID after confirming this is the correct admin account.");
+      showLogin("This account is not authorised to access the admin dashboard.");
       return;
     }
     showAdmin(user);
-    try { await refreshAll(); }
-    catch(error) {
-      console.error("Admin data loading failed:",error);
-      showToast("You are signed in, but dashboard data could not load: "+readableError(error));
-    }
-  },error=>{
-    console.error("Firebase auth state error:",error);
-    showLogin("Could not verify your admin session: "+readableError(error));
+    await refreshAll();
   });
 }
 </script>
