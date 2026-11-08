@@ -399,6 +399,7 @@ input::placeholder,textarea::placeholder{color:#A0A8B4}
 .modal-actions button:disabled{opacity:.6;cursor:not-allowed}
 
 @media(max-width:600px){
+  input,select,textarea{font-size:16px}
   .form-grid{grid-template-columns:1fr}
   .field.full{grid-column:auto}
   .container{padding:18px 12px 40px}
@@ -491,6 +492,8 @@ input::placeholder,textarea::placeholder{color:#A0A8B4}
 
       </div>
 
+      <div id="supplierEditNotice" class="message show success" style="display:none;margin-top:16px"></div>
+
       <div class="actions">
         <button type="button" class="primary-btn" id="saveButton">
           <i class="fa-solid fa-floppy-disk"></i>
@@ -558,6 +561,7 @@ let productData = null;
 let inventoryItems = [];
 let inventoryToDelete = null;
 let messageTimer = null;
+let isSupplierProduct = false;
 
 /* ELEMENTS */
 const loading = document.getElementById("loading");
@@ -655,8 +659,22 @@ async function loadProduct() {
     }
 
     productData = snapshot.data();
+    isSupplierProduct = productData.supplierProvider === "spenceraccstore";
 
     document.getElementById("productName").value = productData.name || "";
+
+    if (isSupplierProduct) {
+      document.querySelector(".page-heading h1").textContent = "Edit Supplier Product";
+      document.querySelector(".page-heading p").textContent = "Change the product name, category, price and details shown in Gentle Acct Store.";
+      document.querySelector("#editor .card-title").lastChild.textContent = " Product Information";
+      const notice = document.getElementById("supplierEditNotice");
+      notice.style.display = "block";
+      notice.textContent = "Supplier product · Spencer ID: " + (productData.supplierProductId || productId.replace("spencer_", "")) +
+        " · Supplier cost: ₦" + Number(productData.supplierCost || 0).toLocaleString("en-NG") +
+        " · Supplier stock is managed by the supplier and is not edited here.";
+      const inventoryCard = document.querySelectorAll("#editor .card")[1];
+      if (inventoryCard) inventoryCard.style.display = "none";
+    }
 
     const categorySelect = document.getElementById("category");
     const category = productData.category || "Other";
@@ -824,19 +842,27 @@ async function saveProduct() {
       return item.sold !== true;
     }).length;
 
+    const updates = {
+      name: name,
+      category: selectedCategory,
+      price: productPrice,
+      image: productImage,
+      description: productDescription,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+
+    if (isSupplierProduct) {
+      updates.originalSupplierName = productData.originalSupplierName || productData.name || "";
+      // Supplier-controlled stock must not be replaced by this page's local inventory count.
+    } else {
+      updates.stockCount = availableCount;
+      updates.totalStock = inventoryItems.length;
+    }
+
     await firebaseDB
       .collection("products")
       .doc(productId)
-      .update({
-        name: name,
-        category: selectedCategory,
-        price: productPrice,
-        image: productImage,
-        description: productDescription,
-        stockCount: availableCount,
-        totalStock: inventoryItems.length,
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
+      .update(updates);
 
     productData = {
       ...productData,
@@ -845,8 +871,10 @@ async function saveProduct() {
       price: productPrice,
       image: productImage,
       description: productDescription,
-      stockCount: availableCount,
-      totalStock: inventoryItems.length
+      ...(isSupplierProduct ? {} : {
+        stockCount: availableCount,
+        totalStock: inventoryItems.length
+      })
     };
 
     showMessage("Product updated successfully.", "success");
@@ -946,6 +974,7 @@ async function addInventory() {
 
 /* UPDATE STOCK COUNTS */
 async function updateStock() {
+  if (isSupplierProduct) return;
   const available = inventoryItems.filter(function(item) {
     return item.sold !== true;
   }).length;
