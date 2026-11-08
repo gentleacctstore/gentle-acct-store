@@ -2051,6 +2051,80 @@ img,svg,video,canvas{max-width:100%;height:auto}
 }
 </style>
 
+
+<style id="gentle-unified-green-white-palette">
+/* Unified Gentle Acct Store brand colours. Layout, typography and behaviour remain unchanged. */
+:root{
+ --green:#29532A !important; --green-dark:#194D28 !important;
+ --green-light:#EAF4EC !important; --green-soft:#EAF4EC !important;
+ --green-pale:#F2F6F3 !important; --green-border:#D9E9DC !important;
+ --blue:#29532A !important; --blue-dark:#194D28 !important;
+ --blue-light:#EAF4EC !important; --blue-soft:#F2F6F3 !important;
+ --primary:#29532A !important; --primary-dark:#194D28 !important;
+ --accent:#29532A !important; --accent-light:#EAF4EC !important;
+ --bg:#F2F6F3 !important; --background:#F2F6F3 !important;
+ --page:#F2F6F3 !important; --white:#FFFFFF !important;
+ --border:#D9E9DC !important; --line:#D9E9DC !important;
+ --shadow:0 5px 18px rgba(41,83,42,.07) !important;
+}
+/* Shared brand accents and primary controls */
+.brand-name,.brand-text h1,.brand-accent,.header-title,.header-title i,
+.header-icon,.back-btn,.back-login,.fund-link,.view-all,.related-price,
+.product-price,.amount,.detail-value,.history-amount,.nav-item.active,
+.tx-amount,.order-price,.section-heading,.section-heading:before,
+.input-icon,.stat-icon,.heading-icon,.empty-icon,.menu-icon,
+.card-heading-icon,.deposit-icon,.support-icon,.loading-spinner,
+.loading i,.state-icon,.order-icon,.success-icon,.success h1,
+.theme-check,.security-status.good {color:#29532A !important;}
+.header,.top-header,header {border-bottom-color:#29532A !important;}
+.header-icon,.back-btn,.wallet-chip,.auth-tab.active,.menu-icon,
+.card-heading-icon,.deposit-icon,.support-icon,.stat-icon,
+.order-icon,.state-icon,.success-icon,.theme-option.selected {
+ background-color:#EAF4EC !important; border-color:#D9E9DC !important;
+}
+.reset-btn,.pay-btn,.primary-btn,.update-btn,.complete-btn,.btn-primary,
+.copy-small,.related-buy,.wallet-btn:not(.secondary),.copy-btn,
+.error-box button,.refresh,.retry,.retry-btn,.shop-btn,.success-btn.primary,
+button.primary,.button.primary,.save-button,.logout-button:not(.secondary) {
+ background:#29532A !important; color:#FFFFFF !important;
+ border-color:#29532A !important; box-shadow:0 7px 18px rgba(41,83,42,.15) !important;
+}
+.reset-btn:hover,.pay-btn:hover,.primary-btn:hover,.update-btn:hover,
+.complete-btn:hover,.btn-primary:hover,.related-buy:hover,.refresh:hover,
+.retry:hover,.retry-btn:hover,.save-button:hover {background:#194D28 !important;}
+.btn-secondary,.secondary-btn,.wallet-btn.secondary,.back,
+.header-icon,.wallet-chip {color:#194D28 !important;background:#EAF4EC !important;border-color:#D9E9DC !important;}
+input:focus,textarea:focus,select:focus,.form-control:focus,
+.amount-wrap:focus-within {border-color:#29532A !important;box-shadow:0 0 0 3px rgba(41,83,42,.10) !important;}
+input,textarea,select,.form-control {accent-color:#29532A;}
+.hero,.wallet-card,.balance-card,.summary-card,.profile-card {
+ background:linear-gradient(125deg,#194D28 0%,#29532A 58%,#47764A 100%) !important;
+ color:#FFFFFF !important;
+}
+.hero h2,.hero p,.hero-label,.summary-card,.summary-card *,
+.wallet-card *,.balance-card *,.profile-card * {color:#FFFFFF;}
+.notice,.details-box,.wallet-summary,.purchase-item,.purchase-text,
+.reference,.link-box,.security-badge,.security-note {
+ background:#EAF4EC !important;border-color:#D9E9DC !important;
+}
+.status.approved,.status.success,.status.completed,.message.success {
+ background:#EAF4EC !important;color:#194D28 !important;
+}
+/* White surfaces and consistent page backgrounds */
+html:not(.dark-mode):not([data-theme="dark"]) body,
+html:not(.dark-mode):not([data-theme="dark"]) .page,
+html:not(.dark-mode):not([data-theme="dark"]) main {background-color:#F2F6F3;}
+.card,.auth-card,.product-card,.related-card,.stat-card,.floating-card,
+.transaction,.order,.state-box,.empty,.loading,.purchase-card,
+.section,.fund-card,.deposit-list {border-color:#D9E9DC;}
+/* Dark mode keeps its existing dark surfaces while using the same green brand accent. */
+html.dark-mode,html[data-theme="dark"] {--green:#8BC995 !important;--green-dark:#B7E4BE !important;--blue:#8BC995 !important;--blue-dark:#B7E4BE !important;--green-light:#203B29 !important;--blue-light:#203B29 !important;--border:#304F37 !important;}
+html.dark-mode .nav-item.active,html[data-theme="dark"] .nav-item.active,
+html.dark-mode .header-icon,html[data-theme="dark"] .header-icon,
+html.dark-mode .back-btn,html[data-theme="dark"] .back-btn {color:#B7E4BE !important;}
+@media(max-width:767px){input,textarea,select,.form-control,.input-wrap input{font-size:16px !important;}}
+</style>
+
 </head><header class="header gentle-clean-header">
 <div class="container nav">
 <a aria-label="GentleLogs home" class="brand" href="index.html">
