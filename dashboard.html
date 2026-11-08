@@ -1848,13 +1848,22 @@ const CATEGORY_ORDER = [
 
 function getCategoryPriority(category) {
   const name = String(category || "").trim().toLowerCase();
-  const index = CATEGORY_ORDER.findIndex(item => item.toLowerCase() === name);
+  const index = CATEGORY_ORDER.findIndex(
+    item => item.trim().toLowerCase() === name
+  );
   return index === -1 ? CATEGORY_ORDER.length : index;
 }
 
-function sortCategories(a,b) {
-  return getCategoryPriority(a) - getCategoryPriority(b) ||
-    a.localeCompare(b);
+// Always keep the 24 requested categories in their exact supplied order.
+// Any extra categories are placed after them, alphabetically.
+function sortCategories(a, b) {
+  const priorityDifference = getCategoryPriority(a) - getCategoryPriority(b);
+  if (priorityDifference !== 0) return priorityDifference;
+  return String(a).localeCompare(String(b));
+}
+
+function getOrderedCategories(categories) {
+  return [...categories].sort(sortCategories);
 }
 
 function buildCategoryButtons() {
@@ -1881,9 +1890,7 @@ function buildCategoryButtons() {
     }
   });
 
-  categories.sort(sortCategories);
-
-  categories.forEach(category => {
+  getOrderedCategories(categories).forEach(category => {
     const button = document.createElement("button");
 
     button.className = "category-btn" +
@@ -1947,7 +1954,7 @@ function renderProducts() {
 
   let html = "";
 
-  Object.keys(groups).sort(sortCategories).forEach(category => {
+  getOrderedCategories(Object.keys(groups)).forEach(category => {
     const sectionId = "products-" + slugify(category);
     const safeCategory = escapeAttribute(category);
 
