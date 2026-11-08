@@ -435,26 +435,110 @@ th { color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.
 @media(max-width:900px){.supplier-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:420px){.supplier-card-grid{gap:8px;padding:10px}.supplier-card{padding:10px}.supplier-card-name{font-size:11px}.supplier-card .btn{padding:7px 6px;font-size:10px}}
 
+
+/* GENTLE ACCT STORE ADMIN LOGIN — reference-matched green design */
+.login-screen{
+  min-height:100svh;display:none;align-items:center;justify-content:center;
+  padding:28px 18px;background:linear-gradient(135deg,#f2f8f4 0%,#e8f2eb 52%,#f5faf6 100%);
+}
+.login-card{
+  width:min(100%,650px);background:#fff;color:#151a17;border:1px solid #d8e8dc;
+  border-radius:34px;padding:48px 58px 42px;box-shadow:0 18px 55px rgba(25,77,40,.10);
+  text-align:center;
+}
+.login-brand-icon{
+  width:106px;height:106px;margin:0 auto 28px;border-radius:28px;
+  display:grid;place-items:center;background:linear-gradient(145deg,#1d6334,#124b27);
+  color:#fff;font-size:55px;box-shadow:0 14px 32px rgba(25,77,40,.22);
+}
+.login-card h1{margin:0;color:#111;font-size:34px;line-height:1.2;font-weight:900;letter-spacing:-1.3px}
+.login-card h1 span{color:#245b34}
+.login-badge{
+  width:max-content;margin:12px auto 34px;padding:9px 22px;border:2px solid #b6d8c1;
+  border-radius:30px;background:#eaf4ed;color:#245b34;font-size:14px;font-weight:850;letter-spacing:2px;
+}
+.login-badge span{letter-spacing:0;margin-right:6px}
+.login-card .login-intro{margin:-18px 0 27px;color:#78847c;font-size:13px}
+.login-card .field{margin-bottom:24px;text-align:left;gap:10px}
+.login-card .field label{font-size:14px;color:#555e58;font-weight:850;letter-spacing:1.2px}
+.login-input-wrap{
+  min-height:76px;display:flex;align-items:center;gap:17px;padding:0 19px;
+  border:2px solid #dce9df;border-radius:18px;background:#f9fbf9;
+}
+.login-input-wrap:focus-within{border-color:#83b995;box-shadow:0 0 0 3px rgba(41,83,42,.08)}
+.login-field-icon{flex:0 0 auto;color:#aeb8b0;font-size:23px}
+.login-card .login-input-wrap input{
+  width:100%;min-width:0;border:0;outline:0;background:transparent;color:#17251b;
+  font-size:17px;padding:15px 0;box-shadow:none;
+}
+.login-card .login-input-wrap input::placeholder{color:#aeb5b0;opacity:1}
+.login-password-toggle{
+  flex:0 0 auto;border:0;background:transparent;color:#9aa69e;font-size:23px;padding:8px;
+}
+.login-card #loginButton{
+  min-height:78px;margin-top:5px;border:0;border-radius:18px;
+  background:linear-gradient(110deg,#15552d,#1d6335);color:#fff;
+  box-shadow:0 12px 28px rgba(25,77,40,.20);font-size:19px;font-weight:850;
+}
+.login-card #loginButton:hover{background:linear-gradient(110deg,#104725,#19572f)}
+.login-security{
+  display:flex;align-items:center;gap:14px;margin-top:34px;padding:20px 19px;
+  border:2px solid #b8d9c2;border-radius:17px;background:#eaf4ed;color:#245b34;
+  text-align:left;font-size:14px;font-weight:650;line-height:1.55;
+}
+.login-security-icon{flex:0 0 auto;font-size:27px}
+.login-back-link{
+  display:inline-block;margin-top:34px;color:#9aa39d;text-decoration:none;font-size:15px;
+}
+.login-back-link:hover{color:#245b34}
+.login-card .error-box{margin:0 0 18px;text-align:left}
+@media(max-width:600px){
+  .login-screen{padding:22px 15px}
+  .login-card{padding:36px 24px 32px;border-radius:28px}
+  .login-brand-icon{width:88px;height:88px;border-radius:24px;font-size:46px;margin-bottom:24px}
+  .login-card h1{font-size:27px}
+  .login-badge{margin-bottom:30px;font-size:12px}
+  .login-card .field label{font-size:12px}
+  .login-input-wrap{min-height:66px;border-radius:15px;padding:0 15px;gap:13px}
+  .login-card .login-input-wrap input{font-size:16px}
+  .login-card #loginButton{min-height:68px;font-size:17px}
+  .login-security{font-size:12px;padding:15px;gap:11px;margin-top:27px}
+  .login-back-link{margin-top:29px;font-size:14px}
+}
 </style>
 </head>
 <body>
 
 <div class="login-screen" id="loginScreen">
   <div class="login-card">
-    <h1>Gentle Admin</h1>
-    <p>Sign in with the authorised administrator account.</p>
+    <div class="login-brand-icon" aria-hidden="true">⬟</div>
+    <h1>Gentle <span>Acct</span> Store</h1>
+    <div class="login-badge"><span>🔒</span> ADMIN PANEL</div>
+    <p class="login-intro">Sign in with your authorised administrator account.</p>
     <div id="loginError" class="error-box hidden"></div>
     <form id="loginForm">
       <div class="field">
-        <label for="loginEmail">Email address</label>
-        <input id="loginEmail" type="email" autocomplete="username" required>
+        <label for="loginEmail">EMAIL ADDRESS</label>
+        <div class="login-input-wrap">
+          <span class="login-field-icon" aria-hidden="true">✉</span>
+          <input id="loginEmail" type="email" autocomplete="username" placeholder="admin@yoursite.com" required>
+        </div>
       </div>
       <div class="field">
-        <label for="loginPassword">Password</label>
-        <input id="loginPassword" type="password" autocomplete="current-password" required>
+        <label for="loginPassword">PASSWORD</label>
+        <div class="login-input-wrap">
+          <span class="login-field-icon" aria-hidden="true">▣</span>
+          <input id="loginPassword" type="password" autocomplete="current-password" placeholder="Enter admin password" required>
+          <button class="login-password-toggle" id="toggleLoginPassword" type="button" aria-label="Show password" aria-pressed="false">◉</button>
+        </div>
       </div>
-      <button class="btn btn-primary" id="loginButton" type="submit">Sign in</button>
+      <button class="btn btn-primary" id="loginButton" type="submit"><span aria-hidden="true">➜</span> Sign In to Admin</button>
     </form>
+    <div class="login-security">
+      <span class="login-security-icon" aria-hidden="true">⬟</span>
+      <span>This area is restricted to authorised administrators only. Access attempts are logged.</span>
+    </div>
+    <a class="login-back-link" href="./">← Back to main site</a>
   </div>
 </div>
 
@@ -1683,6 +1767,15 @@ $("logoutButton").addEventListener("click",async()=>{
     console.error("Sign out failed:",error);
     showToast("Could not sign out: "+readableError(error));
   }
+});
+
+/* LOGIN PASSWORD VISIBILITY */
+$("toggleLoginPassword").addEventListener("click",()=>{
+  const input=$("loginPassword");
+  const showing=input.type==="password";
+  input.type=showing?"text":"password";
+  $("toggleLoginPassword").setAttribute("aria-label",showing?"Hide password":"Show password");
+  $("toggleLoginPassword").setAttribute("aria-pressed",String(showing));
 });
 
 /* LOGIN */
