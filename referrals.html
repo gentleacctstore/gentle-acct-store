@@ -1,0 +1,875 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#05070D">
+<meta name="description" content="Gentle Acct Store referral management dashboard">
+<title>Referral Management | Gentle Acct Store</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script>
+(function () {
+  try {
+    const saved = localStorage.getItem("gentle-acct-store-theme");
+    document.documentElement.dataset.theme =
+      saved === "dark" || saved === "blue" || saved === "light" ? saved : "dark";
+  } catch (_) {
+    document.documentElement.dataset.theme = "dark";
+  }
+})();
+</script>
+
+<style>
+:root {
+  color-scheme: dark;
+  --bg:#05070D;
+  --surface:#0B1220;
+  --surface2:#101A2D;
+  --surface3:#142341;
+  --text:#F8FAFC;
+  --muted:#94A3B8;
+  --border:#1E2B43;
+  --accent:#C9232C;
+  --accent-hover:#991B24;
+  --accent-soft:#351719;
+  --success:#22C55E;
+  --success-soft:#0B2A1B;
+  --warning:#FBBF24;
+  --warning-soft:#30250A;
+  --danger:#F87171;
+  --danger-soft:#351719;
+  --shadow:0 18px 45px rgba(0,0,0,.20);
+}
+html[data-theme="light"] {
+  color-scheme:light;
+  --bg:#F3F6FC;
+  --surface:#FFFFFF;
+  --surface2:#F8FAFC;
+  --surface3:#EAF1FF;
+  --text:#0F172A;
+  --muted:#64748B;
+  --border:#E2E8F0;
+  --accent:#C9232C;
+  --accent-hover:#991B24;
+  --accent-soft:#FDEEEF;
+  --success:#15803D;
+  --success-soft:#DCFCE7;
+  --warning:#A16207;
+  --warning-soft:#FEF3C7;
+  --danger:#B91C1C;
+  --danger-soft:#FEE2E2;
+  --shadow:0 14px 35px rgba(15,23,42,.06);
+}
+html[data-theme="blue"] {
+  color-scheme:dark;
+  --bg:#071426;
+  --surface:#0B1D36;
+  --surface2:#102747;
+  --surface3:#15355D;
+  --text:#F0F7FF;
+  --muted:#A6BCD6;
+  --border:#23466E;
+  --accent:#E0444B;
+  --accent-hover:#C9232C;
+  --accent-soft:#351719;
+  --success:#4ADE80;
+  --success-soft:#103821;
+  --warning:#FCD34D;
+  --warning-soft:#3A2D0C;
+  --danger:#FCA5A5;
+  --danger-soft:#421B25;
+  --shadow:0 18px 45px rgba(0,0,0,.20);
+}
+* {box-sizing:border-box}
+body {
+  margin:0;
+  min-height:100vh;
+  background:
+    radial-gradient(ellipse at top left, var(--accent-soft), transparent 36%),
+    var(--bg);
+  color:var(--text);
+  font-family:"Space Grotesk",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:14px;
+  line-height:1.5;
+}
+button,input,select {font:inherit}
+button {cursor:pointer}
+button:disabled {opacity:.55;cursor:not-allowed}
+a {color:inherit;text-decoration:none}
+.app {max-width:1440px;margin:auto;padding:24px}
+.topbar {
+  display:flex;align-items:center;justify-content:space-between;
+  gap:18px;flex-wrap:wrap;margin-bottom:28px;
+}
+.brand {display:flex;align-items:center;gap:13px}
+.brand-mark {
+  width:46px;height:46px;display:grid;place-items:center;
+  border-radius:15px;background:linear-gradient(145deg,#E0444B,#991B24);
+  color:white;font-size:21px;font-weight:900;
+  box-shadow:0 8px 25px rgba(201,35,44,.22);
+}
+.brand-name {font-size:18px;font-weight:850;letter-spacing:-.5px}
+.brand-sub {font-size:12px;color:var(--muted)}
+.top-actions {display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.btn {
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  min-height:41px;padding:10px 14px;border:1px solid var(--border);
+  border-radius:12px;background:var(--surface);color:var(--text);
+  font-weight:700;transition:.18s ease;
+}
+.btn:hover {border-color:var(--accent);transform:translateY(-1px)}
+.btn-primary {background:var(--accent);border-color:var(--accent);color:white}
+.btn-primary:hover {background:var(--accent-hover)}
+.btn-small {min-height:34px;padding:7px 10px;font-size:12px}
+.btn-success {background:var(--success-soft);color:var(--success);border-color:var(--success)}
+.btn-ghost {background:transparent}
+.hero {
+  display:flex;align-items:flex-end;justify-content:space-between;
+  gap:20px;flex-wrap:wrap;margin-bottom:23px;
+}
+.eyebrow {
+  display:inline-flex;align-items:center;gap:7px;color:var(--accent);
+  font-size:11px;font-weight:850;letter-spacing:1.5px;text-transform:uppercase;
+}
+.hero h1 {font-size:clamp(26px,4vw,36px);line-height:1.15;margin:9px 0 8px;letter-spacing:-1.2px}
+.hero p {margin:0;color:var(--muted);max-width:620px}
+.admin-pill {
+  display:flex;align-items:center;gap:8px;padding:9px 12px;
+  border:1px solid var(--border);border-radius:999px;background:var(--surface);
+  color:var(--muted);font-size:12px;
+}
+.dot {width:8px;height:8px;background:var(--success);border-radius:50%}
+.stats {
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:15px;margin-bottom:23px;
+}
+.stat {
+  min-width:0;padding:20px;border:1px solid var(--border);
+  border-radius:18px;background:var(--surface);box-shadow:var(--shadow);
+}
+.stat-top {display:flex;align-items:center;justify-content:space-between;gap:10px}
+.stat-label {font-size:12px;color:var(--muted);font-weight:650}
+.stat-icon {
+  width:38px;height:38px;display:grid;place-items:center;border-radius:12px;
+  background:var(--accent-soft);color:var(--accent);font-size:17px;
+}
+.stat-value {font-size:clamp(23px,3vw,31px);font-weight:850;letter-spacing:-1px;margin-top:13px}
+.stat-note {font-size:11px;color:var(--muted);margin-top:4px}
+.toolbar {
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  flex-wrap:wrap;margin-bottom:17px;
+}
+.filters {display:flex;gap:10px;flex:1;flex-wrap:wrap}
+.search-wrap {position:relative;flex:1;min-width:210px;max-width:440px}
+.search-wrap span {position:absolute;left:13px;top:10px;color:var(--muted);font-size:16px}
+.control {
+  min-height:42px;width:100%;padding:10px 12px;
+  border:1px solid var(--border);border-radius:12px;
+  background:var(--surface);color:var(--text);outline:none;
+}
+.search-wrap .control {padding-left:38px}
+.control:focus {border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+select.control {width:auto;min-width:150px}
+.result-count {font-size:12px;color:var(--muted)}
+.referral-list {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.referral-card {
+  min-width:0;border:1px solid var(--border);border-radius:18px;
+  background:var(--surface);padding:20px;box-shadow:var(--shadow);
+  transition:border-color .2s,transform .2s;
+}
+.referral-card:hover {border-color:var(--accent);transform:translateY(-2px)}
+.card-head {display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.person {display:flex;gap:12px;align-items:center;min-width:0}
+.avatar {
+  width:46px;height:46px;flex-shrink:0;border-radius:15px;
+  display:grid;place-items:center;background:var(--accent-soft);
+  color:var(--accent);font-size:17px;font-weight:850;
+}
+.person-info {min-width:0}
+.person-name {font-size:15px;font-weight:800;overflow-wrap:anywhere}
+.person-email {font-size:12px;color:var(--muted);overflow-wrap:anywhere}
+.badge {
+  display:inline-flex;align-items:center;gap:5px;padding:6px 9px;
+  border-radius:999px;font-size:10px;font-weight:850;
+  text-transform:uppercase;letter-spacing:.45px;white-space:nowrap;
+}
+.badge-pending {background:var(--warning-soft);color:var(--warning)}
+.badge-rewarded {background:var(--success-soft);color:var(--success)}
+.badge-ineligible {background:var(--surface2);color:var(--muted)}
+.badge-missing {background:var(--danger-soft);color:var(--danger)}
+.card-divider {height:1px;background:var(--border);margin:17px 0}
+.details {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.detail-label {font-size:11px;color:var(--muted);margin-bottom:4px}
+.detail-value {font-size:14px;font-weight:800;overflow-wrap:anywhere}
+.progress-track {height:6px;border-radius:99px;background:var(--surface2);overflow:hidden;margin-top:9px}
+.progress-fill {height:100%;border-radius:99px;background:var(--accent);transition:width .25s}
+.card-foot {
+  display:flex;justify-content:space-between;align-items:center;
+  gap:12px;flex-wrap:wrap;margin-top:17px;
+}
+.card-date {font-size:11px;color:var(--muted)}
+.empty {
+  grid-column:1/-1;text-align:center;padding:55px 20px;
+  border:1px dashed var(--border);border-radius:18px;background:var(--surface);
+}
+.empty-icon {font-size:32px;margin-bottom:10px}
+.empty h3 {margin:0 0 6px;font-size:17px}
+.empty p {margin:0;color:var(--muted);font-size:13px}
+.notice {
+  display:flex;gap:10px;align-items:flex-start;padding:13px 15px;
+  border:1px solid var(--border);border-radius:14px;
+  background:var(--surface);color:var(--muted);font-size:12px;margin-bottom:18px;
+}
+.notice strong {color:var(--text)}
+.toast {
+  position:fixed;bottom:22px;left:50%;transform:translate(-50%,20px);
+  opacity:0;pointer-events:none;z-index:10;max-width:calc(100% - 32px);
+  padding:13px 17px;border:1px solid var(--border);border-radius:13px;
+  background:var(--surface);box-shadow:var(--shadow);font-weight:700;
+  transition:.25s ease;
+}
+.toast.show {opacity:1;transform:translate(-50%,0)}
+.toast.error {border-color:var(--danger);color:var(--danger)}
+.toast.success {border-color:var(--success);color:var(--success)}
+.loading {text-align:center;padding:45px 15px;color:var(--muted)}
+.spinner {
+  width:25px;height:25px;border:3px solid var(--border);
+  border-top-color:var(--accent);border-radius:50%;
+  animation:spin .8s linear infinite;margin:0 auto 12px;
+}
+@keyframes spin {to{transform:rotate(360deg)}}
+.footer {padding:25px 0 8px;text-align:center;color:var(--muted);font-size:11px}
+@media(max-width:900px) {
+  .stats {grid-template-columns:repeat(2,minmax(0,1fr))}
+  .referral-list {grid-template-columns:1fr}
+}
+@media(max-width:540px) {
+  .app {padding:15px}
+  .topbar {margin-bottom:22px}
+  .brand-name {font-size:16px}
+  .top-actions {width:100%}
+  .top-actions .btn {flex:1}
+  .hero {align-items:flex-start}
+  .stats {gap:10px}
+  .stat {padding:14px;border-radius:15px}
+  .stat-icon {width:32px;height:32px}
+  .stat-value {font-size:24px}
+  .filters {width:100%}
+  .search-wrap {max-width:none;min-width:100%}
+  select.control {flex:1;min-width:0}
+  .toolbar > .btn {width:100%}
+  .referral-card {padding:15px}
+  .card-head {align-items:flex-start}
+  .badge {font-size:9px;padding:5px 7px}
+  .details {gap:13px}
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+  <header class="topbar">
+    <a class="brand" href="admin.html" aria-label="Gentle Acct Store admin home">
+      <div class="brand-mark">G</div>
+      <div>
+        <div class="brand-name">Gentle Acct Store</div>
+        <div class="brand-sub">Admin Control Centre</div>
+      </div>
+    </a>
+
+    <div class="top-actions">
+      <button class="btn" id="themeBtn" type="button">☀️ Light theme</button>
+      <button class="btn" id="refreshBtn" type="button">↻ Refresh</button>
+      <a class="btn btn-ghost" href="admin.html">← Dashboard</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div>
+      <div class="eyebrow">✦ Affiliate programme</div>
+      <h1>Referral Management</h1>
+      <p>Track referred customers, check qualifying funding and manage referral rewards from one place.</p>
+    </div>
+    <div class="admin-pill"><span class="dot"></span> Admin workspace</div>
+  </section>
+
+  <section class="stats" aria-label="Referral statistics">
+    <article class="stat">
+      <div class="stat-top">
+        <div class="stat-label">Total Referrals</div>
+        <div class="stat-icon">♧</div>
+      </div>
+      <div class="stat-value" id="totalReferrals">—</div>
+      <div class="stat-note">Customers linked to a referrer</div>
+    </article>
+
+    <article class="stat">
+      <div class="stat-top">
+        <div class="stat-label">Eligible Referrals</div>
+        <div class="stat-icon">✓</div>
+      </div>
+      <div class="stat-value" id="eligibleReferrals">—</div>
+      <div class="stat-note">At least ₦1,500 approved funding</div>
+    </article>
+
+    <article class="stat">
+      <div class="stat-top">
+        <div class="stat-label">Rewards Recorded</div>
+        <div class="stat-icon">₦</div>
+      </div>
+      <div class="stat-value" id="rewardsRecorded">—</div>
+      <div class="stat-note">Rewards marked as paid</div>
+    </article>
+
+    <article class="stat">
+      <div class="stat-top">
+        <div class="stat-label">Reward Value</div>
+        <div class="stat-icon">✦</div>
+      </div>
+      <div class="stat-value" id="rewardValue">₦0</div>
+      <div class="stat-note">Recorded rewards × ₦500</div>
+    </article>
+  </section>
+
+  <div class="notice">
+    <span>ℹ️</span>
+    <div><strong>Reward rules:</strong> A referred customer must have at least ₦1,500 in cumulative approved funding. The referral reward is ₦500. Pending rewards are not automatically credited.</div>
+  </div>
+
+  <section class="toolbar">
+    <div class="filters">
+      <div class="search-wrap">
+        <span>⌕</span>
+        <input class="control" id="searchInput" type="search" placeholder="Search customer, email or referrer ID…" autocomplete="off">
+      </div>
+      <select class="control" id="statusFilter" aria-label="Filter by referral status">
+        <option value="all">All statuses</option>
+        <option value="eligible">Eligible — pending reward</option>
+        <option value="rewarded">Rewarded</option>
+        <option value="ineligible">Not yet eligible</option>
+        <option value="missing">Missing referral record</option>
+      </select>
+    </div>
+    <div class="result-count" id="resultCount">Loading referrals…</div>
+  </section>
+
+  <main>
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      Loading referral records…
+    </div>
+    <div id="referralList" class="referral-list"></div>
+  </main>
+
+  <footer class="footer">Gentle Acct Store · Referral Administration</footer>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase.js"></script>
+
+<script>
+"use strict";
+
+const ADMIN_UID = "UoEjCy99gbQKkGob59vGi3CunZi1";
+const REWARD_AMOUNT = 500;
+const MINIMUM_QUALIFYING_FUNDING = 1500;
+const APPROVED_STATUSES = ["approved", "completed", "paid", "credited"];
+const THEME_KEY = "gentle-acct-store-theme";
+const USER_THEME_PREFIX = "gentle-acct-store-theme-user-";
+
+let customers = [];
+let fundingRequests = [];
+let referrals = [];
+let referralRows = [];
+let currentUser = null;
+let loadingData = false;
+let toastTimer = null;
+
+const $ = id => document.getElementById(id);
+
+function money(value) {
+  return new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: "NGN",
+    maximumFractionDigits: 0
+  }).format(Number(value) || 0);
+}
+
+function safeText(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+  }[char]));
+}
+
+function formatDate(value) {
+  if (!value) return "Date unavailable";
+  let date;
+  if (typeof value.toDate === "function") date = value.toDate();
+  else if (value.seconds) date = new Date(value.seconds * 1000);
+  else date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Date unavailable";
+  return date.toLocaleDateString("en-NG", {
+    day:"numeric", month:"short", year:"numeric"
+  });
+}
+
+function showToast(message, type = "success") {
+  const toast = $("toast");
+  toast.textContent = message;
+  toast.className = "toast show " + type;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.className = "toast", 3500);
+}
+
+function getTheme() {
+  return document.documentElement.dataset.theme || "dark";
+}
+
+function saveTheme(theme) {
+  document.documentElement.dataset.theme = theme;
+  try {
+    localStorage.setItem(THEME_KEY, theme);
+    if (currentUser) {
+      localStorage.setItem(USER_THEME_PREFIX + currentUser.uid, theme);
+    }
+  } catch (_) {}
+  updateThemeButton();
+}
+
+function updateThemeButton() {
+  const theme = getTheme();
+  $("themeBtn").textContent =
+    theme === "dark" ? "☀️ Light theme" :
+    theme === "light" ? "🌊 Blue theme" : "🌙 Dark theme";
+}
+
+function cycleTheme() {
+  const next = getTheme() === "dark" ? "light" :
+    getTheme() === "light" ? "blue" : "dark";
+  saveTheme(next);
+}
+
+function approvedFundingTotal(userId) {
+  return fundingRequests.reduce((sum, item) => {
+    const data = item.data;
+    const status = String(data.status || "").toLowerCase();
+    if (data.userId === userId && APPROVED_STATUSES.includes(status)) {
+      return sum + (Number(data.amount) || 0);
+    }
+    return sum;
+  }, 0);
+}
+
+function getReferralForCustomer(customer) {
+  return referrals.find(item =>
+    item.data.referredUserId === customer.id ||
+    item.id === customer.id
+  ) || null;
+}
+
+function getReferralStatus(customer, referral, total) {
+  if (!referral) return "missing";
+  const status = String(referral.data.status || "pending").toLowerCase();
+  if (["rewarded", "approved", "paid"].includes(status)) return "rewarded";
+  if (total >= MINIMUM_QUALIFYING_FUNDING) return "eligible";
+  return "ineligible";
+}
+
+function buildRows() {
+  referralRows = customers
+    .filter(customer => Boolean(customer.data.referrerId))
+    .map(customer => {
+      const referral = getReferralForCustomer(customer);
+      const total = approvedFundingTotal(customer.id);
+      const referrerId = customer.data.referrerId;
+      const referrer = customers.find(person => person.id === referrerId);
+      return {
+        customer,
+        referral,
+        total,
+        referrerId,
+        referrer,
+        status: getReferralStatus(customer, referral, total)
+      };
+    });
+
+  updateStats();
+  renderRows();
+}
+
+function updateStats() {
+  const eligible = referralRows.filter(row => row.status === "eligible").length;
+  const rewarded = referralRows.filter(row => row.status === "rewarded").length;
+
+  $("totalReferrals").textContent = referralRows.length.toLocaleString();
+  $("eligibleReferrals").textContent = eligible.toLocaleString();
+  $("rewardsRecorded").textContent = rewarded.toLocaleString();
+  $("rewardValue").textContent = money(rewarded * REWARD_AMOUNT);
+}
+
+function initials(name) {
+  const words = String(name || "Customer").trim().split(/\s+/).filter(Boolean);
+  return words.slice(0, 2).map(word => word[0]).join("").toUpperCase() || "C";
+}
+
+function statusBadge(status) {
+  const config = {
+    eligible: ["Eligible", "badge-pending"],
+    rewarded: ["Rewarded", "badge-rewarded"],
+    ineligible: ["Not eligible", "badge-ineligible"],
+    missing: ["Record missing", "badge-missing"]
+  };
+  const item = config[status] || config.ineligible;
+  return `<span class="badge ${item[1]}">${item[0]}</span>`;
+}
+
+function renderRows() {
+  const query = $("searchInput").value.trim().toLowerCase();
+  const filter = $("statusFilter").value;
+
+  const filtered = referralRows.filter(row => {
+    const name = row.customer.data.name || "";
+    const email = row.customer.data.email || "";
+    const referrerName = row.referrer?.data.name || "";
+    const haystack = [
+      name, email, row.customer.id, row.referrerId, referrerName
+    ].join(" ").toLowerCase();
+
+    if (query && !haystack.includes(query)) return false;
+    if (filter !== "all" && row.status !== filter) return false;
+    return true;
+  });
+
+  $("resultCount").textContent =
+    `${filtered.length} of ${referralRows.length} referrals`;
+
+  $("loading").style.display = "none";
+
+  if (!filtered.length) {
+    $("referralList").innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">⌕</div>
+        <h3>No referrals found</h3>
+        <p>Try another search or change the status filter.</p>
+      </div>`;
+    return;
+  }
+
+  $("referralList").innerHTML = filtered.map(row => {
+    const data = row.customer.data;
+    const referralData = row.referral?.data || {};
+    const name = data.name || "Unnamed customer";
+    const email = data.email || "No email available";
+    const referrerName = row.referrer?.data.name || "Referrer";
+    const progress = Math.min(
+      100, (row.total / MINIMUM_QUALIFYING_FUNDING) * 100
+    );
+    const remaining = Math.max(
+      0, MINIMUM_QUALIFYING_FUNDING - row.total
+    );
+
+    let action = "";
+    if (row.status === "eligible") {
+      action = `<button class="btn btn-primary btn-small reward-btn"
+        data-customer-id="${safeText(row.customer.id)}">
+        Approve ₦500 reward
+      </button>`;
+    } else if (row.status === "rewarded") {
+      action = `<span class="badge badge-rewarded">✓ Reward recorded</span>`;
+    } else if (row.status === "missing") {
+      action = `<span class="badge badge-missing">Referral record missing</span>`;
+    } else {
+      action = `<span class="card-date">${money(remaining)} more approved funding needed</span>`;
+    }
+
+    const createdAt = data.createdAt || referralData.createdAt;
+
+    return `
+      <article class="referral-card">
+        <div class="card-head">
+          <div class="person">
+            <div class="avatar">${safeText(initials(name))}</div>
+            <div class="person-info">
+              <div class="person-name">${safeText(name)}</div>
+              <div class="person-email">${safeText(email)}</div>
+            </div>
+          </div>
+          ${statusBadge(row.status)}
+        </div>
+
+        <div class="card-divider"></div>
+
+        <div class="details">
+          <div>
+            <div class="detail-label">Referrer</div>
+            <div class="detail-value">${safeText(referrerName)}</div>
+          </div>
+          <div>
+            <div class="detail-label">Referral reward</div>
+            <div class="detail-value">${money(REWARD_AMOUNT)}</div>
+          </div>
+          <div>
+            <div class="detail-label">Approved funding</div>
+            <div class="detail-value">${money(row.total)}</div>
+          </div>
+          <div>
+            <div class="detail-label">Qualifying target</div>
+            <div class="detail-value">${money(MINIMUM_QUALIFYING_FUNDING)}</div>
+          </div>
+        </div>
+
+        <div class="progress-track" aria-label="Funding qualification progress">
+          <div class="progress-fill" style="width:${progress}%"></div>
+        </div>
+
+        <div class="card-foot">
+          <div class="card-date">Joined: ${safeText(formatDate(createdAt))}</div>
+          ${action}
+        </div>
+      </article>`;
+  }).join("");
+
+  document.querySelectorAll(".reward-btn").forEach(button => {
+    button.addEventListener("click", () => approveReward(button.dataset.customerId, button));
+  });
+}
+
+async function loadData() {
+  if (loadingData) return;
+  loadingData = true;
+  $("loading").style.display = "block";
+  $("loading").innerHTML = '<div class="spinner"></div>Loading referral records…';
+  $("referralList").innerHTML = "";
+  $("refreshBtn").disabled = true;
+
+  try {
+    const [customerSnapshot, fundingSnapshot, referralSnapshot] = await Promise.all([
+      firebaseDB.collection("customers").get(),
+      firebaseDB.collection("fundingRequests").get(),
+      firebaseDB.collection("referrals").get()
+    ]);
+
+    customers = customerSnapshot.docs.map(doc => ({
+      id: doc.id, data: doc.data()
+    }));
+    fundingRequests = fundingSnapshot.docs.map(doc => ({
+      id: doc.id, data: doc.data()
+    }));
+    referrals = referralSnapshot.docs.map(doc => ({
+      id: doc.id, data: doc.data()
+    }));
+
+    buildRows();
+  } catch (error) {
+    console.error("Could not load referrals:", error);
+    $("loading").innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">⚠️</div>
+        <h3>Unable to load referrals</h3>
+        <p>Check your connection and Firestore permissions, then refresh.</p>
+      </div>`;
+    showToast("Could not load referral data.", "error");
+  } finally {
+    loadingData = false;
+    $("refreshBtn").disabled = false;
+  }
+}
+
+/*
+ * SECURITY NOTE:
+ * This browser transaction preserves the existing admin workflow.
+ * Firestore Security Rules alone must restrict wallet/referral writes
+ * to the authorized administrator. A trusted server-side endpoint with
+ * idempotency is safer for real wallet rewards.
+ */
+async function approveReward(customerId, button) {
+  if (!currentUser || currentUser.uid !== ADMIN_UID) {
+    showToast("You are not authorized to approve rewards.", "error");
+    return;
+  }
+
+  const customer = customers.find(item => item.id === customerId);
+  if (!customer) {
+    showToast("Customer record not found. Refresh and try again.", "error");
+    return;
+  }
+
+  const referral = getReferralForCustomer(customer);
+  if (!referral) {
+    showToast("Referral record is missing. No reward was issued.", "error");
+    return;
+  }
+
+  const referrerId = customer.data.referrerId;
+  if (!referrerId || referrerId === customerId) {
+    showToast("Invalid referrer. No reward was issued.", "error");
+    return;
+  }
+
+  const fundingDocs = fundingRequests.filter(item =>
+    item.data.userId === customerId &&
+    APPROVED_STATUSES.includes(String(item.data.status || "").toLowerCase())
+  );
+
+  if (!confirm(
+    `Approve a ${money(REWARD_AMOUNT)} referral reward for the referrer of ` +
+    `${customer.data.name || "this customer"}? The customer must have at least ` +
+    `${money(MINIMUM_QUALIFYING_FUNDING)} in approved funding.`
+  )) return;
+
+  button.disabled = true;
+  button.textContent = "Processing…";
+
+  try {
+    const referralRef = firebaseDB.collection("referrals").doc(referral.id);
+    const customerRef = firebaseDB.collection("customers").doc(customerId);
+    const walletRef = firebaseDB.collection("wallets").doc(referrerId);
+    const fundingRefs = fundingDocs.map(item =>
+      firebaseDB.collection("fundingRequests").doc(item.id)
+    );
+
+    await firebaseDB.runTransaction(async transaction => {
+      // Complete all reads before performing writes.
+      const customerSnap = await transaction.get(customerRef);
+      const referralSnap = await transaction.get(referralRef);
+      const walletSnap = await transaction.get(walletRef);
+      const fundingSnaps = [];
+
+      for (const fundingRef of fundingRefs) {
+        fundingSnaps.push(await transaction.get(fundingRef));
+      }
+
+      if (!customerSnap.exists || !referralSnap.exists) {
+        throw new Error("Customer or referral record no longer exists.");
+      }
+
+      const freshCustomer = customerSnap.data();
+      const freshReferral = referralSnap.data();
+
+      if (freshCustomer.referrerId !== referrerId) {
+        throw new Error("The referrer has changed. Refresh and review the record.");
+      }
+
+      if (freshReferral.referredUserId &&
+          freshReferral.referredUserId !== customerId) {
+        throw new Error("Referral record does not match this customer.");
+      }
+
+      if (freshReferral.referrerId &&
+          freshReferral.referrerId !== referrerId) {
+        throw new Error("Referral referrer ID does not match the customer.");
+      }
+
+      if (String(freshReferral.status || "pending").toLowerCase() !== "pending") {
+        throw new Error("This referral has already been processed.");
+      }
+
+      const totalApproved = fundingSnaps.reduce((sum, snap) => {
+        if (!snap.exists) return sum;
+        const funding = snap.data();
+        const status = String(funding.status || "").toLowerCase();
+
+        if (funding.userId === customerId &&
+            APPROVED_STATUSES.includes(status)) {
+          return sum + (Number(funding.amount) || 0);
+        }
+        return sum;
+      }, 0);
+
+      if (totalApproved < MINIMUM_QUALIFYING_FUNDING) {
+        throw new Error(
+          `Customer does not meet the ${money(MINIMUM_QUALIFYING_FUNDING)} funding requirement.`
+        );
+      }
+
+      if (Number(freshReferral.rewardAmount || REWARD_AMOUNT) !== REWARD_AMOUNT) {
+        throw new Error("Reward amount does not match the configured ₦500 reward.");
+      }
+
+      if (!walletSnap.exists) {
+        throw new Error("Referrer wallet was not found. No reward was issued.");
+      }
+
+      transaction.update(walletRef, {
+        balance: firebase.firestore.FieldValue.increment(REWARD_AMOUNT),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      transaction.update(referralRef, {
+        status: "rewarded",
+        rewardAmount: REWARD_AMOUNT,
+        rewardedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        rewardedBy: currentUser.uid,
+        totalApprovedFunding: totalApproved,
+        fundingRequestIds: fundingSnaps
+          .filter(snap => snap.exists &&
+            snap.data().userId === customerId &&
+            APPROVED_STATUSES.includes(String(snap.data().status || "").toLowerCase()))
+          .map(snap => snap.id)
+      });
+    });
+
+    showToast("₦500 referral reward approved.", "success");
+    await loadData();
+  } catch (error) {
+    console.error("Referral reward approval failed:", error);
+    showToast(error.message || "Reward approval failed.", "error");
+    button.disabled = false;
+    button.textContent = "Approve ₦500 reward";
+  }
+}
+
+function startAdminPage() {
+  if (!window.firebaseAuth || !window.firebaseDB) {
+    $("loading").innerHTML = `
+      <div class="empty">
+        <h3>Firebase is not ready</h3>
+        <p>Check that firebase.js initializes firebaseAuth and firebaseDB.</p>
+      </div>`;
+    return;
+  }
+
+  firebaseAuth.onAuthStateChanged(async user => {
+    if (!user || user.uid !== ADMIN_UID || !user.emailVerified) {
+      window.location.href = "login.html";
+      return;
+    }
+
+    currentUser = user;
+
+    try {
+      const userTheme = localStorage.getItem(USER_THEME_PREFIX + user.uid);
+      const globalTheme = localStorage.getItem(THEME_KEY);
+      const selectedTheme = userTheme || globalTheme || "dark";
+
+      saveTheme(
+        ["dark", "light", "blue"].includes(selectedTheme)
+          ? selectedTheme : "dark"
+      );
+    } catch (_) {
+      saveTheme("dark");
+    }
+
+    await loadData();
+  });
+}
+
+$("themeBtn").addEventListener("click", cycleTheme);
+$("refreshBtn").addEventListener("click", loadData);
+$("searchInput").addEventListener("input", renderRows);
+$("statusFilter").addEventListener("change", renderRows);
+
+updateThemeButton();
+startAdminPage();
+</script>
+</body>
+</html>

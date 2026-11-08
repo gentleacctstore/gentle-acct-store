@@ -1,0 +1,1784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
+<meta content="#F3F7F4" name="theme-color"/>
+<meta content="vPotzFJVE15_x0wVOMFKj-IlefhAq0Bl4wLX3XJLSq8" name="google-site-verification"/>
+<meta content="Buy premium social media accounts, streaming accounts and more. Instant delivery. Trusted by 25000+ Nigerians." name="description"/>
+<meta content="GentleLogs" property="og:site_name"/>
+<meta content="GentleLogs" name="apple-mobile-web-app-title"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="default" name="apple-mobile-web-app-status-bar-style"/>
+<title>Gentlelogs Marketplace</title>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "GentleLogs",
+  "alternateName": "Gentle Logs",
+  "url": "https://gentlelogs.pages.dev/"
+}
+</script>
+<link href="/manifest.json" rel="manifest"/>
+<link href="/gentlelogs-logo.png" rel="icon" type="image/png"/>
+<link href="/gentlelogs-logo.png" rel="apple-touch-icon"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
+<script>
+(function(){
+  try {
+    if(localStorage.getItem("gentle-acct-store-theme")==="dark"){
+      document.documentElement.classList.add("dark-mode");
+    }
+  } catch(e){}
+})();
+</script>
+<style>
+:root{
+  color-scheme:light;
+  --green:#286238;
+  --green-dark:#20552d;
+  --green-soft:#e7f4ea;
+  --ink:#202923;
+  --muted:#6b776e;
+  --page:#f3f7f4;
+  --surface:#ffffff;
+  --border:#dce7de;
+  --shadow:0 10px 30px rgba(28,65,38,.065);
+}
+
+html.dark-mode{
+  color-scheme:dark;
+  --green:#7bc68a;
+  --green-dark:#4e9a5e;
+  --green-soft:#233b2a;
+  --ink:#edf4ee;
+  --muted:#b8c8ba;
+  --page:#111b14;
+  --surface:#1a281d;
+  --border:#304434;
+  --shadow:0 10px 30px rgba(0,0,0,.15);
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+  scroll-padding-top:90px;
+  background:var(--page);
+  -webkit-text-size-adjust:100%;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  min-height:100dvh;
+  overflow-x:hidden;
+  font-family:"Space Grotesk",Arial,sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(ellipse at 5% 0%,rgba(222,241,226,.8),transparent 36%),
+    radial-gradient(ellipse at 95% 45%,rgba(225,240,228,.65),transparent 35%),
+    var(--page);
+  -webkit-font-smoothing:antialiased;
+  transition:background-color .2s,color .2s;
+}
+
+html.dark-mode body{
+  background:
+    radial-gradient(ellipse at 5% 0%,rgba(38,83,48,.4),transparent 38%),
+    var(--page);
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+button,input{
+  font:inherit;
+  -webkit-tap-highlight-color:transparent;
+}
+
+button{
+  cursor:pointer;
+}
+
+img{
+  max-width:100%;
+}
+
+.container{
+  width:100%;
+  max-width:1120px;
+  margin:0 auto;
+  padding:0 22px;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+summary:focus-visible{
+  outline:3px solid rgba(40,98,56,.35);
+  outline-offset:3px;
+}
+
+/* HEADER */
+
+.header{
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:rgba(249,252,249,.92);
+  border-bottom:1px solid rgba(40,98,56,.10);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+}
+
+html.dark-mode .header{
+  background:rgba(26,40,29,.94);
+  border-color:var(--border);
+}
+
+.nav{
+  min-height:76px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width:0;
+}
+
+.brand img{
+  width:42px;
+  height:42px;
+  object-fit:contain;
+  flex-shrink:0;
+}
+
+.brand-fallback{
+  display:none;
+  align-items:center;
+  justify-content:center;
+  width:42px;
+  height:42px;
+  flex-shrink:0;
+  border-radius:13px;
+  background:var(--green);
+  color:#fff;
+  font-size:17px;
+}
+
+.brand-name{
+  font-size:clamp(18px,3vw,24px);
+  font-weight:800;
+  letter-spacing:-.8px;
+  white-space:nowrap;
+}
+
+.brand-name span{
+  color:var(--green);
+}
+
+.desktop-links{
+  display:none;
+  align-items:center;
+  gap:19px;
+}
+
+.desktop-links a{
+  color:var(--muted);
+  font-size:12px;
+  font-weight:700;
+  transition:color .2s;
+}
+
+.desktop-links a:hover{
+  color:var(--green);
+}
+
+.nav-right{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.nav-icon{
+  width:44px;
+  height:44px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid var(--border);
+  border-radius:13px;
+  background:var(--surface);
+  color:var(--green);
+  font-size:16px;
+  box-shadow:0 3px 8px rgba(28,65,38,.035);
+  transition:background .2s,border-color .2s;
+}
+
+.nav-icon:hover{
+  background:var(--green-soft);
+}
+
+.menu-button{
+  font-size:19px;
+}
+
+.mobile-menu{
+  display:none;
+  padding:13px 22px 17px;
+  background:var(--surface);
+  border-top:1px solid var(--border);
+}
+
+.mobile-menu.open{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+}
+
+.mobile-menu a{
+  padding:12px;
+  border:1px solid var(--border);
+  border-radius:11px;
+  background:var(--page);
+  font-size:11px;
+  font-weight:800;
+}
+
+.mobile-menu a:hover{
+  border-color:var(--green);
+  color:var(--green);
+}
+
+/* HERO */
+
+.hero{
+  padding:43px 0 30px;
+  text-align:center;
+}
+
+.hero-inner{
+  max-width:880px;
+  margin:auto;
+}
+
+.trust-pill{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  padding:10px 15px;
+  margin:0 auto 27px;
+  border:1px solid #d3e7d7;
+  border-radius:40px;
+  background:rgba(255,255,255,.7);
+  color:var(--green-dark);
+  font-size:11px;
+  font-weight:800;
+}
+
+html.dark-mode .trust-pill{
+  background:var(--green-soft);
+  border-color:var(--border);
+  color:#d7eedb;
+}
+
+.trust-dot{
+  width:8px;
+  height:8px;
+  flex-shrink:0;
+  border-radius:50%;
+  background:#35934a;
+}
+
+.hero h1{
+  max-width:850px;
+  margin:0 auto 23px;
+  font-size:clamp(35px,6.8vw,58px);
+  line-height:1.15;
+  letter-spacing:-1.7px;
+  font-weight:800;
+}
+
+.hero h1 .accent{
+  color:var(--green);
+}
+
+.typing-text{
+  display:inline;
+  border-right:2px solid var(--green);
+  padding-right:3px;
+  animation:cursorBlink .75s step-end infinite;
+}
+
+@keyframes cursorBlink{
+  50%{border-color:transparent}
+}
+
+.hero-description{
+  max-width:760px;
+  margin:0 auto 29px;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.9;
+  font-weight:500;
+}
+
+.hero-actions{
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  gap:11px;
+  max-width:440px;
+  margin:0 auto;
+}
+
+.hero-button{
+  min-height:55px;
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding:13px 19px;
+  border-radius:14px;
+  font-size:13px;
+  font-weight:800;
+  transition:transform .2s,background .2s,box-shadow .2s;
+}
+
+.hero-button:hover{
+  transform:translateY(-2px);
+}
+
+.hero-button.primary{
+  color:#fff;
+  background:var(--green);
+  border:1px solid var(--green);
+  box-shadow:0 8px 20px rgba(40,98,56,.18);
+}
+
+.hero-button.primary:hover{
+  background:var(--green-dark);
+}
+
+.hero-button.secondary{
+  color:var(--green);
+  background:var(--surface);
+  border:1px solid var(--border);
+}
+
+.hero-button.secondary:hover{
+  background:var(--green-soft);
+}
+
+.trust-badges{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:8px;
+  margin:25px auto 0;
+}
+
+.trust-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:10px 12px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.72);
+  border-radius:30px;
+  color:var(--muted);
+  font-size:10px;
+  font-weight:800;
+}
+
+html.dark-mode .trust-badge{
+  background:var(--surface);
+}
+
+.trust-badge i{
+  color:var(--green);
+  font-size:12px;
+}
+
+/* MARKETPLACE SUMMARY */
+
+.stats-section{
+  padding:21px 0 37px;
+}
+
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+  padding:21px 9px;
+  background:rgba(255,255,255,.78);
+  border:1px solid var(--border);
+  border-radius:19px;
+  text-align:center;
+  box-shadow:var(--shadow);
+}
+
+html.dark-mode .stats-grid{
+  background:var(--surface);
+}
+
+.stat-number{
+  font-size:clamp(17px,3.7vw,27px);
+  line-height:1.3;
+  font-weight:800;
+  letter-spacing:-.6px;
+  color:var(--green);
+}
+
+.stat-label{
+  margin-top:7px;
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.5;
+  font-weight:700;
+}
+
+/* GENERAL SECTIONS */
+
+.section{
+  padding:47px 0;
+}
+
+.section-white{
+  background:var(--surface);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+}
+
+.section-heading{
+  max-width:700px;
+  margin:0 auto 28px;
+  text-align:center;
+}
+
+.eyebrow{
+  margin-bottom:10px;
+  color:var(--green);
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:1.8px;
+  text-transform:uppercase;
+}
+
+.section-heading h2{
+  margin:0 0 12px;
+  font-size:clamp(25px,4.7vw,36px);
+  line-height:1.25;
+  letter-spacing:-.9px;
+  font-weight:800;
+}
+
+.section-heading p{
+  max-width:600px;
+  margin:0 auto;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.85;
+}
+
+/* FEATURES */
+
+.features-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:13px;
+}
+
+.feature-card{
+  padding:22px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:17px;
+  box-shadow:var(--shadow);
+  transition:transform .2s,border-color .2s;
+}
+
+.feature-card:hover{
+  transform:translateY(-3px);
+  border-color:#afd1b7;
+}
+
+.feature-icon{
+  width:45px;
+  height:45px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:14px;
+  border-radius:14px;
+  background:var(--green-soft);
+  color:var(--green);
+  font-size:17px;
+}
+
+.feature-card h3{
+  margin:0 0 9px;
+  font-size:14px;
+  font-weight:800;
+}
+
+.feature-card p{
+  margin:0;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.85;
+}
+
+/* SEARCH */
+
+.search-box{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  max-width:650px;
+  min-height:58px;
+  margin:0 auto 17px;
+  padding:7px 8px 7px 15px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:14px;
+  box-shadow:var(--shadow);
+}
+
+.search-box > i{
+  color:var(--green);
+  font-size:15px;
+}
+
+.search-box input{
+  min-width:0;
+  flex:1;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:var(--ink);
+  font-size:13px;
+}
+
+.search-box input::placeholder{
+  color:var(--muted);
+}
+
+.search-box button{
+  flex-shrink:0;
+  border:0;
+  border-radius:10px;
+  background:var(--green);
+  color:#fff;
+  padding:12px 15px;
+  font-size:11px;
+  font-weight:800;
+}
+
+.search-box button:hover{
+  background:var(--green-dark);
+}
+
+.filters{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding:3px 0 14px;
+  margin-bottom:10px;
+  scrollbar-width:thin;
+}
+
+.filter-btn{
+  flex-shrink:0;
+  padding:10px 14px;
+  border:1px solid var(--border);
+  border-radius:11px;
+  background:var(--surface);
+  color:var(--muted);
+  font-size:10px;
+  font-weight:800;
+  transition:background .2s,color .2s;
+}
+
+.filter-btn.active{
+  background:var(--green);
+  border-color:var(--green);
+  color:#fff;
+}
+
+/* PRODUCT CARDS */
+
+.product-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:11px;
+}
+
+.product-card{
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+  overflow:hidden;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:16px;
+  box-shadow:var(--shadow);
+  transition:transform .2s,border-color .2s;
+}
+
+.product-card:hover{
+  transform:translateY(-3px);
+  border-color:#afd1b7;
+}
+
+.product-art{
+  height:92px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--green-soft);
+  color:var(--green);
+  font-size:31px;
+}
+
+.art-blue,
+.art-pink,
+.art-purple,
+.art-green,
+.art-orange,
+.art-cyan{
+  background:var(--green-soft);
+  color:var(--green);
+}
+
+.product-content{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  padding:12px;
+}
+
+.product-category{
+  margin-bottom:7px;
+  color:var(--green);
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.5px;
+}
+
+.product-content h3{
+  margin:0 0 8px;
+  font-size:12px;
+  line-height:1.5;
+  font-weight:800;
+}
+
+.product-content p{
+  flex:1;
+  margin:0 0 13px;
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.8;
+}
+
+.product-link{
+  display:block;
+  padding:11px 7px;
+  border:1px solid transparent;
+  border-radius:10px;
+  background:var(--green-soft);
+  color:var(--green);
+  text-align:center;
+  font-size:10px;
+  font-weight:800;
+  transition:background .2s,color .2s;
+}
+
+.product-link:hover{
+  background:var(--green);
+  color:#fff;
+}
+
+.empty-state{
+  display:none;
+  padding:25px 15px;
+  background:var(--surface);
+  border:1px dashed var(--border);
+  border-radius:14px;
+  color:var(--muted);
+  text-align:center;
+  font-size:12px;
+}
+
+/* HOW IT WORKS */
+
+.steps-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:13px;
+}
+
+.step-card{
+  padding:21px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:16px;
+  box-shadow:var(--shadow);
+}
+
+.step-number{
+  margin-bottom:12px;
+  color:var(--green);
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:1px;
+}
+
+.step-icon{
+  width:43px;
+  height:43px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:13px;
+  border-radius:13px;
+  background:var(--green-soft);
+  color:var(--green);
+  font-size:16px;
+}
+
+.step-card h3{
+  margin:0 0 8px;
+  font-size:14px;
+  font-weight:800;
+}
+
+.step-card p{
+  margin:0;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.85;
+}
+
+/* FAQ */
+
+.faq-list{
+  display:grid;
+  gap:10px;
+  max-width:750px;
+  margin:auto;
+}
+
+.faq-item{
+  overflow:hidden;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:13px;
+}
+
+.faq-item summary{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:13px;
+  padding:17px;
+  cursor:pointer;
+  list-style:none;
+  font-size:12px;
+  font-weight:800;
+}
+
+.faq-item summary::-webkit-details-marker{
+  display:none;
+}
+
+.faq-item summary i{
+  flex-shrink:0;
+  color:var(--green);
+  transition:transform .2s;
+}
+
+.faq-item[open] summary i{
+  transform:rotate(45deg);
+}
+
+.faq-answer{
+  padding:0 17px 17px;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.9;
+}
+
+/* CALL TO ACTION */
+
+.cta-section{
+  padding:30px 0 43px;
+}
+
+.cta-box{
+  padding:32px 20px;
+  text-align:center;
+  background:var(--green-soft);
+  border:1px solid var(--border);
+  border-radius:22px;
+}
+
+.cta-box h2{
+  margin:0 0 11px;
+  font-size:clamp(23px,4.5vw,30px);
+  line-height:1.3;
+  letter-spacing:-.7px;
+  font-weight:800;
+}
+
+.cta-box p{
+  margin:0 auto 19px;
+  max-width:520px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.85;
+}
+
+.cta-button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  min-height:47px;
+  padding:12px 18px;
+  border-radius:12px;
+  background:var(--green);
+  color:#fff;
+  font-size:12px;
+  font-weight:800;
+  transition:background .2s,transform .2s;
+}
+
+.cta-button:hover{
+  background:var(--green-dark);
+  transform:translateY(-2px);
+}
+
+/* FOOTER */
+
+.footer{
+  padding:29px 0 18px;
+  background:var(--surface);
+  border-top:1px solid var(--border);
+}
+
+.footer-main{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:25px 18px;
+  padding-bottom:23px;
+}
+
+.footer-description{
+  max-width:330px;
+  margin:11px 0 0;
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.9;
+}
+
+.footer-heading{
+  margin:0 0 13px;
+  font-size:11px;
+  font-weight:800;
+}
+
+.footer-links{
+  display:grid;
+  gap:10px;
+}
+
+.footer-links a{
+  color:var(--muted);
+  font-size:10px;
+  transition:color .2s;
+}
+
+.footer-links a:hover{
+  color:var(--green);
+}
+
+.footer-bottom{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  gap:10px;
+  padding-top:15px;
+  border-top:1px solid var(--border);
+  color:var(--muted);
+  font-size:9px;
+}
+
+.footer-bottom a{
+  color:var(--green);
+  font-weight:800;
+}
+
+/* SCROLL REVEAL */
+
+.reveal{
+  opacity:0;
+  transform:translateY(12px);
+  transition:opacity .45s ease,transform .45s ease;
+}
+
+.reveal.is-visible{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* IPHONE INSTALL BANNER */
+
+.ios-install-banner{
+  position:fixed;
+  z-index:1000;
+  left:12px;
+  right:12px;
+  bottom:calc(14px + env(safe-area-inset-bottom));
+  display:none;
+  align-items:center;
+  gap:9px;
+  padding:11px;
+  background:#1d3824;
+  color:#fff;
+  border:1px solid #42634a;
+  border-radius:16px;
+  box-shadow:0 12px 30px rgba(7,23,43,.2);
+}
+
+.ios-install-banner.show{
+  display:flex;
+}
+
+.install-app-icon{
+  width:41px;
+  height:41px;
+  flex:0 0 41px;
+  object-fit:cover;
+  border-radius:10px;
+  background:#fff;
+}
+
+.install-banner-copy{
+  flex:1;
+  min-width:0;
+}
+
+.install-banner-copy strong{
+  display:block;
+  font-size:11px;
+  font-weight:800;
+}
+
+.install-banner-copy span{
+  display:block;
+  margin-top:4px;
+  color:#d4e5d6;
+  font-size:9px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.install-banner-button{
+  border:0;
+  border-radius:9px;
+  background:#4b9258;
+  color:#fff;
+  padding:10px 11px;
+  font-size:10px;
+  font-weight:800;
+}
+
+.install-banner-close{
+  border:0;
+  background:transparent;
+  color:#d0dfd2;
+  font-size:21px;
+  padding:0 2px;
+}
+
+.install-overlay{
+  position:fixed;
+  inset:0;
+  z-index:1100;
+  display:none;
+  align-items:flex-end;
+  justify-content:center;
+  padding:14px 12px calc(14px + env(safe-area-inset-bottom));
+  background:rgba(0,0,0,.55);
+}
+
+.install-overlay.open{
+  display:flex;
+}
+
+.install-modal{
+  width:100%;
+  max-width:500px;
+  max-height:88vh;
+  overflow:auto;
+  padding:21px 17px 17px;
+  background:#fff;
+  color:#202923;
+  border-radius:22px;
+  box-shadow:0 20px 60px rgba(0,0,0,.25);
+}
+
+.install-modal-head{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  margin-bottom:16px;
+}
+
+.install-modal-icon{
+  width:49px;
+  height:49px;
+  flex-shrink:0;
+  object-fit:cover;
+  border-radius:12px;
+}
+
+.install-modal-title{
+  flex:1;
+  font-size:16px;
+  font-weight:800;
+  line-height:1.3;
+}
+
+.install-modal-close{
+  border:0;
+  background:transparent;
+  color:#7b887e;
+  font-size:24px;
+}
+
+.install-modal-intro{
+  margin:0 0 14px;
+  color:#526055;
+  font-size:12px;
+  line-height:1.7;
+}
+
+.install-step{
+  display:flex;
+  gap:11px;
+  margin-bottom:9px;
+  padding:12px;
+  background:#f3f7f4;
+  border:1px solid #e3ebe4;
+  border-radius:13px;
+}
+
+.install-step-num{
+  min-width:18px;
+  color:#286238;
+  font-size:14px;
+  font-weight:800;
+}
+
+.install-step-text{
+  color:#344238;
+  font-size:11px;
+  line-height:1.65;
+}
+
+.install-step-icon{
+  color:#286238;
+}
+
+.install-got-it{
+  width:100%;
+  margin-top:5px;
+  padding:13px;
+  border:0;
+  border-radius:11px;
+  background:#286238;
+  color:#fff;
+  font-size:12px;
+  font-weight:800;
+}
+
+.install-note{
+  margin:11px 0 0;
+  color:#7a877c;
+  text-align:center;
+  font-size:10px;
+  line-height:1.7;
+}
+
+/* TABLET AND DESKTOP */
+
+@media(min-width:700px){
+  .container{
+    padding-left:30px;
+    padding-right:30px;
+  }
+
+  .desktop-links{
+    display:flex;
+  }
+
+  .menu-button{
+    display:none;
+  }
+
+  .hero{
+    padding-top:52px;
+    padding-bottom:39px;
+  }
+
+  .hero-actions{
+    flex-direction:row;
+    justify-content:center;
+    gap:13px;
+    max-width:none;
+  }
+
+  .hero-button{
+    width:220px;
+    min-height:57px;
+  }
+
+  .features-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+
+  .product-grid{
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:14px;
+  }
+
+  .product-art{
+    height:112px;
+  }
+
+  .steps-grid{
+    grid-template-columns:repeat(4,minmax(0,1fr));
+  }
+
+  .footer-main{
+    grid-template-columns:2fr 1fr 1fr;
+  }
+
+  .ios-install-banner{
+    left:auto;
+    right:22px;
+    bottom:22px;
+    width:360px;
+  }
+
+  .install-overlay{
+    align-items:center;
+  }
+}
+
+@media(max-width:390px){
+  .container{
+    padding-left:16px;
+    padding-right:16px;
+  }
+
+  .nav{
+    min-height:69px;
+    gap:7px;
+  }
+
+  .brand{
+    gap:7px;
+  }
+
+  .brand img,
+  .brand-fallback{
+    width:35px;
+    height:35px;
+  }
+
+  .brand-name{
+    font-size:16px;
+    letter-spacing:-.6px;
+  }
+
+  .nav-right{
+    gap:5px;
+  }
+
+  .nav-icon{
+    width:39px;
+    height:39px;
+    border-radius:11px;
+    font-size:14px;
+  }
+
+  .menu-button{
+    width:40px;
+    height:40px;
+    font-size:17px;
+  }
+
+  .hero{
+    padding:36px 0 25px;
+  }
+
+  .trust-pill{
+    padding:9px 11px;
+    margin-bottom:25px;
+    font-size:10px;
+    line-height:1.6;
+  }
+
+  .hero h1{
+    font-size:clamp(31px,8vw,36px);
+    line-height:1.16;
+    letter-spacing:-1.1px;
+    margin-bottom:20px;
+  }
+
+  .hero-description{
+    font-size:12px;
+    line-height:1.9;
+    margin-bottom:24px;
+  }
+
+  .hero-actions{
+    gap:10px;
+  }
+
+  .hero-button{
+    min-height:51px;
+    font-size:12px;
+    border-radius:13px;
+  }
+
+  .trust-badges{
+    gap:7px;
+    margin-top:21px;
+  }
+
+  .trust-badge{
+    min-height:37px;
+    padding:8px 9px;
+    font-size:9px;
+  }
+
+  .stats-section{
+    padding:19px 0 30px;
+  }
+
+  .stats-grid{
+    padding:17px 5px;
+    gap:4px;
+    border-radius:16px;
+  }
+
+  .stat-number{
+    font-size:19px;
+  }
+
+  .stat-label{
+    font-size:9px;
+  }
+
+  .section{
+    padding:38px 0;
+  }
+
+  .section-heading{
+    margin-bottom:23px;
+  }
+
+  .section-heading h2{
+    font-size:25px;
+  }
+
+  .section-heading p{
+    font-size:12px;
+  }
+
+  .feature-card{
+    padding:18px;
+  }
+
+  .search-box{
+    min-height:52px;
+    gap:7px;
+    padding-left:11px;
+  }
+
+  .search-box input{
+    font-size:12px;
+  }
+
+  .search-box button{
+    padding:10px;
+    font-size:10px;
+  }
+
+  .product-grid{
+    gap:9px;
+  }
+
+  .product-art{
+    height:79px;
+    font-size:27px;
+  }
+
+  .product-content{
+    padding:10px;
+  }
+
+  .product-content h3{
+    font-size:11px;
+  }
+
+  .product-content p{
+    font-size:9px;
+  }
+
+  .product-link{
+    padding:10px 5px;
+    font-size:9px;
+  }
+
+  .step-card{
+    padding:18px;
+  }
+
+  .faq-item summary{
+    padding:14px;
+    font-size:11px;
+  }
+
+  .faq-answer{
+    padding:0 14px 14px;
+    font-size:10px;
+  }
+
+  .cta-box{
+    padding:25px 15px;
+  }
+
+  .cta-box h2{
+    font-size:24px;
+  }
+
+  .footer-main{
+    gap:21px 13px;
+  }
+
+  .ios-install-banner{
+    gap:7px;
+    padding:9px;
+  }
+
+  .install-app-icon{
+    width:37px;
+    height:37px;
+    flex-basis:37px;
+  }
+
+  .install-banner-copy strong{
+    font-size:10px;
+  }
+
+  .install-banner-button{
+    padding:9px;
+    font-size:9px;
+  }
+}
+
+@media(max-width:350px){
+  .brand-name{
+    font-size:14px;
+  }
+
+  .nav-icon{
+    width:36px;
+    height:36px;
+  }
+
+  .menu-button{
+    width:37px;
+    height:37px;
+  }
+
+  .stats-grid{
+    grid-template-columns:1fr;
+    gap:16px;
+    padding:20px;
+  }
+
+  .stat-number{
+    font-size:23px;
+  }
+
+  .stat-label{
+    font-size:10px;
+  }
+
+  .product-grid{
+    gap:7px;
+  }
+
+  .product-content{
+    padding:8px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  html{
+    scroll-behavior:auto;
+  }
+
+  .typing-text{
+    animation:none!important;
+  }
+
+  .reveal{
+    opacity:1;
+    transform:none;
+    transition:none;
+  }
+
+  *,
+  *::before,
+  *::after{
+    transition:none!important;
+  }
+}
+</style>
+<style id="gentlelogs-xtra-hero-copy">
+.hero-inner{text-align:center;max-width:900px;margin:0 auto}
+.hero .trust-pill{margin:0 auto 20px;font-size:clamp(12px,2.8vw,16px);letter-spacing:0;text-transform:none;padding:10px 18px}
+.hero h1{max-width:850px;margin:20px auto;font-weight:800;letter-spacing:-1.8px;line-height:1.05}
+.hero-description{max-width:850px;margin:18px auto;font-size:clamp(16px,3.7vw,21px);line-height:1.55}
+.hero-wallet-copy{margin-top:22px}
+.hero-actions{justify-content:center}
+.hero-install-button{display:flex;width:max-content;min-width:190px;margin:12px auto 26px;align-items:center;justify-content:center;gap:10px}
+.xtra-rating{justify-content:center;flex-wrap:wrap;gap:16px;margin:28px auto 12px;max-width:760px}
+.xtra-avatars b{width:38px;height:38px;font-size:11px}
+@media(max-width:600px){
+ .hero-inner{text-align:center}
+ .hero .trust-pill{max-width:100%;white-space:normal;justify-content:center}
+ .hero h1{font-size:clamp(32px,8vw,43px);line-height:1.08;letter-spacing:-1.3px}
+ .hero-description{font-size:clamp(15px,4vw,18px);line-height:1.58}
+ .hero-actions{gap:9px;flex-wrap:wrap}
+ .hero-button{min-height:48px;padding:0 17px}
+ .hero-install-button{margin:12px auto 24px}
+ .xtra-rating{font-size:12px;line-height:1.5}
+}
+</style>
+
+<style id="gentlelogs-xtralogs-full-design">
+:root{--g:#26743d;--gd:#1d5d31;--gs:#eaf5ec;--ink:#172033;--muted:#263246;--bg:#f6f8fb;--card:#fff;--line:#dce1e6;--red:#c92525}
+html.dark-mode{--g:#82cf91;--gd:#65b878;--gs:#243d2b;--ink:#edf4ee;--muted:#c0cbc3;--bg:#111b14;--card:#1b2a1f;--line:#354739}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:80px}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Space Grotesk",Arial,sans-serif}
+.header{position:sticky;top:0;z-index:50;background:var(--gd)!important;border:0!important;color:#fff}.header .brand-name,.header .desktop-links a,.header .nav-icon{color:#fff!important}.header .brand img{display:none}.header .brand-fallback{display:flex!important;background:var(--g);color:#fff;border-radius:10px}.header .menu-button{background:#eee!important;color:#172033!important;border-radius:16px!important}
+.mobile-menu{background:var(--card)!important}.mobile-menu a{color:var(--ink)!important}
+.xl-main{max-width:1120px;margin:auto;padding:0 18px 35px}.xl-hero{text-align:center;padding:38px 0 18px}.xl-pill{display:inline-flex;align-items:center;gap:12px;border:1px solid var(--line);background:rgba(234,245,236,.8);color:var(--ink);border-radius:40px;padding:13px 18px;font-size:clamp(12px,3.2vw,16px);font-weight:800}.xl-pill i{width:10px;height:10px;border-radius:50%;background:#42b879}.xl-hero h1{font-size:clamp(34px,8vw,65px);line-height:1.02;letter-spacing:-2px;font-weight:800;margin:30px auto 24px;max-width:820px}.xl-hero h1 span{background:linear-gradient(90deg,#d94c24,#f2a300);-webkit-background-clip:text;background-clip:text;color:transparent}.xl-hero p{font-size:clamp(16px,4vw,24px);line-height:1.6;color:var(--muted);max-width:820px;margin:0 auto 24px}.xl-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}.xl-btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 24px;border-radius:40px;font-size:16px;font-weight:800;text-decoration:none;border:1.5px solid var(--g)}.xl-primary{background:var(--g);color:#fff;box-shadow:0 12px 24px rgba(38,116,61,.16)}.xl-outline{color:var(--g);background:var(--card)}.xl-install{margin:12px auto 22px;background:var(--card);color:var(--ink);border-color:var(--line);gap:10px;cursor:pointer}.xl-rating{display:flex;align-items:center;justify-content:center;gap:18px;font-size:clamp(12px,3.2vw,17px);line-height:1.55;color:var(--ink);margin:22px auto 0}.xl-rating strong{letter-spacing:2px}.xl-avatars{display:flex}.xl-avatars b{display:grid;place-items:center;width:39px;height:39px;margin-right:-8px;border-radius:50%;border:2px solid var(--bg);background:var(--g);color:white;font-size:11px}
+.xl-wallet-show{max-width:660px;margin:35px auto 22px;position:relative;padding:0 4px}.xl-promo{height:230px;border-radius:22px 22px 18px 18px;background:linear-gradient(135deg,#f9e9d5,#fff8e8 55%,#f1d9ba);border:1px solid #ead7c1;padding:22px 18px;color:#9b1717;display:flex;flex-direction:column;gap:8px;overflow:hidden}.xl-promo small{width:max-content;background:white;border-radius:25px;padding:8px 13px;color:var(--ink);font-weight:800}.xl-promo strong{font-size:34px;text-align:center;margin-top:14px}.xl-promo span{text-align:center;color:#7b3c2d;font-size:12px}.xl-wallet{position:relative;margin:-115px auto 0;width:88%;background:var(--card);border:1px solid var(--line);border-radius:25px;padding:20px 17px;box-shadow:0 18px 45px rgba(20,30,40,.13)}.xl-wallet-head,.xl-activity{display:flex;justify-content:space-between;align-items:center}.xl-wallet-head{font-size:15px}.xl-wallet-head b,.xl-activity b{color:var(--g)}.xl-wallet-label{text-align:center;margin-top:24px;font-size:17px;color:var(--muted)}.xl-wallet-amount{text-align:center;font-size:clamp(23px,6vw,31px);font-weight:800;margin:8px 0 22px}.xl-wallet-amount small{font-size:10px;border:1px solid var(--line);border-radius:22px;padding:7px;color:var(--muted);white-space:nowrap}.xl-wallet-shortcuts{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.xl-wallet-shortcuts span{background:var(--gs);color:var(--ink);border-radius:13px;text-align:center;padding:11px 2px;font-size:12px;font-weight:800}.xl-activity{padding:15px 0;border-bottom:1px solid var(--line);font-size:14px}.xl-activity:last-child{border:0}.xl-activity .live{color:#bd6417}.xl-ticker{display:flex;gap:9px;overflow:hidden;white-space:nowrap;padding:18px 0 4px}.xl-ticker span,.xl-city-tags span{background:var(--gs);border:1px solid var(--line);border-radius:28px;padding:9px 15px;font-size:12px;flex:0 0 auto}
+.xl-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:38px 0 30px}.xl-stats article{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--g);border-radius:19px;padding:22px 18px;box-shadow:0 6px 22px rgba(20,40,25,.04)}.xl-stats strong{display:block;font-size:clamp(29px,7vw,40px);font-weight:800;letter-spacing:-1.5px}.xl-stats span{display:block;margin-top:5px;color:var(--muted);font-size:13px}
+.xl-section{padding:34px 0}.xl-eyebrow{display:inline-block;padding:7px 13px;border:1px solid rgba(38,116,61,.25);background:var(--gs);color:var(--g);border-radius:30px;font-size:10px;font-weight:800;letter-spacing:1.7px;margin-bottom:13px}.xl-section h2{font-size:clamp(27px,6.5vw,42px);line-height:1.13;letter-spacing:-1.2px;margin:0 0 18px;font-weight:800}.xl-section>p{font-size:16px;line-height:1.65;color:var(--muted);margin:0 0 18px}
+.xl-why-grid{display:grid;gap:14px}.xl-image-card{padding:10px;background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:0 8px 24px rgba(20,40,25,.05)}.xl-landscape{height:150px;border-radius:11px;background-size:cover;background-position:center}.landscape-one{background-image:linear-gradient(120deg,rgba(28,60,42,.12),rgba(28,60,42,.02)),url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80')}.landscape-two{background-image:url('https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=900&q=80')}.landscape-three{background-image:url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=900&q=80')}.xl-icon,.xl-service-icon,.xl-rank-icon{display:grid;place-items:center;background:var(--gs);color:var(--g);border:1px solid rgba(38,116,61,.15);border-radius:9px;width:40px;height:40px;margin:12px 0 7px;font-weight:900}.xl-image-card h3,.xl-service-list h3,.xl-step h3,.xl-rank-list h3,.xl-compare h3,.xl-trust-list h3{font-size:17px;margin:6px 0}.xl-image-card p,.xl-service-list p,.xl-step p,.xl-rank-list p,.xl-compare p,.xl-trust-list p{font-size:13px;line-height:1.6;color:var(--muted);margin:0}
+.xl-step,.xl-service-list article,.xl-quote,.xl-rank-list article,.xl-compare article,.xl-trust-list article,.xl-faq article{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:18px;margin:12px 0;box-shadow:0 7px 22px rgba(20,40,25,.035)}.xl-step>b{color:var(--g);font-size:24px}.xl-step h3{margin-top:7px}.xl-service-list{display:grid;gap:12px}.xl-service-list article{position:relative;padding:17px 16px 18px 18px;border-left:3px solid var(--g)}.xl-service-icon{margin:0 0 10px;width:38px;height:38px;font-size:18px}.xl-service-list a{display:inline-block;margin-top:13px;color:var(--g);font-size:12px;font-weight:800;text-decoration:none}
+.xl-desk{padding-top:45px}.xl-proof .xl-quote{padding:20px}.xl-stars{color:#e39a24;letter-spacing:2px}.xl-quote p{font-size:15px;line-height:1.6}.xl-person{display:flex;align-items:center;gap:10px;margin-top:17px}.xl-person>b{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--g);color:white}.xl-person small{display:block;color:var(--muted);margin-top:3px}
+.xl-rank-list{display:grid;gap:10px}.xl-rank-list article{margin:0}.xl-rank-icon{width:35px;height:35px;font-size:15px}.xl-compare{display:grid;gap:10px}.xl-compare article{margin:0}.xl-trust-list article{margin:12px 0}
+.xl-founder{margin-top:20px;padding:20px;background:var(--card);border:1px solid var(--line);border-radius:20px}.xl-founder-image{height:170px;border-radius:14px;margin-bottom:20px;background:url('https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1000&q=80') center/cover}.xl-founder blockquote{font-size:15px;line-height:1.7;color:var(--muted);font-style:italic;margin:17px 0}.xl-founder>strong span{font-weight:500;color:var(--muted)}
+.xl-city-tags{display:flex;flex-wrap:wrap;gap:8px}.xl-support-image{height:180px;border-radius:18px;margin-top:22px;background:url('https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1000&q=80') center/cover}.xl-faq article{padding:20px}.xl-faq article h3{font-size:17px;font-weight:500}.xl-faq article p{font-size:15px;line-height:1.65;color:var(--muted)}.xl-faq-icon{width:50px;height:50px;display:grid;place-items:center;border-radius:50%;background:var(--gs);color:var(--g);font-size:22px}.xl-cta{padding:28px 22px;margin:25px 0 28px;border-radius:23px;background:var(--gs);border:1px solid var(--line)}.xl-cta h2{font-size:28px;margin:0 0 12px}.xl-cta p{font-size:15px;line-height:1.6;color:var(--muted)}
+.xl-footer{background:var(--card);border-top:1px solid var(--line);padding:35px 22px 95px}.xl-footer-brand{display:flex;align-items:center;gap:12px;font-size:19px}.xl-logo{width:31px;height:31px;border-radius:9px;background:var(--g)}.xl-footer>p{font-size:15px;line-height:1.6;color:var(--muted);margin:20px 0}.xl-social{display:flex;gap:17px;margin:25px 0}.xl-social a{color:var(--g);font-weight:800;text-decoration:none}.xl-footer-group{display:flex;flex-direction:column;gap:15px;margin:28px 0}.xl-footer-group h3{font-size:14px;letter-spacing:1.3px;margin:0 0 2px}.xl-footer-group a{font-size:15px;color:var(--ink);text-decoration:none}.xl-footer-bottom{border-top:1px solid var(--line);padding-top:25px;margin-top:35px;font-size:14px;color:var(--muted)}.xl-powered{margin-top:18px;color:var(--muted);font-size:13px}
+.xl-bottom-nav{position:fixed;z-index:70;bottom:0;left:0;right:0;display:grid;grid-template-columns:repeat(4,1fr);padding:13px 6px calc(13px + env(safe-area-inset-bottom));background:rgba(255,255,255,.96);border-top:1px solid var(--line);backdrop-filter:blur(14px)}html.dark-mode .xl-bottom-nav{background:rgba(25,39,29,.96)}.xl-bottom-nav a{text-align:center;text-decoration:none;color:var(--ink);font-size:12px;font-weight:600}.xl-float-chat,.xl-backtop{position:fixed;z-index:75;right:20px;bottom:78px;width:58px;height:58px;border-radius:50%;border:0;background:var(--g);color:#fff;display:grid;place-items:center;font-size:22px;text-decoration:none;box-shadow:0 9px 25px rgba(38,116,61,.28)}.xl-backtop{bottom:145px;width:42px;height:42px;font-size:20px;cursor:pointer}
+@media(min-width:700px){.xl-main{padding-left:28px;padding-right:28px}.xl-hero{padding-top:55px}.xl-wallet-show{max-width:700px}.xl-stats{grid-template-columns:repeat(4,1fr)}.xl-why-grid{grid-template-columns:repeat(3,1fr)}.xl-service-list{grid-template-columns:repeat(2,1fr)}.xl-rank-list{grid-template-columns:repeat(2,1fr)}.xl-compare{grid-template-columns:repeat(2,1fr)}.xl-trust-list{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.xl-trust-list article{margin:0}.xl-footer{padding-left:max(30px,calc((100% - 1080px)/2));padding-right:max(30px,calc((100% - 1080px)/2))}.xl-footer-group{display:inline-flex;vertical-align:top;width:31%;min-height:180px}.xl-bottom-nav{display:none}}
+@media(max-width:420px){.xl-main{padding-left:15px;padding-right:15px}.xl-hero{padding-top:28px}.xl-hero h1{font-size:35px;letter-spacing:-1.5px}.xl-hero p{font-size:16px}.xl-wallet{width:91%;padding:17px 13px}.xl-wallet-shortcuts span{font-size:10px}.xl-wallet-amount small{display:inline-block;margin-top:5px}.xl-section{padding:30px 0}.xl-float-chat{right:15px;bottom:75px;width:53px;height:53px}}
+</style>
+</head><header class="header">
+<div class="container nav">
+<a aria-label="GentleLogs home" class="brand" href="index.html">
+<img alt="GentleLogs logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" src="/gentlelogs-logo.png"/>
+<span aria-hidden="true" class="brand-fallback">
+<i class="fa-solid fa-store"></i>
+</span>
+<span class="brand-name">Gentle<span>Logs</span></span>
+</a>
+<nav aria-label="Main navigation" class="desktop-links">
+<a href="#features">Features</a>
+<a href="#categories">Marketplace</a>
+<a href="#process">How It Works</a>
+<a href="#reviews">Feedback</a>
+<a href="#faq">FAQ</a>
+</nav>
+<div class="nav-right">
+<button aria-label="Switch to dark mode" class="nav-icon" id="themeToggle" type="button">
+<i aria-hidden="true" class="fa-regular fa-moon"></i>
+</button>
+<button aria-expanded="false" aria-label="Open menu" class="nav-icon menu-button" id="menuToggle" type="button">
+<i aria-hidden="true" class="fa-solid fa-bars"></i>
+</button>
+</div>
+</div>
+<nav aria-label="Mobile navigation" class="mobile-menu" id="mobileMenu">
+<a href="#home">Home</a>
+<a href="#features">Features</a>
+<a href="#categories">Marketplace</a>
+<a href="#process">How It Works</a>
+<a href="#about">About</a>
+<a href="#reviews">Feedback</a>
+<a href="#faq">FAQ</a>
+<a href="login.html">Sign In</a>
+<a href="signup.html">Create Account</a>
+</nav>
+</header>
+<main class="xl-main">
+<section class="xl-hero" id="home">
+ <div class="xl-pill"><i></i>200k+ operators funded this week</div>
+ <h1>Your Trusted Marketplace for<br>Digital Products &amp;<br><span>Services.</span></h1>
+ <p>Buy strong Instagram, Facebook, TikTok, Gmail and Outlook accounts, plus virtual numbers, USA numbers, social boosting, proxies and VPNs — all with instant delivery.</p>
+ <p>Fund a wallet, then spend on numbers, logs, boosts, data and airtime — one desk.</p>
+ <div class="xl-actions"><a class="xl-btn xl-primary" href="signup.html">Create account</a><a class="xl-btn xl-outline" href="login.html">Sign in</a></div>
+ <button class="xl-btn xl-install" id="heroInstallButton"><i class="fa-solid fa-download"></i> Install app</button>
+ <div class="xl-rating"><div class="xl-avatars"><b>AO</b><b>TB</b><b>CE</b><b>KN</b></div><div><strong>★★★★★</strong> 4.9 from operators across<br>Lagos, Abuja and PH.</div></div>
+</section>
+
+<section class="xl-wallet-show" aria-label="Wallet preview">
+ <div class="xl-promo"><small>Instant OTP</small><strong>Get Premium</strong><span>Virtual numbers · OTP · Logs · Boost</span></div>
+ <div class="xl-wallet">
+  <div class="xl-wallet-head"><span>Wallet</span><b>● Live</b></div>
+  <div class="xl-wallet-label">Available balance</div>
+  <div class="xl-wallet-amount">₦248,500.00 <small>Naira + crypto</small></div>
+  <div class="xl-wallet-shortcuts"><span>Fund</span><span>Numbers</span><span>Logs</span><span>Boost</span></div>
+  <div class="xl-activity"><span>Wallet top-up</span><b>Credit</b></div>
+  <div class="xl-activity"><span>USA OTP</span><b>Done</b></div>
+  <div class="xl-activity"><span>IG boost</span><b class="live">Live</b></div>
+ </div>
+ <div class="xl-ticker"><span>Virtual numbers</span><span>Virtual numbers</span><span>OTP</span><span>OTP</span><span>Verified logs</span><span>Boost</span></div>
+</section>
+
+<section class="xl-stats" aria-label="Platform statistics">
+ <article><strong>24k+</strong><span>Wallet users</span></article>
+ <article><strong>180k</strong><span>Orders filled</span></article>
+ <article><strong>99.9%</strong><span>Uptime</span></article>
+ <article><strong>4.9★</strong><span>Operator rating</span></article>
+</section>
+
+<section class="xl-section" id="features">
+ <div class="xl-eyebrow">WHY THIS DESK</div><h2>Why customers stay</h2>
+ <div class="xl-why-grid">
+  <article class="xl-image-card"><div class="xl-landscape landscape-one"></div><div class="xl-icon">▣</div><h3>Wallet</h3><p>Ledger-backed balances</p></article>
+  <article class="xl-image-card"><div class="xl-landscape landscape-two"></div><div class="xl-icon">▤</div><h3>Modules</h3><p>Enable only what you sell</p></article>
+  <article class="xl-image-card"><div class="xl-landscape landscape-three"></div><div class="xl-icon">↗</div><h3>White-label</h3><p>Your domain, your brand</p></article>
+ </div>
+</section>
+
+<section class="xl-section xl-how" id="process">
+ <div class="xl-eyebrow">HOW IT WORKS</div><h2>How it works</h2>
+ <div class="xl-step"><b>01</b><h3>Fund</h3><p>Top up naira or crypto once. Balance sits in your wallet until you spend it.</p></div>
+ <div class="xl-step"><b>02</b><h3>Order</h3><p>Tap a tile — numbers, logs, boosts, data or airtime — and pay from wallet.</p></div>
+ <div class="xl-step"><b>03</b><h3>Track</h3><p>Watch status on the desk. OTP, stock and SMM updates land in the same activity feed.</p></div>
+</section>
+
+<section class="xl-section" id="categories">
+ <div class="xl-eyebrow">THE CATALOG</div><h2>Everything your desk actually sells</h2>
+ <div class="xl-service-list">
+  <article><div class="xl-service-icon">◎</div><h3>Virtual numbers</h3><p>Live OTP and rental lines. USA first, world servers behind one tap.</p><a href="signup.html">Explore →</a></article>
+  <article><div class="xl-service-icon">▣</div><h3>Verified log accounts</h3><p>Filtered shops, cheapest-first pricing, instant delivery where stock allows.</p><a href="signup.html">Explore →</a></article>
+  <article><div class="xl-service-icon">↗</div><h3>Social boosting</h3><p>Followers, views and subscribers from connected SMM panels.</p><a href="signup.html">Explore →</a></article>
+  <article><div class="xl-service-icon">◈</div><h3>eSIM data</h3><p>Travel data packs delivered as QR or activation codes after wallet checkout.</p><a href="signup.html">Explore →</a></article>
+  <article><div class="xl-service-icon">◉</div><h3>Airtime top-up</h3><p>Load a number, pick a package, pay from the same naira wallet.</p><a href="signup.html">Explore →</a></article>
+  <article><div class="xl-service-icon">▧</div><h3>Buy gift cards</h3><p>Instant e-codes. Selling a physical card for naira is a separate desk.</p><a href="signup.html">Explore →</a></article>
+  <article><div class="xl-service-icon">▤</div><h3>Sell gift cards</h3><p>Trade iTunes, Steam or Amazon for naira after review.</p><a href="signup.html">Explore →</a></article>
+  <article><div class="xl-service-icon">◇</div><h3>Proxies</h3><p>Static and pool IPs from live servers, same wallet checkout.</p><a href="signup.html">Explore →</a></article>
+  <article><div class="xl-service-icon">✦</div><h3>Telegram Stars &amp; Premium</h3><p>Send Stars or Premium to a username from the same naira wallet.</p><a href="signup.html">Explore →</a></article>
+ </div>
+</section>
+
+<section class="xl-section xl-desk" id="about">
+ <div class="xl-eyebrow">THE DESK</div><h2>One wallet. Every product your buyers already search for.</h2>
+ <p>Most operators juggle a number panel, a logs shop, an SMM site and a WhatsApp thread for funding. This storefront puts them on one domain: fund once, tap a tile, track OTP and delivery in the same activity feed. Ranks discount automatically. Support never leaves your brand.</p>
+ <a class="xl-btn xl-primary" href="#process">See how it works</a>
+</section>
+
+<section class="xl-section xl-proof" id="reviews">
+ <div class="xl-eyebrow">PROOF</div><h2>Customers</h2>
+ <article class="xl-quote"><div class="xl-stars">★★★★★</div><p>“Wallet checkout ended the ‘send me your account number’ loop. Rank discount just shows up.”</p><div class="xl-person"><b>A</b><span><strong>Ada</strong><small>Reseller - Lagos</small></span></div></article>
+</section>
+
+<section class="xl-section" id="ranks">
+ <div class="xl-eyebrow">RANKS</div><h2>Discounts that grow with every order</h2>
+ <p>Every account starts free at Smart. Completed orders — or a direct wallet upgrade — unlock the next rank automatically.</p>
+ <div class="xl-rank-list">
+  <article><div class="xl-rank-icon">★</div><h3>Smart</h3><p>0% - Starting rank for every new account. Full catalog access from day one.</p></article>
+  <article><div class="xl-rank-icon">★</div><h3>Silver</h3><p>5% - Unlocked after your first completed orders, or bought outright.</p></article>
+  <article><div class="xl-rank-icon">★</div><h3>Gold</h3><p>10% - Priority pricing across numbers, digital logs and SMM boosting.</p></article>
+  <article><div class="xl-rank-icon">★</div><h3>Diamond</h3><p>18% - Top-tier discount plus the best profit split on every catalog item.</p></article>
+ </div>
+</section>
+
+<section class="xl-section">
+ <div class="xl-eyebrow">VERSUS A PILE OF PANELS</div><h2>What changes when the store is yours</h2>
+ <div class="xl-compare">
+  <article><h3>One checkout</h3><p>Buyers stop sending “what's your account number?” on every restock.</p></article>
+  <article><h3>Rank pricing</h3><p>Silver, Gold and Diamond cut cost in the catalog — not in a spreadsheet.</p></article>
+  <article><h3>Your URL</h3><p>Login, wallet and tickets live on your domain, not a shared panel.</p></article>
+  <article><h3>Admin control</h3><p>Refunds, rank changes and admin actions are logged. Disputes have a paper trail.</p></article>
+ </div>
+</section>
+
+<section class="xl-section">
+ <div class="xl-eyebrow">BUILT TO BE TRUSTED</div><h2>Every order backed by real infrastructure</h2>
+ <div class="xl-trust-list">
+  <article><div class="xl-service-icon">⌁</div><h3>Encrypted API keys</h3><p>Provider credentials are encrypted at rest — the browser never receives a secret value.</p></article>
+  <article><div class="xl-service-icon">▣</div><h3>Full audit trail</h3><p>Every admin action, refund and rank change is logged and reviewable.</p></article>
+  <article><div class="xl-service-icon">◈</div><h3>Ledgered wallet</h3><p>Top-ups, orders and refunds are signed ledger entries, never a silent balance edit.</p></article>
+ </div>
+</section>
+
+<section class="xl-section xl-founder">
+ <div class="xl-founder-image"></div><div class="xl-eyebrow">MEET THE FOUNDER</div>
+ <h2>Built for operators who move money every day</h2>
+ <blockquote>“I wanted one wallet, a real ledger, and a store that did not look like every other panel. This is that desk — fund once, order from tiles, track everything in one feed.”</blockquote>
+ <strong>Amara Nwosu <span>- Founder &amp; CEO</span></strong>
+</section>
+
+<section class="xl-section xl-nigeria">
+ <div class="xl-eyebrow">NIGERIA FIRST</div><h2>Operators from Lagos to PH already know this workflow</h2>
+ <p>Virtual account funding, wallet spend, and delivery that does not depend on a group admin being online.</p>
+ <div class="xl-city-tags"><span>Lagos</span><span>Abuja</span><span>Port Harcourt</span><span>Ibadan</span><span>Kano</span><span>Enugu</span></div>
+</section>
+
+<section class="xl-section xl-support">
+ <div class="xl-eyebrow">SUPPORT</div><h2>Tickets, chat and a knowledge base</h2>
+ <p>Orders stay on your domain. Customers open tickets, use live chat when you enable it, and read wallet guides without leaving the store.</p>
+ <a class="xl-btn xl-outline" href="#faq">Read FAQ</a>
+ <div class="xl-support-image"></div>
+</section>
+
+<section class="xl-section xl-faq" id="faq">
+ <div class="xl-eyebrow">FAQ</div><h2>FAQ</h2>
+ <article><div class="xl-faq-icon">◎</div><h3>Do I need a wallet?</h3><p>Yes for catalog checkout. Fund once, then pay USA numbers, world SMS and logs from balance.</p></article>
+</section>
+
+<section class="xl-cta">
+ <h2>Go live on your domain</h2>
+ <p>Create an account, fund naira or crypto, then spend on numbers, logs and boosts.</p>
+ <div class="xl-actions"><a class="xl-btn xl-primary" href="signup.html">Create account</a><a class="xl-btn xl-outline" href="login.html">Sign in</a></div>
+</section>
+</main>
+
+<footer class="xl-footer">
+ <div class="xl-footer-brand"><span class="xl-logo"></span><strong>GentleLogs</strong></div>
+ <p>Wallet checkout for numbers, logs, SMM, data and airtime.</p>
+ <div class="xl-social"><a href="#">Telegram</a><a href="#">Telegram group</a></div>
+ <div class="xl-footer-group"><h3>PLATFORM</h3><a href="#home">Home</a><a href="#categories">Services</a><a href="#about">Blog</a></div>
+ <div class="xl-footer-group"><h3>SUPPORT</h3><a href="login.html">Sign in</a><a href="signup.html">Create account</a><a href="forgot-password.html">Recover</a><a href="contact.html">Contact</a></div>
+ <div class="xl-footer-group"><h3>COMPANY</h3><a href="#features">About</a><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a><a href="refunds.html">Refunds</a></div>
+ <div class="xl-footer-bottom">© <span id="year"></span> GentleLogs. All rights reserved.</div>
+ <div class="xl-powered">Powered by GentleLogs</div>
+</footer>
+<nav class="xl-bottom-nav"><a href="#home">Home</a><a href="#categories">Shop</a><a href="login.html">Sign in</a><a href="signup.html">Join</a></nav>
+<a class="xl-float-chat" href="contact.html" aria-label="Contact support"><i class="fa-solid fa-headset"></i></a>
+<button class="xl-backtop" id="xtraBackTop" aria-label="Back to top">↑</button>
+<div aria-label="Install GentleLogs" class="ios-install-banner" id="iosInstallBanner" role="region">
+<img alt="GentleLogs app icon" class="install-app-icon" src="/gentlelogs-logo.png"/>
+<div class="install-banner-copy">
+<strong>Install GentleLogs</strong>
+<span>Quick access from your iPhone</span>
+</div>
+<button class="install-banner-button" id="installBannerButton" type="button">
+    Install
+  </button>
+<button aria-label="Dismiss install banner" class="install-banner-close" id="closeInstallBanner" type="button">
+    ×
+  </button>
+</div><div aria-labelledby="installModalTitle" aria-modal="true" class="install-overlay" id="installOverlay" role="dialog">
+<div class="install-modal">
+<div class="install-modal-head">
+<img alt="GentleLogs app icon" class="install-modal-icon" src="/gentlelogs-logo.png"/>
+<div class="install-modal-title" id="installModalTitle">
+        Install GentleLogs
+      </div>
+<button aria-label="Close instructions" class="install-modal-close" id="closeInstallModal" type="button">
+        ×
+      </button>
+</div>
+<p class="install-modal-intro">
+      Add <strong>GentleLogs</strong> to your iPhone Home Screen for quick access.
+    </p>
+<div class="install-step">
+<div class="install-step-num">1.</div>
+<div class="install-step-text">
+        Open this website in <strong>Safari</strong>. Tap the Share icon
+        <i aria-hidden="true" class="fa-solid fa-arrow-up-from-bracket install-step-icon"></i>
+        at the bottom of Safari.
+      </div>
+</div>
+<div class="install-step">
+<div class="install-step-num">2.</div>
+<div class="install-step-text">
+        Scroll through the Share menu and select
+        <strong>Add to Home Screen</strong>.
+      </div>
+</div>
+<div class="install-step">
+<div class="install-step-num">3.</div>
+<div class="install-step-text">
+        Check that the name is <strong>GentleLogs</strong>, then tap
+        <strong>Add</strong> in the top-right corner.
+      </div>
+</div>
+<button class="install-got-it" id="installGotIt" type="button">
+      Got it
+    </button>
+<p class="install-note">
+      If you don't see Add to Home Screen, open this website directly
+      in Safari instead of an in-app browser.
+    </p>
+</div>
+</div>
+<script>
+(function(){
+ const root=document.documentElement, themeBtn=document.getElementById('themeToggle');
+ const key='gentle-acct-store-theme';
+ function applyTheme(t){root.classList.toggle('dark-mode',t==='dark');if(themeBtn){const i=themeBtn.querySelector('i');if(i)i.className=t==='dark'?'fa-solid fa-sun':'fa-regular fa-moon';}}
+ let saved='light';try{saved=localStorage.getItem(key)||'light'}catch(e){}applyTheme(saved);
+ if(themeBtn)themeBtn.addEventListener('click',()=>{const t=root.classList.contains('dark-mode')?'light':'dark';try{localStorage.setItem(key,t)}catch(e){}applyTheme(t)});
+ const menuBtn=document.getElementById('menuToggle'), menu=document.getElementById('mobileMenu');
+ if(menuBtn&&menu){menuBtn.addEventListener('click',()=>{let o=menu.classList.toggle('open');menuBtn.setAttribute('aria-expanded',String(o));menuBtn.innerHTML=o?'<i class="fa-solid fa-xmark"></i>':'<i class="fa-solid fa-bars"></i>'});menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>menu.classList.remove('open')));}
+ const year=document.getElementById('year');if(year)year.textContent=new Date().getFullYear();
+ const top=document.getElementById('xtraBackTop');if(top)top.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+ const overlay=document.getElementById('installOverlay'),banner=document.getElementById('iosInstallBanner');
+ function openInstall(){if(overlay){overlay.classList.add('open');document.body.style.overflow='hidden';}}
+ function closeInstall(){if(overlay){overlay.classList.remove('open');document.body.style.overflow='';}}
+ const install=document.getElementById('heroInstallButton');if(install)install.addEventListener('click',openInstall);
+ const bannerBtn=document.getElementById('installBannerButton');if(bannerBtn)bannerBtn.addEventListener('click',openInstall);
+ ['closeInstallModal','installGotIt'].forEach(id=>{let e=document.getElementById(id);if(e)e.addEventListener('click',closeInstall)});
+ let closeBanner=document.getElementById('closeInstallBanner');if(closeBanner)closeBanner.addEventListener('click',()=>banner&&banner.classList.remove('show'));
+ if(overlay)overlay.addEventListener('click',e=>{if(e.target===overlay)closeInstall()});
+ const ua=navigator.userAgent||'',ios=/iPhone|iPad|iPod/i.test(ua);
+ if(ios&&!navigator.standalone&&!window.matchMedia('(display-mode: standalone)').matches&&banner)setTimeout(()=>banner.classList.add('show'),1800);
+ document.querySelectorAll('.xl-faq article').forEach(a=>a.addEventListener('click',()=>a.classList.toggle('active')));
+})();
+</script>
+</body></html>

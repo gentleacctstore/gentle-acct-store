@@ -1,0 +1,1312 @@
+
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b1120">
+<meta name="description" content="Gentle Acct Store admin dashboard">
+<title>Admin Dashboard | Gentle Acct Store</title>
+
+<script>
+try {
+  document.documentElement.dataset.theme =
+    localStorage.getItem("gentleAdminTheme") || "dark";
+} catch (_) {
+  document.documentElement.dataset.theme = "dark";
+}
+</script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js"></script>
+<script src="firebase.js"></script>
+
+<style>
+:root {
+  color-scheme: light;
+  --blue:#2563eb;
+  --blue-dark:#1d4ed8;
+  --navy:#0b1120;
+  --bg:#f4f7fb;
+  --surface:#fff;
+  --surface-2:#f8fafc;
+  --text:#182230;
+  --muted:#718096;
+  --border:#e5eaf2;
+  --green:#16a34a;
+  --red:#dc2626;
+  --input-bg:#fff;
+  --hover:#eff6ff;
+  --shadow:0 15px 35px #0f172a18;
+}
+
+html[data-theme="dark"] {
+  color-scheme:dark;
+  --bg:#0b1120;
+  --surface:#111c30;
+  --surface-2:#17243a;
+  --text:#e5edf8;
+  --muted:#9aabc3;
+  --border:#293750;
+  --input-bg:#0d1729;
+  --hover:#1c3152;
+  --shadow:0 15px 35px #0005;
+}
+
+* { box-sizing:border-box; }
+
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  transition:background .18s,color .18s;
+}
+
+button,input,textarea,select { font:inherit; }
+button,a { cursor:pointer; }
+button:disabled { opacity:.55; cursor:not-allowed; }
+.hidden { display:none!important; }
+.muted { color:var(--muted); }
+.small { font-size:12px; }
+
+.sidebar {
+  position:fixed;
+  inset:0 auto 0 0;
+  width:245px;
+  padding:24px 16px;
+  background:var(--navy);
+  color:white;
+  display:flex;
+  flex-direction:column;
+  overflow-y:auto;
+  z-index:20;
+}
+
+.brand { display:flex;align-items:center;gap:12px;padding:5px 8px 25px; }
+.brand-icon {
+  width:43px;height:43px;border-radius:14px;
+  background:linear-gradient(135deg,#60a5fa,#2563eb);
+  display:grid;place-items:center;font-size:21px;font-weight:900;
+}
+.brand-name { font-size:16px;font-weight:800; }
+.brand-sub { font-size:10px;color:#a6b4cc;margin-top:4px; }
+.nav-label { color:#718096;font-size:10px;letter-spacing:1.5px;font-weight:800;padding:10px 12px; }
+.nav-link {
+  display:flex;align-items:center;gap:11px;width:100%;border:0;
+  background:transparent;color:#aab6cb;text-decoration:none;
+  padding:12px 13px;border-radius:12px;margin:3px 0;
+  font-size:13px;font-weight:650;text-align:left;
+}
+.nav-link:hover,.nav-link.active { background:#1d2b43;color:white; }
+.nav-link.active { box-shadow:inset 3px 0 #60a5fa; }
+.nav-icon { width:22px;text-align:center;font-size:17px; }
+.sidebar-bottom { margin-top:auto; }
+.admin-chip { display:flex;align-items:center;gap:10px;border-top:1px solid #263247;padding:17px 6px 8px; }
+.avatar { width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#263c60;color:#bfdbfe;font-weight:800; }
+.admin-email { font-size:11px;color:#aab6cb;overflow-wrap:anywhere; }
+
+.main { margin-left:245px;min-height:100vh; }
+.topbar {
+  min-height:78px;background:var(--surface);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;padding:16px 28px;
+  gap:15px;position:sticky;top:0;z-index:10;
+}
+.page-title { font-size:22px;font-weight:850; }
+.page-subtitle { color:var(--muted);font-size:12px;margin-top:5px; }
+.top-actions { display:flex;align-items:center;gap:9px; }
+.content { max-width:1500px;margin:auto;padding:26px 28px 45px; }
+
+.btn {
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  border:1px solid var(--border);border-radius:11px;background:var(--surface);
+  color:var(--text);padding:10px 14px;font-size:12px;font-weight:750;
+  text-decoration:none;
+}
+.btn-primary { background:var(--blue);color:white;border-color:var(--blue); }
+.btn-danger { background:#fff1f2;color:#dc2626;border-color:#fecdd3; }
+.btn-small { padding:7px 9px;font-size:11px; }
+.icon-btn {
+  border:1px solid var(--border);background:var(--surface);
+  color:var(--text);border-radius:10px;width:39px;height:39px;display:grid;place-items:center;
+}
+
+.welcome {
+  border-radius:22px;padding:27px;color:white;
+  background:linear-gradient(115deg,#14264a,#2563eb);
+  display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:23px;
+}
+.welcome h2 { margin:0 0 8px;font-size:23px; }
+.welcome p { margin:0;color:#dbeafe;font-size:13px; }
+
+.stats { display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-bottom:23px; }
+.stat-card { background:var(--surface);border:1px solid var(--border);border-radius:17px;padding:19px;min-width:0; }
+.stat-top { display:flex;justify-content:space-between;align-items:center;gap:8px; }
+.stat-label { font-size:12px;color:var(--muted);font-weight:650; }
+.stat-icon { width:37px;height:37px;border-radius:12px;display:grid;place-items:center;background:var(--hover);font-size:18px; }
+.stat-number { font-size:26px;font-weight:850;margin-top:15px;overflow-wrap:anywhere; }
+.stat-note { font-size:11px;color:var(--muted);margin-top:5px; }
+
+.panel { background:var(--surface);border:1px solid var(--border);border-radius:18px;margin-bottom:22px;overflow:hidden; }
+.panel-head {
+  padding:19px 21px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.panel-title { font-size:15px;font-weight:850; }
+.panel-desc { font-size:11px;color:var(--muted);margin-top:5px; }
+.panel-body { padding:20px; }
+
+.quick-links { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:23px; }
+.quick-card {
+  background:var(--surface);border:1px solid var(--border);border-radius:16px;
+  padding:18px;text-decoration:none;color:var(--text);display:block;
+}
+.quick-icon { font-size:22px;margin-bottom:12px; }
+.quick-title { font-size:14px;font-weight:800; }
+.quick-desc { font-size:11px;line-height:1.5;color:var(--muted);margin-top:6px; }
+
+.toolbar { display:flex;align-items:center;gap:10px;flex-wrap:wrap; }
+.search-wrap { flex:1;min-width:170px; }
+.search-wrap input {
+  width:100%;padding:12px;border:1px solid var(--border);border-radius:11px;
+  background:var(--input-bg);color:var(--text);outline:none;font-size:12px;
+}
+.filter {
+  border:1px solid var(--border);border-radius:11px;background:var(--input-bg);
+  color:var(--text);padding:11px 12px;font-size:12px;
+}
+
+.product-grid { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;padding:20px; }
+.product-card { border:1px solid var(--border);border-radius:15px;overflow:hidden;background:var(--surface);min-width:0; }
+.product-image { height:145px;background:var(--surface-2);position:relative;overflow:hidden; }
+.product-image img { width:100%;height:100%;object-fit:cover; }
+.product-placeholder { height:100%;display:grid;place-items:center;font-size:35px;color:#94a3b8; }
+.stock-badge {
+  position:absolute;left:10px;top:10px;background:#dcfce7;color:#166534;
+  padding:6px 8px;border-radius:20px;font-size:10px;font-weight:800;
+}
+.stock-badge.out { background:#fee2e2;color:#991b1b; }
+.product-info { padding:13px; }
+.product-category {
+  display:inline-flex;align-items:center;gap:6px;background:var(--hover);
+  color:#60a5fa;padding:5px 8px;border-radius:7px;font-size:10px;font-weight:800;margin-bottom:8px;
+}
+.category-logo { width:18px;height:18px;object-fit:contain;vertical-align:middle; }
+.product-name { font-size:13px;font-weight:850;overflow-wrap:anywhere; }
+.product-description { color:var(--muted);font-size:11px;line-height:1.5;margin-top:7px;overflow-wrap:anywhere; }
+.product-bottom { display:flex;justify-content:space-between;gap:8px;margin-top:13px;padding-top:12px;border-top:1px solid var(--border); }
+.product-price { font-size:15px;font-weight:850;color:#60a5fa; }
+.product-actions { display:flex;gap:5px;flex-wrap:wrap;margin-top:12px; }
+
+.empty-state { text-align:center;padding:35px 18px;color:var(--muted); }
+.loading { text-align:center;padding:28px;color:var(--muted);font-size:13px; }
+.table-wrap { overflow-x:auto; }
+table { border-collapse:collapse;width:100%;font-size:12px; }
+th,td { padding:13px 15px;text-align:left;border-bottom:1px solid var(--border);vertical-align:middle; }
+th { color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px; }
+
+.modal-backdrop {
+  position:fixed;inset:0;background:#071225b8;z-index:100;
+  display:none;align-items:center;justify-content:center;padding:15px;
+}
+.modal-backdrop.show { display:flex; }
+.modal { width:min(100%,600px);max-height:92vh;overflow-y:auto;background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:19px; }
+.modal-head,.modal-body,.modal-foot { padding:18px 21px; }
+.modal-head { display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border); }
+.modal-head h3 { margin:0;font-size:17px; }
+.modal-foot { border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:9px; }
+.form-grid { display:grid;grid-template-columns:1fr 1fr;gap:15px; }
+.field { min-width:0;display:flex;flex-direction:column;gap:7px; }
+.field.full { grid-column:1/-1; }
+.field label { font-size:12px;font-weight:750; }
+.field input,.field textarea,.field select {
+  width:100%;border:1px solid var(--border);border-radius:10px;
+  padding:12px;font-size:13px;outline:none;background:var(--input-bg);color:var(--text);
+}
+.field textarea { resize:vertical;min-height:85px; }
+.help-text { font-size:10px;color:var(--muted); }
+.category-picker { position:relative;width:100%; }
+.category-trigger {
+  width:100%;border:1px solid var(--border);border-radius:10px;background:var(--input-bg);
+  color:var(--text);padding:12px;display:flex;justify-content:space-between;text-align:left;
+}
+.category-options {
+  display:none;position:absolute;left:0;right:0;top:calc(100% + 5px);
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:5px;box-shadow:var(--shadow);z-index:150;max-height:220px;overflow-y:auto;
+}
+.category-picker.open .category-options { display:block; }
+.category-option {
+  display:flex;align-items:center;gap:9px;width:100%;padding:10px;border:0;
+  border-radius:8px;background:var(--surface);color:var(--text);text-align:left;font-size:12px;
+}
+.category-option img { width:22px;height:22px;object-fit:contain; }
+.category-option:hover,.category-option.selected { background:var(--hover);color:#60a5fa; }
+
+.error-box,.success-box { padding:12px;border-radius:10px;font-size:12px;margin-bottom:12px; }
+.error-box { background:#451c2b;color:#fecdd3; }
+.success-box { background:#123a2a;color:#bbf7d0; }
+.toast {
+  position:fixed;bottom:20px;right:20px;z-index:300;max-width:90vw;
+  background:#111827;color:white;padding:14px 17px;border-radius:12px;font-size:12px;display:none;
+}
+.toast.show { display:block; }
+.login-screen {
+  min-height:100vh;display:none;align-items:center;justify-content:center;padding:20px;
+  background:linear-gradient(135deg,#0b1120,#1d4ed8);
+}
+.login-card { width:min(100%,410px);background:white;color:#182230;border-radius:22px;padding:28px; }
+.login-card h1 { font-size:23px; }
+.login-card p { font-size:12px;color:#718096;line-height:1.6; }
+.login-card .field { margin-bottom:15px; }
+.login-card .btn { width:100%; }
+.mobile-menu { display:none; }
+.inventory-list { margin-top:16px; }
+.inventory-row { display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--border);overflow-wrap:anywhere; }
+.inventory-row code { overflow-wrap:anywhere;white-space:normal; }
+.status { font-size:10px;font-weight:800; }
+.status.success { color:#22c55e; }
+.status.failed { color:#f87171; }
+
+@media(max-width:1100px) {
+  .stats { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .product-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media(max-width:760px) {
+  .sidebar { width:260px;transform:translateX(-105%);transition:transform .2s;box-shadow:15px 0 35px #0005; }
+  .sidebar.open { transform:translateX(0); }
+  .main { margin-left:0; }
+  .topbar { padding:14px;min-height:70px; }
+  .mobile-menu { display:grid; }
+  .page-title { font-size:18px; }
+  .top-actions .desktop-only { display:none; }
+  .content { padding:16px 12px 32px; }
+  .welcome { padding:20px;align-items:flex-start;flex-direction:column; }
+  .welcome h2 { font-size:20px; }
+  .stats { gap:9px; }
+  .stat-card { padding:13px; }
+  .stat-number { font-size:21px; }
+  .stat-label,.stat-note { font-size:10px; }
+  .quick-links { grid-template-columns:1fr; }
+  .panel-head,.panel-body { padding:15px; }
+  .product-grid { padding:11px;gap:9px;grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .product-image { height:115px; }
+  .product-info { padding:10px; }
+  .product-actions .btn { padding:6px;font-size:10px; }
+  .toolbar { align-items:stretch; }
+  .search-wrap { flex-basis:100%; }
+  .form-grid { grid-template-columns:1fr; }
+  .field.full { grid-column:auto; }
+  .modal-backdrop { padding:8px; }
+  .modal { max-height:95vh; }
+}
+@media(max-width:350px) {
+  .product-grid { grid-template-columns:1fr; }
+}
+
+/* MOBILE FIX FOR CATEGORY LINKS TABLE */
+#categoryLinksSection .table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+#categoryLinksSection table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+#categoryLinksSection th,
+#categoryLinksSection td {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+#categoryLinksSection th:first-child,
+#categoryLinksSection td:first-child {
+  width: 29%;
+}
+
+#categoryLinksSection th:nth-child(2),
+#categoryLinksSection td:nth-child(2) {
+  width: 35%;
+}
+
+#categoryLinksSection th:nth-child(3),
+#categoryLinksSection td:nth-child(3) {
+  width: 36%;
+}
+
+#categoryLinksSection td input {
+  box-sizing: border-box;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100%;
+  padding: 9px 7px !important;
+  font-size: 11px;
+}
+
+@media (max-width: 760px) {
+  #categoryLinksSection .panel-head {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  #categoryLinksSection .panel-head > button {
+    padding: 9px 12px;
+  }
+
+  #categoryLinksSection th,
+  #categoryLinksSection td {
+    padding: 10px 5px;
+    font-size: 10px;
+  }
+
+  #categoryLinksSection td:first-child strong {
+    overflow-wrap: anywhere;
+  }
+}
+
+
+
+/* ADMIN DASHBOARD UPGRADE */
+.low-stock-notice {
+  display:flex;align-items:flex-start;gap:12px;padding:15px;margin-bottom:20px;
+  border:1px solid #f59e0b55;border-radius:14px;background:#f59e0b12;color:var(--text);
+}
+.low-stock-notice .notice-icon { font-size:22px; }
+.low-stock-notice strong { display:block;font-size:13px;margin-bottom:5px; }
+.low-stock-notice p { margin:0;font-size:12px;line-height:1.6;color:var(--muted); }
+.stock-badge.low { background:#fef3c7;color:#92400e; }
+.nav-link:focus-visible,.btn:focus-visible,.icon-btn:focus-visible { outline:2px solid #60a5fa;outline-offset:3px; }
+@media (max-width:760px) {
+  .top-actions { gap:6px; }
+  .top-actions .btn { padding:9px;font-size:11px; }
+  .low-stock-notice { padding:12px; }
+}
+
+</style>
+</head>
+<body>
+
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <h1>Gentle Admin</h1>
+    <p>Sign in with the authorised administrator account.</p>
+    <div id="loginError" class="error-box hidden"></div>
+    <form id="loginForm">
+      <div class="field">
+        <label for="loginEmail">Email address</label>
+        <input id="loginEmail" type="email" autocomplete="username" required>
+      </div>
+      <div class="field">
+        <label for="loginPassword">Password</label>
+        <input id="loginPassword" type="password" autocomplete="current-password" required>
+      </div>
+      <button class="btn btn-primary" id="loginButton" type="submit">Sign in</button>
+    </form>
+  </div>
+</div>
+
+<div class="hidden" id="adminApp">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-icon">G</div>
+      <div>
+        <div class="brand-name">Gentle Acct Store</div>
+        <div class="brand-sub">ADMIN CONTROL CENTER</div>
+      </div>
+    </div>
+    <div class="nav-label">MAIN MENU</div>
+    <button class="nav-link active" data-section="dashboard"><span class="nav-icon">▦</span>Dashboard</button>
+    <button class="nav-link" data-section="products"><span class="nav-icon">▣</span>Products</button>
+    <button class="nav-link" data-section="inventory"><span class="nav-icon">▤</span>Inventory</button>
+    <button class="nav-link" data-section="categoryLinks"><span class="nav-icon">🔗</span>Category Links</button>
+    <a class="nav-link" href="customers.html"><span class="nav-icon">♙</span>Customers</a>
+    <a class="nav-link" href="wallet-funding.html"><span class="nav-icon">↗</span>Funding requests</a>
+    <a class="nav-link" href="admin-referrals.html"><span class="nav-icon">♧</span>Referral management</a>
+    <div class="sidebar-bottom">
+      <div class="nav-label">ACCOUNT</div>
+      <button class="nav-link" id="notificationButton"><span class="nav-icon">♧</span>Enable notifications</button>
+      <button class="nav-link" id="refreshButton"><span class="nav-icon">↻</span>Refresh data</button>
+      <button class="nav-link" id="logoutButton"><span class="nav-icon">⇥</span>Sign out</button>
+      <div class="admin-chip">
+        <div class="avatar">G</div>
+        <div>
+          <div style="font-size:12px;font-weight:800">Administrator</div>
+          <div class="admin-email" id="adminEmail">Checking account...</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:11px">
+        <button class="icon-btn mobile-menu" id="menuButton" aria-label="Open menu">☰</button>
+        <div>
+          <div class="page-title" id="pageTitle">Dashboard</div>
+          <div class="page-subtitle" id="pageSubtitle">Overview of your store</div>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="btn" id="themeToggle" type="button">☀️ Light mode</button>
+        <button class="btn desktop-only" id="topRefreshButton">↻ Refresh</button>
+        <button class="btn btn-primary" id="topAddProductButton">＋ Add product</button>
+      </div>
+    </header>
+
+    <div class="content">
+      <section id="dashboardSection">
+        <div class="welcome">
+          <div>
+            <h2>Welcome back, Admin 👋</h2>
+            <p>Manage your products, customers and store activity.</p>
+          </div>
+          <button class="btn" id="welcomeAddButton">＋ Add a product</button>
+        </div>
+        <div class="quick-links">
+          <a class="quick-card" href="customers.html"><div class="quick-icon">👥</div><div class="quick-title">Customers</div><div class="quick-desc">View registered customers, email addresses and customer IDs.</div></a>
+          <a class="quick-card" href="wallet-funding.html"><div class="quick-icon">💳</div><div class="quick-title">Wallet Funding</div><div class="quick-desc">Review customer deposits and funding requests.</div></a>
+          <a class="quick-card" href="admin-referrals.html"><div class="quick-icon">🎁</div><div class="quick-title">Referral Management</div><div class="quick-desc">Check referred customers and referral rewards.</div></a>
+        </div>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-top"><span class="stat-label">Total products</span><span class="stat-icon">▣</span></div><div class="stat-number" id="totalProducts">—</div><div class="stat-note">Products in your store</div></div>
+          <div class="stat-card"><div class="stat-top"><span class="stat-label">Available stock</span><span class="stat-icon">📦</span></div><div class="stat-number" id="totalStock">—</div><div class="stat-note">Unsold inventory items</div></div>
+          <div class="stat-card"><div class="stat-top"><span class="stat-label">Out of stock</span><span class="stat-icon">⚠️</span></div><div class="stat-number" id="outOfStock">—</div><div class="stat-note">Products needing stock</div></div>
+          <div class="stat-card"><div class="stat-top"><span class="stat-label">Pending funding</span><span class="stat-icon">↗</span></div><div class="stat-number" id="pendingFunding">—</div><div class="stat-note">Requests awaiting review; not currently calculated</div></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div><div class="panel-title">Your products</div><div class="panel-desc">Quick view of products in your store</div></div><button class="btn btn-primary btn-small" id="dashboardViewAll">View all</button></div>
+          <div class="product-grid" id="dashboardProducts"><div class="loading">Loading products...</div></div>
+        </div>
+      </section>
+
+      <section id="productsSection" class="hidden">
+        <div class="panel">
+          <div class="panel-head"><div><div class="panel-title">Product management</div><div class="panel-desc">Add, search, edit and remove products</div></div><button class="btn btn-primary" id="productsAddButton">＋ Add product</button></div>
+          <div class="panel-body">
+            <div class="toolbar">
+              <div class="search-wrap"><input id="productSearch" type="search" placeholder="Search products by name or category..."></div>
+              <select class="filter" id="categoryFilter"><option value="">All categories</option></select>
+              <select class="filter" id="stockFilter"><option value="">All stock</option><option value="available">In stock</option><option value="empty">Out of stock</option></select>
+            </div>
+          </div>
+          <div class="product-grid" id="productGrid"><div class="loading">Loading products...</div></div>
+        </div>
+      </section>
+
+      <section id="inventorySection" class="hidden">
+        <div class="panel">
+          <div class="panel-head"><div><div class="panel-title">Inventory overview</div><div class="panel-desc">Check stock levels for each product</div></div><button class="btn" id="inventoryRefreshButton">↻ Refresh</button></div>
+          <div class="table-wrap"><table><thead><tr><th>Product</th><th>Category</th><th>Available</th><th>Sold</th><th>Action</th></tr></thead><tbody id="inventoryTable"><tr><td colspan="5" class="loading">Loading inventory...</td></tr></tbody></table></div>
+        </div>
+      </section>
+
+      <section id="categoryLinksSection" class="hidden">
+        <div class="panel">
+          <div class="panel-head"><div><div class="panel-title">Category logos & default links</div><div class="panel-desc">Set a reusable logo and default link for each category.</div></div><button class="btn" id="reloadCategoryLinks">↻ Reload</button></div>
+          <div class="panel-body">
+            <div class="error-box">Settings are saved in Firestore at <code>storeSettings/categoryLinks</code>. Your Firestore rules must allow the authorised admin to write this document. The storefront must read the product's <code>productLink</code> field to use the saved link.</div>
+            <div id="categoryLinksMessage" class="hidden"></div>
+            <div class="toolbar" style="margin-bottom:15px"><div class="search-wrap"><input id="categoryLinkSearch" type="search" placeholder="Search categories..."></div></div>
+            <div class="table-wrap"><table><thead><tr><th>Category</th><th>Logo URL</th><th>Default link</th></tr></thead><tbody id="categoryLinksTable"></tbody></table></div>
+            <button class="btn btn-primary" id="saveCategoryLinks" style="margin-top:16px">Save category settings</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<div class="modal-backdrop" id="productModal">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-head"><h3 id="productModalTitle">Add new product</h3><button class="icon-btn" id="closeProductModal" type="button">×</button></div>
+    <form id="productForm">
+      <div class="modal-body">
+        <div id="productFormMessage" class="hidden"></div>
+        <div class="form-grid">
+          <div class="field full"><label for="productName">Product name *</label><input id="productName" maxlength="120" required></div>
+          <div class="field full"><label>Product category *</label><input id="productCategory" type="hidden"><div class="category-picker" id="categoryPicker"><button class="category-trigger" id="productCategoryButton" type="button"><span id="selectedCategory">Choose a category</span><span>⌄</span></button><div class="category-options" id="categoryOptions"></div></div></div>
+          <div class="field"><label for="productPrice">Price (₦) *</label><input id="productPrice" type="number" min="0" step="0.01" required></div>
+          <div class="field"><label for="productImage">Image URL</label><input id="productImage" type="url"></div>
+          <div class="field full"><label for="productDescription">Description</label><textarea id="productDescription" maxlength="1000"></textarea></div>
+          <div class="field full"><label for="productLink">Product link (optional)</label><input id="productLink" type="url" placeholder="Leave blank to use category's saved link"><div class="help-text" id="productLinkHelp">Choose a category to see its saved default link.</div></div>
+          <div class="field full"><label for="inventoryItems">Inventory items</label><textarea id="inventoryItems" placeholder="One item per line. Optional."></textarea></div>
+        </div>
+      </div>
+      <div class="modal-foot"><button class="btn" type="button" id="cancelProductModal">Cancel</button><button class="btn btn-primary" type="submit" id="saveProductButton">Save product</button></div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="inventoryModal">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-head"><div><h3>Manage inventory</h3><div class="panel-desc" id="inventoryModalSubtitle"></div></div><button class="icon-btn" id="closeInventoryModal" type="button">×</button></div>
+    <div class="modal-body">
+      <div id="inventoryModalMessage" class="hidden"></div>
+      <div class="field"><label for="newInventoryItems">Add stock items</label><textarea id="newInventoryItems" placeholder="One item per line..."></textarea></div>
+      <button class="btn btn-primary" id="addInventoryButton" type="button" style="margin-top:12px">＋ Add inventory</button>
+      <div class="inventory-list" id="inventoryItemsList"></div>
+    </div>
+    <div class="modal-foot"><button class="btn" id="closeInventoryModalBottom" type="button">Close</button></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+
+const ADMIN_UID = "UoEjCy99gbQKkGob59vGi3CunZi1";
+const VAPID_KEY = "BBK7boItExQx1LlAngzvuu38HWGFxuDLGYg8o2LDezCmNJuoGRkPUkZe8_OYMdszdsfbR6Cg9fbFHLXN2eKlx9o";
+const auth = window.firebaseAuth;
+const db = window.firebaseDB;
+const $ = id => document.getElementById(id);
+
+const OLD_CATEGORIES = [
+  "Instagram","Facebook","TikTok","Gmails","Google Voice","VPN","WhatsApp",
+  "Telegram","Snapchat","X (Twitter)","Discord","All Messaging Apps",
+  "Giveaway Accounts","Other"
+];
+const NEW_CATEGORIES = [
+  "9 Proxy","Working Tools 🧰","Netflix Account","USA iCloud","LinkedIn",
+  "Reddit Accounts","Facebook Advertising","Verified Profiles",
+  "Plenty of Fish (POF) Dating Sites"
+];
+
+const CATEGORY_META = {
+  "Facebook":{logo:"https://upload.wikimedia.org/wikipedia/commons/6/6c/Facebook_Logo_2023.png",defaultLink:""},
+  "X (Twitter)":{logo:"https://cdn.jsdelivr.net/gh/selfhst/icons/png/twitter.png",defaultLink:""},
+  "Instagram":{logo:"https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png",defaultLink:""},
+  "TikTok":{logo:"https://upload.wikimedia.org/wikipedia/commons/a/a6/Tiktok_icon.svg",defaultLink:""},
+  "VPN":{logo:"https://cdn.jsdelivr.net/gh/selfhst/icons/png/nordvpn.png",defaultLink:""},
+  "iMessage":{logo:"https://dashboardicons.com/api/icons/external/simpleicons/imessage/brand.png",defaultLink:""},
+  "WhatsApp":{logo:"https://cdn.jsdelivr.net/gh/selfhst/icons/png/whatsapp.png",defaultLink:""},
+  "Telegram":{logo:"https://cdn.jsdelivr.net/gh/selfhst/icons/png/telegram.png",defaultLink:""},
+  "Snapchat":{logo:"https://cdn.jsdelivr.net/gh/selfhst/icons/png/snapchat.png",defaultLink:""},
+  "Discord":{logo:"https://cdn.jsdelivr.net/gh/selfhst/icons/png/discord.png",defaultLink:""},
+  "9 Proxy":{logo:"",defaultLink:""},
+  "Working Tools 🧰":{logo:"https://img.icons8.com/fluency/96/toolbox.png?utm_source=chatgpt.com",defaultLink:""},
+  "Netflix Account":{logo:"https://cdn.jsdelivr.net/gh/selfhst/icons/png/netflix.png",defaultLink:""},
+  "USA iCloud":{logo:"https://cdn.jsdelivr.net/gh/selfhst/icons/png/icloud.png",defaultLink:""},
+  "LinkedIn":{logo:"https://cdn.jsdelivr.net/gh/selfhst/icons/png/linkedin.png",defaultLink:""},
+  "Reddit Accounts":{logo:"https://cdn.jsdelivr.net/gh/selfhst/icons/png/reddit.png",defaultLink:""},
+  "Facebook Advertising":{logo:"https://upload.wikimedia.org/wikipedia/commons/6/6c/Facebook_Logo_2023.png",defaultLink:""},
+  "Verified Profiles":{logo:"",defaultLink:""},
+  "Plenty of Fish (POF) Dating Sites":{logo:"",defaultLink:""}
+};
+
+const CATEGORIES = [...new Set([...OLD_CATEGORIES,...NEW_CATEGORIES,...Object.keys(CATEGORY_META)])];
+let products = [];
+let productStock = {};
+let inventoryErrors = {};
+let activeInventoryProduct = null;
+let isSavingProduct = false;
+let toastTimer;
+let categorySettings = {};
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[c]);
+}
+
+function money(value) {
+  return "₦"+Number(value||0).toLocaleString("en-NG",{maximumFractionDigits:2});
+}
+
+function showToast(message) {
+  $("toast").textContent = message;
+  $("toast").classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>$("toast").classList.remove("show"),3500);
+}
+
+function showMessage(id,message,type="error") {
+  const el=$(id);
+  el.className=type==="success"?"success-box":"error-box";
+  el.textContent=message;
+}
+
+function hideMessage(id) {
+  $(id).className="hidden";
+  $(id).textContent="";
+}
+
+function readableError(error) {
+  const code=error && error.code ? error.code : "";
+  if(code.includes("permission-denied")) return "Firebase denied access. Check Firestore rules and the signed-in admin account.";
+  if(code.includes("unavailable")) return "Firestore is temporarily unavailable. Check your internet connection and try again.";
+  if(code.includes("unauthenticated")) return "Your session has expired. Sign in again.";
+  if(code.includes("failed-precondition")) return "Firestore reported a configuration or index issue.";
+  return (error && error.message) ? error.message : "An unknown error occurred.";
+}
+
+function showLogin(message="") {
+  $("loginScreen").style.display="flex";
+  $("adminApp").classList.add("hidden");
+  $("loginError").textContent=message;
+  $("loginError").classList.toggle("hidden",!message);
+}
+
+function showAdmin(user) {
+  $("loginScreen").style.display="none";
+  $("adminApp").classList.remove("hidden");
+  $("adminEmail").textContent=user.email||"Administrator";
+}
+
+function productName(p) { return p.name||p.productName||"Unnamed product"; }
+function productCategory(p) { return p.category||"Other"; }
+function productPrice(p) { return Number(p.price??p.productPrice??0); }
+function productImage(p) { return p.image||p.imageUrl||p.productImage||""; }
+function productDescription(p) { return p.description||p.productDescription||""; }
+function stockCount(id) { return productStock[id]||{available:0,sold:0}; }
+
+function categoryMeta(category) {
+  const saved=categorySettings[category]||{};
+  const defaults=CATEGORY_META[category]||{};
+  return {
+    logo:saved.logo||defaults.logo||"",
+    defaultLink:saved.defaultLink||defaults.defaultLink||""
+  };
+}
+
+function categoryIconHTML(category) {
+  const logo=categoryMeta(category).logo;
+  if(logo) return `<img class="category-logo" src="${escapeHTML(logo)}" alt="" loading="lazy" onerror="this.style.display='none'">`;
+  return `<span class="category-logo" style="display:inline-grid;place-items:center;background:#dbeafe;color:#1d4ed8">▣</span>`;
+}
+
+/* THEME */
+
+function applyTheme(theme) {
+  const chosen=theme==="light"?"light":"dark";
+  document.documentElement.dataset.theme=chosen;
+  $("themeToggle").textContent=chosen==="dark"?"☀️ Light mode":"🌙 Dark mode";
+  try { localStorage.setItem("gentleAdminTheme",chosen); } catch(error) {
+    console.warn("Theme preference could not be saved:",error);
+  }
+}
+
+$("themeToggle").addEventListener("click",()=>{
+  const current=document.documentElement.dataset.theme||"dark";
+  applyTheme(current==="dark"?"light":"dark");
+});
+
+/* NAVIGATION */
+
+function showSection(section) {
+  const map={dashboard:"dashboardSection",products:"productsSection",inventory:"inventorySection",categoryLinks:"categoryLinksSection"};
+  Object.entries(map).forEach(([key,id])=>$(id).classList.toggle("hidden",key!==section));
+  document.querySelectorAll(".nav-link[data-section]").forEach(button=>{
+    button.classList.toggle("active",button.dataset.section===section);
+  });
+  const titles={
+    dashboard:["Dashboard","Overview of your store"],
+    products:["Products","Manage your store products"],
+    inventory:["Inventory","Review available and sold stock"],
+    categoryLinks:["Category Links","Manage category logos and saved links"]
+  };
+  $("pageTitle").textContent=titles[section][0];
+  $("pageSubtitle").textContent=titles[section][1];
+  $("sidebar").classList.remove("open");
+  if(section==="inventory") renderInventoryTable();
+  if(section==="categoryLinks") renderCategoryLinksTable();
+}
+
+document.querySelectorAll(".nav-link[data-section]").forEach(button=>{
+  button.addEventListener("click",()=>showSection(button.dataset.section));
+});
+$("menuButton").addEventListener("click",()=>$("sidebar").classList.toggle("open"));
+// Close the mobile sidebar when tapping outside it.
+document.addEventListener("click",event=>{
+  const sidebar=$("sidebar");
+  const menuButton=$("menuButton");
+  if(window.innerWidth<=760&&sidebar.classList.contains("open")&&
+     !sidebar.contains(event.target)&&!menuButton.contains(event.target)){
+    sidebar.classList.remove("open");
+  }
+});
+$("dashboardViewAll").addEventListener("click",()=>showSection("products"));
+
+/* CATEGORY PICKER */
+
+function buildCategoryOptions() {
+  $("categoryOptions").innerHTML=CATEGORIES.map(category=>`
+    <button type="button" class="category-option" data-category="${escapeHTML(category)}">
+      ${categoryIconHTML(category)}<span>${escapeHTML(category)}</span>
+    </button>`).join("");
+  document.querySelectorAll(".category-option").forEach(button=>{
+    button.addEventListener("click",()=>setCategory(button.dataset.category));
+  });
+}
+
+function setCategory(category) {
+  $("productCategory").value=category;
+  $("selectedCategory").innerHTML=category?`${categoryIconHTML(category)} ${escapeHTML(category)}`:"Choose a category";
+  document.querySelectorAll(".category-option").forEach(button=>{
+    button.classList.toggle("selected",button.dataset.category===category);
+  });
+  $("categoryPicker").classList.remove("open");
+  const link=categoryMeta(category).defaultLink;
+  $("productLinkHelp").textContent=link
+    ?"Saved default link found. Leave the product link blank to use it."
+    :"No saved default link for this category yet. Add one under Category Links.";
+}
+
+$("productCategoryButton").addEventListener("click",()=>$("categoryPicker").classList.toggle("open"));
+document.addEventListener("click",event=>{
+  if(!event.target.closest("#categoryPicker")) $("categoryPicker").classList.remove("open");
+});
+
+/* MODALS */
+
+function openProductModal() {
+  $("productForm").reset();
+  hideMessage("productFormMessage");
+  setCategory("");
+  $("productModal").classList.add("show");
+  document.body.style.overflow="hidden";
+}
+
+function closeProductModal() {
+  $("productModal").classList.remove("show");
+  $("categoryPicker").classList.remove("open");
+  document.body.style.overflow="";
+}
+
+function openInventoryModal(product) {
+  activeInventoryProduct=product;
+  $("inventoryModalSubtitle").textContent=productName(product);
+  $("newInventoryItems").value="";
+  hideMessage("inventoryModalMessage");
+  $("inventoryModal").classList.add("show");
+  document.body.style.overflow="hidden";
+  renderInventoryItemsList(product.id);
+}
+
+function closeInventoryModal() {
+  $("inventoryModal").classList.remove("show");
+  activeInventoryProduct=null;
+  document.body.style.overflow="";
+}
+
+["topAddProductButton","welcomeAddButton","productsAddButton"].forEach(id=>{
+  $(id).addEventListener("click",openProductModal);
+});
+$("closeProductModal").addEventListener("click",closeProductModal);
+$("cancelProductModal").addEventListener("click",closeProductModal);
+$("closeInventoryModal").addEventListener("click",closeInventoryModal);
+$("closeInventoryModalBottom").addEventListener("click",closeInventoryModal);
+$("productModal").addEventListener("click",event=>{if(event.target===$("productModal"))closeProductModal();});
+$("inventoryModal").addEventListener("click",event=>{if(event.target===$("inventoryModal"))closeInventoryModal();});
+document.addEventListener("keydown",event=>{
+  if(event.key==="Escape"){closeProductModal();closeInventoryModal();}
+});
+
+/* CATEGORY LINKS */
+
+async function loadCategorySettings() {
+  if(!db) throw new Error("Firebase Firestore is not initialised.");
+  const snapshot=await db.collection("storeSettings").doc("categoryLinks").get();
+  categorySettings=snapshot.exists?(snapshot.data().categories||{}):{};
+  buildCategoryOptions();
+  renderCategoryLinksTable();
+}
+
+function renderCategoryLinksTable() {
+  const search=($("categoryLinkSearch").value||"").trim().toLowerCase();
+  const categories=CATEGORIES.filter(category=>!search||category.toLowerCase().includes(search));
+  $("categoryLinksTable").innerHTML=categories.map(category=>{
+    const meta=categoryMeta(category);
+    return `<tr>
+      <td><strong>${categoryIconHTML(category)} ${escapeHTML(category)}</strong></td>
+      <td><input type="url" data-cat-logo="${escapeHTML(category)}" aria-label="${escapeHTML(category)} logo URL" placeholder="https://..." value="${escapeHTML(meta.logo)}" style="min-width:180px;width:100%;padding:9px;border:1px solid var(--border);border-radius:8px;background:var(--input-bg);color:var(--text)"></td>
+      <td><input type="url" data-cat-link="${escapeHTML(category)}" aria-label="${escapeHTML(category)} default link" placeholder="https://..." value="${escapeHTML(meta.defaultLink)}" style="min-width:180px;width:100%;padding:9px;border:1px solid var(--border);border-radius:8px;background:var(--input-bg);color:var(--text)"></td>
+    </tr>`;
+  }).join("")||'<tr><td colspan="3" class="empty-state">No matching categories.</td></tr>';
+}
+
+$("categoryLinkSearch").addEventListener("input",renderCategoryLinksTable);
+
+$("reloadCategoryLinks").addEventListener("click",async()=>{
+  const button=$("reloadCategoryLinks");
+  button.disabled=true;
+  try {
+    await loadCategorySettings();
+    hideMessage("categoryLinksMessage");
+    showToast("Category settings reloaded.");
+  } catch(error) {
+    console.error("Category settings reload failed:",error);
+    showMessage("categoryLinksMessage","Could not load category settings: "+readableError(error));
+  } finally { button.disabled=false; }
+});
+
+$("saveCategoryLinks").addEventListener("click",async()=>{
+  const button=$("saveCategoryLinks");
+  button.disabled=true;
+  button.textContent="Saving...";
+  try {
+    const next={...categorySettings};
+    document.querySelectorAll("[data-cat-logo]").forEach(input=>{
+      const category=input.dataset.catLogo;
+      next[category]={...(next[category]||{}),logo:input.value.trim()};
+    });
+    document.querySelectorAll("[data-cat-link]").forEach(input=>{
+      const category=input.dataset.catLink;
+      next[category]={...(next[category]||{}),defaultLink:input.value.trim()};
+    });
+    await db.collection("storeSettings").doc("categoryLinks").set({
+      categories:next,
+      updatedAt:firebase.firestore.FieldValue.serverTimestamp(),
+      updatedBy:auth.currentUser.uid
+    },{merge:true});
+    categorySettings=next;
+    buildCategoryOptions();
+    renderCategoryLinksTable();
+    showMessage("categoryLinksMessage","Category logos and links saved.","success");
+    showToast("Category settings saved.");
+  } catch(error) {
+    console.error("Saving category settings failed:",error);
+    showMessage("categoryLinksMessage","Could not save settings: "+readableError(error));
+  } finally {
+    button.disabled=false;
+    button.textContent="Save category settings";
+  }
+});
+
+/* PRODUCTS AND INVENTORY LOADING */
+
+async function loadProducts() {
+  if(!db) throw new Error("Firebase Firestore is not initialised.");
+
+  $("productGrid").innerHTML='<div class="loading">Loading products...</div>';
+  $("dashboardProducts").innerHTML='<div class="loading">Loading products...</div>';
+  $("inventoryTable").innerHTML='<tr><td colspan="5" class="loading">Loading inventory...</td></tr>';
+
+  const snapshot=await db.collection("products").get();
+  const loadedProducts=snapshot.docs.map(doc=>({id:doc.id,...doc.data()}));
+
+  const nextStock={};
+  const nextErrors={};
+
+  const results=await Promise.all(loadedProducts.map(async product=>{
+    try {
+      const snap=await db.collection("products").doc(product.id).collection("inventory").get();
+      let available=0,sold=0;
+      snap.forEach(doc=>{
+        if(doc.data().sold===true) sold++;
+        else available++;
+      });
+      return {id:product.id,stock:{available,sold},error:null};
+    } catch(error) {
+      console.error("Inventory load failed for product "+product.id+":",error);
+      return {id:product.id,stock:null,error};
+    }
+  }));
+
+  results.forEach(result=>{
+    if(result.error) nextErrors[result.id]=result.error;
+    else nextStock[result.id]=result.stock;
+  });
+
+  products=loadedProducts;
+  productStock=nextStock;
+  inventoryErrors=nextErrors;
+
+  updateCategories();
+  renderStats();
+  renderProductGrid();
+  renderDashboardProducts();
+  renderInventoryTable();
+
+  if(Object.keys(inventoryErrors).length) {
+    console.warn("Some inventory records could not be read. Stock figures may be incomplete.",inventoryErrors);
+  }
+}
+
+function updateCategories() {
+  const filter=$("categoryFilter");
+  const previous=filter.value;
+  const categories=[...new Set([...CATEGORIES,...products.map(productCategory)])].filter(Boolean).sort();
+  filter.innerHTML='<option value="">All categories</option>'+categories.map(category=>
+    `<option value="${escapeHTML(category)}">${escapeHTML(category)}</option>`).join("");
+  if(categories.includes(previous)) filter.value=previous;
+}
+
+function renderStats() {
+  $("totalProducts").textContent=products.length;
+  const stockHasErrors=Object.keys(inventoryErrors).length>0;
+  let available=0,outOfStock=0,lowStock=0;
+  products.forEach(product=>{
+    if(inventoryErrors[product.id]) return;
+    const stock=stockCount(product.id);
+    available+=stock.available;
+    if(stock.available===0) outOfStock++;
+    else if(stock.available<=3) lowStock++;
+  });
+  $("totalStock").textContent=stockHasErrors?available.toLocaleString()+"*":available.toLocaleString();
+  $("outOfStock").textContent=stockHasErrors?outOfStock+"*":outOfStock;
+  $("totalStock").title=stockHasErrors?"Some inventory reads failed; this total may be incomplete.":"";
+  $("outOfStock").title=stockHasErrors?"Some inventory reads failed; this total may be incomplete.":"";
+
+  let notice=$("lowStockNotice");
+  if(!notice){
+    notice=document.createElement("div");
+    notice.id="lowStockNotice";
+    notice.className="low-stock-notice hidden";
+    const stats=document.querySelector("#dashboardSection .stats");
+    if(stats) stats.insertAdjacentElement("afterend",notice);
+  }
+  if(lowStock||outOfStock||stockHasErrors){
+    notice.classList.remove("hidden");
+    let message="";
+    if(outOfStock) message+=`${outOfStock} product(s) are out of stock. `;
+    if(lowStock) message+=`${lowStock} product(s) have 1–3 items remaining. `;
+    if(stockHasErrors) message+="Some inventory could not be checked.";
+    notice.innerHTML=`<span class="notice-icon">⚠️</span><div><strong>Inventory attention needed</strong><p>${escapeHTML(message.trim())}</p></div>`;
+  } else {
+    notice.classList.add("hidden");
+  }
+}
+
+/* PRODUCT CARDS */
+
+function productCard(product) {
+  const stock=stockCount(product.id);
+  const hasInventoryError=!!inventoryErrors[product.id];
+  const name=productName(product);
+  const image=productImage(product);
+  const category=productCategory(product);
+  const stockLabel=hasInventoryError?"Stock unavailable":stock.available?stock.available+" available":"Out of stock";
+
+  return `<article class="product-card">
+    <div class="product-image">
+      ${image?`<img src="${escapeHTML(image)}" alt="${escapeHTML(name)}" onerror="this.style.display='none'">`:'<div class="product-placeholder">▣</div>'}
+      <span class="stock-badge ${!hasInventoryError&&!stock.available?"out":(!hasInventoryError&&stock.available<=3?"low":"")}">${stockLabel}</span>
+    </div>
+    <div class="product-info">
+      <span class="product-category">${categoryIconHTML(category)} ${escapeHTML(category)}</span>
+      <div class="product-name">${escapeHTML(name)}</div>
+      <div class="product-description">${escapeHTML(productDescription(product)||"No description added.")}</div>
+      <div class="product-bottom"><div><div class="product-price">${money(productPrice(product))}</div><div class="small muted">${hasInventoryError?"Sold count unavailable":stock.sold+" sold"}</div></div></div>
+      <div class="product-actions">
+        <button class="btn btn-small" data-action="inventory" data-id="${escapeHTML(product.id)}">Stock</button>
+        <button class="btn btn-small" data-action="edit" data-id="${escapeHTML(product.id)}">Edit</button>
+        <button class="btn btn-small btn-danger" data-action="delete" data-id="${escapeHTML(product.id)}">Delete</button>
+      </div>
+    </div>
+  </article>`;
+}
+
+function renderProductGrid() {
+  const search=$("productSearch").value.trim().toLowerCase();
+  const category=$("categoryFilter").value;
+  const stockFilter=$("stockFilter").value;
+
+  const filtered=products.filter(product=>{
+    const name=productName(product).toLowerCase();
+    const cat=productCategory(product);
+    const description=productDescription(product).toLowerCase();
+    const stock=stockCount(product.id);
+    if(search&&!name.includes(search)&&!cat.toLowerCase().includes(search)&&!description.includes(search))return false;
+    if(category&&cat!==category)return false;
+    if(stockFilter==="available"&&(inventoryErrors[product.id]||stock.available===0))return false;
+    if(stockFilter==="empty"&&(inventoryErrors[product.id]||stock.available!==0))return false;
+    return true;
+  });
+
+  $("productGrid").innerHTML=filtered.length?filtered.map(productCard).join(""):'<div class="empty-state" style="grid-column:1/-1">No products found.</div>';
+}
+
+function renderDashboardProducts() {
+  const recent=products.slice(0,6);
+  $("dashboardProducts").innerHTML=recent.length?recent.map(productCard).join(""):'<div class="empty-state" style="grid-column:1/-1">No products yet. Add your first product.</div>';
+}
+
+$("productSearch").addEventListener("input",renderProductGrid);
+$("categoryFilter").addEventListener("change",renderProductGrid);
+$("stockFilter").addEventListener("change",renderProductGrid);
+
+document.addEventListener("click",async event=>{
+  const button=event.target.closest("[data-action]");
+  if(!button)return;
+  const product=products.find(item=>item.id===button.dataset.id);
+  if(!product)return;
+  if(button.dataset.action==="inventory")openInventoryModal(product);
+  if(button.dataset.action==="edit")location.href="edit.html?id="+encodeURIComponent(product.id);
+  if(button.dataset.action==="delete")await deleteProduct(product);
+});
+
+/* CREATE PRODUCT */
+
+$("productForm").addEventListener("submit",async event=>{
+  event.preventDefault();
+  if(isSavingProduct)return;
+
+  const name=$("productName").value.trim();
+  const category=$("productCategory").value;
+  const price=Number($("productPrice").value);
+  const image=$("productImage").value.trim();
+  const description=$("productDescription").value.trim();
+  const explicitLink=$("productLink").value.trim();
+  const defaultLink=categoryMeta(category).defaultLink;
+  const productLink=explicitLink||defaultLink;
+  const items=$("inventoryItems").value.split("\n").map(item=>item.trim()).filter(Boolean);
+
+  if(!name)return showMessage("productFormMessage","Enter a product name.");
+  if(!category)return showMessage("productFormMessage","Choose a category.");
+  if($("productPrice").value===""||!Number.isFinite(price)||price<0)return showMessage("productFormMessage","Enter a valid price.");
+
+  isSavingProduct=true;
+  $("saveProductButton").disabled=true;
+  $("saveProductButton").textContent="Saving...";
+
+  try {
+    const ref=db.collection("products").doc();
+    await ref.set({
+      name,category,price,image,description,
+      productLink,defaultLink:productLink,categoryLogo:categoryMeta(category).logo,
+      createdAt:firebase.firestore.FieldValue.serverTimestamp(),
+      updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    const inventory=ref.collection("inventory");
+    for(let start=0;start<items.length;start+=400) {
+      const batch=db.batch();
+      items.slice(start,start+400).forEach(value=>{
+        batch.set(inventory.doc(),{value,sold:false,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+      });
+      await batch.commit();
+    }
+
+    closeProductModal();
+    showToast("Product added successfully.");
+    await loadProducts();
+  } catch(error) {
+    console.error("Product save failed:",error);
+    showMessage("productFormMessage","Could not save product: "+readableError(error));
+  } finally {
+    isSavingProduct=false;
+    $("saveProductButton").disabled=false;
+    $("saveProductButton").textContent="Save product";
+  }
+});
+
+/* DELETE PRODUCT */
+
+async function deleteProduct(product) {
+  if(!confirm(`Delete "${productName(product)}" and its inventory? This cannot be undone.`))return;
+  try {
+    const ref=db.collection("products").doc(product.id);
+    const inventory=ref.collection("inventory");
+    while(true) {
+      const snapshot=await inventory.limit(400).get();
+      if(snapshot.empty)break;
+      const batch=db.batch();
+      snapshot.docs.forEach(doc=>batch.delete(doc.ref));
+      await batch.commit();
+      if(snapshot.size<400)break;
+    }
+    await ref.delete();
+    showToast("Product deleted.");
+    await loadProducts();
+  } catch(error) {
+    console.error("Product deletion failed:",error);
+    showToast("Could not delete product: "+readableError(error));
+  }
+}
+
+/* INVENTORY TABLE AND ITEMS */
+
+function renderInventoryTable() {
+  $("inventoryTable").innerHTML=products.length?products.map(product=>{
+    const stock=stockCount(product.id);
+    const failed=!!inventoryErrors[product.id];
+    return `<tr>
+      <td><strong>${escapeHTML(productName(product))}</strong></td>
+      <td>${escapeHTML(productCategory(product))}</td>
+      <td>${failed?"Unavailable":stock.available}</td>
+      <td>${failed?"Unavailable":stock.sold}</td>
+      <td><button class="btn btn-small" data-action="inventory" data-id="${escapeHTML(product.id)}">Manage stock</button></td>
+    </tr>`;
+  }).join(""):'<tr><td colspan="5" class="empty-state">No products found.</td></tr>';
+}
+
+async function renderInventoryItemsList(productId) {
+  const list=$("inventoryItemsList");
+  list.innerHTML='<div class="loading">Loading inventory...</div>';
+  try {
+    const snapshot=await db.collection("products").doc(productId).collection("inventory").get();
+    if(activeInventoryProduct?.id!==productId)return;
+    if(snapshot.empty) {
+      list.innerHTML='<div class="empty-state">No inventory items yet.</div>';
+      return;
+    }
+    list.innerHTML=snapshot.docs.map(doc=>{
+      const item=doc.data();
+      const value=item.value??item.code??item.account??item.email??"Inventory item";
+      const sold=item.sold===true;
+      return `<div class="inventory-row"><div><code>${escapeHTML(value)}</code><div class="small muted">${sold?"Sold":"Available"}</div></div><span class="status ${sold?"failed":"success"}">${sold?"Sold":"Available"}</span></div>`;
+    }).join("");
+  } catch(error) {
+    console.error("Inventory item list failed:",error);
+    list.innerHTML=`<div class="error-box">Could not load inventory: ${escapeHTML(readableError(error))}</div>`;
+  }
+}
+
+$("addInventoryButton").addEventListener("click",async()=>{
+  if($("addInventoryButton").disabled)return;
+  if(!activeInventoryProduct)return;
+  const items=$("newInventoryItems").value.split("\n").map(item=>item.trim()).filter(Boolean);
+  if(!items.length)return showMessage("inventoryModalMessage","Enter at least one inventory item.");
+
+  const button=$("addInventoryButton");
+  button.disabled=true;
+  button.textContent="Adding...";
+
+  try {
+    const ref=db.collection("products").doc(activeInventoryProduct.id).collection("inventory");
+    for(let start=0;start<items.length;start+=400) {
+      const batch=db.batch();
+      items.slice(start,start+400).forEach(value=>{
+        batch.set(ref.doc(),{value,sold:false,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+      });
+      await batch.commit();
+    }
+    $("newInventoryItems").value="";
+    showMessage("inventoryModalMessage","Inventory added successfully.","success");
+    await loadProducts();
+    if(activeInventoryProduct)await renderInventoryItemsList(activeInventoryProduct.id);
+  } catch(error) {
+    console.error("Adding inventory failed:",error);
+    showMessage("inventoryModalMessage","Could not add inventory: "+readableError(error));
+  } finally {
+    button.disabled=false;
+    button.textContent="＋ Add inventory";
+  }
+});
+
+/* NOTIFICATIONS */
+
+async function enableNotifications() {
+  try {
+    if(!("Notification" in window))return showToast("Notifications are not supported in this browser.");
+    if(!window.firebaseMessaging)return showToast("Firebase messaging is not configured in firebase.js.");
+    const permission=await Notification.requestPermission();
+    if(permission!=="granted")return showToast("Notification permission was not granted.");
+    const token=await window.firebaseMessaging.getToken({vapidKey:VAPID_KEY});
+    if(!token)return showToast("Could not obtain a notification token.");
+    const user=auth.currentUser;
+    if(!user||user.uid!==ADMIN_UID)return showToast("Administrator authentication is required.");
+    await db.collection("adminPushTokens").doc(user.uid).set({
+      token,uid:user.uid,email:user.email||"",
+      updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+    },{merge:true});
+    showToast("Notifications enabled on this device.");
+  } catch(error) {
+    console.error("Notifications setup failed:",error);
+    showToast("Could not enable notifications: "+readableError(error));
+  }
+}
+$("notificationButton").addEventListener("click",enableNotifications);
+
+/* REFRESH AND SIGN OUT */
+
+async function refreshAll() {
+  const buttons=[$("refreshButton"),$("topRefreshButton"),$("inventoryRefreshButton"),$("reloadCategoryLinks")];
+  buttons.forEach(button=>{if(button)button.disabled=true;});
+
+  try {
+    const results=await Promise.allSettled([loadProducts(),loadCategorySettings()]);
+    const productResult=results[0];
+    const categoryResult=results[1];
+
+    if(productResult.status==="rejected")console.error("Product refresh failed:",productResult.reason);
+    if(categoryResult.status==="rejected")console.error("Category settings refresh failed:",categoryResult.reason);
+
+    if(productResult.status==="fulfilled"&&categoryResult.status==="fulfilled") {
+      showToast(Object.keys(inventoryErrors).length
+        ?"Products loaded, but some inventory could not be read."
+        :"Store data refreshed successfully.");
+    } else if(productResult.status==="fulfilled") {
+      showToast("Products loaded. Category settings failed to reload.");
+    } else if(categoryResult.status==="fulfilled") {
+      showToast("Category settings loaded. Product loading failed.");
+      $("productGrid").innerHTML='<div class="error-box">Products could not be loaded. Check the browser console for the Firebase error.</div>';
+      $("dashboardProducts").innerHTML='<div class="error-box">Products could not be loaded. Check the browser console for the Firebase error.</div>';
+    } else {
+      showToast("Refresh failed. Check Firebase configuration and permissions.");
+    }
+  } finally {
+    buttons.forEach(button=>{if(button)button.disabled=false;});
+  }
+}
+
+$("refreshButton").addEventListener("click",refreshAll);
+$("topRefreshButton").addEventListener("click",refreshAll);
+$("inventoryRefreshButton").addEventListener("click",refreshAll);
+
+$("logoutButton").addEventListener("click",async()=>{
+  try { await auth.signOut(); }
+  catch(error) {
+    console.error("Sign out failed:",error);
+    showToast("Could not sign out: "+readableError(error));
+  }
+});
+
+/* LOGIN */
+
+$("loginForm").addEventListener("submit",async event=>{
+  event.preventDefault();
+  if(!auth)return showLogin("Firebase authentication is not configured.");
+
+  const button=$("loginButton");
+  button.disabled=true;
+  button.textContent="Signing in...";
+
+  try {
+    const credential=await auth.signInWithEmailAndPassword(
+      $("loginEmail").value.trim(),
+      $("loginPassword").value
+    );
+    if(credential.user.uid!==ADMIN_UID) {
+      await auth.signOut();
+      showLogin("This account is not authorised to access the admin dashboard.");
+    }
+  } catch(error) {
+    console.error("Admin sign-in failed:",error);
+    showLogin("Sign-in failed: "+readableError(error));
+  } finally {
+    button.disabled=false;
+    button.textContent="Sign in";
+  }
+});
+
+/* AUTHENTICATION */
+
+applyTheme(document.documentElement.dataset.theme||"dark");
+buildCategoryOptions();
+
+if(!auth||!db) {
+  showLogin("Firebase could not start. Check firebase.js and confirm it initializes firebaseAuth and firebaseDB.");
+} else {
+  auth.onAuthStateChanged(async user=>{
+    if(!user) {
+      showLogin();
+      return;
+    }
+    if(user.uid!==ADMIN_UID) {
+      await auth.signOut();
+      showLogin("This account is not authorised to access the admin dashboard.");
+      return;
+    }
+    showAdmin(user);
+    await refreshAll();
+  });
+}
+</script>
+</body>
+</html>

@@ -1,527 +1,780 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#2563EB">
-  <title>Customers - Gentle Acct Store</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1120">
+  <meta name="description" content="Gentle Acct Store customer management dashboard">
+  <title>Customers | Gentle Acct Store</title>
+
+  <script>
+    (function () {
+      try {
+        const theme = localStorage.getItem("gentle-acct-store-theme");
+        document.documentElement.dataset.theme =
+          ["dark", "light", "blue"].includes(theme) ? theme : "dark";
+      } catch (_) {
+        document.documentElement.dataset.theme = "dark";
+      }
+    })();
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
   <style>
     :root {
-      --primary: #2563EB;
-      --primary-dark: #1D4ED8;
-      --primary-light: #EFF6FF;
-      --background: #F8FAFC;
-      --white: #FFFFFF;
-      --text: #172033;
-      --muted: #7B8798;
-      --border: #E5EAF2;
-      --success: #15803D;
-      --success-bg: #F0FDF4;
+      color-scheme: dark;
+      --bg: #0b1120;
+      --surface: #111b2e;
+      --surface-soft: #17243a;
+      --input: #0c1628;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --blue: #3b82f6;
+      --blue-dark: #2563eb;
+      --border: #26364e;
+      --green: #22c55e;
+      --red: #ef4444;
+      --shadow: 0 8px 30px rgba(0, 0, 0, .16);
+      --blue-soft: rgba(59, 130, 246, .15);
+      --green-soft: rgba(34, 197, 94, .12);
+      --red-soft: rgba(239, 68, 68, .12);
+      --notice-bg: rgba(245, 158, 11, .10);
+      --notice-border: rgba(245, 158, 11, .3);
+      --notice-text: #fbbf24;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html[data-theme="light"] {
+      color-scheme: light;
+      --bg: #f4f7fc;
+      --surface: #ffffff;
+      --surface-soft: #f1f5f9;
+      --input: #f9fbfe;
+      --text: #152238;
+      --muted: #77849a;
+      --blue: #2864f0;
+      --blue-dark: #1746ba;
+      --border: #e1e8f2;
+      --green: #15803d;
+      --red: #dc2626;
+      --shadow: 0 8px 30px rgba(25, 50, 90, .06);
+      --blue-soft: #edf3ff;
+      --green-soft: #e9f9ef;
+      --red-soft: #fff0f0;
+      --notice-bg: #fff8e7;
+      --notice-border: #f4e4b7;
+      --notice-text: #795b17;
+    }
 
-    html { scroll-behavior: smooth; }
+    html[data-theme="blue"] {
+      color-scheme: light;
+      --bg: #eaf2ff;
+      --surface: #ffffff;
+      --surface-soft: #f0f6ff;
+      --input: #ffffff;
+      --text: #10244a;
+      --muted: #526b91;
+      --blue: #2563eb;
+      --blue-dark: #1d4ed8;
+      --border: #c9daf5;
+      --green: #15803d;
+      --red: #b91c1c;
+      --shadow: 0 8px 30px rgba(37, 99, 235, .08);
+      --blue-soft: #dbeafe;
+      --green-soft: #dcfce7;
+      --red-soft: #fee2e2;
+      --notice-bg: #fff8e7;
+      --notice-border: #f4e4b7;
+      --notice-text: #795b17;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
-      font-family: 'Poppins', sans-serif;
-      background: var(--background);
+      font-family: "Poppins", sans-serif;
+      background: var(--bg);
       color: var(--text);
       min-height: 100vh;
+      transition: background .2s ease, color .2s ease;
     }
 
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      min-height: 68px;
-      padding: 12px 18px;
+    button, input {
+      font: inherit;
+    }
+
+    button, a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .topbar {
+      background: var(--surface);
+      color: var(--text);
+      padding: 18px 5%;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      background: rgba(255,255,255,.96);
-      backdrop-filter: blur(14px);
+      gap: 16px;
+      flex-wrap: wrap;
       border-bottom: 1px solid var(--border);
     }
 
-    .logo {
+    .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
-      color: var(--text);
-      font-size: 16px;
-      font-weight: 800;
+      gap: 12px;
     }
 
-    .logo-icon {
-      width: 39px;
-      height: 39px;
+    .brand-icon {
+      width: 43px;
+      height: 43px;
       display: grid;
       place-items: center;
-      color: white;
-      background: var(--primary);
       border-radius: 13px;
+      background: linear-gradient(135deg, #4285ff, #1746ba);
+      color: #fff;
+      font-size: 19px;
+      flex-shrink: 0;
     }
 
-    .back {
+    .brand h1 {
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -.4px;
+    }
+
+    .brand p {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 2px;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .top-btn {
+      text-decoration: none;
+      color: var(--text);
+      border: 1px solid var(--border);
+      background: var(--surface-soft);
+      padding: 10px 13px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 7px;
-      padding: 10px 13px;
-      color: var(--primary-dark);
-      background: var(--primary-light);
-      border: 1px solid #DBEAFE;
-      border-radius: 11px;
-      font-size: 11px;
-      font-weight: 700;
-      text-decoration: none;
-      transition: .2s;
+      transition: .2s ease;
     }
 
-    .back:hover { background: #DBEAFE; }
+    .top-btn:hover {
+      border-color: var(--blue);
+    }
 
     .container {
-      width: 100%;
-      max-width: 1120px;
-      margin: auto;
-      padding: 28px 16px 55px;
+      width: min(1120px, 92%);
+      margin: 34px auto;
     }
 
-    .hero { margin-bottom: 22px; }
+    .page-heading {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-bottom: 26px;
+    }
 
     .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      margin-bottom: 11px;
-      padding: 7px 10px;
-      border-radius: 20px;
-      color: var(--primary-dark);
-      background: var(--primary-light);
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: .5px;
-    }
-
-    .hero h1 {
-      margin-bottom: 8px;
-      font-size: clamp(24px, 5vw, 32px);
-      line-height: 1.25;
+      color: var(--blue);
+      text-transform: uppercase;
+      font-size: 10px;
       font-weight: 800;
-      letter-spacing: -.7px;
+      letter-spacing: 1.6px;
+      margin-bottom: 8px;
     }
 
-    .hero p {
-      max-width: 500px;
+    .page-heading h2 {
+      font-size: clamp(24px, 4vw, 34px);
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .page-heading p {
       color: var(--muted);
-      font-size: 12px;
+      font-size: 13px;
       line-height: 1.8;
+      margin-top: 7px;
     }
 
-    .summary {
-      position: relative;
+    .refresh-btn {
+      border: none;
+      background: var(--blue);
+      color: #fff;
+      border-radius: 11px;
+      padding: 12px 17px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 15px rgba(40, 100, 240, .18);
+    }
+
+    .refresh-btn:hover {
+      background: var(--blue-dark);
+    }
+
+    .refresh-btn:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 25px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      padding: 21px;
+      box-shadow: var(--shadow);
+      min-width: 0;
+    }
+
+    .stat-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .stat-icon {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      background: var(--blue-soft);
+      color: var(--blue);
+      border-radius: 12px;
+      flex-shrink: 0;
+    }
+
+    .stat-number {
+      display: block;
+      font-size: 29px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-top: 14px;
+      overflow-wrap: anywhere;
+    }
+
+    .stat-note {
+      color: var(--muted);
+      font-size: 10px;
+      margin-top: 5px;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
       overflow: hidden;
-      margin-bottom: 20px;
-      padding: 23px;
-      color: white;
-      background: linear-gradient(125deg, #2563EB, #1D4ED8);
-      border-radius: 20px;
-      box-shadow: 0 12px 28px rgba(37,99,235,.13);
     }
 
-    .summary::after {
-      content: "";
+    .panel-header {
+      padding: 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .panel-header h3 {
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .panel-header p {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 5px;
+    }
+
+    .search-wrap {
+      position: relative;
+      width: min(100%, 330px);
+    }
+
+    .search-wrap i {
       position: absolute;
-      width: 180px;
-      height: 180px;
-      right: -65px;
-      top: -85px;
-      border: 28px solid rgba(255,255,255,.08);
-      border-radius: 50%;
-      pointer-events: none;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 13px;
     }
 
-    .summary-content { position: relative; z-index: 1; }
+    #search {
+      width: 100%;
+      padding: 12px 14px 12px 39px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      background: var(--input);
+      outline: none;
+      font-size: 12px;
+      color: var(--text);
+    }
 
-    .summary-top {
+    #search::placeholder {
+      color: var(--muted);
+    }
+
+    #search:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px var(--blue-soft);
+    }
+
+    .count-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      margin-bottom: 20px;
+      padding: 15px 22px;
+      background: var(--surface-soft);
+      border-bottom: 1px solid var(--border);
     }
 
-    .summary-icon {
-      width: 46px;
-      height: 46px;
-      display: grid;
-      place-items: center;
-      background: rgba(255,255,255,.15);
-      border: 1px solid rgba(255,255,255,.13);
-      border-radius: 14px;
-      font-size: 18px;
+    #customerCount {
+      color: var(--muted);
+      font-size: 11px;
     }
 
-    .live {
-      display: inline-flex;
+    .live-label {
+      display: flex;
       align-items: center;
       gap: 7px;
-      padding: 7px 10px;
-      background: rgba(255,255,255,.13);
-      border-radius: 20px;
-      font-size: 9px;
+      font-size: 10px;
       font-weight: 600;
+      color: var(--green);
     }
 
     .live-dot {
       width: 7px;
       height: 7px;
+      background: var(--green);
       border-radius: 50%;
-      background: #86EFAC;
     }
 
-    .summary h2 {
-      margin-bottom: 7px;
-      font-size: 34px;
-      line-height: 1.1;
-      font-weight: 800;
+    #customers {
+      padding: 22px;
     }
 
-    .summary p { font-size: 11px; opacity: .9; }
-
-    .search-box {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-height: 52px;
-      margin-bottom: 25px;
-      padding: 0 15px;
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      box-shadow: 0 4px 14px rgba(15,23,42,.025);
-      transition: .2s;
-    }
-
-    .search-box:focus-within {
-      border-color: #93B4FC;
-      box-shadow: 0 0 0 4px rgba(37,99,235,.08);
-    }
-
-    .search-box i { color: #94A3B8; font-size: 14px; }
-
-    .search-box input {
-      width: 100%;
-      min-width: 0;
-      height: 50px;
-      color: var(--text);
-      background: transparent;
-      border: 0;
-      outline: 0;
-      font: inherit;
-      font-size: 12px;
-    }
-
-    .search-box input::placeholder { color: #9AA5B5; }
-
-    .list-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 15px;
-    }
-
-    .list-title {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-    }
-
-    .list-title i { color: var(--primary); font-size: 15px; }
-    .list-title h2 { font-size: 17px; font-weight: 800; }
-
-    .count {
-      padding: 7px 10px;
-      color: var(--primary-dark);
-      background: var(--primary-light);
-      border: 1px solid #DBEAFE;
-      border-radius: 20px;
-      font-size: 9px;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-
-    .customers {
+    .customer-grid {
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 13px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
     }
 
     .customer {
-      min-width: 0;
-      padding: 17px;
-      background: white;
       border: 1px solid var(--border);
-      border-radius: 17px;
-      box-shadow: 0 4px 14px rgba(15,23,42,.025);
-      transition: border-color .2s, box-shadow .2s, transform .2s;
+      border-radius: 15px;
+      padding: 19px;
+      min-width: 0;
+      transition: border-color .2s, transform .2s, background .2s;
+      background: var(--surface);
     }
 
     .customer:hover {
+      border-color: var(--blue);
       transform: translateY(-2px);
-      border-color: #CBDCFC;
-      box-shadow: 0 9px 22px rgba(15,23,42,.055);
     }
 
     .customer-top {
       display: flex;
-      align-items: center;
-      gap: 11px;
+      align-items: flex-start;
+      gap: 12px;
+      min-width: 0;
     }
 
     .avatar {
-      width: 46px;
-      height: 46px;
-      flex-shrink: 0;
+      flex: 0 0 43px;
+      width: 43px;
+      height: 43px;
       display: grid;
       place-items: center;
-      color: var(--primary-dark);
-      background: var(--primary-light);
-      border: 1px solid #DBEAFE;
       border-radius: 14px;
-      font-size: 17px;
+      background: var(--blue-soft);
+      color: var(--blue);
       font-weight: 800;
+      font-size: 17px;
     }
 
-    .customer-info { flex: 1; min-width: 0; }
+    .customer-info {
+      min-width: 0;
+      flex: 1;
+    }
 
-    .customer-info h3 {
-      overflow: hidden;
-      margin-bottom: 4px;
-      color: var(--text);
-      font-size: 12px;
+    .customer-info h4 {
+      font-size: 13px;
       font-weight: 700;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      overflow-wrap: anywhere;
     }
 
     .email {
-      overflow-wrap: anywhere;
+      font-size: 11px;
       color: var(--muted);
-      font-size: 10px;
-      line-height: 1.6;
+      overflow-wrap: anywhere;
+      margin-top: 5px;
     }
 
     .status {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
+      display: inline-block;
       flex-shrink: 0;
-      padding: 6px 8px;
-      color: var(--success);
-      background: var(--success-bg);
-      border: 1px solid #DCFCE7;
+      padding: 5px 9px;
       border-radius: 20px;
-      font-size: 8px;
+      background: var(--green-soft);
+      color: var(--green);
+      font-size: 9px;
       font-weight: 700;
     }
 
-    .status::before {
-      content: "";
-      width: 5px;
-      height: 5px;
-      flex-shrink: 0;
-      background: #22C55E;
-      border-radius: 50%;
+    .status.inactive,
+    .status.suspended,
+    .status.disabled {
+      background: var(--red-soft);
+      color: var(--red);
     }
 
     .details {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 9px;
-      margin-top: 15px;
-      padding-top: 13px;
-      border-top: 1px solid #EEF2F7;
+      gap: 12px;
+      margin-top: 19px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
     }
 
     .detail {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 14px;
       min-width: 0;
-      padding: 10px;
-      background: #F8FAFC;
-      border: 1px solid #F1F5F9;
-      border-radius: 11px;
     }
 
     .detail-label {
-      display: block;
-      margin-bottom: 5px;
-      color: #94A3B8;
-      font-size: 8px;
-      font-weight: 700;
-      letter-spacing: .35px;
-      text-transform: uppercase;
+      color: var(--muted);
+      font-size: 10px;
+      flex-shrink: 0;
     }
 
     .detail-value {
-      display: block;
-      overflow: hidden;
-      color: #344054;
       font-size: 10px;
       font-weight: 600;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .loading, .empty, .error-box {
-      grid-column: 1 / -1;
-      padding: 42px 18px;
-      text-align: center;
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 17px;
-    }
-
-    .loading-icon, .empty-icon, .error-icon {
-      width: 49px;
-      height: 49px;
-      display: grid;
-      place-items: center;
-      margin: 0 auto 13px;
-      color: var(--primary);
-      background: var(--primary-light);
-      border-radius: 15px;
-      font-size: 19px;
-    }
-
-    .loading p, .empty p, .error-box p {
-      color: var(--muted);
-      font-size: 11px;
-      line-height: 1.8;
+      text-align: right;
       overflow-wrap: anywhere;
     }
 
-    .empty { border-style: dashed; border-color: #CBD5E1; }
-    .empty h3, .error-box h3 { margin-bottom: 7px; font-size: 14px; }
-    .empty p { max-width: 320px; margin: auto; }
-
-    .error-box {
-      color: #B42318;
-      background: #FFF7F7;
-      border-color: #FECACA;
+    .copy-btn {
+      border: 0;
+      background: var(--blue-soft);
+      color: var(--blue);
+      padding: 4px 7px;
+      border-radius: 6px;
+      font-size: 10px;
+      cursor: pointer;
+      margin-left: 4px;
     }
 
-    .error-icon { color: #B42318; background: #FEE2E2; }
-    .error-box p { color: #B42318; }
+    .loading, .empty, .error-box {
+      text-align: center;
+      padding: 55px 15px;
+    }
+
+    .loading-icon, .empty-icon, .error-icon {
+      width: 58px;
+      height: 58px;
+      margin: 0 auto 16px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+    }
+
+    .loading-icon, .empty-icon {
+      color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .error-icon {
+      color: var(--red);
+      background: var(--red-soft);
+    }
+
+    .empty h3, .error-box h3 {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .empty p, .error-box p {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.8;
+      max-width: 430px;
+      margin: 0 auto;
+    }
 
     .retry {
-      margin-top: 14px;
-      padding: 10px 15px;
-      color: white;
-      background: var(--primary);
+      margin-top: 18px;
       border: 0;
+      background: var(--blue);
+      color: white;
+      padding: 11px 17px;
       border-radius: 10px;
-      font: inherit;
-      font-size: 11px;
       font-weight: 700;
+      font-size: 12px;
       cursor: pointer;
     }
 
-    .retry:hover { background: var(--primary-dark); }
-
-    @media (min-width: 650px) {
-      header { padding: 12px 26px; }
-      .container { padding: 32px 22px 60px; }
-      .customers { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .summary { padding: 26px; }
+    .notice {
+      margin-top: 18px;
+      padding: 15px 17px;
+      border-radius: 12px;
+      background: var(--notice-bg);
+      border: 1px solid var(--notice-border);
+      color: var(--notice-text);
+      font-size: 11px;
+      line-height: 1.8;
     }
 
-    @media (min-width: 950px) {
-      header { padding-right: 36px; padding-left: 36px; }
-      .container { padding-top: 40px; }
-      .customers { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .notice i {
+      margin-right: 6px;
     }
 
-    @media (max-width: 360px) {
-      header { padding-right: 12px; padding-left: 12px; }
-      .container { padding-right: 12px; padding-left: 12px; }
-      .customer { padding: 13px; }
-      .status { display: none; }
+    .footer {
+      text-align: center;
+      padding: 28px 12px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    @media (max-width: 680px) {
+      .container {
+        margin: 25px auto;
+      }
+
+      .stats {
+        gap: 9px;
+      }
+
+      .stat-card {
+        padding: 14px 11px;
+        border-radius: 13px;
+      }
+
+      .stat-label {
+        font-size: 10px;
+      }
+
+      .stat-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 9px;
+        font-size: 12px;
+      }
+
+      .stat-number {
+        font-size: 23px;
+      }
+
+      .stat-note {
+        font-size: 9px;
+      }
+
+      .customer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      #customers {
+        padding: 14px;
+      }
+
+      .panel-header {
+        padding: 17px;
+      }
+
+      .search-wrap {
+        width: 100%;
+      }
+
+      .count-row {
+        padding: 13px 17px;
+      }
+
+      .topbar {
+        padding: 15px 4%;
+      }
+
+      .top-actions {
+        width: 100%;
+      }
+
+      .top-actions .top-btn {
+        flex: 1;
+      }
+    }
+
+    @media (max-width: 370px) {
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .stat-card {
+        padding: 16px;
+      }
     }
   </style>
 </head>
 
 <body>
-  <header>
-    <div class="logo">
-      <div class="logo-icon"><i class="fa-solid fa-users"></i></div>
-      <span>Customers</span>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-icon">
+        <i class="fa-solid fa-users"></i>
+      </div>
+      <div>
+        <h1>Gentle Acct Store</h1>
+        <p>Customer management</p>
+      </div>
     </div>
 
-    <a href="admin.html" class="back">
-      <i class="fa-solid fa-arrow-left"></i>
-      <span>Admin</span>
-    </a>
+    <div class="top-actions">
+      <button class="top-btn" id="themeBtn" type="button">
+        <i class="fa-solid fa-moon"></i> Dark theme
+      </button>
+
+      <a class="top-btn" href="admin.html">
+        <i class="fa-solid fa-arrow-left"></i> Admin Dashboard
+      </a>
+
+      <button class="top-btn" id="logoutBtn" type="button">
+        <i class="fa-solid fa-right-from-bracket"></i> Logout
+      </button>
+    </div>
   </header>
 
   <main class="container">
-    <section class="hero">
-      <div class="eyebrow">
-        <i class="fa-solid fa-shield-halved"></i>
-        ADMIN PANEL
+    <section class="page-heading">
+      <div>
+        <div class="eyebrow">Admin control centre</div>
+        <h2>Customers</h2>
+        <p>View registered customer profiles and search their details.</p>
       </div>
-      <h1>Customer Management</h1>
-      <p>View registered customers and check their account information in one place.</p>
+
+      <button class="refresh-btn" id="refreshBtn" type="button">
+        <i class="fa-solid fa-rotate"></i> Refresh customers
+      </button>
     </section>
 
-    <section class="summary">
-      <div class="summary-content">
-        <div class="summary-top">
-          <div class="summary-icon"><i class="fa-solid fa-user-group"></i></div>
-          <div class="live"><span class="live-dot"></span> Connected</div>
+    <section class="stats">
+      <div class="stat-card">
+        <div class="stat-top">
+          <span class="stat-label">Total profiles</span>
+          <span class="stat-icon"><i class="fa-solid fa-users"></i></span>
         </div>
-        <h2 id="totalCustomers">0</h2>
-        <p>Total Registered Customers</p>
+        <strong class="stat-number" id="totalCustomers">—</strong>
+        <p class="stat-note">Profiles saved in Firestore</p>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-top">
+          <span class="stat-label">Google profiles</span>
+          <span class="stat-icon"><i class="fa-brands fa-google"></i></span>
+        </div>
+        <strong class="stat-number" id="googleCustomers">—</strong>
+        <p class="stat-note">Profiles marked as Google signup</p>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-top">
+          <span class="stat-label">Email profiles</span>
+          <span class="stat-icon"><i class="fa-solid fa-envelope"></i></span>
+        </div>
+        <strong class="stat-number" id="emailCustomers">—</strong>
+        <p class="stat-note">Profiles marked as email signup</p>
       </div>
     </section>
 
-    <label class="search-box" for="search">
-      <i class="fa-solid fa-magnifying-glass"></i>
-      <input
-        id="search"
-        type="search"
-        autocomplete="off"
-        placeholder="Search by name or email..."
-        aria-label="Search customers by name or email"
-      >
-    </label>
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <h3>All customer profiles</h3>
+          <p>Search by name, email address or customer ID.</p>
+        </div>
 
-    <div class="list-head">
-      <div class="list-title">
-        <i class="fa-solid fa-address-book"></i>
-        <h2>All Customers</h2>
+        <div class="search-wrap">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input
+            id="search"
+            type="search"
+            placeholder="Search customers..."
+            autocomplete="off"
+            aria-label="Search customers"
+          >
+        </div>
       </div>
-      <span class="count" id="customerCount">0 customers</span>
-    </div>
 
-    <div id="customers" class="customers" aria-live="polite">
-      <div class="loading">
-        <div class="loading-icon"><i class="fa-solid fa-spinner fa-spin"></i></div>
-        <p>Checking your customer records...</p>
+      <div class="count-row">
+        <span id="customerCount">Loading customers...</span>
+        <span class="live-label">
+          <span class="live-dot"></span> Firestore profiles
+        </span>
       </div>
+
+      <div id="customers">
+        <div class="loading">
+          <div class="loading-icon">
+            <i class="fa-solid fa-spinner fa-spin"></i>
+          </div>
+          <p>Loading customer profiles...</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="notice">
+      <i class="fa-solid fa-circle-info"></i>
+      This page displays customer profiles stored in Firestore. A Google account
+      that exists only in Firebase Authentication will not appear until its
+      customer profile has been created in Firestore.
     </div>
   </main>
 
-  <!-- Load Firebase once -->
+  <footer class="footer">
+    Gentle Acct Store &copy; <span id="currentYear"></span> · Admin customer management
+  </footer>
+
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -531,199 +784,84 @@
     "use strict";
 
     const ADMIN_UID = "UoEjCy99gbQKkGob59vGi3CunZi1";
+    const THEME_KEY = "gentle-acct-store-theme";
+    const THEMES = ["dark", "light", "blue"];
 
     let gentleCustomers = [];
+    let adminAuthorized = false;
+    let loadingCustomers = false;
 
-    document.addEventListener("DOMContentLoaded", function () {
-      if (typeof firebaseAuth === "undefined" ||
-          typeof firebaseDB === "undefined") {
-        showError("Firebase could not be initialized. Check firebase.js and try again.");
-        return;
+    const $ = id => document.getElementById(id);
+
+    $("currentYear").textContent = new Date().getFullYear();
+
+    // Shared theme: this page reads and writes the same key as the other pages.
+    function getTheme() {
+      try {
+        const theme = localStorage.getItem(THEME_KEY);
+        return THEMES.includes(theme) ? theme : "dark";
+      } catch (_) {
+        return "dark";
+      }
+    }
+
+    function applyTheme(theme, save) {
+      const selected = THEMES.includes(theme) ? theme : "dark";
+
+      document.documentElement.dataset.theme = selected;
+
+      const themeColors = {
+        dark: "#0b1120",
+        light: "#f4f7fc",
+        blue: "#eaf2ff"
+      };
+
+      document.querySelector('meta[name="theme-color"]')
+        .setAttribute("content", themeColors[selected]);
+
+      if (save) {
+        try {
+          localStorage.setItem(THEME_KEY, selected);
+        } catch (error) {
+          console.warn("Could not save theme preference.", error);
+        }
       }
 
-      firebaseAuth.onAuthStateChanged(function (user) {
-        if (!user) {
-          window.location.replace("admin-login.html");
-          return;
-        }
+      updateThemeButton(selected);
+    }
 
-        if (user.uid !== ADMIN_UID) {
-          showError("You are not authorized to view this page.");
-          return;
-        }
+    function updateThemeButton(theme) {
+      const labels = {
+        dark: '<i class="fa-solid fa-moon"></i> Dark theme',
+        light: '<i class="fa-solid fa-sun"></i> Light theme',
+        blue: '<i class="fa-solid fa-droplet"></i> Blue theme'
+      };
 
-        if (!user.emailVerified) {
-          showError("Please verify your admin email before viewing customers.");
-          return;
-        }
+      $("themeBtn").innerHTML = labels[theme] || labels.dark;
+    }
 
-        loadCustomers();
-      });
+    $("themeBtn").addEventListener("click", function () {
+      const current = getTheme();
+      const next = THEMES[(THEMES.indexOf(current) + 1) % THEMES.length];
+      applyTheme(next, true);
     });
 
-    async function loadCustomers() {
-      const container = document.getElementById("customers");
-
-      container.innerHTML = `
-        <div class="loading">
-          <div class="loading-icon">
-            <i class="fa-solid fa-spinner fa-spin"></i>
-          </div>
-          <p>Loading customers...</p>
-        </div>`;
-
-      try {
-        const snapshot = await firebaseDB.collection("customers").get();
-
-        gentleCustomers = [];
-
-        snapshot.forEach(function (doc) {
-          const data = doc.data() || {};
-
-          gentleCustomers.push({
-            id: doc.id,
-            name: data.name || "Customer",
-            email: data.email || "No email",
-            status: data.status || "Active",
-            createdAt: data.createdAt || null
-          });
-        });
-
-        gentleCustomers.sort(function (a, b) {
-          return getTimeValue(b.createdAt) - getTimeValue(a.createdAt);
-        });
-
-        renderCustomers();
-      } catch (error) {
-        console.error("CUSTOMER LOAD ERROR:", error);
-        showError(getFriendlyError(error));
+    // Synchronize theme changes made in another open tab.
+    window.addEventListener("storage", function (event) {
+      if (event.key === THEME_KEY) {
+        applyTheme(event.newValue || "dark", false);
       }
-    }
+    });
 
-    document.getElementById("search").addEventListener("input", renderCustomers);
+    applyTheme(getTheme(), false);
 
-    function renderCustomers() {
-      const search = String(document.getElementById("search").value || "")
-        .toLowerCase()
-        .trim();
-
-      const filtered = gentleCustomers.filter(function (customer) {
-        return String(customer.name).toLowerCase().includes(search) ||
-               String(customer.email).toLowerCase().includes(search);
-      });
-
-      document.getElementById("totalCustomers").textContent =
-        gentleCustomers.length.toLocaleString();
-
-      document.getElementById("customerCount").textContent =
-        filtered.length + (filtered.length === 1 ? " customer" : " customers");
-
-      const container = document.getElementById("customers");
-      container.innerHTML = "";
-
-      if (filtered.length === 0) {
-        container.innerHTML = `
-          <div class="empty">
-            <div class="empty-icon">
-              <i class="fa-solid fa-user-group"></i>
-            </div>
-            <h3>${search ? "No customers found" : "No customers yet"}</h3>
-            <p>${search
-              ? "Try another name or email address."
-              : "Registered customers saved in the customers collection will appear here."}</p>
-          </div>`;
-        return;
-      }
-
-      filtered.forEach(function (customer) {
-        const name = String(customer.name || "Customer");
-        const email = String(customer.email || "No email");
-        const initial = name.charAt(0).toUpperCase();
-        const status = String(customer.status || "Active");
-        const registered = formatDate(customer.createdAt);
-
-        const card = document.createElement("article");
-        card.className = "customer";
-
-        card.innerHTML = `
-          <div class="customer-top">
-            <div class="avatar">${escapeHTML(initial)}</div>
-            <div class="customer-info">
-              <h3 title="${escapeHTML(name)}">${escapeHTML(name)}</h3>
-              <div class="email">${escapeHTML(email)}</div>
-            </div>
-            <span class="status">${escapeHTML(status)}</span>
-          </div>
-
-          <div class="details">
-            <div class="detail">
-              <span class="detail-label">Customer ID</span>
-              <span class="detail-value" title="${escapeHTML(customer.id)}">${escapeHTML(customer.id)}</span>
-            </div>
-            <div class="detail">
-              <span class="detail-label">Registered</span>
-              <span class="detail-value">${escapeHTML(registered)}</span>
-            </div>
-          </div>`;
-
-        container.appendChild(card);
-      });
-    }
-
-    function showError(message) {
-      const container = document.getElementById("customers");
-
-      container.innerHTML = `
-        <div class="error-box">
-          <div class="error-icon">
-            <i class="fa-solid fa-triangle-exclamation"></i>
-          </div>
-          <h3>Unable to load customers</h3>
-          <p>${escapeHTML(message)}</p>
-          <button class="retry" type="button" onclick="loadCustomers()">
-            Try again
-          </button>
-        </div>`;
-    }
-
-    function getFriendlyError(error) {
-      if (error && error.code === "permission-denied") {
-        return "Firestore denied access. Check your Firestore security rules for the admin account.";
-      }
-
-      if (error && error.code === "unavailable") {
-        return "The database is temporarily unavailable. Check your internet connection and try again.";
-      }
-
-      return error && error.message
-        ? error.message
-        : "Something went wrong while loading customer records.";
-    }
-
-    function formatDate(value) {
-      if (!value) return "Not available";
-
-      try {
-        let date;
-
-        if (typeof value.toDate === "function") {
-          date = value.toDate();
-        } else if (typeof value === "number") {
-          date = new Date(value);
-        } else {
-          date = new Date(value);
-        }
-
-        if (isNaN(date.getTime())) return "Not available";
-
-        return date.toLocaleDateString("en-GB", {
-          day: "numeric",
-          month: "short",
-          year: "numeric"
-        });
-      } catch (error) {
-        return "Not available";
-      }
+    function escapeHTML(value) {
+      return String(value == null ? "" : value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
     }
 
     function getTimeValue(value) {
@@ -734,20 +872,306 @@
           ? value.toDate()
           : new Date(value);
 
-        const time = date.getTime();
-        return isNaN(time) ? 0 : time;
-      } catch (error) {
+        return Number.isNaN(date.getTime()) ? 0 : date.getTime();
+      } catch (_) {
         return 0;
       }
     }
 
-    function escapeHTML(value) {
-      return String(value == null ? "" : value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    function formatDate(value) {
+      const time = getTimeValue(value);
+      if (!time) return "Not available";
+
+      return new Date(time).toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "short",
+        year: "numeric"
+      });
+    }
+
+    function getSignupMethod(data) {
+      const method = String(
+        data.signupMethod || data.provider || ""
+      ).toLowerCase();
+
+      if (method.includes("google")) return "Google";
+      if (method.includes("email") || method.includes("password")) {
+        return "Email";
+      }
+
+      return "Not recorded";
+    }
+
+    function showError(message) {
+      $("customers").innerHTML = `
+        <div class="error-box">
+          <div class="error-icon">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+          </div>
+          <h3>Unable to load customers</h3>
+          <p>${escapeHTML(message)}</p>
+          <button class="retry" id="retryBtn" type="button">
+            <i class="fa-solid fa-rotate"></i> Try again
+          </button>
+        </div>`;
+
+      $("retryBtn").addEventListener("click", function () {
+        if (adminAuthorized) loadCustomers();
+      });
+    }
+
+    async function loadCustomers() {
+      if (!adminAuthorized || loadingCustomers) return;
+
+      loadingCustomers = true;
+      $("refreshBtn").disabled = true;
+      $("refreshBtn").innerHTML =
+        '<i class="fa-solid fa-spinner fa-spin"></i> Loading...';
+
+      $("customers").innerHTML = `
+        <div class="loading">
+          <div class="loading-icon">
+            <i class="fa-solid fa-spinner fa-spin"></i>
+          </div>
+          <p>Loading customer profiles...</p>
+        </div>`;
+
+      try {
+        const snapshot = await firebaseDB.collection("customers").get();
+
+        console.log(
+          "Customer documents found:",
+          snapshot.size,
+          snapshot.docs.map(doc => ({
+            id: doc.id,
+            data: doc.data()
+          }))
+        );
+
+        gentleCustomers = snapshot.docs.map(function (doc) {
+          const data = doc.data() || {};
+          const email = data.email || "";
+          const fullName = [
+            data.firstName,
+            data.lastName
+          ].filter(Boolean).join(" ").trim();
+
+          return {
+            id: doc.id,
+            name: data.name ||
+              data.displayName ||
+              fullName ||
+              data.username ||
+              (email ? email.split("@")[0] : "Customer"),
+            email: email || "No email",
+            username: data.username || "",
+            status: data.status || "Active",
+            signupMethod: getSignupMethod(data),
+            createdAt: data.createdAt || null
+          };
+        });
+
+        gentleCustomers.sort((a, b) =>
+          getTimeValue(b.createdAt) - getTimeValue(a.createdAt)
+        );
+
+        $("totalCustomers").textContent =
+          gentleCustomers.length.toLocaleString();
+
+        $("googleCustomers").textContent =
+          gentleCustomers.filter(c => c.signupMethod === "Google").length
+            .toLocaleString();
+
+        $("emailCustomers").textContent =
+          gentleCustomers.filter(c => c.signupMethod === "Email").length
+            .toLocaleString();
+
+        renderCustomers();
+      } catch (error) {
+        console.error("Gentle customer loading error:", error);
+
+        showError(
+          error.code === "permission-denied"
+            ? "Firestore denied access. Check your admin login and Firestore security rules."
+            : error.message || "An error occurred while loading customers."
+        );
+      } finally {
+        loadingCustomers = false;
+        $("refreshBtn").disabled = false;
+        $("refreshBtn").innerHTML =
+          '<i class="fa-solid fa-rotate"></i> Refresh customers';
+      }
+    }
+
+    function renderCustomers() {
+      const search = $("search").value.toLowerCase().trim();
+
+      const filtered = gentleCustomers.filter(function (customer) {
+        return [
+          customer.name,
+          customer.email,
+          customer.id,
+          customer.username,
+          customer.signupMethod
+        ].some(value =>
+          String(value || "").toLowerCase().includes(search)
+        );
+      });
+
+      $("customerCount").textContent =
+        `${filtered.length.toLocaleString()} of ${gentleCustomers.length.toLocaleString()} customers`;
+
+      const container = $("customers");
+
+      if (!filtered.length) {
+        container.innerHTML = `
+          <div class="empty">
+            <div class="empty-icon">
+              <i class="fa-solid fa-user-group"></i>
+            </div>
+            <h3>${search ? "No matching customers" : "No customer profiles found"}</h3>
+            <p>${search
+              ? "Try a different name, email address or customer ID."
+              : "No documents were found in the Firestore customers collection."}</p>
+          </div>`;
+        return;
+      }
+
+      const grid = document.createElement("div");
+      grid.className = "customer-grid";
+
+      filtered.forEach(function (customer) {
+        const card = document.createElement("article");
+        card.className = "customer";
+
+        const statusClass = [
+          "inactive",
+          "suspended",
+          "disabled"
+        ].includes(String(customer.status).toLowerCase())
+          ? " " + String(customer.status).toLowerCase()
+          : "";
+
+        card.innerHTML = `
+          <div class="customer-top">
+            <div class="avatar">${escapeHTML(customer.name.charAt(0).toUpperCase())}</div>
+            <div class="customer-info">
+              <h4>${escapeHTML(customer.name)}</h4>
+              <div class="email">${escapeHTML(customer.email)}</div>
+            </div>
+            <span class="status${statusClass}">${escapeHTML(customer.status)}</span>
+          </div>
+
+          <div class="details">
+            <div class="detail">
+              <span class="detail-label">Customer ID</span>
+              <span class="detail-value">
+                ${escapeHTML(customer.id)}
+                <button class="copy-btn" type="button"
+                  data-copy="${escapeHTML(customer.id)}"
+                  aria-label="Copy customer ID">
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+              </span>
+            </div>
+
+            <div class="detail">
+              <span class="detail-label">Username</span>
+              <span class="detail-value">${escapeHTML(customer.username || "Not set")}</span>
+            </div>
+
+            <div class="detail">
+              <span class="detail-label">Signup method</span>
+              <span class="detail-value">${escapeHTML(customer.signupMethod)}</span>
+            </div>
+
+            <div class="detail">
+              <span class="detail-label">Registration date</span>
+              <span class="detail-value">${escapeHTML(formatDate(customer.createdAt))}</span>
+            </div>
+          </div>`;
+
+        grid.appendChild(card);
+      });
+
+      container.replaceChildren(grid);
+    }
+
+    $("search").addEventListener("input", renderCustomers);
+
+    $("refreshBtn").addEventListener("click", function () {
+      if (adminAuthorized) loadCustomers();
+    });
+
+    $("customers").addEventListener("click", async function (event) {
+      const button = event.target.closest("[data-copy]");
+      if (!button) return;
+
+      try {
+        await navigator.clipboard.writeText(button.dataset.copy);
+
+        const original = button.innerHTML;
+        button.innerHTML = '<i class="fa-solid fa-check"></i>';
+        setTimeout(() => {
+          if (button.isConnected) button.innerHTML = original;
+        }, 1200);
+      } catch (_) {
+        window.prompt("Copy this customer ID:", button.dataset.copy);
+      }
+    });
+
+    $("logoutBtn").addEventListener("click", async function () {
+      try {
+        if (typeof firebaseAuth !== "undefined") {
+          await firebaseAuth.signOut();
+        }
+
+        [
+          "gentleLoggedIn",
+          "gentleUser",
+          "gentleCurrentUserId",
+          "gentleBalance"
+        ].forEach(key => localStorage.removeItem(key));
+
+        window.location.replace("admin-login.html");
+      } catch (error) {
+        console.error("Logout error:", error);
+        alert("Unable to log out. Please try again.");
+      }
+    });
+
+    if (
+      typeof firebaseAuth === "undefined" ||
+      typeof firebaseDB === "undefined"
+    ) {
+      showError(
+        "Firebase did not initialize. Check that firebase.js is in the same project folder."
+      );
+    } else {
+      firebaseAuth.onAuthStateChanged(async function (user) {
+        adminAuthorized = false;
+
+        if (!user) {
+          window.location.replace("admin-login.html");
+          return;
+        }
+
+        if (user.uid !== ADMIN_UID) {
+          showError("This account is not authorized to access customer management.");
+          return;
+        }
+
+        if (!user.emailVerified) {
+          showError("Please verify the admin email address before continuing.");
+          return;
+        }
+
+        adminAuthorized = true;
+
+        // Always use the global theme key, not the older per-user theme key.
+        applyTheme(getTheme(), false);
+        await loadCustomers();
+      });
     }
   </script>
 </body>

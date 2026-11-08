@@ -1,0 +1,19 @@
+
+{
+  "id": "/",
+  "name": "GentleLogs",
+  "short_name": "GentleLogs",
+  "description": "GentleLogs online store",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#0878E8",
+  "icons": [
+    {
+      "src": "/gentlelogs-logo.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+GENTLE ACCT STORE — CUSTOM PASSWORD RESET EMAIL
+
+Files
+- functions/api/password-reset.js : Cloudflare Pages Function
+- forgot-password.html            : updated page; replace the existing page with this file
+
+IMPORTANT
+This keeps Firebase Authentication as the account/password system. Firebase generates the genuine password-reset action link; Resend sends that link in a branded email. The Firebase default email sender is not used by this endpoint.
+
+1) Add the Pages Function
+Upload the `functions` folder to the ROOT of the same Cloudflare Pages project that serves Gentle Acct Store. The final path must be:
+  functions/api/password-reset.js
+Do not put it inside a nested subfolder such as public/functions.
+
+2) Create a Google service account
+In Google Cloud Console, select project `gentle-acct-store`, create a service account, and grant it the Firebase Authentication email-sending permission `firebaseauth.users.sendEmail` (or the narrowest custom IAM role containing that permission). Create a JSON key for this service account. Keep the JSON private.
+
+3) Set Cloudflare Pages secrets
+Cloudflare Dashboard → Workers & Pages → your Gentle Acct Store Pages project → Settings → Variables and Secrets → Add.
+Add these as encrypted secrets (not plain text where Cloudflare offers the secret option):
+
+FIREBASE_SERVICE_ACCOUNT = paste the COMPLETE service-account JSON contents
+RESEND_API_KEY = your Resend API key
+RESET_FROM_EMAIL = Gentle Acct Store <support@YOUR-VERIFIED-DOMAIN>
+SITE_ORIGIN = https://YOUR-ACTUAL-GENTLE-ACCT-STORE-DOMAIN (optional but recommended; exact origin only, no trailing slash)
+
+The sender domain must be verified in Resend before sending to customers. If you do not own/verify an email domain yet, stop here and set that up first. Do not use a made-up sender address.
+
+4) Deploy
+Save the secrets and redeploy the Cloudflare Pages project. Ensure the updated forgot-password.html is also deployed.
+
+5) Test
+Submit a reset request for an email that is already registered in Firebase Authentication. Check inbox and spam. Confirm the email sender is your verified address and the link opens Firebase's password reset flow. Do not test with another person's email without permission.
+
+NOTES
+- Project ID is set to `gentle-acct-store` in the function to match the supplied firebase.js.
+- Do not expose the service-account JSON or Resend API key in HTML, JavaScript, GitHub public repositories, or chat.
+- The function deliberately gives the same success response for unknown email addresses to reduce account enumeration.
+- The existing Firebase email/password accounts are not migrated or changed.
+- Cloudflare Pages Functions must be enabled for this project. If the project uses an advanced-mode `_worker.js` deployment, this `functions/` route may not be picked up; tell me and we will merge the endpoint into that worker instead.

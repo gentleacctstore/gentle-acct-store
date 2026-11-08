@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#F3F7F4">
+<title>Transactions | Gentle Acct Store</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green: #2D5F35;
+  --green-dark: #214C29;
+  --green-light: #EAF4EC;
+  --bg: #F3F7F4;
+  --card: #FFFFFF;
+  --text: #17251A;
+  --muted: #758078;
+  --border: #E3EAE4;
+  --shadow: 0 4px 18px rgba(22,57,29,.06);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: Poppins, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding-bottom: 90px;
+}
+body.dark {
+  --bg: #0B1120;
+  --card: #151E2F;
+  --text: #F0F5F1;
+  --muted: #A0ADA4;
+  --border: #293547;
+  --green-light: #1C3023;
+  --shadow: 0 4px 18px rgba(0,0,0,.12);
+}
+body.blue {
+  --green: #2D5F35;
+  --green-dark: #214C29;
+  --green-light: #EAF4EC;
+}
+.app { max-width: 600px; margin: 0 auto; min-height: 100vh; }
+/* The old green heading and back button have been removed. */
+main { padding: 20px 15px 24px; }
+.toolbar { display: flex; gap: 9px; margin-bottom: 15px; }
+.search-wrap { flex: 1; position: relative; }
+.search-wrap span {
+  position: absolute; left: 12px; top: 50%;
+  transform: translateY(-50%); color: var(--muted); font-size: 19px;
+}
+input, select {
+  font-family: inherit; color: var(--text); background: var(--card);
+  border: 1px solid var(--border); border-radius: 12px;
+  outline: none; min-width: 0; width: 100%; font-size: 12px; padding: 12px;
+}
+.search-wrap input { padding-left: 36px; }
+input:focus, select:focus { border-color: var(--green); }
+.refresh {
+  background: var(--green); color: white; border: none;
+  border-radius: 12px; padding: 0 15px; font-family: inherit;
+  font-weight: 600; font-size: 12px; cursor: pointer;
+}
+.filters, .date-filters {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 9px; margin-bottom: 15px;
+}
+.section-heading {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; margin: 20px 2px 12px;
+}
+.section-heading h2 { font-size: 15px; font-weight: 700; }
+.count {
+  background: var(--green-light); color: var(--green);
+  font-size: 11px; font-weight: 600; padding: 5px 10px; border-radius: 20px;
+}
+.list { display: flex; flex-direction: column; gap: 10px; }
+.transaction {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 15px; padding: 15px; box-shadow: var(--shadow);
+}
+.transaction-top { display: flex; align-items: flex-start; gap: 11px; }
+.tx-icon {
+  width: 42px; height: 42px; border-radius: 13px;
+  background: var(--green-light); color: var(--green);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+}
+.tx-info { flex: 1; min-width: 0; }
+.tx-title { font-size: 13px; font-weight: 600; overflow-wrap: anywhere; }
+.tx-date { color: var(--muted); font-size: 10px; margin-top: 4px; }
+.tx-amount { font-size: 14px; font-weight: 700; color: var(--green); white-space: nowrap; }
+.tx-bottom {
+  border-top: 1px solid var(--border); margin-top: 13px; padding-top: 11px;
+  display: flex; justify-content: space-between; align-items: center; gap: 8px;
+}
+.reference { color: var(--muted); font-size: 10px; overflow-wrap: anywhere; }
+.status { font-size: 10px; font-weight: 600; padding: 5px 9px; border-radius: 20px; white-space: nowrap; background: #FFF3D8; color: #93630B; }
+.status.approved, .status.success, .status.completed { background: #DDF5E3; color: #216B35; }
+.status.rejected, .status.failed, .status.cancelled { background: #FCE5E5; color: #A52C2C; }
+.status.pending, .status.processing { background: #FFF3D8; color: #93630B; }
+.empty, .loading, .error {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 15px; padding: 32px 18px; text-align: center; box-shadow: var(--shadow);
+}
+.empty-icon { font-size: 35px; margin-bottom: 10px; }
+.empty h3, .loading h3, .error h3 { font-size: 14px; margin-bottom: 6px; }
+.empty p, .loading p, .error p { color: var(--muted); font-size: 11px; line-height: 1.7; }
+.error h3 { color: #B33A3A; }
+.retry {
+  border: none; background: var(--green); color: white; border-radius: 10px;
+  padding: 10px 17px; font-family: inherit; font-weight: 600;
+  font-size: 12px; margin-top: 14px; cursor: pointer;
+}
+.bottom-nav {
+  position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 100%; max-width: 600px; background: var(--card);
+  border-top: 1px solid var(--border); display: flex; justify-content: space-around;
+  padding: 9px 5px calc(9px + env(safe-area-inset-bottom)); z-index: 20;
+}
+.nav-item {
+  text-decoration: none; color: var(--muted); display: flex;
+  flex-direction: column; align-items: center; gap: 4px; font-size: 9px; flex: 1;
+}
+.nav-item span { font-size: 19px; line-height: 1.2; }
+.nav-item.active { color: var(--green); font-weight: 700; }
+@media (min-width: 500px) { main { padding: 22px 20px; } }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style id="gentlelogs-xtralogs-red-white-theme">
+/* GentleLogs XtraLogs-inspired red and white theme. Original structure and scripts are preserved. */
+:root {
+  --green:#C9232C !important;
+  --green-dark:#991B24 !important;
+  --green-light:#FDEEEF !important;
+  --green-soft:#FFF5F5 !important;
+  --green-pale:#FFFFFF !important;
+  --green-border:#F1C9CC !important;
+  --light-green:#FDEEEF !important;
+  --light:#FDEEEF !important;
+  --pale:#FFF8F8 !important;
+  --background:#FFFFFF !important;
+  --bg:#FFFFFF !important;
+  --page:#FFFFFF !important;
+  --text:#171923 !important;
+  --muted:#747985 !important;
+  --border:#E8E8EB !important;
+  --white:#FFFFFF !important;
+  --card:#FFFFFF !important;
+  --blue:#C9232C !important;
+  --blue-dark:#991B24 !important;
+  --blue-light:#FDEEEF !important;
+  --shadow:0 8px 26px rgba(23,25,35,.06) !important;
+}
+html,body,button,input,textarea,select,option {
+  font-family:"Space Grotesk",sans-serif !important;
+}
+html,body { background:#FFFFFF; color:#171923; }
+/* White surfaces, subtle borders and restrained shadows */
+.card,.auth-card,.product-card,.related-card,.stat-card,.floating-card,
+.wallet-summary,.details-box,.notice,.purchase-card,.referral-premium,
+.loading,.error-box,.security-badge,.main-icon,.transaction,.order,
+.state-box,.empty,.loading,.link-box,.summary-card:not(.hero) {
+  border-color:#E8E8EB;
+}
+.card,.auth-card,.product-card,.related-card,.stat-card,.floating-card,
+.transaction,.order,.state-box,.empty,.loading,.purchase-card {
+  background-color:#FFFFFF;
+}
+/* Brand, icons, links and prices */
+h1,h2,h3,h4,.header-title,.brand-name,.brand-text h1,.section-heading,
+.page-heading h1,.title h1,.heading h1,.intro h2,.logo,.logo-accent,
+.heading,.tx-title,.order-name h3 { color:#171923; }
+.brand-name span,.brand-accent,.header-title i,.section-heading:before,
+.input-icon,.stat-icon,.heading-icon,.empty-icon,.back-login,.fund-link,
+.related-price,.product-price,.amount,.detail-value,.wallet-summary strong,
+.history-amount,.footer strong,.nav-item.active,.tx-amount,.order-price,
+.page-heading h1 + span { color:#C9232C; }
+/* Red primary actions */
+.reset-btn,.pay-btn,.primary-btn,.update-btn,.complete-btn,.btn-primary,
+.copy-small,.related-buy,.wallet-btn:not(.secondary),.copy-btn,
+.error-box button,.refresh,.retry,.retry-btn,.shop-btn,.success-btn.primary,
+button.primary,.button.primary {
+  background:linear-gradient(105deg,#C9232C 0%,#E13A43 100%) !important;
+  color:#FFFFFF !important;
+  border-color:transparent !important;
+  box-shadow:0 7px 18px rgba(201,35,44,.16);
+}
+.reset-btn:hover,.pay-btn:hover,.primary-btn:hover,.update-btn:hover,
+.complete-btn:hover,.btn-primary:hover,.copy-small:hover,.related-buy:hover,
+.refresh:hover,.retry:hover,.retry-btn:hover {
+  background:linear-gradient(105deg,#A91D26 0%,#C9232C 100%) !important;
+}
+.btn-secondary,.secondary-btn,.wallet-btn.secondary,.copy-small.secondary,
+.back,.back-btn,.header-icon,.wallet-chip,.auth-tab.active {
+  color:#A91D26;
+  background:#FDEEEF;
+  border-color:#F1C9CC;
+}
+input,textarea,select,.form-control {
+  color:#171923;
+  border-color:#E3E3E7;
+  background:#FFFFFF;
+}
+input:focus,textarea:focus,select:focus,.form-control:focus {
+  border-color:#C9232C !important;
+  box-shadow:0 0 0 3px rgba(201,35,44,.10) !important;
+}
+/* Red brand bars and highlighted surfaces */
+header,.topbar,.top-header { border-bottom-color:#C9232C; }
+.logo-box,.brand-icon,.brand-mark,.main-icon,.heading-icon,.stat-icon,
+.tx-icon,.order-icon,.state-icon,.step-number,.feature-icon {
+  background:#FDEEEF;
+  color:#C9232C;
+}
+.hero,.wallet-card,.summary-card {
+  background:linear-gradient(125deg,#A91D26 0%,#C9232C 58%,#E64B52 100%) !important;
+  color:#FFFFFF;
+}
+.hero h2,.hero p,.hero-label,.summary-card,.summary-card * { color:#FFFFFF; }
+.notice,.details-box,.wallet-summary,.purchase-item,.purchase-text,
+.reference,.link-box,.security-badge {
+  background:#FFF5F5;
+  border-color:#F1D9DB;
+}
+.status.approved,.status.success,.status.completed,
+.message.success { background:#EAF7EF; color:#17663A; }
+.status.rejected,.status.failed,.status.cancelled,
+.message.error { background:#FFF0F0; color:#A51F2A; }
+/* Maintain readable mobile controls and prevent iOS Safari focus zoom. */
+@media(max-width:767px) {
+  input,textarea,select,.form-control,.input-wrap input { font-size:16px !important; }
+}
+@media(prefers-reduced-motion:reduce) {
+  *,*::before,*::after { scroll-behavior:auto !important; animation-duration:.01ms !important; transition-duration:.01ms !important; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <main>
+    <div class="toolbar">
+      <div class="search-wrap">
+        <span>⌕</span>
+        <input id="searchInput" type="search" placeholder="Search reference or amount..." aria-label="Search transactions">
+      </div>
+      <button class="refresh" id="refreshBtn" type="button">Refresh</button>
+    </div>
+    <div class="filters">
+      <select id="statusFilter" aria-label="Filter by status">
+        <option value="all">All statuses</option>
+        <option value="pending">Pending</option>
+        <option value="approved">Approved</option>
+        <option value="success">Success</option>
+        <option value="rejected">Rejected</option>
+        <option value="failed">Failed</option>
+        <option value="cancelled">Cancelled</option>
+      </select>
+      <select id="sortFilter" aria-label="Sort transactions">
+        <option value="newest">Newest first</option>
+        <option value="oldest">Oldest first</option>
+        <option value="highest">Highest amount</option>
+        <option value="lowest">Lowest amount</option>
+      </select>
+    </div>
+    <div class="date-filters">
+      <input id="startDate" type="date" aria-label="Start date">
+      <input id="endDate" type="date" aria-label="End date">
+    </div>
+    <div class="section-heading">
+      <h2>Transaction History</h2>
+      <span class="count" id="resultCount">0 records</span>
+    </div>
+    <div id="historyList" class="list">
+      <div class="loading">
+        <h3>Loading transactions...</h3>
+        <p>Please wait while we load your funding history.</p>
+      </div>
+    </div>
+  </main>
+  <nav class="bottom-nav">
+    <a class="nav-item" href="index.html"><span>⌂</span>Home</a>
+    <a class="nav-item" href="products.html"><span>▦</span>Products</a>
+    <a class="nav-item active" href="fund.html"><span>↗</span>Wallet</a>
+    <a class="nav-item" href="orders.html"><span>▤</span>Orders</a>
+    <a class="nav-item" href="profile.html"><span>♙</span>Profile</a>
+  </nav>
+</div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase.js"></script>
+<script>
+(function () {
+  "use strict";
+  const historyList = document.getElementById("historyList");
+  const resultCount = document.getElementById("resultCount");
+  const searchInput = document.getElementById("searchInput");
+  const statusFilter = document.getElementById("statusFilter");
+  const sortFilter = document.getElementById("sortFilter");
+  const startDate = document.getElementById("startDate");
+  const endDate = document.getElementById("endDate");
+  const refreshBtn = document.getElementById("refreshBtn");
+  let allTransactions = [];
+  let currentUser = null;
+  function applyTheme(user) {
+    let theme = "light";
+    try {
+      theme = localStorage.getItem("gentle-acct-store-theme") || "light";
+      if (theme !== "dark" && user) {
+        theme = localStorage.getItem("gentle-acct-store-theme-user-" + user.uid) || theme;
+      }
+    } catch (e) {}
+    document.body.classList.remove("dark", "blue");
+    if (theme === "dark") document.body.classList.add("dark");
+    else if (theme === "blue") document.body.classList.add("blue");
+  }
+  function escapeHTML(value) {
+    return String(value == null ? "" : value).replace(/[&<>"']/g, function (c) {
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+    });
+  }
+  function money(value) {
+    const amount = Number(value);
+    return "₦" + (Number.isFinite(amount) ? amount : 0).toLocaleString("en-NG", {
+      minimumFractionDigits: 2, maximumFractionDigits: 2
+    });
+  }
+  function toDate(value) {
+    if (!value) return null;
+    if (typeof value.toDate === "function") return value.toDate();
+    if (value instanceof Date) return value;
+    if (typeof value.seconds === "number") return new Date(value.seconds * 1000);
+    const parsed = new Date(value);
+    return Number.isNaN(parsed.getTime()) ? null : parsed;
+  }
+  function formatDate(value) {
+    const date = toDate(value);
+    if (!date) return "Date unavailable";
+    return date.toLocaleString("en-NG", {
+      day: "numeric", month: "short", year: "numeric",
+      hour: "2-digit", minute: "2-digit"
+    });
+  }
+  function normalStatus(value) {
+    const status = String(value || "pending").toLowerCase().trim();
+    if (["approved","success","successful","completed"].includes(status)) {
+      return status === "successful" ? "success" : status;
+    }
+    if (["rejected","failed","cancelled","canceled"].includes(status)) {
+      return status === "canceled" ? "cancelled" : status;
+    }
+    return status || "pending";
+  }
+  function statusLabel(status) {
+    const labels = {
+      pending:"Pending", approved:"Approved", success:"Successful",
+      completed:"Completed", rejected:"Rejected", failed:"Failed",
+      cancelled:"Cancelled", processing:"Processing"
+    };
+    return labels[status] || status.charAt(0).toUpperCase() + status.slice(1);
+  }
+  function showMessage(title, message, isError) {
+    historyList.innerHTML =
+      '<div class="' + (isError ? "error" : "empty") + '">' +
+      '<div class="empty-icon">' + (isError ? "⚠️" : "↗") + '</div>' +
+      '<h3>' + escapeHTML(title) + '</h3>' +
+      '<p>' + escapeHTML(message) + '</p>' +
+      (isError ? '<button type="button" class="retry" id="retryButton">Try again</button>' : '') +
+      '</div>';
+    resultCount.textContent = "0 records";
+    const retryButton = document.getElementById("retryButton");
+    if (retryButton) retryButton.addEventListener("click", loadTransactions);
+  }
+  function renderTransactions() {
+    const query = searchInput.value.trim().toLowerCase();
+    const selectedStatus = statusFilter.value;
+    const sort = sortFilter.value;
+    const from = startDate.value ? new Date(startDate.value + "T00:00:00") : null;
+    const until = endDate.value ? new Date(endDate.value + "T23:59:59.999") : null;
+    let rows = allTransactions.filter(function (item) {
+      const reference = String(item.reference || "").toLowerCase();
+      const amountText = String(item.amount || "");
+      const status = normalStatus(item.status);
+      const date = toDate(item.createdAt);
+      const matchesSearch = !query || reference.includes(query) ||
+        amountText.includes(query) || money(item.amount).toLowerCase().includes(query);
+      const matchesStatus = selectedStatus === "all" ||
+        status === selectedStatus ||
+        (selectedStatus === "approved" && status === "completed") ||
+        (selectedStatus === "success" && status === "completed");
+      return matchesSearch &&
+        matchesStatus &&
+        (!from || (date && date >= from)) &&
+        (!until || (date && date <= until));
+    });
+    rows.sort(function (a, b) {
+      const da = toDate(a.createdAt);
+      const db = toDate(b.createdAt);
+      const ta = da ? da.getTime() : 0;
+      const tb = db ? db.getTime() : 0;
+      if (sort === "oldest") return ta - tb;
+      if (sort === "highest") return Number(b.amount || 0) - Number(a.amount || 0);
+      if (sort === "lowest") return Number(a.amount || 0) - Number(b.amount || 0);
+      return tb - ta;
+    });
+    resultCount.textContent = rows.length + (rows.length === 1 ? " record" : " records");
+    if (!rows.length) {
+      showMessage(
+        allTransactions.length ? "No matching transactions" : "No transactions yet",
+        allTransactions.length
+          ? "Try changing your search or filters."
+          : "Your funding requests will appear here after you submit them.",
+        false
+      );
+      return;
+    }
+    historyList.innerHTML = rows.map(function (item) {
+      const status = normalStatus(item.status);
+      return '<article class="transaction">' +
+        '<div class="transaction-top">' +
+          '<div class="tx-icon">↗</div>' +
+          '<div class="tx-info">' +
+            '<div class="tx-title">Wallet Funding</div>' +
+            '<div class="tx-date">' + escapeHTML(formatDate(item.createdAt)) + '</div>' +
+          '</div>' +
+          '<div class="tx-amount">' + escapeHTML(money(item.amount)) + '</div>' +
+        '</div>' +
+        '<div class="tx-bottom">' +
+          '<div class="reference">Ref: ' + escapeHTML(item.reference || item.id || "No reference") + '</div>' +
+          '<span class="status ' + escapeHTML(status) + '">' + escapeHTML(statusLabel(status)) + '</span>' +
+        '</div>' +
+      '</article>';
+    }).join("");
+  }
+  async function loadTransactions() {
+    if (!currentUser) return;
+    historyList.innerHTML =
+      '<div class="loading"><h3>Loading transactions...</h3>' +
+      '<p>Please wait while we load your funding history.</p></div>';
+    refreshBtn.disabled = true;
+    refreshBtn.textContent = "Loading...";
+    try {
+      const snapshot = await firebaseDB.collection("fundingRequests")
+        .where("userId", "==", currentUser.uid)
+        .get();
+      allTransactions = snapshot.docs.map(function (doc) {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          amount: data.amount,
+          status: data.status || "pending",
+          reference: data.reference || doc.id,
+          paymentMethod: data.paymentMethod || "",
+          createdAt: data.createdAt || null
+        };
+      });
+      renderTransactions();
+    } catch (error) {
+      console.error("Unable to load funding history:", error);
+      if (error && error.code === "permission-denied") {
+        showMessage(
+          "Access to funding history denied",
+          "Check that Firestore rules allow customers to read their own fundingRequests and that each request has the correct userId.",
+          true
+        );
+      } else {
+        showMessage(
+          "Unable to load transactions",
+          "Please check your internet connection and try again.",
+          true
+        );
+      }
+    } finally {
+      refreshBtn.disabled = false;
+      refreshBtn.textContent = "Refresh";
+    }
+  }
+  searchInput.addEventListener("input", renderTransactions);
+  statusFilter.addEventListener("change", renderTransactions);
+  sortFilter.addEventListener("change", renderTransactions);
+  startDate.addEventListener("change", renderTransactions);
+  endDate.addEventListener("change", renderTransactions);
+  refreshBtn.addEventListener("click", loadTransactions);
+  if (typeof firebase === "undefined" ||
+      typeof firebaseAuth === "undefined" ||
+      typeof firebaseDB === "undefined") {
+    showMessage("Firebase not configured",
+      "Check that firebase.js initializes firebaseAuth and firebaseDB.", true);
+    return;
+  }
+  firebaseAuth.onAuthStateChanged(function (user) {
+    if (!user) {
+      window.location.href = "login.html";
+      return;
+    }
+    currentUser = user;
+    applyTheme(user);
+    loadTransactions();
+  });
+})();
+</script>
+</body>
+</html>

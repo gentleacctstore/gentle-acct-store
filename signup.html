@@ -3,475 +3,346 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#2563EB">
-<meta name="description" content="Create your Gentle Acct Store account.">
-<title>Create Account | Gentle Acct Store</title>
-
-<script>
-(function(){
-  try{
-    if(localStorage.getItem("gentle-acct-store-theme")==="dark"){
-      document.documentElement.classList.add("dark-mode");
-    }
-  }catch(e){}
-})();
-</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f2f7f3">
+<meta name="description" content="Create your GentleLogs account.">
+<title>Create Account | GentleLogs</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{
-  min-height:100vh;min-height:100dvh;font-family:"Poppins",sans-serif;
-  background:radial-gradient(ellipse at 8% 12%,rgba(37,99,235,.10),transparent 32%),radial-gradient(ellipse at 95% 90%,rgba(96,165,250,.12),transparent 32%),linear-gradient(145deg,#fff 0%,#F8FBFF 48%,#EFF6FF 100%);
-  color:#101828;overflow-x:hidden;position:relative;transition:background .25s,color .25s
-}
-a{text-decoration:none;color:inherit}
-button,input{font-family:"Poppins",sans-serif;-webkit-tap-highlight-color:transparent}
-button{-webkit-appearance:none;appearance:none}
-::selection{background:#DBEAFE;color:#1D4ED8}
-
 :root{
-  color-scheme:light;--blue:#2563EB;--blue-dark:#1D4ED8;
-  --blue-light:#EFF6FF;--blue-soft:#DBEAFE;--blue-border:#BFDBFE;
-  --blue-hover:#1E40AF;--text:#101828;--muted:#667085;
-  --white:#fff;--green:#16A34A
+  --green:#147a48;
+  --green-dark:#0b5631;
+  --text:#15251c;
+  --muted:#718077;
+  --border:#e1eae4;
+  --shadow:0 24px 70px rgba(27,72,46,.11)
 }
-
-.header{
-  position:sticky;top:0;z-index:1000;width:100%;
-  background:rgba(255,255,255,.88);backdrop-filter:blur(22px);
-  -webkit-backdrop-filter:blur(22px);border-bottom:1px solid #E5EDFA;
-  box-shadow:0 4px 20px rgba(37,99,235,.035);
-  transition:background .25s,border-color .25s,box-shadow .25s
+*{box-sizing:border-box;margin:0;padding:0}
+html{min-height:100%;background:#f2f7f3;-webkit-text-size-adjust:100%}
+body{
+  min-height:100vh;min-height:100dvh;padding:25px 13px 32px;
+  display:flex;justify-content:center;align-items:center;
+  font-family:"Space Grotesk",sans-serif;color:var(--text);
+  background:radial-gradient(ellipse at 8% 7%,rgba(64,160,100,.16),transparent 34%),
+  radial-gradient(ellipse at 92% 91%,rgba(34,124,75,.13),transparent 32%),
+  linear-gradient(145deg,#f0f7f2,#f9fbf9 48%,#eaf4ed);
+  overflow-x:hidden
 }
-.header-inner{
-  max-width:1180px;margin:auto;min-height:76px;padding:12px 22px;
-  display:flex;align-items:center;justify-content:space-between;gap:15px
+button,input{font:inherit}
+button{-webkit-tap-highlight-color:transparent}
+.page-wrapper{width:100%;max-width:470px;margin:auto}
+.brand-header{text-align:center;margin-bottom:22px}
+.brand-mark{
+  width:56px;height:56px;margin:0 auto 10px;display:grid;place-items:center;
+  color:white;font-size:25px;font-weight:800;letter-spacing:-2px;
+  border-radius:18px;background:linear-gradient(145deg,#22975a,#07552f);
+  box-shadow:0 12px 25px #147a483b
 }
-.logo{
-  display:flex;align-items:center;gap:11px;color:var(--blue);
-  font-size:19px;font-weight:800;letter-spacing:-.7px;white-space:nowrap
+.brand-name{font-size:22px;font-weight:800;letter-spacing:-.8px;color:#123d28}
+.brand-name span{color:var(--green)}
+.brand-caption{margin-top:5px;font-size:12px;color:#718078}
+.auth-card{
+  background:rgba(255,255,255,.97);border:1px solid #dae9de;
+  border-radius:24px;overflow:hidden;box-shadow:var(--shadow)
 }
-.logo:hover{opacity:.85}
-.logo-icon{
-  width:42px;height:42px;flex:none;border-radius:14px;
-  background:linear-gradient(145deg,#3B82F6,#2563EB);color:#fff;
-  display:flex;align-items:center;justify-content:center;font-size:16px;
-  box-shadow:0 8px 20px rgba(37,99,235,.22),inset 0 1px 0 rgba(255,255,255,.25)
+.card-top{height:5px;background:linear-gradient(90deg,#0b5631,#27a565,#8ad7a8)}
+.auth-content{padding:27px 25px 25px}
+.auth-tabs{
+  display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:5px;
+  background:#f0f5f1;border:1px solid #e7eee9;border-radius:13px;margin-bottom:23px
 }
-.home-link{
-  display:inline-flex;align-items:center;justify-content:center;gap:8px;
-  color:var(--blue);font-size:11px;font-weight:700;
-  border:1px solid var(--blue-border);background:rgba(255,255,255,.9);
-  padding:11px 16px;border-radius:13px;
-  transition:background .25s,border-color .25s,transform .25s,box-shadow .25s
+.auth-tab{
+  min-height:43px;display:flex;justify-content:center;align-items:center;
+  border-radius:9px;text-decoration:none;font-size:12px;font-weight:600;color:#77847b
 }
-.home-link:hover{
-  background:var(--blue-light);border-color:var(--blue);
-  transform:translateY(-2px);box-shadow:0 7px 18px rgba(37,99,235,.08)
+.auth-tab.active{color:var(--green-dark);background:#fff;box-shadow:0 2px 9px #163f2717}
+.heading{font-size:25px;font-weight:800;line-height:1.35;letter-spacing:-.8px;color:#16291d}
+.subtitle{margin-top:7px;margin-bottom:22px;color:var(--muted);font-size:12px;line-height:1.8}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-group{min-width:0;margin-bottom:15px}
+.form-group>label{
+  display:block;margin-bottom:7px;color:#33473a;font-size:10px;
+  font-weight:700;letter-spacing:.7px;text-transform:uppercase
 }
-
-.main{
-  min-height:calc(100vh - 76px);min-height:calc(100dvh - 76px);
-  padding:40px 18px 45px;display:flex;justify-content:center;align-items:center
+.form-control{
+  width:100%;height:48px;border:1px solid #dce7df;border-radius:11px;
+  padding:0 12px;outline:none;background:#fbfdfb;color:#203629;font-size:13px;
+  transition:.2s
 }
-.auth-wrapper{width:100%;max-width:465px;margin:auto}
-.auth-heading{text-align:center;margin-bottom:25px}
-.auth-icon{
-  position:relative;width:64px;height:64px;margin:0 auto 17px;
-  border-radius:20px;background:linear-gradient(145deg,#3B82F6,#2563EB);
-  color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;
-  box-shadow:0 14px 30px rgba(37,99,235,.22),inset 0 1px 0 rgba(255,255,255,.25)
+.form-control:focus{background:#fff;border-color:#29975c;box-shadow:0 0 0 4px #29975c1a}
+.form-control::placeholder{color:#a2aea6}
+.password-wrap{position:relative}
+.password-control{padding-right:60px}
+.toggle-password{
+  position:absolute;right:5px;top:50%;transform:translateY(-50%);
+  height:34px;min-width:42px;padding:0 6px;border:0;border-radius:8px;
+  background:transparent;color:#718077;cursor:po"Space Grotesk";font-size:11px
 }
-.auth-icon::before{
-  content:"";position:absolute;inset:-6px;border-radius:25px;
-  border:1px solid rgba(37,99,235,.12)
+.password-hint{margin-top:6px;font-size:10px;color:#89968d}
+.terms-row{display:flex;align-items:flex-start;gap:9px;margin:3px 0 18px}
+.terms-row input{width:16px;height:16px;flex-shrink:0;margin-top:3px;accent-color:var(--green)}
+.terms-row label{color:#68776d;font-size:10.5px;line-height:1.8}
+.terms-row a,.bottom-note a{color:var(--green);font-weight:700;text-decoration:none}
+.primary-btn,.google-btn{
+  width:100%;min-height:49px;border-radius:11px;display:flex;
+  justify-content:center;align-items:center;gap:9px;font-size:12.5px;font-weight:700;cursor:po"Space Grotesk"
 }
-.auth-icon::after{
-  content:"";position:absolute;width:11px;height:11px;border-radius:50%;
-  background:#22C55E;right:-2px;top:-2px;border:3px solid #EFF6FF
+.primary-btn{
+  border:0;background:linear-gradient(100deg,#0c6337,#16874c);
+  color:white;box-shadow:0 8px 18px #12703d2b
 }
-.auth-heading h1{
-  color:#1D4ED8;font-size:29px;line-height:1.25;font-weight:800;letter-spacing:-.9px
+.primary-btn:disabled,.google-btn:disabled{opacity:.65;cursor:wait}
+.divider{
+  display:flex;align-items:center;gap:12px;margin:21px 0;
+  color:#97a39a;font-size:9px;font-weight:700;letter-spacing:.8px
 }
-.auth-heading p{
-  max-width:390px;margin:10px auto 0;color:var(--muted);
-  font-size:11px;line-height:1.9
+.divider:before,.divider:after{content:"";flex:1;height:1px;background:#e8eee9}
+.google-btn{background:white;color:#33443a;border:1px solid #dce6df}
+.google-btn:hover{background:#f9fcfa;border-color:#b8d1c0}
+.google-btn img{width:19px;height:19px}
+.bottom-note{margin-top:20px;text-align:center;font-size:11px;line-height:1.8;color:#7b887f}
+.security-note{margin-top:16px;text-align:center;color:#809087;font-size:10px}
+.message{
+  display:none;margin-bottom:15px;padding:12px;border-radius:10px;
+  font-size:11px;line-height:1.7;overflow-wrap:anywhere
 }
-.heading-accent{
-  display:inline-block;width:36px;height:4px;border-radius:20px;margin-top:12px;
-  background:linear-gradient(90deg,#2563EB,#93C5FD)
+.message.show{display:block}
+.message.error{color:#a32f28;background:#fff0ee;border:1px solid #f6d5d1}
+.message.success{color:#17683d;background:#edf9f0;border:1px solid #cdebd5}
+.message.info{color:#275c86;background:#eef7ff;border:1px solid #d2e7fa}
+@media(max-width:390px){
+  .auth-content{padding:22px 15px}
+  .heading{font-size:23px}
+  .form-row{gap:8px}
+  .form-control{font-size:13px}
 }
-
-.card{
-  position:relative;overflow:hidden;background:rgba(255,255,255,.86);
-  border:1px solid rgba(255,255,255,.98);border-radius:24px;padding:30px;
-  box-shadow:0 25px 70px rgba(37,99,235,.09),0 4px 15px rgba(37,99,235,.025),inset 0 1px 0 rgba(255,255,255,.98);
-  backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
-  transition:background .25s,border-color .25s,box-shadow .25s
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<style id="gentlelogs-xtralogs-red-white-theme">
+/* GentleLogs XtraLogs-inspired red and white theme. Original structure and scripts are preserved. */
+:root {
+  --green:#C9232C !important;
+  --green-dark:#991B24 !important;
+  --green-light:#FDEEEF !important;
+  --green-soft:#FFF5F5 !important;
+  --green-pale:#FFFFFF !important;
+  --green-border:#F1C9CC !important;
+  --light-green:#FDEEEF !important;
+  --light:#FDEEEF !important;
+  --pale:#FFF8F8 !important;
+  --background:#FFFFFF !important;
+  --bg:#FFFFFF !important;
+  --page:#FFFFFF !important;
+  --text:#171923 !important;
+  --muted:#747985 !important;
+  --border:#E8E8EB !important;
+  --white:#FFFFFF !important;
+  --card:#FFFFFF !important;
+  --blue:#C9232C !important;
+  --blue-dark:#991B24 !important;
+  --blue-light:#FDEEEF !important;
+  --shadow:0 8px 26px rgba(23,25,35,.06) !important;
 }
-.card::before{
-  content:"";position:absolute;top:0;left:0;right:0;height:3px;
-  background:linear-gradient(90deg,transparent,#2563EB,#93C5FD,transparent)
+html,body,button,input,textarea,select,option {
+  font-family:"Space Grotesk",sans-serif !important;
 }
-.card::after{
-  content:"";position:absolute;width:170px;height:170px;top:-110px;right:-85px;
-  border-radius:50%;background:rgba(59,130,246,.065);pointer-events:none
+html,body { background:#FFFFFF; color:#171923; }
+/* White surfaces, subtle borders and restrained shadows */
+.card,.auth-card,.product-card,.related-card,.stat-card,.floating-card,
+.wallet-summary,.details-box,.notice,.purchase-card,.referral-premium,
+.loading,.error-box,.security-badge,.main-icon,.transaction,.order,
+.state-box,.empty,.loading,.link-box,.summary-card:not(.hero) {
+  border-color:#E8E8EB;
 }
-.card-title-row{
-  display:flex;align-items:center;justify-content:space-between;gap:10px;
-  margin-bottom:6px;position:relative;z-index:1
+.card,.auth-card,.product-card,.related-card,.stat-card,.floating-card,
+.transaction,.order,.state-box,.empty,.loading,.purchase-card {
+  background-color:#FFFFFF;
 }
-.card-title{font-size:20px;font-weight:800;color:#1D4ED8;letter-spacing:-.5px}
-.card-badge{
-  display:inline-flex;align-items:center;gap:6px;background:var(--blue-light);
-  border:1px solid var(--blue-border);color:var(--blue);
-  padding:7px 10px;border-radius:30px;font-size:9px;font-weight:700;white-space:nowrap
+/* Brand, icons, links and prices */
+h1,h2,h3,h4,.header-title,.brand-name,.brand-text h1,.section-heading,
+.page-heading h1,.title h1,.heading h1,.intro h2,.logo,.logo-accent,
+.heading,.tx-title,.order-name h3 { color:#171923; }
+.brand-name span,.brand-accent,.header-title i,.section-heading:before,
+.input-icon,.stat-icon,.heading-icon,.empty-icon,.back-login,.fund-link,
+.related-price,.product-price,.amount,.detail-value,.wallet-summary strong,
+.history-amount,.footer strong,.nav-item.active,.tx-amount,.order-price,
+.page-heading h1 + span { color:#C9232C; }
+/* Red primary actions */
+.reset-btn,.pay-btn,.primary-btn,.update-btn,.complete-btn,.btn-primary,
+.copy-small,.related-buy,.wallet-btn:not(.secondary),.copy-btn,
+.error-box button,.refresh,.retry,.retry-btn,.shop-btn,.success-btn.primary,
+button.primary,.button.primary {
+  background:linear-gradient(105deg,#C9232C 0%,#E13A43 100%) !important;
+  color:#FFFFFF !important;
+  border-color:transparent !important;
+  box-shadow:0 7px 18px rgba(201,35,44,.16);
 }
-.card-subtitle{
-  font-size:10.5px;color:var(--muted);line-height:1.8;
-  margin-bottom:23px;position:relative;z-index:1
+.reset-btn:hover,.pay-btn:hover,.primary-btn:hover,.update-btn:hover,
+.complete-btn:hover,.btn-primary:hover,.copy-small:hover,.related-buy:hover,
+.refresh:hover,.retry:hover,.retry-btn:hover {
+  background:linear-gradient(105deg,#A91D26 0%,#C9232C 100%) !important;
 }
-
-#signupForm{position:relative;z-index:1}
-.form-group{margin-bottom:17px}
-.form-group label{display:block;font-size:10.5px;font-weight:700;color:#344054;margin-bottom:8px}
-.input-wrap{position:relative;width:100%}
-.input-icon{
-  position:absolute;left:15px;top:50%;transform:translateY(-50%);
-  color:#60A5FA;font-size:13px;pointer-events:none;z-index:2;transition:color .2s
+.btn-secondary,.secondary-btn,.wallet-btn.secondary,.copy-small.secondary,
+.back,.back-btn,.header-icon,.wallet-chip,.auth-tab.active {
+  color:#A91D26;
+  background:#FDEEEF;
+  border-color:#F1C9CC;
 }
-.input-wrap:focus-within .input-icon{color:var(--blue)}
-input{
-  width:100%;height:51px;padding:0 45px 0 43px;
-  border:1px solid #DBE7F8;border-radius:12px;outline:none;
-  background:rgba(255,255,255,.92);color:var(--text);
-  font-size:16px;font-weight:500;
-  transition:border-color .22s,background .22s,box-shadow .22s,color .22s
+input,textarea,select,.form-control {
+  color:#171923;
+  border-color:#E3E3E7;
+  background:#FFFFFF;
 }
-input::placeholder{color:#9AA7B8;font-weight:400}
-input:hover{border-color:#93C5FD}
-input:focus{
-  border-color:var(--blue);background:#fff;
-  box-shadow:0 0 0 4px rgba(37,99,235,.09),0 3px 10px rgba(37,99,235,.025)
+input:focus,textarea:focus,select:focus,.form-control:focus {
+  border-color:#C9232C !important;
+  box-shadow:0 0 0 3px rgba(201,35,44,.10) !important;
 }
-input:disabled{opacity:.7;cursor:not-allowed}
-
-.password-toggle{
-  position:absolute;right:9px;top:50%;transform:translateY(-50%);
-  width:34px;height:34px;padding:0;border:1px solid transparent;
-  border-radius:9px;background:transparent;color:#93A4BC;
-  display:flex;align-items:center;justify-content:center;cursor:pointer;
-  transition:background .2s,color .2s,border-color .2s
+/* Red brand bars and highlighted surfaces */
+header,.topbar,.top-header { border-bottom-color:#C9232C; }
+.logo-box,.brand-icon,.brand-mark,.main-icon,.heading-icon,.stat-icon,
+.tx-icon,.order-icon,.state-icon,.step-number,.feature-icon {
+  background:#FDEEEF;
+  color:#C9232C;
 }
-.password-toggle:hover{background:var(--blue-light);color:var(--blue);border-color:var(--blue-border)}
-.password-toggle:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
-.password-note{margin-top:7px;display:flex;align-items:center;gap:6px;color:#8491A3;font-size:8.5px;line-height:1.7}
-.password-note i{color:var(--blue)}
-
-.submit-button{
-  position:relative;width:100%;min-height:51px;height:51px;
-  border:1px solid rgba(255,255,255,.2);border-radius:12px;
-  background:linear-gradient(135deg,#3B82F6,#2563EB 48%,#1D4ED8);
-  color:#fff;font-size:11.5px;font-weight:700;letter-spacing:.1px;
-  cursor:pointer;overflow:hidden;margin-top:5px;
-  box-shadow:0 10px 24px rgba(37,99,235,.23),inset 0 1px 0 rgba(255,255,255,.2);
-  transition:transform .22s,box-shadow .22s,filter .22s
+.hero,.wallet-card,.summary-card {
+  background:linear-gradient(125deg,#A91D26 0%,#C9232C 58%,#E64B52 100%) !important;
+  color:#FFFFFF;
 }
-.submit-button::before{
-  content:"";position:absolute;top:0;left:-120%;width:80%;height:100%;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);
-  transform:skewX(-20deg);transition:left .6s;pointer-events:none
+.hero h2,.hero p,.hero-label,.summary-card,.summary-card * { color:#FFFFFF; }
+.notice,.details-box,.wallet-summary,.purchase-item,.purchase-text,
+.reference,.link-box,.security-badge {
+  background:#FFF5F5;
+  border-color:#F1D9DB;
 }
-.submit-button:hover::before{left:140%}
-.submit-button:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(37,99,235,.29);filter:brightness(1.04)}
-.submit-button:active{transform:translateY(0)}
-.submit-button:disabled{opacity:.65;cursor:not-allowed;transform:none;filter:none}
-.submit-button i{margin-right:8px}
-
-.message{display:none;margin-top:14px;padding:12px 13px;border-radius:11px;font-size:9.5px;line-height:1.8;overflow-wrap:anywhere}
-.message.success{display:block;background:#F0FDF4;border:1px solid #BBF7D0;color:#18733A}
-.message.error{display:block;background:#FEF2F2;border:1px solid #FECACA;color:#B42318}
-.login-link{text-align:center;margin-top:21px;color:var(--muted);font-size:10px;line-height:1.8}
-.login-link a{color:var(--blue);font-weight:800;margin-left:4px}
-.login-link a:hover{color:var(--blue-hover);text-decoration:underline}
-
-.security-note{
-  margin-top:22px;padding:14px;border-radius:13px;
-  background:linear-gradient(135deg,rgba(239,246,255,.98),rgba(219,234,254,.55));
-  border:1px solid #DBEAFE;display:flex;align-items:flex-start;gap:10px
+.status.approved,.status.success,.status.completed,
+.message.success { background:#EAF7EF; color:#17663A; }
+.status.rejected,.status.failed,.status.cancelled,
+.message.error { background:#FFF0F0; color:#A51F2A; }
+/* Maintain readable mobile controls and prevent iOS Safari focus zoom. */
+@media(max-width:767px) {
+  input,textarea,select,.form-control,.input-wrap input { font-size:16px !important; }
 }
-.security-icon{
-  width:30px;height:30px;flex:none;border-radius:9px;background:#DBEAFE;color:var(--blue);
-  display:flex;align-items:center;justify-content:center;font-size:11px
-}
-.security-note p{color:#64748B;font-size:8.5px;line-height:1.85}
-.security-note strong{color:#1E40AF}
-
-.verify-screen{display:none}
-.verify-screen.show{display:block}
-.verify-icon{
-  width:72px;height:72px;margin:0 auto 17px;border-radius:22px;
-  background:linear-gradient(145deg,#DBEAFE,#EFF6FF);color:var(--blue);
-  display:flex;align-items:center;justify-content:center;font-size:29px;
-  box-shadow:0 10px 24px rgba(37,99,235,.08)
-}
-.verify-card{
-  background:rgba(255,255,255,.88);border:1px solid rgba(255,255,255,.98);
-  border-radius:23px;padding:29px 24px;text-align:center;
-  box-shadow:0 20px 55px rgba(37,99,235,.09);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  transition:background .25s,border-color .25s,box-shadow .25s
-}
-.verify-card h2{color:#1D4ED8;font-size:21px;margin-bottom:9px}
-.verify-card .verify-text{color:#667085;font-size:10px;line-height:1.9;margin-bottom:18px}
-.email-box{
-  background:var(--blue-light);border:1px solid var(--blue-border);
-  border-radius:12px;padding:13px;color:var(--blue-dark);font-size:10px;
-  font-weight:700;word-break:break-word;margin-bottom:17px
-}
-.verify-status{
-  padding:12px;border-radius:11px;background:#F8FAFC;border:1px solid #E2E8F0;
-  color:#667085;font-size:9px;line-height:1.8;margin-bottom:15px
-}
-.verify-status.success{background:#F0FDF4;color:#18733A;border:1px solid #BBF7D0}
-.verify-status.error{background:#FEF2F2;color:#B42318;border:1px solid #FECACA}
-.verify-button,.resend-button{
-  width:100%;min-height:47px;border:none;border-radius:12px;
-  font-family:"Poppins",sans-serif;font-size:10.5px;font-weight:700;cursor:pointer;
-  transition:transform .2s,box-shadow .2s
-}
-.verify-button{
-  background:linear-gradient(135deg,#3B82F6,#2563EB);color:#fff;
-  margin-bottom:10px;box-shadow:0 8px 18px rgba(37,99,235,.18)
-}
-.verify-button:hover{transform:translateY(-1px);box-shadow:0 11px 23px rgba(37,99,235,.23)}
-.resend-button{background:var(--blue-light);border:1px solid var(--blue-border);color:var(--blue)}
-.resend-button:hover{background:var(--blue-soft)}
-.verify-button:disabled,.resend-button:disabled{opacity:.55;cursor:not-allowed;transform:none}
-
-.footer{text-align:center;padding:0 15px 25px;color:#9AA5B5;font-size:9px;line-height:1.9}
-.footer-brand{color:var(--blue);font-weight:700}
-a:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:5px}
-
-@media(min-width:601px) and (max-width:900px){
-  .main{padding:38px 22px 40px}
-  .auth-wrapper{max-width:450px}
-  .card{padding:29px}
-}
-
-@media(max-width:600px){
-  .header-inner{min-height:65px;padding:10px 14px;gap:10px}
-  .logo{font-size:15px;gap:8px;letter-spacing:-.5px}
-  .logo-icon{width:35px;height:35px;border-radius:11px;font-size:14px}
-  .home-link{padding:9px 11px;font-size:10px;gap:6px;border-radius:11px}
-  .home-link span{display:none}
-  .main{min-height:calc(100vh - 65px);min-height:calc(100dvh - 65px);padding:30px 14px 35px;align-items:flex-start}
-  .auth-wrapper{max-width:430px}
-  .auth-heading{margin-bottom:22px}
-  .auth-icon{width:57px;height:57px;border-radius:17px;font-size:20px;margin-bottom:15px}
-  .auth-heading h1{font-size:25px}
-  .auth-heading p{font-size:10px;padding:0 7px}
-  .heading-accent{width:31px;height:3px;margin-top:10px}
-  .card{padding:24px 19px;border-radius:21px}
-  .card-title{font-size:18px}
-  .card-badge{padding:6px 8px;font-size:8px}
-  .card-subtitle{font-size:10px}
-  .form-group{margin-bottom:17px}
-  input{height:49px;font-size:16px}
-  .submit-button{height:50px;min-height:50px}
-  .security-note{padding:13px}
-  .verify-card{padding:25px 17px;border-radius:19px}
-  .verify-card h2{font-size:19px}
-  .footer{padding-bottom:21px}
-}
-
-@media(max-width:370px){
-  .header-inner{padding:9px 10px}
-  .logo{font-size:13px;gap:7px}
-  .logo-icon{width:32px;height:32px;border-radius:9px;font-size:12px}
-  .home-link{padding:8px 9px}
-  .main{padding:26px 11px 30px}
-  .auth-heading h1{font-size:22px}
-  .card{padding:21px 15px;border-radius:18px}
-  .card-badge{display:none}
-  .card-title{font-size:17px}
-  input{font-size:16px}
-  .security-note p{font-size:8px}
-}
-
-/* DARK MODE */
-html.dark-mode{color-scheme:dark;--blue:#60A5FA;--blue-dark:#93C5FD;--blue-light:#172B4D;--blue-soft:#1E3A5F;--blue-border:#345783;--blue-hover:#BFDBFE;--text:#F1F5F9;--muted:#A7B4C8;--white:#111827}
-html.dark-mode body{
-  background:radial-gradient(ellipse at 8% 12%,rgba(37,99,235,.18),transparent 32%),radial-gradient(ellipse at 95% 90%,rgba(96,165,250,.10),transparent 32%),linear-gradient(145deg,#080F1D 0%,#0B1424 48%,#101D32 100%);
-  color:#F1F5F9
-}
-html.dark-mode ::selection{background:#1D4ED8;color:#fff}
-html.dark-mode .header{background:rgba(11,20,36,.94);border-bottom-color:#243650;box-shadow:0 4px 20px rgba(0,0,0,.18)}
-html.dark-mode .logo{color:#60A5FA}
-html.dark-mode .home-link{background:#142238;border-color:#345783;color:#93C5FD}
-html.dark-mode .home-link:hover{background:#1B3150;border-color:#60A5FA}
-html.dark-mode .auth-heading h1,html.dark-mode .card-title,html.dark-mode .verify-card h2{color:#93C5FD}
-html.dark-mode .auth-heading p,html.dark-mode .card-subtitle,html.dark-mode .login-link,html.dark-mode .verify-card .verify-text{color:#A7B4C8}
-html.dark-mode .auth-icon::before{border-color:rgba(96,165,250,.25)}
-html.dark-mode .auth-icon::after{border-color:#101D32}
-html.dark-mode .card{background:rgba(17,29,48,.94);border-color:#283B56;box-shadow:0 25px 70px rgba(0,0,0,.22),0 4px 15px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.025)}
-html.dark-mode .card::after{background:rgba(59,130,246,.10)}
-html.dark-mode .card-badge{background:#172B4D;border-color:#345783;color:#93C5FD}
-html.dark-mode .form-group label{color:#D5DFED}
-html.dark-mode input{background:#0C1728;border-color:#2B405D;color:#F1F5F9}
-html.dark-mode input::placeholder{color:#8292AA}
-html.dark-mode input:hover{border-color:#5278AB}
-html.dark-mode input:focus{background:#101F34;border-color:#60A5FA;box-shadow:0 0 0 4px rgba(96,165,250,.12),0 3px 10px rgba(0,0,0,.12)}
-html.dark-mode input:disabled{background:#111C2C}
-html.dark-mode .input-icon{color:#7DADEB}
-html.dark-mode .password-toggle{color:#9CAEC5}
-html.dark-mode .password-toggle:hover{background:#172B4D;color:#93C5FD;border-color:#345783}
-html.dark-mode .password-note{color:#91A2B9}
-html.dark-mode .password-note i{color:#93C5FD}
-html.dark-mode .login-link a{color:#93C5FD}
-html.dark-mode .login-link a:hover{color:#BFDBFE}
-html.dark-mode .security-note{background:linear-gradient(135deg,rgba(23,43,77,.95),rgba(22,39,65,.85));border-color:#304B70}
-html.dark-mode .security-icon{background:#223D63;color:#93C5FD}
-html.dark-mode .security-note p{color:#B4C3D8}
-html.dark-mode .security-note strong{color:#BFDBFE}
-html.dark-mode .verify-icon{background:linear-gradient(145deg,#1D3A60,#172B4D);color:#93C5FD;box-shadow:0 10px 24px rgba(0,0,0,.15)}
-html.dark-mode .verify-card{background:rgba(17,29,48,.94);border-color:#283B56;box-shadow:0 20px 55px rgba(0,0,0,.22)}
-html.dark-mode .email-box{background:#172B4D;border-color:#345783;color:#BFDBFE}
-html.dark-mode .verify-status{background:#111E30;border-color:#304158;color:#B4C3D8}
-html.dark-mode .verify-status.success{background:#102C22;color:#86EFAC;border-color:#22543D}
-html.dark-mode .verify-status.error{background:#351B25;color:#FCA5A5;border-color:#71303B}
-html.dark-mode .resend-button{background:#172B4D;border-color:#345783;color:#93C5FD}
-html.dark-mode .resend-button:hover{background:#1E3A5F}
-html.dark-mode .footer{color:#8393AA}
-html.dark-mode .footer-brand{color:#93C5FD}
-html.dark-mode a:focus-visible{outline-color:#93C5FD}
-
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+@media(prefers-reduced-motion:reduce) {
+  *,*::before,*::after { scroll-behavior:auto !important; animation-duration:.01ms !important; transition-duration:.01ms !important; }
 }
 </style>
 </head>
 
 <body>
-<header class="header">
-  <div class="header-inner">
-    <a href="index.html" class="logo" aria-label="Gentle Acct Store homepage">
-      <span class="logo-icon"><i class="fa-solid fa-store"></i></span>
-      <span>Gentle Acct Store</span>
-    </a>
-    <a href="index.html" class="home-link">
-      <i class="fa-solid fa-arrow-left"></i>
-      <span>Back to Home</span>
-    </a>
-  </div>
-</header>
+<main class="page-wrapper">
+  <header class="brand-header">
+    <div class="brand-mark" aria-label="GentleLogs logo">G.</div>
+    <div class="brand-name">Gentle<span>Logs</span></div>
+    <p class="brand-caption">YOUR DIGITAL MARKETPLACE</p>
+  </header>
 
-<main class="main">
-  <div class="auth-wrapper">
-    <div id="signupScreen">
-      <div class="auth-heading">
-        <div class="auth-icon"><i class="fa-solid fa-user-plus"></i></div>
-        <h1>Create Your Account</h1>
-        <p>Join Gentle Acct Store and manage your products, wallet and orders from one account.</p>
-        <span class="heading-accent" aria-hidden="true"></span>
-      </div>
+  <section class="auth-card">
+    <div class="card-top"></div>
+    <div class="auth-content">
+      <nav class="auth-tabs" aria-label="Account pages">
+        <a class="auth-tab active" href="signup.html">Create Account</a>
+        <a class="auth-tab" href="login.html">Sign In</a>
+      </nav>
 
-      <div class="card">
-        <div class="card-title-row">
-          <div class="card-title">Create Account</div>
-          <div class="card-badge"><i class="fa-solid fa-shield-halved"></i> Secure Signup</div>
+      <h1 class="heading">Create your account</h1>
+      <p class="subtitle">Create your GentleLogs account and get started in just a few steps.</p>
+
+      <div id="message" class="message" role="status" aria-live="polite"></div>
+
+      <form id="signupForm" novalidate>
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input class="form-control" id="username" type="text"
+            placeholder="Choose a username" autocomplete="username"
+            maxlength="30" required>
         </div>
-        <div class="card-subtitle">Enter your details below to create your Gentle Acct Store account.</div>
 
-        <form id="signupForm" novalidate>
+        <div class="form-row">
           <div class="form-group">
-            <label for="name">Full Name</label>
-            <div class="input-wrap">
-              <i class="fa-solid fa-user input-icon"></i>
-              <input type="text" id="name" name="name" placeholder="Enter your full name" autocomplete="name" required>
-            </div>
+            <label for="firstName">First Name</label>
+            <input class="form-control" id="firstName" type="text"
+              placeholder="First name" autocomplete="given-name"
+              maxlength="60" required>
           </div>
-
           <div class="form-group">
-            <label for="email">Email Address</label>
-            <div class="input-wrap">
-              <i class="fa-solid fa-envelope input-icon"></i>
-              <input type="email" id="email" name="email" placeholder="Enter your email address" autocomplete="email" autocapitalize="none" spellcheck="false" inputmode="email" required>
-            </div>
+            <label for="lastName">Last Name</label>
+            <input class="form-control" id="lastName" type="text"
+              placeholder="Last name" autocomplete="family-name"
+              maxlength="60" required>
           </div>
-
-          <div class="form-group">
-            <label for="password">Password</label>
-            <div class="input-wrap">
-              <i class="fa-solid fa-lock input-icon"></i>
-              <input type="password" id="password" name="password" placeholder="Create a password" minlength="6" autocomplete="new-password" required>
-              <button type="button" class="password-toggle" id="passwordToggle" aria-label="Show password" aria-controls="password" aria-pressed="false">
-                <i class="fa-solid fa-eye"></i>
-              </button>
-            </div>
-            <div class="password-note"><i class="fa-solid fa-circle-info"></i> Password must contain at least 6 characters.</div>
-          </div>
-
-          <div class="form-group">
-            <label for="confirmPassword">Confirm Password</label>
-            <div class="input-wrap">
-              <i class="fa-solid fa-shield-halved input-icon"></i>
-              <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" minlength="6" autocomplete="new-password" required>
-              <button type="button" class="password-toggle" id="confirmPasswordToggle" aria-label="Show password" aria-controls="confirmPassword" aria-pressed="false">
-                <i class="fa-solid fa-eye"></i>
-              </button>
-            </div>
-          </div>
-
-          <button type="submit" id="signupBtn" class="submit-button">
-            <i class="fa-solid fa-user-plus"></i> Create Account
-          </button>
-        </form>
-
-        <div id="message" class="message" role="status" aria-live="polite"></div>
-        <div class="login-link">Already have an account? <a href="login.html">Login</a></div>
-
-        <div class="security-note">
-          <div class="security-icon"><i class="fa-solid fa-shield-halved"></i></div>
-          <p><strong>One more step after signup.</strong> You'll need to verify your email before accessing your Gentle Acct Store account.</p>
         </div>
-      </div>
-    </div>
 
-    <div id="verifyScreen" class="verify-screen">
-      <div class="auth-heading">
-        <div class="verify-icon"><i class="fa-solid fa-envelope-circle-check"></i></div>
-        <h1>Check Your Email</h1>
-        <p>Your account has been created successfully.</p>
-        <span class="heading-accent" aria-hidden="true"></span>
-      </div>
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input class="form-control" id="phone" type="tel"
+            placeholder="e.g. 08012345678" autocomplete="tel"
+            inputmode="tel" maxlength="20" required>
+        </div>
 
-      <div class="verify-card">
-        <h2>Verify Your Email</h2>
-        <p class="verify-text">We've sent a verification link to the email address below. Open that email and follow the instructions.</p>
-        <div id="verificationEmail" class="email-box">-</div>
-        <div id="verifyStatus" class="verify-status" role="status" aria-live="polite">Open your email and tap the verification link. Then return here.</div>
-        <button type="button" id="checkVerification" class="verify-button">
-          <i class="fa-solid fa-circle-check"></i> I've Verified My Email
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input class="form-control" id="email" type="email"
+            placeholder="you@example.com" autocomplete="email"
+            maxlength="254" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="password-wrap">
+            <input class="form-control password-control" id="password"
+              type="password" placeholder="Create a password"
+              autocomplete="new-password" minlength="6" required>
+            <button class="toggle-password" type="button"
+              data-target="password" aria-label="Show password">Show</button>
+          </div>
+          <p class="password-hint">Use at least 6 characters.</p>
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <div class="password-wrap">
+            <input class="form-control password-control" id="confirmPassword"
+              type="password" placeholder="Enter password again"
+              autocomplete="new-password" minlength="6" required>
+            <button class="toggle-password" type="button"
+              data-target="confirmPassword" aria-label="Show confirm password">Show</button>
+          </div>
+        </div>
+
+        <div class="terms-row">
+          <input id="acceptTerms" type="checkbox" required>
+          <label for="acceptTerms">
+            I agree to the
+            <a href="terms.html" target="_blank" rel="noopener">Terms of Service</a>
+            and
+            <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.
+          </label>
+        </div>
+
+        <button class="primary-btn" id="signupButton" type="submit">
+          Create My Account
         </button>
-        <button type="button" id="resendVerification" class="resend-button">
-          <i class="fa-solid fa-paper-plane"></i> Resend Verification Email
-        </button>
-      </div>
+      </form>
+
+      <div class="divider">OR SIGN UP WITH</div>
+
+      <button class="google-btn" id="googleSignup" type="button">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="">
+        <span>Continue with Google</span>
+      </button>
+
+      <p class="bottom-note">
+        Already have an account? <a href="login.html">Sign in here</a>
+      </p>
+      <div class="security-note">Your account information is handled securely.</div>
     </div>
-  </div>
+  </section>
 </main>
-
-<footer class="footer">
-  <p>© 2026 <span class="footer-brand">Gentle Acct Store</span>. All rights reserved.</p>
-</footer>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
@@ -479,259 +350,589 @@ html.dark-mode a:focus-visible{outline-color:#93C5FD}
 <script src="firebase.js"></script>
 
 <script>
-/* THEME SYNC */
 (function(){
-  const KEY="gentle-acct-store-theme";
-  const meta=document.querySelector('meta[name="theme-color"]');
+"use strict";
 
-  function syncTheme(){
-    let dark=false;
-    try{dark=localStorage.getItem(KEY)==="dark"}catch(e){}
-    document.documentElement.classList.toggle("dark-mode",dark);
-    document.body.classList.toggle("dark-mode",dark);
-    document.documentElement.style.colorScheme=dark?"dark":"light";
-    if(meta)meta.setAttribute("content",dark?"#0B1424":"#2563EB");
+const $ = id => document.getElementById(id);
+const form = $("signupForm");
+const signupButton = $("signupButton");
+const googleButton = $("googleSignup");
+const messageBox = $("message");
+
+let auth = null;
+let db = null;
+let ready = false;
+let busy = false;
+
+function showMessage(text, type = "error") {
+  messageBox.textContent = text;
+  messageBox.className = "message show " + type;
+}
+
+function clearMessage() {
+  messageBox.textContent = "";
+  messageBox.className = "message";
+}
+
+function cleanText(value) {
+  return String(value || "").trim().replace(/\s+/g, " ");
+}
+
+function cleanUsername(value) {
+  return cleanText(value)
+    .replace(/^@+/, "")
+    .replace(/[^a-zA-Z0-9_.-]/g, "")
+    .slice(0, 30);
+}
+
+function referralFromUrl() {
+  return (new URLSearchParams(window.location.search).get("ref") || "").trim();
+}
+
+function friendlyError(error) {
+  console.error("Signup error:", error);
+
+  const code = error && error.code ? error.code : "";
+  const raw = error && error.message ? error.message : "";
+
+  const messages = {
+    "auth/email-already-in-use":
+      "This email already has an account. Please sign in instead.",
+    "auth/invalid-email":
+      "Please enter a valid email address.",
+    "auth/weak-password":
+      "Choose a password with at least 6 characters.",
+    "auth/operation-not-allowed":
+      "Enable email/password signup in Firebase Authentication.",
+    "auth/unauthorized-domain":
+      "Add this website domain to Firebase Authentication's authorized domains.",
+    "auth/network-request-failed":
+      "Network error. Check your connection and try again.",
+    "auth/too-many-requests":
+      "Too many attempts. Please wait and try again.",
+    "auth/popup-closed-by-user":
+      "The Google sign-in window was closed.",
+    "auth/popup-blocked":
+      "Your browser blocked the Google sign-in window.",
+    "auth/account-exists-with-different-credential":
+      "An account already exists with this email. Sign in using its original method."
+  };
+
+  if (messages[code]) return messages[code];
+
+  if (/permission.*denied/i.test(raw) || code === "permission-denied") {
+    return "Firestore rejected a database operation. Check the published Firestore rules.";
   }
 
-  syncTheme();
-  window.addEventListener("storage",e=>{
-    if(e.key===KEY||e.key===null)syncTheme();
-  });
-  window.addEventListener("pageshow",syncTheme);
-  document.addEventListener("visibilitychange",()=>{
-    if(!document.hidden)syncTheme();
-  });
-})();
-
-/* ELEMENTS */
-const form=document.getElementById("signupForm");
-const signupButton=document.getElementById("signupBtn");
-const message=document.getElementById("message");
-const password=document.getElementById("password");
-const confirmPassword=document.getElementById("confirmPassword");
-const passwordToggle=document.getElementById("passwordToggle");
-const confirmPasswordToggle=document.getElementById("confirmPasswordToggle");
-const signupScreen=document.getElementById("signupScreen");
-const verifyScreen=document.getElementById("verifyScreen");
-const verificationEmail=document.getElementById("verificationEmail");
-const verifyStatus=document.getElementById("verifyStatus");
-const checkVerification=document.getElementById("checkVerification");
-const resendVerification=document.getElementById("resendVerification");
-
-let verificationUser=null;
-let verificationTimer=null;
-let verificationFinished=false;
-
-function showMessage(text,type){
-  message.textContent=text;
-  message.className="message "+type;
+  return raw || "Something went wrong. Please try again.";
 }
 
-function togglePassword(input,button){
-  const icon=button.querySelector("i");
-  const showing=input.type==="password";
-  input.type=showing?"text":"password";
-  icon.className=showing?"fa-solid fa-eye-slash":"fa-solid fa-eye";
-  button.setAttribute("aria-label",showing?"Hide password":"Show password");
-  button.setAttribute("aria-pressed",String(showing));
+function setBusy(value) {
+  busy = value;
+  signupButton.disabled = value;
+  googleButton.disabled = value;
+  signupButton.textContent = value ? "Please wait..." : "Create My Account";
+  googleButton.querySelector("span").textContent =
+    value ? "Please wait..." : "Continue with Google";
 }
 
-passwordToggle.addEventListener("click",()=>togglePassword(password,passwordToggle));
-confirmPasswordToggle.addEventListener("click",()=>togglePassword(confirmPassword,confirmPasswordToggle));
+function saveLogin(user, profile) {
+  try {
+    localStorage.setItem("gentleLoggedIn", "true");
+    localStorage.setItem("gentleCurrentUserId", user.uid);
+    localStorage.setItem("gentleUser", JSON.stringify({
+      uid: user.uid,
+      email: user.email || "",
+      username: profile.username || "",
+      firstName: profile.firstName || "",
+      lastName: profile.lastName || "",
+      phone: profile.phone || ""
+    }));
 
-function showVerifyScreen(user){
-  verificationUser=user;
-  verificationEmail.textContent=user.email||"";
-  signupScreen.style.display="none";
-  verifyScreen.classList.add("show");
-  startVerificationCheck();
-  window.scrollTo({top:0,behavior:"smooth"});
-}
-
-function startVerificationCheck(){
-  if(verificationTimer)clearInterval(verificationTimer);
-
-  verificationTimer=setInterval(async()=>{
-    if(!verificationUser||verificationFinished)return;
-    try{
-      await verificationUser.reload();
-      const user=firebaseAuth.currentUser;
-      if(user&&user.emailVerified)await verificationComplete();
-    }catch(error){
-      console.error("AUTO VERIFICATION ERROR:",error);
+    if (typeof profile.balance === "number") {
+      localStorage.setItem("gentleBalance", String(profile.balance));
     }
-  },3000);
+  } catch (error) {
+    console.warn("Could not save local login details:", error);
+  }
 }
 
-async function verificationComplete(){
-  if(verificationFinished)return;
-  verificationFinished=true;
+function validateForm() {
+  const details = {
+    username: cleanUsername($("username").value),
+    firstName: cleanText($("firstName").value),
+    lastName: cleanText($("lastName").value),
+    phone: cleanText($("phone").value),
+    email: cleanText($("email").value).toLowerCase(),
+    password: $("password").value,
+    confirmPassword: $("confirmPassword").value
+  };
 
-  if(verificationTimer){
-    clearInterval(verificationTimer);
-    verificationTimer=null;
+  if (details.username.length < 3) {
+    showMessage("Username must contain at least 3 valid characters.");
+    $("username").focus();
+    return null;
   }
 
-  verifyStatus.className="verify-status success";
-  verifyStatus.textContent="Email verified successfully. Redirecting to login...";
-  checkVerification.disabled=true;
-  resendVerification.disabled=true;
-  checkVerification.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Opening Login...';
-
-  try{
-    await firebaseAuth.signOut();
-  }catch(error){
-    console.error("SIGNOUT AFTER VERIFICATION ERROR:",error);
+  if (!details.firstName || !details.lastName) {
+    showMessage("Enter your first and last name.");
+    return null;
   }
 
-  setTimeout(()=>window.location.replace("login.html"),800);
+  if (details.phone.replace(/\D/g, "").length < 7) {
+    showMessage("Enter a valid phone number.");
+    $("phone").focus();
+    return null;
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(details.email)) {
+    showMessage("Enter a valid email address.");
+    $("email").focus();
+    return null;
+  }
+
+  if (details.password.length < 6) {
+    showMessage("Password must have at least 6 characters.");
+    $("password").focus();
+    return null;
+  }
+
+  if (details.password !== details.confirmPassword) {
+    showMessage("Your passwords do not match.");
+    $("confirmPassword").focus();
+    return null;
+  }
+
+  if (!$("acceptTerms").checked) {
+    showMessage("Please accept the Terms of Service and Privacy Policy.");
+    return null;
+  }
+
+  return details;
 }
 
-/* SIGNUP */
-form.addEventListener("submit",async event=>{
-  event.preventDefault();
+/*
+ * Save referral attribution.
+ *
+ * IMPORTANT FIX:
+ * This transaction does not read customers/{referrerId}.
+ * The Firestore rules must verify the referrer's existence using
+ * exists(/databases/$(database)/documents/customers/{referrerId}).
+ *
+ * The customer can read their own customer profile and their own
+ * referral document. Referral creation must still be allowed by rules.
+ */
+async function saveReferral(referredUid, referrerId) {
+  if (!referredUid || !referrerId || referredUid === referrerId) {
+    return;
+  }
 
-  const name=document.getElementById("name").value.trim();
-  const email=document.getElementById("email").value.trim().toLowerCase();
-  const passwordValue=password.value;
-  const confirmPasswordValue=confirmPassword.value;
+  const customerRef = db.collection("customers").doc(referredUid);
+  const referralRef = db.collection("referrals").doc(referredUid);
 
-  if(!name)return showMessage("Please enter your full name.","error");
-  if(!email)return showMessage("Please enter your email address.","error");
-  if(passwordValue!==confirmPasswordValue)return showMessage("Passwords do not match.","error");
-  if(passwordValue.length<6)return showMessage("Password must contain at least 6 characters.","error");
+  await db.runTransaction(async transaction => {
+    const customerSnap = await transaction.get(customerRef);
+    const referralSnap = await transaction.get(referralRef);
 
-  signupButton.disabled=true;
-  signupButton.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Creating Account...';
-
-  try{
-    if(typeof firebaseAuth==="undefined"){
-      throw new Error("Firebase Authentication is not configured. Check firebase.js.");
+    if (!customerSnap.exists) {
+      throw new Error("Customer profile does not exist.");
     }
 
-    const result=await firebaseAuth.createUserWithEmailAndPassword(email,passwordValue);
-    const user=result.user;
+    const customer = customerSnap.data() || {};
 
-    if(!user)throw new Error("The account could not be created.");
-
-    await user.updateProfile({displayName:name});
-
-    if(typeof firebaseDB==="undefined"){
-      throw new Error("ACCOUNT_CREATED_PROFILE_PENDING");
+    if (customer.referrerId !== referrerId) {
+      throw new Error("Saved referral attribution does not match the link.");
     }
 
-    await firebaseDB.collection("customers").doc(user.uid).set({
-      uid:user.uid,
-      name:name,
-      email:user.email,
-      status:"Active",
-      createdAt:firebase.firestore.FieldValue.serverTimestamp()
+    if (referralSnap.exists) {
+      // Do not overwrite or duplicate an existing referral.
+      return;
+    }
+
+    transaction.set(referralRef, {
+      referrerId: referrerId,
+      referredUserId: referredUid,
+      status: "pending",
+      rewardAmount: 500,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
+  });
+}
 
-    await user.sendEmailVerification();
+/*
+ * Create a new customer profile or update ordinary profile fields.
+ * Existing customers' referrerId and balance are never overwritten.
+ */
+async function saveCustomer(user, details, method) {
+  const customerRef = db.collection("customers").doc(user.uid);
+  const customerSnap = await customerRef.get();
+  const isNew = !customerSnap.exists;
+  const old = isNew ? {} : (customerSnap.data() || {});
+  const candidateReferrer = referralFromUrl();
 
-    localStorage.removeItem("gentleLoggedIn");
-    localStorage.removeItem("gentleUser");
-    localStorage.removeItem("gentleCurrentUserId");
-    localStorage.removeItem("gentleAdminLoggedIn");
+  let referrerId = old.referrerId || "";
 
-    showVerifyScreen(user);
-  }catch(error){
-    console.error("SIGNUP ERROR:",error);
-    let text="Unable to complete signup. Please try again.";
+  if (isNew && candidateReferrer && candidateReferrer !== user.uid) {
+    referrerId = candidateReferrer;
+  }
 
-    if(error.code==="auth/email-already-in-use"){
-      text="An account with this email already exists. Try logging in.";
-    }else if(error.code==="auth/invalid-email"){
-      text="Please enter a valid email address.";
-    }else if(error.code==="auth/weak-password"){
-      text="Your password is too weak. Use at least 6 characters.";
-    }else if(error.code==="auth/network-request-failed"){
-      text="Network error. Please check your internet connection.";
-    }else if(error.code==="auth/too-many-requests"){
-      text="Too many attempts. Please wait before trying again.";
-    }else if(error.message==="ACCOUNT_CREATED_PROFILE_PENDING"){
-      text="Your Firebase account was created, but the customer profile could not be saved. Please contact support before trying to register again.";
-    }else if(error.code==="permission-denied"){
-      text="Your account may have been created, but saving the customer profile was blocked by database permissions. Check your Firestore rules before trying again.";
+  const email = user.email || details.email || old.email || "";
+  const emailPrefix = cleanUsername(
+    (email.split("@")[0] || "customer").slice(0, 20)
+  ) || "customer";
+
+  const profile = {
+    uid: user.uid,
+    email: email,
+    username: old.username || details.username ||
+      (emailPrefix + "_" + user.uid.slice(0, 5)),
+    firstName: old.firstName || details.firstName || "",
+    lastName: old.lastName || details.lastName || "",
+    phone: old.phone || details.phone || "",
+    signupMethod: old.signupMethod || method,
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+  };
+
+  if (isNew) {
+    profile.balance = 0;
+    profile.status = "Active";
+    profile.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+
+    if (referrerId) {
+      profile.referrerId = referrerId;
     }
 
-    showMessage(text,"error");
-    signupButton.disabled=false;
-    signupButton.innerHTML='<i class="fa-solid fa-user-plus"></i> Create Account';
+    await customerRef.set(profile);
+  } else {
+    await customerRef.set({
+      email: profile.email,
+      username: profile.username,
+      firstName: profile.firstName,
+      lastName: profile.lastName,
+      phone: profile.phone,
+      signupMethod: profile.signupMethod,
+      updatedAt: profile.updatedAt
+    }, { merge: true });
+  }
+
+  /*
+   * Referral saving is a separate operation. A referral error must
+   * not be reported as if Firebase Authentication failed.
+   */
+  let referralFailed = false;
+
+  if (isNew && referrerId) {
+    try {
+      await saveReferral(user.uid, referrerId);
+    } catch (error) {
+      referralFailed = true;
+      console.error("Referral record could not be saved:", error);
+    }
+  }
+
+  const savedSnap = await customerRef.get();
+  const savedProfile = savedSnap.exists
+    ? savedSnap.data()
+    : profile;
+
+  saveLogin(user, savedProfile);
+
+  return {
+    profile: savedProfile,
+    referralFailed: referralFailed
+  };
+}
+
+async function finishSignup(user, details, method) {
+  let result;
+
+  try {
+    result = await saveCustomer(user, details, method);
+  } catch (error) {
+    console.error("Customer profile save failed:", error);
+
+    showMessage(
+      "Your authentication succeeded, but the customer profile could not be saved. Do not register again. " +
+      friendlyError(error)
+    );
+    return false;
+  }
+
+  if (result.referralFailed) {
+    showMessage(
+      "Your account was created, but its referral record could not be saved. The referral needs to be checked and repaired. You can continue to your account.",
+      "info"
+    );
+
+    setTimeout(() => {
+      window.location.replace("dashboard.html");
+    }, 2500);
+
+    return true;
+  }
+
+  showMessage("Your account is ready. Redirecting...", "success");
+
+  setTimeout(() => {
+    window.location.replace("dashboard.html");
+  }, 900);
+
+  return true;
+}
+
+form.addEventListener("submit", async function(event) {
+  event.preventDefault();
+  clearMessage();
+
+  if (busy) return;
+
+  if (!ready) {
+    showMessage("Firebase is not ready. Check that firebase.js loads correctly.");
+    return;
+  }
+
+  const details = validateForm();
+  if (!details) return;
+
+  setBusy(true);
+
+  let authenticatedUser = null;
+
+  try {
+    const credential = await auth.createUserWithEmailAndPassword(
+      details.email,
+      details.password
+    );
+
+    authenticatedUser = credential.user;
+
+    await finishSignup(authenticatedUser, details, "email");
+  } catch (error) {
+    if (authenticatedUser) {
+      showMessage(
+        "Your account was created, but a later operation failed. Do not register again. " +
+        friendlyError(error)
+      );
+    } else {
+      showMessage(friendlyError(error));
+    }
+  } finally {
+    setBusy(false);
   }
 });
 
-/* MANUAL VERIFICATION CHECK */
-checkVerification.addEventListener("click",async()=>{
-  if(!verificationUser||verificationFinished)return;
+function googleNameParts(user) {
+  const parts = cleanText(user.displayName).split(" ").filter(Boolean);
 
-  try{
-    checkVerification.disabled=true;
-    checkVerification.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Checking...';
-    await verificationUser.reload();
+  return {
+    firstName: parts[0] || "",
+    lastName: parts.slice(1).join(" ")
+  };
+}
 
-    const user=firebaseAuth.currentUser;
-    if(user&&user.emailVerified){
-      await verificationComplete();
-    }else{
-      verifyStatus.className="verify-status error";
-      verifyStatus.textContent="Your email has not been verified yet. Please check your inbox and spam folder, then try again.";
-      checkVerification.disabled=false;
-      checkVerification.innerHTML='<i class="fa-solid fa-circle-check"></i> I\'ve Verified My Email';
+googleButton.addEventListener("click", async function() {
+  clearMessage();
+
+  if (busy) return;
+
+  if (!ready) {
+    showMessage("Firebase is not ready. Check that firebase.js loads correctly.");
+    return;
+  }
+
+  if (!$("acceptTerms").checked) {
+    showMessage("Please accept the Terms of Service and Privacy Policy.");
+    return;
+  }
+
+  setBusy(true);
+
+  try {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: "select_account" });
+
+    const credential = await auth.signInWithPopup(provider);
+    const user = credential.user;
+
+    if (!user) {
+      throw new Error("Google sign-in did not return a user.");
     }
-  }catch(error){
-    console.error("VERIFICATION CHECK ERROR:",error);
-    verifyStatus.className="verify-status error";
-    verifyStatus.textContent="Unable to check verification status. Please try again.";
-    checkVerification.disabled=false;
-    checkVerification.innerHTML='<i class="fa-solid fa-circle-check"></i> I\'ve Verified My Email';
+
+    const names = googleNameParts(user);
+    const emailPrefix = cleanUsername(
+      (user.email || "customer").split("@")[0]
+    ) || "customer";
+
+    const details = {
+      username: cleanUsername($("username").value) ||
+        (emailPrefix + "_" + user.uid.slice(0, 5)),
+      firstName: cleanText($("firstName").value) || names.firstName,
+      lastName: cleanText($("lastName").value) || names.lastName,
+      phone: cleanText($("phone").value),
+      email: user.email || ""
+    };
+
+    await finishSignup(user, details, "google");
+  } catch (error) {
+    showMessage(friendlyError(error));
+  } finally {
+    setBusy(false);
   }
 });
 
-/* RESEND VERIFICATION EMAIL */
-resendVerification.addEventListener("click",async()=>{
-  if(!verificationUser||verificationFinished)return;
+document.querySelectorAll(".toggle-password").forEach(button => {
+  button.addEventListener("click", function() {
+    const input = $(this.dataset.target);
+    const show = input.type === "password";
 
-  try{
-    resendVerification.disabled=true;
-    resendVerification.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
-    await verificationUser.sendEmailVerification();
-    verifyStatus.className="verify-status success";
-    verifyStatus.textContent="A new verification email has been sent. Please check your inbox and spam folder.";
-  }catch(error){
-    console.error("RESEND VERIFICATION ERROR:",error);
-    verifyStatus.className="verify-status error";
-    verifyStatus.textContent=error.code==="auth/too-many-requests"
-      ?"Too many verification emails were requested. Please wait before trying again."
-      :"Could not resend the verification email. Please try again.";
-  }
-
-  setTimeout(()=>{
-    if(!verificationFinished){
-      resendVerification.disabled=false;
-      resendVerification.innerHTML='<i class="fa-solid fa-paper-plane"></i> Resend Verification Email';
-    }
-  },3000);
-});
-
-/* CLEAR ERROR WHILE TYPING */
-["name","email","password","confirmPassword"].forEach(id=>{
-  document.getElementById(id).addEventListener("input",()=>{
-    if(message.classList.contains("error")){
-      message.style.display="none";
-      message.className="message";
-    }
+    input.type = show ? "text" : "password";
+    this.textContent = show ? "Hide" : "Show";
+    this.setAttribute(
+      "aria-label",
+      show ? "Hide password" : "Show password"
+    );
   });
 });
 
-/* CLEAN UP TIMER */
-window.addEventListener("pagehide",()=>{
-  if(verificationTimer){
-    clearInterval(verificationTimer);
-    verificationTimer=null;
-  }
+$("username").addEventListener("input", function() {
+  this.value = cleanUsername(this.value);
 });
+
+try {
+  if (
+    typeof firebase === "undefined" ||
+    !firebase.apps ||
+    firebase.apps.length === 0
+  ) {
+    throw new Error("Firebase app has not been initialized.");
+  }
+
+  auth = window.firebaseAuth || firebase.auth();
+  db = window.firebaseDB || firebase.firestore();
+
+  if (!auth || !db) {
+    throw new Error("Firebase Auth or Firestore is unavailable.");
+  }
+
+  ready = true;
+} catch (error) {
+  console.error("Firebase initialization error:", error);
+  showMessage("Signup service could not start. Check your firebase.js configuration.");
+}
+})();
 </script>
+
+<style id="gentlelogs-xtralogs-signup">
+:root{
+  --green:#D9363E!important;
+  --green-dark:#A91F2B!important;
+  --text:#172033!important;
+  --muted:#687386!important;
+  --border:#E5E8EE!important;
+  --shadow:0 18px 48px rgba(23,32,51,.08)!important;
+}
+html,body{background:#F7F8FA!important;color:#172033!important}
+body{
+  min-height:100vh;min-height:100dvh;padding:30px 15px 26px!important;
+  background:radial-gradient(ellipse at 50% 0%,rgba(245,116,65,.08),transparent 38%),#F7F8FA!important;
+  font-family:"Space Grotesk",sans-serif!important;
+}
+*,button,input{font-family:Inter,"Space Grotesk",sans-serif!important}
+.page-wrapper{max-width:440px!important}
+.brand-header{text-align:center!important;margin:0 auto 23px!important}
+.brand-mark{
+  width:45px!important;height:45px!important;border-radius:14px!important;
+  margin:0 auto 9px!important;background:linear-gradient(145deg,#F26A3D,#C62936)!important;
+  box-shadow:0 8px 20px rgba(198,41,54,.18)!important;font-size:21px!important;
+}
+.brand-name{font-size:24px!important;letter-spacing:-1.1px!important;color:#172033!important;font-weight:800!important}
+.brand-name span{color:#D9363E!important}
+.brand-caption{font-size:9px!important;letter-spacing:1.8px!important;color:#8A93A3!important;margin-top:4px!important}
+.auth-card{
+  border:1px solid #E7E9EF!important;border-radius:19px!important;
+  background:#fff!important;box-shadow:0 18px 50px rgba(25,35,55,.075)!important;
+}
+.card-top{height:4px!important;background:linear-gradient(90deg,#B92332,#E54C42,#F5A044)!important}
+.auth-content{padding:24px 25px 25px!important}
+.auth-tabs{
+  display:grid!important;grid-template-columns:1fr 1fr!important;gap:0!important;
+  padding:0 5px!important;background:#fff!important;border:0!important;
+  border-bottom:1px solid #EEF0F4!important;border-radius:0!important;margin:-3px 0 24px!important;
+}
+.auth-tab{
+  position:relative!important;min-height:49px!important;border-radius:0!important;
+  font-size:12px!important;color:#7C8493!important;background:transparent!important;
+  box-shadow:none!important;
+}
+.auth-tab.active{color:#C92D38!important;background:transparent!important;box-shadow:none!important}
+.auth-tab.active:after{
+  content:"";position:absolute;left:18%;right:18%;bottom:0;height:3px;
+  border-radius:4px 4px 0 0;background:linear-gradient(90deg,#C62936,#F07842);
+}
+.heading{font-size:25px!important;line-height:1.25!important;letter-spacing:-.9px!important;color:#172033!important}
+.subtitle{font-size:12px!important;line-height:1.7!important;color:#737D8E!important;margin-top:7px!important;margin-bottom:21px!important}
+.form-row{gap:11px!important}
+.form-group{margin-bottom:15px!important}
+.form-group>label{
+  font-size:10px!important;letter-spacing:.75px!important;color:#354052!important;
+  font-weight:700!important;margin-bottom:7px!important;
+}
+.form-control{
+  height:49px!important;border:1px solid #E1E5EC!important;border-radius:10px!important;
+  background:#FBFCFD!important;color:#172033!important;font-size:13px!important;
+  padding:0 12px!important;box-shadow:none!important;
+}
+.form-control:focus{
+  border-color:#E05B4D!important;box-shadow:0 0 0 3px rgba(224,91,77,.10)!important;background:#fff!important;
+}
+.form-control::placeholder{color:#A0A8B5!important}
+.password-control{padding-right:60px!important}
+.toggle-password{
+  color:#7C8798!important;border-radius:8px!important;font-size:10px!important;
+}
+.toggle-password:hover{background:#FFF1ED!important;color:#C92D38!important}
+.password-hint{font-size:10px!important;color:#929BAA!important}
+.terms-row{gap:9px!important;margin:3px 0 18px!important}
+.terms-row input{accent-color:#C92D38!important}
+.terms-row label{font-size:10.5px!important;line-height:1.75!important;color:#687386!important}
+.terms-row a,.bottom-note a{color:#C92D38!important}
+.primary-btn{
+  min-height:49px!important;border-radius:10px!important;
+  background:linear-gradient(100deg,#C62936,#E44B3F 65%,#F18A43)!important;
+  box-shadow:0 8px 18px rgba(201,45,56,.17)!important;font-size:12.5px!important;
+}
+.primary-btn:hover{background:linear-gradient(100deg,#A91F2B,#CF3939 65%,#E77937)!important}
+.divider{margin:21px 0 16px!important;color:#929BAA!important}
+.divider:before,.divider:after{background:#E9ECF1!important}
+.google-btn{
+  min-height:47px!important;border-radius:10px!important;border:1px solid #E1E5EC!important;
+  color:#303B4E!important;font-size:12px!important;background:#fff!important;
+}
+.google-btn:hover{background:#FAFBFC!important;border-color:#CBD2DE!important}
+.bottom-note{font-size:10.5px!important;color:#929BAA!important;margin-top:19px!important}
+.security-note{font-size:10px!important;color:#929BAA!important;margin-top:14px!important}
+.message{font-size:11px!important}
+.message.error{color:#A32F28!important;background:#FFF0EE!important;border-color:#F6D5D1!important}
+.message.success{color:#17683D!important;background:#EDF9F0!important;border-color:#CDEBD5!important}
+.message.info{color:#275C86!important;background:#EEF7FF!important;border-color:#D2E7FA!important}
+@media(max-width:600px){
+  body{padding:25px 14px 22px!important}
+  .brand-header{margin-bottom:20px!important}
+  .auth-content{padding:22px 20px 22px!important}
+  .heading{font-size:24px!important}
+}
+@media(max-width:390px){
+  body{padding:19px 11px!important}
+  .brand-header{margin-bottom:17px!important}
+  .auth-content{padding:21px 16px 20px!important}
+  .auth-card{border-radius:17px!important}
+  .form-row{gap:8px!important}
+}
+/* Prevent iPhone Safari from zooming when a form field is tapped. */
+@media(max-width:767px){
+  input,textarea,select,.form-control{font-size:16px!important}
+}
+</style>
+
 </body>
 </html>

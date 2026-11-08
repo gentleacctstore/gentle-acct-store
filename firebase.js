@@ -1,3 +1,4 @@
+
 // Firebase connection for Gentle Acct Store
 
 const firebaseConfig = {
@@ -10,37 +11,30 @@ const firebaseConfig = {
   measurementId: "G-FN045CZYZG"
 };
 
+// Initialize Firebase safely
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
-// =========================
-// START FIREBASE
-// =========================
+// Firebase Authentication
+window.firebaseAuth = firebase.auth();
 
-firebase.initializeApp(firebaseConfig);
+// Cloud Firestore
+window.firebaseDB = firebase.firestore();
 
-
-// =========================
-// FIREBASE AUTHENTICATION
-// =========================
-
-window.firebaseAuth =
-  firebase.auth();
-
-
-// =========================
-// CLOUD FIRESTORE
-// =========================
-
-/*
-  Firestore will be available
-  on pages that load the
-  Firebase Firestore SDK.
-*/
+// Firebase Messaging
+window.firebaseMessaging = null;
 
 if (
-  typeof firebase.firestore === "function"
+  typeof firebase.messaging === "function" &&
+  typeof window !== "undefined" &&
+  "serviceWorker" in navigator
 ) {
-  
-  window.firebaseDB =
-    firebase.firestore();
-  
+  try {
+    window.firebaseMessaging = firebase.messaging();
+  } catch (error) {
+    console.warn("Firebase Messaging unavailable:", error);
+  }
 }
+
+console.log("Gentle Acct Store Firebase initialized successfully.");
