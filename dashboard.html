@@ -1240,108 +1240,6 @@ html.dark-mode .back-btn,html[data-theme="dark"] .back-btn {color:#B7E4BE !impor
 @media(max-width:767px){input,textarea,select,.form-control,.input-wrap input{font-size:16px !important;}}
 </style>
 
-<style id="gentle-compact-dashboard">
-/* Compact mobile-first layout matching the supplied reference recording. */
-.top-header{padding:9px 15px}
-.top-header-row{gap:9px}
-.brand-area{gap:8px}
-.brand-logo{width:35px;height:35px;border-radius:11px;font-size:16px}
-.brand-text h1{font-size:14px;letter-spacing:-.25px}
-.brand-text p{font-size:9px;margin-top:1px}
-.header-actions{gap:7px}
-.header-icon{width:32px;height:32px;border-radius:10px;font-size:14px}
-.header-wallet span{font-size:9px;margin-bottom:1px}
-.header-wallet strong{font-size:12px}
-.store-announcements{
-  display:flex;align-items:center;justify-content:center;gap:9px;
-  min-height:28px;padding:5px 10px;background:#194D28;color:#fff;
-  font-size:10px;font-weight:800;letter-spacing:.05px;
-}
-.store-announcements span{white-space:nowrap}
-.store-announcements i{margin-right:4px;color:#D6EBD9}
-.announcement-separator{opacity:.65}
-main{padding:12px 14px 23px}
-.section{margin-top:15px}
-.section-heading{margin-bottom:9px}
-.section-heading h2{font-size:16px}
-.wallet-card{padding:14px;border-radius:17px;box-shadow:0 7px 18px rgba(41,83,42,.12)}
-.user-info{gap:8px}
-.user-avatar{width:34px;height:34px;font-size:13px}
-.user-info small{font-size:10px;margin-bottom:2px}
-.user-info strong{font-size:12px;max-width:130px}
-.wallet-balance span{font-size:9px;margin-bottom:2px}
-.wallet-balance strong{font-size:12px}
-.wallet-art{top:55px;right:10px;transform:scale(.66);transform-origin:top right}
-.wallet-middle{margin-top:16px;padding-right:65px}
-.wallet-middle p{font-size:10px;margin-bottom:2px}
-.wallet-middle h2{font-size:23px;letter-spacing:-.7px}
-.wallet-bottom{margin-top:14px;padding-top:10px;gap:8px}
-.wallet-stats{gap:13px}
-.wallet-stat span{font-size:9px;margin-bottom:2px}
-.wallet-stat strong{font-size:12px}
-.wallet-buttons{gap:5px}
-.wallet-btn{min-height:31px;padding:7px 9px;font-size:10px}
-.stats-grid{gap:7px;margin-top:10px}
-.stat-card{padding:9px 5px;border-radius:13px}
-.stat-icon{width:29px;height:29px;margin-bottom:5px;border-radius:9px;font-size:13px}
-.stat-card strong{font-size:16px}
-.stat-card span{font-size:9px;margin-top:2px}
-.referral-premium{min-height:86px;gap:8px;padding:9px 10px;border-radius:15px}
-.gift-art{flex-basis:58px;width:58px;height:65px;transform:scale(.72)}
-.special-offer-label{font-size:8px;padding:4px 7px;margin-bottom:3px}
-.referral-copy h3{font-size:16px;line-height:1.2}
-.referral-copy p{font-size:10px;line-height:1.35;margin-top:3px}
-.referral-arrow{width:26px;height:26px;flex-basis:26px;font-size:10px}
-.search-box{height:42px;padding:0 12px;gap:9px;border-radius:12px}
-.search-box i{font-size:14px}
-.search-box input{font-size:14px}
-.popular-shortcuts{display:flex;align-items:center;gap:7px;overflow:hidden;margin-top:10px}
-.popular-shortcuts>strong{flex:0 0 auto;color:var(--muted);font-size:10px}
-.popular-category-buttons{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-.popular-category-buttons::-webkit-scrollbar{display:none}
-.popular-chip{flex:0 0 auto;padding:6px 10px;border:1px solid var(--border);border-radius:18px;background:#fff;color:var(--green);font-size:9px;font-weight:800;white-space:nowrap}
-.product-section{margin-top:17px;scroll-margin-top:65px}
-.product-section .section-heading{margin-bottom:8px}
-.product-section .section-heading h2{font-size:16px}
-.product-section .section-heading a{font-size:10px}
-.category-logo{width:27px;height:27px;flex-basis:27px}
-.product-list{border-radius:14px}
-.product-card{min-height:69px;gap:8px;padding:8px 9px}
-.product-image{width:39px;height:39px;flex-basis:39px;border-radius:10px}
-.product-image>i{font-size:22px}
-.product-info h3{font-size:12px;line-height:1.22;margin-bottom:3px}
-.product-stock{font-size:9px}
-.product-price{font-size:12px;margin-bottom:3px}
-.buy-btn{min-width:57px;min-height:28px;padding:5px 8px;font-size:10px}
-.buy-btn.disabled,.buy-btn:disabled{min-width:51px;min-height:28px;padding:5px;font-size:9px}
-.tutorial-card{padding:13px;border-radius:15px}
-.tutorial-card h3{font-size:14px}
-.tutorial-card p{font-size:11px;margin-bottom:10px}
-.tutorial-whatsapp{min-height:39px;padding:10px;font-size:11px}
-.floating-contact{width:43px;height:43px;right:12px;bottom:calc(76px + env(safe-area-inset-bottom));font-size:19px}
-.bottom-nav{height:calc(61px + env(safe-area-inset-bottom))}
-.bottom-nav-inner{height:61px}
-.nav-item{gap:3px;font-size:9px}
-.nav-item i{font-size:17px}
-body{padding-bottom:calc(70px + env(safe-area-inset-bottom))}
-html{scroll-padding-top:70px}
-.toast{bottom:calc(75px + env(safe-area-inset-bottom))}
-@media(max-width:370px){
-  .top-header{padding:8px 9px}
-  .brand-text h1{font-size:12px}
-  .brand-logo{width:31px;height:31px}
-  main{padding:10px 9px 20px}
-  .wallet-card{padding:11px}
-  .wallet-middle h2{font-size:20px}
-  .wallet-btn{padding:6px 7px;font-size:9px}
-  .product-card{min-height:64px;padding:7px}
-  .product-image{width:35px;height:35px;flex-basis:35px}
-}
-@media(min-width:700px){
-  .store-announcements{max-width:900px;margin:0 auto}
-}
-</style>
-
 </head>
 
 
@@ -1368,12 +1266,6 @@ html{scroll-padding-top:70px}
     </div>
   </div>
 </header>
-
-<div class="store-announcements" aria-label="Store announcements">
-  <span><i class="fa-solid fa-users"></i> Active Users</span>
-  <span class="announcement-separator">•</span>
-  <span><i class="fa-solid fa-box-open"></i> New Stock Added Daily</span>
-</div>
 
 <main>
   <section class="wallet-card">
@@ -1486,11 +1378,6 @@ html{scroll-padding-top:70px}
              autocomplete="off"
              aria-label="Search products">
     </div>
-  </section>
-
-  <section class="popular-shortcuts" aria-label="Popular categories">
-    <strong>Popular:</strong>
-    <div id="popularCategoryButtons" class="popular-category-buttons"></div>
   </section>
 
   <section class="section">
@@ -1918,7 +1805,6 @@ async function loadProducts() {
     });
 
     buildCategoryButtons();
-    buildPopularCategoryButtons();
     renderProducts();
   } catch(error) {
     console.error("Products loading error:", error);
@@ -1962,22 +1848,13 @@ const CATEGORY_ORDER = [
 
 function getCategoryPriority(category) {
   const name = String(category || "").trim().toLowerCase();
-  const index = CATEGORY_ORDER.findIndex(
-    item => item.trim().toLowerCase() === name
-  );
+  const index = CATEGORY_ORDER.findIndex(item => item.toLowerCase() === name);
   return index === -1 ? CATEGORY_ORDER.length : index;
 }
 
-// Always keep the 24 requested categories in their exact supplied order.
-// Any extra categories are placed after them, alphabetically.
-function sortCategories(a, b) {
-  const priorityDifference = getCategoryPriority(a) - getCategoryPriority(b);
-  if (priorityDifference !== 0) return priorityDifference;
-  return String(a).localeCompare(String(b));
-}
-
-function getOrderedCategories(categories) {
-  return [...categories].sort(sortCategories);
+function sortCategories(a,b) {
+  return getCategoryPriority(a) - getCategoryPriority(b) ||
+    a.localeCompare(b);
 }
 
 function buildCategoryButtons() {
@@ -2004,7 +1881,9 @@ function buildCategoryButtons() {
     }
   });
 
-  getOrderedCategories(categories).forEach(category => {
+  categories.sort(sortCategories);
+
+  categories.forEach(category => {
     const button = document.createElement("button");
 
     button.className = "category-btn" +
@@ -2016,27 +1895,6 @@ function buildCategoryButtons() {
     button.addEventListener("click",() => selectCategory(category));
     container.appendChild(button);
   });
-}
-
-function buildPopularCategoryButtons() {
-  const container = document.getElementById("popularCategoryButtons");
-  if (!container) return;
-
-  const preferred = ["Instagram","TikTok","Facebook","Gmail","VPN","Discord"];
-  const available = [...new Set(products.map(product =>
-    String(product.category || "").trim()).filter(Boolean))];
-  const unique = preferred.map(name =>
-    available.find(category => category.toLowerCase().includes(name.toLowerCase()))
-  ).filter(Boolean);
-
-  container.innerHTML = unique.map(category =>
-    `<button class="popular-chip" type="button"
-      onclick="selectCategoryByName('${escapeAttribute(category)}')">${escapeHtml(category)}</button>`
-  ).join("");
-}
-
-function selectCategoryByName(category) {
-  selectCategory(category);
 }
 
 function selectCategory(category) {
@@ -2089,7 +1947,7 @@ function renderProducts() {
 
   let html = "";
 
-  getOrderedCategories(Object.keys(groups)).forEach(category => {
+  Object.keys(groups).sort(sortCategories).forEach(category => {
     const sectionId = "products-" + slugify(category);
     const safeCategory = escapeAttribute(category);
 
@@ -2119,8 +1977,7 @@ function renderProducts() {
 /* COMPACT PRODUCT NAMES
    Keep important details, use familiar short forms, and display in capitals. */
 function getDisplayProductName(product) {
-  // An admin-entered displayName takes priority over the automatic shortened name.
-  let original = String(product.displayName || product.name || "Product").trim();
+  let original = String(product.name || "Product").trim();
   const entityDecoder = document.createElement("textarea");
   entityDecoder.innerHTML = original;
   original = entityDecoder.value.trim();
