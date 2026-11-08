@@ -961,13 +961,7 @@ document.addEventListener("keydown",event=>{
 
 /* CATEGORY ROW LAYOUT */
 function normalizeLayoutRows(rows) {
-  if (!Array.isArray(rows)) return [];
-  return rows.map(row => {
-    // Firestore does not allow an array directly inside another array.
-    // Read both the older array format and the Firestore-safe object format.
-    const categories = Array.isArray(row) ? row : row && Array.isArray(row.categories) ? row.categories : [];
-    return categories.map(value => String(value || "").trim()).filter(Boolean);
-  }).filter(row => row.length);
+  return Array.isArray(rows) ? rows.map(row => Array.isArray(row) ? row.filter(Boolean) : []).filter(row => row.length) : [];
 }
 function renderCategoryLayoutRows() {
   const host=$("categoryLayoutRows");
@@ -997,10 +991,7 @@ $("saveCategoryLayout").addEventListener("click",async()=>{
   try{
     const rows=normalizeLayoutRows(categoryLayoutRows);
     const used=rows.flat();if(new Set(used).size!==used.length)throw new Error("A category can only appear once.");
-    // Store each row as an object containing a categories array.
-    // This preserves row grouping while avoiding Firestore's nested-array restriction.
-    const firestoreRows=rows.map(categories=>({categories}));
-    await db.collection("storeSettings").doc("categoryLayout").set({rows:firestoreRows,updatedAt:firebase.firestore.FieldValue.serverTimestamp(),updatedBy:auth.currentUser.uid},{merge:true});
+    await db.collection("storeSettings").doc("categoryLayout").set({rows,updatedAt:firebase.firestore.FieldValue.serverTimestamp(),updatedBy:auth.currentUser.uid},{merge:true});
     categoryLayoutRows=rows;showMessage("categoryLayoutMessage","Category row layout saved successfully.","success");showToast("Category layout saved.");
   }catch(error){showMessage("categoryLayoutMessage","Could not save layout: "+readableError(error));}
   finally{button.disabled=false;button.textContent="Save category layout";}
