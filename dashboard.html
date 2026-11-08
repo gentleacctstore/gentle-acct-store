@@ -1974,15 +1974,34 @@ function renderProducts() {
 }
 
 
-/* CUSTOMER-FRIENDLY PRODUCT NAMES
-   Keep the supplier's full wording so customers can understand what they are buying.
-   Decode HTML entities such as &amp; before displaying the name. */
+/* COMPACT PRODUCT NAMES
+   Keep important details, use familiar short forms, and display in capitals. */
 function getDisplayProductName(product) {
   let original = String(product.name || "Product").trim();
   const entityDecoder = document.createElement("textarea");
   entityDecoder.innerHTML = original;
   original = entityDecoder.value.trim();
-  return original.replace(/\\s+/g, " ");
+  for (let i = 0; i < 3 && /&(?:amp|quot|#39|lt|gt);/i.test(original); i++) {
+    entityDecoder.innerHTML = original;
+    original = entityDecoder.value.trim();
+  }
+  return original
+    .replace(/\s+/g, " ")
+    .replace(/Facebook/gi, "FB")
+    .replace(/Instagram/gi, "IG")
+    .replace(/Accounts/gi, "ACCTS")
+    .replace(/Account/gi, "ACCT")
+    .replace(/Followers/gi, "FOLLOWS")
+    .replace(/Verified by e-mail/gi, "EMAIL VERIFIED")
+    .replace(/Verified by email/gi, "EMAIL VERIFIED")
+    .replace(/Email Included/gi, "EMAIL INCL.")
+    .replace(/No email in the set/gi, "NO EMAIL")
+    .replace(/Registered in/gi, "REG. IN")
+    .replace(/Partially filled profile/gi, "PARTIAL PROFILE")
+    .replace(/2FA in the set/gi, "2FA INCL.")
+    .replace(/Sharp & Ready to Use/gi, "SHARP & READY")
+    .replace(/\s*\|\s*/g, " | ")
+    .toUpperCase();
 }
 
 /* PRODUCT CARD */
