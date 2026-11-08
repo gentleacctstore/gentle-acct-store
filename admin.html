@@ -472,7 +472,6 @@ th { color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.
     <button class="nav-link" data-section="products"><span class="nav-icon">▣</span>Products</button>
     <button class="nav-link" data-section="inventory"><span class="nav-icon">▤</span>Inventory</button>
     <button class="nav-link" data-section="categoryLinks"><span class="nav-icon">🔗</span>Category Links</button>
-    <button class="nav-link" data-section="categoryLayout"><span class="nav-icon">☷</span>Category Layout</button>
     <button class="nav-link" data-section="supplier"><span class="nav-icon">⇄</span>Supplier API</button>
     <a class="nav-link" href="customers.html"><span class="nav-icon">♙</span>Customers</a>
     <a class="nav-link" href="wallet-funding.html"><span class="nav-icon">↗</span>Funding requests</a>
@@ -577,21 +576,6 @@ th { color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.
             <div class="toolbar" style="margin-bottom:15px"><div class="search-wrap"><input id="categoryLinkSearch" type="search" placeholder="Search categories..."></div></div>
             <div class="table-wrap"><table><thead><tr><th>Category</th><th>Logo URL</th><th>Default link</th></tr></thead><tbody id="categoryLinksTable"></tbody></table></div>
             <button class="btn btn-primary" id="saveCategoryLinks" style="margin-top:16px">Save category settings</button>
-          </div>
-        </div>
-      </section>
-
-      <section id="categoryLayoutSection" class="hidden">
-        <div class="panel">
-          <div class="panel-head"><div><div class="panel-title">Category row layout</div><div class="panel-desc">Choose which categories appear on each line of your storefront.</div></div><button class="btn" id="reloadCategoryLayout" type="button">↻ Reload</button></div>
-          <div class="panel-body">
-            <div class="error-box">Add categories to each row in the order you want them displayed. Categories not assigned to a row will appear after your arranged rows.</div>
-            <div id="categoryLayoutMessage" class="hidden"></div>
-            <div id="categoryLayoutRows" style="display:grid;gap:12px;margin-top:14px"></div>
-            <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:14px">
-              <button class="btn" id="addCategoryRow" type="button">＋ Add row</button>
-              <button class="btn btn-primary" id="saveCategoryLayout" type="button">Save category layout</button>
-            </div>
           </div>
         </div>
       </section>
@@ -708,11 +692,6 @@ const CATEGORY_META = {
 };
 
 const CATEGORIES = [...new Set([...OLD_CATEGORIES,...NEW_CATEGORIES,...Object.keys(CATEGORY_META)])];
-const CATEGORY_LAYOUT_DEFAULT = [
-  "Giveaway Accounts","All Texting Apps","USA Facebook","Aged Facebook","Instagram","Aged Instagram","TikTok Accounts","Twitter","Twitter Followers","VPN Premium","9 Proxy","Working Tools","Netflix Accounts","Snapchat","USA iCloud","USA Facebook Dating (Female)","USA Facebook Dating (Male)","Email Services","LinkedIn","Reddit Accounts","Advertising Facebook","Verified Profiles","Aged Instagram with Followers and Old Posts","Plenty of Fish (POF) Dating Sites"
-];
-let categoryLayoutRows = [];
-
 let products = [];
 let productStock = {};
 let inventoryErrors = {};
@@ -847,7 +826,7 @@ $("themeToggle").addEventListener("click",()=>{
 /* NAVIGATION */
 
 function showSection(section) {
-  const map={dashboard:"dashboardSection",products:"productsSection",inventory:"inventorySection",categoryLinks:"categoryLinksSection",categoryLayout:"categoryLayoutSection",supplier:"supplierSection"};
+  const map={dashboard:"dashboardSection",products:"productsSection",inventory:"inventorySection",categoryLinks:"categoryLinksSection",supplier:"supplierSection"};
   Object.entries(map).forEach(([key,id])=>$(id).classList.toggle("hidden",key!==section));
   document.querySelectorAll(".nav-link[data-section]").forEach(button=>{
     button.classList.toggle("active",button.dataset.section===section);
@@ -857,7 +836,6 @@ function showSection(section) {
     products:["Products","Manage your store products"],
     inventory:["Inventory","Review available and sold stock"],
     categoryLinks:["Category Links","Manage category logos and saved links"],
-    categoryLayout:["Category Layout","Arrange storefront categories into rows"],
     supplier:["Supplier API","Connect Spencer Acc Store and import products"]
   };
   $("pageTitle").textContent=titles[section][0];
@@ -957,44 +935,6 @@ $("productModal").addEventListener("click",event=>{if(event.target===$("productM
 $("inventoryModal").addEventListener("click",event=>{if(event.target===$("inventoryModal"))closeInventoryModal();});
 document.addEventListener("keydown",event=>{
   if(event.key==="Escape"){closeProductModal();closeInventoryModal();}
-});
-
-/* CATEGORY ROW LAYOUT */
-function normalizeLayoutRows(rows) {
-  return Array.isArray(rows) ? rows.map(row => Array.isArray(row) ? row.filter(Boolean) : []).filter(row => row.length) : [];
-}
-function renderCategoryLayoutRows() {
-  const host=$("categoryLayoutRows");
-  if(!host) return;
-  host.innerHTML=categoryLayoutRows.map((row,index)=>{
-    const options=CATEGORY_LAYOUT_DEFAULT.filter(category=>!categoryLayoutRows.some((other,ri)=>other.includes(category) && ri!==index));
-    return `<div style="border:1px solid var(--border);border-radius:12px;padding:12px;background:var(--card)">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:9px"><strong>LINE ${index+1}</strong><button class="btn btn-small" type="button" data-remove-layout-row="${index}">Remove row</button></div>
-      <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px">${row.map((category,position)=>`<span style="display:inline-flex;align-items:center;gap:6px;padding:7px 9px;border-radius:20px;background:var(--input-bg);border:1px solid var(--border);font-size:12px"><b>${position+1}.</b> ${escapeHTML(category)} <button type="button" data-remove-layout-category="${index}" data-category="${escapeHTML(category)}" aria-label="Remove ${escapeHTML(category)}" style="border:0;background:transparent;color:var(--danger);font-weight:900">×</button></span>`).join("") || '<span class="muted">No categories in this line yet.</span>'}</div>
-      <div style="display:flex;gap:8px"><select data-layout-add-select="${index}" style="flex:1;min-width:0;padding:10px;border:1px solid var(--border);border-radius:9px;background:var(--input-bg);color:var(--text);font-size:16px"><option value="">Choose category to add…</option>${options.filter(c=>!row.includes(c)).map(c=>`<option value="${escapeHTML(c)}">${escapeHTML(c)}</option>`).join("")}</select><button class="btn btn-primary btn-small" type="button" data-add-layout-category="${index}">Add</button></div>
-    </div>`;
-  }).join("");
-  host.querySelectorAll("[data-add-layout-category]").forEach(button=>button.addEventListener("click",()=>{const i=Number(button.dataset.addLayoutCategory);const select=host.querySelector(`[data-layout-add-select="${i}"]`);if(select.value&&!categoryLayoutRows[i].includes(select.value)){categoryLayoutRows[i].push(select.value);renderCategoryLayoutRows();}}));
-  host.querySelectorAll("[data-remove-layout-category]").forEach(button=>button.addEventListener("click",()=>{const i=Number(button.dataset.removeLayoutCategory);categoryLayoutRows[i]=categoryLayoutRows[i].filter(c=>c!==button.dataset.category);renderCategoryLayoutRows();}));
-  host.querySelectorAll("[data-remove-layout-row]").forEach(button=>button.addEventListener("click",()=>{categoryLayoutRows.splice(Number(button.dataset.removeLayoutRow),1);renderCategoryLayoutRows();}));
-}
-async function loadCategoryLayout(){
-  const snapshot=await db.collection("storeSettings").doc("categoryLayout").get();
-  const saved=snapshot.exists?normalizeLayoutRows(snapshot.data().rows):[];
-  categoryLayoutRows=saved.length?saved:[CATEGORY_LAYOUT_DEFAULT.slice()];
-  renderCategoryLayoutRows();
-}
-$("addCategoryRow").addEventListener("click",()=>{categoryLayoutRows.push([]);renderCategoryLayoutRows();});
-$("reloadCategoryLayout").addEventListener("click",async()=>{try{await loadCategoryLayout();showToast("Category layout reloaded.");}catch(error){showMessage("categoryLayoutMessage","Could not load layout: "+readableError(error));}});
-$("saveCategoryLayout").addEventListener("click",async()=>{
-  const button=$("saveCategoryLayout");button.disabled=true;button.textContent="Saving...";
-  try{
-    const rows=normalizeLayoutRows(categoryLayoutRows);
-    const used=rows.flat();if(new Set(used).size!==used.length)throw new Error("A category can only appear once.");
-    await db.collection("storeSettings").doc("categoryLayout").set({rows,updatedAt:firebase.firestore.FieldValue.serverTimestamp(),updatedBy:auth.currentUser.uid},{merge:true});
-    categoryLayoutRows=rows;showMessage("categoryLayoutMessage","Category row layout saved successfully.","success");showToast("Category layout saved.");
-  }catch(error){showMessage("categoryLayoutMessage","Could not save layout: "+readableError(error));}
-  finally{button.disabled=false;button.textContent="Save category layout";}
 });
 
 /* CATEGORY LINKS */
@@ -1692,7 +1632,7 @@ async function refreshAll() {
 
   try {
     setHealthStatus("storeConnectionStatus","Connecting…","warn");
-    const results=await Promise.allSettled([loadProducts(),loadCategorySettings(),loadCategoryLayout(),loadFundingSummary()]);
+    const results=await Promise.allSettled([loadProducts(),loadCategorySettings(),loadFundingSummary()]);
     const productResult=results[0];
     const categoryResult=results[1];
     const fundingResult=results[2];
