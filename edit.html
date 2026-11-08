@@ -488,6 +488,28 @@ html.dark-mode .nav-item.active,html[data-theme="dark"] .nav-item.active,
 html.dark-mode .header-icon,html[data-theme="dark"] .header-icon,
 html.dark-mode .back-btn,html[data-theme="dark"] .back-btn {color:#B7E4BE !important;}
 @media(max-width:767px){input,textarea,select,.form-control,.input-wrap input{font-size:16px !important;}}
+
+/* Product editor enhancements */
+.image-preview-wrap{margin-top:10px;display:flex;align-items:center;gap:12px;padding:10px;border:1px dashed var(--border);border-radius:12px;background:#FBFCFE}
+.image-preview{width:76px;height:76px;object-fit:cover;border-radius:10px;background:#EAF4EC;display:none}
+.image-preview-placeholder{width:76px;height:76px;border-radius:10px;background:#EAF4EC;color:#29532A;display:flex;align-items:center;justify-content:center;font-size:22px}
+.image-preview-meta{min-width:0;font-size:10px;color:var(--muted);line-height:1.6;overflow-wrap:anywhere}
+.editor-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:14px 0}
+.editor-stat{padding:12px;border:1px solid var(--border);border-radius:12px;background:#FBFCFE;min-width:0}
+.editor-stat strong{display:block;font-size:17px;color:var(--blue-dark);line-height:1.3}
+.editor-stat span{font-size:9px;color:var(--muted);font-weight:600}
+.supplier-finance{display:none;margin-top:15px;padding:14px;border:1px solid var(--border);border-radius:13px;background:#F8FBF8}
+.supplier-finance-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.supplier-metric span{display:block;color:var(--muted);font-size:9px;font-weight:600}
+.supplier-metric strong{display:block;color:var(--text);font-size:13px;margin-top:4px;overflow-wrap:anywhere}
+.profit-positive{color:#15803D!important}.profit-negative{color:#DC2626!important}
+.bulk-preview{display:none;margin-top:10px;padding:11px 12px;border-radius:11px;background:#EAF4EC;color:#194D28;font-size:10px;line-height:1.7}
+.bulk-preview.show{display:block}
+.bulk-preview.warning{background:#FFF7E6;color:#92400E}
+.unsaved-indicator{display:none;align-items:center;gap:6px;font-size:9px;font-weight:700;color:#B45309;margin-top:9px}
+.unsaved-indicator.show{display:flex}
+@media(max-width:390px){.editor-stats{gap:6px}.editor-stat{padding:9px}.editor-stat strong{font-size:15px}.supplier-finance-grid{grid-template-columns:1fr 1fr}}
+
 </style>
 
 </head>
@@ -538,13 +560,28 @@ html.dark-mode .back-btn,html[data-theme="dark"] .back-btn {color:#B7E4BE !impor
         <div class="field">
           <label for="category">Category</label>
           <select id="category">
-            <option value="Giveaway Accounts">Giveaway Accounts</option>
             <option value="Instagram">Instagram</option>
-            <option value="TikTok">TikTok</option>
             <option value="Facebook">Facebook</option>
-            <option value="Gmail">Gmail</option>
+            <option value="TikTok">TikTok</option>
+            <option value="Gmails">Gmails</option>
+            <option value="Google Voice">Google Voice</option>
             <option value="VPN">VPN</option>
+            <option value="WhatsApp">WhatsApp</option>
+            <option value="Telegram">Telegram</option>
+            <option value="Snapchat">Snapchat</option>
+            <option value="X (Twitter)">X (Twitter)</option>
             <option value="Discord">Discord</option>
+            <option value="All Messaging Apps">All Messaging Apps</option>
+            <option value="Giveaway Accounts">Giveaway Accounts</option>
+            <option value="9 Proxy">9 Proxy</option>
+            <option value="Working Tools 🧰">Working Tools 🧰</option>
+            <option value="Netflix Account">Netflix Account</option>
+            <option value="USA iCloud">USA iCloud</option>
+            <option value="LinkedIn">LinkedIn</option>
+            <option value="Reddit Accounts">Reddit Accounts</option>
+            <option value="Facebook Advertising">Facebook Advertising</option>
+            <option value="Verified Profiles">Verified Profiles</option>
+            <option value="Plenty of Fish (POF) Dating Sites">Plenty of Fish (POF) Dating Sites</option>
             <option value="Other">Other</option>
           </select>
         </div>
@@ -557,6 +594,11 @@ html.dark-mode .back-btn,html[data-theme="dark"] .back-btn {color:#B7E4BE !impor
         <div class="field">
           <label for="image">Product Image URL</label>
           <input id="image" type="url" placeholder="https://example.com/image.jpg">
+          <div class="image-preview-wrap">
+            <div class="image-preview-placeholder" id="imagePreviewPlaceholder"><i class="fa-regular fa-image"></i></div>
+            <img id="imagePreview" class="image-preview" alt="Product image preview">
+            <div class="image-preview-meta" id="imagePreviewMeta">Paste an image URL to preview how your product image will look.</div>
+          </div>
         </div>
 
         <div class="field full">
@@ -567,6 +609,16 @@ html.dark-mode .back-btn,html[data-theme="dark"] .back-btn {color:#B7E4BE !impor
       </div>
 
       <div id="supplierEditNotice" class="message show success" style="display:none;margin-top:16px"></div>
+      <div id="supplierFinance" class="supplier-finance">
+        <div class="card-title" style="margin-bottom:12px"><i class="fa-solid fa-chart-line"></i> Supplier Pricing Overview</div>
+        <div class="supplier-finance-grid">
+          <div class="supplier-metric"><span>Supplier cost</span><strong id="supplierCostValue">—</strong></div>
+          <div class="supplier-metric"><span>Your selling price</span><strong id="supplierSellingValue">—</strong></div>
+          <div class="supplier-metric"><span>Estimated profit</span><strong id="supplierProfitValue">—</strong></div>
+        </div>
+        <p class="inventory-help" style="margin:10px 0 0">Profit is an estimate before payment fees or other expenses. Supplier cost is read-only and remains controlled by the supplier sync.</p>
+      </div>
+      <div class="unsaved-indicator" id="unsavedIndicator"><i class="fa-solid fa-circle-exclamation"></i> You have unsaved product changes</div>
 
       <div class="actions">
         <button type="button" class="primary-btn" id="saveButton">
@@ -592,7 +644,11 @@ html.dark-mode .back-btn,html[data-theme="dark"] .back-btn {color:#B7E4BE !impor
       <p class="inventory-help">
         Add account details or other inventory items one per line. Available items can be removed. Sold items are preserved for order history.
       </p>
-
+      <div class="editor-stats">
+        <div class="editor-stat"><strong id="statAvailable">0</strong><span>AVAILABLE</span></div>
+        <div class="editor-stat"><strong id="statSold">0</strong><span>SOLD</span></div>
+        <div class="editor-stat"><strong id="statTotal">0</strong><span>TOTAL ITEMS</span></div>
+      </div>
       <div id="inventoryList" class="inventory-list"></div>
 
       <div class="add-inventory">
@@ -603,6 +659,7 @@ html.dark-mode .back-btn,html[data-theme="dark"] .back-btn {color:#B7E4BE !impor
             <i class="fa-solid fa-plus"></i>
           </button>
         </div>
+        <div id="bulkPreview" class="bulk-preview" aria-live="polite"></div>
       </div>
 
     </section>
@@ -636,6 +693,7 @@ let inventoryItems = [];
 let inventoryToDelete = null;
 let messageTimer = null;
 let isSupplierProduct = false;
+let initialProductFormState = "";
 
 /* ELEMENTS */
 const loading = document.getElementById("loading");
@@ -721,6 +779,68 @@ firebaseAuth.onAuthStateChanged(async function(user) {
   await loadProduct();
 });
 
+/* EDITOR HELPERS */
+function moneyNGN(value) {
+  return "₦" + Number(value || 0).toLocaleString("en-NG", {maximumFractionDigits: 2});
+}
+function getProductFormState() {
+  return JSON.stringify({
+    name: document.getElementById("productName").value,
+    category: document.getElementById("category").value,
+    price: document.getElementById("price").value,
+    image: document.getElementById("image").value,
+    description: document.getElementById("description").value
+  });
+}
+function updateUnsavedState() {
+  const changed = !!initialProductFormState && getProductFormState() !== initialProductFormState;
+  document.getElementById("unsavedIndicator").classList.toggle("show", changed);
+  return changed;
+}
+function updateImagePreview() {
+  const url = document.getElementById("image").value.trim();
+  const img = document.getElementById("imagePreview");
+  const placeholder = document.getElementById("imagePreviewPlaceholder");
+  const meta = document.getElementById("imagePreviewMeta");
+  img.style.display = "none";
+  placeholder.style.display = "flex";
+  if (!url) {
+    meta.textContent = "Paste an image URL to preview how your product image will look.";
+    return;
+  }
+  try {
+    const parsed = new URL(url);
+    if (!["https:", "http:"].includes(parsed.protocol)) throw new Error("Invalid URL");
+    img.onload = function(){ img.style.display = "block"; placeholder.style.display = "none"; meta.textContent = "Image preview loaded."; };
+    img.onerror = function(){ img.style.display = "none"; placeholder.style.display = "flex"; meta.textContent = "Image could not load. Check the URL."; };
+    img.src = url;
+  } catch (error) {
+    meta.textContent = "Enter a valid http:// or https:// image URL.";
+  }
+}
+function updateSupplierFinance() {
+  if (!isSupplierProduct || !productData) return;
+  const cost = Number(productData.supplierCost || 0);
+  const selling = Number(document.getElementById("price").value || 0);
+  const profit = selling - cost;
+  document.getElementById("supplierCostValue").textContent = moneyNGN(cost);
+  document.getElementById("supplierSellingValue").textContent = moneyNGN(selling);
+  const profitEl = document.getElementById("supplierProfitValue");
+  profitEl.textContent = (profit >= 0 ? "+" : "−") + moneyNGN(Math.abs(profit));
+  profitEl.className = profit >= 0 ? "profit-positive" : "profit-negative";
+}
+["productName","category","price","image","description"].forEach(function(id){
+  document.getElementById(id).addEventListener("input", function(){
+    updateUnsavedState();
+    if (id === "image") updateImagePreview();
+    if (id === "price") updateSupplierFinance();
+  });
+  document.getElementById(id).addEventListener("change", updateUnsavedState);
+});
+window.addEventListener("beforeunload", function(event){
+  if (updateUnsavedState()) { event.preventDefault(); event.returnValue = ""; }
+});
+
 /* LOAD PRODUCT */
 async function loadProduct() {
   try {
@@ -746,6 +866,7 @@ async function loadProduct() {
       notice.textContent = "Supplier product · Spencer ID: " + (productData.supplierProductId || productId.replace("spencer_", "")) +
         " · Supplier cost: ₦" + Number(productData.supplierCost || 0).toLocaleString("en-NG") +
         " · Supplier stock and supplier cost are synced from Spencer. Edit only your Gentle selling details here.";
+      document.getElementById("supplierFinance").style.display = "block";
       const inventoryCard = document.querySelectorAll("#editor .card")[1];
       if (inventoryCard) inventoryCard.style.display = "none";
     }
@@ -763,8 +884,12 @@ async function loadProduct() {
     document.getElementById("price").value = Number(productData.price || 0);
     document.getElementById("image").value = productData.image || "";
     document.getElementById("description").value = productData.description || "";
+    updateImagePreview();
+    updateSupplierFinance();
 
     await loadInventory();
+    initialProductFormState = getProductFormState();
+    updateUnsavedState();
 
     loading.style.display = "none";
     editor.style.display = "block";
@@ -810,8 +935,12 @@ function renderInventory() {
     return item.sold !== true;
   }).length;
 
+  const soldCount = inventoryItems.length - available;
   inventoryCount.textContent =
     available + (available === 1 ? " item available" : " items available");
+  document.getElementById("statAvailable").textContent = available.toLocaleString();
+  document.getElementById("statSold").textContent = soldCount.toLocaleString();
+  document.getElementById("statTotal").textContent = inventoryItems.length.toLocaleString();
 
   inventoryList.innerHTML = "";
 
@@ -951,6 +1080,8 @@ async function saveProduct() {
       })
     };
 
+    initialProductFormState = getProductFormState();
+    updateUnsavedState();
     showMessage("Product updated successfully.", "success");
 
   } catch (error) {
@@ -961,6 +1092,29 @@ async function saveProduct() {
     button.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save Changes';
   }
 }
+
+function previewBulkInventory() {
+  const raw = document.getElementById("newInventory").value;
+  const preview = document.getElementById("bulkPreview");
+  const incoming = raw.split(/\r?\n/).map(function(value){ return value.trim(); }).filter(Boolean);
+  if (!incoming.length) {
+    preview.className = "bulk-preview";
+    preview.textContent = "";
+    return;
+  }
+  const existing = new Set(inventoryItems.map(function(item){ return String(item.value || "").trim().toLowerCase(); }));
+  const seen = new Set();
+  let duplicates = 0;
+  let accepted = 0;
+  incoming.forEach(function(value){
+    const key = value.toLowerCase();
+    if (existing.has(key) || seen.has(key)) duplicates++;
+    else { seen.add(key); accepted++; }
+  });
+  preview.className = "bulk-preview show" + (duplicates ? " warning" : "");
+  preview.textContent = accepted + " new item(s) ready to add · " + duplicates + " duplicate line(s) will be skipped.";
+}
+document.getElementById("newInventory").addEventListener("input", previewBulkInventory);
 
 /* ADD INVENTORY */
 document.getElementById("addInventoryButton").addEventListener("click", addInventory);
@@ -974,14 +1128,26 @@ async function addInventory() {
     return;
   }
 
-  const items = text
+  const rawItems = text
     .split(/\r?\n/)
-    .map(function(item) {
-      return item.trim();
-    })
-    .filter(function(item) {
-      return item.length > 0;
-    });
+    .map(function(item) { return item.trim(); })
+    .filter(function(item) { return item.length > 0; });
+  const existingValues = new Set(inventoryItems.map(function(item) {
+    return String(item.value || "").trim().toLowerCase();
+  }));
+  const seenValues = new Set();
+  const items = rawItems.filter(function(item) {
+    const key = item.toLowerCase();
+    if (existingValues.has(key) || seenValues.has(key)) return false;
+    seenValues.add(key);
+    return true;
+  });
+  const skippedDuplicates = rawItems.length - items.length;
+
+  if (!items.length) {
+    showMessage("No new inventory items to add. " + skippedDuplicates + " duplicate line(s) were skipped.", "error");
+    return;
+  }
 
   if (!items.length) {
     showMessage("Enter at least one inventory item.", "error");
@@ -1025,6 +1191,8 @@ async function addInventory() {
     }
 
     textarea.value = "";
+    document.getElementById("bulkPreview").className = "bulk-preview";
+    document.getElementById("bulkPreview").textContent = "";
 
     await loadInventory();
     await updateStock();
@@ -1033,7 +1201,8 @@ async function addInventory() {
       items.length +
       (items.length === 1
         ? " inventory item added successfully."
-        : " inventory items added successfully."),
+        : " inventory items added successfully.") +
+      (skippedDuplicates ? " " + skippedDuplicates + " duplicate line(s) skipped." : ""),
       "success"
     );
 
