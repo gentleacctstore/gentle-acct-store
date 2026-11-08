@@ -681,12 +681,10 @@ main {padding:22px 22px 30px}
   font-weight:1000;
   line-height:1.4;
   letter-spacing:-.3px;
+  display:block;
+  overflow:visible;
+  white-space:normal;
   overflow-wrap:anywhere;
-  display:-webkit-box;
-  -webkit-box-orient:vertical;
-  -webkit-line-clamp:2;
-  line-clamp:2;
-  overflow:hidden;
 }
 .product-meta {flex-wrap:wrap;gap:7px}
 .product-stock {
@@ -1428,8 +1426,8 @@ html.dark-mode .back-btn,html[data-theme="dark"] .back-btn {color:#B7E4BE !impor
 <a class="floating-contact"
    href="https://chat.whatsapp.com/DCNgBa8SHIH81Bcc2rSCmf"
    target="_blank" rel="noopener noreferrer"
-   aria-label="Join our WhatsApp community">
-  <i class="fa-brands fa-whatsapp"></i>
+   aria-label="Contact customer support">
+  <i class="fa-solid fa-headset" aria-hidden="true"></i>
 </a>
 
 <nav class="bottom-nav" aria-label="Main navigation">
@@ -1950,45 +1948,15 @@ function renderProducts() {
 }
 
 
-/* SHORT DISPLAY NAMES FOR SPENCER SUPPLIER PRODUCTS */
+/* CUSTOMER-FRIENDLY PRODUCT NAMES
+   Keep the supplier's full wording so customers can understand what they are buying.
+   Decode HTML entities such as &amp; before displaying the name. */
 function getDisplayProductName(product) {
   let original = String(product.name || "Product").trim();
-  // Decode HTML entities so encoded text never appears in product names.
   const entityDecoder = document.createElement("textarea");
   entityDecoder.innerHTML = original;
   original = entityDecoder.value.trim();
-
-  const isSpencerProduct =
-    String(product.supplierProvider || "").toLowerCase() === "spenceraccstore" ||
-    String(product.id || "").startsWith("spencer_") ||
-    Boolean(product.supplierProductId);
-
-  if (!isSpencerProduct) return original;
-
-  let name = original.replace(/\s+/g, " ").trim();
-  name = name
-    .replace(/\bACCOUNTS\b/gi, "ACCTS")
-    .replace(/\bACCOUNT\b/gi, "ACCT")
-    .replace(/\bSUBSCRIPTION\b/gi, "SUB")
-    .replace(/\bSUBSCRIPTIONS\b/gi, "SUBS")
-    .replace(/\bMONTHLY\b/gi, "MONTH")
-    .replace(/\bYEARLY\b/gi, "YEAR")
-    .replace(/\bVERIFICATION\b/gi, "VERIFY")
-    .replace(/\bFOLLOWERS\b/gi, "FOLLOWS")
-    .replace(/\bWITH\b/gi, "");
-
-  name = name.replace(/\s+/g, " ").trim().toUpperCase();
-
-  // Keep the customer-facing card compact without losing the full name:
-  // the full original product name remains available in the title attribute.
-  const maxLength = 38;
-  if (name.length > maxLength) {
-    const shortened = name.slice(0, maxLength - 1);
-    const lastSpace = shortened.lastIndexOf(" ");
-    name = (lastSpace > 18 ? shortened.slice(0, lastSpace) : shortened).trim() + "…";
-  }
-
-  return name;
+  return original.replace(/\\s+/g, " ");
 }
 
 /* PRODUCT CARD */
