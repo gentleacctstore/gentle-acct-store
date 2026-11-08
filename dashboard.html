@@ -1877,7 +1877,10 @@ async function loadSavedCategoryLayout() {
     const db=window.firebaseDB || firebase.firestore();
     const snapshot=await db.collection("storeSettings").doc("categoryLayout").get();
     const rows=snapshot.exists?snapshot.data().rows:[];
-    savedCategoryLayoutRows=Array.isArray(rows)?rows.filter(Array.isArray):[];
+    savedCategoryLayoutRows=Array.isArray(rows)?rows.map(row=>{
+      if(Array.isArray(row)) return row; // Backward compatibility with any older saved format.
+      return row && Array.isArray(row.categories) ? row.categories : [];
+    }).filter(row=>row.length):[];
   } catch(error) {
     console.warn("Category layout could not be loaded; using default order.",error);
     savedCategoryLayoutRows=[];
