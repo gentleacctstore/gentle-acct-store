@@ -745,7 +745,7 @@ async function loadProduct() {
       notice.style.display = "block";
       notice.textContent = "Supplier product · Spencer ID: " + (productData.supplierProductId || productId.replace("spencer_", "")) +
         " · Supplier cost: ₦" + Number(productData.supplierCost || 0).toLocaleString("en-NG") +
-        " · Supplier stock is managed by the supplier and is not edited here.";
+        " · Supplier stock and supplier cost are synced from Spencer. Edit only your Gentle selling details here.";
       const inventoryCard = document.querySelectorAll("#editor .card")[1];
       if (inventoryCard) inventoryCard.style.display = "none";
     }
