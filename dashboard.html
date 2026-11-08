@@ -682,6 +682,11 @@ main {padding:22px 22px 30px}
   line-height:1.4;
   letter-spacing:-.3px;
   overflow-wrap:anywhere;
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+  line-clamp:2;
+  overflow:hidden;
 }
 .product-meta {flex-wrap:wrap;gap:7px}
 .product-stock {
@@ -1947,7 +1952,12 @@ function renderProducts() {
 
 /* SHORT DISPLAY NAMES FOR SPENCER SUPPLIER PRODUCTS */
 function getDisplayProductName(product) {
-  const original = String(product.name || "Product").trim();
+  let original = String(product.name || "Product").trim();
+  // Decode HTML entities so encoded text never appears in product names.
+  const entityDecoder = document.createElement("textarea");
+  entityDecoder.innerHTML = original;
+  original = entityDecoder.value.trim();
+
   const isSpencerProduct =
     String(product.supplierProvider || "").toLowerCase() === "spenceraccstore" ||
     String(product.id || "").startsWith("spencer_") ||
@@ -1955,23 +1965,30 @@ function getDisplayProductName(product) {
 
   if (!isSpencerProduct) return original;
 
-  const abbreviations = [
-    [/\bACCOUNTS\b/gi, "ACCS"],
-    [/\bACCOUNT\b/gi, "ACC"],
-    [/\bMONTHS\b/gi, "MOS"],
-    [/\bMONTH\b/gi, "MO"],
-    [/\bYEARS\b/gi, "YRS"],
-    [/\bYEAR\b/gi, "YR"],
-    [/\bDAYS\b/gi, "DAYS"],
-    [/\bVERIFIED\b/gi, "VERIFIED"]
-  ];
-
   let name = original.replace(/\s+/g, " ").trim();
-  abbreviations.forEach(([pattern, replacement]) => {
-    name = name.replace(pattern, replacement);
-  });
+  name = name
+    .replace(/\bACCOUNTS\b/gi, "ACCTS")
+    .replace(/\bACCOUNT\b/gi, "ACCT")
+    .replace(/\bSUBSCRIPTION\b/gi, "SUB")
+    .replace(/\bSUBSCRIPTIONS\b/gi, "SUBS")
+    .replace(/\bMONTHLY\b/gi, "MONTH")
+    .replace(/\bYEARLY\b/gi, "YEAR")
+    .replace(/\bVERIFICATION\b/gi, "VERIFY")
+    .replace(/\bFOLLOWERS\b/gi, "FOLLOWS")
+    .replace(/\bWITH\b/gi, "");
 
-  return name.toUpperCase();
+  name = name.replace(/\s+/g, " ").trim().toUpperCase();
+
+  // Keep the customer-facing card compact without losing the full name:
+  // the full original product name remains available in the title attribute.
+  const maxLength = 38;
+  if (name.length > maxLength) {
+    const shortened = name.slice(0, maxLength - 1);
+    const lastSpace = shortened.lastIndexOf(" ");
+    name = (lastSpace > 18 ? shortened.slice(0, lastSpace) : shortened).trim() + "…";
+  }
+
+  return name;
 }
 
 /* PRODUCT CARD */
@@ -2026,7 +2043,7 @@ function createProductCard(product) {
   return `<article class="product-card" data-product-id="${escapeAttribute(id)}">
     <div class="product-image">${imageHTML}</div>
     <div class="product-info">
-      <h3 title="${name}">${name}</h3>
+      <h3 title="${escapeAttribute(product.name || productName)}">${name}</h3>
       <div class="product-meta">
         <span class="product-stock ${stockClass}">
           <i class="fa-solid fa-circle"></i>${stockText}
