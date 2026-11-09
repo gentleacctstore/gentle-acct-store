@@ -432,9 +432,288 @@ async function handleSupplierApi(request, env) {
   }
 }
 
+
+
+
+/* CUSTOMER CHECKOUT: REAL SPENCER PURCHASE */
+function fsValue(v) {
+  if (!v || typeof v !== "object") return null;
+  if ("stringValue" in v) return v.stringValue;
+  if ("integerValue" in v) return Number(v.integerValue);
+  if ("doubleValue" in v) return Number(v.doubleValue);
+  if ("booleanValue" in v) return v.booleanValue;
+  if ("timestampValue" in v) return v.timestampValue;
+  return null;
+}
+function fsNumber(n) {
+  return Number.isInteger(n) ? { integerValue: String(n) } : { doubleValue: n };
+}
+async function fsGet(projectId, token, collection, id) {
+  const url = `https://firestore.googleapis.com/v1/projects/${encodeURIComponent(projectId)}/databases/(default)/documents/${collection}/${encodeURIComponent(id)}`;
+  const r = await fetch(url, { headers: { Authorization: "Bearer " + token } });
+  if (!r.ok) return { response: r };
+  return { document: await r.json() };
+}
+async function fsCommit(projectId, token, writes) {
+  const url = `https://firestore.googleapis.com/v1/projects/${encodeURIComponent(projectId)}/databases/(default)/documents:commit`;
+  return fetch(url, {
+    method: "POST",
+    headers: { Authorization: "Bearer " + token, "Content-Type": "application/json" },
+    body: JSON.stringify({ writes })
+  });
+}
+async function handleCustomerSpencerPurchase(request, env) {
+  const origin = request.headers.get("Origin");
+  if (origin !== ALLOWED_ORIGIN) return supplierJson({ error: "Origin not allowed" }, 403, null);
+  if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: {
+    "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    "Access-Control-Max-Age": "86400", Vary: "Origin"
+  }});
+  if (request.method !== "POST") return supplierJson({ error: "POST required" }, 405, origin);
+  if (!env.SPENCER_API_KEY || !env.FCM_SERVICE_ACCOUNT_JSON) return supplierJson({ error: "Supplier checkout is not configured" }, 503, origin);
+  const auth = request.headers.get("Authorization") || "";
+  const idToken = auth.startsWith("Bearer ") ? auth.slice(7) : "";
+  if (!idToken) return supplierJson({ error: "Sign in before purchasing" }, 401, origin);
+  let body;
+  try { body = await request.json(); } catch { return supplierJson({ error: "Invalid JSON" }, 400, origin); }
+  const productId = String(body.productId || "");
+  const requestId = String(body.requestId || "");
+  if (!/^[A-Za-z0-9_-]{1,150}$/.test(productId) || !/^[A-Za-z0-9_-]{12,150}$/.test(requestId)) {
+    return supplierJson({ error: "Invalid product or purchase reference" }, 400, origin);
+  }
+  const lookup = await fetch("https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=" + encodeURIComponent(FIREBASE_API_KEY), {
+    method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ idToken })
+  });
+  if (!lookup.ok) return supplierJson({ error: "Your sign-in session has expired. Sign in again." }, 401, origin);
+  const user = (await lookup.json()).users?.[0];
+  if (!user?.localId) return supplierJson({ error: "Customer authentication failed" }, 401, origin);
+  let sa;
+  try { sa = JSON.parse(env.FCM_SERVICE_ACCOUNT_JSON); } catch { return supplierJson({ error: "Firebase service configuration is invalid" }, 500, origin); }
+  if (!sa.project_id || !sa.client_email || !sa.private_key) return supplierJson({ error: "Firebase service configuration is incomplete" }, 500, origin);
+  const token = await getGoogleAccessToken(sa);
+  const [productResult, walletResult, existingResult] = await Promise.all([
+    fsGet(sa.project_id, token, "products", productId),
+    fsGet(sa.project_id, token, "wallets", user.localId),
+    fsGet(sa.project_id, token, "orders", requestId)
+  ]);
+  if (existingResult.document) {
+    const f = existingResult.document.fields || {};
+    if (fsValue(f.userId) !== user.localId) return supplierJson({ error: "Purchase reference conflict" }, 409, origin);
+    if (fsValue(f.status) === "completed") return supplierJson({ success: true, orderId: requestId, purchaseText: fsValue(f.purchaseText) || "", balance: null, alreadyCompleted: true }, 200, origin);
+    return supplierJson({ error: "This purchase is already being processed. Check your orders before trying again.", orderId: requestId, pending: true }, 202, origin);
+  }
+  if (!productResult.document) return supplierJson({ error: "Product not found" }, 404, origin);
+  if (!walletResult.document) return supplierJson({ error: "Your wallet was not found" }, 404, origin);
+  const pf = productResult.document.fields || {};
+  const wf = walletResult.document.fields || {};
+  if (fsValue(pf.supplierProvider) !== "spenceraccstore") return supplierJson({ error: "This is not a Spencer-supplied product" }, 400, origin);
+  const supplierProductId = Number(fsValue(pf.supplierProductId));
+  const price = Number(fsValue(pf.price));
+  const stock = Number(fsValue(pf.stockCount) || 0);
+  const balance = Number(fsValue(wf.balance) || 0);
+  if (!Number.isSafeInteger(supplierProductId) || supplierProductId < 1 || !Number.isFinite(price) || price <= 0) return supplierJson({ error: "Product supplier details or selling price are invalid" }, 409, origin);
+  if (stock <= 0 || fsValue(pf.supplierInStock) === false) return supplierJson({ error: "This product is currently out of stock" }, 409, origin);
+  if (balance < price) return supplierJson({ error: "Insufficient wallet balance" }, 402, origin);
+  const orderId = requestId;
+  const newBalance = Number((balance - price).toFixed(2));
+  const now = new Date().toISOString();
+  const orderName = `projects/${sa.project_id}/databases/(default)/documents/orders/${orderId}`;
+  const walletName = `projects/${sa.project_id}/databases/(default)/documents/wallets/${user.localId}`;
+  const reserve = await fsCommit(sa.project_id, token, [
+    { update: { name: walletName, fields: {
+      balance: fsNumber(newBalance), updatedAt: { timestampValue: now }, lastOrderId: { stringValue: orderId }
+    }}, updateMask: { fieldPaths: ["balance", "updatedAt", "lastOrderId"] }, currentDocument: { updateTime: walletResult.document.updateTime } },
+    { update: { name: orderName, fields: {
+      userId: { stringValue: user.localId }, userEmail: { stringValue: user.email || "" },
+      productId: { stringValue: productId }, productName: { stringValue: fsValue(pf.name) || "" },
+      amount: fsNumber(price), status: { stringValue: "supplier_processing" },
+      supplierProvider: { stringValue: "spenceraccstore" }, createdAt: { timestampValue: now },
+      purchaseReference: { stringValue: orderId }
+    }}, currentDocument: { exists: false } }
+  ]);
+  if (!reserve.ok) return supplierJson({ error: "Your wallet or product changed. Refresh checkout and try again." }, 409, origin);
+  let upstream;
+  try {
+    upstream = await fetch(SPENCER_API_BASE + "/api/v1/purchase", {
+      method: "POST", headers: { Authorization: "Bearer " + env.SPENCER_API_KEY, Accept: "application/json", "Content-Type": "application/json" },
+      body: JSON.stringify({ product_id: supplierProductId, quantity: 1 }), signal: AbortSignal.timeout(25000)
+    });
+  } catch (e) {
+    console.error("Spencer purchase outcome is uncertain:", e);
+    return supplierJson({ error: "Spencer is still processing this order. Your order is marked pending; do not purchase again yet.", orderId, pending: true }, 202, origin);
+  }
+  let payload;
+  try { payload = await upstream.json(); } catch { payload = null; }
+  const delivered = Array.isArray(payload?.delivered_items) ? payload.delivered_items : [];
+  const success = upstream.ok && payload?.status === "success" && delivered.length > 0;
+  if (!success) {
+    // Only refund when Spencer explicitly confirms that the purchase failed.
+    const explicitFailure = upstream.status >= 400 || payload?.status === "error" || payload?.status === "failed";
+    if (!explicitFailure) return supplierJson({ error: "Supplier response could not confirm the result. Your order is pending review; do not retry yet.", orderId, pending: true }, 202, origin);
+    const latestWallet = await fsGet(sa.project_id, token, "wallets", user.localId);
+    if (latestWallet.document) {
+      const latestBalance = Number(fsValue(latestWallet.document.fields?.balance) || 0);
+      const refundCommit = await fsCommit(sa.project_id, token, [{ update: {
+        name: walletName, fields: { balance: fsNumber(Number((latestBalance + price).toFixed(2))), updatedAt: { timestampValue: new Date().toISOString() } }
+      }, updateMask: { fieldPaths: ["balance", "updatedAt"] }, currentDocument: { updateTime: latestWallet.document.updateTime } }]);
+      if (!refundCommit.ok) console.error("Customer refund requires manual reconciliation for order", orderId);
+    }
+    const failedOrderUrl = `https://firestore.googleapis.com/v1/${orderName}?updateMask.fieldPaths=status&updateMask.fieldPaths=supplierMessage`;
+    await fetch(failedOrderUrl, { method: "PATCH", headers: { Authorization: "Bearer " + token, "Content-Type": "application/json" }, body: JSON.stringify({ fields: { status: { stringValue: "failed_refunded" }, supplierMessage: { stringValue: String(payload?.message || "Supplier rejected the purchase").slice(0, 400) } } }) });
+    return supplierJson({ error: payload?.message || "Supplier could not complete this purchase. Your wallet has been refunded where the refund was confirmed." }, 502, origin);
+  }
+  const credentials = delivered.map(x => String(x.credentials || "").trim()).filter(Boolean);
+  if (!credentials.length) return supplierJson({ error: "Supplier completed the purchase but returned no readable credentials. Order is pending support review.", orderId, pending: true }, 202, origin);
+  const purchaseText = credentials.join("\n\n");
+  const supplierOrderId = String(payload.order_details?.order_id || "");
+  const finalUrl = `https://firestore.googleapis.com/v1/${orderName}?updateMask.fieldPaths=status&updateMask.fieldPaths=purchaseText&updateMask.fieldPaths=deliveredItems&updateMask.fieldPaths=supplierOrderId&updateMask.fieldPaths=supplierMessage&updateMask.fieldPaths=completedAt`;
+  const finalResponse = await fetch(finalUrl, { method: "PATCH", headers: { Authorization: "Bearer " + token, "Content-Type": "application/json" }, body: JSON.stringify({ fields: {
+    status: { stringValue: "completed" }, purchaseText: { stringValue: purchaseText },
+    deliveredItems: { arrayValue: { values: credentials.map(c => ({ stringValue: c })) } },
+    supplierOrderId: { stringValue: supplierOrderId }, supplierMessage: { stringValue: String(payload.message || "Delivered").slice(0, 300) }, completedAt: { timestampValue: new Date().toISOString() }
+  }}) });
+  if (!finalResponse.ok) return supplierJson({ error: "Supplier delivered the product, but order saving is delayed. Contact support with order reference " + orderId, orderId, pending: true }, 202, origin);
+  return supplierJson({ success: true, orderId, purchaseText, balance: newBalance, productName: fsValue(pf.name) || "Product" }, 200, origin);
+}
+
+
+/* AUTOMATIC SPENCER STOCK SYNCHRONISATION */
+function firestoreFieldValue(value) {
+  if (!value || typeof value !== "object") return null;
+  if ("stringValue" in value) return value.stringValue;
+  if ("integerValue" in value) return Number(value.integerValue);
+  if ("doubleValue" in value) return Number(value.doubleValue);
+  if ("booleanValue" in value) return value.booleanValue;
+  if ("timestampValue" in value) return value.timestampValue;
+  return null;
+}
+
+async function listFirestoreProducts(projectId, accessToken) {
+  const all = [];
+  let pageToken = "";
+  do {
+    const url = new URL(`https://firestore.googleapis.com/v1/projects/${encodeURIComponent(projectId)}/databases/(default)/documents/products`);
+    url.searchParams.set("pageSize", "1000");
+    if (pageToken) url.searchParams.set("pageToken", pageToken);
+    const response = await fetch(url, {
+      headers: { Authorization: "Bearer " + accessToken }
+    });
+    const payload = await response.json();
+    if (!response.ok) throw new Error("Could not read Gentle product records from Firestore");
+    all.push(...(payload.documents || []));
+    pageToken = payload.nextPageToken || "";
+  } while (pageToken);
+  return all;
+}
+
+async function syncSpencerStock(env) {
+  if (!env.SPENCER_API_KEY) throw new Error("SPENCER_API_KEY is not configured");
+  if (!env.FCM_SERVICE_ACCOUNT_JSON) throw new Error("FCM_SERVICE_ACCOUNT_JSON is not configured");
+
+  let serviceAccount;
+  try { serviceAccount = JSON.parse(env.FCM_SERVICE_ACCOUNT_JSON); }
+  catch { throw new Error("FCM_SERVICE_ACCOUNT_JSON is invalid"); }
+  if (!serviceAccount.project_id || !serviceAccount.client_email || !serviceAccount.private_key) {
+    throw new Error("The Firebase service account is missing required fields");
+  }
+
+  const accessToken = await getGoogleAccessToken(serviceAccount);
+  const upstream = await fetch(SPENCER_API_BASE + "/api/v1/products", {
+    headers: {
+      Authorization: "Bearer " + env.SPENCER_API_KEY,
+      Accept: "application/json"
+    }
+  });
+  const contentType = upstream.headers.get("content-type") || "";
+  const supplierPayload = contentType.includes("application/json") ? await upstream.json() : null;
+  if (!upstream.ok || !supplierPayload || supplierPayload.status === "error") {
+    throw new Error("Spencer did not return a valid product stock list");
+  }
+
+  const supplierList = Array.isArray(supplierPayload.products)
+    ? supplierPayload.products
+    : Array.isArray(supplierPayload.data)
+      ? supplierPayload.data
+      : null;
+  if (!supplierList) throw new Error("Spencer product response format was not recognised; no stock was changed");
+
+  const supplierById = new Map();
+  for (const item of supplierList) {
+    const id = Number(item.product_id);
+    if (Number.isSafeInteger(id) && id > 0) supplierById.set(id, item);
+  }
+
+  const documents = await listFirestoreProducts(serviceAccount.project_id, accessToken);
+  const imported = documents.filter(doc =>
+    firestoreFieldValue(doc.fields?.supplierProvider) === "spenceraccstore"
+  );
+
+  let updated = 0;
+  let missing = 0;
+  const syncedAt = new Date().toISOString();
+  for (const doc of imported) {
+    const fields = doc.fields || {};
+    const supplierId = Number(firestoreFieldValue(fields.supplierProductId));
+    const supplierProduct = supplierById.get(supplierId);
+    if (!supplierProduct) { missing++; continue; }
+
+    const stock = Math.max(0, Math.floor(Number(supplierProduct.stock_count || 0)));
+    const inStock = supplierProduct.in_stock === true && stock > 0;
+    const documentName = doc.name;
+    const patchUrl = new URL("https://firestore.googleapis.com/v1/" + documentName);
+    ["stockCount", "supplierStockCount", "supplierInStock", "supplierSyncedAt", "updatedAt"].forEach(field =>
+      patchUrl.searchParams.append("updateMask.fieldPaths", field)
+    );
+    const patch = await fetch(patchUrl, {
+      method: "PATCH",
+      headers: {
+        Authorization: "Bearer " + accessToken,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        fields: {
+          stockCount: { integerValue: String(stock) },
+          supplierStockCount: { integerValue: String(stock) },
+          supplierInStock: { booleanValue: inStock },
+          supplierSyncedAt: { timestampValue: syncedAt },
+          updatedAt: { timestampValue: syncedAt }
+        }
+      })
+    });
+    if (!patch.ok) {
+      console.error("Stock sync failed for document", documentName, patch.status);
+      continue;
+    }
+    updated++;
+  }
+
+  return { updated, missing, supplierProducts: supplierList.length, syncedAt };
+}
+
 export default {
+  async scheduled(controller, env, ctx) {
+    ctx.waitUntil((async () => {
+      try {
+        const result = await syncSpencerStock(env);
+        console.log("Spencer stock sync completed:", JSON.stringify(result));
+      } catch (error) {
+        console.error("Spencer stock sync failed:", error);
+      }
+    })());
+  },
+
   async fetch(request, env) {
     const url = new URL(request.url);
+
+    if (url.pathname === "/api/customer/spencer-purchase") {
+      try { return await handleCustomerSpencerPurchase(request, env); }
+      catch (error) {
+        console.error("Customer Spencer checkout error:", error);
+        return supplierJson({ error: "Purchase service encountered an error. Check your orders before retrying." }, 500, request.headers.get("Origin"));
+      }
+    }
 
     if (url.pathname.startsWith("/api/supplier/")) {
       try {

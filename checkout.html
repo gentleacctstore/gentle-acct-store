@@ -504,7 +504,7 @@ function renderCheckout(){
   const productNameRaw = String(selectedProduct.name || "Product");
   const productName = escapeHTML(productNameRaw);
   const category = escapeHTML(selectedProduct.category || "Product");
-  const description = productNameRaw;
+  const description = String(selectedProduct.description || "Digital product");
   const price = Number(selectedProduct.price || 0);
   const stock = Number(selectedProduct.stockCount || 0);
 
@@ -577,7 +577,7 @@ function renderCheckout(){
 
         <div class="details-box">
           <div class="details-title">PRODUCT DETAILS</div>
-          <div class="details-text">${escapeHTML(description)}</div>
+          <div class="details-text">${escapeHTML(productNameRaw)}</div>
         </div>
 
         <div class="wallet-summary">
@@ -662,6 +662,42 @@ async function completePurchase(){
     const productRef = firebaseDB
       .collection("products")
       .doc(selectedProduct.id);
+
+    // Spencer products are purchased live through the Cloudflare Worker.
+    // The server verifies the customer, product price, stock and wallet balance.
+    if(String(selectedProduct.supplierProvider || "").toLowerCase() === "spenceraccstore"){
+      const idToken = await firebaseAuth.currentUser.getIdToken();
+      const pendingKey = "gentle_spencer_pending_" + currentUser.uid + "_" + selectedProduct.id;
+      let requestId = localStorage.getItem(pendingKey);
+      if(!requestId){
+        requestId = (crypto.randomUUID ? crypto.randomUUID() :
+          "sp_" + Date.now() + "_" + Math.random().toString(36).slice(2, 12));
+        localStorage.setItem(pendingKey,requestId);
+      }
+      const response = await fetch("/api/customer/spencer-purchase",{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json",
+          "Authorization":"Bearer " + idToken
+        },
+        body:JSON.stringify({productId:selectedProduct.id,requestId})
+      });
+      const result = await response.json().catch(()=>({}));
+      if(response.status === 202 || result.pending){
+        showToast(result.error || "Your order is processing. Check Orders before trying again.");
+        button.disabled = true;
+        button.innerHTML = '<i class="fa-solid fa-clock"></i> Order Processing';
+        return;
+      }
+      if(!response.ok || !result.success){
+        if(response.status !== 202 && !result.pending) localStorage.removeItem(pendingKey);
+        throw new Error(result.error || "Purchase could not be completed.");
+      }
+      localStorage.removeItem(pendingKey);
+      walletBalance = Number(result.balance);
+      showSuccess(String(result.purchaseText || ""));
+      return;
+    }
 
     const inventoryQuery = await productRef
       .collection("inventory")
