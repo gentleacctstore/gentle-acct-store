@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#29532A">
-<meta name="description" content="View your Gentle Acct Store orders and purchase information.">
+<meta name="theme-color" content="#285B32">
+<meta name="description" content="View your orders and securely access delivered account credentials.">
 <title>My Orders - Gentle Acct Store</title>
 
 <script>
@@ -183,6 +183,56 @@ main{padding:15px 11px 22px}
 }
 .toast.show{opacity:1;visibility:visible;transform:translate(-50%,0)}
 
+
+/* CUSTOMER ORDERS: compact list + focused order detail */
+.header-wallet{display:flex;align-items:center;gap:7px;background:var(--blue-light);border:1px solid var(--border);border-radius:10px;padding:7px 10px;color:var(--blue-dark);font-size:11px;font-weight:800;white-space:nowrap}
+.header-wallet i{font-size:12px}
+.header-notice{width:32px;height:32px;border:1px solid var(--border);border-radius:10px;background:var(--blue-soft);color:var(--muted);display:flex;align-items:center;justify-content:center}
+.header-actions{display:flex;align-items:center;gap:7px}
+.orders-heading{margin:0 0 18px}
+.orders-heading h1{font-size:20px;letter-spacing:-.5px}
+.orders-heading p{font-size:11px}
+.orders-list-card{background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
+.order-row{width:100%;display:flex;align-items:center;gap:11px;padding:13px 11px;border:0;border-bottom:1px solid #E8EFE9;background:#fff;text-align:left;min-width:0;color:var(--text)}
+.order-row:last-child{border-bottom:0}
+.order-row:active{background:var(--blue-light)}
+.order-row-icon{width:44px;height:44px;flex:0 0 44px;border-radius:13px;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:16px}
+.order-row-main{flex:1;min-width:0}
+.order-row-name{display:block;font-size:12px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px}
+.order-row-meta{display:block;color:var(--muted);font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.order-row-side{flex:0 0 auto;display:flex;flex-direction:column;align-items:flex-end;gap:5px;max-width:43%}
+.order-row-price{font-size:12px;font-weight:800;color:var(--blue-dark);white-space:nowrap}
+.order-row .status{font-size:8px;padding:4px 7px;border:1px solid #B8DCC1}
+.order-chevron{color:#A8ADA9;font-size:13px;margin-left:1px;flex:0 0 auto}
+.detail-back{display:inline-flex;align-items:center;gap:8px;border:0;background:transparent;color:var(--blue-dark);font-size:12px;font-weight:800;padding:3px 0;margin:2px 0 15px}
+.detail-card{background:#fff;border:1px solid var(--border);border-radius:17px;overflow:hidden;box-shadow:var(--shadow)}
+.detail-top{display:flex;align-items:center;gap:11px;padding:15px 13px;border-bottom:1px solid var(--border)}
+.detail-top .order-icon{width:43px;height:43px}
+.detail-title{flex:1;min-width:0}
+.detail-title h2{font-size:14px;font-weight:800;overflow-wrap:anywhere;margin-bottom:3px}
+.detail-title p{font-size:10px;color:var(--muted)}
+.detail-content{padding:13px}
+.detail-product{display:flex;align-items:center;gap:10px;background:var(--blue-light);border:1px solid var(--border);border-radius:12px;padding:13px;margin-bottom:12px}
+.detail-product i{color:var(--blue);font-size:16px;flex:0 0 18px}
+.detail-product-main{min-width:0;flex:1}
+.detail-product-name{font-size:13px;font-weight:800;overflow-wrap:anywhere}
+.detail-product-meta{font-size:10px;color:var(--muted);margin-top:2px;overflow-wrap:anywhere}
+.detail-totals{background:var(--blue-light);border:1px solid var(--border);border-radius:12px;padding:13px;margin-bottom:14px}
+.total-line{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:11px;padding:5px 0}
+.total-line span:first-child{color:var(--muted)}
+.total-line strong{font-weight:700;white-space:nowrap}
+.total-divider{height:1px;background:var(--border);margin:8px 0}
+.total-line.grand{font-size:13px;font-weight:800;padding-top:7px}
+.total-line.grand span:first-child,.total-line.grand strong{color:var(--blue-dark)}
+.credentials-heading{font-size:11px;letter-spacing:1px;color:var(--muted);font-weight:800;margin:0 0 9px}
+.credential-item{display:flex;align-items:flex-start;gap:8px;background:#F5FAF6;border:1px solid var(--border);border-radius:11px;padding:10px;margin-bottom:8px}
+.credential-value{flex:1;min-width:0;white-space:pre-wrap;overflow-wrap:anywhere;user-select:text;-webkit-user-select:text;font-family:monospace;font-size:11px;line-height:1.7;color:var(--blue-dark)}
+.credential-copy{border:1px solid #B8DCC1;background:var(--blue-light);color:var(--blue-dark);border-radius:8px;padding:7px 10px;font-size:10px;font-weight:800;flex:0 0 auto}
+.all-orders-btn{width:100%;border:1px solid var(--border);background:var(--blue-light);color:var(--blue-dark);border-radius:11px;padding:12px;font-size:12px;font-weight:800;margin-top:5px}
+.order-ref-line{font-size:10px;color:var(--muted);overflow-wrap:anywhere;margin-top:3px}
+.hidden-view{display:none!important}
+@media(max-width:370px){.order-row{gap:8px;padding:11px 8px}.order-row-icon{width:38px;height:38px;flex-basis:38px}.order-row-name{font-size:11px}.order-row-price{font-size:11px}.detail-content{padding:10px}}
+
 /* DARK THEME */
 html.dark-mode,html.dark-mode body{background:#0B1120;color:#E5EAF5}
 html.dark-mode header,html.dark-mode .bottom-nav{background:rgba(15,23,42,.98);border-color:#31543A}
@@ -204,8 +254,8 @@ html.dark-mode .toast{background:#194D28}
 html.blue-mode:not(.dark-mode),html.blue-mode:not(.dark-mode) body{background:#EAF2FF;color:#172033}
 html.blue-mode:not(.dark-mode) header,html.blue-mode:not(.dark-mode) .bottom-nav{background:rgba(239,246,255,.98)}
 html.blue-mode:not(.dark-mode) .order,html.blue-mode:not(.dark-mode) .state-box{border-color:#C8DAFA}
-html.blue-mode:not(.dark-mode) .purchase-text{background:#F0F6FF;border-color:#C8DAFA}
-html.blue-mode:not(.dark-mode) .order-category{background:#DBEAFE;color:#1D4ED8}
+html.blue-mode:not(.dark-mode) .purchase-text{background:#F2F6F3;border-color:#C8DAFA}
+html.blue-mode:not(.dark-mode) .order-category{background:#EAF4EC;color:#285B32}
 
 @media(min-width:700px){
   body{background:#EEF4FC}
@@ -224,28 +274,28 @@ html.blue-mode:not(.dark-mode) .order-category{background:#DBEAFE;color:#1D4ED8}
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style id="gentlelogs-xtralogs-red-white-theme">
-/* GentleLogs XtraLogs-inspired red and white theme. Original structure and scripts are preserved. */
+/* GentleLogs green and white theme. Original structure and scripts are preserved. */
 :root {
-  --green:#C9232C !important;
-  --green-dark:#991B24 !important;
-  --green-light:#FDEEEF !important;
-  --green-soft:#FFF5F5 !important;
+  --green:#285B32 !important;
+  --green-dark:#194D28 !important;
+  --green-light:#EAF4EC !important;
+  --green-soft:#F2F6F3 !important;
   --green-pale:#FFFFFF !important;
-  --green-border:#F1C9CC !important;
-  --light-green:#FDEEEF !important;
-  --light:#FDEEEF !important;
-  --pale:#FFF8F8 !important;
+  --green-border:#D9E9DC !important;
+  --light-green:#EAF4EC !important;
+  --light:#EAF4EC !important;
+  --pale:#F2F6F3 !important;
   --background:#FFFFFF !important;
   --bg:#FFFFFF !important;
   --page:#FFFFFF !important;
   --text:#171923 !important;
   --muted:#747985 !important;
-  --border:#E8E8EB !important;
+  --border:#D9E9DC !important;
   --white:#FFFFFF !important;
   --card:#FFFFFF !important;
-  --blue:#C9232C !important;
-  --blue-dark:#991B24 !important;
-  --blue-light:#FDEEEF !important;
+  --blue:#285B32 !important;
+  --blue-dark:#194D28 !important;
+  --blue-light:#EAF4EC !important;
   --shadow:0 8px 26px rgba(23,25,35,.06) !important;
 }
 html,body,button,input,textarea,select,option {
@@ -257,7 +307,7 @@ html,body { background:#FFFFFF; color:#171923; }
 .wallet-summary,.details-box,.notice,.purchase-card,.referral-premium,
 .loading,.error-box,.security-badge,.main-icon,.transaction,.order,
 .state-box,.empty,.loading,.link-box,.summary-card:not(.hero) {
-  border-color:#E8E8EB;
+  border-color:#D9E9DC;
 }
 .card,.auth-card,.product-card,.related-card,.stat-card,.floating-card,
 .transaction,.order,.state-box,.empty,.loading,.purchase-card {
@@ -271,13 +321,13 @@ h1,h2,h3,h4,.header-title,.brand-name,.brand-text h1,.section-heading,
 .input-icon,.stat-icon,.heading-icon,.empty-icon,.back-login,.fund-link,
 .related-price,.product-price,.amount,.detail-value,.wallet-summary strong,
 .history-amount,.footer strong,.nav-item.active,.tx-amount,.order-price,
-.page-heading h1 + span { color:#C9232C; }
+.page-heading h1 + span { color:#285B32; }
 /* Red primary actions */
 .reset-btn,.pay-btn,.primary-btn,.update-btn,.complete-btn,.btn-primary,
 .copy-small,.related-buy,.wallet-btn:not(.secondary),.copy-btn,
 .error-box button,.refresh,.retry,.retry-btn,.shop-btn,.success-btn.primary,
 button.primary,.button.primary {
-  background:linear-gradient(105deg,#C9232C 0%,#E13A43 100%) !important;
+  background:linear-gradient(105deg,#285B32 0%,#285B32 100%) !important;
   color:#FFFFFF !important;
   border-color:transparent !important;
   box-shadow:0 7px 18px rgba(201,35,44,.16);
@@ -285,44 +335,44 @@ button.primary,.button.primary {
 .reset-btn:hover,.pay-btn:hover,.primary-btn:hover,.update-btn:hover,
 .complete-btn:hover,.btn-primary:hover,.copy-small:hover,.related-buy:hover,
 .refresh:hover,.retry:hover,.retry-btn:hover {
-  background:linear-gradient(105deg,#A91D26 0%,#C9232C 100%) !important;
+  background:linear-gradient(105deg,#194D28 0%,#285B32 100%) !important;
 }
 .btn-secondary,.secondary-btn,.wallet-btn.secondary,.copy-small.secondary,
 .back,.back-btn,.header-icon,.wallet-chip,.auth-tab.active {
-  color:#A91D26;
-  background:#FDEEEF;
-  border-color:#F1C9CC;
+  color:#194D28;
+  background:#EAF4EC;
+  border-color:#D9E9DC;
 }
 input,textarea,select,.form-control {
   color:#171923;
-  border-color:#E3E3E7;
+  border-color:#D9E9DC;
   background:#FFFFFF;
 }
 input:focus,textarea:focus,select:focus,.form-control:focus {
-  border-color:#C9232C !important;
+  border-color:#285B32 !important;
   box-shadow:0 0 0 3px rgba(201,35,44,.10) !important;
 }
 /* Red brand bars and highlighted surfaces */
-header,.topbar,.top-header { border-bottom-color:#C9232C; }
+header,.topbar,.top-header { border-bottom-color:#285B32; }
 .logo-box,.brand-icon,.brand-mark,.main-icon,.heading-icon,.stat-icon,
 .tx-icon,.order-icon,.state-icon,.step-number,.feature-icon {
-  background:#FDEEEF;
-  color:#C9232C;
+  background:#EAF4EC;
+  color:#285B32;
 }
 .hero,.wallet-card,.summary-card {
-  background:linear-gradient(125deg,#A91D26 0%,#C9232C 58%,#E64B52 100%) !important;
+  background:linear-gradient(125deg,#194D28 0%,#285B32 58%,#285B32 100%) !important;
   color:#FFFFFF;
 }
 .hero h2,.hero p,.hero-label,.summary-card,.summary-card * { color:#FFFFFF; }
 .notice,.details-box,.wallet-summary,.purchase-item,.purchase-text,
 .reference,.link-box,.security-badge {
-  background:#FFF5F5;
-  border-color:#F1D9DB;
+  background:#F2F6F3;
+  border-color:#D9E9DC;
 }
 .status.approved,.status.success,.status.completed,
 .message.success { background:#EAF7EF; color:#17663A; }
 .status.rejected,.status.failed,.status.cancelled,
-.message.error { background:#FFF0F0; color:#A51F2A; }
+.message.error { background:#FEF2F2; color:#B91C1C; }
 /* Maintain readable mobile controls and prevent iOS Safari focus zoom. */
 @media(max-width:767px) {
   input,textarea,select,.form-control,.input-wrap input { font-size:16px !important; }
@@ -331,126 +381,44 @@ header,.topbar,.top-header { border-bottom-color:#C9232C; }
   *,*::before,*::after { scroll-behavior:auto !important; animation-duration:.01ms !important; transition-duration:.01ms !important; }
 }
 </style>
-
-<style id="gentle-unified-green-white-palette">
-/* Unified Gentle Acct Store brand colours. Layout, typography and behaviour remain unchanged. */
-:root{
- --green:#29532A !important; --green-dark:#194D28 !important;
- --green-light:#EAF4EC !important; --green-soft:#EAF4EC !important;
- --green-pale:#F2F6F3 !important; --green-border:#D9E9DC !important;
- --blue:#29532A !important; --blue-dark:#194D28 !important;
- --blue-light:#EAF4EC !important; --blue-soft:#F2F6F3 !important;
- --primary:#29532A !important; --primary-dark:#194D28 !important;
- --accent:#29532A !important; --accent-light:#EAF4EC !important;
- --bg:#F2F6F3 !important; --background:#F2F6F3 !important;
- --page:#F2F6F3 !important; --white:#FFFFFF !important;
- --border:#D9E9DC !important; --line:#D9E9DC !important;
- --shadow:0 5px 18px rgba(41,83,42,.07) !important;
-}
-/* Shared brand accents and primary controls */
-.brand-name,.brand-text h1,.brand-accent,.header-title,.header-title i,
-.header-icon,.back-btn,.back-login,.fund-link,.view-all,.related-price,
-.product-price,.amount,.detail-value,.history-amount,.nav-item.active,
-.tx-amount,.order-price,.section-heading,.section-heading:before,
-.input-icon,.stat-icon,.heading-icon,.empty-icon,.menu-icon,
-.card-heading-icon,.deposit-icon,.support-icon,.loading-spinner,
-.loading i,.state-icon,.order-icon,.success-icon,.success h1,
-.theme-check,.security-status.good {color:#29532A !important;}
-.header,.top-header,header {border-bottom-color:#29532A !important;}
-.header-icon,.back-btn,.wallet-chip,.auth-tab.active,.menu-icon,
-.card-heading-icon,.deposit-icon,.support-icon,.stat-icon,
-.order-icon,.state-icon,.success-icon,.theme-option.selected {
- background-color:#EAF4EC !important; border-color:#D9E9DC !important;
-}
-.reset-btn,.pay-btn,.primary-btn,.update-btn,.complete-btn,.btn-primary,
-.copy-small,.related-buy,.wallet-btn:not(.secondary),.copy-btn,
-.error-box button,.refresh,.retry,.retry-btn,.shop-btn,.success-btn.primary,
-button.primary,.button.primary,.save-button,.logout-button:not(.secondary) {
- background:#29532A !important; color:#FFFFFF !important;
- border-color:#29532A !important; box-shadow:0 7px 18px rgba(41,83,42,.15) !important;
-}
-.reset-btn:hover,.pay-btn:hover,.primary-btn:hover,.update-btn:hover,
-.complete-btn:hover,.btn-primary:hover,.related-buy:hover,.refresh:hover,
-.retry:hover,.retry-btn:hover,.save-button:hover {background:#194D28 !important;}
-.btn-secondary,.secondary-btn,.wallet-btn.secondary,.back,
-.header-icon,.wallet-chip {color:#194D28 !important;background:#EAF4EC !important;border-color:#D9E9DC !important;}
-input:focus,textarea:focus,select:focus,.form-control:focus,
-.amount-wrap:focus-within {border-color:#29532A !important;box-shadow:0 0 0 3px rgba(41,83,42,.10) !important;}
-input,textarea,select,.form-control {accent-color:#29532A;}
-.hero,.wallet-card,.balance-card,.summary-card,.profile-card {
- background:linear-gradient(125deg,#194D28 0%,#29532A 58%,#47764A 100%) !important;
- color:#FFFFFF !important;
-}
-.hero h2,.hero p,.hero-label,.summary-card,.summary-card *,
-.wallet-card *,.balance-card *,.profile-card * {color:#FFFFFF;}
-.notice,.details-box,.wallet-summary,.purchase-item,.purchase-text,
-.reference,.link-box,.security-badge,.security-note {
- background:#EAF4EC !important;border-color:#D9E9DC !important;
-}
-.status.approved,.status.success,.status.completed,.message.success {
- background:#EAF4EC !important;color:#194D28 !important;
-}
-/* White surfaces and consistent page backgrounds */
-html:not(.dark-mode):not([data-theme="dark"]) body,
-html:not(.dark-mode):not([data-theme="dark"]) .page,
-html:not(.dark-mode):not([data-theme="dark"]) main {background-color:#F2F6F3;}
-.card,.auth-card,.product-card,.related-card,.stat-card,.floating-card,
-.transaction,.order,.state-box,.empty,.loading,.purchase-card,
-.section,.fund-card,.deposit-list {border-color:#D9E9DC;}
-/* Dark mode keeps its existing dark surfaces while using the same green brand accent. */
-html.dark-mode,html[data-theme="dark"] {--green:#8BC995 !important;--green-dark:#B7E4BE !important;--blue:#8BC995 !important;--blue-dark:#B7E4BE !important;--green-light:#203B29 !important;--blue-light:#203B29 !important;--border:#304F37 !important;}
-html.dark-mode .nav-item.active,html[data-theme="dark"] .nav-item.active,
-html.dark-mode .header-icon,html[data-theme="dark"] .header-icon,
-html.dark-mode .back-btn,html[data-theme="dark"] .back-btn {color:#B7E4BE !important;}
-@media(max-width:767px){input,textarea,select,.form-control,.input-wrap input{font-size:16px !important;}}
-</style>
-
 </head>
 
 <body>
 <div class="page">
   <header>
     <div class="header-left">
-      <button class="back-btn" id="backButton" type="button" aria-label="Back to dashboard">
-        <i class="fa-solid fa-arrow-left"></i>
-      </button>
-      <div class="header-title">Gentle Acct Store</div>
+      <div class="header-title">Spencer Store</div>
     </div>
-    <div class="header-icon"><i class="fa-solid fa-receipt"></i></div>
+    <div class="header-actions">
+      <button class="header-notice" type="button" aria-label="Notifications"><i class="fa-solid fa-bell"></i></button>
+      <div class="header-wallet"><i class="fa-solid fa-wallet"></i><strong id="headerBalance">₦0.00</strong></div>
+    </div>
   </header>
 
   <main>
-    <div class="page-heading">
-      <h1>My Orders</h1>
-      <p>View your purchases and access your account details.</p>
-    </div>
-
-    <div class="summary-card">
-      <div>
-        <div class="summary-label">Total Orders</div>
-        <div class="summary-number" id="totalOrders">0</div>
-        <div class="summary-description">Your purchase history</div>
+    <section id="ordersListView">
+      <div class="page-heading orders-heading">
+        <h1>My Orders</h1>
+        <p><span id="totalOrders">0</span> orders total</p>
       </div>
-      <div class="summary-icon"><i class="fa-solid fa-bag-shopping"></i></div>
-    </div>
-
-    <div class="section-heading">
-      <h2>Order History</h2>
-      <span class="section-count" id="orderCount">0 orders</span>
-    </div>
-
-    <div id="ordersList">
-      <div class="state-box">
-        <div class="loading-spinner"><i class="fa-solid fa-spinner fa-spin"></i></div>
-        <p>Loading your orders...</p>
+      <div id="ordersList">
+        <div class="state-box">
+          <div class="loading-spinner"><i class="fa-solid fa-spinner fa-spin"></i></div>
+          <p>Loading your orders...</p>
+        </div>
       </div>
-    </div>
+    </section>
+
+    <section id="orderDetailView" class="hidden-view">
+      <button class="detail-back" type="button" id="detailBackButton"><i class="fa-solid fa-arrow-left"></i> Back to Orders</button>
+      <div id="orderDetailContent"></div>
+    </section>
   </main>
 
   <nav class="bottom-nav" aria-label="Main navigation">
     <a class="nav-item" href="dashboard.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
     <a class="nav-item" href="dashboard.html#products"><i class="fa-solid fa-box"></i><span>Products</span></a>
-    <a class="nav-item active" href="orders.html" aria-current="page"><i class="fa-solid fa-receipt"></i><span>Orders</span></a>
+    <a class="nav-item active" href="orders.html" aria-current="page"><i class="fa-solid fa-bag-shopping"></i><span>Orders</span></a>
     <a class="nav-item" href="fund.html"><i class="fa-solid fa-wallet"></i><span>Fund</span></a>
     <a class="nav-item" href="profile.html"><i class="fa-solid fa-user"></i><span>Menu</span></a>
   </nav>
@@ -487,7 +455,7 @@ function applyTheme(theme){
   document.documentElement.classList.toggle("dark-mode",theme==="dark");
   document.documentElement.classList.toggle("blue-mode",theme==="blue");
   const meta=document.querySelector('meta[name="theme-color"]');
-  if(meta)meta.content=theme==="dark"?"#0B1120":theme==="blue"?"#1D4ED8":"#285B32";
+  if(meta)meta.content=theme==="dark"?"#0B1120":theme==="blue"?"#285B32":"#285B32";
 }
 
 function syncTheme(){
@@ -531,169 +499,157 @@ firebaseAuth.onAuthStateChanged(async function(user){
 
 async function loadFirestoreOrders(){
   const list=document.getElementById("ordersList");
-  list.innerHTML=`
-    <div class="state-box">
-      <div class="loading-spinner"><i class="fa-solid fa-spinner fa-spin"></i></div>
-      <p>Loading your orders...</p>
-    </div>`;
+  list.innerHTML=`<div class="state-box"><div class="loading-spinner"><i class="fa-solid fa-spinner fa-spin"></i></div><p>Loading your orders...</p></div>`;
 
   try{
     if(typeof firebaseDB==="undefined")throw new Error("Firestore is not available. Please try again later.");
     if(!firebaseUser)throw new Error("You are not signed in.");
 
-    const snapshot=await firebaseDB.collection("orders")
-      .where("userId","==",firebaseUser.uid).get();
-
+    const snapshot=await firebaseDB.collection("orders").where("userId","==",firebaseUser.uid).get();
     const orders=[];
     snapshot.forEach(function(doc){
-      const data=doc.data();
+      const data=doc.data()||{};
+      const delivered=data.deliveredItems||data.credentials||data.items||data.orderItems||data.purchaseText||data.inventoryValue||data.supplierResponse||"";
       orders.push({
         id:doc.id,
-        productName:data.productName||"Digital Product",
+        orderNumber:data.orderNumber||data.orderNo||data.displayOrderId||data.orderCode||doc.id.slice(0,5).toUpperCase(),
+        productName:data.productName||data.name||"Digital Product",
         category:data.category||"Digital Product",
-        amount:Number(data.amount??data.price??0),
+        amount:Number(data.amount??data.totalPaid??data.total??data.price??0),
+        subtotal:Number(data.subtotal??data.amount??data.totalPaid??data.total??data.price??0),
+        quantity:Number(data.quantity??data.qty??1)||1,
         status:data.status||"completed",
-        purchaseText:data.purchaseText||data.inventoryValue||"Purchase information unavailable.",
-        createdAt:data.createdAt||null
+        purchaseText:normalizeDelivery(delivered),
+        reference:data.paymentReference||data.supplierOrderId||data.apiOrderId||data.reference||data.orderReference||"",
+        paymentMethod:data.paymentMethod||data.paymentProvider||"",
+        createdAt:data.createdAt||data.date||null,
+        raw:data
       });
     });
 
     orders.sort(function(a,b){return getTime(b.createdAt)-getTime(a.createdAt);});
     currentOrders=orders;
     displayOrders(orders);
+    await loadHeaderBalance();
   }catch(error){
     console.error("Orders loading error:",error);
-    list.innerHTML=`
-      <div class="state-box">
-        <div class="state-icon error"><i class="fa-solid fa-triangle-exclamation"></i></div>
-        <h3>Unable to load orders</h3>
-        <p>${escapeHtml(error.message||"Please check your connection and try again.")}</p>
-        <button class="retry-btn" type="button" id="retryButton">
-          <i class="fa-solid fa-rotate-right"></i> Try Again
-        </button>
-      </div>`;
+    list.innerHTML=`<div class="state-box"><div class="state-icon error"><i class="fa-solid fa-triangle-exclamation"></i></div><h3>Unable to load orders</h3><p>${escapeHtml(error.message||"Please check your connection and try again.")}</p><button class="retry-btn" type="button" id="retryButton"><i class="fa-solid fa-rotate-right"></i> Try Again</button></div>`;
     document.getElementById("retryButton").addEventListener("click",loadFirestoreOrders);
   }
+}
+
+async function loadHeaderBalance(){
+  try{
+    if(!firebaseUser||typeof firebaseDB==="undefined")return;
+    const snap=await firebaseDB.collection("wallets").doc(firebaseUser.uid).get();
+    const balance=snap.exists?Number((snap.data()||{}).balance||0):0;
+    document.getElementById("headerBalance").textContent=formatMoney(balance);
+  }catch(error){console.warn("Header wallet balance unavailable:",error);}
+}
+
+function normalizeDelivery(value){
+  if(value==null||value==="")return "Purchase information unavailable.";
+  if(typeof value==="string")return value;
+  if(Array.isArray(value))return value.map(function(item){
+    if(typeof item==="string")return item;
+    if(item&&typeof item==="object")return Object.entries(item).map(([k,v])=>k+": "+String(v)).join("\n");
+    return String(item);
+  }).join("\n\n");
+  if(typeof value==="object"){
+    if(value.credentials)return normalizeDelivery(value.credentials);
+    if(value.delivered_items)return normalizeDelivery(value.delivered_items);
+    if(value.items)return normalizeDelivery(value.items);
+    return Object.entries(value).map(([k,v])=>k+": "+(typeof v==="object"?JSON.stringify(v):String(v))).join("\n");
+  }
+  return String(value);
+}
+
+function getOrderStatus(status){
+  const value=String(status||"completed").toLowerCase();
+  if(["pending","processing","awaiting payment","awaiting_payment"].includes(value))return {label:"Pending",className:"pending",icon:"fa-clock"};
+  if(["failed","cancelled","canceled","refunded"].includes(value))return {label:value.charAt(0).toUpperCase()+value.slice(1),className:"failed",icon:"fa-circle-xmark"};
+  return {label:"Completed",className:"",icon:"fa-circle-check"};
 }
 
 function displayOrders(orders){
   const list=document.getElementById("ordersList");
   document.getElementById("totalOrders").textContent=orders.length;
-  document.getElementById("orderCount").textContent=orders.length+(orders.length===1?" order":" orders");
   list.innerHTML="";
 
   if(orders.length===0){
-    list.innerHTML=`
-      <div class="state-box">
-        <div class="state-icon"><i class="fa-solid fa-bag-shopping"></i></div>
-        <h3>No orders yet</h3>
-        <p>Your purchases will appear here after you complete an order.</p>
-        <button class="shop-btn" type="button" id="startShoppingButton">
-          <i class="fa-solid fa-store"></i> Start Shopping
-        </button>
-      </div>`;
-    document.getElementById("startShoppingButton").addEventListener("click",function(){
-      window.location.href="dashboard.html";
-    });
+    list.innerHTML=`<div class="state-box"><div class="state-icon"><i class="fa-solid fa-bag-shopping"></i></div><h3>No orders yet</h3><p>Your purchases will appear here after you complete an order.</p><button class="shop-btn" type="button" id="startShoppingButton"><i class="fa-solid fa-store"></i> Start Shopping</button></div>`;
+    document.getElementById("startShoppingButton").addEventListener("click",function(){window.location.href="dashboard.html";});
     return;
   }
 
+  const wrapper=document.createElement("div");
+  wrapper.className="orders-list-card";
   orders.forEach(function(order,index){
-    const status=String(order.status||"completed").toLowerCase();
-    let statusClass="";
-    let statusLabel="Completed";
-    let statusIcon="fa-circle-check";
-
-    if(["pending","processing","awaiting payment"].includes(status)){
-      statusClass="pending";statusLabel="Pending";statusIcon="fa-clock";
-    }else if(["failed","cancelled","canceled","refunded"].includes(status)){
-      statusClass="failed";
-      statusLabel=status.charAt(0).toUpperCase()+status.slice(1);
-      statusIcon="fa-circle-xmark";
-    }
-
-    const card=document.createElement("article");
-    card.className="order";
-    card.innerHTML=`
-      <div class="order-top">
-        <div class="order-icon"><i class="fa-solid fa-box"></i></div>
-        <div class="order-name">
-          <h3>${escapeHtml(order.productName)}</h3>
-          <span class="order-category">${escapeHtml(order.category)}</span>
-        </div>
-        <span class="status ${statusClass}">
-          <i class="fa-solid ${statusIcon}"></i> ${escapeHtml(statusLabel)}
-        </span>
-      </div>
-      <div class="order-meta">
-        <div class="order-date">
-          <div><i class="fa-regular fa-calendar"></i> ${escapeHtml(formatDate(order.createdAt))}</div>
-          <div>Order #${escapeHtml(order.id.slice(0,8))}</div>
-        </div>
-        <div class="order-price">${formatMoney(order.amount)}</div>
-      </div>
-      <div class="purchase">
-        <div class="purchase-heading">
-          <span><i class="fa-solid fa-key"></i> Purchase Information</span>
-        </div>
-        <div class="purchase-text" id="purchase-${index}"></div>
-        <button class="copy-btn" type="button" data-index="${index}">
-          <i class="fa-regular fa-copy"></i> Copy Purchase Information
-        </button>
-      </div>`;
-
-    card.querySelector(".purchase-text").textContent=order.purchaseText;
-    list.appendChild(card);
+    const status=getOrderStatus(order.status);
+    const row=document.createElement("button");
+    row.type="button";row.className="order-row";row.setAttribute("aria-label","View order for "+order.productName);
+    row.innerHTML=`<span class="order-row-icon"><i class="fa-solid fa-tag"></i></span><span class="order-row-main"><span class="order-row-name">${escapeHtml(order.productName)}</span><span class="order-row-meta">#${escapeHtml(String(order.orderNumber))} · ${escapeHtml(relativeDate(order.createdAt))}</span></span><span class="order-row-side"><strong class="order-row-price">${formatMoney(order.amount)}</strong><span class="status ${status.className}">${escapeHtml(status.label)}</span></span><i class="fa-solid fa-chevron-right order-chevron"></i>`;
+    row.addEventListener("click",function(){showOrderDetails(index);});
+    wrapper.appendChild(row);
   });
-
-  list.querySelectorAll(".copy-btn").forEach(function(button){
-    button.addEventListener("click",function(){
-      copyText(Number(button.dataset.index),button);
-    });
-  });
+  list.appendChild(wrapper);
 }
 
-async function copyText(index,button){
+function showOrderDetails(index){
   const order=currentOrders[index];
-  const text=order&&order.purchaseText?order.purchaseText:"";
+  if(!order)return;
+  const status=getOrderStatus(order.status);
+  const detail=document.getElementById("orderDetailContent");
+  const credentials=order.purchaseText&&order.purchaseText!=="Purchase information unavailable."?order.purchaseText:"Purchase information is not available yet.";
+  const credentialLines=credentials.split(/\n\n/).filter(Boolean);
+  const credentialHtml=credentialLines.map(function(line,i){
+    return `<div class="credential-item"><div class="credential-value">${escapeHtml(line)}</div><button class="credential-copy" type="button" data-copy-index="${i}">Copy</button></div>`;
+  }).join("");
+  const reference=order.reference||String(order.orderNumber||order.id);
+  detail.innerHTML=`<article class="detail-card">
+    <div class="detail-top"><div class="order-icon"><i class="fa-solid fa-receipt"></i></div><div class="detail-title"><h2>Order #${escapeHtml(String(order.orderNumber))}</h2><p>${escapeHtml(formatDate(order.createdAt))}</p></div><span class="status ${status.className}">${escapeHtml(status.label)}</span></div>
+    <div class="detail-content">
+      <div class="detail-product"><i class="fa-solid fa-tag"></i><div class="detail-product-main"><div class="detail-product-name">${escapeHtml(order.productName)}</div><div class="detail-product-meta">Qty: ${escapeHtml(String(order.quantity))} · Ref: ${escapeHtml(String(reference))}</div></div></div>
+      <div class="detail-totals"><div class="total-line"><span>Subtotal</span><strong>${formatMoney(order.subtotal)}</strong></div><div class="total-divider"></div><div class="total-line grand"><span>Total Paid</span><strong>${formatMoney(order.amount)}</strong></div></div>
+      <h3 class="credentials-heading">ACCOUNT CREDENTIALS</h3>
+      ${credentialHtml||`<div class="credential-item"><div class="credential-value">${escapeHtml(credentials)}</div></div>`}
+      ${order.paymentMethod?`<p class="order-ref-line">Payment method: ${escapeHtml(order.paymentMethod)}</p>`:""}
+      <button class="all-orders-btn" type="button" id="allOrdersButton"><i class="fa-solid fa-list"></i> &nbsp;All Orders</button>
+    </div></article>`;
+  document.getElementById("ordersListView").classList.add("hidden-view");
+  document.getElementById("orderDetailView").classList.remove("hidden-view");
+  window.scrollTo({top:0,behavior:"smooth"});
+  detail.querySelectorAll("[data-copy-index]").forEach(function(button){
+    button.addEventListener("click",function(){copyCredential(credentialLines[Number(button.dataset.copyIndex)]||credentials,button);});
+  });
+  document.getElementById("allOrdersButton").addEventListener("click",showOrdersList);
+}
 
-  if(!text||text==="Purchase information unavailable."){
-    showToast("No purchase information is available to copy.");
-    return;
-  }
+function showOrdersList(){
+  document.getElementById("orderDetailView").classList.add("hidden-view");
+  document.getElementById("ordersListView").classList.remove("hidden-view");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
 
+async function copyCredential(text,button){
+  if(!text||text==="Purchase information unavailable."){showToast("No account credentials are available to copy.");return;}
   try{
-    if(navigator.clipboard&&window.isSecureContext){
-      await navigator.clipboard.writeText(text);
-    }else{
-      const textarea=document.createElement("textarea");
-      textarea.value=text;
-      textarea.setAttribute("readonly","");
-      textarea.style.position="fixed";
-      textarea.style.left="-9999px";
-      document.body.appendChild(textarea);
-      textarea.select();
-      const copied=document.execCommand("copy");
-      textarea.remove();
-      if(!copied)throw new Error("Copy was not successful.");
+    if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(text);
+    else{
+      const area=document.createElement("textarea");area.value=text;area.setAttribute("readonly","");area.style.position="fixed";area.style.left="-9999px";document.body.appendChild(area);area.select();const ok=document.execCommand("copy");area.remove();if(!ok)throw new Error("Copy failed");
     }
+    showToast("Copied successfully.");
+    if(button){const old=button.textContent;button.textContent="Copied";button.disabled=true;setTimeout(function(){if(button.isConnected){button.textContent=old;button.disabled=false;}},1500);}
+  }catch(error){console.error("Credential copy error:",error);showToast("Unable to copy. Press and hold the credential text to copy it.");}
+}
 
-    showToast("Purchase information copied.");
-    if(button){
-      const oldHTML=button.innerHTML;
-      button.innerHTML='<i class="fa-solid fa-check"></i> Copied';
-      button.disabled=true;
-      setTimeout(function(){
-        if(button.isConnected){
-          button.innerHTML=oldHTML;
-          button.disabled=false;
-        }
-      },1800);
-    }
-  }catch(error){
-    console.error("Copy error:",error);
-    showToast("Unable to copy automatically. Press and hold the text to copy it.");
-  }
+document.getElementById("detailBackButton").addEventListener("click",showOrdersList);
+
+function relativeDate(value){
+  const time=getTime(value);if(!time)return "Date unavailable";
+  const diff=Math.max(0,Date.now()-time),mins=Math.floor(diff/60000),hours=Math.floor(mins/60),days=Math.floor(hours/24);
+  if(mins<1)return "Just now";if(mins<60)return mins+" min ago";if(hours<24)return hours+" hr ago";if(days<7)return days+" days ago";
+  return new Date(time).toLocaleDateString("en-NG",{day:"2-digit",month:"short",year:"numeric"});
 }
 
 function getTime(value){
@@ -709,8 +665,8 @@ function formatDate(value){
   const time=getTime(value);
   if(!time)return "Date unavailable";
   return new Date(time).toLocaleString("en-NG",{
-    day:"numeric",month:"short",year:"numeric",
-    hour:"2-digit",minute:"2-digit"
+    day:"2-digit",month:"short",year:"numeric",
+    hour:"numeric",minute:"2-digit"
   });
 }
 
