@@ -387,7 +387,7 @@ header,.topbar,.top-header { border-bottom-color:#285B32; }
 <div class="page">
   <header>
     <div class="header-left">
-      <div class="header-title">Spencer Store</div>
+      <div class="header-title">Gentle Acct Store</div>
     </div>
     <div class="header-actions">
       <button class="header-notice" type="button" aria-label="Notifications"><i class="fa-solid fa-bell"></i></button>
@@ -473,10 +473,19 @@ document.addEventListener("visibilitychange",function(){
 });
 syncTheme();
 
-document.getElementById("backButton").addEventListener("click",function(){
-  window.location.href="dashboard.html";
-});
+const backButton=document.getElementById("backButton");
+if(backButton){
+  backButton.addEventListener("click",function(){
+    window.location.href="dashboard.html";
+  });
+}
 
+if(typeof firebaseAuth==="undefined" || typeof firebaseDB==="undefined" || !firebaseAuth || !firebaseDB){
+  const ordersList=document.getElementById("ordersList");
+  if(ordersList){
+    ordersList.innerHTML=`<div class="state-box"><div class="state-icon error"><i class="fa-solid fa-triangle-exclamation"></i></div><h3>Orders service unavailable</h3><p>Firebase did not load. Please check that firebase.js is loading correctly, then refresh.</p><button class="retry-btn" type="button" onclick="window.location.reload()"><i class="fa-solid fa-rotate-right"></i> Refresh page</button></div>`;
+  }
+}else{
 firebaseAuth.onAuthStateChanged(async function(user){
   if(!user || !user.emailVerified){
     try{
@@ -496,6 +505,7 @@ firebaseAuth.onAuthStateChanged(async function(user){
   syncTheme();
   await loadFirestoreOrders();
 });
+}
 
 async function loadFirestoreOrders(){
   const list=document.getElementById("ordersList");
