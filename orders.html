@@ -519,6 +519,10 @@ async function loadFirestoreOrders(){
     const orders=[];
     snapshot.forEach(function(doc){
       const data=doc.data()||{};
+      // Keep unsuccessful transactions in Firestore for admin records,
+      // but never expose them in the customer's order history.
+      const orderStatus=String(data.status||data.orderStatus||data.paymentStatus||"").trim().toLowerCase().replace(/[\s-]+/g,"_");
+      if(["failed","failure","failed_refunded","cancelled","canceled","refunded","rejected"].includes(orderStatus))return;
       const delivered=data.deliveredItems||data.credentials||data.items||data.orderItems||data.purchaseText||data.inventoryValue||data.supplierResponse||"";
       orders.push({
         id:doc.id,
@@ -574,10 +578,12 @@ function normalizeDelivery(value){
   return String(value);
 }
 
-function getOrderStatus(status){
+function getOrderStatus(status,hasDelivery){
   const value=String(status||"completed").toLowerCase();
-  if(["pending","processing","awaiting payment","awaiting_payment"].includes(value))return {label:"Pending",className:"pending",icon:"fa-clock"};
-  if(["failed","cancelled","canceled","refunded"].includes(value))return {label:value.charAt(0).toUpperCase()+value.slice(1),className:"failed",icon:"fa-circle-xmark"};
+  if(["pending","processing","supplier_processing","awaiting payment","awaiting_payment"].includes(value))return {label:"Processing",className:"pending",icon:"fa-clock"};
+  if(["failed","failed_refunded","cancelled","canceled","refunded"].includes(value))return {label:"Not completed",className:"failed",icon:"fa-circle-xmark"};
+  // Never tell a customer a digital order is completed when no delivery was saved.
+  if(["completed","success","successful"].includes(value)&&!hasDelivery)return {label:"Delivery pending",className:"pending",icon:"fa-clock"};
   return {label:"Completed",className:"",icon:"fa-circle-check"};
 }
 
@@ -595,7 +601,8 @@ function displayOrders(orders){
   const wrapper=document.createElement("div");
   wrapper.className="orders-list-card";
   orders.forEach(function(order,index){
-    const status=getOrderStatus(order.status);
+    const hasDelivery=Boolean(order.purchaseText&&order.purchaseText!=="Purchase information unavailable.");
+    const status=getOrderStatus(order.status,hasDelivery);
     const row=document.createElement("button");
     row.type="button";row.className="order-row";row.setAttribute("aria-label","View order for "+order.productName);
     row.innerHTML=`<span class="order-row-icon"><i class="fa-solid fa-tag"></i></span><span class="order-row-main"><span class="order-row-name">${escapeHtml(order.productName)}</span><span class="order-row-meta">#${escapeHtml(String(order.orderNumber))} · ${escapeHtml(relativeDate(order.createdAt))}</span></span><span class="order-row-side"><strong class="order-row-price">${formatMoney(order.amount)}</strong><span class="status ${status.className}">${escapeHtml(status.label)}</span></span><i class="fa-solid fa-chevron-right order-chevron"></i>`;
@@ -608,7 +615,8 @@ function displayOrders(orders){
 function showOrderDetails(index){
   const order=currentOrders[index];
   if(!order)return;
-  const status=getOrderStatus(order.status);
+  const hasDelivery=Boolean(order.purchaseText&&order.purchaseText!=="Purchase information unavailable.");
+  const status=getOrderStatus(order.status,hasDelivery);
   const detail=document.getElementById("orderDetailContent");
   const credentials=order.purchaseText&&order.purchaseText!=="Purchase information unavailable."?order.purchaseText:"Purchase information is not available yet.";
   const credentialLines=credentials.split(/\n\n/).filter(Boolean);
