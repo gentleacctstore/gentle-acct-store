@@ -418,29 +418,22 @@ th { color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.
 .supplier-note{margin:15px;padding:12px;border-radius:10px;background:var(--hover);color:var(--muted);font-size:11px;line-height:1.6}
 @media(max-width:760px){.supplier-summary{grid-template-columns:1fr}.supplier-stat{padding:12px}.supplier-stat strong{font-size:18px}.supplier-toolbar>*{width:100%}.supplier-toolbar input{flex-basis:100%}.supplier-toolbar select,.supplier-toolbar input{font-size:16px}}
 
-/* SQUARE-STYLE SUPPLIER PRODUCT BLOCKS */
-.supplier-card-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:15px;align-items:stretch}
-.supplier-card{min-width:0;min-height:300px;border:1px solid var(--border);border-radius:16px;background:var(--surface);padding:13px;display:flex;flex-direction:column;gap:9px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-.supplier-card-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+/* COMPACT FETCHED SUPPLIER PRODUCT CARDS */
+.supplier-card-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:15px}
+.supplier-card{min-width:0;border:1px solid var(--border);border-radius:14px;background:var(--surface);padding:13px;display:flex;flex-direction:column;gap:9px}
+.supplier-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
 .supplier-card-check{width:18px;height:18px;flex:0 0 auto;accent-color:var(--blue)}
-.supplier-card-name{font-size:12px;font-weight:850;line-height:1.4;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.supplier-card-name{font-size:12px;font-weight:850;line-height:1.4;overflow-wrap:anywhere}
 .supplier-card-meta{font-size:10px;color:var(--muted);line-height:1.45;overflow-wrap:anywhere}
 .supplier-card-values{display:grid;grid-template-columns:1fr 1fr;gap:7px}
 .supplier-card-value{min-width:0;background:var(--surface-2);border:1px solid var(--border);border-radius:9px;padding:8px}
-.supplier-card-value small{display:block;color:var(--muted);font-size:9px;line-height:1.3}
+.supplier-card-value small{display:block;color:var(--muted);font-size:9px}
 .supplier-card-value strong{display:block;margin-top:4px;font-size:11px;overflow-wrap:anywhere}
-.supplier-card .supplier-selling-price{width:100%;min-width:0;min-height:40px;padding:8px;border:1px solid var(--border);border-radius:8px;background:var(--input-bg);color:var(--text);font-size:16px}
-.supplier-card-actions{display:flex;gap:7px;margin-top:auto;align-items:center}
+.supplier-card .supplier-selling-price{width:100%;min-width:0;min-height:38px;padding:8px;border:1px solid var(--border);border-radius:8px;background:var(--input-bg);color:var(--text);font-size:16px}
+.supplier-card-actions{display:flex;gap:7px;margin-top:auto}
 .supplier-card-actions .btn{flex:1;min-width:0}
 @media(max-width:900px){.supplier-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:520px){.supplier-card-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;padding:10px}.supplier-card{min-height:320px;padding:10px;border-radius:14px;gap:8px}.supplier-card-name{font-size:11px;-webkit-line-clamp:4}.supplier-card-meta{font-size:9px}.supplier-card-value{padding:7px}.supplier-card-value small{font-size:9px}.supplier-card-value strong{font-size:10px}.supplier-card .supplier-selling-price{min-height:40px;font-size:16px}.supplier-card .btn{padding:8px 6px;font-size:11px}}
-@media(max-width:340px){.supplier-card-grid{grid-template-columns:1fr}.supplier-card{min-height:0}}
-
-/* CUSTOMER ORDERS */
-.order-cards{display:grid;grid-template-columns:1fr;gap:12px;padding:14px}.order-card{min-width:0;border:1px solid var(--border);border-radius:14px;background:var(--surface-2);padding:14px}.order-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:12px}.order-card-id{font-size:13px;font-weight:850;overflow-wrap:anywhere;word-break:break-word;line-height:1.45}.order-card-customer{font-size:13px;font-weight:700;overflow-wrap:anywhere;word-break:break-word}.order-card-uid{font-size:11px;color:var(--muted);overflow-wrap:anywhere;word-break:break-word;margin-top:4px}.order-card-product{font-size:14px;font-weight:800;margin:12px 0 10px;overflow-wrap:anywhere}.order-card-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.order-card-meta-item{min-width:0;border:1px solid var(--border);border-radius:10px;padding:9px;background:var(--surface)}.order-card-meta-item small{display:block;font-size:10px;color:var(--muted);margin-bottom:4px}.order-card-meta-item strong{display:block;font-size:12px;overflow-wrap:anywhere}.order-card-action{width:100%;margin-top:10px}.order-cards .empty-state,.order-cards .loading,.order-cards .error-box{margin:0}.order-status{display:inline-block;padding:5px 8px;border-radius:20px;font-size:10px;font-weight:800;text-transform:capitalize;background:var(--surface-2);color:var(--muted);white-space:nowrap}
-.order-status.completed,.order-status.success{background:#dcfce7;color:#166534}.order-status.pending,.order-status.processing,.order-status.supplier_pending{background:#fef3c7;color:#92400e}.order-status.failed,.order-status.cancelled,.order-status.refunded{background:#fee2e2;color:#991b1b}
-.order-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.order-detail-item{min-width:0;padding:11px;border:1px solid var(--border);border-radius:10px;background:var(--surface-2)}.order-detail-item small{display:block;color:var(--muted);font-size:10px;margin-bottom:5px}.order-detail-item strong{display:block;font-size:12px;overflow-wrap:anywhere;white-space:pre-wrap}.order-detail-block{margin-top:15px;padding:13px;border:1px solid var(--border);border-radius:11px}.order-detail-block h4{margin:0 0 9px;font-size:12px}.order-payload{display:block;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;font-size:12px;line-height:1.6;color:var(--text);user-select:text}
-@media(max-width:760px){.order-detail-grid{grid-template-columns:1fr}}
+@media(max-width:420px){.supplier-card-grid{gap:8px;padding:10px}.supplier-card{padding:10px}.supplier-card-name{font-size:11px}.supplier-card .btn{padding:7px 6px;font-size:10px}}
 
 /* SUPPLIER IMPORT PROGRESS */
 .supplier-import-progress{display:none;margin:0 15px 15px;padding:13px;border:1px solid var(--border);border-radius:12px;background:var(--surface-2)}
@@ -487,7 +480,6 @@ th { color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.
     <button class="nav-link active" data-section="dashboard"><span class="nav-icon">▦</span>Dashboard</button>
     <button class="nav-link" data-section="products"><span class="nav-icon">▣</span>Products</button>
     <button class="nav-link" data-section="inventory"><span class="nav-icon">▤</span>Inventory</button>
-    <button class="nav-link" data-section="orders"><span class="nav-icon">🧾</span>Orders</button>
     <button class="nav-link" data-section="categoryLinks"><span class="nav-icon">🔗</span>Category Links</button>
     <button class="nav-link" data-section="supplier"><span class="nav-icon">⇄</span>Supplier API</button>
     <a class="nav-link" href="customers.html"><span class="nav-icon">♙</span>Customers</a>
@@ -584,15 +576,6 @@ th { color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.
         </div>
       </section>
 
-      <section id="ordersSection" class="hidden">
-        <div class="panel">
-          <div class="panel-head"><div><div class="panel-title">Customer orders</div><div class="panel-desc">Every order recorded in your store, newest first. Open an order to view its full contents and delivery details.</div></div><button class="btn" id="ordersRefreshButton" type="button">↻ Refresh orders</button></div>
-          <div class="panel-body"><div class="toolbar"><div class="search-wrap"><input id="orderSearch" type="search" placeholder="Search order ID, customer, email or product..." aria-label="Search orders"></div><select class="filter" id="orderStatusFilter" aria-label="Filter orders by status"><option value="">All statuses</option><option value="completed">Completed</option><option value="pending">Pending</option><option value="processing">Processing</option><option value="failed">Failed</option><option value="cancelled">Cancelled</option></select></div></div>
-          <div class="order-cards" id="ordersTable"><div class="loading">Loading orders...</div></div>
-          <div class="panel-body small muted" id="ordersCount">Orders will appear here once saved to Firestore.</div>
-        </div>
-      </section>
-
       <section id="categoryLinksSection" class="hidden">
         <div class="panel">
           <div class="panel-head"><div><div class="panel-title">Category logos & default links</div><div class="panel-desc">Set a reusable logo and default link for each category.</div></div><button class="btn" id="reloadCategoryLinks">↻ Reload</button></div>
@@ -679,7 +662,6 @@ th { color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.
     <div class="modal-foot"><button class="btn" id="closeInventoryModalBottom" type="button">Close</button></div>
   </div>
 </div>
-<div class="modal-backdrop" id="orderDetailsModal"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="orderDetailsTitle"><div class="modal-head"><h3 id="orderDetailsTitle">Order details</h3><button class="icon-btn" id="closeOrderDetails" type="button" aria-label="Close">×</button></div><div class="modal-body" id="orderDetailsBody"></div><div class="modal-foot"><button class="btn" id="closeOrderDetailsBottom" type="button">Close</button></div></div></div>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -859,7 +841,7 @@ $("themeToggle").addEventListener("click",()=>{
 /* NAVIGATION */
 
 function showSection(section) {
-  const map={dashboard:"dashboardSection",products:"productsSection",inventory:"inventorySection",orders:"ordersSection",categoryLinks:"categoryLinksSection",supplier:"supplierSection"};
+  const map={dashboard:"dashboardSection",products:"productsSection",inventory:"inventorySection",categoryLinks:"categoryLinksSection",supplier:"supplierSection"};
   Object.entries(map).forEach(([key,id])=>$(id).classList.toggle("hidden",key!==section));
   document.querySelectorAll(".nav-link[data-section]").forEach(button=>{
     button.classList.toggle("active",button.dataset.section===section);
@@ -868,7 +850,6 @@ function showSection(section) {
     dashboard:["Dashboard","Overview of your store"],
     products:["Products","Manage your store products"],
     inventory:["Inventory","Review available and sold stock"],
-    orders:["Customer Orders","Review purchases and delivered items"],
     categoryLinks:["Category Links","Manage category logos and saved links"],
     supplier:["Supplier API","Connect Spencer Acc Store and import products"]
   };
@@ -876,7 +857,6 @@ function showSection(section) {
   $("pageSubtitle").textContent=titles[section][1];
   $("sidebar").classList.remove("open");
   if(section==="inventory") renderInventoryTable();
-  if(section==="orders") loadOrders();
   if(section==="categoryLinks") renderCategoryLinksTable();
   if(section==="supplier") autoLoadSupplierSection();
 }
@@ -1766,23 +1746,6 @@ $("addInventoryButton").addEventListener("click",async()=>{
   }
 });
 
-/* CUSTOMER ORDERS */
-let cachedOrders=[];
-let orderDetailsById=new Map();
-function orderDate(value){if(!value)return "—";let date=value;if(value&&typeof value.toDate==="function")date=value.toDate();else if(value&&typeof value.seconds==="number")date=new Date(value.seconds*1000);else if(typeof value==="string"||typeof value==="number")date=new Date(value);return date instanceof Date&&!Number.isNaN(date.getTime())?date.toLocaleString("en-NG",{dateStyle:"medium",timeStyle:"short"}):"—";}
-function orderStatus(order){return String(order.status||order.paymentStatus||order.deliveryStatus||"unknown").toLowerCase().replace(/\s+/g,"_");}
-function orderCustomer(order){return order.userEmail||order.customerEmail||order.email||order.userName||order.customerName||order.userId||order.customerId||"Customer";}
-function orderProduct(order){if(Array.isArray(order.items)&&order.items.length)return order.items.map(item=>item.productName||item.name||item.title||"Product").join(", ");return order.productName||order.name||order.productTitle||order.productId||"Product";}
-function orderAmount(order){const value=order.amount??order.totalAmount??order.total??order.totalPrice??order.price??order.paymentAmount;return value===undefined||value===null||value===""?"—":money(value);}
-function renderOrders(){const search=($("orderSearch").value||"").trim().toLowerCase();const statusFilter=$("orderStatusFilter").value;const filtered=cachedOrders.filter(({id,data})=>{const status=orderStatus(data);const haystack=[id,orderCustomer(data),orderProduct(data),data.userId,data.customerId,data.supplierOrderId].filter(Boolean).join(" ").toLowerCase();return(!search||haystack.includes(search))&&(!statusFilter||status===statusFilter);});$("ordersTable").innerHTML=filtered.length?filtered.map(({id,data})=>{const status=orderStatus(data);const customer=orderCustomer(data);const uid=data.userId||data.customerId||"";return `<article class="order-card"><div class="order-card-top"><div><div class="small muted">ORDER ID</div><div class="order-card-id">${escapeHTML(id)}</div></div><span class="order-status ${escapeHTML(status)}">${escapeHTML(status.replace(/_/g," "))}</span></div><div class="order-card-customer">${escapeHTML(customer)}</div>${uid?`<div class="order-card-uid">UID: ${escapeHTML(uid)}</div>`:""}<div class="order-card-product">${escapeHTML(orderProduct(data))}</div><div class="order-card-meta"><div class="order-card-meta-item"><small>Amount</small><strong>${escapeHTML(orderAmount(data))}</strong></div><div class="order-card-meta-item"><small>Date</small><strong>${escapeHTML(orderDate(data.createdAt||data.orderDate||data.timestamp))}</strong></div><div class="order-card-meta-item"><small>Quantity</small><strong>${escapeHTML(data.quantity??data.qty??"—")}</strong></div><div class="order-card-meta-item"><small>Payment</small><strong>${escapeHTML(data.paymentMethod||data.paymentStatus||"—")}</strong></div></div><button class="btn btn-small order-card-action" type="button" data-open-order="${escapeHTML(id)}">View Details &amp; Delivered Items</button></article>`;}).join(""):'<div class="empty-state">No matching orders found.</div>';$ ("ordersCount").textContent=`Showing ${filtered.length} of ${cachedOrders.length} order(s).`;}
-function formatOrderValue(value){if(value===undefined||value===null||value==="")return "";if(typeof value==="string")return value;try{return JSON.stringify(value,null,2);}catch(error){return String(value);}}
-function addOrderDetail(label,value){if(value===undefined||value===null||value==="")return "";return `<div class="order-detail-item"><small>${escapeHTML(label)}</small><strong>${escapeHTML(formatOrderValue(value))}</strong></div>`;}
-function openOrderDetails(orderId){const order=orderDetailsById.get(orderId);if(!order)return showToast("Order details are no longer available. Refresh orders.");const fields=[["Order ID",orderId],["Customer",orderCustomer(order)],["Customer UID",order.userId||order.customerId],["Product",orderProduct(order)],["Product ID",order.productId],["Amount paid",orderAmount(order)],["Quantity",order.quantity],["Status",orderStatus(order)],["Payment method",order.paymentMethod],["Payment reference",order.paymentReference||order.reference],["Supplier order ID",order.supplierOrderId||order.supplier_order_id],["Created",orderDate(order.createdAt||order.orderDate||order.timestamp)],["Updated",orderDate(order.updatedAt)]];const grid=fields.map(([label,value])=>addOrderDetail(label,value)).filter(Boolean).join("");const deliveries=[["Delivered item / credentials",order.purchaseText||order.deliveryDetails||order.accountDetails||order.inventoryValue||order.value],["Delivered items",order.deliveredItems],["Credentials",order.credentials],["Order items",order.items||order.orderItems],["Supplier response",order.supplierResponse]];const blocks=deliveries.filter(([,value])=>value!==undefined&&value!==null&&value!=="").map(([label,value])=>`<div class="order-detail-block"><h4>${escapeHTML(label)}</h4><code class="order-payload">${escapeHTML(formatOrderValue(value))}</code></div>`);$("orderDetailsTitle").textContent="Order "+orderId;$("orderDetailsBody").innerHTML=`<div class="order-detail-grid">${grid}</div>${blocks.join("")||'<div class="empty-state">No delivery information was saved in this order record.</div>'}`;$("orderDetailsModal").classList.add("show");document.body.style.overflow="hidden";}
-async function loadOrders(){const body=$("ordersTable");body.innerHTML='<div class="loading">Loading customer orders…</div>';try{let snapshot;try{snapshot=await db.collection("orders").orderBy("createdAt","desc").limit(500).get();}catch(orderByError){console.warn("Orders ordered query failed; using basic query:",orderByError);snapshot=await db.collection("orders").limit(500).get();}cachedOrders=snapshot.docs.map(doc=>({id:doc.id,data:doc.data()||{}}));cachedOrders.sort((a,b)=>{const t=v=>v?.toDate?v.toDate().getTime():v?.seconds?v.seconds*1000:new Date(v||0).getTime()||0;return t(b.data.createdAt||b.data.orderDate||b.data.timestamp)-t(a.data.createdAt||a.data.orderDate||a.data.timestamp);});orderDetailsById=new Map(cachedOrders.map(item=>[item.id,item.data]));renderOrders();}catch(error){console.error("Orders loading failed:",error);body.innerHTML=`<div class="error-box">Could not load orders: ${escapeHTML(readableError(error))}. Check that Firestore rules allow the authorised admin to read the orders collection.</div>`;$("ordersCount").textContent="Orders could not be loaded.";}}
-$("orderSearch").addEventListener("input",renderOrders);$("orderStatusFilter").addEventListener("change",renderOrders);$("ordersRefreshButton").addEventListener("click",loadOrders);$("ordersTable").addEventListener("click",event=>{const button=event.target.closest("[data-open-order]");if(button)openOrderDetails(button.dataset.openOrder);});
-function closeOrderDetails(){$("orderDetailsModal").classList.remove("show");document.body.style.overflow="";}
-$("closeOrderDetails").addEventListener("click",closeOrderDetails);$("closeOrderDetailsBottom").addEventListener("click",closeOrderDetails);$("orderDetailsModal").addEventListener("click",event=>{if(event.target===$("orderDetailsModal"))closeOrderDetails();});
-
 /* NOTIFICATIONS */
 
 async function enableNotifications() {
@@ -1829,7 +1792,7 @@ async function refreshAll() {
 
   try {
     setHealthStatus("storeConnectionStatus","Connecting…","warn");
-    const results=await Promise.allSettled([loadProducts(),loadCategorySettings(),loadFundingSummary(),loadOrders()]);
+    const results=await Promise.allSettled([loadProducts(),loadCategorySettings(),loadFundingSummary()]);
     const productResult=results[0];
     const categoryResult=results[1];
     const fundingResult=results[2];
