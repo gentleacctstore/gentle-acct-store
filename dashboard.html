@@ -1238,6 +1238,187 @@ html.dark-mode .nav-item.active,html[data-theme="dark"] .nav-item.active,
 html.dark-mode .header-icon,html[data-theme="dark"] .header-icon,
 html.dark-mode .back-btn,html[data-theme="dark"] .back-btn {color:#B7E4BE !important;}
 @media(max-width:767px){input,textarea,select,.form-control,.input-wrap input{font-size:16px !important;}}
+
+/* MAIN MENU DRAWER — Gentle Acct Store */
+.menu-nav-trigger {
+  border:0;
+  padding:0;
+  background:transparent;
+  font-family:inherit;
+  cursor:pointer;
+}
+.main-menu-backdrop {
+  position:fixed;
+  inset:0;
+  z-index:500;
+  background:rgba(18,24,20,.48);
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+  opacity:0;
+  visibility:hidden;
+  transition:opacity .25s,visibility .25s;
+}
+.main-menu-drawer {
+  position:fixed;
+  z-index:510;
+  top:0;
+  right:0;
+  bottom:0;
+  display:flex;
+  flex-direction:column;
+  width:min(82vw,430px);
+  max-width:100%;
+  padding-top:env(safe-area-inset-top);
+  background:#fff;
+  border-left:1px solid #D9E9DC;
+  box-shadow:-14px 0 45px rgba(20,45,25,.13);
+  transform:translateX(102%);
+  transition:transform .28s cubic-bezier(.2,.75,.25,1);
+}
+body.main-menu-open {overflow:hidden}
+body.main-menu-open .main-menu-backdrop {opacity:1;visibility:visible}
+body.main-menu-open .main-menu-drawer {transform:translateX(0)}
+.main-menu-header {
+  min-height:94px;
+  padding:20px 22px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  border-bottom:1px solid #E8EFE9;
+  flex-shrink:0;
+}
+.main-menu-brand {
+  color:#171923;
+  font-size:22px;
+  font-weight:1000;
+  letter-spacing:-.7px;
+}
+.main-menu-close {
+  width:48px;height:48px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  border:1px solid #D9E9DC;
+  border-radius:50%;
+  background:#F3F7F4;
+  color:#5D625F;
+  font-size:21px;
+}
+.main-menu-scroll {
+  flex:1;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  padding:23px 20px 18px;
+}
+.main-menu-group {margin-bottom:25px}
+.main-menu-label {
+  margin:0 0 12px 3px;
+  color:#A1A5A2;
+  font-size:12px;
+  font-weight:1000;
+  letter-spacing:2px;
+}
+.main-menu-link {
+  width:100%;
+  min-height:58px;
+  display:flex;
+  align-items:center;
+  gap:17px;
+  padding:12px 13px;
+  border:0;
+  border-radius:13px;
+  background:transparent;
+  color:#55585A;
+  font-family:inherit;
+  font-size:16px;
+  font-weight:700;
+  text-align:left;
+  text-decoration:none;
+  transition:background .18s,color .18s;
+}
+.main-menu-link:active,.main-menu-link:hover {
+  background:#F0F6F1;
+  color:#29532A;
+}
+.main-menu-link>i:first-child {
+  width:24px;
+  flex:0 0 24px;
+  color:#5B605D;
+  font-size:19px;
+  text-align:center;
+}
+.main-menu-link span {min-width:0;flex:1}
+.menu-pill {
+  padding:6px 10px;
+  border-radius:20px;
+  background:#F9EEE1;
+  color:#A85A1A;
+  font-size:10px;
+  font-weight:1000;
+  white-space:nowrap;
+}
+.menu-external {color:#A4AAA5;font-size:13px}
+.main-menu-account {margin-bottom:18px}
+.main-menu-signout {cursor:pointer}
+.main-menu-signout>i:first-child {color:#55585A}
+.main-menu-wallet {
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin:0;
+  padding:18px 21px calc(20px + env(safe-area-inset-bottom));
+  border-top:1px solid #E8EFE9;
+  background:#fff;
+}
+.main-menu-wallet>div {
+  min-width:0;
+  padding:16px 17px;
+  flex:1;
+  border:2px solid #B8D9C0;
+  border-radius:17px;
+  background:#EAF4EC;
+}
+.main-menu-wallet span {
+  display:block;
+  margin-bottom:3px;
+  color:#7A817C;
+  font-size:13px;
+}
+.main-menu-wallet strong {
+  display:block;
+  color:#29532A;
+  font-size:20px;
+  font-weight:1000;
+  overflow-wrap:anywhere;
+}
+.main-menu-wallet>a {
+  padding:12px 5px 12px 12px;
+  color:#29532A;
+  font-size:14px;
+  font-weight:1000;
+  white-space:nowrap;
+}
+html.dark-mode .main-menu-drawer {background:#211D27;border-color:#40313A}
+html.dark-mode .main-menu-header,html.dark-mode .main-menu-wallet {background:#211D27;border-color:#40313A}
+html.dark-mode .main-menu-brand {color:#F1F5F9}
+html.dark-mode .main-menu-close {background:#302A34;border-color:#51414A;color:#E5EAF5}
+html.dark-mode .main-menu-label {color:#A9A6AF}
+html.dark-mode .main-menu-link {color:#D7D3D9}
+html.dark-mode .main-menu-link>i:first-child {color:#C5C1C8}
+html.dark-mode .main-menu-link:active,html.dark-mode .main-menu-link:hover {background:#302A34;color:#A8D5B2}
+html.dark-mode .main-menu-wallet>div {background:#25382B;border-color:#426B4B}
+html.dark-mode .main-menu-wallet span {color:#B8B6C0}
+html.dark-mode .main-menu-wallet strong,html.dark-mode .main-menu-wallet>a {color:#A8D5B2}
+@media(max-width:420px) {
+  .main-menu-drawer {width:84vw}
+  .main-menu-header {min-height:86px;padding:17px 19px}
+  .main-menu-brand {font-size:20px}
+  .main-menu-scroll {padding:19px 17px 14px}
+  .main-menu-link {min-height:55px;font-size:15px;gap:14px}
+  .main-menu-wallet {padding:15px 17px calc(16px + env(safe-area-inset-bottom))}
+}
 </style>
 
 </head>
@@ -1434,6 +1615,62 @@ html.dark-mode .back-btn,html[data-theme="dark"] .back-btn {color:#B7E4BE !impor
   <i class="fa-solid fa-headset" aria-hidden="true"></i>
 </a>
 
+<!-- GENTLE ACCT STORE MAIN MENU -->
+<div class="main-menu-backdrop" id="mainMenuBackdrop" onclick="closeMainMenu()" aria-hidden="true"></div>
+<aside class="main-menu-drawer" id="mainMenuDrawer" aria-label="Main menu" aria-hidden="true">
+  <div class="main-menu-header">
+    <div class="main-menu-brand">Gentle Acct Store</div>
+    <button type="button" class="main-menu-close" onclick="closeMainMenu()" aria-label="Close menu">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+
+  <div class="main-menu-scroll">
+    <div class="main-menu-group">
+      <div class="main-menu-label">MAIN</div>
+      <a class="main-menu-link" href="dashboard.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+      <a class="main-menu-link" href="profile.html"><i class="fa-solid fa-user"></i><span>Profile</span></a>
+    </div>
+
+    <div class="main-menu-group">
+      <div class="main-menu-label">SHOP</div>
+      <a class="main-menu-link" href="#productsContainer" onclick="closeMainMenu();setTimeout(scrollToProducts,180)">
+        <i class="fa-solid fa-store"></i><span>All Products</span>
+      </a>
+      <a class="main-menu-link" href="orders.html"><i class="fa-solid fa-bag-shopping"></i><span>My Orders</span></a>
+      <a class="main-menu-link" href="fund.html"><i class="fa-solid fa-circle-plus"></i><span>Add Funds</span></a>
+      <a class="main-menu-link" href="referrals.html">
+        <i class="fa-solid fa-gift"></i><span>Contest & Referrals</span><small class="menu-pill">REWARDS</small>
+      </a>
+    </div>
+
+    <div class="main-menu-group">
+      <div class="main-menu-label">SUPPORT</div>
+      <a class="main-menu-link" href="https://chat.whatsapp.com/DCNgBa8SHIH81Bcc2rSCmf" target="_blank" rel="noopener noreferrer">
+        <i class="fa-brands fa-whatsapp"></i><span>Support & Community</span><i class="fa-solid fa-arrow-up-right-from-square menu-external"></i>
+      </a>
+      <a class="main-menu-link" href="https://wa.me/2349131953030" target="_blank" rel="noopener noreferrer">
+        <i class="fa-solid fa-headset"></i><span>Contact Support</span><i class="fa-solid fa-arrow-up-right-from-square menu-external"></i>
+      </a>
+    </div>
+
+    <div class="main-menu-group main-menu-account">
+      <div class="main-menu-label">ACCOUNT</div>
+      <button type="button" class="main-menu-link main-menu-signout" onclick="signOutFromMainMenu()">
+        <i class="fa-solid fa-right-from-bracket"></i><span>Sign Out</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="main-menu-wallet">
+    <div>
+      <span>Wallet Balance</span>
+      <strong id="menuWalletBalance">₦0.00</strong>
+    </div>
+    <a href="fund.html">Top Up</a>
+  </div>
+</aside>
+
 <nav class="bottom-nav" aria-label="Main navigation">
   <div class="bottom-nav-inner">
     <a href="dashboard.html" class="nav-item active" aria-current="page">
@@ -1448,9 +1685,9 @@ html.dark-mode .back-btn,html[data-theme="dark"] .back-btn {color:#B7E4BE !impor
     <a href="fund.html" class="nav-item">
       <i class="fa-solid fa-circle-plus"></i><span>Fund</span>
     </a>
-    <a href="profile.html" class="nav-item">
+    <button type="button" class="nav-item menu-nav-trigger" onclick="openMainMenu()" aria-label="Open main menu" aria-controls="mainMenuDrawer" aria-expanded="false">
       <i class="fa-solid fa-bars"></i><span>Menu</span>
-    </a>
+    </button>
   </div>
 </nav>
 
@@ -1848,13 +2085,22 @@ const CATEGORY_ORDER = [
 
 function getCategoryPriority(category) {
   const name = String(category || "").trim().toLowerCase();
-  const index = CATEGORY_ORDER.findIndex(item => item.toLowerCase() === name);
+  const index = CATEGORY_ORDER.findIndex(
+    item => item.trim().toLowerCase() === name
+  );
   return index === -1 ? CATEGORY_ORDER.length : index;
 }
 
-function sortCategories(a,b) {
-  return getCategoryPriority(a) - getCategoryPriority(b) ||
-    a.localeCompare(b);
+// Always keep the 24 requested categories in their exact supplied order.
+// Any extra categories are placed after them, alphabetically.
+function sortCategories(a, b) {
+  const priorityDifference = getCategoryPriority(a) - getCategoryPriority(b);
+  if (priorityDifference !== 0) return priorityDifference;
+  return String(a).localeCompare(String(b));
+}
+
+function getOrderedCategories(categories) {
+  return [...categories].sort(sortCategories);
 }
 
 function buildCategoryButtons() {
@@ -1881,9 +2127,7 @@ function buildCategoryButtons() {
     }
   });
 
-  categories.sort(sortCategories);
-
-  categories.forEach(category => {
+  getOrderedCategories(categories).forEach(category => {
     const button = document.createElement("button");
 
     button.className = "category-btn" +
@@ -1947,7 +2191,7 @@ function renderProducts() {
 
   let html = "";
 
-  Object.keys(groups).sort(sortCategories).forEach(category => {
+  getOrderedCategories(Object.keys(groups)).forEach(category => {
     const sectionId = "products-" + slugify(category);
     const safeCategory = escapeAttribute(category);
 
@@ -1977,7 +2221,8 @@ function renderProducts() {
 /* COMPACT PRODUCT NAMES
    Keep important details, use familiar short forms, and display in capitals. */
 function getDisplayProductName(product) {
-  let original = String(product.name || "Product").trim();
+  // An admin-entered displayName takes priority over the automatic shortened name.
+  let original = String(product.displayName || product.name || "Product").trim();
   const entityDecoder = document.createElement("textarea");
   entityDecoder.innerHTML = original;
   original = entityDecoder.value.trim();
@@ -2195,6 +2440,42 @@ function showToast(message) {
 
   syncTheme();
 })();
+
+/* MAIN MENU DRAWER */
+function openMainMenu() {
+  document.body.classList.add("main-menu-open");
+  const drawer=document.getElementById("mainMenuDrawer");
+  const trigger=document.querySelector(".menu-nav-trigger");
+  const backdrop=document.getElementById("mainMenuBackdrop");
+  if(drawer) drawer.setAttribute("aria-hidden","false");
+  if(backdrop) backdrop.setAttribute("aria-hidden","false");
+  if(trigger) trigger.setAttribute("aria-expanded","true");
+  const balance=document.getElementById("headerBalance");
+  const menuBalance=document.getElementById("menuWalletBalance");
+  if(balance && menuBalance) menuBalance.textContent=balance.textContent;
+}
+function closeMainMenu() {
+  document.body.classList.remove("main-menu-open");
+  const drawer=document.getElementById("mainMenuDrawer");
+  const trigger=document.querySelector(".menu-nav-trigger");
+  const backdrop=document.getElementById("mainMenuBackdrop");
+  if(drawer) drawer.setAttribute("aria-hidden","true");
+  if(backdrop) backdrop.setAttribute("aria-hidden","true");
+  if(trigger) trigger.setAttribute("aria-expanded","false");
+}
+async function signOutFromMainMenu() {
+  closeMainMenu();
+  try {
+    await firebase.auth().signOut();
+    window.location.href="login.html";
+  } catch(error) {
+    console.error("Sign out error:",error);
+    showToast("Could not sign out. Please try again.");
+  }
+}
+document.addEventListener("keydown",event=>{
+  if(event.key==="Escape") closeMainMenu();
+});
 </script>
 </body>
 </html>
