@@ -310,6 +310,16 @@ table{min-width:620px}
  .unified-sidebar>a.unified-nav{font-size:10px;padding:7px 8px}
 }
 
+
+/* GENTLE ADMIN CONSISTENCY + MOBILE SAFETY */
+:root{--accent:#176b3a;--accent-hover:#10552e;--accent-soft:#102b1d}
+html[data-theme="light"]{--accent:#176b3a;--accent-hover:#10552e;--accent-soft:#e8f4ec}
+html[data-theme="blue"]{--accent:#2b9254;--accent-hover:#176b3a;--accent-soft:#153522}
+button,input,select,textarea{font-size:16px}
+.brand-mark{background:linear-gradient(145deg,#2b9254,#176b3a)}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #55a875;outline-offset:2px}
+@media(max-width:560px){.app{padding:14px 11px}.referral-card{min-width:0}.card-head,.card-foot{flex-wrap:wrap}}
+
 </style>
 <style>
 /* Unified Gentle Admin design system */
