@@ -79,9 +79,9 @@ a {text-decoration:none;color:inherit}
 }
 
 .top-header {
-  position:sticky;
-  top:0;
-  z-index:100;
+  position:relative;
+  top:auto;
+  z-index:1;
   padding:15px 22px;
   background:rgba(255,247,247,.94);
   border-bottom:1px solid rgba(241,220,221,.9);
@@ -1519,6 +1519,103 @@ body { background: radial-gradient(ellipse at 8% 0%, rgba(221,239,227,.62), tran
 .top-header { background:rgba(255,255,255,.9) !important; border-bottom-color:#e4ece6 !important; }
 
 </style>
+
+<style>
+/* Refined dashboard header — visual-only; keeps existing IDs and notification action. */
+.top-header {
+  position: relative !important;
+  top: auto !important;
+  z-index: 2;
+  padding: 17px 22px !important;
+  background: #ffffff !important;
+  border-bottom: 1px solid #e8eee9 !important;
+  box-shadow: 0 5px 20px rgba(23, 55, 35, .035);
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+.top-header-row { gap: 14px !important; min-height: 62px; }
+.brand-area { gap: 13px !important; min-width: 0; }
+.brand-logo {
+  width: 52px !important;
+  height: 52px !important;
+  border-radius: 16px !important;
+  color: #ffffff !important;
+  background: linear-gradient(145deg, #247b49, #145b34) !important;
+  box-shadow: 0 7px 16px rgba(25, 105, 59, .17) !important;
+  font-size: 21px !important;
+}
+.brand-text h1 {
+  color: #183c28 !important;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-size: clamp(15px, 2.2vw, 20px) !important;
+  line-height: 1.2;
+  font-weight: 750 !important;
+  letter-spacing: -.65px !important;
+}
+.brand-text p {
+  color: #7a8980 !important;
+  font-size: 11px !important;
+  line-height: 1.35;
+  font-weight: 500 !important;
+  margin-top: 5px !important;
+}
+.header-actions { gap: 12px !important; flex-shrink: 0; }
+.header-icon {
+  width: 42px !important;
+  height: 42px !important;
+  border: 1px solid #e1ebe4 !important;
+  border-radius: 14px !important;
+  background: #f4f8f5 !important;
+  color: #205b38 !important;
+  font-size: 16px !important;
+  box-shadow: none !important;
+}
+.header-icon:active { background: #eaf3ed !important; }
+.header-wallet {
+  min-width: 0;
+  padding: 8px 12px;
+  border: 1px solid #e6eee8;
+  border-radius: 13px;
+  background: #f8faf8;
+  align-items: flex-start !important;
+}
+.header-wallet span {
+  color: #829087 !important;
+  font-size: 9px !important;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: .075em;
+  font-weight: 700 !important;
+  margin-bottom: 4px !important;
+}
+.header-wallet strong {
+  color: #194b2e !important;
+  font-size: clamp(12px, 1.8vw, 16px) !important;
+  line-height: 1.15;
+  font-weight: 800 !important;
+  letter-spacing: -.45px;
+}
+@media (max-width: 480px) {
+  .top-header { padding: 13px 12px !important; }
+  .top-header-row { gap: 8px !important; }
+  .brand-area { gap: 9px !important; }
+  .brand-logo { width: 43px !important; height: 43px !important; border-radius: 13px !important; font-size: 17px !important; }
+  .brand-text h1 { font-size: 14px !important; letter-spacing: -.45px !important; }
+  .brand-text p { font-size: 9px !important; margin-top: 3px !important; }
+  .header-actions { gap: 7px !important; }
+  .header-icon { width: 36px !important; height: 36px !important; border-radius: 12px !important; font-size: 14px !important; }
+  .header-wallet { padding: 6px 8px; border-radius: 11px; }
+  .header-wallet span { font-size: 8px !important; margin-bottom: 3px !important; }
+  .header-wallet strong { font-size: 11px !important; letter-spacing: -.3px; }
+}
+@media (max-width: 350px) {
+  .brand-text p { display: none; }
+  .brand-text h1 { font-size: 13px !important; }
+  .header-actions { gap: 5px !important; }
+  .header-wallet { padding: 6px; }
+}
+</style>
+
 </head>
 
 
