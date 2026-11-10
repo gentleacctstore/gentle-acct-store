@@ -1,13 +1,13 @@
 
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0b1120">
-<meta name="description" content="Gentle Acct Store admin dashboard">
-<title>Admin Dashboard | Gentle Acct Store</title>
 
+<html data-theme="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="#0b1120" name="theme-color"/>
+<meta content="Gentle Acct Store admin dashboard" name="description"/>
+<title>Admin Dashboard | Gentle Acct Store</title>
 <script>
 try {
   document.documentElement.dataset.theme =
@@ -16,13 +16,11 @@ try {
   document.documentElement.dataset.theme = "dark";
 }
 </script>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js"></script>
 <script src="firebase.js"></script>
-
 <style>
 :root {
   color-scheme: light;
@@ -445,7 +443,6 @@ th { color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.
 .supplier-import-progress-meta{display:flex;justify-content:space-between;gap:8px;margin-top:7px;color:var(--muted);font-size:10px}
 
 </style>
-
 <style id="gentle-premium-redesign">
 /* GENTLE ACCT STORE — premium marketplace / SaaS interface layer */
 :root{--g:#176b3a;--gd:#104d2b;--gp:#eaf4ed;--ink:#14231a;--muted:#748178;--line:#e5ece7;--canvas:#f4f7f5;--surface:#fff;--shadow:0 10px 32px rgba(17,48,29,.065);--shadow2:0 18px 45px rgba(17,48,29,.12)}
@@ -466,225 +463,253 @@ th { color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.
 @media(max-width:390px){#productsContainer{grid-template-columns:1fr!important}.product-card{display:grid!important;grid-template-columns:84px 1fr!important;align-items:center!important}.product-image{height:84px!important;width:84px!important;min-width:84px!important}.quick-links{grid-template-columns:1fr!important}}
 
 </style>
-</head>
+<style>
+/* Unified Gentle Admin design system */
+:root{--ga-blue:#2563eb;--ga-blue2:#1d4ed8;--ga-radius:16px}
+html[data-theme="dark"]{--ga-bg:#0b1220;--ga-panel:#111c2e;--ga-panel2:#162238;--ga-border:#27364d;--ga-text:#e8eef8;--ga-muted:#91a1b8;--ga-soft:#172b4b}
+html[data-theme="light"],html[data-theme="blue"]{--ga-bg:#f4f7fb;--ga-panel:#fff;--ga-panel2:#f8faff;--ga-border:#e2e8f0;--ga-text:#172338;--ga-muted:#718096;--ga-soft:#edf3ff}
+body{background:var(--ga-bg)!important;color:var(--ga-text)!important;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif!important;font-size:14px!important}
+button,input,select,textarea{font-size:16px!important}
+a{transition:color .18s,background .18s,border-color .18s}
+.unified-sidebar{position:fixed;inset:0 auto 0 0;width:248px;padding:25px 17px 18px;background:#0b1425;color:#eaf1ff;display:flex;flex-direction:column;z-index:60;border-right:1px solid #1d2b42;overflow:auto}
+.unified-brand{display:flex;align-items:center;gap:12px;padding:4px 8px 29px;color:#fff;text-decoration:none}
+.unified-mark{width:39px;height:39px;border-radius:12px;background:linear-gradient(145deg,#3b82f6,#1d4ed8);display:grid;place-items:center;font-size:20px;font-weight:800;color:white;box-shadow:0 8px 20px #2563eb44}
+.unified-brand b{display:block;font-size:14px;letter-spacing:1.5px}.unified-brand small{display:block;color:#8191aa;font-size:9px;letter-spacing:1.8px;margin-top:4px}
+.unified-nav-label{padding:17px 11px 8px;color:#71829b;font-size:9px;font-weight:800;letter-spacing:1.5px}
+.unified-nav{display:flex;align-items:center;gap:12px;padding:11px 12px;margin:2px 0;border-radius:10px;color:#aab8cd;text-decoration:none;font-size:12px;font-weight:600;min-height:41px}
+.unified-nav i{width:17px;text-align:center;color:#8295b3;font-size:13px}.unified-nav:hover,.unified-nav.active{background:#1b3152;color:#fff}.unified-nav.active i,.unified-nav:hover i{color:#70a5ff}
+.unified-sidebar-foot{margin-top:auto;padding:17px 10px 5px;border-top:1px solid #223149;color:#90a0b7;font-size:10px}.online-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#22c55e;margin-right:8px;box-shadow:0 0 0 4px #22c55e1b}
+.admin-shell-main{margin-left:248px;min-width:0;min-height:100vh}.admin-shell-main>.topbar{position:sticky;top:0;z-index:30;background:var(--ga-panel);border-bottom:1px solid var(--ga-border);box-shadow:0 5px 18px #0000000a}
+.admin-shell-main>.container,.admin-shell-main>main{max-width:1440px;margin:0 auto;padding:30px clamp(18px,3vw,42px) 45px}
+.admin-shell-main .page-heading,.admin-shell-main .hero,.admin-shell-main .page-intro{margin-bottom:23px}
+.admin-shell-main h1,.admin-shell-main h2,.admin-shell-main h3,.admin-shell-main h4{letter-spacing:-.035em}
+.admin-shell-main .panel,.admin-shell-main .stat,.admin-shell-main .request,.admin-shell-main .referral-card,.admin-shell-main .customer-card,.admin-shell-main .table-wrap{background:var(--ga-panel);border:1px solid var(--ga-border);border-radius:15px;box-shadow:0 8px 24px #07152a0b}
+.admin-shell-main .stat{padding:19px}.admin-shell-main .panel{overflow:hidden}
+.admin-shell-main input,.admin-shell-main select,.admin-shell-main textarea{border:1px solid var(--ga-border)!important;border-radius:10px!important;background:var(--ga-panel2)!important;color:var(--ga-text)!important;min-height:43px;padding:10px 12px}
+.admin-shell-main button{border-radius:10px;transition:transform .16s,filter .16s,background .16s}.admin-shell-main button:active{transform:translateY(1px)}
+.admin-shell-main .refresh-btn,.admin-shell-main .verify-btn,.admin-shell-main .back-btn{background:var(--ga-blue)!important;border-color:var(--ga-blue)!important;color:#fff!important}
+.admin-shell-main .refresh-btn:hover,.admin-shell-main .verify-btn:hover,.admin-shell-main .back-btn:hover{background:var(--ga-blue2)!important}
+.admin-shell-main .page-title,.admin-shell-main .hero h1{font-weight:750}
+.admin-shell-main .topbar-inner{max-width:none;padding:13px clamp(18px,3vw,42px)}
+/* Main dashboard keeps its existing Firebase-driven sidebar and sections */
+#adminApp>.sidebar{background:#0b1425!important;border-right:1px solid #1d2b42}
+#adminApp .brand-icon{background:linear-gradient(145deg,#3b82f6,#1d4ed8)!important}
+#adminApp .nav-link.active,#adminApp .nav-link:hover{background:#1b3152!important;color:#fff!important}
+#adminApp .main{background:var(--ga-bg)}
+#adminApp .topbar,#adminApp .panel,#adminApp .stat-card,#adminApp .health-card,#adminApp .insight-card{border-color:var(--ga-border)!important}
+#adminApp .primary-btn,#adminApp .btn-primary{background:var(--ga-blue)!important;border-color:var(--ga-blue)!important}
+#adminApp .primary-btn:hover,#adminApp .btn-primary:hover{background:var(--ga-blue2)!important}
+@media(max-width:900px){.unified-sidebar{position:relative;inset:auto;width:100%;height:auto;padding:10px 12px;display:block;overflow:visible}.unified-brand{padding:2px 5px 10px}.unified-nav-label,.unified-sidebar-foot{display:none}.unified-sidebar>a.unified-nav{display:inline-flex;white-space:nowrap;padding:9px 10px;margin:2px 3px 0 0;min-height:36px;font-size:11px}.unified-sidebar{white-space:normal}.admin-shell-main{margin-left:0}.admin-shell-main>.container,.admin-shell-main>main{padding:20px 14px 32px}}
+@media(max-width:560px){.admin-shell-main>.topbar .topbar-inner{padding:10px 13px}.admin-shell-main .stats{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-shell-main .stat{padding:13px}.admin-shell-main .page-heading{align-items:flex-start}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+</style></head>
 <body>
-
 <div class="login-screen" id="loginScreen">
-  <div class="login-card">
-    <h1>Gentle Admin</h1>
-    <p>Sign in with the authorised administrator account.</p>
-    <div id="loginError" class="error-box hidden"></div>
-    <form id="loginForm">
-      <div class="field">
-        <label for="loginEmail">Email address</label>
-        <input id="loginEmail" type="email" autocomplete="username" required>
-      </div>
-      <div class="field">
-        <label for="loginPassword">Password</label>
-        <input id="loginPassword" type="password" autocomplete="current-password" required>
-      </div>
-      <button class="btn btn-primary" id="loginButton" type="submit">Sign in</button>
-    </form>
-  </div>
+<div class="login-card">
+<h1>Gentle Admin</h1>
+<p>Sign in with the authorised administrator account.</p>
+<div class="error-box hidden" id="loginError"></div>
+<form id="loginForm">
+<div class="field">
+<label for="loginEmail">Email address</label>
+<input autocomplete="username" id="loginEmail" required="" type="email"/>
 </div>
-
+<div class="field">
+<label for="loginPassword">Password</label>
+<input autocomplete="current-password" id="loginPassword" required="" type="password"/>
+</div>
+<button class="btn btn-primary" id="loginButton" type="submit">Sign in</button>
+</form>
+</div>
+</div>
 <div class="hidden" id="adminApp">
-  <aside class="sidebar" id="sidebar">
-    <div class="brand">
-      <div class="brand-icon">G</div>
-      <div>
-        <div class="brand-name">Gentle Acct Store</div>
-        <div class="brand-sub">ADMIN CONTROL CENTER</div>
-      </div>
-    </div>
-    <div class="nav-label">MAIN MENU</div>
-    <button class="nav-link active" data-section="dashboard"><span class="nav-icon">▦</span>Dashboard</button>
-    <button class="nav-link" data-section="products"><span class="nav-icon">▣</span>Products</button>
-    <button class="nav-link" data-section="inventory"><span class="nav-icon">▤</span>Inventory</button>
-    <button class="nav-link" data-section="categoryLinks"><span class="nav-icon">🔗</span>Category Links</button>
-    <button class="nav-link" data-section="supplier"><span class="nav-icon">⇄</span>Supplier API</button>
-    <a class="nav-link" href="customers.html"><span class="nav-icon">♙</span>Customers</a>
-    <a class="nav-link" href="wallet-funding.html"><span class="nav-icon">↗</span>Funding requests</a>
-    <a class="nav-link" href="admin-referrals.html"><span class="nav-icon">♧</span>Referral management</a>
-    <div class="sidebar-bottom">
-      <div class="nav-label">ACCOUNT</div>
-      <button class="nav-link" id="notificationButton"><span class="nav-icon">♧</span>Enable notifications</button>
-      <button class="nav-link" id="refreshButton"><span class="nav-icon">↻</span>Refresh data</button>
-      <button class="nav-link" id="logoutButton"><span class="nav-icon">⇥</span>Sign out</button>
-      <div class="admin-chip">
-        <div class="avatar">G</div>
-        <div>
-          <div style="font-size:12px;font-weight:800">Administrator</div>
-          <div class="admin-email" id="adminEmail">Checking account...</div>
-        </div>
-      </div>
-    </div>
-  </aside>
-
-  <main class="main">
-    <header class="topbar">
-      <div style="display:flex;align-items:center;gap:11px">
-        <button class="icon-btn mobile-menu" id="menuButton" aria-label="Open menu">☰</button>
-        <div>
-          <div class="page-title" id="pageTitle">Dashboard</div>
-          <div class="page-subtitle" id="pageSubtitle">Overview of your store</div>
-        </div>
-      </div>
-      <div class="top-actions">
-        <button class="btn" id="themeToggle" type="button">☀️ Light mode</button>
-        <button class="btn desktop-only" id="topRefreshButton">↻ Refresh</button>
-        <button class="btn btn-primary" id="topAddProductButton">＋ Add product</button>
-      </div>
-    </header>
-
-    <div class="content">
-      <section id="dashboardSection">
-        <div class="welcome">
-          <div>
-            <h2>Welcome back, Admin 👋</h2>
-            <p>Manage your products, customers and store activity.</p>
-          </div>
-          <button class="btn" id="welcomeAddButton">＋ Add a product</button>
-        </div>
-        <div class="health-panel" aria-label="Store system health">
-          <div class="health-item"><div class="health-symbol">◉</div><div class="health-copy"><div class="health-title">Store connection</div><div class="health-value warn" id="storeConnectionStatus">Checking…</div></div></div>
-          <div class="health-item"><div class="health-symbol">♙</div><div class="health-copy"><div class="health-title">Admin session</div><div class="health-value ok" id="adminSessionStatus">Authorised</div></div></div>
-          <div class="health-item"><div class="health-symbol">▤</div><div class="health-copy"><div class="health-title">Inventory reads</div><div class="health-value warn" id="inventoryHealthStatus">Waiting…</div></div></div>
-          <div class="health-item"><div class="health-symbol">↻</div><div class="health-copy"><div class="health-title">Last sync</div><div class="health-value" id="lastSyncStatus">Not synced yet</div></div></div>
-        </div>
-        <div class="quick-links">
-          <a class="quick-card" href="customers.html"><div class="quick-icon">👥</div><div class="quick-title">Customers</div><div class="quick-desc">View registered customers, email addresses and customer IDs.</div></a>
-          <a class="quick-card" href="wallet-funding.html"><div class="quick-icon">💳</div><div class="quick-title">Wallet Funding</div><div class="quick-desc">Review customer deposits and funding requests.</div></a>
-          <a class="quick-card" href="admin-referrals.html"><div class="quick-icon">🎁</div><div class="quick-title">Referral Management</div><div class="quick-desc">Check referred customers and referral rewards.</div></a>
-          <button class="quick-card" id="dashboardSupplierShortcut" type="button" style="text-align:left;font:inherit;cursor:pointer"><div class="quick-icon">⇄</div><div class="quick-title">Supplier API</div><div class="quick-desc">Open supplier products, check stock and manage imported listings.</div></button>
-        </div>
-        <div class="stats">
-          <div class="stat-card"><div class="stat-top"><span class="stat-label">Total products</span><span class="stat-icon">▣</span></div><div class="stat-number" id="totalProducts">—</div><div class="stat-note">Products in your store</div></div>
-          <div class="stat-card"><div class="stat-top"><span class="stat-label">Available stock</span><span class="stat-icon">📦</span></div><div class="stat-number" id="totalStock">—</div><div class="stat-note">Unsold inventory items</div></div>
-          <div class="stat-card"><div class="stat-top"><span class="stat-label">Out of stock</span><span class="stat-icon">⚠️</span></div><div class="stat-number" id="outOfStock">—</div><div class="stat-note">Products needing stock</div></div>
-          <div class="stat-card"><div class="stat-top"><span class="stat-label">Pending funding</span><span class="stat-icon">↗</span></div><div class="stat-number" id="pendingFunding">—</div><div class="stat-note" id="pendingFundingNote">Requests awaiting review</div></div>
-          <div class="stat-card"><div class="stat-top"><span class="stat-label">Low stock</span><span class="stat-icon">◷</span></div><div class="stat-number" id="lowStockCount">—</div><div class="stat-note">Products with 1–3 items left</div></div>
-        </div>
-        <div class="insight-row">
-          <div class="insight-card"><div class="insight-label">Categories in use</div><div class="insight-value" id="categoryCount">—</div><div class="insight-note">Different product categories currently listed</div></div>
-          <div class="insight-card"><div class="insight-label">Inventory accuracy</div><div class="insight-value" id="inventoryAccuracy">Checking…</div><div class="insight-note" id="inventoryAccuracyNote">Based on successful inventory reads</div></div>
-          <div class="insight-card"><div class="insight-label">Products needing attention</div><div class="insight-value" id="attentionCount">—</div><div class="insight-note">Out of stock or low-stock products</div></div>
-        </div>
-        <div class="panel">
-          <div class="panel-head"><div><div class="panel-title">Your products</div><div class="panel-desc">Quick view of products in your store</div></div><button class="btn btn-primary btn-small" id="dashboardViewAll">View all</button></div>
-          <div class="product-grid" id="dashboardProducts"><div class="loading">Loading products...</div></div>
-        </div>
-      </section>
-
-      <section id="productsSection" class="hidden">
-        <div class="panel">
-          <div class="panel-head"><div><div class="panel-title">Product management</div><div class="panel-desc">Add, search, edit and remove products</div></div><button class="btn btn-primary" id="productsAddButton">＋ Add product</button></div>
-          <div class="panel-body">
-            <div class="toolbar">
-              <div class="search-wrap"><input id="productSearch" type="search" placeholder="Search products by name or category..."></div>
-              <select class="filter" id="categoryFilter"><option value="">All categories</option></select>
-              <select class="filter" id="stockFilter"><option value="">All stock</option><option value="available">In stock</option><option value="empty">Out of stock</option></select>
-            </div>
-          </div>
-          <div class="product-grid" id="productGrid"><div class="loading">Loading products...</div></div>
-        </div>
-      </section>
-
-      <section id="inventorySection" class="hidden">
-        <div class="panel">
-          <div class="panel-head"><div><div class="panel-title">Inventory overview</div><div class="panel-desc">Check stock levels for each product</div></div><button class="btn" id="inventoryRefreshButton">↻ Refresh</button></div>
-          <div class="table-wrap"><table><thead><tr><th>Product</th><th>Category</th><th>Available</th><th>Sold</th><th>Action</th></tr></thead><tbody id="inventoryTable"><tr><td colspan="5" class="loading">Loading inventory...</td></tr></tbody></table></div>
-        </div>
-      </section>
-
-      <section id="categoryLinksSection" class="hidden">
-        <div class="panel">
-          <div class="panel-head"><div><div class="panel-title">Category logos & default links</div><div class="panel-desc">Set a reusable logo and default link for each category.</div></div><button class="btn" id="reloadCategoryLinks">↻ Reload</button></div>
-          <div class="panel-body">
-            <div class="error-box">Settings are saved in Firestore at <code>storeSettings/categoryLinks</code>. Your Firestore rules must allow the authorised admin to write this document. The storefront must read the product's <code>productLink</code> field to use the saved link.</div>
-            <div id="categoryLinksMessage" class="hidden"></div>
-            <div class="toolbar" style="margin-bottom:15px"><div class="search-wrap"><input id="categoryLinkSearch" type="search" placeholder="Search categories..."></div></div>
-            <div class="table-wrap"><table><thead><tr><th>Category</th><th>Logo URL</th><th>Default link</th></tr></thead><tbody id="categoryLinksTable"></tbody></table></div>
-            <button class="btn btn-primary" id="saveCategoryLinks" style="margin-top:16px">Save category settings</button>
-          </div>
-        </div>
-      </section>
-
-      <section id="supplierSection" class="hidden">
-        <div class="panel">
-          <div class="panel-head">
-            <div><div class="panel-title">Spencer Acc Store connection</div><div class="panel-desc">Import supplier products and choose your own Gentle selling prices.</div></div>
-            <button class="btn" id="supplierRefreshBalance" type="button">↻ Refresh balance</button>
-          </div>
-          <div class="panel-body">
-            <div id="supplierMessage" class="hidden"></div>
-            <div class="supplier-summary">
-              <div class="supplier-stat"><small>Supplier wallet balance</small><strong id="supplierBalance">—</strong></div>
-              <div class="supplier-stat"><small>Supplier username</small><strong id="supplierUsername">—</strong></div>
-              <div class="supplier-stat"><small>Currency</small><strong id="supplierCurrency">NGN</strong></div>
-            </div>
-            <div class="supplier-toolbar">
-              <select id="supplierCategoryFilter" aria-label="Supplier category"><option value="">All supplier categories</option></select>
-              <input id="supplierSearch" type="search" placeholder="Search supplier products..." aria-label="Search supplier products">
-              <button class="btn" id="supplierLoadCategories" type="button">Load categories</button>
-              <button class="btn btn-primary" id="supplierLoadProducts" type="button">Fetch products</button>
-              <button class="btn btn-primary" id="supplierImportSelected" type="button">Import selected</button>
-              <button class="btn" id="supplierRestockAll" type="button">↻ Restock all imported</button>
-              <button class="btn" id="supplierClearAll" type="button" style="border:1px solid #DC2626;color:#DC2626">Clear all Spencer products</button>
-            </div>
-            <div class="supplier-import-progress" id="supplierImportProgress" role="status" aria-live="polite">
-              <div class="supplier-import-progress-top"><span id="supplierImportProgressLabel">Preparing import…</span><span class="supplier-import-progress-count" id="supplierImportProgressCount">0 / 0</span></div>
-              <div class="supplier-import-progress-track"><div class="supplier-import-progress-fill" id="supplierImportProgressFill"></div></div>
-              <div class="supplier-import-progress-meta"><span id="supplierImportProgressDone">Imported: 0</span><span id="supplierImportProgressRemaining">Remaining: 0</span></div>
-            </div>
-            <div class="supplier-note">Supplier prices are your costs, not your store selling prices. Enter the price customers should pay before importing. Product stock is synced from Spencer when you fetch products. Supplier API requests are made through the Cloudflare Worker; the API key is never sent to this browser.</div>
-          </div>
-          <div class="panel-head" style="border-top:1px solid var(--border)">
-            <div><div class="panel-title">Fetched supplier products</div><div class="panel-desc">Search above, review each product card and choose what to import.</div></div>
-            <label class="small muted" style="display:flex;align-items:center;gap:7px"><input id="supplierSelectAll" type="checkbox" aria-label="Select all products"> Select all</label>
-          </div>
-          <div class="supplier-card-grid" id="supplierProductsTable"><div class="empty-state" style="grid-column:1/-1">Fetch supplier products to display them here.</div></div>
-        </div>
-      </section>
-    </div>
-  </main>
+<aside class="sidebar" id="sidebar">
+<div class="brand">
+<div class="brand-icon">G</div>
+<div>
+<div class="brand-name">Gentle Acct Store</div>
+<div class="brand-sub">ADMIN CONTROL CENTER</div>
 </div>
-
+</div>
+<div class="nav-label">MAIN MENU</div>
+<button class="nav-link active" data-section="dashboard"><span class="nav-icon">▦</span>Dashboard</button>
+<button class="nav-link" data-section="products"><span class="nav-icon">▣</span>Products</button>
+<button class="nav-link" data-section="inventory"><span class="nav-icon">▤</span>Inventory</button>
+<button class="nav-link" data-section="categoryLinks"><span class="nav-icon">🔗</span>Category Links</button>
+<button class="nav-link" data-section="supplier"><span class="nav-icon">⇄</span>Supplier API</button>
+<a class="nav-link" href="customers.html"><span class="nav-icon">♙</span>Customers</a>
+<a class="nav-link" href="wallet-funding.html"><span class="nav-icon">↗</span>Funding requests</a>
+<a class="nav-link" href="admin-referrals.html"><span class="nav-icon">♧</span>Referral management</a>
+<div class="sidebar-bottom">
+<div class="nav-label">ACCOUNT</div>
+<button class="nav-link" id="notificationButton"><span class="nav-icon">♧</span>Enable notifications</button>
+<button class="nav-link" id="refreshButton"><span class="nav-icon">↻</span>Refresh data</button>
+<button class="nav-link" id="logoutButton"><span class="nav-icon">⇥</span>Sign out</button>
+<div class="admin-chip">
+<div class="avatar">G</div>
+<div>
+<div style="font-size:12px;font-weight:800">Administrator</div>
+<div class="admin-email" id="adminEmail">Checking account...</div>
+</div>
+</div>
+</div>
+</aside>
+<main class="main">
+<header class="topbar">
+<div style="display:flex;align-items:center;gap:11px">
+<button aria-label="Open menu" class="icon-btn mobile-menu" id="menuButton">☰</button>
+<div>
+<div class="page-title" id="pageTitle">Dashboard</div>
+<div class="page-subtitle" id="pageSubtitle">Overview of your store</div>
+</div>
+</div>
+<div class="top-actions">
+<button class="btn" id="themeToggle" type="button">☀️ Light mode</button>
+<button class="btn desktop-only" id="topRefreshButton">↻ Refresh</button>
+<button class="btn btn-primary" id="topAddProductButton">＋ Add product</button>
+</div>
+</header>
+<div class="content">
+<section id="dashboardSection">
+<div class="welcome">
+<div>
+<h2>Welcome back, Admin 👋</h2>
+<p>Manage your products, customers and store activity.</p>
+</div>
+<button class="btn" id="welcomeAddButton">＋ Add a product</button>
+</div>
+<div aria-label="Store system health" class="health-panel">
+<div class="health-item"><div class="health-symbol">◉</div><div class="health-copy"><div class="health-title">Store connection</div><div class="health-value warn" id="storeConnectionStatus">Checking…</div></div></div>
+<div class="health-item"><div class="health-symbol">♙</div><div class="health-copy"><div class="health-title">Admin session</div><div class="health-value ok" id="adminSessionStatus">Authorised</div></div></div>
+<div class="health-item"><div class="health-symbol">▤</div><div class="health-copy"><div class="health-title">Inventory reads</div><div class="health-value warn" id="inventoryHealthStatus">Waiting…</div></div></div>
+<div class="health-item"><div class="health-symbol">↻</div><div class="health-copy"><div class="health-title">Last sync</div><div class="health-value" id="lastSyncStatus">Not synced yet</div></div></div>
+</div>
+<div class="quick-links">
+<a class="quick-card" href="customers.html"><div class="quick-icon">👥</div><div class="quick-title">Customers</div><div class="quick-desc">View registered customers, email addresses and customer IDs.</div></a>
+<a class="quick-card" href="wallet-funding.html"><div class="quick-icon">💳</div><div class="quick-title">Wallet Funding</div><div class="quick-desc">Review customer deposits and funding requests.</div></a>
+<a class="quick-card" href="admin-referrals.html"><div class="quick-icon">🎁</div><div class="quick-title">Referral Management</div><div class="quick-desc">Check referred customers and referral rewards.</div></a>
+<button class="quick-card" id="dashboardSupplierShortcut" style="text-align:left;font:inherit;cursor:pointer" type="button"><div class="quick-icon">⇄</div><div class="quick-title">Supplier API</div><div class="quick-desc">Open supplier products, check stock and manage imported listings.</div></button>
+</div>
+<div class="stats">
+<div class="stat-card"><div class="stat-top"><span class="stat-label">Total products</span><span class="stat-icon">▣</span></div><div class="stat-number" id="totalProducts">—</div><div class="stat-note">Products in your store</div></div>
+<div class="stat-card"><div class="stat-top"><span class="stat-label">Available stock</span><span class="stat-icon">📦</span></div><div class="stat-number" id="totalStock">—</div><div class="stat-note">Unsold inventory items</div></div>
+<div class="stat-card"><div class="stat-top"><span class="stat-label">Out of stock</span><span class="stat-icon">⚠️</span></div><div class="stat-number" id="outOfStock">—</div><div class="stat-note">Products needing stock</div></div>
+<div class="stat-card"><div class="stat-top"><span class="stat-label">Pending funding</span><span class="stat-icon">↗</span></div><div class="stat-number" id="pendingFunding">—</div><div class="stat-note" id="pendingFundingNote">Requests awaiting review</div></div>
+<div class="stat-card"><div class="stat-top"><span class="stat-label">Low stock</span><span class="stat-icon">◷</span></div><div class="stat-number" id="lowStockCount">—</div><div class="stat-note">Products with 1–3 items left</div></div>
+</div>
+<div class="insight-row">
+<div class="insight-card"><div class="insight-label">Categories in use</div><div class="insight-value" id="categoryCount">—</div><div class="insight-note">Different product categories currently listed</div></div>
+<div class="insight-card"><div class="insight-label">Inventory accuracy</div><div class="insight-value" id="inventoryAccuracy">Checking…</div><div class="insight-note" id="inventoryAccuracyNote">Based on successful inventory reads</div></div>
+<div class="insight-card"><div class="insight-label">Products needing attention</div><div class="insight-value" id="attentionCount">—</div><div class="insight-note">Out of stock or low-stock products</div></div>
+</div>
+<div class="panel">
+<div class="panel-head"><div><div class="panel-title">Your products</div><div class="panel-desc">Quick view of products in your store</div></div><button class="btn btn-primary btn-small" id="dashboardViewAll">View all</button></div>
+<div class="product-grid" id="dashboardProducts"><div class="loading">Loading products...</div></div>
+</div>
+</section>
+<section class="hidden" id="productsSection">
+<div class="panel">
+<div class="panel-head"><div><div class="panel-title">Product management</div><div class="panel-desc">Add, search, edit and remove products</div></div><button class="btn btn-primary" id="productsAddButton">＋ Add product</button></div>
+<div class="panel-body">
+<div class="toolbar">
+<div class="search-wrap"><input id="productSearch" placeholder="Search products by name or category..." type="search"/></div>
+<select class="filter" id="categoryFilter"><option value="">All categories</option></select>
+<select class="filter" id="stockFilter"><option value="">All stock</option><option value="available">In stock</option><option value="empty">Out of stock</option></select>
+</div>
+</div>
+<div class="product-grid" id="productGrid"><div class="loading">Loading products...</div></div>
+</div>
+</section>
+<section class="hidden" id="inventorySection">
+<div class="panel">
+<div class="panel-head"><div><div class="panel-title">Inventory overview</div><div class="panel-desc">Check stock levels for each product</div></div><button class="btn" id="inventoryRefreshButton">↻ Refresh</button></div>
+<div class="table-wrap"><table><thead><tr><th>Product</th><th>Category</th><th>Available</th><th>Sold</th><th>Action</th></tr></thead><tbody id="inventoryTable"><tr><td class="loading" colspan="5">Loading inventory...</td></tr></tbody></table></div>
+</div>
+</section>
+<section class="hidden" id="categoryLinksSection">
+<div class="panel">
+<div class="panel-head"><div><div class="panel-title">Category logos &amp; default links</div><div class="panel-desc">Set a reusable logo and default link for each category.</div></div><button class="btn" id="reloadCategoryLinks">↻ Reload</button></div>
+<div class="panel-body">
+<div class="error-box">Settings are saved in Firestore at <code>storeSettings/categoryLinks</code>. Your Firestore rules must allow the authorised admin to write this document. The storefront must read the product's <code>productLink</code> field to use the saved link.</div>
+<div class="hidden" id="categoryLinksMessage"></div>
+<div class="toolbar" style="margin-bottom:15px"><div class="search-wrap"><input id="categoryLinkSearch" placeholder="Search categories..." type="search"/></div></div>
+<div class="table-wrap"><table><thead><tr><th>Category</th><th>Logo URL</th><th>Default link</th></tr></thead><tbody id="categoryLinksTable"></tbody></table></div>
+<button class="btn btn-primary" id="saveCategoryLinks" style="margin-top:16px">Save category settings</button>
+</div>
+</div>
+</section>
+<section class="hidden" id="supplierSection">
+<div class="panel">
+<div class="panel-head">
+<div><div class="panel-title">Spencer Acc Store connection</div><div class="panel-desc">Import supplier products and choose your own Gentle selling prices.</div></div>
+<button class="btn" id="supplierRefreshBalance" type="button">↻ Refresh balance</button>
+</div>
+<div class="panel-body">
+<div class="hidden" id="supplierMessage"></div>
+<div class="supplier-summary">
+<div class="supplier-stat"><small>Supplier wallet balance</small><strong id="supplierBalance">—</strong></div>
+<div class="supplier-stat"><small>Supplier username</small><strong id="supplierUsername">—</strong></div>
+<div class="supplier-stat"><small>Currency</small><strong id="supplierCurrency">NGN</strong></div>
+</div>
+<div class="supplier-toolbar">
+<select aria-label="Supplier category" id="supplierCategoryFilter"><option value="">All supplier categories</option></select>
+<input aria-label="Search supplier products" id="supplierSearch" placeholder="Search supplier products..." type="search"/>
+<button class="btn" id="supplierLoadCategories" type="button">Load categories</button>
+<button class="btn btn-primary" id="supplierLoadProducts" type="button">Fetch products</button>
+<button class="btn btn-primary" id="supplierImportSelected" type="button">Import selected</button>
+<button class="btn" id="supplierRestockAll" type="button">↻ Restock all imported</button>
+<button class="btn" id="supplierClearAll" style="border:1px solid #DC2626;color:#DC2626" type="button">Clear all Spencer products</button>
+</div>
+<div aria-live="polite" class="supplier-import-progress" id="supplierImportProgress" role="status">
+<div class="supplier-import-progress-top"><span id="supplierImportProgressLabel">Preparing import…</span><span class="supplier-import-progress-count" id="supplierImportProgressCount">0 / 0</span></div>
+<div class="supplier-import-progress-track"><div class="supplier-import-progress-fill" id="supplierImportProgressFill"></div></div>
+<div class="supplier-import-progress-meta"><span id="supplierImportProgressDone">Imported: 0</span><span id="supplierImportProgressRemaining">Remaining: 0</span></div>
+</div>
+<div class="supplier-note">Supplier prices are your costs, not your store selling prices. Enter the price customers should pay before importing. Product stock is synced from Spencer when you fetch products. Supplier API requests are made through the Cloudflare Worker; the API key is never sent to this browser.</div>
+</div>
+<div class="panel-head" style="border-top:1px solid var(--border)">
+<div><div class="panel-title">Fetched supplier products</div><div class="panel-desc">Search above, review each product card and choose what to import.</div></div>
+<label class="small muted" style="display:flex;align-items:center;gap:7px"><input aria-label="Select all products" id="supplierSelectAll" type="checkbox"/> Select all</label>
+</div>
+<div class="supplier-card-grid" id="supplierProductsTable"><div class="empty-state" style="grid-column:1/-1">Fetch supplier products to display them here.</div></div>
+</div>
+</section>
+</div>
+</main>
+</div>
 <div class="modal-backdrop" id="productModal">
-  <div class="modal" role="dialog" aria-modal="true">
-    <div class="modal-head"><h3 id="productModalTitle">Add new product</h3><button class="icon-btn" id="closeProductModal" type="button">×</button></div>
-    <form id="productForm">
-      <div class="modal-body">
-        <div id="productFormMessage" class="hidden"></div>
-        <div class="form-grid">
-          <div class="field full"><label for="productName">Product name *</label><input id="productName" maxlength="120" required></div>
-          <div class="field full"><label>Product category *</label><input id="productCategory" type="hidden"><div class="category-picker" id="categoryPicker"><button class="category-trigger" id="productCategoryButton" type="button"><span id="selectedCategory">Choose a category</span><span>⌄</span></button><div class="category-options" id="categoryOptions"></div></div></div>
-          <div class="field"><label for="productPrice">Price (₦) *</label><input id="productPrice" type="number" min="0" step="0.01" required></div>
-          <div class="field"><label for="productImage">Image URL</label><input id="productImage" type="url"></div>
-          <div class="field full"><label for="productDescription">Description</label><textarea id="productDescription" maxlength="1000"></textarea></div>
-          <div class="field full"><label for="productLink">Product link (optional)</label><input id="productLink" type="url" placeholder="Leave blank to use category's saved link"><div class="help-text" id="productLinkHelp">Choose a category to see its saved default link.</div></div>
-          <div class="field full"><label for="inventoryItems">Inventory items</label><textarea id="inventoryItems" placeholder="One item per line. Optional."></textarea></div>
-        </div>
-      </div>
-      <div class="modal-foot"><button class="btn" type="button" id="cancelProductModal">Cancel</button><button class="btn btn-primary" type="submit" id="saveProductButton">Save product</button></div>
-    </form>
-  </div>
+<div aria-modal="true" class="modal" role="dialog">
+<div class="modal-head"><h3 id="productModalTitle">Add new product</h3><button class="icon-btn" id="closeProductModal" type="button">×</button></div>
+<form id="productForm">
+<div class="modal-body">
+<div class="hidden" id="productFormMessage"></div>
+<div class="form-grid">
+<div class="field full"><label for="productName">Product name *</label><input id="productName" maxlength="120" required=""/></div>
+<div class="field full"><label>Product category *</label><input id="productCategory" type="hidden"/><div class="category-picker" id="categoryPicker"><button class="category-trigger" id="productCategoryButton" type="button"><span id="selectedCategory">Choose a category</span><span>⌄</span></button><div class="category-options" id="categoryOptions"></div></div></div>
+<div class="field"><label for="productPrice">Price (₦) *</label><input id="productPrice" min="0" required="" step="0.01" type="number"/></div>
+<div class="field"><label for="productImage">Image URL</label><input id="productImage" type="url"/></div>
+<div class="field full"><label for="productDescription">Description</label><textarea id="productDescription" maxlength="1000"></textarea></div>
+<div class="field full"><label for="productLink">Product link (optional)</label><input id="productLink" placeholder="Leave blank to use category's saved link" type="url"/><div class="help-text" id="productLinkHelp">Choose a category to see its saved default link.</div></div>
+<div class="field full"><label for="inventoryItems">Inventory items</label><textarea id="inventoryItems" placeholder="One item per line. Optional."></textarea></div>
 </div>
-
+</div>
+<div class="modal-foot"><button class="btn" id="cancelProductModal" type="button">Cancel</button><button class="btn btn-primary" id="saveProductButton" type="submit">Save product</button></div>
+</form>
+</div>
+</div>
 <div class="modal-backdrop" id="inventoryModal">
-  <div class="modal" role="dialog" aria-modal="true">
-    <div class="modal-head"><div><h3>Manage inventory</h3><div class="panel-desc" id="inventoryModalSubtitle"></div></div><button class="icon-btn" id="closeInventoryModal" type="button">×</button></div>
-    <div class="modal-body">
-      <div id="inventoryModalMessage" class="hidden"></div>
-      <div class="field"><label for="newInventoryItems">Add stock items</label><textarea id="newInventoryItems" placeholder="One item per line..."></textarea></div>
-      <button class="btn btn-primary" id="addInventoryButton" type="button" style="margin-top:12px">＋ Add inventory</button>
-      <div class="inventory-list" id="inventoryItemsList"></div>
-    </div>
-    <div class="modal-foot"><button class="btn" id="closeInventoryModalBottom" type="button">Close</button></div>
-  </div>
+<div aria-modal="true" class="modal" role="dialog">
+<div class="modal-head"><div><h3>Manage inventory</h3><div class="panel-desc" id="inventoryModalSubtitle"></div></div><button class="icon-btn" id="closeInventoryModal" type="button">×</button></div>
+<div class="modal-body">
+<div class="hidden" id="inventoryModalMessage"></div>
+<div class="field"><label for="newInventoryItems">Add stock items</label><textarea id="newInventoryItems" placeholder="One item per line..."></textarea></div>
+<button class="btn btn-primary" id="addInventoryButton" style="margin-top:12px" type="button">＋ Add inventory</button>
+<div class="inventory-list" id="inventoryItemsList"></div>
+</div>
+<div class="modal-foot"><button class="btn" id="closeInventoryModalBottom" type="button">Close</button></div>
+</div>
 </div>
 <div class="toast" id="toast"></div>
-
 <script>
 "use strict";
 
