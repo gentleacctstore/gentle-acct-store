@@ -406,6 +406,53 @@ svg{flex-shrink:0}
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{transition:none!important;scroll-behavior:auto!important}
 }
+
+/* Mobile-first compact layout overrides */
+html,body{max-width:100%;overflow-x:hidden}
+*,*::before,*::after{box-sizing:border-box}
+img,svg,video,canvas{max-width:100%;height:auto}
+button,a,input,select,textarea{touch-action:manipulation}
+.table-wrap,.table-container,.table-responsive,.panel,.panel-body{max-width:100%;}
+.table-wrap,.table-container,.table-responsive{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{min-width:620px}
+@media(max-width:900px){
+ .unified-sidebar{position:relative;inset:auto;width:100%;height:auto;display:flex;flex-direction:row;align-items:center;gap:7px;padding:8px 10px;overflow-x:auto;overflow-y:hidden;white-space:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+ .unified-brand{flex:0 0 auto;padding:3px 8px!important;margin-right:5px}
+ .unified-nav-label,.unified-sidebar-foot{display:none!important}
+ .unified-sidebar>a.unified-nav{display:inline-flex;flex:0 0 auto;align-items:center;gap:6px;min-height:35px;padding:8px 10px;margin:0;font-size:11px;white-space:nowrap}
+ .admin-shell-main{margin:0!important;width:100%;min-width:0}
+ .admin-shell-main>.container,.admin-shell-main>main{width:100%;padding:16px 12px 28px!important}
+ .admin-shell-main>.topbar .topbar-inner{padding:9px 12px!important;gap:8px;flex-wrap:wrap}
+ .admin-shell-main .page-heading,.admin-shell-main .hero,.admin-shell-main .page-intro{margin-bottom:14px}
+ .admin-shell-main .panel,.admin-shell-main .stat,.admin-shell-main .request,.admin-shell-main .referral-card,.admin-shell-main .customer-card,.admin-shell-main .table-wrap{border-radius:12px}
+ .admin-shell-main .stat{padding:12px!important;min-width:0}
+ .admin-shell-main .panel{min-width:0}
+ .admin-shell-main input,.admin-shell-main select,.admin-shell-main textarea{font-size:16px!important;min-height:42px;max-width:100%}
+ .admin-shell-main button{min-height:38px;max-width:100%}
+ .admin-shell-main .stats{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+ .admin-shell-main .page-heading{align-items:flex-start;gap:10px;flex-wrap:wrap}
+ .admin-shell-main .page-heading h1,.admin-shell-main h1{font-size:clamp(19px,5vw,25px)}
+ .admin-shell-main .top-actions{display:flex;gap:6px;flex-wrap:wrap}
+}
+@media(max-width:560px){
+ .admin-shell-main>.container,.admin-shell-main>main{padding:13px 10px 24px!important}
+ .admin-shell-main .stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .admin-shell-main .stat{padding:10px!important}
+ .admin-shell-main .stat strong,.admin-shell-main .stat-number{font-size:19px!important}
+ .admin-shell-main .panel-head,.admin-shell-main .panel-body{padding:11px!important}
+ .admin-shell-main .page-heading{display:flex;flex-direction:column;align-items:stretch}
+ .admin-shell-main .page-heading button,.admin-shell-main .page-heading a{width:100%}
+ .admin-shell-main form{max-width:100%}
+ .admin-shell-main .form-grid,.admin-shell-main .filters,.admin-shell-main .toolbar,.admin-shell-main .search-row{grid-template-columns:minmax(0,1fr)!important;display:grid;gap:9px}
+ .admin-shell-main input,.admin-shell-main select,.admin-shell-main textarea{width:100%;min-width:0}
+ .admin-shell-main .topbar-inner{align-items:center}
+ .admin-shell-main .top-actions>*{font-size:12px;padding:8px 10px}
+}
+@media(max-width:360px){
+ .admin-shell-main .stats{grid-template-columns:1fr!important}
+ .unified-sidebar>a.unified-nav{font-size:10px;padding:7px 8px}
+}
+
 </style>
 <style>
 /* Unified Gentle Admin design system */

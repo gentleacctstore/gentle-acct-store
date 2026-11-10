@@ -442,6 +442,31 @@ th { color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.
 .supplier-import-progress-fill{height:100%;width:0;background:var(--blue);border-radius:99px;transition:width .2s}
 .supplier-import-progress-meta{display:flex;justify-content:space-between;gap:8px;margin-top:7px;color:var(--muted);font-size:10px}
 
+
+/* Compact mobile usability pass */
+html,body{max-width:100%;overflow-x:hidden}*,*::before,*::after{box-sizing:border-box}img,svg,video{max-width:100%}
+.table-wrap,.table-container,.table-responsive{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}table{min-width:620px}
+@media(max-width:760px){
+ #adminApp>.sidebar{width:min(82vw,260px)!important;max-width:260px}
+ #adminApp .main{margin-left:0!important;min-width:0;width:100%}
+ #adminApp .content{padding:13px 10px 25px!important;min-width:0}
+ #adminApp .topbar{padding:9px 11px!important;min-height:54px!important;gap:8px}
+ #adminApp .page{padding:0 10px 24px!important}
+ #adminApp .wallet-card{min-height:0!important;padding:17px!important}
+ #adminApp .welcome{min-height:0!important;padding:16px!important}
+ #adminApp .stats,#adminApp .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+ #adminApp .stat-card,#adminApp .stat{padding:10px!important;min-width:0}
+ #adminApp .stat-number,#adminApp .stat-card strong{font-size:19px!important}
+ #adminApp .section{margin-top:19px!important}
+ #adminApp .section-heading h2{font-size:17px!important}
+ #adminApp input,#adminApp select,#adminApp textarea{font-size:16px!important;min-height:42px;max-width:100%}
+ #adminApp button{min-height:38px;max-width:100%}
+ #productsContainer{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+ #adminApp .product-card{padding:9px!important;min-width:0}
+ #adminApp .panel,#adminApp .card{min-width:0;max-width:100%}
+}
+@media(max-width:390px){#productsContainer{grid-template-columns:1fr!important}#adminApp .stats,#adminApp .stats-grid{grid-template-columns:1fr 1fr!important}}
+
 </style>
 <style id="gentle-premium-redesign">
 /* GENTLE ACCT STORE — premium marketplace / SaaS interface layer */
