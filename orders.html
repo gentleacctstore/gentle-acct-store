@@ -381,7 +381,11 @@ if(typeof firebaseAuth==="undefined" || typeof firebaseDB==="undefined" || !fire
   ordersList.innerHTML=`<div class="state-box"><div class="state-icon error"><i class="fa-solid fa-triangle-exclamation"></i></div><h3>Orders service unavailable</h3><p>Firebase did not load. Please check that firebase.js is loading correctly, then refresh.</p><button class="retry-btn" type="button" onclick="window.location.reload()"><i class="fa-solid fa-rotate-right"></i> Refresh page</button></div>`;
 }else{
   firebaseAuth.onAuthStateChanged(async function(user){
-    if(!user || !user.emailVerified){
+    /*
+      Match home.html: any signed-in Firebase customer can open Orders.
+      Do not require emailVerified here, because Home does not require it.
+    */
+    if(!user){
       try{
         localStorage.removeItem("gentleLoggedIn");
         localStorage.removeItem("gentleCurrentUserId");
