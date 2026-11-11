@@ -579,7 +579,7 @@ main{padding:25px 20px}
     <i class="fa-solid fa-arrow-right"></i>
   </button>
 
-  <div class="secure-note">
+  <div class="secure-note" id="secure-note">
     <i class="fa-solid fa-shield-halved"></i>
     Your account information is protected.
   </div>
@@ -703,6 +703,7 @@ async function loadCheckout(user){
     0
   );
 
+  walletBalance = balance;
   $("walletBalance").textContent = money(balance);
 
   $("stockLabel").innerHTML =
@@ -739,34 +740,196 @@ if(!auth || !db){
   });
 }
 
-/*
-  PURCHASE INTEGRATION
+/* PURCHASE FLOW RESTORED FROM THE PREVIOUS GENTLELOGS CHECKOUT */
+let purchaseInProgress = false;
+let walletBalance = 0;
 
-  Connect this button to the existing secure purchase handler
-  after verifying the inventory schema and purchase API.
-
-  Do not debit a wallet or mark inventory as sold directly
-  from this customer-facing page.
-*/
-
-$("buyButton").addEventListener("click",() => {
-  if(!selectedProduct || !currentUser) return;
-
-  const balance = Number(
-    currentWallet.balance ??
-    currentWallet.walletBalance ??
-    0
-  );
-
-  if(balance < productPrice){
-    showMessage("Your wallet balance is insufficient. Please add funds.");
+async function completePurchase(){
+  const button = $("buyButton");
+  if(purchaseInProgress) return;
+  if(!selectedProduct || !currentUser){
+    showMessage("Your product or account details are not ready. Please refresh and try again.");
     return;
   }
 
-  showMessage(
-    "Your checkout is ready. The secure purchase and automatic delivery handler still needs to be connected."
-  );
-});
+  const price = Number(selectedProduct.price || 0);
+  if(!Number.isFinite(price) || price <= 0){
+    showMessage("This product has an invalid price.");
+    return;
+  }
+
+  if(walletBalance < price){
+    showMessage("Your wallet balance is insufficient. Please add funds.");
+    return;
+  }
+  if(Number(selectedProduct.stockCount || 0) <= 0){
+    showMessage("This product is sold out.");
+    return;
+  }
+
+  purchaseInProgress = true;
+  button.disabled = true;
+  button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
+
+  try{
+    const productRef = db.collection("products").doc(selectedProduct.id);
+
+    // Keep the existing Spencer Acc Store server-side purchase integration.
+    if(String(selectedProduct.supplierProvider || "").toLowerCase() === "spenceraccstore"){
+      if(!auth.currentUser) throw new Error("Please sign in again before purchasing.");
+      const idToken = await auth.currentUser.getIdToken();
+      const pendingKey = "gentle_spencer_pending_" + currentUser.uid + "_" + selectedProduct.id;
+      let requestId = localStorage.getItem(pendingKey);
+      if(!requestId){
+        requestId = (crypto.randomUUID ? crypto.randomUUID() :
+          "sp_" + Date.now() + "_" + Math.random().toString(36).slice(2,12));
+        localStorage.setItem(pendingKey,requestId);
+      }
+
+      const response = await fetch("/api/customer/spencer-purchase",{
+        method:"POST",
+        headers:{"Content-Type":"application/json","Authorization":"Bearer " + idToken},
+        body:JSON.stringify({productId:selectedProduct.id,requestId})
+      });
+      const result = await response.json().catch(()=>({}));
+
+      if(response.status === 202 || result.pending){
+        showMessage(result.error || "Your order is processing. Check Orders before trying again.");
+        button.disabled = true;
+        button.innerHTML = '<i class="fa-solid fa-clock"></i> Order Processing';
+        return;
+      }
+      if(!response.ok || !result.success){
+        if(response.status !== 202 && !result.pending) localStorage.removeItem(pendingKey);
+        throw new Error(result.error || "Purchase could not be completed.");
+      }
+      localStorage.removeItem(pendingKey);
+      walletBalance = Number(result.balance);
+      if(Number.isFinite(walletBalance)) $("walletBalance").textContent = money(walletBalance);
+      showSuccess(String(result.purchaseText || ""));
+      return;
+    }
+
+    // Find the next unsold inventory item, preserving the previous FIFO position order.
+    const inventoryQuery = await productRef.collection("inventory")
+      .where("sold","==",false).get();
+    if(inventoryQuery.empty) throw new Error("This product has no available inventory.");
+
+    const inventoryDocs = inventoryQuery.docs.sort((a,b) =>
+      Number(a.data().position || 0) - Number(b.data().position || 0)
+    );
+    const inventoryDoc = inventoryDocs[0];
+    const inventoryRef = inventoryDoc.ref;
+    const orderRef = db.collection("orders").doc();
+    const walletRef = db.collection("wallets").doc(currentUser.uid);
+
+    let newBalance = 0;
+    let purchaseItem = "";
+
+    // Wallet debit, stock reduction, inventory allocation and order creation are atomic.
+    await db.runTransaction(async transaction => {
+      const walletSnapshot = await transaction.get(walletRef);
+      const productSnapshot = await transaction.get(productRef);
+      const inventorySnapshot = await transaction.get(inventoryRef);
+
+      if(!walletSnapshot.exists) throw new Error("Your wallet has not been created yet. Please contact support.");
+      if(!productSnapshot.exists) throw new Error("This product no longer exists.");
+      if(!inventorySnapshot.exists) throw new Error("The inventory item no longer exists.");
+
+      const wallet = walletSnapshot.data();
+      const product = productSnapshot.data();
+      const inventory = inventorySnapshot.data();
+      const currentBalance = Number(wallet.balance || 0);
+      const currentStock = Number(product.stockCount || 0);
+      const currentPrice = Number(product.price || 0);
+
+      if(currentStock <= 0) throw new Error("This product is sold out.");
+      if(currentBalance < currentPrice) throw new Error("Insufficient wallet balance.");
+      if(inventory.sold === true) throw new Error("This inventory item has already been purchased. Please try again.");
+
+      purchaseItem = String(inventory.value || "").trim();
+      if(!purchaseItem) throw new Error("The inventory item is empty.");
+
+      newBalance = Number((currentBalance - currentPrice).toFixed(2));
+      transaction.update(walletRef,{
+        balance:newBalance,
+        updatedAt:firebase.firestore.FieldValue.serverTimestamp(),
+        lastOrderId:orderRef.id
+      });
+      transaction.update(productRef,{
+        stockCount:currentStock - 1,
+        updatedAt:firebase.firestore.FieldValue.serverTimestamp(),
+        lastOrderId:orderRef.id
+      });
+      transaction.update(inventoryRef,{
+        sold:true,
+        soldTo:currentUser.uid,
+        soldAt:firebase.firestore.FieldValue.serverTimestamp(),
+        orderId:orderRef.id
+      });
+      transaction.set(orderRef,{
+        userId:currentUser.uid,
+        userEmail:currentUser.email || "",
+        productId:selectedProduct.id,
+        productName:product.name || "",
+        amount:currentPrice,
+        status:"completed",
+        purchaseText:purchaseItem,
+        inventoryId:inventoryDoc.id,
+        createdAt:firebase.firestore.FieldValue.serverTimestamp()
+      });
+    });
+
+    walletBalance = newBalance;
+    currentWallet = {...(currentWallet || {}),balance:newBalance};
+    selectedProduct.stockCount = Math.max(0,Number(selectedProduct.stockCount || 0)-1);
+    $("walletBalance").textContent = money(newBalance);
+    $("stockLabel").innerHTML = '<i class="fa-solid fa-circle"></i> ' +
+      (selectedProduct.stockCount > 0 ? "Available" : "Out of stock");
+    showSuccess(purchaseItem);
+  }catch(error){
+    console.error("PURCHASE ERROR:",error);
+    button.disabled = false;
+    button.innerHTML = 'Confirm & Buy <i class="fa-solid fa-arrow-right"></i>';
+    showMessage(error.message || "Purchase could not be completed.");
+  }finally{
+    purchaseInProgress = false;
+  }
+}
+
+function showSuccess(purchaseItem){
+  const item = String(purchaseItem || "").trim();
+  const message = $("message");
+  message.style.display = "none";
+  const success = document.createElement("section");
+  success.style.cssText = "margin-top:18px;padding:22px 16px;background:#fff;border:1px solid #F0E8E2;border-radius:18px;text-align:center";
+  const icon = document.createElement("div");
+  icon.innerHTML = '<i class="fa-solid fa-check"></i>';
+  icon.style.cssText = "width:54px;height:54px;margin:0 auto 12px;border-radius:50%;display:grid;place-items:center;background:#FFF1E8;color:#C96532;font-size:23px";
+  const title = document.createElement("h2");
+  title.textContent = "Purchase successful";
+  title.style.cssText = "font-size:20px;margin-bottom:6px";
+  const desc = document.createElement("p");
+  desc.textContent = "Your item has been delivered below.";
+  desc.style.cssText = "font-size:12px;color:#9298A2;margin-bottom:15px";
+  const label = document.createElement("div");
+  label.textContent = "YOUR PURCHASE";
+  label.style.cssText = "font-size:10px;font-weight:700;color:#C96532;text-align:left;margin-bottom:7px";
+  const value = document.createElement("div");
+  value.style.cssText = "padding:14px;border-radius:12px;background:#FFF1E8;color:#252A30;font-size:13px;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere;text-align:left";
+  value.textContent = item || "No purchase information was returned. Please check your Orders.";
+  const actions = document.createElement("div");
+  actions.style.cssText = "display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:15px";
+  actions.innerHTML = '<a href="orders.html" style="padding:12px 8px;background:#E87535;color:#fff;border-radius:11px;font-size:12px;font-weight:700">My Orders</a><a href="dashboard.html" style="padding:12px 8px;background:#FFF1E8;color:#C96532;border-radius:11px;font-size:12px;font-weight:700">Continue Shopping</a>';
+  success.append(icon,title,desc,label,value,actions);
+  $("buyButton").style.display = "none";
+  $("secure-note")?.remove?.();
+  document.querySelector("main").appendChild(success);
+  try{localStorage.removeItem("gentleCheckoutProduct");}catch(e){}
+}
+
+$("buyButton").addEventListener("click",completePurchase);
+
 </script>
 
 </body>
