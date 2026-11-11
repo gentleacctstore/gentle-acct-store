@@ -4,547 +4,867 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#29532A">
-<meta name="description" content="Create your GentleLogs account.">
-<title>Create Account | GentleLogs</title>
+<meta name="theme-color" content="#E87535">
+<meta name="description" content="Create your Gentle acct store account and access our digital marketplace.">
+
+<title>Create Account | Gentle acct store</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-:root{
-  --green:#147a48;
-  --green-dark:#0b5631;
-  --text:#15251c;
-  --muted:#718077;
-  --border:#e1eae4;
-  --shadow:0 24px 70px rgba(27,72,46,.11)
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html{min-height:100%;background:#f2f7f3;-webkit-text-size-adjust:100%}
-body{
-  min-height:100vh;min-height:100dvh;padding:25px 13px 32px;
-  display:flex;justify-content:center;align-items:center;
-  font-family:"Space Grotesk",sans-serif;color:var(--text);
-  background:radial-gradient(ellipse at 8% 7%,rgba(64,160,100,.16),transparent 34%),
-  radial-gradient(ellipse at 92% 91%,rgba(34,124,75,.13),transparent 32%),
-  linear-gradient(145deg,#f0f7f2,#f9fbf9 48%,#eaf4ed);
-  overflow-x:hidden
-}
-button,input{font:inherit}
-button{-webkit-tap-highlight-color:transparent}
-.page-wrapper{width:100%;max-width:470px;margin:auto}
-.brand-header{text-align:center;margin-bottom:22px}
-.brand-mark{
-  width:56px;height:56px;margin:0 auto 10px;display:grid;place-items:center;
-  color:white;font-size:25px;font-weight:800;letter-spacing:-2px;
-  border-radius:18px;background:linear-gradient(145deg,#22975a,#07552f);
-  box-shadow:0 12px 25px #147a483b
-}
-.brand-name{font-size:22px;font-weight:800;letter-spacing:-.8px;color:#123d28}
-.brand-name span{color:var(--green)}
-.brand-caption{margin-top:5px;font-size:12px;color:#718078}
-.auth-card{
-  background:rgba(255,255,255,.97);border:1px solid #dae9de;
-  border-radius:24px;overflow:hidden;box-shadow:var(--shadow)
-}
-.card-top{height:5px;background:linear-gradient(90deg,#0b5631,#27a565,#8ad7a8)}
-.auth-content{padding:27px 25px 25px}
-.auth-tabs{
-  display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:5px;
-  background:#f0f5f1;border:1px solid #e7eee9;border-radius:13px;margin-bottom:23px
-}
-.auth-tab{
-  min-height:43px;display:flex;justify-content:center;align-items:center;
-  border-radius:9px;text-decoration:none;font-size:12px;font-weight:600;color:#77847b
-}
-.auth-tab.active{color:var(--green-dark);background:#fff;box-shadow:0 2px 9px #163f2717}
-.heading{font-size:25px;font-weight:800;line-height:1.35;letter-spacing:-.8px;color:#16291d}
-.subtitle{margin-top:7px;margin-bottom:22px;color:var(--muted);font-size:12px;line-height:1.8}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.form-group{min-width:0;margin-bottom:15px}
-.form-group>label{
-  display:block;margin-bottom:7px;color:#33473a;font-size:10px;
-  font-weight:700;letter-spacing:.7px;text-transform:uppercase
-}
-.form-control{
-  width:100%;height:48px;border:1px solid #dce7df;border-radius:11px;
-  padding:0 12px;outline:none;background:#fbfdfb;color:#203629;font-size:13px;
-  transition:.2s
-}
-.form-control:focus{background:#fff;border-color:#29975c;box-shadow:0 0 0 4px #29975c1a}
-.form-control::placeholder{color:#a2aea6}
-.password-wrap{position:relative}
-.password-control{padding-right:60px}
-.toggle-password{
-  position:absolute;right:5px;top:50%;transform:translateY(-50%);
-  height:34px;min-width:42px;padding:0 6px;border:0;border-radius:8px;
-  background:transparent;color:#718077;cursor:po"Space Grotesk";font-size:11px
-}
-.password-hint{margin-top:6px;font-size:10px;color:#89968d}
-.terms-row{display:flex;align-items:flex-start;gap:9px;margin:3px 0 18px}
-.terms-row input{width:16px;height:16px;flex-shrink:0;margin-top:3px;accent-color:var(--green)}
-.terms-row label{color:#68776d;font-size:10.5px;line-height:1.8}
-.terms-row a,.bottom-note a{color:var(--green);font-weight:700;text-decoration:none}
-.primary-btn,.google-btn{
-  width:100%;min-height:49px;border-radius:11px;display:flex;
-  justify-content:center;align-items:center;gap:9px;font-size:12.5px;font-weight:700;cursor:po"Space Grotesk"
-}
-.primary-btn{
-  border:0;background:linear-gradient(100deg,#0c6337,#16874c);
-  color:white;box-shadow:0 8px 18px #12703d2b
-}
-.primary-btn:disabled,.google-btn:disabled{opacity:.65;cursor:wait}
-.divider{
-  display:flex;align-items:center;gap:12px;margin:21px 0;
-  color:#97a39a;font-size:9px;font-weight:700;letter-spacing:.8px
-}
-.divider:before,.divider:after{content:"";flex:1;height:1px;background:#e8eee9}
-.google-btn{background:white;color:#33443a;border:1px solid #dce6df}
-.google-btn:hover{background:#f9fcfa;border-color:#b8d1c0}
-.google-btn img{width:19px;height:19px}
-.bottom-note{margin-top:20px;text-align:center;font-size:11px;line-height:1.8;color:#7b887f}
-.security-note{margin-top:16px;text-align:center;color:#809087;font-size:10px}
-.message{
-  display:none;margin-bottom:15px;padding:12px;border-radius:10px;
-  font-size:11px;line-height:1.7;overflow-wrap:anywhere
-}
-.message.show{display:block}
-.message.error{color:#a32f28;background:#fff0ee;border:1px solid #f6d5d1}
-.message.success{color:#17683d;background:#edf9f0;border:1px solid #cdebd5}
-.message.info{color:#275c86;background:#eef7ff;border:1px solid #d2e7fa}
-@media(max-width:390px){
-  .auth-content{padding:22px 15px}
-  .heading{font-size:23px}
-  .form-row{gap:8px}
-  .form-control{font-size:13px}
-}
-@media(prefers-reduced-motion:reduce){*{transition:none!important}}
-</style>
-<style id="gentlelogs-xtralogs-red-white-theme">
-/* GentleLogs XtraLogs-inspired red and white theme. Original structure and scripts are preserved. */
 :root {
-  --green:#C9232C !important;
-  --green-dark:#991B24 !important;
-  --green-light:#FDEEEF !important;
-  --green-soft:#FFF5F5 !important;
-  --green-pale:#FFFFFF !important;
-  --green-border:#F1C9CC !important;
-  --light-green:#FDEEEF !important;
-  --light:#FDEEEF !important;
-  --pale:#FFF8F8 !important;
-  --background:#FFFFFF !important;
-  --bg:#FFFFFF !important;
-  --page:#FFFFFF !important;
-  --text:#171923 !important;
-  --muted:#747985 !important;
-  --border:#E8E8EB !important;
-  --white:#FFFFFF !important;
-  --card:#FFFFFF !important;
-  --blue:#C9232C !important;
-  --blue-dark:#991B24 !important;
-  --blue-light:#FDEEEF !important;
-  --shadow:0 8px 26px rgba(23,25,35,.06) !important;
+  --orange: #E87535;
+  --orange-dark: #C96532;
+  --orange-light: #FFF1E8;
+  --orange-border: #F0DED2;
+  --text: #252A30;
+  --muted: #85817E;
+  --white: #FFFFFF;
+  --background: #FFFCFA;
+  --green: #27834B;
+  --green-light: #EAF5EC;
+  --red: #B42318;
+  --red-light: #FFF0EE;
+  --shadow: 0 22px 60px rgba(92,52,29,.09);
 }
-html,body,button,input,textarea,select,option {
-  font-family:"Space Grotesk",sans-serif !important;
-}
-html,body { background:#FFFFFF; color:#171923; }
-/* White surfaces, subtle borders and restrained shadows */
-.card,.auth-card,.product-card,.related-card,.stat-card,.floating-card,
-.wallet-summary,.details-box,.notice,.purchase-card,.referral-premium,
-.loading,.error-box,.security-badge,.main-icon,.transaction,.order,
-.state-box,.empty,.loading,.link-box,.summary-card:not(.hero) {
-  border-color:#E8E8EB;
-}
-.card,.auth-card,.product-card,.related-card,.stat-card,.floating-card,
-.transaction,.order,.state-box,.empty,.loading,.purchase-card {
-  background-color:#FFFFFF;
-}
-/* Brand, icons, links and prices */
-h1,h2,h3,h4,.header-title,.brand-name,.brand-text h1,.section-heading,
-.page-heading h1,.title h1,.heading h1,.intro h2,.logo,.logo-accent,
-.heading,.tx-title,.order-name h3 { color:#171923; }
-.brand-name span,.brand-accent,.header-title i,.section-heading:before,
-.input-icon,.stat-icon,.heading-icon,.empty-icon,.back-login,.fund-link,
-.related-price,.product-price,.amount,.detail-value,.wallet-summary strong,
-.history-amount,.footer strong,.nav-item.active,.tx-amount,.order-price,
-.page-heading h1 + span { color:#C9232C; }
-/* Red primary actions */
-.reset-btn,.pay-btn,.primary-btn,.update-btn,.complete-btn,.btn-primary,
-.copy-small,.related-buy,.wallet-btn:not(.secondary),.copy-btn,
-.error-box button,.refresh,.retry,.retry-btn,.shop-btn,.success-btn.primary,
-button.primary,.button.primary {
-  background:linear-gradient(105deg,#C9232C 0%,#E13A43 100%) !important;
-  color:#FFFFFF !important;
-  border-color:transparent !important;
-  box-shadow:0 7px 18px rgba(201,35,44,.16);
-}
-.reset-btn:hover,.pay-btn:hover,.primary-btn:hover,.update-btn:hover,
-.complete-btn:hover,.btn-primary:hover,.copy-small:hover,.related-buy:hover,
-.refresh:hover,.retry:hover,.retry-btn:hover {
-  background:linear-gradient(105deg,#A91D26 0%,#C9232C 100%) !important;
-}
-.btn-secondary,.secondary-btn,.wallet-btn.secondary,.copy-small.secondary,
-.back,.back-btn,.header-icon,.wallet-chip,.auth-tab.active {
-  color:#A91D26;
-  background:#FDEEEF;
-  border-color:#F1C9CC;
-}
-input,textarea,select,.form-control {
-  color:#171923;
-  border-color:#E3E3E7;
-  background:#FFFFFF;
-}
-input:focus,textarea:focus,select:focus,.form-control:focus {
-  border-color:#C9232C !important;
-  box-shadow:0 0 0 3px rgba(201,35,44,.10) !important;
-}
-/* Red brand bars and highlighted surfaces */
-header,.topbar,.top-header { border-bottom-color:#C9232C; }
-.logo-box,.brand-icon,.brand-mark,.main-icon,.heading-icon,.stat-icon,
-.tx-icon,.order-icon,.state-icon,.step-number,.feature-icon {
-  background:#FDEEEF;
-  color:#C9232C;
-}
-.hero,.wallet-card,.summary-card {
-  background:linear-gradient(125deg,#A91D26 0%,#C9232C 58%,#E64B52 100%) !important;
-  color:#FFFFFF;
-}
-.hero h2,.hero p,.hero-label,.summary-card,.summary-card * { color:#FFFFFF; }
-.notice,.details-box,.wallet-summary,.purchase-item,.purchase-text,
-.reference,.link-box,.security-badge {
-  background:#FFF5F5;
-  border-color:#F1D9DB;
-}
-.status.approved,.status.success,.status.completed,
-.message.success { background:#EAF7EF; color:#17663A; }
-.status.rejected,.status.failed,.status.cancelled,
-.message.error { background:#FFF0F0; color:#A51F2A; }
-/* Maintain readable mobile controls and prevent iOS Safari focus zoom. */
-@media(max-width:767px) {
-  input,textarea,select,.form-control,.input-wrap input { font-size:16px !important; }
-}
-@media(prefers-reduced-motion:reduce) {
-  *,*::before,*::after { scroll-behavior:auto !important; animation-duration:.01ms !important; transition-duration:.01ms !important; }
-}
-</style>
 
-<style id="gentle-unified-green-white-palette">
-/* Unified Gentle Acct Store brand colours. Layout, typography and behaviour remain unchanged. */
-:root{
- --green:#29532A !important; --green-dark:#194D28 !important;
- --green-light:#EAF4EC !important; --green-soft:#EAF4EC !important;
- --green-pale:#F2F6F3 !important; --green-border:#D9E9DC !important;
- --blue:#29532A !important; --blue-dark:#194D28 !important;
- --blue-light:#EAF4EC !important; --blue-soft:#F2F6F3 !important;
- --primary:#29532A !important; --primary-dark:#194D28 !important;
- --accent:#29532A !important; --accent-light:#EAF4EC !important;
- --bg:#F2F6F3 !important; --background:#F2F6F3 !important;
- --page:#F2F6F3 !important; --white:#FFFFFF !important;
- --border:#D9E9DC !important; --line:#D9E9DC !important;
- --shadow:0 5px 18px rgba(41,83,42,.07) !important;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
-/* Shared brand accents and primary controls */
-.brand-name,.brand-text h1,.brand-accent,.header-title,.header-title i,
-.header-icon,.back-btn,.back-login,.fund-link,.view-all,.related-price,
-.product-price,.amount,.detail-value,.history-amount,.nav-item.active,
-.tx-amount,.order-price,.section-heading,.section-heading:before,
-.input-icon,.stat-icon,.heading-icon,.empty-icon,.menu-icon,
-.card-heading-icon,.deposit-icon,.support-icon,.loading-spinner,
-.loading i,.state-icon,.order-icon,.success-icon,.success h1,
-.theme-check,.security-status.good {color:#29532A !important;}
-.header,.top-header,header {border-bottom-color:#29532A !important;}
-.header-icon,.back-btn,.wallet-chip,.auth-tab.active,.menu-icon,
-.card-heading-icon,.deposit-icon,.support-icon,.stat-icon,
-.order-icon,.state-icon,.success-icon,.theme-option.selected {
- background-color:#EAF4EC !important; border-color:#D9E9DC !important;
-}
-.reset-btn,.pay-btn,.primary-btn,.update-btn,.complete-btn,.btn-primary,
-.copy-small,.related-buy,.wallet-btn:not(.secondary),.copy-btn,
-.error-box button,.refresh,.retry,.retry-btn,.shop-btn,.success-btn.primary,
-button.primary,.button.primary,.save-button,.logout-button:not(.secondary) {
- background:#29532A !important; color:#FFFFFF !important;
- border-color:#29532A !important; box-shadow:0 7px 18px rgba(41,83,42,.15) !important;
-}
-.reset-btn:hover,.pay-btn:hover,.primary-btn:hover,.update-btn:hover,
-.complete-btn:hover,.btn-primary:hover,.related-buy:hover,.refresh:hover,
-.retry:hover,.retry-btn:hover,.save-button:hover {background:#194D28 !important;}
-.btn-secondary,.secondary-btn,.wallet-btn.secondary,.back,
-.header-icon,.wallet-chip {color:#194D28 !important;background:#EAF4EC !important;border-color:#D9E9DC !important;}
-input:focus,textarea:focus,select:focus,.form-control:focus,
-.amount-wrap:focus-within {border-color:#29532A !important;box-shadow:0 0 0 3px rgba(41,83,42,.10) !important;}
-input,textarea,select,.form-control {accent-color:#29532A;}
-.hero,.wallet-card,.balance-card,.summary-card,.profile-card {
- background:linear-gradient(125deg,#194D28 0%,#29532A 58%,#47764A 100%) !important;
- color:#FFFFFF !important;
-}
-.hero h2,.hero p,.hero-label,.summary-card,.summary-card *,
-.wallet-card *,.balance-card *,.profile-card * {color:#FFFFFF;}
-.notice,.details-box,.wallet-summary,.purchase-item,.purchase-text,
-.reference,.link-box,.security-badge,.security-note {
- background:#EAF4EC !important;border-color:#D9E9DC !important;
-}
-.status.approved,.status.success,.status.completed,.message.success {
- background:#EAF4EC !important;color:#194D28 !important;
-}
-/* White surfaces and consistent page backgrounds */
-html:not(.dark-mode):not([data-theme="dark"]) body,
-html:not(.dark-mode):not([data-theme="dark"]) .page,
-html:not(.dark-mode):not([data-theme="dark"]) main {background-color:#F2F6F3;}
-.card,.auth-card,.product-card,.related-card,.stat-card,.floating-card,
-.transaction,.order,.state-box,.empty,.loading,.purchase-card,
-.section,.fund-card,.deposit-list {border-color:#D9E9DC;}
-/* Dark mode keeps its existing dark surfaces while using the same green brand accent. */
-html.dark-mode,html[data-theme="dark"] {--green:#8BC995 !important;--green-dark:#B7E4BE !important;--blue:#8BC995 !important;--blue-dark:#B7E4BE !important;--green-light:#203B29 !important;--blue-light:#203B29 !important;--border:#304F37 !important;}
-html.dark-mode .nav-item.active,html[data-theme="dark"] .nav-item.active,
-html.dark-mode .header-icon,html[data-theme="dark"] .header-icon,
-html.dark-mode .back-btn,html[data-theme="dark"] .back-btn {color:#B7E4BE !important;}
-@media(max-width:767px){input,textarea,select,.form-control,.input-wrap input{font-size:16px !important;}}
-</style>
 
+html {
+  min-height: 100%;
+  background: var(--background);
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
 
-<style id="gentle-signup-final-green-white-colours">
-/* Final Gentle Acct Store green-and-white palette. Existing layout and functionality are preserved. */
-:root{
-  --green:#29532A!important;
-  --green-dark:#194D28!important;
-  --green-light:#EAF4EC!important;
-  --green-soft:#EAF4EC!important;
-  --green-pale:#F2F6F3!important;
-  --green-border:#D9E9DC!important;
-  --border:#D9E9DC!important;
-  --shadow:0 18px 48px rgba(41,83,42,.08)!important;
-}
-html,body{background:#F2F6F3!important;color:#172033!important}
-body{
-  background:radial-gradient(ellipse at 50% 0%,rgba(41,83,42,.08),transparent 38%),#F2F6F3!important;
-}
-.brand-mark{
-  background:linear-gradient(145deg,#47764A,#194D28)!important;
-  box-shadow:0 8px 20px rgba(41,83,42,.18)!important;
-}
-.brand-name span{color:#29532A!important}
-.auth-card{border-color:#D9E9DC!important;background:#FFFFFF!important}
-.card-top{background:linear-gradient(90deg,#194D28,#29532A,#8BC995)!important}
-.auth-tab.active{color:#29532A!important}
-.auth-tab.active:after{background:linear-gradient(90deg,#194D28,#47764A)!important}
-.form-control:focus{
-  border-color:#29532A!important;
-  box-shadow:0 0 0 3px rgba(41,83,42,.10)!important;
-}
-.toggle-password:hover{background:#EAF4EC!important;color:#29532A!important}
-.terms-row input{accent-color:#29532A!important}
-.terms-row a,.bottom-note a{color:#29532A!important}
-.primary-btn{
-  background:linear-gradient(100deg,#194D28,#29532A 65%,#47764A)!important;
-  box-shadow:0 8px 18px rgba(41,83,42,.17)!important;
-}
-.primary-btn:hover{background:linear-gradient(100deg,#153F22,#194D28 65%,#29532A)!important}
-.google-btn:hover{background:#F2F6F3!important;border-color:#D9E9DC!important}
-@media(max-width:767px){
-  input,textarea,select,.form-control{font-size:16px!important}
-}
-</style>
-
-
-<style>
-
-/* Gentle Acct Store — cohesive premium visual layer.
-   Presentation-only overrides: existing IDs, scripts, data flows and actions remain intact. */
-:root {
-  --brand-green: #176b3a;
-  --brand-green-dark: #10552e;
-  --brand-green-soft: #eaf4ee;
-  --brand-ink: #17251d;
-  --brand-muted: #718078;
-  --brand-line: #e4ece6;
-  --brand-canvas: #f5f8f6;
-  --brand-shadow: 0 12px 34px rgba(20, 54, 34, .075);
-  --brand-shadow-hover: 0 18px 42px rgba(20, 54, 34, .11);
-}
-html { -webkit-text-size-adjust: 100%; }
 body {
-  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 30px 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: hidden;
+  font-family: "Space Grotesk", sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(ellipse at 8% 8%, rgba(232,117,53,.12), transparent 36%),
+    radial-gradient(ellipse at 92% 92%, rgba(201,101,50,.09), transparent 34%),
+    linear-gradient(145deg,#FFF8F3,#FFFFFF 52%,#FFF5EF);
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
 }
-button, input, select, textarea { font-family: inherit; }
-a, button { -webkit-tap-highlight-color: transparent; }
-button { transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease, border-color .18s ease; }
-button:active { transform: translateY(1px); }
-:focus-visible { outline: 3px solid rgba(35, 130, 76, .28); outline-offset: 2px; }
-input, select, textarea { min-height: 44px; font-size: 16px !important; }
-.card, .auth-card, .panel, .purchase-card, .balance-card, .floating-card,
-.stat-card, .product-card, .wallet-card, .section-card, .content-card,
-.order-card, .transaction, .theme-card, .settings-card {
-  border-color: var(--brand-line);
-  box-shadow: var(--brand-shadow);
+
+button,
+input {
+  font: inherit;
 }
-.card, .auth-card, .panel, .purchase-card, .balance-card, .floating-card {
-  border-radius: 20px;
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
 }
-.stat-card, .product-card, .order-card, .transaction, .theme-card {
-  border-radius: 16px;
+
+button {
+  cursor: pointer;
 }
-.btn, .primary-btn, .submit-btn, .buy-btn, .reset-btn, .action-btn,
-button[type="submit"] {
-  border-radius: 12px;
-  font-weight: 650;
-  letter-spacing: -.01em;
+
+.page-wrapper {
+  width: 100%;
+  max-width: 455px;
+  margin: auto;
+  animation: pageEnter .5s ease both;
 }
-.btn-primary, .primary-btn, .submit-btn, .buy-btn, .reset-btn,
-.action-btn.primary, button[type="submit"] {
-  box-shadow: 0 7px 18px rgba(23, 107, 58, .16);
-}
-.btn-primary:hover, .primary-btn:hover, .submit-btn:hover, .buy-btn:hover,
-.reset-btn:hover, .action-btn.primary:hover, button[type="submit"]:hover {
-  box-shadow: 0 10px 24px rgba(23, 107, 58, .22);
-  transform: translateY(-1px);
-}
-.top-header, header, .header, .app-header {
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-}
-.section-heading, .section-title, .heading, .panel-title {
-  letter-spacing: -.035em;
-}
-small, .muted, .subtitle, .panel-desc, .description {
-  letter-spacing: .005em;
-}
-@media (hover:hover) {
-  .stat-card:hover, .product-card:hover, .order-card:hover, .transaction:hover {
-    box-shadow: var(--brand-shadow-hover);
-    transform: translateY(-2px);
+
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
-@media (max-width: 640px) {
-  .card, .auth-card, .panel, .purchase-card, .balance-card, .floating-card {
+
+/* BRAND */
+
+.brand-header {
+  text-align: center;
+  margin-bottom: 23px;
+}
+
+.brand-mark {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 10px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  color: #FFFFFF;
+  font-size: 23px;
+  font-weight: 700;
+  letter-spacing: -2px;
+  background: linear-gradient(145deg,#F08A4B,#C96532);
+  box-shadow: 0 10px 24px rgba(232,117,53,.22);
+}
+
+.brand-name {
+  color: #252A30;
+  font-size: 25px;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
+.brand-name span {
+  color: var(--orange);
+}
+
+.brand-caption {
+  margin-top: 5px;
+  color: #96908A;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 1.8px;
+}
+
+/* AUTH CARD */
+
+.auth-card {
+  overflow: hidden;
+  border: 1px solid var(--orange-border);
+  border-radius: 21px;
+  background: #FFFFFF;
+  box-shadow: var(--shadow);
+}
+
+.card-top {
+  height: 4px;
+  background: linear-gradient(90deg,#C96532,#E87535,#F5B080);
+}
+
+.auth-content {
+  padding: 26px 25px 25px;
+}
+
+/* TABS */
+
+.auth-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  padding: 5px;
+  margin-bottom: 25px;
+  border: 1px solid #F4E5DB;
+  border-radius: 12px;
+  background: #FFF6F0;
+}
+
+.auth-tab {
+  min-height: 43px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  color: #85817E;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+  transition: .2s ease;
+}
+
+.auth-tab:hover {
+  color: var(--orange-dark);
+}
+
+.auth-tab.active {
+  color: var(--orange-dark);
+  background: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(201,101,50,.10);
+}
+
+/* HEADING */
+
+.heading {
+  color: var(--text);
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -.8px;
+}
+
+.subtitle {
+  margin-top: 8px;
+  margin-bottom: 23px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.75;
+}
+
+/* FORM */
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 11px;
+}
+
+.form-group {
+  min-width: 0;
+  margin-bottom: 16px;
+}
+
+.form-group > label {
+  display: block;
+  margin-bottom: 7px;
+  color: #45413E;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .65px;
+  text-transform: uppercase;
+}
+
+.form-control {
+  width: 100%;
+  height: 49px;
+  padding: 0 13px;
+  border: 1px solid #E9E1DC;
+  border-radius: 11px;
+  outline: none;
+  background: #FFFEFD;
+  color: #252A30;
+  font-size: 14px;
+  transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+.form-control::placeholder {
+  color: #AAA29C;
+}
+
+.form-control:focus {
+  border-color: var(--orange);
+  background: #FFFFFF;
+  box-shadow: 0 0 0 4px rgba(232,117,53,.12);
+}
+
+.password-wrap {
+  position: relative;
+}
+
+.password-control {
+  padding-right: 65px;
+}
+
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  min-width: 45px;
+  height: 34px;
+  padding: 0 7px;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #85817E;
+  font-size: 11px;
+  font-weight: 700;
+  transition: .2s ease;
+}
+
+.toggle-password:hover {
+  background: var(--orange-light);
+  color: var(--orange-dark);
+}
+
+.password-hint {
+  margin-top: 7px;
+  color: #96908A;
+  font-size: 10px;
+}
+
+/* TERMS */
+
+.terms-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 3px 0 19px;
+}
+
+.terms-row input {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  margin-top: 3px;
+  accent-color: var(--orange);
+  cursor: pointer;
+}
+
+.terms-row label {
+  color: #77716C;
+  font-size: 10.5px;
+  line-height: 1.8;
+}
+
+.terms-row a,
+.bottom-note a {
+  color: var(--orange-dark);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.terms-row a:hover,
+.bottom-note a:hover {
+  text-decoration: underline;
+}
+
+/* BUTTONS */
+
+.primary-btn,
+.google-btn {
+  width: 100%;
+  min-height: 49px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-radius: 11px;
+  font-size: 12.5px;
+  font-weight: 700;
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+.primary-btn {
+  border: 0;
+  color: #FFFFFF;
+  background: linear-gradient(105deg,#C96532,#E87535 65%,#F08A4B);
+  box-shadow: 0 9px 22px rgba(201,101,50,.20);
+}
+
+.primary-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  background: linear-gradient(105deg,#B4552A,#D96B34 65%,#E87535);
+  box-shadow: 0 12px 26px rgba(201,101,50,.25);
+}
+
+.primary-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.primary-btn:disabled,
+.google-btn:disabled {
+  opacity: .65;
+  cursor: wait;
+  transform: none;
+  box-shadow: none;
+}
+
+.google-btn {
+  border: 1px solid #E9E1DC;
+  color: #37332F;
+  background: #FFFFFF;
+}
+
+.google-btn:hover:not(:disabled) {
+  border-color: #E8B99C;
+  background: #FFFAF6;
+}
+
+.google-btn img {
+  width: 19px;
+  height: 19px;
+}
+
+/* DIVIDER */
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 22px 0 17px;
+  color: #A39A93;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .9px;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #EFE7E1;
+}
+
+/* FOOTER */
+
+.bottom-note {
+  margin-top: 21px;
+  color: #85817E;
+  text-align: center;
+  font-size: 11px;
+  line-height: 1.8;
+}
+
+.security-note {
+  margin-top: 15px;
+  color: #96908A;
+  text-align: center;
+  font-size: 10px;
+}
+
+/* TOAST NOTIFICATIONS */
+
+.toast-container {
+  position: fixed;
+  top: max(18px, env(safe-area-inset-top));
+  right: 18px;
+  z-index: 99999;
+  width: min(370px, calc(100% - 36px));
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.toast {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px;
+  overflow: hidden;
+  border: 1px solid #F0DED2;
+  border-radius: 14px;
+  background: #FFFFFF;
+  box-shadow: 0 12px 35px rgba(45,35,27,.13);
+  pointer-events: auto;
+  animation: toastIn .35s ease both;
+}
+
+.toast-icon {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #EAF5EC;
+  color: #27834B;
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.toast.error .toast-icon {
+  background: #FFF0EE;
+  color: #B42318;
+}
+
+.toast.info .toast-icon {
+  background: #FFF1E8;
+  color: #C96532;
+}
+
+.toast-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.toast-title {
+  color: #252A30;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.toast-description {
+  margin-top: 4px;
+  color: #85817E;
+  font-size: 11px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.toast-close {
+  width: 27px;
+  height: 27px;
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #999999;
+  font-size: 19px;
+  line-height: 1;
+}
+
+.toast-close:hover {
+  background: #FFF1E8;
+  color: #C96532;
+}
+
+.toast-progress {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 3px;
+  background: #E87535;
+  transform-origin: left;
+  animation: toastProgress 4s linear forwards;
+}
+
+.toast.error .toast-progress {
+  background: #D64545;
+}
+
+.toast.info .toast-progress {
+  background: #E87535;
+}
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translateX(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes toastOut {
+  to {
+    opacity: 0;
+    transform: translateX(25px);
+  }
+}
+
+@keyframes toastProgress {
+  to {
+    transform: scaleX(0);
+  }
+}
+
+/* RESPONSIVE */
+
+@media(max-width:600px) {
+  body {
+    padding: 24px 14px;
+  }
+
+  .brand-header {
+    margin-bottom: 20px;
+  }
+
+  .auth-content {
+    padding: 23px 20px 22px;
+  }
+
+  .heading {
+    font-size: 24px;
+  }
+
+  .toast-container {
+    top: max(12px, env(safe-area-inset-top));
+    right: 12px;
+    width: calc(100% - 24px);
+  }
+}
+
+@media(max-width:390px) {
+  body {
+    padding: 19px 11px;
+  }
+
+  .brand-header {
+    margin-bottom: 17px;
+  }
+
+  .auth-content {
+    padding: 21px 16px 20px;
+  }
+
+  .auth-card {
     border-radius: 17px;
   }
-  input, select, textarea { font-size: 16px !important; }
+
+  .form-row {
+    gap: 8px;
+  }
+
+  .heading {
+    font-size: 23px;
+  }
 }
 
+/* iOS INPUT ZOOM PREVENTION */
 
-:root { --green:#176b3a !important; --green-dark:#10552e !important; --green-light:#eaf4ee !important; --green-soft:#f5f8f6 !important; --green-pale:#f5f8f6 !important; --green-border:#e1ebe4 !important; }
-body { background:radial-gradient(circle at 12% 8%,#e3f0e7 0,transparent 40%),#f5f8f6 !important; }
-.auth-card { border:1px solid #e4ece6 !important; box-shadow:0 24px 65px rgba(20,54,34,.10) !important; }
+@media(max-width:767px) {
+  input,
+  textarea,
+  select,
+  .form-control {
+    font-size: 16px !important;
+  }
+}
 
+/* ACCESSIBILITY */
+
+:focus-visible {
+  outline: 3px solid rgba(232,117,53,.28);
+  outline-offset: 3px;
+}
+
+@media(prefers-reduced-motion:reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
 </style>
 </head>
 
 <body>
+
+<!-- GLOBAL TOAST CONTAINER -->
+
+<div
+  class="toast-container"
+  id="toastContainer"
+  aria-live="polite"
+  aria-atomic="false"
+></div>
+
 <main class="page-wrapper">
+
   <header class="brand-header">
-    <div class="brand-mark" aria-label="GentleLogs logo">G.</div>
+    <div class="brand-mark" aria-label="Gentle acct store logo">G.</div>
     <div class="brand-name">Gentle<span>Logs</span></div>
-    <p class="brand-caption">YOUR DIGITAL MARKETPLACE</p>
+    <p class="brand-caption">SOCIAL MEDIA LOGS MARKETPLACE</p>
   </header>
 
   <section class="auth-card">
+
     <div class="card-top"></div>
+
     <div class="auth-content">
+
       <nav class="auth-tabs" aria-label="Account pages">
-        <a class="auth-tab active" href="signup.html">Create Account</a>
-        <a class="auth-tab" href="login.html">Sign In</a>
+        <a class="auth-tab active" href="signup.html" aria-current="page">
+          Create Account
+        </a>
+
+        <a class="auth-tab" href="login.html">
+          Sign In
+        </a>
       </nav>
 
       <h1 class="heading">Create your account</h1>
-      <p class="subtitle">Create your GentleLogs account and get started in just a few steps.</p>
 
-      <div id="message" class="message" role="status" aria-live="polite"></div>
+      <p class="subtitle">
+        Join Gentle acct store and get started in just a few simple steps.
+      </p>
 
       <form id="signupForm" novalidate>
+
         <div class="form-group">
           <label for="username">Username</label>
-          <input class="form-control" id="username" type="text"
-            placeholder="Choose a username" autocomplete="username"
-            maxlength="30" required>
+
+          <input
+            class="form-control"
+            id="username"
+            type="text"
+            placeholder="Choose a username"
+            autocomplete="username"
+            maxlength="30"
+            required
+          >
         </div>
 
         <div class="form-row">
+
           <div class="form-group">
             <label for="firstName">First Name</label>
-            <input class="form-control" id="firstName" type="text"
-              placeholder="First name" autocomplete="given-name"
-              maxlength="60" required>
+
+            <input
+              class="form-control"
+              id="firstName"
+              type="text"
+              placeholder="First name"
+              autocomplete="given-name"
+              maxlength="60"
+              required
+            >
           </div>
+
           <div class="form-group">
             <label for="lastName">Last Name</label>
-            <input class="form-control" id="lastName" type="text"
-              placeholder="Last name" autocomplete="family-name"
-              maxlength="60" required>
+
+            <input
+              class="form-control"
+              id="lastName"
+              type="text"
+              placeholder="Last name"
+              autocomplete="family-name"
+              maxlength="60"
+              required
+            >
           </div>
+
         </div>
 
         <div class="form-group">
           <label for="phone">Phone Number</label>
-          <input class="form-control" id="phone" type="tel"
-            placeholder="e.g. 08012345678" autocomplete="tel"
-            inputmode="tel" maxlength="20" required>
+
+          <input
+            class="form-control"
+            id="phone"
+            type="tel"
+            placeholder="e.g. 08012345678"
+            autocomplete="tel"
+            inputmode="tel"
+            maxlength="20"
+            required
+          >
         </div>
 
         <div class="form-group">
           <label for="email">Email Address</label>
-          <input class="form-control" id="email" type="email"
-            placeholder="you@example.com" autocomplete="email"
-            maxlength="254" required>
+
+          <input
+            class="form-control"
+            id="email"
+            type="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+            maxlength="254"
+            required
+          >
         </div>
 
         <div class="form-group">
           <label for="password">Password</label>
+
           <div class="password-wrap">
-            <input class="form-control password-control" id="password"
-              type="password" placeholder="Create a password"
-              autocomplete="new-password" minlength="6" required>
-            <button class="toggle-password" type="button"
-              data-target="password" aria-label="Show password">Show</button>
+            <input
+              class="form-control password-control"
+              id="password"
+              type="password"
+              placeholder="Create a password"
+              autocomplete="new-password"
+              minlength="6"
+              required
+            >
+
+            <button
+              class="toggle-password"
+              type="button"
+              data-target="password"
+              aria-label="Show password"
+            >
+              Show
+            </button>
           </div>
-          <p class="password-hint">Use at least 6 characters.</p>
+
+          <p class="password-hint">
+            Use at least 6 characters.
+          </p>
         </div>
 
         <div class="form-group">
           <label for="confirmPassword">Confirm Password</label>
+
           <div class="password-wrap">
-            <input class="form-control password-control" id="confirmPassword"
-              type="password" placeholder="Enter password again"
-              autocomplete="new-password" minlength="6" required>
-            <button class="toggle-password" type="button"
-              data-target="confirmPassword" aria-label="Show confirm password">Show</button>
+            <input
+              class="form-control password-control"
+              id="confirmPassword"
+              type="password"
+              placeholder="Enter password again"
+              autocomplete="new-password"
+              minlength="6"
+              required
+            >
+
+            <button
+              class="toggle-password"
+              type="button"
+              data-target="confirmPassword"
+              aria-label="Show confirm password"
+            >
+              Show
+            </button>
           </div>
         </div>
 
         <div class="terms-row">
-          <input id="acceptTerms" type="checkbox" required>
+
+          <input
+            id="acceptTerms"
+            type="checkbox"
+            required
+          >
+
           <label for="acceptTerms">
             I agree to the
-            <a href="terms.html" target="_blank" rel="noopener">Terms of Service</a>
+            <a href="terms.html" target="_blank" rel="noopener">
+              Terms of Service
+            </a>
             and
-            <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.
+            <a href="privacy.html" target="_blank" rel="noopener">
+              Privacy Policy
+            </a>.
           </label>
+
         </div>
 
-        <button class="primary-btn" id="signupButton" type="submit">
+        <button
+          class="primary-btn"
+          id="signupButton"
+          type="submit"
+        >
           Create My Account
         </button>
+
       </form>
 
       <div class="divider">OR SIGN UP WITH</div>
 
-      <button class="google-btn" id="googleSignup" type="button">
-        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="">
+      <button
+        class="google-btn"
+        id="googleSignup"
+        type="button"
+      >
+        <img
+          src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+          alt=""
+        >
         <span>Continue with Google</span>
       </button>
 
       <p class="bottom-note">
-        Already have an account? <a href="login.html">Sign in here</a>
+        Already have an account?
+        <a href="login.html">Sign in here</a>
       </p>
-      <div class="security-note">Your account information is handled securely.</div>
+
+      <div class="security-note">
+        Your account information is handled securely.
+      </div>
+
     </div>
   </section>
+
 </main>
+
+<!-- FIREBASE -->
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
@@ -552,32 +872,110 @@ body { background:radial-gradient(circle at 12% 8%,#e3f0e7 0,transparent 40%),#f
 <script src="firebase.js"></script>
 
 <script>
-(function(){
+(function() {
 "use strict";
 
 const $ = id => document.getElementById(id);
+
 const form = $("signupForm");
 const signupButton = $("signupButton");
 const googleButton = $("googleSignup");
-const messageBox = $("message");
 
 let auth = null;
 let db = null;
 let ready = false;
 let busy = false;
 
+/* =========================================
+   GENTLELOGS TOAST NOTIFICATION SYSTEM
+   ========================================= */
+
+function showToast(title, description, type = "success", duration = 4000) {
+
+  const container = $("toastContainer");
+
+  if (!container) return;
+
+  const toast = document.createElement("div");
+  toast.className = "toast " + type;
+
+  const iconBox = document.createElement("div");
+  iconBox.className = "toast-icon";
+
+  iconBox.textContent =
+    type === "success" ? "✓" :
+    type === "error" ? "!" : "i";
+
+  const content = document.createElement("div");
+  content.className = "toast-content";
+
+  const heading = document.createElement("div");
+  heading.className = "toast-title";
+  heading.textContent = title;
+
+  const descriptionBox = document.createElement("div");
+  descriptionBox.className = "toast-description";
+  descriptionBox.textContent = description;
+
+  content.append(heading, descriptionBox);
+
+  const close = document.createElement("button");
+  close.className = "toast-close";
+  close.type = "button";
+  close.textContent = "×";
+  close.setAttribute("aria-label", "Close notification");
+
+  const progress = document.createElement("div");
+  progress.className = "toast-progress";
+
+  toast.append(iconBox, content, close, progress);
+  container.appendChild(toast);
+
+  let removed = false;
+
+  const timer = setTimeout(removeToast, duration);
+
+  function removeToast() {
+
+    if (removed) return;
+
+    removed = true;
+    clearTimeout(timer);
+
+    toast.style.animation = "toastOut .25s ease forwards";
+
+    setTimeout(() => {
+      toast.remove();
+    }, 260);
+  }
+
+  close.addEventListener("click", removeToast);
+
+  return removeToast;
+}
+
+/* All signup feedback uses the top notification system. */
+
 function showMessage(text, type = "error") {
-  messageBox.textContent = text;
-  messageBox.className = "message show " + type;
+
+  const title =
+    type === "success" ? "Success!" :
+    type === "info" ? "Please note" :
+    "Something needs attention";
+
+  showToast(title, text, type);
 }
 
 function clearMessage() {
-  messageBox.textContent = "";
-  messageBox.className = "message";
+  // Toasts disappear automatically or can be closed manually.
 }
 
+/* TEXT CLEANUP */
+
 function cleanText(value) {
-  return String(value || "").trim().replace(/\s+/g, " ");
+  return String(value || "")
+    .trim()
+    .replace(/\s+/g, " ");
 }
 
 function cleanUsername(value) {
@@ -588,251 +986,418 @@ function cleanUsername(value) {
 }
 
 function referralFromUrl() {
-  return (new URLSearchParams(window.location.search).get("ref") || "").trim();
+  return (
+    new URLSearchParams(window.location.search).get("ref") || ""
+  ).trim();
 }
 
+/* FIREBASE ERROR MESSAGES */
+
 function friendlyError(error) {
+
   console.error("Signup error:", error);
 
   const code = error && error.code ? error.code : "";
   const raw = error && error.message ? error.message : "";
 
   const messages = {
+
     "auth/email-already-in-use":
       "This email already has an account. Please sign in instead.",
+
     "auth/invalid-email":
       "Please enter a valid email address.",
+
     "auth/weak-password":
       "Choose a password with at least 6 characters.",
+
     "auth/operation-not-allowed":
       "Enable email/password signup in Firebase Authentication.",
+
     "auth/unauthorized-domain":
       "Add this website domain to Firebase Authentication's authorized domains.",
+
     "auth/network-request-failed":
       "Network error. Check your connection and try again.",
+
     "auth/too-many-requests":
       "Too many attempts. Please wait and try again.",
+
     "auth/popup-closed-by-user":
       "The Google sign-in window was closed.",
+
     "auth/popup-blocked":
       "Your browser blocked the Google sign-in window.",
+
     "auth/account-exists-with-different-credential":
       "An account already exists with this email. Sign in using its original method."
+
   };
 
-  if (messages[code]) return messages[code];
+  if (messages[code]) {
+    return messages[code];
+  }
 
-  if (/permission.*denied/i.test(raw) || code === "permission-denied") {
+  if (
+    /permission.*denied/i.test(raw) ||
+    code === "permission-denied"
+  ) {
     return "Firestore rejected a database operation. Check the published Firestore rules.";
   }
 
   return raw || "Something went wrong. Please try again.";
 }
 
+/* BUTTON LOADING STATES */
+
 function setBusy(value) {
+
   busy = value;
+
   signupButton.disabled = value;
   googleButton.disabled = value;
-  signupButton.textContent = value ? "Please wait..." : "Create My Account";
-  googleButton.querySelector("span").textContent =
-    value ? "Please wait..." : "Continue with Google";
+
+  signupButton.textContent = value
+    ? "Please wait..."
+    : "Create My Account";
+
+  googleButton.querySelector("span").textContent = value
+    ? "Please wait..."
+    : "Continue with Google";
 }
 
+/* SAVE CUSTOMER SESSION */
+
 function saveLogin(user, profile) {
+
   try {
+
     localStorage.setItem("gentleLoggedIn", "true");
-    localStorage.setItem("gentleCurrentUserId", user.uid);
-    localStorage.setItem("gentleUser", JSON.stringify({
-      uid: user.uid,
-      email: user.email || "",
-      username: profile.username || "",
-      firstName: profile.firstName || "",
-      lastName: profile.lastName || "",
-      phone: profile.phone || ""
-    }));
+
+    localStorage.setItem(
+      "gentleCurrentUserId",
+      user.uid
+    );
+
+    localStorage.setItem(
+      "gentleUser",
+      JSON.stringify({
+        uid: user.uid,
+        email: user.email || "",
+        username: profile.username || "",
+        firstName: profile.firstName || "",
+        lastName: profile.lastName || "",
+        phone: profile.phone || ""
+      })
+    );
 
     if (typeof profile.balance === "number") {
-      localStorage.setItem("gentleBalance", String(profile.balance));
+
+      localStorage.setItem(
+        "gentleBalance",
+        String(profile.balance)
+      );
+
     }
+
   } catch (error) {
-    console.warn("Could not save local login details:", error);
+
+    console.warn(
+      "Could not save local login details:",
+      error
+    );
+
   }
 }
 
+/* FORM VALIDATION */
+
 function validateForm() {
+
   const details = {
+
     username: cleanUsername($("username").value),
+
     firstName: cleanText($("firstName").value),
+
     lastName: cleanText($("lastName").value),
+
     phone: cleanText($("phone").value),
+
     email: cleanText($("email").value).toLowerCase(),
+
     password: $("password").value,
+
     confirmPassword: $("confirmPassword").value
+
   };
 
   if (details.username.length < 3) {
-    showMessage("Username must contain at least 3 valid characters.");
+
+    showMessage(
+      "Username must contain at least 3 valid characters."
+    );
+
     $("username").focus();
     return null;
   }
 
   if (!details.firstName || !details.lastName) {
+
     showMessage("Enter your first and last name.");
     return null;
   }
 
   if (details.phone.replace(/\D/g, "").length < 7) {
+
     showMessage("Enter a valid phone number.");
+
     $("phone").focus();
     return null;
   }
 
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(details.email)) {
+
     showMessage("Enter a valid email address.");
+
     $("email").focus();
     return null;
   }
 
   if (details.password.length < 6) {
-    showMessage("Password must have at least 6 characters.");
+
+    showMessage(
+      "Password must have at least 6 characters."
+    );
+
     $("password").focus();
     return null;
   }
 
   if (details.password !== details.confirmPassword) {
+
     showMessage("Your passwords do not match.");
+
     $("confirmPassword").focus();
     return null;
   }
 
   if (!$("acceptTerms").checked) {
-    showMessage("Please accept the Terms of Service and Privacy Policy.");
+
+    showMessage(
+      "Please accept the Terms of Service and Privacy Policy."
+    );
+
     return null;
   }
 
   return details;
 }
 
-/*
- * Save referral attribution.
- *
- * IMPORTANT FIX:
- * This transaction does not read customers/{referrerId}.
- * The Firestore rules must verify the referrer's existence using
- * exists(/databases/$(database)/documents/customers/{referrerId}).
- *
- * The customer can read their own customer profile and their own
- * referral document. Referral creation must still be allowed by rules.
- */
+/* REFERRAL ATTRIBUTION */
+
 async function saveReferral(referredUid, referrerId) {
-  if (!referredUid || !referrerId || referredUid === referrerId) {
+
+  if (
+    !referredUid ||
+    !referrerId ||
+    referredUid === referrerId
+  ) {
     return;
   }
 
-  const customerRef = db.collection("customers").doc(referredUid);
-  const referralRef = db.collection("referrals").doc(referredUid);
+  const customerRef = db
+    .collection("customers")
+    .doc(referredUid);
+
+  const referralRef = db
+    .collection("referrals")
+    .doc(referredUid);
 
   await db.runTransaction(async transaction => {
+
     const customerSnap = await transaction.get(customerRef);
+
     const referralSnap = await transaction.get(referralRef);
 
     if (!customerSnap.exists) {
-      throw new Error("Customer profile does not exist.");
+
+      throw new Error(
+        "Customer profile does not exist."
+      );
+
     }
 
     const customer = customerSnap.data() || {};
 
     if (customer.referrerId !== referrerId) {
-      throw new Error("Saved referral attribution does not match the link.");
+
+      throw new Error(
+        "Saved referral attribution does not match the link."
+      );
+
     }
 
     if (referralSnap.exists) {
-      // Do not overwrite or duplicate an existing referral.
       return;
     }
 
     transaction.set(referralRef, {
+
       referrerId: referrerId,
+
       referredUserId: referredUid,
+
       status: "pending",
+
       rewardAmount: 500,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+
+      createdAt:
+        firebase.firestore.FieldValue.serverTimestamp()
+
     });
+
   });
+
 }
 
-/*
- * Create a new customer profile or update ordinary profile fields.
- * Existing customers' referrerId and balance are never overwritten.
- */
+/* CREATE OR UPDATE CUSTOMER PROFILE */
+
 async function saveCustomer(user, details, method) {
-  const customerRef = db.collection("customers").doc(user.uid);
+
+  const customerRef = db
+    .collection("customers")
+    .doc(user.uid);
+
   const customerSnap = await customerRef.get();
+
   const isNew = !customerSnap.exists;
-  const old = isNew ? {} : (customerSnap.data() || {});
+
+  const old = isNew
+    ? {}
+    : (customerSnap.data() || {});
+
   const candidateReferrer = referralFromUrl();
 
   let referrerId = old.referrerId || "";
 
-  if (isNew && candidateReferrer && candidateReferrer !== user.uid) {
+  if (
+    isNew &&
+    candidateReferrer &&
+    candidateReferrer !== user.uid
+  ) {
+
     referrerId = candidateReferrer;
+
   }
 
-  const email = user.email || details.email || old.email || "";
+  const email =
+    user.email ||
+    details.email ||
+    old.email ||
+    "";
+
   const emailPrefix = cleanUsername(
     (email.split("@")[0] || "customer").slice(0, 20)
   ) || "customer";
 
   const profile = {
+
     uid: user.uid,
+
     email: email,
-    username: old.username || details.username ||
+
+    username:
+      old.username ||
+      details.username ||
       (emailPrefix + "_" + user.uid.slice(0, 5)),
-    firstName: old.firstName || details.firstName || "",
-    lastName: old.lastName || details.lastName || "",
-    phone: old.phone || details.phone || "",
-    signupMethod: old.signupMethod || method,
-    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+
+    firstName:
+      old.firstName ||
+      details.firstName ||
+      "",
+
+    lastName:
+      old.lastName ||
+      details.lastName ||
+      "",
+
+    phone:
+      old.phone ||
+      details.phone ||
+      "",
+
+    signupMethod:
+      old.signupMethod ||
+      method,
+
+    updatedAt:
+      firebase.firestore.FieldValue.serverTimestamp()
+
   };
 
   if (isNew) {
+
     profile.balance = 0;
+
     profile.status = "Active";
-    profile.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+
+    profile.createdAt =
+      firebase.firestore.FieldValue.serverTimestamp();
 
     if (referrerId) {
       profile.referrerId = referrerId;
     }
 
     await customerRef.set(profile);
+
   } else {
+
     await customerRef.set({
+
       email: profile.email,
+
       username: profile.username,
+
       firstName: profile.firstName,
+
       lastName: profile.lastName,
+
       phone: profile.phone,
+
       signupMethod: profile.signupMethod,
+
       updatedAt: profile.updatedAt
-    }, { merge: true });
+
+    }, {
+      merge: true
+    });
+
   }
 
-  /*
-   * Referral saving is a separate operation. A referral error must
-   * not be reported as if Firebase Authentication failed.
-   */
   let referralFailed = false;
 
   if (isNew && referrerId) {
+
     try {
+
       await saveReferral(user.uid, referrerId);
+
     } catch (error) {
+
       referralFailed = true;
-      console.error("Referral record could not be saved:", error);
+
+      console.error(
+        "Referral record could not be saved:",
+        error
+      );
+
     }
+
   }
 
   const savedSnap = await customerRef.get();
+
   const savedProfile = savedSnap.exists
     ? savedSnap.data()
     : profile;
@@ -843,57 +1408,93 @@ async function saveCustomer(user, details, method) {
     profile: savedProfile,
     referralFailed: referralFailed
   };
+
 }
 
+/* FINISH SIGNUP */
+
 async function finishSignup(user, details, method) {
+
   let result;
 
   try {
-    result = await saveCustomer(user, details, method);
+
+    result = await saveCustomer(
+      user,
+      details,
+      method
+    );
+
   } catch (error) {
-    console.error("Customer profile save failed:", error);
+
+    console.error(
+      "Customer profile save failed:",
+      error
+    );
 
     showMessage(
       "Your authentication succeeded, but the customer profile could not be saved. Do not register again. " +
       friendlyError(error)
     );
+
     return false;
   }
 
   if (result.referralFailed) {
-    showMessage(
-      "Your account was created, but its referral record could not be saved. The referral needs to be checked and repaired. You can continue to your account.",
-      "info"
+
+    showToast(
+      "Account created successfully!",
+      "Welcome to Gentle acct store. Your referral record needs attention.",
+      "info",
+      5000
     );
 
     setTimeout(() => {
+
       window.location.replace("dashboard.html");
+
     }, 2500);
 
     return true;
   }
 
-  showMessage("Your account is ready. Redirecting...", "success");
+  showToast(
+    "Account created successfully!",
+    "Welcome to Gentle acct store. Your account is ready.",
+    "success",
+    4000
+  );
 
   setTimeout(() => {
+
     window.location.replace("dashboard.html");
-  }, 900);
+
+  }, 1500);
 
   return true;
 }
 
+/* EMAIL AND PASSWORD SIGNUP */
+
 form.addEventListener("submit", async function(event) {
+
   event.preventDefault();
+
   clearMessage();
 
   if (busy) return;
 
   if (!ready) {
-    showMessage("Firebase is not ready. Check that firebase.js loads correctly.");
+
+    showMessage(
+      "Firebase is not ready. Check that firebase.js loads correctly."
+    );
+
     return;
   }
 
   const details = validateForm();
+
   if (!details) return;
 
   setBusy(true);
@@ -901,277 +1502,238 @@ form.addEventListener("submit", async function(event) {
   let authenticatedUser = null;
 
   try {
-    const credential = await auth.createUserWithEmailAndPassword(
-      details.email,
-      details.password
-    );
+
+    const credential =
+      await auth.createUserWithEmailAndPassword(
+        details.email,
+        details.password
+      );
 
     authenticatedUser = credential.user;
 
-    await finishSignup(authenticatedUser, details, "email");
+    await finishSignup(
+      authenticatedUser,
+      details,
+      "email"
+    );
+
   } catch (error) {
+
     if (authenticatedUser) {
+
       showMessage(
         "Your account was created, but a later operation failed. Do not register again. " +
         friendlyError(error)
       );
+
     } else {
+
       showMessage(friendlyError(error));
+
     }
+
   } finally {
+
     setBusy(false);
+
   }
+
 });
 
+/* GOOGLE SIGNUP */
+
 function googleNameParts(user) {
-  const parts = cleanText(user.displayName).split(" ").filter(Boolean);
+
+  const parts = cleanText(user.displayName)
+    .split(" ")
+    .filter(Boolean);
 
   return {
     firstName: parts[0] || "",
     lastName: parts.slice(1).join(" ")
   };
+
 }
 
 googleButton.addEventListener("click", async function() {
+
   clearMessage();
 
   if (busy) return;
 
   if (!ready) {
-    showMessage("Firebase is not ready. Check that firebase.js loads correctly.");
+
+    showMessage(
+      "Firebase is not ready. Check that firebase.js loads correctly."
+    );
+
     return;
   }
 
   if (!$("acceptTerms").checked) {
-    showMessage("Please accept the Terms of Service and Privacy Policy.");
+
+    showMessage(
+      "Please accept the Terms of Service and Privacy Policy."
+    );
+
     return;
   }
 
   setBusy(true);
 
   try {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    provider.setCustomParameters({ prompt: "select_account" });
 
-    const credential = await auth.signInWithPopup(provider);
+    const provider =
+      new firebase.auth.GoogleAuthProvider();
+
+    provider.setCustomParameters({
+      prompt: "select_account"
+    });
+
+    const credential =
+      await auth.signInWithPopup(provider);
+
     const user = credential.user;
 
     if (!user) {
-      throw new Error("Google sign-in did not return a user.");
+
+      throw new Error(
+        "Google sign-in did not return a user."
+      );
+
     }
 
     const names = googleNameParts(user);
+
     const emailPrefix = cleanUsername(
       (user.email || "customer").split("@")[0]
     ) || "customer";
 
     const details = {
-      username: cleanUsername($("username").value) ||
+
+      username:
+        cleanUsername($("username").value) ||
         (emailPrefix + "_" + user.uid.slice(0, 5)),
-      firstName: cleanText($("firstName").value) || names.firstName,
-      lastName: cleanText($("lastName").value) || names.lastName,
-      phone: cleanText($("phone").value),
-      email: user.email || ""
+
+      firstName:
+        cleanText($("firstName").value) ||
+        names.firstName,
+
+      lastName:
+        cleanText($("lastName").value) ||
+        names.lastName,
+
+      phone:
+        cleanText($("phone").value),
+
+      email:
+        user.email || ""
+
     };
 
-    await finishSignup(user, details, "google");
-  } catch (error) {
-    showMessage(friendlyError(error));
-  } finally {
-    setBusy(false);
-  }
-});
-
-document.querySelectorAll(".toggle-password").forEach(button => {
-  button.addEventListener("click", function() {
-    const input = $(this.dataset.target);
-    const show = input.type === "password";
-
-    input.type = show ? "text" : "password";
-    this.textContent = show ? "Hide" : "Show";
-    this.setAttribute(
-      "aria-label",
-      show ? "Hide password" : "Show password"
+    await finishSignup(
+      user,
+      details,
+      "google"
     );
-  });
+
+  } catch (error) {
+
+    showMessage(friendlyError(error));
+
+  } finally {
+
+    setBusy(false);
+
+  }
+
 });
+
+/* SHOW AND HIDE PASSWORD */
+
+document.querySelectorAll(".toggle-password")
+  .forEach(button => {
+
+    button.addEventListener("click", function() {
+
+      const input = $(this.dataset.target);
+
+      const show = input.type === "password";
+
+      input.type = show ? "text" : "password";
+
+      this.textContent = show ? "Hide" : "Show";
+
+      this.setAttribute(
+        "aria-label",
+        show ? "Hide password" : "Show password"
+      );
+
+    });
+
+  });
+
+/* CLEAN USERNAME WHILE TYPING */
 
 $("username").addEventListener("input", function() {
-  this.value = cleanUsername(this.value);
+
+  const cleaned = cleanUsername(this.value);
+
+  if (this.value !== cleaned) {
+    this.value = cleaned;
+  }
+
 });
 
+/* FIREBASE INITIALIZATION */
+
 try {
+
   if (
     typeof firebase === "undefined" ||
     !firebase.apps ||
     firebase.apps.length === 0
   ) {
-    throw new Error("Firebase app has not been initialized.");
+
+    throw new Error(
+      "Firebase app has not been initialized."
+    );
+
   }
 
-  auth = window.firebaseAuth || firebase.auth();
-  db = window.firebaseDB || firebase.firestore();
+  auth =
+    window.firebaseAuth ||
+    firebase.auth();
+
+  db =
+    window.firebaseDB ||
+    firebase.firestore();
 
   if (!auth || !db) {
-    throw new Error("Firebase Auth or Firestore is unavailable.");
+
+    throw new Error(
+      "Firebase Auth or Firestore is unavailable."
+    );
+
   }
 
   ready = true;
+
 } catch (error) {
-  console.error("Firebase initialization error:", error);
-  showMessage("Signup service could not start. Check your firebase.js configuration.");
+
+  console.error(
+    "Firebase initialization error:",
+    error
+  );
+
+  showMessage(
+    "Signup service could not start. Check your firebase.js configuration."
+  );
+
 }
+
 })();
 </script>
 
-<style id="gentlelogs-xtralogs-signup">
-:root{
-  --green:#D9363E!important;
-  --green-dark:#A91F2B!important;
-  --text:#172033!important;
-  --muted:#687386!important;
-  --border:#E5E8EE!important;
-  --shadow:0 18px 48px rgba(23,32,51,.08)!important;
-}
-html,body{background:#F7F8FA!important;color:#172033!important}
-body{
-  min-height:100vh;min-height:100dvh;padding:30px 15px 26px!important;
-  background:radial-gradient(ellipse at 50% 0%,rgba(245,116,65,.08),transparent 38%),#F7F8FA!important;
-  font-family:"Space Grotesk",sans-serif!important;
-}
-*,button,input{font-family:Inter,"Space Grotesk",sans-serif!important}
-.page-wrapper{max-width:440px!important}
-.brand-header{text-align:center!important;margin:0 auto 23px!important}
-.brand-mark{
-  width:45px!important;height:45px!important;border-radius:14px!important;
-  margin:0 auto 9px!important;background:linear-gradient(145deg,#F26A3D,#C62936)!important;
-  box-shadow:0 8px 20px rgba(198,41,54,.18)!important;font-size:21px!important;
-}
-.brand-name{font-size:24px!important;letter-spacing:-1.1px!important;color:#172033!important;font-weight:800!important}
-.brand-name span{color:#D9363E!important}
-.brand-caption{font-size:9px!important;letter-spacing:1.8px!important;color:#8A93A3!important;margin-top:4px!important}
-.auth-card{
-  border:1px solid #E7E9EF!important;border-radius:19px!important;
-  background:#fff!important;box-shadow:0 18px 50px rgba(25,35,55,.075)!important;
-}
-.card-top{height:4px!important;background:linear-gradient(90deg,#B92332,#E54C42,#F5A044)!important}
-.auth-content{padding:24px 25px 25px!important}
-.auth-tabs{
-  display:grid!important;grid-template-columns:1fr 1fr!important;gap:0!important;
-  padding:0 5px!important;background:#fff!important;border:0!important;
-  border-bottom:1px solid #EEF0F4!important;border-radius:0!important;margin:-3px 0 24px!important;
-}
-.auth-tab{
-  position:relative!important;min-height:49px!important;border-radius:0!important;
-  font-size:12px!important;color:#7C8493!important;background:transparent!important;
-  box-shadow:none!important;
-}
-.auth-tab.active{color:#C92D38!important;background:transparent!important;box-shadow:none!important}
-.auth-tab.active:after{
-  content:"";position:absolute;left:18%;right:18%;bottom:0;height:3px;
-  border-radius:4px 4px 0 0;background:linear-gradient(90deg,#C62936,#F07842);
-}
-.heading{font-size:25px!important;line-height:1.25!important;letter-spacing:-.9px!important;color:#172033!important}
-.subtitle{font-size:12px!important;line-height:1.7!important;color:#737D8E!important;margin-top:7px!important;margin-bottom:21px!important}
-.form-row{gap:11px!important}
-.form-group{margin-bottom:15px!important}
-.form-group>label{
-  font-size:10px!important;letter-spacing:.75px!important;color:#354052!important;
-  font-weight:700!important;margin-bottom:7px!important;
-}
-.form-control{
-  height:49px!important;border:1px solid #E1E5EC!important;border-radius:10px!important;
-  background:#FBFCFD!important;color:#172033!important;font-size:13px!important;
-  padding:0 12px!important;box-shadow:none!important;
-}
-.form-control:focus{
-  border-color:#E05B4D!important;box-shadow:0 0 0 3px rgba(224,91,77,.10)!important;background:#fff!important;
-}
-.form-control::placeholder{color:#A0A8B5!important}
-.password-control{padding-right:60px!important}
-.toggle-password{
-  color:#7C8798!important;border-radius:8px!important;font-size:10px!important;
-}
-.toggle-password:hover{background:#FFF1ED!important;color:#C92D38!important}
-.password-hint{font-size:10px!important;color:#929BAA!important}
-.terms-row{gap:9px!important;margin:3px 0 18px!important}
-.terms-row input{accent-color:#C92D38!important}
-.terms-row label{font-size:10.5px!important;line-height:1.75!important;color:#687386!important}
-.terms-row a,.bottom-note a{color:#C92D38!important}
-.primary-btn{
-  min-height:49px!important;border-radius:10px!important;
-  background:linear-gradient(100deg,#C62936,#E44B3F 65%,#F18A43)!important;
-  box-shadow:0 8px 18px rgba(201,45,56,.17)!important;font-size:12.5px!important;
-}
-.primary-btn:hover{background:linear-gradient(100deg,#A91F2B,#CF3939 65%,#E77937)!important}
-.divider{margin:21px 0 16px!important;color:#929BAA!important}
-.divider:before,.divider:after{background:#E9ECF1!important}
-.google-btn{
-  min-height:47px!important;border-radius:10px!important;border:1px solid #E1E5EC!important;
-  color:#303B4E!important;font-size:12px!important;background:#fff!important;
-}
-.google-btn:hover{background:#FAFBFC!important;border-color:#CBD2DE!important}
-.bottom-note{font-size:10.5px!important;color:#929BAA!important;margin-top:19px!important}
-.security-note{font-size:10px!important;color:#929BAA!important;margin-top:14px!important}
-.message{font-size:11px!important}
-.message.error{color:#A32F28!important;background:#FFF0EE!important;border-color:#F6D5D1!important}
-.message.success{color:#17683D!important;background:#EDF9F0!important;border-color:#CDEBD5!important}
-.message.info{color:#275C86!important;background:#EEF7FF!important;border-color:#D2E7FA!important}
-@media(max-width:600px){
-  body{padding:25px 14px 22px!important}
-  .brand-header{margin-bottom:20px!important}
-  .auth-content{padding:22px 20px 22px!important}
-  .heading{font-size:24px!important}
-}
-@media(max-width:390px){
-  body{padding:19px 11px!important}
-  .brand-header{margin-bottom:17px!important}
-  .auth-content{padding:21px 16px 20px!important}
-  .auth-card{border-radius:17px!important}
-  .form-row{gap:8px!important}
-}
-/* Prevent iPhone Safari from zooming when a form field is tapped. */
-@media(max-width:767px){
-  input,textarea,select,.form-control{font-size:16px!important}
-}
-</style>
-
 </body>
 </html>
-
-
-<style id="gentle-signup-final-redesign">
-:root{--green:#29532A!important;--green-dark:#194D28!important;--text:#17251B!important;--muted:#718077!important;--border:#D9E9DC!important;--shadow:0 20px 55px rgba(28,65,38,.10)!important}
-html,body{font-family:Inter,"Space Grotesk",Arial,sans-serif!important;color:#17251B!important}
-html{background:#F2F6F3!important}
-body{min-height:100vh;min-height:100dvh;padding:28px 14px 32px!important;background:radial-gradient(ellipse at 8% 8%,rgba(64,130,75,.13),transparent 36%),radial-gradient(ellipse at 92% 92%,rgba(64,130,75,.10),transparent 34%),linear-gradient(145deg,#F0F6F1,#FFFFFF 52%,#EDF4EE)!important}
-*,button,input,textarea,select{font-family:Inter,"Space Grotesk",Arial,sans-serif!important}
-button{cursor:pointer!important}
-.page-wrapper{max-width:455px!important}
-.brand-header{margin-bottom:22px!important}
-.brand-mark{width:52px!important;height:52px!important;border-radius:16px!important;background:linear-gradient(145deg,#397B45,#194D28)!important;box-shadow:0 10px 24px rgba(41,83,42,.18)!important;font-size:23px!important}
-.brand-name{font-size:25px!important;letter-spacing:-1px!important;color:#17251B!important;font-weight:800!important}
-.brand-name span{color:#29532A!important}
-.brand-caption{font-size:10px!important;letter-spacing:1.5px!important;color:#718077!important}
-.auth-card{background:#FFFFFF!important;border:1px solid #D9E9DC!important;border-radius:21px!important;box-shadow:0 20px 55px rgba(28,65,38,.10)!important}
-.card-top{height:4px!important;background:linear-gradient(90deg,#194D28,#397B45,#A6CDAA)!important}
-.auth-content{padding:25px 25px 24px!important}
-.auth-tabs{background:#F1F6F2!important;border:1px solid #E1EBE3!important;border-radius:12px!important;gap:5px!important}
-.auth-tab{font-size:12px!important;font-weight:700!important;color:#718077!important}
-.auth-tab.active{background:#FFFFFF!important;color:#194D28!important;box-shadow:0 2px 8px rgba(25,77,40,.10)!important}
-.heading{font-family:Inter,sans-serif!important;color:#17251B!important;font-size:26px!important;font-weight:800!important;letter-spacing:-.8px!important}
-.subtitle{font-size:12px!important;color:#718077!important}
-.form-group>label{font-size:10px!important;color:#34483A!important;letter-spacing:.55px!important}
-.form-control{height:49px!important;border:1px solid #D9E5DC!important;border-radius:11px!important;background:#FBFDFB!important;color:#203629!important;font-size:14px!important;transition:border-color .18s,box-shadow .18s!important}
-.form-control:focus{border-color:#397B45!important;box-shadow:0 0 0 4px rgba(41,83,42,.10)!important}
-.form-control::placeholder{color:#9AA79D!important}
-.toggle-password{font-family:Inter,sans-serif!important;cursor:pointer!important;color:#647468!important}
-.primary-btn{background:linear-gradient(100deg,#194D28,#347640)!important;color:#FFFFFF!important;border:0!important;box-shadow:0 8px 19px rgba(41,83,42,.17)!important;font-size:13px!important;font-weight:800!important}
-.primary-btn:hover{background:linear-gradient(100deg,#123D20,#295F33)!important}
-.google-btn{border:1px solid #D9E5DC!important;background:#FFFFFF!important;color:#34483A!important;font-size:13px!important}
-.terms-row label,.bottom-note,.security-note{font-size:11px!important;line-height:1.75!important}
-.terms-row a,.bottom-note a{color:#29532A!important}
-.message{font-size:12px!important}
-@media(max-width:390px){.auth-content{padding:21px 16px!important}.heading{font-size:23px!important}.form-row{gap:8px!important}}
-@media(max-width:767px){input,textarea,select,.form-control{font-size:16px!important}}
-</style>

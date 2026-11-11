@@ -1,875 +1,482 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#05070D">
-<meta name="description" content="Gentle Acct Store referral management dashboard">
-<title>Referral Management | Gentle Acct Store</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#f7faf8">
+<meta name="description" content="GentleLogs referral rewards">
+<title>Referrals | GentleLogs</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-<script>
-(function () {
-  try {
-    const saved = localStorage.getItem("gentle-acct-store-theme");
-    document.documentElement.dataset.theme =
-      saved === "dark" || saved === "blue" || saved === "light" ? saved : "dark";
-  } catch (_) {
-    document.documentElement.dataset.theme = "dark";
-  }
-})();
-</script>
-
 <style>
-:root {
-  color-scheme: dark;
-  --bg:#05070D;
-  --surface:#0B1220;
-  --surface2:#101A2D;
-  --surface3:#142341;
-  --text:#F8FAFC;
-  --muted:#94A3B8;
-  --border:#1E2B43;
-  --accent:#C9232C;
-  --accent-hover:#991B24;
-  --accent-soft:#351719;
-  --success:#22C55E;
-  --success-soft:#0B2A1B;
-  --warning:#FBBF24;
-  --warning-soft:#30250A;
-  --danger:#F87171;
-  --danger-soft:#351719;
-  --shadow:0 18px 45px rgba(0,0,0,.20);
-}
-html[data-theme="light"] {
-  color-scheme:light;
-  --bg:#F3F6FC;
-  --surface:#FFFFFF;
-  --surface2:#F8FAFC;
-  --surface3:#EAF1FF;
-  --text:#0F172A;
-  --muted:#64748B;
-  --border:#E2E8F0;
-  --accent:#C9232C;
-  --accent-hover:#991B24;
-  --accent-soft:#FDEEEF;
-  --success:#15803D;
-  --success-soft:#DCFCE7;
-  --warning:#A16207;
-  --warning-soft:#FEF3C7;
-  --danger:#B91C1C;
-  --danger-soft:#FEE2E2;
-  --shadow:0 14px 35px rgba(15,23,42,.06);
-}
-html[data-theme="blue"] {
-  color-scheme:dark;
-  --bg:#071426;
-  --surface:#0B1D36;
-  --surface2:#102747;
-  --surface3:#15355D;
-  --text:#F0F7FF;
-  --muted:#A6BCD6;
-  --border:#23466E;
-  --accent:#E0444B;
-  --accent-hover:#C9232C;
-  --accent-soft:#351719;
-  --success:#4ADE80;
-  --success-soft:#103821;
-  --warning:#FCD34D;
-  --warning-soft:#3A2D0C;
-  --danger:#FCA5A5;
-  --danger-soft:#421B25;
-  --shadow:0 18px 45px rgba(0,0,0,.20);
-}
-* {box-sizing:border-box}
-body {
-  margin:0;
-  min-height:100vh;
-  background:
-    radial-gradient(ellipse at top left, var(--accent-soft), transparent 36%),
-    var(--bg);
-  color:var(--text);
-  font-family:"Space Grotesk",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  font-size:14px;
-  line-height:1.5;
-}
-button,input,select {font:inherit}
-button {cursor:pointer}
-button:disabled {opacity:.55;cursor:not-allowed}
-a {color:inherit;text-decoration:none}
-.app {max-width:1440px;margin:auto;padding:24px}
-.topbar {
-  display:flex;align-items:center;justify-content:space-between;
-  gap:18px;flex-wrap:wrap;margin-bottom:28px;
-}
-.brand {display:flex;align-items:center;gap:13px}
-.brand-mark {
-  width:46px;height:46px;display:grid;place-items:center;
-  border-radius:15px;background:linear-gradient(145deg,#E0444B,#991B24);
-  color:white;font-size:21px;font-weight:900;
-  box-shadow:0 8px 25px rgba(201,35,44,.22);
-}
-.brand-name {font-size:18px;font-weight:850;letter-spacing:-.5px}
-.brand-sub {font-size:12px;color:var(--muted)}
-.top-actions {display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.btn {
-  display:inline-flex;align-items:center;justify-content:center;gap:8px;
-  min-height:41px;padding:10px 14px;border:1px solid var(--border);
-  border-radius:12px;background:var(--surface);color:var(--text);
-  font-weight:700;transition:.18s ease;
-}
-.btn:hover {border-color:var(--accent);transform:translateY(-1px)}
-.btn-primary {background:var(--accent);border-color:var(--accent);color:white}
-.btn-primary:hover {background:var(--accent-hover)}
-.btn-small {min-height:34px;padding:7px 10px;font-size:12px}
-.btn-success {background:var(--success-soft);color:var(--success);border-color:var(--success)}
-.btn-ghost {background:transparent}
-.hero {
-  display:flex;align-items:flex-end;justify-content:space-between;
-  gap:20px;flex-wrap:wrap;margin-bottom:23px;
-}
-.eyebrow {
-  display:inline-flex;align-items:center;gap:7px;color:var(--accent);
-  font-size:11px;font-weight:850;letter-spacing:1.5px;text-transform:uppercase;
-}
-.hero h1 {font-size:clamp(26px,4vw,36px);line-height:1.15;margin:9px 0 8px;letter-spacing:-1.2px}
-.hero p {margin:0;color:var(--muted);max-width:620px}
-.admin-pill {
-  display:flex;align-items:center;gap:8px;padding:9px 12px;
-  border:1px solid var(--border);border-radius:999px;background:var(--surface);
-  color:var(--muted);font-size:12px;
-}
-.dot {width:8px;height:8px;background:var(--success);border-radius:50%}
-.stats {
-  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:15px;margin-bottom:23px;
-}
-.stat {
-  min-width:0;padding:20px;border:1px solid var(--border);
-  border-radius:18px;background:var(--surface);box-shadow:var(--shadow);
-}
-.stat-top {display:flex;align-items:center;justify-content:space-between;gap:10px}
-.stat-label {font-size:12px;color:var(--muted);font-weight:650}
-.stat-icon {
-  width:38px;height:38px;display:grid;place-items:center;border-radius:12px;
-  background:var(--accent-soft);color:var(--accent);font-size:17px;
-}
-.stat-value {font-size:clamp(23px,3vw,31px);font-weight:850;letter-spacing:-1px;margin-top:13px}
-.stat-note {font-size:11px;color:var(--muted);margin-top:4px}
-.toolbar {
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
-  flex-wrap:wrap;margin-bottom:17px;
-}
-.filters {display:flex;gap:10px;flex:1;flex-wrap:wrap}
-.search-wrap {position:relative;flex:1;min-width:210px;max-width:440px}
-.search-wrap span {position:absolute;left:13px;top:10px;color:var(--muted);font-size:16px}
-.control {
-  min-height:42px;width:100%;padding:10px 12px;
-  border:1px solid var(--border);border-radius:12px;
-  background:var(--surface);color:var(--text);outline:none;
-}
-.search-wrap .control {padding-left:38px}
-.control:focus {border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
-select.control {width:auto;min-width:150px}
-.result-count {font-size:12px;color:var(--muted)}
-.referral-list {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-.referral-card {
-  min-width:0;border:1px solid var(--border);border-radius:18px;
-  background:var(--surface);padding:20px;box-shadow:var(--shadow);
-  transition:border-color .2s,transform .2s;
-}
-.referral-card:hover {border-color:var(--accent);transform:translateY(-2px)}
-.card-head {display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
-.person {display:flex;gap:12px;align-items:center;min-width:0}
-.avatar {
-  width:46px;height:46px;flex-shrink:0;border-radius:15px;
-  display:grid;place-items:center;background:var(--accent-soft);
-  color:var(--accent);font-size:17px;font-weight:850;
-}
-.person-info {min-width:0}
-.person-name {font-size:15px;font-weight:800;overflow-wrap:anywhere}
-.person-email {font-size:12px;color:var(--muted);overflow-wrap:anywhere}
-.badge {
-  display:inline-flex;align-items:center;gap:5px;padding:6px 9px;
-  border-radius:999px;font-size:10px;font-weight:850;
-  text-transform:uppercase;letter-spacing:.45px;white-space:nowrap;
-}
-.badge-pending {background:var(--warning-soft);color:var(--warning)}
-.badge-rewarded {background:var(--success-soft);color:var(--success)}
-.badge-ineligible {background:var(--surface2);color:var(--muted)}
-.badge-missing {background:var(--danger-soft);color:var(--danger)}
-.card-divider {height:1px;background:var(--border);margin:17px 0}
-.details {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.detail-label {font-size:11px;color:var(--muted);margin-bottom:4px}
-.detail-value {font-size:14px;font-weight:800;overflow-wrap:anywhere}
-.progress-track {height:6px;border-radius:99px;background:var(--surface2);overflow:hidden;margin-top:9px}
-.progress-fill {height:100%;border-radius:99px;background:var(--accent);transition:width .25s}
-.card-foot {
-  display:flex;justify-content:space-between;align-items:center;
-  gap:12px;flex-wrap:wrap;margin-top:17px;
-}
-.card-date {font-size:11px;color:var(--muted)}
-.empty {
-  grid-column:1/-1;text-align:center;padding:55px 20px;
-  border:1px dashed var(--border);border-radius:18px;background:var(--surface);
-}
-.empty-icon {font-size:32px;margin-bottom:10px}
-.empty h3 {margin:0 0 6px;font-size:17px}
-.empty p {margin:0;color:var(--muted);font-size:13px}
-.notice {
-  display:flex;gap:10px;align-items:flex-start;padding:13px 15px;
-  border:1px solid var(--border);border-radius:14px;
-  background:var(--surface);color:var(--muted);font-size:12px;margin-bottom:18px;
-}
-.notice strong {color:var(--text)}
-.toast {
-  position:fixed;bottom:22px;left:50%;transform:translate(-50%,20px);
-  opacity:0;pointer-events:none;z-index:10;max-width:calc(100% - 32px);
-  padding:13px 17px;border:1px solid var(--border);border-radius:13px;
-  background:var(--surface);box-shadow:var(--shadow);font-weight:700;
-  transition:.25s ease;
-}
-.toast.show {opacity:1;transform:translate(-50%,0)}
-.toast.error {border-color:var(--danger);color:var(--danger)}
-.toast.success {border-color:var(--success);color:var(--success)}
-.loading {text-align:center;padding:45px 15px;color:var(--muted)}
-.spinner {
-  width:25px;height:25px;border:3px solid var(--border);
-  border-top-color:var(--accent);border-radius:50%;
-  animation:spin .8s linear infinite;margin:0 auto 12px;
-}
-@keyframes spin {to{transform:rotate(360deg)}}
-.footer {padding:25px 0 8px;text-align:center;color:var(--muted);font-size:11px}
-@media(max-width:900px) {
-  .stats {grid-template-columns:repeat(2,minmax(0,1fr))}
-  .referral-list {grid-template-columns:1fr}
-}
-@media(max-width:540px) {
-  .app {padding:15px}
-  .topbar {margin-bottom:22px}
-  .brand-name {font-size:16px}
-  .top-actions {width:100%}
-  .top-actions .btn {flex:1}
-  .hero {align-items:flex-start}
-  .stats {gap:10px}
-  .stat {padding:14px;border-radius:15px}
-  .stat-icon {width:32px;height:32px}
-  .stat-value {font-size:24px}
-  .filters {width:100%}
-  .search-wrap {max-width:none;min-width:100%}
-  select.control {flex:1;min-width:0}
-  .toolbar > .btn {width:100%}
-  .referral-card {padding:15px}
-  .card-head {align-items:flex-start}
-  .badge {font-size:9px;padding:5px 7px}
-  .details {gap:13px}
-}
+:root{--green:#087f43;--green-dark:#075b34;--ink:#17251d;--muted:#7b8981;--line:#e9efeb;--bg:#f5f8f6;--purple:#7650bd;--purple-bg:#f2edff;--blue:#3975bd;--blue-bg:#edf5ff;--amber:#b9791e;--amber-bg:#fff5e6}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Space Grotesk",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,a{font:inherit}a{color:inherit;text-decoration:none}button{cursor:pointer}
+.page{width:min(100%,650px);min-height:100vh;margin:auto;padding:17px 15px 100px;background:#fbfcfb}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.back{width:39px;height:39px;border:1px solid var(--line);border-radius:12px;background:#fff;display:grid;place-items:center;color:var(--ink)}
+.back svg,.top-icon svg,.copy-btn svg,.share-btn svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.brand{display:flex;align-items:center;gap:9px;margin-right:auto}
+.brand-mark{width:36px;height:36px;border-radius:11px;background:linear-gradient(145deg,#20b86a,#08763d);display:grid;place-items:center;color:white;font-weight:900;font-size:19px}
+.brand-name{font-weight:900;font-size:17px;letter-spacing:-.7px}.brand-name span{color:var(--green)}
+.top-icon{width:39px;height:39px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--green);display:grid;place-items:center}
+.intro{margin:25px 1px 17px}.eyebrow{font-size:9px;font-weight:900;letter-spacing:2px;color:var(--green)}
+h1{font-size:27px;line-height:1.12;letter-spacing:-1.1px;margin:7px 0 7px;font-weight:900}
+.intro p{margin:0;color:var(--muted);font-size:11px;line-height:1.65}
+.hero{position:relative;overflow:hidden;padding:19px;border-radius:20px;background:linear-gradient(125deg,#123e28,#087f43 70%,#169a55);color:#fff;box-shadow:0 10px 25px rgba(8,103,53,.12)}
+.hero:after{content:"";position:absolute;width:190px;height:190px;border-radius:50%;border:1px solid rgba(255,255,255,.13);right:-65px;top:-80px;box-shadow:0 0 0 25px rgba(255,255,255,.035),0 0 0 52px rgba(255,255,255,.025)}
+.hero-top{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.hero-label{font-size:10px;color:#d4ecdc;font-weight:650}
+.reward{font-size:26px;font-weight:900;letter-spacing:-1px;margin-top:7px}
+.hero-note{font-size:10px;color:#d7eee0;margin-top:4px}
+.gift-icon{width:49px;height:49px;border-radius:15px;background:rgba(255,255,255,.14);display:grid;place-items:center;flex:none}
+.gift-icon svg{width:29px;height:29px;stroke:white;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.hero-foot{position:relative;z-index:1;margin-top:17px;padding-top:13px;border-top:1px solid rgba(255,255,255,.17);font-size:10px;color:#e2f3e8;line-height:1.6}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:13px}
+.stat{padding:13px 11px;border:1px solid var(--line);border-radius:15px;background:#fff;min-width:0}
+.stat-label{font-size:9px;color:var(--muted);font-weight:700}
+.stat-value{font-size:21px;letter-spacing:-.7px;font-weight:900;margin-top:7px;overflow:hidden;text-overflow:ellipsis}
+.stat:nth-child(2) .stat-value{color:var(--amber)}.stat:nth-child(3) .stat-value{color:var(--green)}
+.panel{margin-top:14px;padding:16px;border:1px solid var(--line);border-radius:18px;background:#fff;box-shadow:0 5px 18px rgba(20,58,36,.035)}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.panel h2{font-size:14px;letter-spacing:-.3px;margin:0;font-weight:850}
+.panel-sub{font-size:10px;color:var(--muted);line-height:1.6;margin:6px 0 12px}
+.link-box{padding:11px 12px;border:1px dashed #cbded1;border-radius:12px;background:#f8fcf9;color:#52665a;font-size:10px;line-height:1.5;overflow-wrap:anywhere;min-height:43px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.copy-btn,.share-btn{min-height:42px;border:0;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:10px;font-weight:800}
+.copy-btn{background:var(--green);color:#fff}.share-btn{background:var(--purple-bg);color:var(--purple)}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:12px}
+.step{padding:12px 9px;border-radius:13px;background:#f7faf8;text-align:center}
+.step-num{width:25px;height:25px;border-radius:9px;background:#e6f5eb;color:var(--green);display:grid;place-items:center;margin:0 auto 7px;font-size:10px;font-weight:900}
+.step strong{display:block;font-size:9px}.step span{display:block;margin-top:4px;color:var(--muted);font-size:8px;line-height:1.45}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:20px 1px 10px}
+.toolbar h2{font-size:16px;margin:0;font-weight:900;letter-spacing:-.5px}
+.refresh{border:1px solid var(--line);background:#fff;color:var(--green);border-radius:10px;padding:8px 11px;font-size:10px;font-weight:800}
+.filters{display:flex;gap:6px;overflow:auto;padding:1px 0 9px;scrollbar-width:none}
+.filter{border:1px solid var(--line);background:#fff;color:#6c7b72;border-radius:20px;padding:8px 12px;font-size:9px;font-weight:800;white-space:nowrap}
+.filter.active{background:#eaf6ee;color:var(--green);border-color:#d8ecdf}
+.list{display:grid;gap:8px}
+.ref-row{display:flex;align-items:center;gap:11px;padding:12px;border:1px solid var(--line);border-radius:14px;background:#fff}
+.avatar{width:37px;height:37px;flex:none;border-radius:12px;background:var(--blue-bg);color:var(--blue);display:grid;place-items:center;font-size:13px;font-weight:900}
+.ref-info{min-width:0;flex:1}.ref-name{font-size:11px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ref-date{font-size:9px;color:var(--muted);margin-top:4px}
+.ref-right{text-align:right;flex:none}.amount{font-size:10px;font-weight:900}.status{display:inline-block;margin-top:5px;padding:4px 7px;border-radius:20px;font-size:8px;font-weight:900;text-transform:capitalize}
+.status.pending{background:var(--amber-bg);color:var(--amber)}.status.approved,.status.paid,.status.completed{background:#eaf6ee;color:var(--green)}.status.rejected,.status.cancelled{background:#fff0ef;color:#bd4942}
+.empty{padding:25px 14px;border:1px dashed #dce8df;border-radius:14px;text-align:center;background:#fbfdfb;color:var(--muted);font-size:10px;line-height:1.7}
+.empty strong{display:block;color:var(--ink);font-size:12px;margin-bottom:5px}
+.notice{display:none;margin-top:12px;padding:11px 12px;border-radius:11px;font-size:10px;line-height:1.6}
+.notice.error{display:block;background:#fff1f0;color:#a43c35}.notice.info{display:block;background:#edf5ff;color:#315e91}
+.bottom-nav{position:fixed;z-index:10;left:50%;transform:translateX(-50%);bottom:0;width:min(100%,650px);padding:7px 9px max(9px,env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(5,1fr);background:rgba(255,255,255,.95);backdrop-filter:blur(16px);border:1px solid #e7eee9;border-bottom:0;border-radius:18px 18px 0 0;box-shadow:0 -5px 22px rgba(20,58,36,.055)}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;color:#6d7b72;font-size:9px;font-weight:700;min-height:39px}
+.nav-item svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}.nav-item.active{color:var(--green)}
+.toast{position:fixed;z-index:20;left:50%;bottom:90px;transform:translate(-50%,12px);opacity:0;pointer-events:none;background:#173d29;color:#fff;padding:11px 15px;border-radius:11px;font-size:10px;font-weight:700;transition:.2s;max-width:90%;text-align:center}.toast.show{opacity:1;transform:translate(-50%,0)}
+.loading{padding:20px;text-align:center;color:var(--muted);font-size:10px}
+@media(max-width:380px){.page{padding-left:12px;padding-right:12px}.reward{font-size:23px}.stat{padding:11px 8px}.stat-value{font-size:18px}.panel{padding:13px}.steps{gap:6px}}
+input,select,textarea{font-size:16px}
+
+/* Screen-recording inspired referral dashboard, adapted to GentleLogs */
+:root{--green:#087f43;--green-dark:#075b34;--purple:#8a3f93;--purple-bg:#f7eafa;--pink:#e74686;--ink:#172033;--muted:#8993a2;--line:#edf0f5;--bg:#f3f4f8}
+body{font-family:"Space Grotesk",system-ui,sans-serif;background:#f3f4f8;color:#172033}
+.page{max-width:600px;background:#f3f4f8;padding:14px 16px 94px}
+.topbar{height:46px}
+.brand-name{font-family:"Space Grotesk",sans-serif}
+.intro{margin:15px 1px 12px}
+.intro h1{font-size:23px;margin:4px 0 5px}
+.intro p{font-size:10px;line-height:1.5}
+.referral-hero{padding:15px;border-radius:18px;background:linear-gradient(120deg,#a92d80 0%,#e34586 55%,#ff8c68 100%);box-shadow:0 9px 22px rgba(191,53,126,.16)}
+.referral-hero:after{border-color:#ffffff25;box-shadow:0 0 0 23px #ffffff0c,0 0 0 46px #ffffff08}
+.hero-label{font-size:9px;letter-spacing:1.5px;color:#ffe5f1;font-weight:700}
+.reward{font-size:19px;letter-spacing:-.6px;margin-top:5px}
+.hero-note{font-size:9px;line-height:1.4;max-width:230px;color:#ffe6ef}
+.gift-icon{width:42px;height:42px;border-radius:13px;background:#ffffff24}
+.gift-icon svg{width:25px;height:25px}
+.hero-stats{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:13px}
+.hero-stats>div{padding:9px 7px;border-radius:11px;background:#ffffff20;text-align:center}
+.hero-stats strong{display:block;font-size:17px;line-height:1.1}
+.hero-stats span{display:block;margin-top:4px;font-size:8px;color:#ffe8f1}
+.progress-panel{margin-top:11px;padding:13px;border:1px solid #f0e7f1;border-radius:15px;background:#fff}
+.panel-head strong{font-size:10px;color:var(--pink)}
+.progress-track{height:7px;border-radius:10px;background:#f2edf3;margin-top:11px;overflow:hidden}
+.progress-track span{display:block;width:0;height:100%;border-radius:10px;background:linear-gradient(90deg,#ad3b91,#f06b89);transition:width .25s}
+.progress-foot{display:flex;justify-content:space-between;margin-top:6px;color:#929baa;font-size:8px}
+.panel{margin-top:11px;padding:13px;border-radius:16px;border-color:#eceef3;box-shadow:0 4px 14px rgba(25,35,60,.035)}
+.panel h2{font-size:13px}
+.panel-sub{font-size:9px;margin:5px 0 9px;line-height:1.45}
+.code-badge{padding:4px 7px;border-radius:15px;background:#f7eafa;color:#954b91;font-size:7px;font-weight:800;letter-spacing:.5px}
+.code-line{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 10px;border:1px dashed #e6cfe5;border-radius:11px;background:#fff9fd}
+.code-line strong{font-size:17px;letter-spacing:2px;color:#b13c83}
+.code-line button{border:0;border-radius:8px;padding:6px 9px;background:#f7eafa;color:#954b91;font-size:9px;font-weight:800}
+.link-box{margin-top:8px;font-size:8px;min-height:34px;padding:8px 9px}
+.actions{margin-top:8px;gap:7px}
+.copy-btn,.share-btn{min-height:36px;font-size:9px;border-radius:10px}
+.copy-btn{background:#087f43}
+.share-btn{background:#f7eafa;color:#954b91}
+.leaderboard{display:grid;gap:7px;margin-top:10px}
+.leader-row{display:flex;align-items:center;gap:9px;padding:8px 9px;border-radius:10px;background:#f8f9fc}
+.leader-rank{width:24px;height:24px;border-radius:8px;display:grid;place-items:center;background:#fff0d8;color:#b67b22;font-size:9px;font-weight:900}
+.leader-name{min-width:0;flex:1;font-size:9px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.leader-count{font-size:9px;color:#8b94a1;font-weight:700}
+.leader-empty{padding:12px;text-align:center;border-radius:10px;background:#f8f9fc;color:#939ba8;font-size:9px}
+.how-panel{background:linear-gradient(125deg,#fff,#fff9f4)}
+.how-panel .steps{margin-top:10px;gap:7px}
+.how-panel .step{background:#fff5ec;padding:10px 7px}
+.how-panel .step-num{background:#ffead8;color:#d47735}
+.how-panel .step strong{font-size:8px}
+.how-panel .step span{font-size:7px}
+.toolbar{margin:16px 1px 8px}
+.toolbar h2{font-size:14px}
+.refresh{font-size:9px;padding:7px 9px}
+.filters{padding-bottom:7px}
+.filter{font-size:8px;padding:7px 10px}
+.ref-row{padding:10px;border-radius:12px}
+.ref-name{font-size:10px}
+.ref-date{font-size:8px}
+.amount{font-size:9px}
+.status{font-size:7px}
+.bottom-nav{max-width:600px}
+@media(max-width:380px){.page{padding-left:12px;padding-right:12px}.hero-stats strong{font-size:15px}.reward{font-size:17px}.panel{padding:11px}.how-panel .steps{gap:5px}}
+
 </style>
 </head>
-
 <body>
-<div class="app">
+<main class="page">
   <header class="topbar">
-    <a class="brand" href="admin.html" aria-label="Gentle Acct Store admin home">
-      <div class="brand-mark">G</div>
-      <div>
-        <div class="brand-name">Gentle Acct Store</div>
-        <div class="brand-sub">Admin Control Centre</div>
-      </div>
-    </a>
-
-    <div class="top-actions">
-      <button class="btn" id="themeBtn" type="button">☀️ Light theme</button>
-      <button class="btn" id="refreshBtn" type="button">↻ Refresh</button>
-      <a class="btn btn-ghost" href="admin.html">← Dashboard</a>
-    </div>
+    <a class="back" href="home.html" aria-label="Back to home"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></a>
+    <a class="brand" href="home.html"><span class="brand-mark">G</span><span class="brand-name">Gentle<span>Logs</span></span></a>
+    <a class="top-icon" href="profile.html" aria-label="Profile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20c.7-4 3.2-6 7.5-6s6.8 2 7.5 6"/></svg></a>
   </header>
 
-  <section class="hero">
-    <div>
-      <div class="eyebrow">✦ Affiliate programme</div>
-      <h1>Referral Management</h1>
-      <p>Track referred customers, check qualifying funding and manage referral rewards from one place.</p>
+  <section class="intro">
+    <div class="eyebrow">GENTLELOGS REWARDS</div>
+    <h1>Refer &amp; Earn</h1>
+    <p>Invite friends to GentleLogs. They must deposit at least ₦1,500 in approved funding for your ₦500 referral reward to qualify.</p>
+  </section>
+
+  <section class="hero referral-hero">
+    <div class="hero-top">
+      <div>
+        <div class="hero-label">REFER &amp; EARN</div>
+        <div class="reward">Invite friends. Earn ₦500.</div>
+        <div class="hero-note">Get rewarded when your referrals complete the qualifying deposit and are approved.</div>
+      </div>
+      <div class="gift-icon"><svg viewBox="0 0 48 48"><path d="M7 20h34v23H7zM4 13h40v8H4zM24 13v30"/><path d="M24 13c-9 0-15-1-15-6 0-4 5-5 8-2 3 2 7 8 7 8ZM24 13c9 0 15-1 15-6 0-4-5-5-8-2-3 2-7 8-7 8Z"/></svg></div>
     </div>
-    <div class="admin-pill"><span class="dot"></span> Admin workspace</div>
+    <div class="hero-stats">
+      <div><strong id="totalHero">0</strong><span>Referrals</span></div>
+      <div><strong id="earnedHero">₦0</strong><span>Earned</span></div>
+      <div><strong>₦500</strong><span>Per referral</span></div>
+    </div>
   </section>
 
-  <section class="stats" aria-label="Referral statistics">
-    <article class="stat">
-      <div class="stat-top">
-        <div class="stat-label">Total Referrals</div>
-        <div class="stat-icon">♧</div>
-      </div>
-      <div class="stat-value" id="totalReferrals">—</div>
-      <div class="stat-note">Customers linked to a referrer</div>
-    </article>
-
-    <article class="stat">
-      <div class="stat-top">
-        <div class="stat-label">Eligible Referrals</div>
-        <div class="stat-icon">✓</div>
-      </div>
-      <div class="stat-value" id="eligibleReferrals">—</div>
-      <div class="stat-note">At least ₦1,500 approved funding</div>
-    </article>
-
-    <article class="stat">
-      <div class="stat-top">
-        <div class="stat-label">Rewards Recorded</div>
-        <div class="stat-icon">₦</div>
-      </div>
-      <div class="stat-value" id="rewardsRecorded">—</div>
-      <div class="stat-note">Rewards marked as paid</div>
-    </article>
-
-    <article class="stat">
-      <div class="stat-top">
-        <div class="stat-label">Reward Value</div>
-        <div class="stat-icon">✦</div>
-      </div>
-      <div class="stat-value" id="rewardValue">₦0</div>
-      <div class="stat-note">Recorded rewards × ₦500</div>
-    </article>
+  <section class="progress-panel">
+    <div class="panel-head"><h2>Progress to your first reward</h2><strong id="progressText">0 / 1</strong></div>
+    <div class="progress-track"><span id="progressFill"></span></div>
+    <div class="progress-foot"><span>Keep sharing your link</span><span>₦500 reward</span></div>
   </section>
 
-  <div class="notice">
-    <span>ℹ️</span>
-    <div><strong>Reward rules:</strong> A referred customer must have at least ₦1,500 in cumulative approved funding. The referral reward is ₦500. Pending rewards are not automatically credited.</div>
+  <section class="panel code-panel">
+    <div class="panel-head"><h2>Your referral code</h2><span class="code-badge">REFERRAL ID</span></div>
+    <p class="panel-sub">Share your code or link with friends so their signup is connected to your account.</p>
+    <div class="code-line"><strong id="referralCode">—</strong><button id="copyCodeBtn" type="button" aria-label="Copy referral code">Copy</button></div>
+    <div class="link-box" id="referralLink">Preparing your personal link…</div>
+    <div class="actions">
+      <button class="copy-btn" id="copyBtn"><svg viewBox="0 0 24 24"><rect x="8" y="8" width="13" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg>Copy link</button>
+      <button class="share-btn" id="shareBtn"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.7 10.7 6.6-4.4m-6.6 9.4 6.6 2.6"/></svg>Share now</button>
+    </div>
+  </section>
+
+  <section class="panel leaderboard-panel">
+    <div class="panel-head"><h2>🏆 Top Referrers</h2><span class="code-badge">LEADERBOARD</span></div>
+    <div id="leaderboard" class="leaderboard"><div class="loading">Loading leaderboard…</div></div>
+  </section>
+
+  <section class="panel how-panel">
+    <h2>How it works</h2>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><strong>Share your link</strong><span>Send your personal referral link to friends.</span></div>
+      <div class="step"><div class="step-num">2</div><strong>Friend joins</strong><span>They register through your link.</span></div>
+      <div class="step"><div class="step-num">3</div><strong>Earn ₦500</strong><span>They complete ₦1,500 in approved funding, then admin approves your reward.</span></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head"><h2>Your referral link</h2></div>
+    <p class="panel-sub">Share this link with friends. It opens the GentleLogs signup page with your referral ID attached.</p>
+    <div class="link-box" id="referralLink">Preparing your personal link…</div>
+    <div class="actions">
+      <button class="copy-btn" id="copyBtn"><svg viewBox="0 0 24 24"><rect x="8" y="8" width="13" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg>Copy link</button>
+      <button class="share-btn" id="shareBtn"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.7 10.7 6.6-4.4m-6.6 9.4 6.6 2.6"/></svg>Share link</button>
+    </div>
+  </section>
+
+  <div class="toolbar">
+    <h2>Referral history</h2>
+    <button class="refresh" id="refreshBtn">Refresh</button>
   </div>
+  <div class="filters" id="filters">
+    <button class="filter active" data-filter="all">All referrals</button>
+    <button class="filter" data-filter="pending">Pending</button>
+    <button class="filter" data-filter="approved">Approved</button>
+    <button class="filter" data-filter="rejected">Rejected</button>
+  </div>
+  <section class="list" id="referralList"><div class="loading">Loading your referrals…</div></section>
+  <div class="notice" id="notice" role="status"></div>
+</main>
 
-  <section class="toolbar">
-    <div class="filters">
-      <div class="search-wrap">
-        <span>⌕</span>
-        <input class="control" id="searchInput" type="search" placeholder="Search customer, email or referrer ID…" autocomplete="off">
-      </div>
-      <select class="control" id="statusFilter" aria-label="Filter by referral status">
-        <option value="all">All statuses</option>
-        <option value="eligible">Eligible — pending reward</option>
-        <option value="rewarded">Rewarded</option>
-        <option value="ineligible">Not yet eligible</option>
-        <option value="missing">Missing referral record</option>
-      </select>
-    </div>
-    <div class="result-count" id="resultCount">Loading referrals…</div>
-  </section>
+<nav class="bottom-nav" aria-label="Main navigation">
+  <a class="nav-item" href="home.html"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z"/></svg><span>Home</span></a>
+  <a class="nav-item" href="orders.html"><svg viewBox="0 0 24 24"><path d="m12 2 9 5v10l-9 5-9-5V7l9-5Z"/><path d="m3 7 9 5 9-5M12 12v10"/></svg><span>History</span></a>
+  <a class="nav-item" href="fund.html"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="15" rx="2"/><path d="M2 10h20M6 15h3"/></svg><span>Fund</span></a>
+  <a class="nav-item active" href="referrals.html"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M20 8v6m3-3h-6"/></svg><span>Rewards</span></a>
+  <a class="nav-item" href="profile.html"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c.5-4.2 3.2-6.5 8-6.5s7.5 2.3 8 6.5"/></svg><span>Profile</span></a>
+</nav>
+<div class="toast" id="toast" role="status"></div>
 
-  <main>
-    <div id="loading" class="loading">
-      <div class="spinner"></div>
-      Loading referral records…
-    </div>
-    <div id="referralList" class="referral-list"></div>
-  </main>
-
-  <footer class="footer">Gentle Acct Store · Referral Administration</footer>
-</div>
-
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
-
+<!-- Firebase compat SDKs must load before firebase.js. -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="firebase.js"></script>
-
 <script>
-"use strict";
+(() => {
+  "use strict";
+  const $ = id => document.getElementById(id);
+  let currentUser = null;
+  let referralRows = [];
+  let activeFilter = "all";
+  let referralCodeValue = "";
+  let toastTimer;
 
-const ADMIN_UID = "UoEjCy99gbQKkGob59vGi3CunZi1";
-const REWARD_AMOUNT = 500;
-const MINIMUM_QUALIFYING_FUNDING = 1500;
-const APPROVED_STATUSES = ["approved", "completed", "paid", "credited"];
-const THEME_KEY = "gentle-acct-store-theme";
-const USER_THEME_PREFIX = "gentle-acct-store-theme-user-";
-
-let customers = [];
-let fundingRequests = [];
-let referrals = [];
-let referralRows = [];
-let currentUser = null;
-let loadingData = false;
-let toastTimer = null;
-
-const $ = id => document.getElementById(id);
-
-function money(value) {
-  return new Intl.NumberFormat("en-NG", {
-    style: "currency",
-    currency: "NGN",
-    maximumFractionDigits: 0
-  }).format(Number(value) || 0);
-}
-
-function safeText(value) {
-  return String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
-  }[char]));
-}
-
-function formatDate(value) {
-  if (!value) return "Date unavailable";
-  let date;
-  if (typeof value.toDate === "function") date = value.toDate();
-  else if (value.seconds) date = new Date(value.seconds * 1000);
-  else date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "Date unavailable";
-  return date.toLocaleDateString("en-NG", {
-    day:"numeric", month:"short", year:"numeric"
-  });
-}
-
-function showToast(message, type = "success") {
-  const toast = $("toast");
-  toast.textContent = message;
-  toast.className = "toast show " + type;
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toast.className = "toast", 3500);
-}
-
-function getTheme() {
-  return document.documentElement.dataset.theme || "dark";
-}
-
-function saveTheme(theme) {
-  document.documentElement.dataset.theme = theme;
-  try {
-    localStorage.setItem(THEME_KEY, theme);
-    if (currentUser) {
-      localStorage.setItem(USER_THEME_PREFIX + currentUser.uid, theme);
-    }
-  } catch (_) {}
-  updateThemeButton();
-}
-
-function updateThemeButton() {
-  const theme = getTheme();
-  $("themeBtn").textContent =
-    theme === "dark" ? "☀️ Light theme" :
-    theme === "light" ? "🌊 Blue theme" : "🌙 Dark theme";
-}
-
-function cycleTheme() {
-  const next = getTheme() === "dark" ? "light" :
-    getTheme() === "light" ? "blue" : "dark";
-  saveTheme(next);
-}
-
-function approvedFundingTotal(userId) {
-  return fundingRequests.reduce((sum, item) => {
-    const data = item.data;
-    const status = String(data.status || "").toLowerCase();
-    if (data.userId === userId && APPROVED_STATUSES.includes(status)) {
-      return sum + (Number(data.amount) || 0);
-    }
-    return sum;
-  }, 0);
-}
-
-function getReferralForCustomer(customer) {
-  return referrals.find(item =>
-    item.data.referredUserId === customer.id ||
-    item.id === customer.id
-  ) || null;
-}
-
-function getReferralStatus(customer, referral, total) {
-  if (!referral) return "missing";
-  const status = String(referral.data.status || "pending").toLowerCase();
-  if (["rewarded", "approved", "paid"].includes(status)) return "rewarded";
-  if (total >= MINIMUM_QUALIFYING_FUNDING) return "eligible";
-  return "ineligible";
-}
-
-function buildRows() {
-  referralRows = customers
-    .filter(customer => Boolean(customer.data.referrerId))
-    .map(customer => {
-      const referral = getReferralForCustomer(customer);
-      const total = approvedFundingTotal(customer.id);
-      const referrerId = customer.data.referrerId;
-      const referrer = customers.find(person => person.id === referrerId);
-      return {
-        customer,
-        referral,
-        total,
-        referrerId,
-        referrer,
-        status: getReferralStatus(customer, referral, total)
-      };
-    });
-
-  updateStats();
-  renderRows();
-}
-
-function updateStats() {
-  const eligible = referralRows.filter(row => row.status === "eligible").length;
-  const rewarded = referralRows.filter(row => row.status === "rewarded").length;
-
-  $("totalReferrals").textContent = referralRows.length.toLocaleString();
-  $("eligibleReferrals").textContent = eligible.toLocaleString();
-  $("rewardsRecorded").textContent = rewarded.toLocaleString();
-  $("rewardValue").textContent = money(rewarded * REWARD_AMOUNT);
-}
-
-function initials(name) {
-  const words = String(name || "Customer").trim().split(/\s+/).filter(Boolean);
-  return words.slice(0, 2).map(word => word[0]).join("").toUpperCase() || "C";
-}
-
-function statusBadge(status) {
-  const config = {
-    eligible: ["Eligible", "badge-pending"],
-    rewarded: ["Rewarded", "badge-rewarded"],
-    ineligible: ["Not eligible", "badge-ineligible"],
-    missing: ["Record missing", "badge-missing"]
-  };
-  const item = config[status] || config.ineligible;
-  return `<span class="badge ${item[1]}">${item[0]}</span>`;
-}
-
-function renderRows() {
-  const query = $("searchInput").value.trim().toLowerCase();
-  const filter = $("statusFilter").value;
-
-  const filtered = referralRows.filter(row => {
-    const name = row.customer.data.name || "";
-    const email = row.customer.data.email || "";
-    const referrerName = row.referrer?.data.name || "";
-    const haystack = [
-      name, email, row.customer.id, row.referrerId, referrerName
-    ].join(" ").toLowerCase();
-
-    if (query && !haystack.includes(query)) return false;
-    if (filter !== "all" && row.status !== filter) return false;
-    return true;
-  });
-
-  $("resultCount").textContent =
-    `${filtered.length} of ${referralRows.length} referrals`;
-
-  $("loading").style.display = "none";
-
-  if (!filtered.length) {
-    $("referralList").innerHTML = `
-      <div class="empty">
-        <div class="empty-icon">⌕</div>
-        <h3>No referrals found</h3>
-        <p>Try another search or change the status filter.</p>
-      </div>`;
-    return;
+  function toast(message) {
+    const el = $("toast");
+    el.textContent = message;
+    el.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove("show"), 2500);
   }
 
-  $("referralList").innerHTML = filtered.map(row => {
-    const data = row.customer.data;
-    const referralData = row.referral?.data || {};
-    const name = data.name || "Unnamed customer";
-    const email = data.email || "No email available";
-    const referrerName = row.referrer?.data.name || "Referrer";
-    const progress = Math.min(
-      100, (row.total / MINIMUM_QUALIFYING_FUNDING) * 100
-    );
-    const remaining = Math.max(
-      0, MINIMUM_QUALIFYING_FUNDING - row.total
-    );
+  function notice(message, type) {
+    const el = $("notice");
+    el.textContent = message;
+    el.className = "notice " + type;
+  }
 
-    let action = "";
-    if (row.status === "eligible") {
-      action = `<button class="btn btn-primary btn-small reward-btn"
-        data-customer-id="${safeText(row.customer.id)}">
-        Approve ₦500 reward
-      </button>`;
-    } else if (row.status === "rewarded") {
-      action = `<span class="badge badge-rewarded">✓ Reward recorded</span>`;
-    } else if (row.status === "missing") {
-      action = `<span class="badge badge-missing">Referral record missing</span>`;
-    } else {
-      action = `<span class="card-date">${money(remaining)} more approved funding needed</span>`;
+  function makeReferralLink(user) {
+    const url = new URL("signup.html", window.location.href);
+    url.searchParams.set("ref", user.uid);
+    return url.href;
+  }
+
+  function safeDate(value) {
+    if (!value) return "Date unavailable";
+    let date = value;
+    if (value && typeof value.toDate === "function") date = value.toDate();
+    else if (typeof value === "number") date = new Date(value);
+    else if (typeof value === "string") date = new Date(value);
+    if (!(date instanceof Date) || Number.isNaN(date.getTime())) return "Date unavailable";
+    return date.toLocaleDateString("en-NG", {day:"numeric",month:"short",year:"numeric"});
+  }
+
+  function normalizedStatus(value) {
+    const status = String(value || "pending").toLowerCase().trim();
+    if (["approved","paid","completed","success","successful","rewarded","credited"].includes(status)) return "approved";
+    if (["rejected","declined","cancelled","canceled"].includes(status)) return "rejected";
+    return "pending";
+  }
+
+  function displayName(data, id) {
+    const name = [data.firstName, data.lastName].filter(Boolean).join(" ").trim()
+      || data.name || data.username || data.displayName;
+    return name || (id ? "Customer " + id.slice(0, 7) : "Referred customer");
+  }
+
+  async function loadReferrals() {
+    if (!currentUser || !window.firebaseDB) return;
+    $("refreshBtn").disabled = true;
+    $("referralList").innerHTML = '<div class="loading">Loading your referrals…</div>';
+    $("notice").className = "notice";
+    try {
+      const snapshot = await firebaseDB.collection("referrals")
+        .where("referrerId", "==", currentUser.uid).get();
+
+      const docs = snapshot.docs || [];
+      const customerLookups = await Promise.all(docs.map(async doc => {
+        const data = doc.data() || {};
+        const referredUid = data.referredUserId || doc.id;
+        try {
+          const customerSnap = await firebaseDB.collection("customers").doc(referredUid).get();
+          return customerSnap.exists ? customerSnap.data() || {} : {};
+        } catch (error) {
+          console.warn("Could not read referred customer profile:", error);
+          return {};
+        }
+      }));
+
+      referralRows = docs.map((doc, index) => {
+        const data = doc.data() || {};
+        const referredUid = data.referredUserId || doc.id;
+        return {
+          id: doc.id,
+          data,
+          customer: customerLookups[index],
+          name: displayName(customerLookups[index], referredUid),
+          status: normalizedStatus(data.status),
+          date: safeDate(data.createdAt),
+          reward: Number(data.rewardAmount || 500)
+        };
+      });
+
+      referralRows.sort((a,b) => {
+        const ad = a.data.createdAt && a.data.createdAt.toMillis ? a.data.createdAt.toMillis() : 0;
+        const bd = b.data.createdAt && b.data.createdAt.toMillis ? b.data.createdAt.toMillis() : 0;
+        return bd - ad;
+      });
+
+      const approved = referralRows.filter(row => row.status === "approved");
+      const pending = referralRows.filter(row => row.status === "pending");
+      $("totalCount").textContent = referralRows.length.toLocaleString("en-NG");
+      $("pendingCount").textContent = pending.length.toLocaleString("en-NG");
+      $("approvedCount").textContent = approved.length.toLocaleString("en-NG");
+      $("totalHero").textContent = referralRows.length.toLocaleString("en-NG");
+      $("earnedHero").textContent = "₦" + approved.reduce((sum,row)=>sum+(Number(row.reward)||500),0).toLocaleString("en-NG");
+      const progress = approved.length > 0 ? 100 : 0;
+      $("progressText").textContent = (approved.length > 0 ? "1" : "0") + " / 1 reward";
+      $("progressFill").style.width = progress + "%";
+      renderRows();
+    } catch (error) {
+      console.error("Referral load failed:", error);
+      $("referralList").innerHTML = '<div class="empty"><strong>Unable to load referral history</strong>Check your internet connection and Firestore read permissions, then refresh.</div>';
+      notice("Your referral link is ready, but referral history could not be loaded. No referral records have been changed.", "error");
+    } finally {
+      $("refreshBtn").disabled = false;
+    }
+  }
+
+
+  async function loadLeaderboard() {
+    const target = $("leaderboard");
+    try {
+      const snapshot = await firebaseDB.collection("referrals").get();
+      const counts = new Map();
+      snapshot.docs.forEach(doc => {
+        const data = doc.data() || {};
+        const id = data.referrerId;
+        if (id) counts.set(id, (counts.get(id) || 0) + 1);
+      });
+      const ranked = [...counts.entries()].sort((a,b)=>b[1]-a[1]).slice(0,5);
+      if (!ranked.length) {
+        target.innerHTML = '<div class="leader-empty">Your leaderboard will appear as referrals join.</div>';
+        return;
+      }
+      target.innerHTML = ranked.map(([id,count],index)=>`
+        <div class="leader-row">
+          <span class="leader-rank">${index===0?"🏆":index+1}</span>
+          <span class="leader-name">${id===currentUser?.uid?"You":"Member ••••"+escapeHtml(id.slice(-4))}</span>
+          <span class="leader-count">${count} referrals</span>
+        </div>`).join("");
+    } catch (error) {
+      console.warn("Leaderboard unavailable:",error);
+      target.innerHTML = '<div class="leader-empty">Leaderboard is unavailable right now.</div>';
+    }
+  }
+
+  function renderRows() {
+    const rows = activeFilter === "all"
+      ? referralRows
+      : referralRows.filter(row => row.status === activeFilter);
+
+    if (!rows.length) {
+      $("referralList").innerHTML = '<div class="empty"><strong>No referrals to show yet</strong>When someone registers through your personal link, their referral will appear here.</div>';
+      return;
     }
 
-    const createdAt = data.createdAt || referralData.createdAt;
-
-    return `
-      <article class="referral-card">
-        <div class="card-head">
-          <div class="person">
-            <div class="avatar">${safeText(initials(name))}</div>
-            <div class="person-info">
-              <div class="person-name">${safeText(name)}</div>
-              <div class="person-email">${safeText(email)}</div>
-            </div>
-          </div>
-          ${statusBadge(row.status)}
+    $("referralList").innerHTML = rows.map(row => {
+      const initial = (row.name || "C").trim().charAt(0).toUpperCase();
+      const amount = Number.isFinite(row.reward) ? row.reward : 500;
+      return `<article class="ref-row">
+        <div class="avatar">${escapeHtml(initial)}</div>
+        <div class="ref-info">
+          <div class="ref-name">${escapeHtml(row.name)}</div>
+          <div class="ref-date">${escapeHtml(row.date)}</div>
         </div>
-
-        <div class="card-divider"></div>
-
-        <div class="details">
-          <div>
-            <div class="detail-label">Referrer</div>
-            <div class="detail-value">${safeText(referrerName)}</div>
-          </div>
-          <div>
-            <div class="detail-label">Referral reward</div>
-            <div class="detail-value">${money(REWARD_AMOUNT)}</div>
-          </div>
-          <div>
-            <div class="detail-label">Approved funding</div>
-            <div class="detail-value">${money(row.total)}</div>
-          </div>
-          <div>
-            <div class="detail-label">Qualifying target</div>
-            <div class="detail-value">${money(MINIMUM_QUALIFYING_FUNDING)}</div>
-          </div>
-        </div>
-
-        <div class="progress-track" aria-label="Funding qualification progress">
-          <div class="progress-fill" style="width:${progress}%"></div>
-        </div>
-
-        <div class="card-foot">
-          <div class="card-date">Joined: ${safeText(formatDate(createdAt))}</div>
-          ${action}
+        <div class="ref-right">
+          <div class="amount">₦${amount.toLocaleString("en-NG")}</div>
+          <span class="status ${row.status}">${row.status}</span>
         </div>
       </article>`;
-  }).join("");
+    }).join("");
+  }
 
-  document.querySelectorAll(".reward-btn").forEach(button => {
-    button.addEventListener("click", () => approveReward(button.dataset.customerId, button));
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, char => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    })[char]);
+  }
+
+  async function copyLink() {
+    const link = $("referralLink").textContent;
+    if (!link || link.includes("Preparing")) return;
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(link);
+        toast("Referral link copied!");
+      } else {
+        window.prompt("Copy your referral link:", link);
+      }
+    } catch (error) {
+      window.prompt("Copy your referral link:", link);
+    }
+  }
+
+  async function shareLink() {
+    const link = $("referralLink").textContent;
+    if (!link || link.includes("Preparing")) return;
+    const shareData = {title:"Join me on GentleLogs", text:"Create your GentleLogs account using my referral link:", url:link};
+    if (navigator.share) {
+      try { await navigator.share(shareData); }
+      catch (error) { if (error && error.name !== "AbortError") toast("Unable to share right now."); }
+    } else {
+      await copyLink();
+    }
+  }
+
+  $("copyBtn").addEventListener("click", copyLink);
+  $("shareBtn").addEventListener("click", shareLink);
+  $("refreshBtn").addEventListener("click", loadReferrals);
+  $("filters").addEventListener("click", event => {
+    const button = event.target.closest("[data-filter]");
+    if (!button) return;
+    activeFilter = button.dataset.filter;
+    document.querySelectorAll(".filter").forEach(item => item.classList.toggle("active", item === button));
+    renderRows();
   });
-}
 
-async function loadData() {
-  if (loadingData) return;
-  loadingData = true;
-  $("loading").style.display = "block";
-  $("loading").innerHTML = '<div class="spinner"></div>Loading referral records…';
-  $("referralList").innerHTML = "";
-  $("refreshBtn").disabled = true;
-
-  try {
-    const [customerSnapshot, fundingSnapshot, referralSnapshot] = await Promise.all([
-      firebaseDB.collection("customers").get(),
-      firebaseDB.collection("fundingRequests").get(),
-      firebaseDB.collection("referrals").get()
-    ]);
-
-    customers = customerSnapshot.docs.map(doc => ({
-      id: doc.id, data: doc.data()
-    }));
-    fundingRequests = fundingSnapshot.docs.map(doc => ({
-      id: doc.id, data: doc.data()
-    }));
-    referrals = referralSnapshot.docs.map(doc => ({
-      id: doc.id, data: doc.data()
-    }));
-
-    buildRows();
-  } catch (error) {
-    console.error("Could not load referrals:", error);
-    $("loading").innerHTML = `
-      <div class="empty">
-        <div class="empty-icon">⚠️</div>
-        <h3>Unable to load referrals</h3>
-        <p>Check your connection and Firestore permissions, then refresh.</p>
-      </div>`;
-    showToast("Could not load referral data.", "error");
-  } finally {
-    loadingData = false;
-    $("refreshBtn").disabled = false;
-  }
-}
-
-/*
- * SECURITY NOTE:
- * This browser transaction preserves the existing admin workflow.
- * Firestore Security Rules alone must restrict wallet/referral writes
- * to the authorized administrator. A trusted server-side endpoint with
- * idempotency is safer for real wallet rewards.
- */
-async function approveReward(customerId, button) {
-  if (!currentUser || currentUser.uid !== ADMIN_UID) {
-    showToast("You are not authorized to approve rewards.", "error");
-    return;
-  }
-
-  const customer = customers.find(item => item.id === customerId);
-  if (!customer) {
-    showToast("Customer record not found. Refresh and try again.", "error");
-    return;
-  }
-
-  const referral = getReferralForCustomer(customer);
-  if (!referral) {
-    showToast("Referral record is missing. No reward was issued.", "error");
-    return;
-  }
-
-  const referrerId = customer.data.referrerId;
-  if (!referrerId || referrerId === customerId) {
-    showToast("Invalid referrer. No reward was issued.", "error");
-    return;
-  }
-
-  const fundingDocs = fundingRequests.filter(item =>
-    item.data.userId === customerId &&
-    APPROVED_STATUSES.includes(String(item.data.status || "").toLowerCase())
-  );
-
-  if (!confirm(
-    `Approve a ${money(REWARD_AMOUNT)} referral reward for the referrer of ` +
-    `${customer.data.name || "this customer"}? The customer must have at least ` +
-    `${money(MINIMUM_QUALIFYING_FUNDING)} in approved funding.`
-  )) return;
-
-  button.disabled = true;
-  button.textContent = "Processing…";
-
-  try {
-    const referralRef = firebaseDB.collection("referrals").doc(referral.id);
-    const customerRef = firebaseDB.collection("customers").doc(customerId);
-    const walletRef = firebaseDB.collection("wallets").doc(referrerId);
-    const fundingRefs = fundingDocs.map(item =>
-      firebaseDB.collection("fundingRequests").doc(item.id)
-    );
-
-    await firebaseDB.runTransaction(async transaction => {
-      // Complete all reads before performing writes.
-      const customerSnap = await transaction.get(customerRef);
-      const referralSnap = await transaction.get(referralRef);
-      const walletSnap = await transaction.get(walletRef);
-      const fundingSnaps = [];
-
-      for (const fundingRef of fundingRefs) {
-        fundingSnaps.push(await transaction.get(fundingRef));
-      }
-
-      if (!customerSnap.exists || !referralSnap.exists) {
-        throw new Error("Customer or referral record no longer exists.");
-      }
-
-      const freshCustomer = customerSnap.data();
-      const freshReferral = referralSnap.data();
-
-      if (freshCustomer.referrerId !== referrerId) {
-        throw new Error("The referrer has changed. Refresh and review the record.");
-      }
-
-      if (freshReferral.referredUserId &&
-          freshReferral.referredUserId !== customerId) {
-        throw new Error("Referral record does not match this customer.");
-      }
-
-      if (freshReferral.referrerId &&
-          freshReferral.referrerId !== referrerId) {
-        throw new Error("Referral referrer ID does not match the customer.");
-      }
-
-      if (String(freshReferral.status || "pending").toLowerCase() !== "pending") {
-        throw new Error("This referral has already been processed.");
-      }
-
-      const totalApproved = fundingSnaps.reduce((sum, snap) => {
-        if (!snap.exists) return sum;
-        const funding = snap.data();
-        const status = String(funding.status || "").toLowerCase();
-
-        if (funding.userId === customerId &&
-            APPROVED_STATUSES.includes(status)) {
-          return sum + (Number(funding.amount) || 0);
-        }
-        return sum;
-      }, 0);
-
-      if (totalApproved < MINIMUM_QUALIFYING_FUNDING) {
-        throw new Error(
-          `Customer does not meet the ${money(MINIMUM_QUALIFYING_FUNDING)} funding requirement.`
-        );
-      }
-
-      if (Number(freshReferral.rewardAmount || REWARD_AMOUNT) !== REWARD_AMOUNT) {
-        throw new Error("Reward amount does not match the configured ₦500 reward.");
-      }
-
-      if (!walletSnap.exists) {
-        throw new Error("Referrer wallet was not found. No reward was issued.");
-      }
-
-      transaction.update(walletRef, {
-        balance: firebase.firestore.FieldValue.increment(REWARD_AMOUNT),
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
-
-      transaction.update(referralRef, {
-        status: "rewarded",
-        rewardAmount: REWARD_AMOUNT,
-        rewardedAt: firebase.firestore.FieldValue.serverTimestamp(),
-        rewardedBy: currentUser.uid,
-        totalApprovedFunding: totalApproved,
-        fundingRequestIds: fundingSnaps
-          .filter(snap => snap.exists &&
-            snap.data().userId === customerId &&
-            APPROVED_STATUSES.includes(String(snap.data().status || "").toLowerCase()))
-          .map(snap => snap.id)
-      });
-    });
-
-    showToast("₦500 referral reward approved.", "success");
-    await loadData();
-  } catch (error) {
-    console.error("Referral reward approval failed:", error);
-    showToast(error.message || "Reward approval failed.", "error");
-    button.disabled = false;
-    button.textContent = "Approve ₦500 reward";
-  }
-}
-
-function startAdminPage() {
   if (!window.firebaseAuth || !window.firebaseDB) {
-    $("loading").innerHTML = `
-      <div class="empty">
-        <h3>Firebase is not ready</h3>
-        <p>Check that firebase.js initializes firebaseAuth and firebaseDB.</p>
-      </div>`;
+    $("referralList").innerHTML = '<div class="empty"><strong>Firebase is not available</strong>Check that the Firebase compat scripts and firebase.js are loading correctly.</div>';
+    notice("Firebase could not initialize. Your referral page is not connected yet.", "error");
     return;
   }
 
   firebaseAuth.onAuthStateChanged(async user => {
-    if (!user || user.uid !== ADMIN_UID || !user.emailVerified) {
-      window.location.href = "login.html";
+    if (!user) {
+      window.location.replace("login.html");
       return;
     }
-
     currentUser = user;
-
-    try {
-      const userTheme = localStorage.getItem(USER_THEME_PREFIX + user.uid);
-      const globalTheme = localStorage.getItem(THEME_KEY);
-      const selectedTheme = userTheme || globalTheme || "dark";
-
-      saveTheme(
-        ["dark", "light", "blue"].includes(selectedTheme)
-          ? selectedTheme : "dark"
-      );
-    } catch (_) {
-      saveTheme("dark");
-    }
-
-    await loadData();
+    referralCodeValue = user.uid.slice(0,8).toUpperCase();
+    $("referralCode").textContent = referralCodeValue;
+    $("referralLink").textContent = makeReferralLink(user);
+    $("copyCodeBtn").addEventListener("click", async () => {
+      const usableLink = $("referralLink").textContent;
+      try { await navigator.clipboard.writeText(usableLink); toast("Your referral link copied!"); }
+      catch (_) { window.prompt("Copy your referral link:", usableLink); }
+    });
+    await Promise.all([loadReferrals(),loadLeaderboard()]);
   });
-}
-
-$("themeBtn").addEventListener("click", cycleTheme);
-$("refreshBtn").addEventListener("click", loadData);
-$("searchInput").addEventListener("input", renderRows);
-$("statusFilter").addEventListener("change", renderRows);
-
-updateThemeButton();
-startAdminPage();
+})();
 </script>
 </body>
 </html>

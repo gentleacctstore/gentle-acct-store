@@ -541,6 +541,7 @@ if(typeof firebaseAuth === "undefined" || typeof firebaseDB === "undefined"){
 
     currentUser = user;
     syncTheme();
+    try{const cached=localStorage.getItem("gentleBalance");if(cached!==null&&Number.isFinite(Number(cached)))walletBalance=Number(cached);}catch(e){}
 
     if(!selectedId){
       showError("No product was selected.");
@@ -574,6 +575,8 @@ async function loadCheckout(){
     walletBalance = walletSnapshot.exists
       ? Number(walletSnapshot.data().balance || 0)
       : 0;
+    if(!Number.isFinite(walletBalance)||walletBalance<0)throw new Error("Wallet balance is invalid.");
+    try{localStorage.setItem("gentleBalance",String(walletBalance));}catch(e){}
 
     renderCheckout();
   }catch(error){
@@ -883,6 +886,7 @@ async function completePurchase(){
     });
 
     walletBalance = newBalance;
+    try{localStorage.setItem("gentleBalance",String(newBalance));}catch(e){}
     selectedProduct.stockCount =
       Number(selectedProduct.stockCount || 0)-1;
 
@@ -1035,6 +1039,7 @@ function escapeAttribute(value){
   return escapeHTML(value);
 }
 </script>
+<script src="gentle-loading.js"></script>
 </body>
 </html>
 

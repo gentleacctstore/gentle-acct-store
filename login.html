@@ -4,19 +4,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#F7F8FA">
+<meta name="theme-color" content="#FFFCFA">
 <meta name="description" content="Sign in securely to your GentleLogs account.">
 <title>Sign In | GentleLogs</title>
-
-<script>
-(function(){
-  try {
-    if(localStorage.getItem("gentle-acct-store-theme")==="dark"){
-      document.documentElement.classList.add("dark-mode");
-    }
-  } catch(e){}
-})();
-</script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,153 +14,155 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <style>
-:root{
-  --green:#147A48;
-  --green-dark:#0B5631;
-  --green-border:#DCE9DF;
-  --background:#F2F7F3;
-  --text:#192B20;
-  --muted:#7C8A80;
-  --input:#FAFCFA;
-  --white:#FFFFFF;
-  --shadow:0 22px 60px rgba(22,75,42,.10);
+:root {
+  --orange:#E87535;
+  --orange-dark:#C96532;
+  --orange-soft:#FFF1E8;
+  --background:#FFFCFA;
+  --surface:#FFFFFF;
+  --text:#252A30;
+  --muted:#7B838D;
+  --border:#EDE5DF;
+  --input:#FFFEFD;
+  --shadow:0 22px 60px rgba(64,43,30,.09);
 }
 
-*{
+* {
   box-sizing:border-box;
   margin:0;
   padding:0;
   font-family:"Space Grotesk",sans-serif;
 }
 
-html{
+html {
   -webkit-text-size-adjust:100%;
   scroll-behavior:smooth;
 }
 
-body{
+body {
   min-height:100vh;
   min-height:100dvh;
   display:flex;
   flex-direction:column;
   justify-content:center;
-  padding:15px 16px 30px;
-  font-family: "Space Grotesk", sans-serif;
-  font-size:12px;
+  padding:25px 16px 30px;
   color:var(--text);
   background:
-    radial-gradient(ellipse at 4% 8%,rgba(83,173,112,.17),transparent 34%),
-    radial-gradient(ellipse at 96% 88%,rgba(54,142,83,.13),transparent 33%),
-    linear-gradient(145deg,#F5FAF6 0%,#FFFFFF 48%,#EDF5EF 100%);
+    radial-gradient(ellipse at 5% 5%,rgba(232,117,53,.09),transparent 35%),
+    radial-gradient(ellipse at 95% 95%,rgba(201,101,50,.07),transparent 35%),
+    var(--background);
   overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
 }
 
-a{
+a {
   color:inherit;
   text-decoration:none;
 }
 
-button,input{
+button,input {
   font:inherit;
   -webkit-tap-highlight-color:transparent;
 }
 
-button{
+button {
   cursor:pointer;
 }
 
-.brand{
+.brand {
   text-align:center;
   margin:0 auto 25px;
 }
 
-.brand-mark{
-  width:53px;
-  height:53px;
-  margin:0 auto 11px;
+.brand-mark {
+  width:47px;
+  height:47px;
+  margin:0 auto 9px;
   display:flex;
   align-items:center;
   justify-content:center;
-  border-radius:17px;
-  color:#FFFFFF;
-  font-size:25px;
-  font-weight:800;
+  border-radius:15px;
+  color:#fff;
+  font-size:22px;
+  font-weight:700;
   letter-spacing:-1.5px;
-  background:linear-gradient(145deg,#24965A,#09542F);
-  box-shadow:0 10px 24px rgba(20,122,72,.23);
+  background:linear-gradient(145deg,#F18B50,#C96532);
+  box-shadow:0 9px 22px rgba(201,101,50,.20);
 }
 
-.brand-name{
+.brand-name {
+  display:inline-block;
   font-size:24px;
-  font-weight:800;
+  font-weight:700;
   line-height:1.4;
-  letter-spacing:-.9px;
-  color:#173522;
+  letter-spacing:-1px;
+  color:var(--text);
 }
 
-.brand-name span{
-  color:var(--green);
+.brand-name span {
+  color:var(--orange);
 }
 
-.brand-tagline{
-  margin-top:6px;
-  color:#87968B;
+.brand-tagline {
+  margin-top:4px;
+  color:#92969C;
   font-size:9px;
-  letter-spacing:2px;
+  letter-spacing:1.8px;
   font-weight:600;
 }
 
-.wrapper{
+.wrapper {
   width:100%;
-  max-width:440px;
+  max-width:420px;
   margin:0 auto;
 }
 
-.card{
+.card {
   position:relative;
-  background:rgba(255,255,255,.97);
-  border:1px solid var(--green-border);
-  border-radius:23px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:20px;
   overflow:hidden;
   box-shadow:var(--shadow);
 }
 
-.card-top{
-  height:5px;
-  background:linear-gradient(90deg,#0B5631,#249B5D,#8CD8A6);
+.card-top {
+  height:4px;
+  background:linear-gradient(90deg,#C96532,#E87535,#F5B17E);
 }
 
-.tabs{
+.tabs {
   display:grid;
   grid-template-columns:1fr 1fr;
   min-height:54px;
-  padding:0 14px;
-  border-bottom:1px solid #E9F0EA;
+  padding:0 15px;
+  border-bottom:1px solid #F0EBE7;
 }
 
-.tab{
+.tab {
   position:relative;
   display:flex;
   align-items:center;
   justify-content:center;
   gap:8px;
   padding:12px 5px;
-  color:#879188;
-  font-size:11.5px;
+  color:#89909A;
+  font-size:12px;
   font-weight:600;
   white-space:nowrap;
   transition:color .2s;
 }
 
-.tab i{
+.tab i {
   font-size:12px;
 }
 
-.tab.active{
-  color:var(--green);
+.tab.active {
+  color:var(--orange-dark);
 }
 
-.tab.active::after{
+.tab.active::after {
   content:"";
   position:absolute;
   bottom:0;
@@ -178,54 +170,54 @@ button{
   width:76%;
   height:3px;
   border-radius:8px 8px 0 0;
-  background:linear-gradient(90deg,#0B5631,#28A463);
+  background:linear-gradient(90deg,#C96532,#E87535);
 }
 
-.content{
-  padding:29px 27px 27px;
+.content {
+  padding:28px 26px 26px;
 }
 
-.heading-row{
+.heading-row {
   display:flex;
   align-items:center;
-  gap:13px;
-  margin-bottom:8px;
+  gap:12px;
+  margin-bottom:7px;
 }
 
-.heading-icon{
-  width:43px;
-  height:43px;
+.heading-icon {
+  width:42px;
+  height:42px;
   flex-shrink:0;
   display:flex;
   align-items:center;
   justify-content:center;
-  border-radius:14px;
-  color:var(--green);
-  background:#EAF5ED;
-  border:1px solid #DCEFE1;
+  border-radius:13px;
+  color:var(--orange-dark);
+  background:var(--orange-soft);
+  border:1px solid #F8E1D2;
   font-size:17px;
 }
 
-h1{
+h1 {
   font-size:25px;
-  line-height:1.35;
-  letter-spacing:-.8px;
-  font-weight:800;
-  color:#17291D;
+  line-height:1.3;
+  letter-spacing:-.9px;
+  font-weight:700;
+  color:var(--text);
 }
 
-.subtitle{
+.subtitle {
   color:var(--muted);
-  font-size:11.5px;
-  line-height:1.9;
-  margin:0 0 25px;
+  font-size:12px;
+  line-height:1.8;
+  margin:0 0 24px;
 }
 
-.group{
-  margin-bottom:19px;
+.group {
+  margin-bottom:17px;
 }
 
-.label-row{
+.label-row {
   display:flex;
   justify-content:space-between;
   align-items:center;
@@ -233,53 +225,53 @@ h1{
   margin-bottom:8px;
 }
 
-.label-row label{
-  font-size:10.5px;
+.label-row label {
+  font-size:10px;
   font-weight:700;
-  letter-spacing:.6px;
+  letter-spacing:.65px;
   text-transform:uppercase;
-  color:#425447;
+  color:#424B55;
 }
 
-.forgot{
-  color:var(--green);
+.forgot {
+  color:var(--orange-dark);
   font-size:10px;
   font-weight:700;
   white-space:nowrap;
 }
 
-.forgot:hover{
+.forgot:hover {
   text-decoration:underline;
 }
 
-.input-wrap{
+.input-wrap {
   position:relative;
   display:flex;
   align-items:center;
-  min-height:50px;
-  border:1px solid #DCE8DF;
-  border-radius:12px;
+  min-height:49px;
+  border:1px solid #E8E3DE;
+  border-radius:11px;
   background:var(--input);
   transition:border-color .2s,box-shadow .2s,background .2s;
 }
 
-.input-wrap:focus-within{
-  border-color:#58A875;
-  background:#FFFFFF;
-  box-shadow:0 0 0 4px rgba(20,122,72,.09);
+.input-wrap:focus-within {
+  border-color:var(--orange);
+  background:#fff;
+  box-shadow:0 0 0 3px rgba(232,117,53,.10);
 }
 
-.input-icon{
-  width:45px;
+.input-icon {
+  width:43px;
   flex-shrink:0;
   display:flex;
   align-items:center;
   justify-content:center;
-  color:#91A295;
+  color:#A0A2A6;
   font-size:14px;
 }
 
-.input-wrap input{
+.input-wrap input {
   width:100%;
   min-width:0;
   height:48px;
@@ -287,18 +279,18 @@ h1{
   border:0;
   outline:0;
   background:transparent;
-  color:#203629;
-  font-size:12px;
+  color:var(--text);
+  font-size:16px;
   font-weight:500;
 }
 
-.input-wrap input::placeholder{
-  color:#A2ADA4;
+.input-wrap input::placeholder {
+  color:#A6A8AC;
   opacity:1;
   font-weight:400;
 }
 
-.eye{
+.eye {
   flex-shrink:0;
   width:39px;
   height:39px;
@@ -306,28 +298,28 @@ h1{
   border:0;
   border-radius:9px;
   background:transparent;
-  color:#819087;
+  color:#858B94;
   font-size:13px;
   transition:background .2s,color .2s;
 }
 
-.eye:hover{
-  background:#EDF5EF;
-  color:var(--green);
+.eye:hover {
+  background:var(--orange-soft);
+  color:var(--orange-dark);
 }
 
-.remember{
+.remember {
   display:flex;
   align-items:center;
   gap:9px;
-  margin:1px 0 21px;
-  color:#68776D;
-  font-size:10.5px;
+  margin:1px 0 20px;
+  color:#737B84;
+  font-size:11px;
   font-weight:500;
   cursor:pointer;
 }
 
-.remember input{
+.remember input {
   appearance:none;
   -webkit-appearance:none;
   width:17px;
@@ -335,18 +327,18 @@ h1{
   flex-shrink:0;
   display:grid;
   place-items:center;
-  border:1px solid #C8DBCE;
+  border:1px solid #D8D4D0;
   border-radius:5px;
-  background:#FFFFFF;
+  background:#fff;
   cursor:pointer;
 }
 
-.remember input:checked{
-  border-color:var(--green);
-  background:var(--green);
+.remember input:checked {
+  border-color:var(--orange);
+  background:var(--orange);
 }
 
-.remember input:checked::after{
+.remember input:checked::after {
   content:"";
   width:4px;
   height:8px;
@@ -355,165 +347,134 @@ h1{
   transform:rotate(45deg) translate(-1px,-1px);
 }
 
-.submit{
+.submit {
   width:100%;
-  min-height:51px;
+  min-height:49px;
   border:0;
-  border-radius:12px;
+  border-radius:11px;
   display:flex;
   align-items:center;
   justify-content:center;
   gap:10px;
-  background:linear-gradient(100deg,#0B6035,#18884D);
-  color:#FFFFFF;
-  font-size:12.5px;
+  background:linear-gradient(100deg,#C96532,#E87535);
+  color:#fff;
+  font-size:13px;
   font-weight:700;
-  letter-spacing:.2px;
-  box-shadow:0 8px 19px rgba(20,122,72,.18);
+  letter-spacing:.1px;
+  box-shadow:0 8px 19px rgba(201,101,50,.18);
   transition:background .2s,transform .2s,box-shadow .2s;
 }
 
-.submit:hover{
-  background:linear-gradient(100deg,#094B2A,#116F3D);
-  box-shadow:0 11px 23px rgba(20,122,72,.23);
+.submit:hover {
+  background:linear-gradient(100deg,#B95B2D,#D96D32);
+  box-shadow:0 10px 22px rgba(201,101,50,.23);
 }
 
-.submit:active{
+.submit:active {
   transform:scale(.99);
 }
 
-.submit:disabled{
+.submit:disabled {
   opacity:.68;
   cursor:not-allowed;
 }
 
-.submit .spinner{
+.submit .spinner {
   display:none;
 }
 
-.submit.loading .spinner{
+.submit.loading .spinner {
   display:inline-block;
 }
 
-.submit.loading .submit-arrow{
+.submit.loading .submit-arrow {
   display:none;
 }
 
-.spinner{
+.spinner {
   width:16px;
   height:16px;
   border:2px solid rgba(255,255,255,.4);
-  border-top-color:#FFFFFF;
+  border-top-color:#fff;
   border-radius:50%;
   animation:spin .7s linear infinite;
 }
 
-@keyframes spin{
-  to{transform:rotate(360deg)}
+@keyframes spin {
+  to {transform:rotate(360deg);}
 }
 
-.message{
-  display:none;
-  margin-top:13px;
-  padding:12px 13px;
-  border-radius:10px;
-  font-size:11px;
-  line-height:1.8;
-  overflow-wrap:anywhere;
-}
-
-.message.error{
-  display:block;
-  color:#A32222;
-  background:#FFF0F0;
-  border:1px solid #F3D2D2;
-}
-
-.message.success{
-  display:block;
-  color:#17683D;
-  background:#EDF8F0;
-  border:1px solid #D3E9D8;
-}
-
-.message.info{
-  display:block;
-  color:#275C86;
-  background:#EEF7FF;
-  border:1px solid #D2E7FA;
-}
-
-.or-divider{
+.or-divider {
   display:flex;
   align-items:center;
   gap:12px;
-  margin:23px 0 16px;
-  color:#8B988F;
-  font-size:9.5px;
+  margin:21px 0 15px;
+  color:#92969D;
+  font-size:9px;
   font-weight:600;
   letter-spacing:1px;
   white-space:nowrap;
 }
 
 .or-divider::before,
-.or-divider::after{
+.or-divider::after {
   content:"";
   height:1px;
-  background:#E6EEE8;
+  background:#ECE8E4;
   flex:1;
 }
 
-.google-btn{
+.google-btn {
   width:100%;
-  min-height:49px;
+  min-height:47px;
   display:flex;
   align-items:center;
   justify-content:center;
   gap:10px;
-  background:#FFFFFF;
-  border:1px solid #DCE7DF;
-  border-radius:12px;
-  color:#33443A;
+  background:#fff;
+  border:1px solid #E8E3DE;
+  border-radius:11px;
+  color:#39414B;
   font-size:12px;
   font-weight:600;
   transition:background .2s,border-color .2s,transform .2s;
 }
 
-.google-btn:hover{
-  background:#F8FCF9;
-  border-color:#B9D4C1;
+.google-btn:hover {
+  background:#FFFAF6;
+  border-color:#E8C8B3;
 }
 
-.google-btn:active{
+.google-btn:active {
   transform:scale(.99);
 }
 
-.google-btn:disabled{
+.google-btn:disabled {
   opacity:.65;
   cursor:not-allowed;
 }
 
-.google-btn img{
+.google-btn img {
   display:block;
   width:19px;
   height:19px;
   flex-shrink:0;
 }
 
-.footer{
+.footer {
   text-align:center;
-  color:#859288;
+  color:#92979E;
   font-size:10px;
   line-height:1.9;
-  margin:21px auto 0;
+  margin:20px auto 0;
 }
 
-.footer strong{
-  color:#607366;
+.footer strong {
+  color:#626B75;
   font-weight:600;
 }
 
-.footer .secure{
+.footer .secure {
   display:flex;
   align-items:center;
   justify-content:center;
@@ -521,227 +482,221 @@ h1{
   margin-bottom:5px;
 }
 
-.footer .secure i{
-  color:var(--green);
+.footer .secure i {
+  color:var(--orange-dark);
   font-size:11px;
 }
 
-@media(max-width:600px){
-  body{padding:24px 13px 25px}
-  .brand{margin-bottom:21px}
-  .brand-mark{
-    width:49px;height:49px;font-size:23px;border-radius:15px
-  }
-  .brand-name{font-size:22px}
-  .content{padding:26px 23px 24px}
-  h1{font-size:24px}
-  .input-wrap input{font-size:16px}
+.toast-container {
+  position:fixed;
+  z-index:9999;
+  top:max(18px,env(safe-area-inset-top));
+  right:18px;
+  width:min(360px,calc(100% - 36px));
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  pointer-events:none;
 }
 
-@media(max-width:390px){
-  body{padding:17px 10px 20px}
-  .brand{margin-bottom:17px}
-  .brand-mark{
-    width:45px;height:45px;font-size:21px;border-radius:14px
-  }
-  .brand-name{font-size:20px}
-  .brand-tagline{font-size:8px;letter-spacing:1.6px}
-  .card{border-radius:20px}
-  .tabs{padding:0 8px;min-height:50px}
-  .tab{font-size:10.5px;gap:6px}
-  .content{padding:23px 17px 21px}
-  .heading-row{gap:10px}
-  .heading-icon{width:39px;height:39px;border-radius:12px}
-  h1{font-size:22px}
-  .subtitle{font-size:11px;margin-bottom:21px}
-  .group{margin-bottom:17px}
-  .input-wrap{min-height:48px}
-  .input-wrap input{height:46px}
-  .input-icon{width:40px}
-}
-
-@media(max-width:340px){
-  .content{padding:20px 13px 18px}
-  .tab{gap:4px;font-size:10px}
-  .label-row label{font-size:9.5px}
-  .forgot{font-size:9px}
-}
-
-/* DARK MODE */
-html.dark-mode{
-  color-scheme:dark;
-  --green:#4ADE80;
-  --green-dark:#166534;
-  --green-border:#304A3A;
-  --background:#0B1424;
-  --text:#F1F5F9;
-  --muted:#A7B4C8;
-  --input:#0C1728;
-  --white:#111D30;
-  --shadow:0 22px 60px rgba(0,0,0,.22);
-}
-
-html.dark-mode body{
+.toast {
+  display:flex;
+  align-items:flex-start;
+  gap:11px;
+  padding:13px 14px;
+  border:1px solid #EDE5DF;
+  border-left:4px solid var(--orange);
+  border-radius:12px;
+  background:#fff;
   color:var(--text);
-  background:
-    radial-gradient(ellipse at 4% 8%,rgba(28,103,62,.20),transparent 34%),
-    radial-gradient(ellipse at 96% 88%,rgba(21,77,52,.16),transparent 33%),
-    linear-gradient(145deg,#080F1D,#101D32);
+  box-shadow:0 12px 35px rgba(35,29,24,.13);
+  pointer-events:auto;
+  opacity:0;
+  transform:translateY(-10px);
+  animation:toastIn .25s ease forwards;
 }
 
-html.dark-mode .brand-name{color:#F1F5F9}
-html.dark-mode .brand-tagline{color:#9CAEC5}
-html.dark-mode .card{background:#111D30;border-color:#283B56}
-html.dark-mode .tabs{border-color:#283B56}
-html.dark-mode .tab{color:#9CAEC5}
-html.dark-mode .tab.active{color:#4ADE80}
-html.dark-mode h1{color:#F1F5F9}
-html.dark-mode .heading-icon{
-  background:#173B2A;border-color:#28583A;color:#4ADE80
-}
-html.dark-mode .label-row label{color:#D5DFED}
-html.dark-mode .input-wrap{background:#0C1728;border-color:#304A3A}
-html.dark-mode .input-wrap:focus-within{
-  border-color:#4ADE80;background:#0C1728;
-  box-shadow:0 0 0 4px rgba(74,222,128,.08)
-}
-html.dark-mode .input-wrap input{color:#F1F5F9}
-html.dark-mode .input-wrap input::placeholder{color:#8292AA}
-html.dark-mode .eye{color:#A7B4C8}
-html.dark-mode .eye:hover{background:#1B2B40;color:#4ADE80}
-html.dark-mode .remember{color:#D5DFED}
-html.dark-mode .remember input{background:#0C1728;border-color:#52705D}
-html.dark-mode .remember input:checked{
-  background:#166534;border-color:#4ADE80
-}
-html.dark-mode .google-btn{
-  background:#0C1728;color:#F1F5F9;border-color:#304A3A
-}
-html.dark-mode .google-btn:hover{
-  background:#142438;border-color:#52705D
-}
-html.dark-mode .or-divider{color:#9CAEC5}
-html.dark-mode .or-divider::before,
-html.dark-mode .or-divider::after{background:#304052}
-html.dark-mode .footer{color:#8393AA}
-html.dark-mode .footer strong{color:#B9C7D9}
-html.dark-mode .message.error{
-  background:#351D2A;color:#FDA4AF;border-color:#653040
-}
-html.dark-mode .message.success{
-  background:#153526;color:#86EFAC;border-color:#28583A
-}
-html.dark-mode .message.info{
-  background:#132B43;color:#93C5FD;border-color:#294B70
+.toast.success {
+  border-left-color:#29965B;
 }
 
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{
+.toast.error {
+  border-left-color:#D94A4A;
+}
+
+.toast-icon {
+  width:20px;
+  height:20px;
+  flex-shrink:0;
+  display:grid;
+  place-items:center;
+  color:var(--orange);
+  font-size:15px;
+}
+
+.toast.success .toast-icon {
+  color:#29965B;
+}
+
+.toast.error .toast-icon {
+  color:#D94A4A;
+}
+
+.toast-body {
+  flex:1;
+  min-width:0;
+}
+
+.toast-title {
+  display:block;
+  margin-bottom:2px;
+  font-size:12px;
+  font-weight:700;
+}
+
+.toast-message {
+  color:#747C85;
+  font-size:11px;
+  line-height:1.55;
+  overflow-wrap:anywhere;
+}
+
+.toast-close {
+  width:24px;
+  height:24px;
+  flex-shrink:0;
+  border:0;
+  border-radius:6px;
+  background:transparent;
+  color:#92979E;
+  font-size:13px;
+}
+
+.toast-close:hover {
+  background:#F5F1ED;
+  color:var(--text);
+}
+
+.toast.removing {
+  animation:toastOut .2s ease forwards;
+}
+
+@keyframes toastIn {
+  to {
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+@keyframes toastOut {
+  to {
+    opacity:0;
+    transform:translateY(-8px);
+  }
+}
+
+@media(max-width:600px) {
+  body {
+    padding:24px 14px 25px;
+  }
+
+  .brand {
+    margin-bottom:22px;
+  }
+
+  .content {
+    padding:25px 22px 23px;
+  }
+
+  h1 {
+    font-size:24px;
+  }
+}
+
+@media(max-width:390px) {
+  body {
+    padding:19px 11px 21px;
+  }
+
+  .brand {
+    margin-bottom:18px;
+  }
+
+  .brand-mark {
+    width:44px;
+    height:44px;
+    font-size:21px;
+    border-radius:14px;
+  }
+
+  .brand-name {
+    font-size:21px;
+  }
+
+  .brand-tagline {
+    font-size:8px;
+    letter-spacing:1.5px;
+  }
+
+  .card {
+    border-radius:18px;
+  }
+
+  .tabs {
+    padding:0 8px;
+    min-height:50px;
+  }
+
+  .tab {
+    font-size:10.5px;
+    gap:6px;
+  }
+
+  .content {
+    padding:22px 17px 20px;
+  }
+
+  .heading-row {
+    gap:10px;
+  }
+
+  .heading-icon {
+    width:39px;
+    height:39px;
+    border-radius:12px;
+  }
+
+  h1 {
+    font-size:22px;
+  }
+
+  .subtitle {
+    font-size:11px;
+    margin-bottom:21px;
+  }
+
+  .group {
+    margin-bottom:16px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce) {
+  *,*::before,*::after {
     animation-duration:.01ms!important;
     transition-duration:.01ms!important;
     scroll-behavior:auto!important;
   }
 }
 </style>
-
-<style id="gentlelogs-font-enforcement">
-body,button,input,select,textarea {
-  font-family:"Space Grotesk",sans-serif !important;
-}
-</style>
-
-
-<style>
-
-/* Gentle Acct Store — cohesive premium visual layer.
-   Presentation-only overrides: existing IDs, scripts, data flows and actions remain intact. */
-:root {
-  --brand-green: #176b3a;
-  --brand-green-dark: #10552e;
-  --brand-green-soft: #eaf4ee;
-  --brand-ink: #17251d;
-  --brand-muted: #718078;
-  --brand-line: #e4ece6;
-  --brand-canvas: #f5f8f6;
-  --brand-shadow: 0 12px 34px rgba(20, 54, 34, .075);
-  --brand-shadow-hover: 0 18px 42px rgba(20, 54, 34, .11);
-}
-html { -webkit-text-size-adjust: 100%; }
-body {
-  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
-button, input, select, textarea { font-family: inherit; }
-a, button { -webkit-tap-highlight-color: transparent; }
-button { transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease, border-color .18s ease; }
-button:active { transform: translateY(1px); }
-:focus-visible { outline: 3px solid rgba(35, 130, 76, .28); outline-offset: 2px; }
-input, select, textarea { min-height: 44px; font-size: 16px !important; }
-.card, .auth-card, .panel, .purchase-card, .balance-card, .floating-card,
-.stat-card, .product-card, .wallet-card, .section-card, .content-card,
-.order-card, .transaction, .theme-card, .settings-card {
-  border-color: var(--brand-line);
-  box-shadow: var(--brand-shadow);
-}
-.card, .auth-card, .panel, .purchase-card, .balance-card, .floating-card {
-  border-radius: 20px;
-}
-.stat-card, .product-card, .order-card, .transaction, .theme-card {
-  border-radius: 16px;
-}
-.btn, .primary-btn, .submit-btn, .buy-btn, .reset-btn, .action-btn,
-button[type="submit"] {
-  border-radius: 12px;
-  font-weight: 650;
-  letter-spacing: -.01em;
-}
-.btn-primary, .primary-btn, .submit-btn, .buy-btn, .reset-btn,
-.action-btn.primary, button[type="submit"] {
-  box-shadow: 0 7px 18px rgba(23, 107, 58, .16);
-}
-.btn-primary:hover, .primary-btn:hover, .submit-btn:hover, .buy-btn:hover,
-.reset-btn:hover, .action-btn.primary:hover, button[type="submit"]:hover {
-  box-shadow: 0 10px 24px rgba(23, 107, 58, .22);
-  transform: translateY(-1px);
-}
-.top-header, header, .header, .app-header {
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-}
-.section-heading, .section-title, .heading, .panel-title {
-  letter-spacing: -.035em;
-}
-small, .muted, .subtitle, .panel-desc, .description {
-  letter-spacing: .005em;
-}
-@media (hover:hover) {
-  .stat-card:hover, .product-card:hover, .order-card:hover, .transaction:hover {
-    box-shadow: var(--brand-shadow-hover);
-    transform: translateY(-2px);
-  }
-}
-@media (max-width: 640px) {
-  .card, .auth-card, .panel, .purchase-card, .balance-card, .floating-card {
-    border-radius: 17px;
-  }
-  input, select, textarea { font-size: 16px !important; }
-}
-
-
-:root { --green:#176b3a !important; --green-dark:#10552e !important; --green-border:#e1ebe4 !important; --background:#f4f8f5 !important; }
-body { background:radial-gradient(circle at 15% 10%,#e4f1e8 0,transparent 38%),#f4f8f5 !important; }
-.wrapper { max-width:460px; }
-.card { border:1px solid #e4ece6 !important; box-shadow:0 24px 65px rgba(20,54,34,.10) !important; }
-
-</style>
 </head>
 
 <body>
 
+<div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="false"></div>
+
 <header class="brand">
-  <a href="index.html" class="brand-mark" aria-label="GentleLogs home">G.</a>
-  <a href="index.html" class="brand-name">Gentle<span>Logs</span></a>
+  <a href="home.html" class="brand-mark" aria-label="GentleLogs home">G.</a>
+  <a href="home.html" class="brand-name">Gentle<span>Logs</span></a>
   <p class="brand-tagline">DIGITAL PRODUCTS. ONE DESK.</p>
 </header>
 
@@ -754,6 +709,7 @@ body { background:radial-gradient(circle at 15% 10%,#e4f1e8 0,transparent 38%),#
         <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i>
         <span>Sign In</span>
       </a>
+
       <a href="signup.html" class="tab">
         <i class="fa-solid fa-user-plus" aria-hidden="true"></i>
         <span>Create Account</span>
@@ -775,11 +731,19 @@ body { background:radial-gradient(circle at 15% 10%,#e4f1e8 0,transparent 38%),#
           <div class="label-row">
             <label for="email">Email Address</label>
           </div>
+
           <div class="input-wrap">
             <i class="fa-solid fa-envelope input-icon" aria-hidden="true"></i>
-            <input id="email" name="email" type="email"
-              placeholder="Enter your email address" autocomplete="email"
-              autocapitalize="none" spellcheck="false" inputmode="email" required>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="Enter your email address"
+              autocomplete="email"
+              autocapitalize="none"
+              spellcheck="false"
+              inputmode="email"
+              required>
           </div>
         </div>
 
@@ -788,12 +752,23 @@ body { background:radial-gradient(circle at 15% 10%,#e4f1e8 0,transparent 38%),#
             <label for="password">Password</label>
             <a href="forgot-password.html" class="forgot">Forgot password?</a>
           </div>
+
           <div class="input-wrap">
             <i class="fa-solid fa-lock input-icon" aria-hidden="true"></i>
-            <input id="password" name="password" type="password"
-              placeholder="Enter your password" autocomplete="current-password" required>
-            <button type="button" class="eye" id="passwordToggle"
-              aria-label="Show password" aria-pressed="false">
+            <input
+              id="password"
+              name="password"
+              type="password"
+              placeholder="Enter your password"
+              autocomplete="current-password"
+              required>
+
+            <button
+              type="button"
+              class="eye"
+              id="passwordToggle"
+              aria-label="Show password"
+              aria-pressed="false">
               <i class="fa-solid fa-eye" aria-hidden="true"></i>
             </button>
           </div>
@@ -809,15 +784,16 @@ body { background:radial-gradient(circle at 15% 10%,#e4f1e8 0,transparent 38%),#
           <span class="spinner" aria-hidden="true"></span>
           <i class="fa-solid fa-arrow-right submit-arrow" aria-hidden="true"></i>
         </button>
-
-        <div class="message" id="message" role="status" aria-live="polite"></div>
       </form>
 
       <div class="or-divider">OR CONTINUE WITH</div>
 
       <button type="button" class="google-btn" id="googleBtn">
-        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-          alt="" width="19" height="19">
+        <img
+          src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+          alt=""
+          width="19"
+          height="19">
         <span>Continue with Google</span>
       </button>
     </div>
@@ -838,139 +814,285 @@ body { background:radial-gradient(circle at 15% 10%,#e4f1e8 0,transparent 38%),#
 <script src="firebase.js"></script>
 
 <script>
-(function(){
+(function() {
   "use strict";
 
   const form = document.getElementById("loginForm");
-  const message = document.getElementById("message");
   const loginBtn = document.getElementById("loginBtn");
   const emailInput = document.getElementById("email");
   const passwordInput = document.getElementById("password");
   const passwordToggle = document.getElementById("passwordToggle");
   const googleBtn = document.getElementById("googleBtn");
   const rememberMe = document.getElementById("rememberMe");
+  const toastContainer = document.getElementById("toastContainer");
+
   let submitting = false;
+  let redirecting = false;
 
-  function showMessage(text, type){
-    message.textContent = text;
-    message.className = "message " + type;
-    message.style.display = "block";
-  }
+  function showMessage(message, type) {
+    const toast = document.createElement("div");
+    toast.className = "toast " + (type || "info");
 
-  function clearMessage(){
-    message.textContent = "";
-    message.className = "message";
-    message.style.display = "none";
-  }
+    let icon = "fa-circle-info";
+    let title = "Notice";
 
-  function setLoading(button, loading){
-    button.disabled = loading;
+    if(type === "success") {
+      icon = "fa-circle-check";
+      title = "Success";
+    } else if(type === "error") {
+      icon = "fa-circle-exclamation";
+      title = "Sign-in failed";
+    }
 
-    if(button === loginBtn){
-      button.classList.toggle("loading", loading);
-      const label = button.querySelector(".submit-label");
-      if(label) label.textContent = loading ? "Signing In..." : "Sign In";
-    }else{
-      const label = button.querySelector("span");
-      if(label) label.textContent = loading
-        ? "Connecting to Google..."
-        : "Continue with Google";
+    const iconElement = document.createElement("div");
+    iconElement.className = "toast-icon";
+    iconElement.innerHTML =
+      '<i class="fa-solid ' + icon + '" aria-hidden="true"></i>';
+
+    const body = document.createElement("div");
+    body.className = "toast-body";
+
+    const titleElement = document.createElement("strong");
+    titleElement.className = "toast-title";
+    titleElement.textContent = title;
+
+    const messageElement = document.createElement("div");
+    messageElement.className = "toast-message";
+    messageElement.textContent = message;
+
+    const close = document.createElement("button");
+    close.type = "button";
+    close.className = "toast-close";
+    close.setAttribute("aria-label", "Close notification");
+    close.innerHTML =
+      '<i class="fa-solid fa-xmark" aria-hidden="true"></i>';
+
+    body.appendChild(titleElement);
+    body.appendChild(messageElement);
+
+    toast.appendChild(iconElement);
+    toast.appendChild(body);
+    toast.appendChild(close);
+
+    toastContainer.appendChild(toast);
+
+    let removeTimer;
+
+    function removeToast() {
+      if(!toast.isConnected) return;
+
+      clearTimeout(removeTimer);
+      toast.classList.add("removing");
+
+      setTimeout(function() {
+        toast.remove();
+      }, 220);
+    }
+
+    close.addEventListener("click", removeToast);
+
+    removeTimer = setTimeout(removeToast, type === "success" ? 1800 : 4000);
+
+    while(toastContainer.children.length > 3) {
+      toastContainer.firstElementChild.remove();
     }
   }
 
-  function getAuth(){
-    if(typeof firebaseAuth !== "undefined" && firebaseAuth) return firebaseAuth;
-    if(typeof firebase !== "undefined" && firebase.apps.length) return firebase.auth();
-    throw new Error("Firebase Authentication is not configured. Check firebase.js.");
+  function setLoading(button, loading) {
+    button.disabled = loading;
+
+    if(button === loginBtn) {
+      button.classList.toggle("loading", loading);
+
+      const label = button.querySelector(".submit-label");
+
+      if(label) {
+        label.textContent = loading ? "Signing In..." : "Sign In";
+      }
+    } else {
+      const label = button.querySelector("span");
+
+      if(label) {
+        label.textContent = loading
+          ? "Connecting to Google..."
+          : "Continue with Google";
+      }
+    }
   }
 
-  function getDatabase(){
-    if(typeof firebaseDB !== "undefined" && firebaseDB) return firebaseDB;
-    if(typeof firebase !== "undefined" && firebase.apps.length) return firebase.firestore();
-    throw new Error("Firebase Firestore is not configured. Check firebase.js.");
+  function getAuth() {
+    if(typeof firebaseAuth !== "undefined" && firebaseAuth) {
+      return firebaseAuth;
+    }
+
+    if(typeof firebase !== "undefined" && firebase.apps.length) {
+      return firebase.auth();
+    }
+
+    throw new Error(
+      "Firebase Authentication is not configured. Check firebase.js."
+    );
   }
 
-  function getFirebaseError(error){
+  function getDatabase() {
+    if(typeof firebaseDB !== "undefined" && firebaseDB) {
+      return firebaseDB;
+    }
+
+    if(typeof firebase !== "undefined" && firebase.apps.length) {
+      return firebase.firestore();
+    }
+
+    throw new Error(
+      "Firebase Firestore is not configured. Check firebase.js."
+    );
+  }
+
+  function getFirebaseError(error) {
     const code = error && error.code ? error.code : "";
+
     const errors = {
-      "auth/invalid-email":"Please enter a valid email address.",
-      "auth/user-disabled":"This account has been disabled. Please contact support.",
-      "auth/user-not-found":"No account was found with this email address.",
-      "auth/wrong-password":"Incorrect email or password.",
-      "auth/invalid-credential":"Incorrect email or password.",
-      "auth/too-many-requests":"Too many attempts. Please wait before trying again.",
-      "auth/network-request-failed":"Network error. Please check your internet connection.",
-      "auth/operation-not-allowed":"This sign-in method is not enabled in Firebase Authentication.",
-      "auth/unauthorized-domain":"This website domain is not authorized for sign-in in Firebase.",
-      "auth/popup-closed-by-user":"Google sign-in was cancelled.",
-      "auth/popup-blocked":"Your browser blocked the Google sign-in window. Allow pop-ups and try again.",
-      "auth/cancelled-popup-request":"A Google sign-in window is already open.",
-      "auth/account-exists-with-different-credential":"An account already exists with this email using another sign-in method.",
-      "permission-denied":"Firestore denied access. Check your published Firestore customer rules.",
-      "unavailable":"The database is temporarily unavailable. Please try again."
+      "auth/invalid-email":
+        "Please enter a valid email address.",
+
+      "auth/user-disabled":
+        "This account has been disabled. Please contact support.",
+
+      "auth/user-not-found":
+        "No account was found with this email address.",
+
+      "auth/wrong-password":
+        "Incorrect email or password.",
+
+      "auth/invalid-credential":
+        "Incorrect email or password.",
+
+      "auth/too-many-requests":
+        "Too many attempts. Please wait before trying again.",
+
+      "auth/network-request-failed":
+        "Network error. Please check your internet connection.",
+
+      "auth/operation-not-allowed":
+        "This sign-in method is not enabled in Firebase Authentication.",
+
+      "auth/unauthorized-domain":
+        "This website domain is not authorized for sign-in in Firebase.",
+
+      "auth/popup-closed-by-user":
+        "Google sign-in was cancelled.",
+
+      "auth/popup-blocked":
+        "Your browser blocked the Google sign-in window. Allow pop-ups and try again.",
+
+      "auth/cancelled-popup-request":
+        "A Google sign-in window is already open.",
+
+      "auth/account-exists-with-different-credential":
+        "An account already exists with this email using another sign-in method.",
+
+      "permission-denied":
+        "Firestore denied access. Check your published Firestore customer rules.",
+
+      "unavailable":
+        "The database is temporarily unavailable. Please try again."
     };
 
     if(errors[code]) return errors[code];
+
     if(error && error.message) return error.message;
+
     return "Sign-in failed. Please try again.";
   }
 
-  function cleanUsername(value){
+  function cleanUsername(value) {
     return String(value || "")
       .toLowerCase()
       .replace(/[^a-z0-9._]/g, "")
       .slice(0, 20);
   }
 
-  function getGoogleName(user){
-    const parts = String(user.displayName || "").trim().split(/\s+/);
+  function getGoogleName(user) {
+    const parts = String(user.displayName || "")
+      .trim()
+      .split(/\s+/);
+
     return {
       firstName: parts[0] || "",
       lastName: parts.slice(1).join(" ")
     };
   }
 
-  async function loadCustomerProfile(user, createGoogleProfile){
+  async function applyAuthPersistence(auth) {
+    const persistence = rememberMe.checked
+      ? firebase.auth.Auth.Persistence.LOCAL
+      : firebase.auth.Auth.Persistence.SESSION;
+
+    await auth.setPersistence(persistence);
+  }
+
+  async function loadCustomerProfile(user, createGoogleProfile) {
     const db = getDatabase();
     const customerRef = db.collection("customers").doc(user.uid);
     const snapshot = await customerRef.get();
 
-    if(snapshot.exists){
+    if(snapshot.exists) {
       const existing = snapshot.data() || {};
 
-      // Email login uses the existing profile as-is. Do not make extra
-      // Firestore writes/readbacks before allowing the customer into the store.
       if(!createGoogleProfile) return existing;
 
       const names = getGoogleName(user);
       const updates = {};
-      if(!existing.email && user.email) updates.email = user.email;
-      if(!existing.username){
-        const prefix = (user.email || "customer").split("@")[0];
-        updates.username = cleanUsername(prefix + "_" + user.uid.slice(0, 5)) || "customer";
-      }
-      if(!existing.signupMethod) updates.signupMethod = "google";
-      if(!existing.firstName && names.firstName) updates.firstName = names.firstName;
-      if(!existing.lastName && names.lastName) updates.lastName = names.lastName;
 
-      if(Object.keys(updates).length){
-        updates.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
+      if(!existing.email && user.email) {
+        updates.email = user.email;
+      }
+
+      if(!existing.username) {
+        const prefix = (user.email || "customer").split("@")[0];
+
+        updates.username =
+          cleanUsername(prefix + "_" + user.uid.slice(0, 5)) || "customer";
+      }
+
+      if(!existing.signupMethod) {
+        updates.signupMethod = "google";
+      }
+
+      if(!existing.firstName && names.firstName) {
+        updates.firstName = names.firstName;
+      }
+
+      if(!existing.lastName && names.lastName) {
+        updates.lastName = names.lastName;
+      }
+
+      if(Object.keys(updates).length) {
+        updates.updatedAt =
+          firebase.firestore.FieldValue.serverTimestamp();
+
         await customerRef.set(updates, { merge: true });
+
         return Object.assign({}, existing, updates);
       }
+
       return existing;
     }
 
-    if(!createGoogleProfile){
-      throw new Error("Your customer profile was not found. Please use Create Account or contact support.");
+    if(!createGoogleProfile) {
+      throw new Error(
+        "Your customer profile was not found. Please use Create Account or contact support."
+      );
     }
 
     const names = getGoogleName(user);
     const emailPrefix = (user.email || "customer").split("@")[0];
+
     const profile = {
       uid: user.uid,
       email: user.email || "",
-      username: cleanUsername(emailPrefix + "_" + user.uid.slice(0, 5)) || "customer",
+      username:
+        cleanUsername(emailPrefix + "_" + user.uid.slice(0, 5)) || "customer",
       firstName: names.firstName,
       lastName: names.lastName,
       phone: "",
@@ -980,11 +1102,13 @@ body { background:radial-gradient(circle at 15% 10%,#e4f1e8 0,transparent 38%),#
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       updatedAt: firebase.firestore.FieldValue.serverTimestamp()
     };
+
     await customerRef.set(profile);
+
     return profile;
   }
 
-  function saveLoginState(user, profile){
+  function saveLoginState(user, profile) {
     const customer = profile || {};
     const balance = Number(customer.balance) || 0;
 
@@ -992,7 +1116,8 @@ body { background:radial-gradient(circle at 15% 10%,#e4f1e8 0,transparent 38%),#
       uid: user.uid,
       id: user.uid,
       email: user.email || customer.email || "",
-      name: user.displayName ||
+      name:
+        user.displayName ||
         [customer.firstName, customer.lastName].filter(Boolean).join(" ") ||
         customer.username ||
         ((user.email || "customer").split("@")[0]),
@@ -1003,319 +1128,205 @@ body { background:radial-gradient(circle at 15% 10%,#e4f1e8 0,transparent 38%),#
       balance: balance
     };
 
-    localStorage.removeItem("gentleAdminLoggedIn");
-    localStorage.setItem("gentleCurrentUserId", user.uid);
-    localStorage.setItem("gentleLoggedIn", "true");
-    localStorage.setItem("gentleUser", JSON.stringify(loggedInUser));
-    localStorage.setItem("gentleBalance", String(balance));
+    try {
+      localStorage.removeItem("gentleAdminLoggedIn");
+      localStorage.setItem("gentleCurrentUserId", user.uid);
+      localStorage.setItem("gentleLoggedIn", "true");
+      localStorage.setItem("gentleUser", JSON.stringify(loggedInUser));
+      localStorage.setItem("gentleBalance", String(balance));
 
-    if(rememberMe.checked){
-      localStorage.setItem("gentleRememberMe", "true");
-    }else{
-      localStorage.removeItem("gentleRememberMe");
+      if(rememberMe.checked) {
+        localStorage.setItem("gentleRememberMe", "true");
+      } else {
+        localStorage.removeItem("gentleRememberMe");
+      }
+
+      localStorage.removeItem("gentleCheckoutProduct");
+    } catch(error) {
+      console.warn("Login state could not be cached:", error);
     }
 
-    localStorage.removeItem("gentleCheckoutProduct");
+    try {
+      sessionStorage.setItem("gentleLoginTransition", "1");
+    } catch(error) {
+      console.warn("Login transition flag could not be saved:", error);
+    }
   }
 
-  async function finishLogin(user, createGoogleProfile){
-    // Returning customers can use their last locally saved profile while the
-    // dashboard refreshes live wallet/customer data. This avoids waiting for
-    // an extra Firestore round-trip on every repeat login.
-    if(!createGoogleProfile){
-      try{
-        const cached = JSON.parse(localStorage.getItem("gentleUser") || "null");
-        if(cached && cached.uid === user.uid){
+  /*
+   * Email verification is intentionally NOT required.
+   * Any successfully authenticated customer can proceed.
+   */
+  async function finishLogin(user, createGoogleProfile) {
+    if(!user) {
+      throw new Error("Unable to identify your account. Please try again.");
+    }
+
+    if(!createGoogleProfile) {
+      try {
+        const cached = JSON.parse(
+          localStorage.getItem("gentleUser") || "null"
+        );
+
+        if(cached && cached.uid === user.uid) {
           saveLoginState(user, cached);
-          showMessage("Signed in successfully. Opening your dashboard...", "success");
-          window.location.replace("dashboard.html");
+          redirectToHome();
           return;
         }
-      }catch(error){
-        console.warn("Saved customer profile cache could not be used:", error);
+      } catch(error) {
+        console.warn(
+          "Saved customer profile cache could not be used:",
+          error
+        );
       }
     }
 
-    const profile = await loadCustomerProfile(user, createGoogleProfile);
+    const profile = await loadCustomerProfile(
+      user,
+      createGoogleProfile
+    );
+
     saveLoginState(user, profile);
-    showMessage("Signed in successfully. Opening your dashboard...", "success");
-    window.location.replace("dashboard.html");
+    redirectToHome();
   }
 
-  passwordToggle.addEventListener("click", function(){
+  function redirectToHome() {
+    redirecting = true;
+
+    showMessage(
+      "Welcome back! You're being taken to your home page.",
+      "success"
+    );
+
+    setTimeout(function() {
+      window.location.replace("home.html");
+    }, 1000);
+  }
+
+  passwordToggle.addEventListener("click", function() {
     const icon = passwordToggle.querySelector("i");
     const showing = passwordInput.type === "password";
 
     passwordInput.type = showing ? "text" : "password";
-    icon.className = showing ? "fa-solid fa-eye-slash" : "fa-solid fa-eye";
-    passwordToggle.setAttribute("aria-label", showing ? "Hide password" : "Show password");
-    passwordToggle.setAttribute("aria-pressed", String(showing));
+
+    icon.className = showing
+      ? "fa-solid fa-eye-slash"
+      : "fa-solid fa-eye";
+
+    passwordToggle.setAttribute(
+      "aria-label",
+      showing ? "Hide password" : "Show password"
+    );
+
+    passwordToggle.setAttribute(
+      "aria-pressed",
+      String(showing)
+    );
   });
 
-  form.addEventListener("submit", async function(event){
+  form.addEventListener("submit", async function(event) {
     event.preventDefault();
-    clearMessage();
 
-    if(submitting) return;
+    if(submitting || redirecting) return;
 
     const email = emailInput.value.trim().toLowerCase();
     const password = passwordInput.value;
 
-    if(!email || !password){
-      showMessage("Please enter your email address and password.", "error");
+    if(!email || !password) {
+      showMessage(
+        "Please enter your email address and password.",
+        "error"
+      );
       return;
     }
 
-    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       showMessage("Please enter a valid email address.", "error");
       emailInput.focus();
       return;
     }
 
     submitting = true;
+
     setLoading(loginBtn, true);
     googleBtn.disabled = true;
 
-    try{
-      const result = await getAuth().signInWithEmailAndPassword(email, password);
-      if(!result.user) throw new Error("Unable to sign in. Please try again.");
+    try {
+      const auth = getAuth();
+
+      await applyAuthPersistence(auth);
+
+      const result = await auth.signInWithEmailAndPassword(
+        email,
+        password
+      );
+
+      if(!result.user) {
+        throw new Error("Unable to sign in. Please try again.");
+      }
 
       await finishLogin(result.user, false);
-    }catch(error){
-      console.error("Gentle Acct Store login error:", error);
+
+    } catch(error) {
+      console.error("GentleLogs login error:", error);
+
       showMessage(getFirebaseError(error), "error");
+
       setLoading(loginBtn, false);
-    }finally{
+
+    } finally {
       submitting = false;
-      googleBtn.disabled = false;
+
+      if(!redirecting) {
+        googleBtn.disabled = false;
+      }
     }
   });
 
-  googleBtn.addEventListener("click", async function(){
-    clearMessage();
-    if(submitting) return;
+  googleBtn.addEventListener("click", async function() {
+    if(submitting || redirecting) return;
 
     submitting = true;
+
     setLoading(googleBtn, true);
     loginBtn.disabled = true;
 
-    try{
+    try {
       const auth = getAuth();
+
+      await applyAuthPersistence(auth);
+
       const provider = new firebase.auth.GoogleAuthProvider();
-      provider.setCustomParameters({ prompt: "select_account" });
+
+      provider.setCustomParameters({
+        prompt:"select_account"
+      });
 
       const result = await auth.signInWithPopup(provider);
-      if(!result.user) throw new Error("Google sign-in could not be completed.");
 
-      // FIX: Google login creates the missing Firestore customer profile.
+      if(!result.user) {
+        throw new Error("Google sign-in could not be completed.");
+      }
+
       await finishLogin(result.user, true);
-    }catch(error){
-      console.error("Gentle Acct Store Google sign-in error:", error);
+
+    } catch(error) {
+      console.error("GentleLogs Google sign-in error:", error);
+
       showMessage(getFirebaseError(error), "error");
-    }finally{
+
+    } finally {
       submitting = false;
-      setLoading(googleBtn, false);
-      loginBtn.disabled = false;
+
+      if(!redirecting) {
+        setLoading(googleBtn, false);
+        loginBtn.disabled = false;
+      }
     }
   });
 
-  [emailInput, passwordInput].forEach(function(input){
-    input.addEventListener("input", function(){
-      if(message.classList.contains("error")) clearMessage();
-    });
-  });
 })();
 </script>
-
-
-
-<style id="gentlelogs-white-only">
-:root,
-html,
-html.dark-mode,
-html.blue-mode,
-html[data-theme="dark"],
-html[data-theme="blue"] {
-  color-scheme: light !important;
-  --page: #f3f7f4 !important;
-  --surface: #ffffff !important;
-  --ink: #202923 !important;
-  --muted: #6b776e !important;
-  --border: #dce7de !important;
-  --green: #286238 !important;
-  --green-dark: #20552d !important;
-  --green-soft: #e7f4ea !important;
-}
-html, html body,
-html.dark-mode body,
-html.blue-mode body,
-html[data-theme="dark"] body,
-html[data-theme="blue"] body {
-  color-scheme: light !important;
-  background-color: #f3f7f4 !important;
-  color: #202923 !important;
-}
-html.dark-mode *,
-html.blue-mode *,
-html[data-theme="dark"] *,
-html[data-theme="blue"] * {
-  color-scheme: light !important;
-}
-#themeToggle, #themeButton, #gentleThemeQuickToggle,
-button[aria-label*="dark mode" i],
-button[aria-label*="light mode" i],
-.theme-toggle, .theme-switch, .dark-mode-toggle {
-  display: none !important;
-}
-</style>
-<script id="gentlelogs-force-white">
-(function () {
-  function keepWhite() {
-    var root = document.documentElement;
-    if (!root) return;
-    root.dataset.theme = "light";
-    root.classList.remove("dark-mode", "blue-mode");
-    try {
-      localStorage.setItem("gentle-acct-store-theme", "light");
-      var uid = localStorage.getItem("gentleCurrentUserId");
-      if (uid) localStorage.setItem("gentle-acct-store-theme-user-" + uid, "light");
-    } catch (e) {}
-    ["themeToggle", "themeButton", "gentleThemeQuickToggle"].forEach(function (id) {
-      var el = document.getElementById(id);
-      if (el) el.remove();
-    });
-  }
-  keepWhite();
-  document.addEventListener("DOMContentLoaded", keepWhite);
-  window.addEventListener("pageshow", keepWhite);
-})();
-</script>
-
-
-<style id="gentlelogs-xtralogs-signin">
-:root{
-  --green:#D9363E!important;
-  --green-dark:#A91F2B!important;
-  --green-border:#E5E8EE!important;
-  --background:#F7F8FA!important;
-  --text:#172033!important;
-  --muted:#687386!important;
-  --input:#FFFFFF!important;
-  --white:#FFFFFF!important;
-  --shadow:0 18px 48px rgba(23,32,51,.08)!important;
-}
-html,body{background:#F7F8FA!important;color:#172033!important}
-body{
-  min-height:100vh;min-height:100dvh;
-  padding:34px 16px 26px!important;
-  background:radial-gradient(ellipse at 50% 0%,rgba(245,116,65,.08),transparent 38%),#F7F8FA!important;
-  font-family:Inter,"Space Grotesk",sans-serif!important;
-}
-*,button,input{font-family:Inter,"Space Grotesk",sans-serif!important}
-.brand{margin:0 auto 27px!important;text-align:center}
-.brand-mark{
-  width:45px!important;height:45px!important;border-radius:14px!important;
-  margin:0 auto 9px!important;background:linear-gradient(145deg,#F26A3D,#C62936)!important;
-  box-shadow:0 8px 20px rgba(198,41,54,.18)!important;font-size:21px!important;
-}
-.brand-name{font-size:24px!important;letter-spacing:-1.1px!important;color:#172033!important;font-weight:800!important}
-.brand-name span{color:#D9363E!important}
-.brand-tagline{font-size:9px!important;letter-spacing:1.8px!important;color:#8A93A3!important;margin-top:4px!important}
-.wrapper{max-width:410px!important}
-.card{border:1px solid #E7E9EF!important;border-radius:19px!important;background:#fff!important;box-shadow:0 18px 50px rgba(25,35,55,.075)!important}
-.card-top{height:4px!important;background:linear-gradient(90deg,#B92332,#E54C42,#F5A044)!important}
-.tabs{min-height:54px!important;border-bottom:1px solid #EEF0F4!important;padding:0 18px!important}
-.tab{font-size:12px!important;color:#7C8493!important}
-.tab.active{color:#C92D38!important}
-.tab.active::after{background:linear-gradient(90deg,#C62936,#F07842)!important;height:3px!important}
-.content{padding:27px 25px 25px!important}
-.heading-row{gap:12px!important;margin-bottom:7px!important}
-.heading-icon{width:42px!important;height:42px!important;border-radius:13px!important;background:#FFF1ED!important;border:1px solid #F9DDD5!important;color:#D43A3D!important}
-h1{font-size:25px!important;line-height:1.25!important;letter-spacing:-.9px!important;color:#172033!important}
-.subtitle{font-size:12px!important;line-height:1.7!important;color:#737D8E!important;margin-bottom:24px!important}
-.group{margin-bottom:17px!important}
-.label-row label{font-size:10px!important;letter-spacing:.75px!important;color:#354052!important}
-.forgot{font-size:10px!important;color:#C92D38!important}
-.input-wrap{min-height:49px!important;border:1px solid #E1E5EC!important;border-radius:10px!important;background:#FBFCFD!important}
-.input-wrap:focus-within{border-color:#E05B4D!important;box-shadow:0 0 0 3px rgba(224,91,77,.10)!important;background:#fff!important}
-.input-icon{color:#929BAA!important;width:43px!important}
-.input-wrap input{color:#172033!important;font-size:13px!important}
-.input-wrap input::placeholder{color:#A0A8B5!important}
-.eye{color:#7C8798!important}
-.eye:hover{background:#FFF1ED!important;color:#C92D38!important}
-.remember{font-size:11px!important;color:#687386!important;margin:0 0 19px!important}
-.remember input{border-color:#D4D9E2!important}
-.remember input:checked{background:#C92D38!important;border-color:#C92D38!important}
-.submit{min-height:49px!important;border-radius:10px!important;background:linear-gradient(100deg,#C62936,#E44B3F 65%,#F18A43)!important;box-shadow:0 8px 18px rgba(201,45,56,.17)!important;font-size:12.5px!important}
-.submit:hover{background:linear-gradient(100deg,#A91F2B,#CF3939 65%,#E77937)!important;box-shadow:0 10px 22px rgba(201,45,56,.22)!important}
-.message{font-size:11px!important}
-.or-divider{margin:21px 0 15px!important;color:#929BAA!important}
-.or-divider::before,.or-divider::after{background:#E9ECF1!important}
-.google-btn{min-height:47px!important;border-radius:10px!important;border-color:#E1E5EC!important;color:#303B4E!important;font-size:12px!important}
-.google-btn:hover{background:#FAFBFC!important;border-color:#CBD2DE!important}
-.footer{font-size:10px!important;color:#929BAA!important;margin-top:19px!important}
-.footer strong{color:#586477!important}
-.footer .secure i{color:#D43A3D!important}
-@media(max-width:600px){body{padding:27px 14px 23px!important}.brand{margin-bottom:22px!important}.content{padding:24px 21px 22px!important}h1{font-size:24px!important}}
-@media(max-width:390px){body{padding:20px 11px!important}.brand{margin-bottom:18px!important}.content{padding:22px 17px 20px!important}.card{border-radius:17px!important}}
-</style>
-
-
-<style id="gentlelogs-no-mobile-input-zoom">
-/* Prevent iOS Safari from zooming when a form field receives focus. */
-@media (max-width: 767px) {
-  input, textarea, select,
-  .input-wrap input,
-  .form-control {
-    font-size: 16px !important;
-  }
-}
-</style>
-
-<style id="gentle-final-green-white-colours">
-/* Final Gentle Acct Store palette override. Colours only; original layout and behaviour are preserved. */
-:root{--green:#29532A!important;--green-dark:#194D28!important;--green-border:#D9E9DC!important;--background:#F2F6F3!important;--text:#202923!important;--muted:#6B776E!important;--input:#FFFFFF!important;--white:#FFFFFF!important;--shadow:0 18px 48px rgba(41,83,42,.08)!important}
-html,body{background-color:#F2F6F3!important;color:#202923!important}
-.brand-mark{background:linear-gradient(145deg,#29532A,#194D28)!important;box-shadow:0 8px 20px rgba(41,83,42,.18)!important}
-.brand-name{color:#202923!important}.brand-name span,.tab.active,.forgot,.footer .secure i{color:#29532A!important}
-.card{border-color:#D9E9DC!important}.card-top{background:linear-gradient(90deg,#194D28,#29532A,#8DBB94)!important}
-.tab.active::after{background:linear-gradient(90deg,#194D28,#29532A)!important}
-.heading-icon{background:#EAF4EC!important;border-color:#D9E9DC!important;color:#29532A!important}
-.input-wrap{border-color:#D9E9DC!important;background:#FFFFFF!important}
-.input-wrap:focus-within{border-color:#29532A!important;box-shadow:0 0 0 3px rgba(41,83,42,.10)!important}
-.input-wrap input{color:#202923!important}.eye:hover{background:#EAF4EC!important;color:#29532A!important}
-.remember input:checked{background:#29532A!important;border-color:#29532A!important}
-.submit{background:linear-gradient(100deg,#194D28,#29532A)!important;box-shadow:0 8px 18px rgba(41,83,42,.16)!important}
-.submit:hover{background:linear-gradient(100deg,#163F22,#194D28)!important;box-shadow:0 10px 22px rgba(41,83,42,.20)!important}
-.google-btn{border-color:#D9E9DC!important}.google-btn:hover{background:#F2F6F3!important;border-color:#B9D4BE!important}
-html.dark-mode{--green:#8BC995!important;--green-dark:#B7E4BE!important;--green-border:#304F37!important;--background:#0B1424!important;--text:#F1F5F9!important;--muted:#A7B4C8!important;--input:#0C1728!important;--white:#111D30!important}
-html.dark-mode body{background:linear-gradient(145deg,#080F1D,#101D32)!important;color:#F1F5F9!important}
-html.dark-mode .card{background:#111D30!important;border-color:#304F37!important}html.dark-mode .brand-name,html.dark-mode h1{color:#F1F5F9!important}
-html.dark-mode .brand-name span,html.dark-mode .tab.active,html.dark-mode .forgot,html.dark-mode .footer .secure i{color:#8BC995!important}
-html.dark-mode .heading-icon{background:#173B2A!important;border-color:#28583A!important;color:#8BC995!important}
-html.dark-mode .input-wrap{background:#0C1728!important;border-color:#304F37!important}html.dark-mode .input-wrap input{color:#F1F5F9!important}
-html.dark-mode .submit{background:linear-gradient(100deg,#194D28,#29532A)!important}
-@media(max-width:767px){input,textarea,select,.input-wrap input{font-size:16px!important}}
-</style>
 
 </body>
 </html>
-
-
-<style id="gentle-auth-final-polish">
-:root{--green:#29532A;--green-dark:#194D28;--green-border:#D9E9DC;--background:#F2F6F3;--text:#17251B;--muted:#718077;--input:#FFFFFF;--white:#FFFFFF;--shadow:0 18px 48px rgba(28,65,38,.09)}
-html,body{font-family:Inter,"Space Grotesk",Arial,sans-serif!important}
-body{background:radial-gradient(ellipse at 50% 0%,rgba(41,83,42,.09),transparent 42%),#F2F6F3!important;color:#17251B!important}
-.brand-mark{background:linear-gradient(145deg,#397B45,#194D28)!important;box-shadow:0 9px 22px rgba(41,83,42,.18)!important}
-.brand-name,.brand-name span{color:#194D28!important}
-.card{border-color:#D9E9DC!important;box-shadow:0 18px 48px rgba(28,65,38,.09)!important}
-.card-top,.tab.active::after{background:linear-gradient(90deg,#194D28,#397B45,#86B98D)!important}
-.tab.active,.forgot{color:#29532A!important}
-.heading-icon{color:#29532A!important;background:#EAF4EC!important;border-color:#D9E9DC!important}
-h1{color:#17251B!important}
-.input-wrap:focus-within{border-color:#397B45!important;box-shadow:0 0 0 4px rgba(41,83,42,.10)!important}
-.submit{background:linear-gradient(100deg,#194D28,#347640)!important;box-shadow:0 8px 19px rgba(41,83,42,.17)!important}
-.submit:hover{background:linear-gradient(100deg,#123D20,#295F33)!important}
-.google-btn{border-color:#D9E9DC!important}
-@media(max-width:767px){input,textarea,select{font-size:16px!important}}
-</style>

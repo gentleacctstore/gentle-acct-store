@@ -5,8 +5,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#29532A">
-<meta name="description" content="Welcome to Gentle Acct Store. Browse products, manage your wallet and view your orders.">
-<title>Dashboard | Gentle Acct Store</title>
+<meta name="description" content="Browse available logs and digital products on GentleLogs.">
+<title>Marketplace | GentleLogs</title>
 
 <script>
 try {
@@ -1128,43 +1128,19 @@ html.dark-mode .toast {
   .floating-contact {right:calc(50% - 430px)}
 }
 
-/* OWN YOUR WEBSITE PROMO */
-.website-promo-backdrop{
-  position:fixed;inset:0;z-index:1000;display:none;align-items:center;
-  justify-content:center;padding:18px;background:rgba(18,12,14,.62);
-  backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)
-}
-.website-promo-backdrop.show{display:flex}
-.website-promo{
-  position:relative;width:min(100%,390px);padding:25px 21px 20px;
-  border:1px solid #F1DCDD;border-radius:23px;background:#fff;
-  color:#171923;text-align:center;box-shadow:0 24px 70px rgba(0,0,0,.24);
-  animation:websitePromoIn .24s ease-out
-}
-@keyframes websitePromoIn{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
-.website-promo-close{
-  position:absolute;top:11px;right:12px;width:32px;height:32px;
-  border:0;border-radius:50%;background:#FDEEEF;color:#991B24;font-size:19px
-}
-.website-promo-icon{
-  display:grid;place-items:center;width:40px;height:40px;margin:0 auto 13px;
-  border-radius:15px;background:#FDEEEF;color:#C9232C;font-size:21px
-}
-.website-promo h2{margin:0 22px 9px;color:#C9232C;font-size:21px;font-weight:1000;letter-spacing:-.5px}
-.website-promo p{margin:0 auto 17px;max-width:310px;color:#626773;font-size:13px;line-height:1.7}
-.website-promo-cta{
-  display:flex;align-items:center;justify-content:center;gap:9px;width:100%;
-  min-height:47px;padding:12px 15px;border:0;border-radius:25px;
-  background:#C9232C;color:#fff;font-size:13px;font-weight:900;text-decoration:none
-}
-.website-promo-dismiss{
-  display:inline-block;margin-top:13px;border:0;background:transparent;
-  color:#85858D;font-size:12px;font-weight:800
-}
-html.dark-mode .website-promo{background:#211D27;border-color:#40313A;color:#F5F1F3}
-html.dark-mode .website-promo p{color:#C5BBC0}
-html.dark-mode .website-promo-close{background:#38242C;color:#FF8D94}
 
+/* LOGS-ONLY MARKETPLACE: account overview belongs on home.html */
+.wallet-card,
+.stats-grid,
+#referralSection,
+#purchaseTutorial,
+.floating-contact,
+.header-wallet {
+  display:none !important;
+}
+
+/* Keep the marketplace focused on searching and browsing logs. */
+main { padding-top:16px; }
 </style>
 
 <style id="gentle-unified-green-white-palette">
@@ -1616,147 +1592,204 @@ body { background: radial-gradient(ellipse at 8% 0%, rgba(221,239,227,.62), tran
 }
 </style>
 
+
+<style id="compact-logs-marketplace-header">
+/* Compact marketplace heading and controls for mobile screens. */
+.top-header {
+  padding: 9px 15px !important;
+  min-height: 0 !important;
+  box-shadow: 0 2px 10px rgba(23,55,35,.025) !important;
+}
+.top-header-row {
+  min-height: 0 !important;
+  gap: 8px !important;
+}
+.brand-area { gap: 0 !important; }
+.brand-logo { display:none !important; }
+.brand-text h1 {
+  font-size: 15px !important;
+  line-height: 1.2 !important;
+  letter-spacing: -.3px !important;
+  font-weight: 700 !important;
+}
+.brand-text p {
+  display:block !important;
+  margin-top: 2px !important;
+  font-size: 9px !important;
+  line-height: 1.3 !important;
+  font-weight: 500 !important;
+}
+.header-actions { gap: 0 !important; }
+.header-icon {
+  width: 33px !important;
+  height: 33px !important;
+  border-radius: 10px !important;
+  font-size: 13px !important;
+}
+.header-wallet { display:none !important; }
+main { padding-top: 11px !important; }
+.search-box {
+  height: 43px !important;
+  min-height: 43px !important;
+  padding: 0 12px !important;
+  gap: 9px !important;
+  border-radius: 12px !important;
+}
+.search-box i { font-size: 14px !important; }
+.search-box input { font-size: 12px !important; }
+.section-heading { margin-bottom: 9px !important; }
+.section-heading h2 { font-size: 15px !important; }
+.category-scroll { gap: 7px !important; }
+.category-btn {
+  min-height: 34px !important;
+  padding: 7px 12px !important;
+  font-size: 10px !important;
+  border-radius: 18px !important;
+}
+@media (max-width: 480px) {
+  .top-header { padding: 8px 12px !important; }
+  .brand-text h1 { font-size: 14px !important; }
+  .brand-text p { font-size: 9px !important; }
+  .header-icon { width: 31px !important; height: 31px !important; }
+  .search-box { height: 41px !important; min-height: 41px !important; }
+}
+</style>
+
+<style id="gentle-customer-final-polish">
+:root{--green:#29532A!important;--green-dark:#194D28!important;--green-light:#EAF4EC!important;--green-soft:#EAF4EC!important;--green-border:#D9E9DC!important;--primary:#29532A!important;--accent:#29532A!important;--border:#D9E9DC!important;--line:#D9E9DC!important}
+html,body,button,input,textarea,select{font-family:Inter,"Space Grotesk",Arial,sans-serif!important}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline-color:rgba(41,83,42,.35)!important}
+input:focus,textarea:focus,select:focus{border-color:#397B45!important;box-shadow:0 0 0 3px rgba(41,83,42,.10)!important}
+@media(max-width:767px){input,textarea,select{font-size:16px!important}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+
+<style id="gentle-green-brand-final">
+/* Keep the customer-facing pages on the Gentle green identity. */
+.brand-logo,.logo-box,.brand-icon,.brand-mark,.main-icon,.heading-icon,.stat-icon,.deposit-icon,.support-icon,.menu-icon,.success-icon{background-color:#EAF4EC!important;color:#29532A!important}
+.primary-btn,.pay-btn,.complete-btn,.submit,.hero-button.primary,.search-box button,.related-buy,.save-button,.support-btn,.error-box button{background:#29532A!important;color:#FFFFFF!important;border-color:#29532A!important}
+.primary-btn:hover,.pay-btn:hover,.complete-btn:hover,.hero-button.primary:hover,.related-buy:hover,.save-button:hover{background:#194D28!important}
+.brand-name,.brand-text h1,.header-title,.header-icon,.back-btn,.view-all,.product-price,.related-price,.amount,.detail-value,.history-amount,.section-heading:before,.nav-item.active,.success h1,.success-icon{color:#29532A!important}
+.header,.top-header,header{border-bottom-color:#D9E9DC!important}
+</style>
+
+
+<style id="gentlelogs-modern-orange-brand">
+/* GentleLogs modern orange identity — visual overrides only; existing marketplace logic is preserved. */
+:root{
+ --green:#E87535!important;--green-dark:#C96532!important;
+ --green-soft:#FFF1E8!important;--green-pale:#FFFCFA!important;
+ --white:#FFFFFF!important;--text:#252A30!important;--muted:#747B83!important;
+ --border:#F1E2D9!important;--shadow:0 10px 30px rgba(91,55,34,.065)!important;
+ --primary:#E87535!important;--accent:#E87535!important;
+}
+html,body,.page{background:#FFFCFA!important;color:#252A30!important}
+body{background:radial-gradient(ellipse at 8% 0%,rgba(255,231,216,.58),transparent 38%),#FFFCFA!important}
+.top-header,.top-header.marketplace-header{
+ background:rgba(255,252,250,.96)!important;border-bottom:1px solid #F1E2D9!important;
+ box-shadow:0 5px 22px rgba(91,55,34,.045)!important;backdrop-filter:blur(18px)!important;
+}
+.brand-text h1,.brand-name,.header-title{color:#252A30!important}
+.brand-text p,.marketplace-header .brand-text p{color:#858078!important}
+.header-icon{background:#FFF1E8!important;border:1px solid #F5D9C8!important;color:#C96532!important}
+.header-icon:active{background:#FFE7D8!important}
+.section-heading h2,.product-section .section-heading h2{color:#252A30!important}
+.section-heading>a,.product-section .section-heading a{color:#C96532!important}
+.search-box{background:#FFFFFF!important;border:1px solid #F0E2D9!important;box-shadow:0 5px 18px rgba(91,55,34,.045)!important}
+.search-box:focus-within{border-color:#E87535!important;box-shadow:0 0 0 4px rgba(232,117,53,.12)!important}
+.search-box i{color:#C96532!important}
+.search-box input{color:#252A30!important}
+.category-btn{background:#FFFFFF!important;border-color:#F0E2D9!important;color:#686C72!important}
+.category-btn.active{background:#E87535!important;border-color:#E87535!important;color:#FFFFFF!important;box-shadow:0 5px 13px rgba(232,117,53,.18)!important}
+.product-list{background:#FFFFFF!important;border:1px solid #F0E2D9!important;box-shadow:0 8px 25px rgba(91,55,34,.045)!important}
+.product-card{background:#FFFFFF!important;border-bottom-color:#F4EAE3!important}
+.product-info h3{color:#252A30!important;font-weight:750!important;letter-spacing:-.2px!important}
+.product-stock i{color:#2E9B65!important}
+.product-stock.low-stock,.product-stock.low-stock i{color:#D98A2B!important}
+.product-stock.out-stock,.product-stock.out-stock i{color:#D66B6B!important}
+.product-category{background:#FFF1E8!important;color:#C96532!important}
+.product-price{color:#C96532!important;font-weight:800!important}
+.buy-btn{background:#E87535!important;border-color:#E87535!important;color:#FFFFFF!important;border-radius:11px!important;box-shadow:0 5px 13px rgba(232,117,53,.16)!important}
+.buy-btn:active:not(:disabled){background:#C96532!important}
+.buy-btn.disabled,.buy-btn:disabled{background:#F7EDE7!important;border-color:#F7EDE7!important;color:#B7A49A!important;box-shadow:none!important}
+.empty-products,.tutorial-card{background:#FFFFFF!important;border-color:#F0E2D9!important}
+.empty-products>i{background:#FFF1E8!important;color:#C96532!important}
+.empty-products h3,.tutorial-card h3{color:#252A30!important}
+.loading i{color:#E87535!important}
+.tutorial-video{background:#FFF1E8!important}
+.tutorial-whatsapp{background:#FFF8F3!important;border-color:#F2D7C6!important;color:#C96532!important}
+.floating-contact{background:#E87535!important;box-shadow:0 8px 25px rgba(232,117,53,.25)!important}
+.bottom-nav{background:rgba(255,255,255,.97)!important;border-color:#F0E2D9!important;box-shadow:0 -5px 24px rgba(91,55,34,.045)!important}
+.nav-item{color:#92949A!important}.nav-item.active{color:#E87535!important}
+.nav-item:active{background:#FFF7F2!important}
+.toast{background:#C96532!important;border-color:#F0C5AA!important;box-shadow:0 12px 30px rgba(201,101,50,.2)!important}
+/* Drawer surfaces and active states */
+.main-menu-drawer,.main-menu-wallet{background:#FFFFFF!important;border-color:#F0E2D9!important}
+.main-menu-header{border-color:#F0E2D9!important}
+.main-menu-brand{color:#252A30!important}
+.main-menu-close{background:#FFF1E8!important;border-color:#F5D9C8!important;color:#C96532!important}
+.main-menu-link:active,.main-menu-link:hover{background:#FFF1E8!important;color:#C96532!important}
+.main-menu-link:active>i:first-child,.main-menu-link:hover>i:first-child{color:#C96532!important}
+.main-menu-wallet>div{background:#FFF7F2!important;border-color:#F2D0BA!important}
+.main-menu-wallet strong,.main-menu-wallet>a{color:#C96532!important}
+.menu-pill{background:#FFF1E8!important;color:#C96532!important}
+/* Dark mode stays dark; orange remains the accent rather than turning every surface orange. */
+html.dark-mode,html.dark-mode body,html.dark-mode .page{background:#17191D!important;color:#F1F1F1!important}
+html.dark-mode body{background:radial-gradient(ellipse at 8% 0%,rgba(116,57,31,.20),transparent 40%),#17191D!important}
+html.dark-mode .top-header,html.dark-mode .top-header.marketplace-header,html.dark-mode .bottom-nav{background:rgba(30,31,35,.97)!important;border-color:#39383A!important}
+html.dark-mode .brand-text h1,html.dark-mode .section-heading h2,html.dark-mode .product-section .section-heading h2,html.dark-mode .product-info h3{color:#F4F1EE!important}
+html.dark-mode .brand-text p,html.dark-mode .product-stock{color:#B8B3AE!important}
+html.dark-mode .header-icon,html.dark-mode .category-btn,html.dark-mode .search-box,html.dark-mode .product-list,html.dark-mode .product-card,html.dark-mode .empty-products,html.dark-mode .tutorial-card,html.dark-mode .tutorial-whatsapp{background:#222327!important;border-color:#3C3937!important;color:#EEEAE6!important}
+html.dark-mode .search-box input{color:#F4F1EE!important}
+html.dark-mode .category-btn.active{background:#E87535!important;border-color:#E87535!important;color:#FFFFFF!important}
+html.dark-mode .product-card{border-bottom-color:#393635!important}
+html.dark-mode .product-price,html.dark-mode .section-heading>a,html.dark-mode .product-section .section-heading a,html.dark-mode .empty-products h3,html.dark-mode .tutorial-card h3{color:#F29A68!important}
+html.dark-mode .product-category,html.dark-mode .empty-products>i{background:#3A2922!important;color:#F29A68!important}
+html.dark-mode .bottom-nav .nav-item{color:#AAA6A2!important}html.dark-mode .bottom-nav .nav-item.active{color:#F29A68!important}
+html.dark-mode .main-menu-drawer,html.dark-mode .main-menu-header,html.dark-mode .main-menu-wallet{background:#222327!important;border-color:#3C3937!important}
+html.dark-mode .main-menu-brand{color:#F4F1EE!important}
+html.dark-mode .main-menu-link{color:#E0DCD8!important}
+html.dark-mode .main-menu-link:active,html.dark-mode .main-menu-link:hover{background:#3A2922!important;color:#F29A68!important}
+html.dark-mode .main-menu-wallet>div{background:#3A2922!important;border-color:#68432F!important}
+html.dark-mode .main-menu-wallet strong,html.dark-mode .main-menu-wallet>a{color:#F29A68!important}
+/* Mobile fit and iOS input zoom prevention. */
+@media(max-width:767px){input,textarea,select{font-size:16px!important}}
+@media(max-width:390px){.product-info h3{overflow-wrap:anywhere}.buy-btn{min-width:58px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+
 </head>
 
 
 <body>
 <div class="page">
 
-<header class="top-header">
+<header class="top-header marketplace-header">
   <div class="top-header-row">
     <div class="brand-area">
-      <div class="brand-logo"><i class="fa-solid fa-store"></i></div>
       <div class="brand-text">
-        <h1>Gentle Acct Store</h1>
-        <p>Your store, all in one place</p>
+        <h1>Log Marketplace</h1>
+        <p>Find the accounts and logs you need.</p>
       </div>
     </div>
-    <div class="header-actions">
-      <button class="header-icon" type="button" onclick="enableGentleNotifications()" aria-label="Notifications">
-        <i class="fa-regular fa-bell"></i>
-      </button>
-      <div class="header-wallet">
-        <span>Wallet balance</span>
-        <strong id="headerBalance">₦0.00</strong>
-      </div>
-    </div>
+    <button class="header-icon" type="button" onclick="enableGentleNotifications()" aria-label="Notifications">
+      <i class="fa-regular fa-bell"></i>
+    </button>
   </div>
 </header>
 
-<main>
-  <section class="wallet-card">
-    <div class="wallet-glow"></div>
-
-    <div class="wallet-art" aria-hidden="true">
-      <span class="coin coin-one">₦</span>
-      <span class="coin coin-two">₦</span>
-      <span class="coin coin-three">₦</span>
-      <div class="wallet-body"></div>
-      <div class="wallet-flap"></div>
-      <div class="wallet-clasp"></div>
-    </div>
-
-    <div class="wallet-top">
-      <div class="user-info">
-        <div class="user-avatar"><i class="fa-solid fa-user"></i></div>
-        <div>
-          <small>Welcome back</small>
-          <strong id="userName">Customer</strong>
-        </div>
-      </div>
-      <div class="wallet-balance">
-        <span>Available Balance</span>
-        <strong id="walletBalance">₦0.00</strong>
-      </div>
-    </div>
-
-    <div class="wallet-middle">
-      <p>Wallet Balance</p>
-      <h2 id="walletLargeBalance">₦0.00</h2>
-    </div>
-
-    <div class="wallet-bottom">
-      <div class="wallet-stats">
-        <div class="wallet-stat">
-          <span>Orders</span>
-          <strong id="ordersCount">0</strong>
-        </div>
-        <div class="wallet-stat">
-          <span>Completed</span>
-          <strong id="completedCount">0</strong>
-        </div>
-      </div>
-      <div class="wallet-buttons">
-        <button class="wallet-btn" type="button" onclick="window.location.href='fund.html'">
-          <i class="fa-solid fa-plus"></i> Fund Wallet
-        </button>
-        <button class="wallet-btn secondary" type="button" onclick="window.location.href='orders.html'">
-          My Orders
-        </button>
-      </div>
-    </div>
-  </section>
-
-  <section class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-icon"><i class="fa-solid fa-bag-shopping"></i></div>
-      <strong id="statOrders">0</strong>
-      <span>Orders</span>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon"><i class="fa-regular fa-heart"></i></div>
-      <strong id="statFavourites">0</strong>
-      <span>Favourites</span>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
-      <strong id="statReferrals">0</strong>
-      <span>Referrals</span>
-    </div>
-  </section>
-
-  <section class="section" id="referralSection">
-    <div class="section-heading">
-      <h2>Earn Rewards</h2>
-    </div>
-
-    <a href="referrals.html" class="referral-premium"
-       aria-label="Refer and earn 500 naira for every successful referral">
-      <span class="sparkle sparkle-one" aria-hidden="true">✦</span>
-      <span class="sparkle sparkle-two" aria-hidden="true">✦</span>
-
-      <div class="gift-art" aria-hidden="true">
-        <div class="gift-box"></div>
-        <div class="gift-lid"></div>
-        <div class="gift-ribbon"></div>
-        <div class="gift-bow"></div>
-      </div>
-
-      <div class="referral-copy">
-        <div class="special-offer-label">
-          <i class="fa-solid fa-gift"></i> REFER &amp; EARN
-        </div>
-        <h3>Earn <span class="reward-amount">₦500</span></h3>
-        <p>For every successful referral!</p>
-      </div>
-
-      <div class="referral-arrow" aria-hidden="true">
-        <i class="fa-solid fa-chevron-right"></i>
-      </div>
-    </a>
-  </section>
-
-  <section class="section">
+<main class="marketplace-main">
+  <section class="section marketplace-search-section">
     <div class="search-box">
       <i class="fa-solid fa-magnifying-glass"></i>
       <input type="search" id="searchInput"
-             placeholder="Search products..."
+             placeholder="Search logs..."
              autocomplete="off"
-             aria-label="Search products">
+             aria-label="Search logs">
     </div>
   </section>
 
-  <section class="section">
+  <section class="section marketplace-categories">
     <div class="section-heading">
       <h2>Explore Categories</h2>
     </div>
@@ -1766,6 +1799,9 @@ body { background: radial-gradient(ellipse at 8% 0%, rgba(221,239,227,.62), tran
     </div>
   </section>
 
+
+
+
   <section id="productsContainer" aria-live="polite">
     <div class="loading">
       <i class="fa-solid fa-spinner fa-spin"></i>
@@ -1773,33 +1809,7 @@ body { background: radial-gradient(ellipse at 8% 0%, rgba(221,239,227,.62), tran
     </div>
   </section>
 
-  <section class="section" id="purchaseTutorial">
-    <div class="section-heading">
-      <h2>How to Purchase Logs</h2>
-    </div>
 
-    <div class="tutorial-card">
-      <h3>HOW TO LOG IN TO FACEBOOK</h3>
-      <p>Watch this video tutorial to learn how to log in. Join our WhatsApp community for more tutorials.</p>
-
-      <div class="tutorial-video">
-        <iframe
-          src="https://www.youtube.com/embed/x3W0pz4TWq8"
-          title="How to Log In to Facebook - Gentle Acct Store"
-          loading="lazy"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen></iframe>
-      </div>
-
-      <a class="tutorial-whatsapp"
-         href="https://chat.whatsapp.com/DCNgBa8SHIH81Bcc2rSCmf"
-         target="_blank" rel="noopener noreferrer">
-        <i class="fa-brands fa-whatsapp"></i>
-        Join WhatsApp Community for More Tutorials
-      </a>
-    </div>
-  </section>
 </main>
 </div>
 
@@ -1814,7 +1824,7 @@ body { background: radial-gradient(ellipse at 8% 0%, rgba(221,239,227,.62), tran
 <div class="main-menu-backdrop" id="mainMenuBackdrop" onclick="closeMainMenu()" aria-hidden="true"></div>
 <aside class="main-menu-drawer" id="mainMenuDrawer" aria-label="Main menu" aria-hidden="true">
   <div class="main-menu-header">
-    <div class="main-menu-brand">Gentle Acct Store</div>
+    <div class="main-menu-brand">GentleLogs</div>
     <button type="button" class="main-menu-close" onclick="closeMainMenu()" aria-label="Close menu">
       <i class="fa-solid fa-xmark"></i>
     </button>
@@ -1823,7 +1833,7 @@ body { background: radial-gradient(ellipse at 8% 0%, rgba(221,239,227,.62), tran
   <div class="main-menu-scroll">
     <div class="main-menu-group">
       <div class="main-menu-label">MAIN</div>
-      <a class="main-menu-link" href="dashboard.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+      <a class="main-menu-link" href="home.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
       <a class="main-menu-link" href="profile.html"><i class="fa-solid fa-user"></i><span>Profile</span></a>
     </div>
 
@@ -1857,22 +1867,18 @@ body { background: radial-gradient(ellipse at 8% 0%, rgba(221,239,227,.62), tran
     </div>
   </div>
 
-  <div class="main-menu-wallet">
-    <div>
-      <span>Wallet Balance</span>
-      <strong id="menuWalletBalance">₦0.00</strong>
-    </div>
+
     <a href="fund.html">Top Up</a>
   </div>
 </aside>
 
 <nav class="bottom-nav" aria-label="Main navigation">
   <div class="bottom-nav-inner">
-    <a href="dashboard.html" class="nav-item active" aria-current="page">
+    <a href="home.html" class="nav-item">
       <i class="fa-solid fa-house"></i><span>Home</span>
     </a>
-    <a href="#productsContainer" class="nav-item" onclick="scrollToProducts(event)">
-      <i class="fa-solid fa-store"></i><span>Products</span>
+    <a href="#productsContainer" class="nav-item active" aria-current="page" onclick="scrollToProducts(event)">
+      <i class="fa-solid fa-store"></i><span>Logs</span>
     </a>
     <a href="orders.html" class="nav-item">
       <i class="fa-solid fa-bag-shopping"></i><span>Orders</span>
@@ -1886,24 +1892,6 @@ body { background: radial-gradient(ellipse at 8% 0%, rgba(221,239,227,.62), tran
   </div>
 </nav>
 
-
-<div class="website-promo-backdrop" id="websitePromo" role="dialog"
-     aria-modal="true" aria-labelledby="websitePromoTitle">
-  <div class="website-promo">
-    <button class="website-promo-close" type="button"
-            onclick="closeWebsitePromo()" aria-label="Close">×</button>
-  <div class="website-promo-icon"><i class="fa-solid fa-globe"></i></div>
-<h2 id="websitePromoTitle">WANT YOUR OWN WEBSITE?</h2>
-<p>Whether it's a personal website, business, online store, portfolio, brand, or any project, we can help bring your idea to life.</p>
-<a class="website-promo-cta"
-   href="https://wa.me/2349131953030"
-   target="_blank" rel="noopener noreferrer">
-  <i class="fa-brands fa-whatsapp"></i> Chat with us on WhatsApp
-</a>
-    <button class="website-promo-dismiss" type="button"
-            onclick="closeWebsitePromo()">Maybe later</button>
-  </div>
-</div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -2102,19 +2090,6 @@ async function enableGentleNotifications() {
   }
 }
 
-/* WEBSITE PROMO: show on every successful customer login */
-function showWebsitePromo() {
-  const popup=document.getElementById("websitePromo");
-  if(popup) popup.classList.add("show");
-}
-function closeWebsitePromo() {
-  const popup=document.getElementById("websitePromo");
-  if(popup) popup.classList.remove("show");
-}
-document.getElementById("websitePromo")?.addEventListener("click",function(event){
-  if(event.target===this) closeWebsitePromo();
-});
-
 /* AUTHENTICATION */
 firebase.auth().onAuthStateChanged(async function(user) {
   if (!user) {
@@ -2128,18 +2103,10 @@ firebase.auth().onAuthStateChanged(async function(user) {
   currentUser = user;
 
   try {
-    await loadUserInformation();
-    displayReferralLink();
-
-    await Promise.all([
-      loadWallet(),
-      loadOrders(),
-      loadProducts(),
-      loadReferralCount()
-    ]);
-    showWebsitePromo();
+    // Marketplace only: don't wait for wallet, order or referral queries here.
+    await loadProducts();
   } catch(error) {
-    console.error("Dashboard loading error:", error);
+    console.error("Marketplace loading error:", error);
   } finally {
     dashboardLoading = false;
   }
@@ -2237,7 +2204,7 @@ async function loadProducts() {
     });
 
     buildCategoryButtons();
-    renderProducts();
+renderProducts();
   } catch(error) {
     console.error("Products loading error:", error);
 
@@ -2341,6 +2308,7 @@ function selectCategory(category) {
   buildCategoryButtons();
   renderProducts();
 }
+
 
 /* RENDER CATEGORY SECTIONS */
 function renderProducts() {
@@ -2672,24 +2640,54 @@ document.addEventListener("keydown",event=>{
   if(event.key==="Escape") closeMainMenu();
 });
 </script>
+<style id="compact-log-marketplace">
+/* COMPACT LOG-ONLY MARKETPLACE */
+.top-header.marketplace-header{
+  position:sticky;top:0;z-index:50;padding:10px 16px;
+  background:rgba(255,255,255,.94)!important;border-bottom:1px solid #e5eee7!important;
+}
+.marketplace-header .top-header-row{min-height:43px;gap:10px}
+.marketplace-header .brand-area{gap:0}
+.marketplace-header .brand-text h1{font-size:17px!important;line-height:1.15;letter-spacing:-.55px}
+.marketplace-header .brand-text p{display:block!important;font-size:9px!important;margin-top:3px;color:#7b8981}
+.marketplace-header .header-icon{width:35px;height:35px;border-radius:12px;font-size:14px}
+.marketplace-main{padding:13px 15px 24px!important}
+.marketplace-main .section{margin-top:14px}
+.marketplace-search-section{margin-top:4px!important}
+.marketplace-main .search-box{height:45px;padding:0 13px;border-radius:13px;gap:9px;box-shadow:0 3px 12px rgba(20,54,34,.035)}
+.marketplace-main .search-box i{font-size:14px}
+.marketplace-main .search-box input{font-size:13px}
+.marketplace-main .section-heading{margin-bottom:8px;gap:8px}
+.marketplace-main .section-heading h2{font-size:15px;letter-spacing:-.35px}
+.marketplace-main .section-heading>a{font-size:11px}
+.marketplace-categories{margin-top:16px!important}
+.marketplace-main .category-scroll{gap:7px;padding:2px 0 5px}
+.marketplace-main .category-btn{font-size:10px;padding:8px 12px;border-radius:20px}
+#productsContainer{margin-top:13px}
+#productsContainer .product-section{margin-top:15px;scroll-margin-top:70px}
+#productsContainer .section-heading{margin-bottom:7px}
+#productsContainer .product-list{border-radius:15px}
+#productsContainer .product-card{min-height:75px;padding:8px 10px;gap:9px}
+#productsContainer .product-image{width:42px;height:42px;flex-basis:42px;border-radius:11px}
+#productsContainer .product-image>i{font-size:25px}
+#productsContainer .product-info h3{font-size:11px;margin-bottom:4px}
+#productsContainer .product-stock{font-size:8px}
+#productsContainer .product-category{font-size:8px;padding:3px 6px}
+#productsContainer .product-price{font-size:12px}
+#productsContainer .buy-btn{min-height:30px;min-width:62px;padding:6px 8px;font-size:10px}
+.floating-contact{width:46px;height:46px;right:12px;bottom:calc(82px + env(safe-area-inset-bottom));font-size:21px}
+.bottom-nav{height:calc(64px + env(safe-area-inset-bottom))}
+.bottom-nav-inner{height:64px}
+.bottom-nav .nav-item{gap:3px;font-size:9px}
+.bottom-nav .nav-item i{font-size:17px}
+@media(max-width:390px){
+ .top-header.marketplace-header{padding:8px 12px}
+ .marketplace-header .brand-text h1{font-size:16px!important}
+ .marketplace-main{padding:11px 12px 20px!important}
+ .new-arrivals-list .product-card{width:145px;min-width:145px}
+ #productsContainer .product-card{min-height:70px}
+}
+</style>
+
 </body>
 </html>
-
-
-<style id="gentle-customer-final-polish">
-:root{--green:#29532A!important;--green-dark:#194D28!important;--green-light:#EAF4EC!important;--green-soft:#EAF4EC!important;--green-border:#D9E9DC!important;--primary:#29532A!important;--accent:#29532A!important;--border:#D9E9DC!important;--line:#D9E9DC!important}
-html,body,button,input,textarea,select{font-family:Inter,"Space Grotesk",Arial,sans-serif!important}
-button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline-color:rgba(41,83,42,.35)!important}
-input:focus,textarea:focus,select:focus{border-color:#397B45!important;box-shadow:0 0 0 3px rgba(41,83,42,.10)!important}
-@media(max-width:767px){input,textarea,select{font-size:16px!important}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
-</style>
-
-<style id="gentle-green-brand-final">
-/* Keep the customer-facing pages on the Gentle green identity. */
-.brand-logo,.logo-box,.brand-icon,.brand-mark,.main-icon,.heading-icon,.stat-icon,.deposit-icon,.support-icon,.menu-icon,.success-icon{background-color:#EAF4EC!important;color:#29532A!important}
-.primary-btn,.pay-btn,.complete-btn,.submit,.hero-button.primary,.search-box button,.related-buy,.save-button,.support-btn,.error-box button{background:#29532A!important;color:#FFFFFF!important;border-color:#29532A!important}
-.primary-btn:hover,.pay-btn:hover,.complete-btn:hover,.hero-button.primary:hover,.related-buy:hover,.save-button:hover{background:#194D28!important}
-.brand-name,.brand-text h1,.header-title,.header-icon,.back-btn,.view-all,.product-price,.related-price,.amount,.detail-value,.history-amount,.section-heading:before,.nav-item.active,.success h1,.success-icon{color:#29532A!important}
-.header,.top-header,header{border-bottom-color:#D9E9DC!important}
-</style>
