@@ -4,19 +4,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#29532A">
-<meta name="description" content="Secure checkout at Gentle Acct Store.">
-<title>Checkout | Gentle Acct Store</title>
-
-<script>
-(function () {
-  try {
-    const theme = localStorage.getItem("gentle-acct-store-theme");
-    if (theme === "dark") document.documentElement.classList.add("dark-mode");
-    if (theme === "blue") document.documentElement.classList.add("blue-mode");
-  } catch (e) {}
-})();
-</script>
+<meta name="theme-color" content="#FFFCFA">
+<meta name="description" content="Complete your purchase securely on GentleLogs.">
+<title>Checkout | GentleLogs</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,1034 +20,754 @@
 
 <style>
 :root{
-  --green:#285B32;--green-dark:#194D28;--green-light:#EAF4EC;
-  --green-border:#D9E9DC;--page:#F2F6F3;--white:#FFFFFF;
-  --text:#171717;--muted:#858585;--line:#E8EEE9;
-  --shadow:0 5px 18px rgba(40,91,50,.07);
+  --orange:#E87535;
+  --orange-dark:#C96532;
+  --orange-soft:#FFF1E8;
+  --bg:#FFFCFA;
+  --white:#FFFFFF;
+  --ink:#252A30;
+  --muted:#9298A2;
+  --line:#F0E8E2;
+  --green:#168A58;
+  --shadow:0 8px 25px rgba(37,42,48,.045);
 }
+
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{font-family:"Space Grotesk",sans-serif;background:var(--page);color:var(--text);min-height:100vh;min-height:100dvh;padding-bottom:94px;transition:background .2s,color .2s}
-button,input{font-family:inherit}
-button{cursor:pointer;-webkit-tap-highlight-color:transparent}
-a{color:inherit;text-decoration:none}
-.page{width:100%;max-width:760px;margin:0 auto;min-height:100vh;min-height:100dvh;background:var(--page)}
-header{height:68px;padding:0 18px;background:#fff;border-bottom:2px solid var(--green);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;box-shadow:0 4px 15px rgba(40,91,50,.05)}
-.header-left{display:flex;align-items:center;gap:11px;min-width:0}
-.back-btn{width:38px;height:38px;flex-shrink:0;border:1px solid var(--green-border);border-radius:11px;background:var(--green-light);color:var(--green);display:flex;align-items:center;justify-content:center;font-size:14px}
-.header-title{font-size:16px;font-weight:800;color:var(--green-dark);white-space:nowrap}
-.header-right{display:flex;align-items:center;gap:8px;color:var(--green);font-size:18px}
-.wallet-chip{display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--green-light);border:1px solid #B5D7BC;border-radius:12px;font-size:12px;font-weight:800;color:var(--green-dark)}
-main{padding:22px 16px 30px}
-.breadcrumb{display:flex;flex-wrap:wrap;align-items:center;gap:9px;color:#858585;font-size:12px;margin:3px 0 18px}
-.breadcrumb i{font-size:10px}
-.page-heading{margin-bottom:18px}
-.page-heading h1{font-size:22px;font-weight:800;line-height:1.4;letter-spacing:-.5px;color:#171717;margin-bottom:5px}
-.page-heading p{font-size:12px;line-height:1.8;color:var(--muted)}
-.product-card{overflow:hidden;background:#fff;border:1.5px solid #DDEBE0;border-radius:22px;box-shadow:var(--shadow);margin-bottom:17px}
-.product-visual{height:220px;background:var(--green);display:flex;align-items:center;justify-content:center;position:relative;color:#fff;overflow:hidden}
-.product-visual img{width:100%;height:100%;object-fit:cover;display:block}
-.product-visual .visual-placeholder{display:flex;flex-direction:column;align-items:center;gap:12px;color:#fff}
-.visual-placeholder i{font-size:68px}
-.visual-placeholder span{font-size:12px;font-weight:600;opacity:.85}
-.hot-badge{position:absolute;left:18px;top:18px;padding:7px 15px;border:1px solid rgba(255,255,255,.6);border-radius:25px;background:rgba(255,255,255,.2);color:#fff;font-size:11px;font-weight:700}
-.product-content{padding:20px}
-.product-content h2{font-size:20px;line-height:1.45;font-weight:800;overflow-wrap:anywhere;color:#171717;margin-bottom:10px}
-.category{display:inline-block;color:#858585;font-size:12px;margin-bottom:18px}
-.product-price{color:var(--green);font-size:28px;line-height:1.25;font-weight:800;letter-spacing:-.5px}
-.price-caption{color:#858585;text-align:right;font-size:12px;margin-top:2px}
-.vendor-discount{display:inline-flex;flex-wrap:wrap;align-items:center;gap:7px;margin-top:19px;padding:8px 13px;background:var(--green-light);border:1.5px solid #B5D7BC;border-radius:28px;color:var(--green);font-size:12px;line-height:1.5}
-.vendor-discount strong{text-decoration:underline}
-.stock-box{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:8px 13px;background:var(--green-light);border:1.5px solid #B5D7BC;border-radius:28px;color:#858585;font-size:12px}
-.stock-box i{font-size:10px;color:var(--green)}
-.details-box{margin-top:17px;padding:17px;border:1px solid #D9E9DC;border-radius:16px;background:#EAF4EC}
-.details-title{font-size:13px;letter-spacing:.7px;color:#777;font-weight:800;margin-bottom:9px}
-.details-text{font-size:13px;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere;color:#171717}
-.wallet-summary{margin-top:17px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px;border:1.5px solid #B5D7BC;border-radius:15px;background:#EAF4EC;color:#858585;font-size:13px}
-.wallet-summary strong{color:var(--green);font-size:17px;font-weight:800;white-space:nowrap}
-.notice{display:flex;align-items:flex-start;gap:9px;margin-top:14px;padding:12px;background:#F4F8F5;border:1px solid var(--green-border);border-radius:12px;color:#777;font-size:10px;line-height:1.8}
-.notice i{color:var(--green);font-size:12px;margin-top:3px;flex-shrink:0}
-.pay-btn{width:100%;min-height:54px;margin-top:17px;padding:14px;border:0;border-radius:14px;background:var(--green);color:#fff;font-size:16px;font-weight:800;box-shadow:0 9px 22px rgba(40,91,50,.17);transition:background .2s,transform .2s}
-.pay-btn:hover{background:var(--green-dark)}
-.pay-btn:active{transform:scale(.99)}
-.pay-btn:disabled{opacity:.55;cursor:not-allowed}
-.pay-btn i{margin-right:7px}
-.fund-link{display:block;text-align:center;margin-top:12px;color:var(--green);font-size:11px;font-weight:800}
-.section-heading{display:flex;align-items:center;gap:10px;margin:25px 0 14px;font-size:18px;font-weight:800;color:#171717}
-.section-heading:before{content:"";width:5px;height:27px;background:var(--green);border-radius:5px}
-.related-card{display:flex;align-items:center;gap:12px;padding:14px;background:#fff;border:1.5px solid #DDEBE0;border-radius:20px;box-shadow:var(--shadow)}
-.related-image{width:70px;height:70px;flex-shrink:0;border-radius:14px;background:var(--green-light);display:flex;align-items:center;justify-content:center;color:var(--green);font-size:23px;overflow:hidden}
-.related-image img{width:100%;height:100%;object-fit:cover}
-.related-info{flex:1;min-width:0}
-.related-info h3{font-size:13px;line-height:1.5;font-weight:800;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.related-stock{font-size:10px;color:#858585;margin-top:5px}
-.related-price{font-size:15px;color:var(--green);font-weight:800;text-align:right;white-space:nowrap}
-.related-buy{display:inline-block;margin-top:7px;padding:7px 12px;border-radius:22px;background:var(--green);color:#fff;font-size:11px;font-weight:700}
-.loading,.error-box{background:#fff;border:1.5px solid #DDEBE0;border-radius:20px;padding:32px 20px;text-align:center;box-shadow:var(--shadow)}
-.loading i{font-size:25px;color:var(--green);margin-bottom:10px}
-.loading p,.error-box p{font-size:11px;color:var(--muted);line-height:1.7}
-.error-box i{width:52px;height:52px;margin:0 auto 13px;border-radius:50%;background:#FFF0F0;color:#DC2626;display:flex;align-items:center;justify-content:center;font-size:20px}
-.error-box h2{font-size:16px;color:var(--green-dark);margin-bottom:6px}
-.error-box button{margin-top:15px;border:0;border-radius:11px;padding:11px 16px;background:var(--green);color:#fff;font-size:11px;font-weight:700}
-.success{display:none;text-align:center;padding:12px 0}
-.success.show{display:block}
-.success-icon{width:72px;height:72px;border-radius:50%;background:var(--green-light);color:var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 15px;font-size:30px}
-.success h1{font-size:22px;font-weight:800;color:var(--green-dark);margin-bottom:6px}
-.success>p{font-size:11px;color:var(--muted);line-height:1.7;margin-bottom:17px}
-.purchase-card{padding:18px;text-align:left}
-.purchase-label{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:9px}
-.purchase-item{background:var(--green-light);color:var(--green-dark);border-radius:13px;padding:15px;font-size:14px;font-weight:700;line-height:1.7;white-space:pre-wrap;overflow-wrap:anywhere}
-.purchase-item a{color:var(--green);text-decoration:underline;font-weight:800;overflow-wrap:anywhere;display:inline-block;position:relative;z-index:2;cursor:pointer;pointer-events:auto}
-.success-buttons{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:15px}
-.success-btn{border:0;border-radius:11px;padding:12px;font-size:10px;font-weight:700}
-.success-btn.primary{background:var(--green);color:#fff}
-.success-btn.secondary{background:var(--green-light);color:var(--green)}
-.toast{position:fixed;left:50%;bottom:95px;transform:translate(-50%,20px);background:var(--green-dark);color:#fff;padding:12px 16px;border-radius:12px;font-size:11px;opacity:0;visibility:hidden;transition:.25s;z-index:200;max-width:calc(100% - 30px);text-align:center}
-.toast.show{opacity:1;visibility:visible;transform:translate(-50%,0)}
-.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:760px;height:78px;background:rgba(255,255,255,.97);border-top:2px solid var(--green-border);display:grid;grid-template-columns:repeat(5,1fr);align-items:center;z-index:60;padding:5px 4px env(safe-area-inset-bottom,0)}
-.nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#999;font-size:10px;font-weight:600;min-width:0}
-.nav-item i{font-size:22px}
-.nav-item.active{color:var(--green)}
-.footer{padding:20px 10px 95px;text-align:center;color:#aaa;font-size:10px}
-html.dark-mode,html.dark-mode body,html.dark-mode .page{background:#0B1120;color:#F1F5F9}
-html.dark-mode header,html.dark-mode .bottom-nav{background:#101A2B;border-color:#31543A}
-html.dark-mode .header-title,html.dark-mode .page-heading h1,html.dark-mode .product-content h2,html.dark-mode .section-heading,html.dark-mode .related-info h3{color:#F1F5F9}
-html.dark-mode .product-card,html.dark-mode .related-card,html.dark-mode .loading,html.dark-mode .error-box,html.dark-mode .purchase-card{background:#142219;border-color:#31543A}
-html.dark-mode .details-box,html.dark-mode .wallet-summary,html.dark-mode .stock-box,html.dark-mode .vendor-discount,html.dark-mode .purchase-item{background:#203B29;border-color:#315E3C;color:#C7E8CE}
-html.dark-mode .details-text{color:#F1F5F9}
-html.dark-mode .notice{background:#17281D;border-color:#31543A;color:#C1CEC4}
-html.dark-mode .wallet-summary strong,html.dark-mode .related-price{color:#BDE5C5}
-html.dark-mode .nav-item.active{color:#BDE5C5}
-html.blue-mode:not(.dark-mode),html.blue-mode:not(.dark-mode) body,html.blue-mode:not(.dark-mode) .page{background:#EAF2FF}
-html.blue-mode:not(.dark-mode) header,html.blue-mode:not(.dark-mode) .bottom-nav{border-color:#BDD4F6}
-html.blue-mode:not(.dark-mode) .product-card,html.blue-mode:not(.dark-mode) .related-card,html.blue-mode:not(.dark-mode) .loading,html.blue-mode:not(.dark-mode) .error-box{border-color:#C8DAFA}
-@media(min-width:700px){body{background:#EAF0EB}.page{box-shadow:0 0 35px rgba(0,0,0,.035)}}
-@media(max-width:450px){
-  header{height:54px;padding:0 10px}
-  .back-btn{width:32px;height:32px}
-  .header-title{font-size:13px}
-  .wallet-chip{padding:6px 8px;font-size:10px}
-  main{padding:14px 11px 20px}
-  .breadcrumb{font-size:10px;margin-bottom:12px}
-  .page-heading{margin-bottom:12px}
-  .page-heading h1{font-size:17px}
-  .page-heading p{font-size:10px}
-  .product-card{border-radius:15px;margin-bottom:12px}
-  .product-visual{height:150px}
-  .product-content{padding:13px}
-  .product-content h2{font-size:16px;margin-bottom:7px}
-  .category{font-size:10px;margin-bottom:12px}
-  .product-price{font-size:22px}
-  .price-caption{font-size:10px}
-  .vendor-discount,.stock-box{margin-top:10px;padding:6px 10px;font-size:10px}
-  .details-box{margin-top:12px;padding:12px}
-  .details-title{font-size:11px}
-  .details-text{font-size:11px;line-height:1.6}
-  .wallet-summary{margin-top:12px;padding:11px;font-size:11px}
-  .wallet-summary strong{font-size:14px}
-  .notice{margin-top:10px;padding:9px;font-size:9px}
-  .pay-btn{min-height:43px;margin-top:12px;padding:10px;font-size:13px}
-  .section-heading{font-size:15px;margin:18px 0 10px}
-  .bottom-nav{height:65px}
-  .nav-item i{font-size:18px}
-  .nav-item{font-size:9px}
-  .footer{font-size:9px;padding-bottom:80px}
-}
-</style>
-<style id="gentlelogs-xtralogs-red-white-theme">
-/* GentleLogs XtraLogs-inspired red and white theme. Original structure and scripts are preserved. */
-:root {
-  --green:#C9232C !important;
-  --green-dark:#991B24 !important;
-  --green-light:#FDEEEF !important;
-  --green-soft:#FFF5F5 !important;
-  --green-pale:#FFFFFF !important;
-  --green-border:#F1C9CC !important;
-  --light-green:#FDEEEF !important;
-  --light:#FDEEEF !important;
-  --pale:#FFF8F8 !important;
-  --background:#FFFFFF !important;
-  --bg:#FFFFFF !important;
-  --page:#FFFFFF !important;
-  --text:#171923 !important;
-  --muted:#747985 !important;
-  --border:#E8E8EB !important;
-  --white:#FFFFFF !important;
-  --card:#FFFFFF !important;
-  --blue:#C9232C !important;
-  --blue-dark:#991B24 !important;
-  --blue-light:#FDEEEF !important;
-  --shadow:0 8px 26px rgba(23,25,35,.06) !important;
-}
-html,body,button,input,textarea,select,option {
-  font-family:"Space Grotesk",sans-serif !important;
-}
-html,body { background:#FFFFFF; color:#171923; }
-/* White surfaces, subtle borders and restrained shadows */
-.card,.auth-card,.product-card,.related-card,.stat-card,.floating-card,
-.wallet-summary,.details-box,.notice,.purchase-card,.referral-premium,
-.loading,.error-box,.security-badge,.main-icon,.transaction,.order,
-.state-box,.empty,.loading,.link-box,.summary-card:not(.hero) {
-  border-color:#E8E8EB;
-}
-.card,.auth-card,.product-card,.related-card,.stat-card,.floating-card,
-.transaction,.order,.state-box,.empty,.loading,.purchase-card {
-  background-color:#FFFFFF;
-}
-/* Brand, icons, links and prices */
-h1,h2,h3,h4,.header-title,.brand-name,.brand-text h1,.section-heading,
-.page-heading h1,.title h1,.heading h1,.intro h2,.logo,.logo-accent,
-.heading,.tx-title,.order-name h3 { color:#171923; }
-.brand-name span,.brand-accent,.header-title i,.section-heading:before,
-.input-icon,.stat-icon,.heading-icon,.empty-icon,.back-login,.fund-link,
-.related-price,.product-price,.amount,.detail-value,.wallet-summary strong,
-.history-amount,.footer strong,.nav-item.active,.tx-amount,.order-price,
-.page-heading h1 + span { color:#C9232C; }
-/* Red primary actions */
-.reset-btn,.pay-btn,.primary-btn,.update-btn,.complete-btn,.btn-primary,
-.copy-small,.related-buy,.wallet-btn:not(.secondary),.copy-btn,
-.error-box button,.refresh,.retry,.retry-btn,.shop-btn,.success-btn.primary,
-button.primary,.button.primary {
-  background:linear-gradient(105deg,#C9232C 0%,#E13A43 100%) !important;
-  color:#FFFFFF !important;
-  border-color:transparent !important;
-  box-shadow:0 7px 18px rgba(201,35,44,.16);
-}
-.reset-btn:hover,.pay-btn:hover,.primary-btn:hover,.update-btn:hover,
-.complete-btn:hover,.btn-primary:hover,.copy-small:hover,.related-buy:hover,
-.refresh:hover,.retry:hover,.retry-btn:hover {
-  background:linear-gradient(105deg,#A91D26 0%,#C9232C 100%) !important;
-}
-.btn-secondary,.secondary-btn,.wallet-btn.secondary,.copy-small.secondary,
-.back,.back-btn,.header-icon,.wallet-chip,.auth-tab.active {
-  color:#A91D26;
-  background:#FDEEEF;
-  border-color:#F1C9CC;
-}
-input,textarea,select,.form-control {
-  color:#171923;
-  border-color:#E3E3E7;
-  background:#FFFFFF;
-}
-input:focus,textarea:focus,select:focus,.form-control:focus {
-  border-color:#C9232C !important;
-  box-shadow:0 0 0 3px rgba(201,35,44,.10) !important;
-}
-/* Red brand bars and highlighted surfaces */
-header,.topbar,.top-header { border-bottom-color:#C9232C; }
-.logo-box,.brand-icon,.brand-mark,.main-icon,.heading-icon,.stat-icon,
-.tx-icon,.order-icon,.state-icon,.step-number,.feature-icon {
-  background:#FDEEEF;
-  color:#C9232C;
-}
-.hero,.wallet-card,.summary-card {
-  background:linear-gradient(125deg,#A91D26 0%,#C9232C 58%,#E64B52 100%) !important;
-  color:#FFFFFF;
-}
-.hero h2,.hero p,.hero-label,.summary-card,.summary-card * { color:#FFFFFF; }
-.notice,.details-box,.wallet-summary,.purchase-item,.purchase-text,
-.reference,.link-box,.security-badge {
-  background:#FFF5F5;
-  border-color:#F1D9DB;
-}
-.status.approved,.status.success,.status.completed,
-.message.success { background:#EAF7EF; color:#17663A; }
-.status.rejected,.status.failed,.status.cancelled,
-.message.error { background:#FFF0F0; color:#A51F2A; }
-/* Maintain readable mobile controls and prevent iOS Safari focus zoom. */
-@media(max-width:767px) {
-  input,textarea,select,.form-control,.input-wrap input { font-size:16px !important; }
-}
-@media(prefers-reduced-motion:reduce) {
-  *,*::before,*::after { scroll-behavior:auto !important; animation-duration:.01ms !important; transition-duration:.01ms !important; }
-}
-</style>
 
-<style id="gentle-unified-green-white-palette">
-/* Unified Gentle Acct Store brand colours. Layout, typography and behaviour remain unchanged. */
-:root{
- --green:#29532A !important; --green-dark:#194D28 !important;
- --green-light:#EAF4EC !important; --green-soft:#EAF4EC !important;
- --green-pale:#F2F6F3 !important; --green-border:#D9E9DC !important;
- --blue:#29532A !important; --blue-dark:#194D28 !important;
- --blue-light:#EAF4EC !important; --blue-soft:#F2F6F3 !important;
- --primary:#29532A !important; --primary-dark:#194D28 !important;
- --accent:#29532A !important; --accent-light:#EAF4EC !important;
- --bg:#F2F6F3 !important; --background:#F2F6F3 !important;
- --page:#F2F6F3 !important; --white:#FFFFFF !important;
- --border:#D9E9DC !important; --line:#D9E9DC !important;
- --shadow:0 5px 18px rgba(41,83,42,.07) !important;
-}
-/* Shared brand accents and primary controls */
-.brand-name,.brand-text h1,.brand-accent,.header-title,.header-title i,
-.header-icon,.back-btn,.back-login,.fund-link,.view-all,.related-price,
-.product-price,.amount,.detail-value,.history-amount,.nav-item.active,
-.tx-amount,.order-price,.section-heading,.section-heading:before,
-.input-icon,.stat-icon,.heading-icon,.empty-icon,.menu-icon,
-.card-heading-icon,.deposit-icon,.support-icon,.loading-spinner,
-.loading i,.state-icon,.order-icon,.success-icon,.success h1,
-.theme-check,.security-status.good {color:#29532A !important;}
-.header,.top-header,header {border-bottom-color:#29532A !important;}
-.header-icon,.back-btn,.wallet-chip,.auth-tab.active,.menu-icon,
-.card-heading-icon,.deposit-icon,.support-icon,.stat-icon,
-.order-icon,.state-icon,.success-icon,.theme-option.selected {
- background-color:#EAF4EC !important; border-color:#D9E9DC !important;
-}
-.reset-btn,.pay-btn,.primary-btn,.update-btn,.complete-btn,.btn-primary,
-.copy-small,.related-buy,.wallet-btn:not(.secondary),.copy-btn,
-.error-box button,.refresh,.retry,.retry-btn,.shop-btn,.success-btn.primary,
-button.primary,.button.primary,.save-button,.logout-button:not(.secondary) {
- background:#29532A !important; color:#FFFFFF !important;
- border-color:#29532A !important; box-shadow:0 7px 18px rgba(41,83,42,.15) !important;
-}
-.reset-btn:hover,.pay-btn:hover,.primary-btn:hover,.update-btn:hover,
-.complete-btn:hover,.btn-primary:hover,.related-buy:hover,.refresh:hover,
-.retry:hover,.retry-btn:hover,.save-button:hover {background:#194D28 !important;}
-.btn-secondary,.secondary-btn,.wallet-btn.secondary,.back,
-.header-icon,.wallet-chip {color:#194D28 !important;background:#EAF4EC !important;border-color:#D9E9DC !important;}
-input:focus,textarea:focus,select:focus,.form-control:focus,
-.amount-wrap:focus-within {border-color:#29532A !important;box-shadow:0 0 0 3px rgba(41,83,42,.10) !important;}
-input,textarea,select,.form-control {accent-color:#29532A;}
-.hero,.wallet-card,.balance-card,.summary-card,.profile-card {
- background:linear-gradient(125deg,#194D28 0%,#29532A 58%,#47764A 100%) !important;
- color:#FFFFFF !important;
-}
-.hero h2,.hero p,.hero-label,.summary-card,.summary-card *,
-.wallet-card *,.balance-card *,.profile-card * {color:#FFFFFF;}
-.notice,.details-box,.wallet-summary,.purchase-item,.purchase-text,
-.reference,.link-box,.security-badge,.security-note {
- background:#EAF4EC !important;border-color:#D9E9DC !important;
-}
-.status.approved,.status.success,.status.completed,.message.success {
- background:#EAF4EC !important;color:#194D28 !important;
-}
-/* White surfaces and consistent page backgrounds */
-html:not(.dark-mode):not([data-theme="dark"]) body,
-html:not(.dark-mode):not([data-theme="dark"]) .page,
-html:not(.dark-mode):not([data-theme="dark"]) main {background-color:#F2F6F3;}
-.card,.auth-card,.product-card,.related-card,.stat-card,.floating-card,
-.transaction,.order,.state-box,.empty,.loading,.purchase-card,
-.section,.fund-card,.deposit-list {border-color:#D9E9DC;}
-/* Dark mode keeps its existing dark surfaces while using the same green brand accent. */
-html.dark-mode,html[data-theme="dark"] {--green:#8BC995 !important;--green-dark:#B7E4BE !important;--blue:#8BC995 !important;--blue-dark:#B7E4BE !important;--green-light:#203B29 !important;--blue-light:#203B29 !important;--border:#304F37 !important;}
-html.dark-mode .nav-item.active,html[data-theme="dark"] .nav-item.active,
-html.dark-mode .header-icon,html[data-theme="dark"] .header-icon,
-html.dark-mode .back-btn,html[data-theme="dark"] .back-btn {color:#B7E4BE !important;}
-@media(max-width:767px){input,textarea,select,.form-control,.input-wrap input{font-size:16px !important;}}
-</style>
-
-
-<style>
-
-/* Gentle Acct Store — cohesive premium visual layer.
-   Presentation-only overrides: existing IDs, scripts, data flows and actions remain intact. */
-:root {
-  --brand-green: #176b3a;
-  --brand-green-dark: #10552e;
-  --brand-green-soft: #eaf4ee;
-  --brand-ink: #17251d;
-  --brand-muted: #718078;
-  --brand-line: #e4ece6;
-  --brand-canvas: #f5f8f6;
-  --brand-shadow: 0 12px 34px rgba(20, 54, 34, .075);
-  --brand-shadow-hover: 0 18px 42px rgba(20, 54, 34, .11);
-}
-html { -webkit-text-size-adjust: 100%; }
-body {
-  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
-button, input, select, textarea { font-family: inherit; }
-a, button { -webkit-tap-highlight-color: transparent; }
-button { transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease, border-color .18s ease; }
-button:active { transform: translateY(1px); }
-:focus-visible { outline: 3px solid rgba(35, 130, 76, .28); outline-offset: 2px; }
-input, select, textarea { min-height: 44px; font-size: 16px !important; }
-.card, .auth-card, .panel, .purchase-card, .balance-card, .floating-card,
-.stat-card, .product-card, .wallet-card, .section-card, .content-card,
-.order-card, .transaction, .theme-card, .settings-card {
-  border-color: var(--brand-line);
-  box-shadow: var(--brand-shadow);
-}
-.card, .auth-card, .panel, .purchase-card, .balance-card, .floating-card {
-  border-radius: 20px;
-}
-.stat-card, .product-card, .order-card, .transaction, .theme-card {
-  border-radius: 16px;
-}
-.btn, .primary-btn, .submit-btn, .buy-btn, .reset-btn, .action-btn,
-button[type="submit"] {
-  border-radius: 12px;
-  font-weight: 650;
-  letter-spacing: -.01em;
-}
-.btn-primary, .primary-btn, .submit-btn, .buy-btn, .reset-btn,
-.action-btn.primary, button[type="submit"] {
-  box-shadow: 0 7px 18px rgba(23, 107, 58, .16);
-}
-.btn-primary:hover, .primary-btn:hover, .submit-btn:hover, .buy-btn:hover,
-.reset-btn:hover, .action-btn.primary:hover, button[type="submit"]:hover {
-  box-shadow: 0 10px 24px rgba(23, 107, 58, .22);
-  transform: translateY(-1px);
-}
-.top-header, header, .header, .app-header {
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-}
-.section-heading, .section-title, .heading, .panel-title {
-  letter-spacing: -.035em;
-}
-small, .muted, .subtitle, .panel-desc, .description {
-  letter-spacing: .005em;
-}
-@media (hover:hover) {
-  .stat-card:hover, .product-card:hover, .order-card:hover, .transaction:hover {
-    box-shadow: var(--brand-shadow-hover);
-    transform: translateY(-2px);
-  }
-}
-@media (max-width: 640px) {
-  .card, .auth-card, .panel, .purchase-card, .balance-card, .floating-card {
-    border-radius: 17px;
-  }
-  input, select, textarea { font-size: 16px !important; }
+body{
+  font-family:"Space Grotesk",sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
 }
 
+button{font:inherit;cursor:pointer}
+a{text-decoration:none;color:inherit}
+button,a{-webkit-tap-highlight-color:transparent}
 
-:root { --green:#176b3a !important; --green-dark:#10552e !important; --green-light:#eaf4ee !important; --green-border:#e1ebe4 !important; --page:#f5f8f6 !important; --line:#e4ece6 !important; }
-body { background:#f5f8f6 !important; }
-.purchase-card { border:1px solid #e4ece6 !important; }
+.shell{
+  width:100%;
+  max-width:650px;
+  min-height:100vh;
+  margin:auto;
+  padding-bottom:35px;
+}
 
+/* HEADER */
+
+.header{
+  height:66px;
+  padding:0 20px;
+  display:flex;
+  align-items:center;
+  gap:15px;
+  background:rgba(255,252,250,.97);
+  border-bottom:1px solid var(--line);
+  position:sticky;
+  top:0;
+  z-index:10;
+  backdrop-filter:blur(15px);
+}
+
+.back-btn{
+  width:38px;
+  height:38px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:white;
+  color:var(--ink);
+  display:grid;
+  place-items:center;
+  font-size:14px;
+}
+
+.brand{
+  font-size:20px;
+  font-weight:700;
+  letter-spacing:-.8px;
+}
+
+.brand span{color:var(--orange)}
+
+.header-label{
+  margin-left:auto;
+  font-size:12px;
+  color:var(--muted);
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+
+.header-label i{color:var(--green)}
+
+/* PAGE */
+
+main{padding:25px 20px}
+
+.heading{margin-bottom:23px}
+
+.eyebrow{
+  color:var(--orange-dark);
+  font-size:10px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+  margin-bottom:7px;
+}
+
+.heading h1{
+  font-size:27px;
+  letter-spacing:-1px;
+  font-weight:700;
+}
+
+.heading p{
+  margin-top:6px;
+  color:var(--muted);
+  font-size:12px;
+}
+
+/* PRODUCT */
+
+.section-label{
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:11px;
+}
+
+.product-card{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:19px;
+  padding:15px;
+  display:flex;
+  gap:14px;
+  align-items:center;
+  box-shadow:var(--shadow);
+}
+
+.product-image{
+  width:88px;
+  height:88px;
+  flex:none;
+  border-radius:15px;
+  background:var(--orange-soft);
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  color:var(--orange);
+  font-size:27px;
+}
+
+.product-image img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.product-info{min-width:0;flex:1}
+
+.product-category{
+  color:var(--orange-dark);
+  font-size:10px;
+  font-weight:600;
+  margin-bottom:6px;
+  text-transform:uppercase;
+  letter-spacing:.6px;
+}
+
+.product-name{
+  font-size:16px;
+  font-weight:700;
+  line-height:1.35;
+  overflow-wrap:anywhere;
+}
+
+.product-price{
+  margin-top:8px;
+  font-size:17px;
+  font-weight:700;
+  color:var(--orange-dark);
+}
+
+.stock{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  font-size:10px;
+  color:var(--green);
+  margin-top:7px;
+}
+
+.stock i{font-size:6px}
+
+/* CUSTOMER */
+
+.section{
+  margin-top:23px;
+}
+
+.section-title{
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:11px;
+}
+
+.customer-card{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:17px;
+  padding:16px;
+}
+
+.customer-row{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.customer-icon{
+  width:39px;
+  height:39px;
+  border-radius:12px;
+  background:var(--orange-soft);
+  color:var(--orange-dark);
+  display:grid;
+  place-items:center;
+  flex:none;
+}
+
+.customer-text{min-width:0}
+
+.customer-name{
+  font-size:13px;
+  font-weight:700;
+}
+
+.customer-email{
+  font-size:11px;
+  color:var(--muted);
+  margin-top:4px;
+  overflow-wrap:anywhere;
+}
+
+.customer-note{
+  border-top:1px solid var(--line);
+  margin-top:14px;
+  padding-top:11px;
+  font-size:10px;
+  color:var(--muted);
+  line-height:1.6;
+}
+
+/* WALLET */
+
+.wallet-card{
+  border:1px solid #F4DCCB;
+  background:linear-gradient(120deg,#FFF5EE,#FFFFFF);
+  border-radius:17px;
+  padding:16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.wallet-left{
+  display:flex;
+  align-items:center;
+  gap:11px;
+}
+
+.wallet-icon{
+  width:40px;
+  height:40px;
+  border-radius:13px;
+  background:#FFE6D7;
+  color:var(--orange-dark);
+  display:grid;
+  place-items:center;
+}
+
+.wallet-label{
+  font-size:10px;
+  color:var(--muted);
+}
+
+.wallet-value{
+  font-size:17px;
+  font-weight:700;
+  margin-top:4px;
+}
+
+.wallet-link{
+  color:var(--orange-dark);
+  font-size:11px;
+  font-weight:700;
+  white-space:nowrap;
+}
+
+/* TOTAL */
+
+.summary{
+  margin-top:22px;
+  background:white;
+  border:1px solid var(--line);
+  border-radius:17px;
+  padding:17px;
+}
+
+.summary-heading{
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:15px;
+}
+
+.summary-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  font-size:12px;
+  margin-top:11px;
+}
+
+.summary-row span:first-child{color:var(--muted)}
+
+.summary-row strong{font-weight:600}
+
+.summary-total{
+  border-top:1px solid var(--line);
+  padding-top:15px;
+  margin-top:16px;
+}
+
+.summary-total span:first-child{
+  color:var(--ink);
+  font-weight:700;
+}
+
+.summary-total strong{
+  color:var(--orange-dark);
+  font-size:20px;
+  font-weight:700;
+}
+
+/* BUTTON */
+
+.buy-button{
+  width:100%;
+  height:54px;
+  margin-top:19px;
+  border:0;
+  border-radius:15px;
+  background:var(--orange);
+  color:white;
+  font-size:14px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  box-shadow:0 7px 17px rgba(232,117,53,.2);
+  transition:.2s;
+}
+
+.buy-button:active{transform:scale(.985)}
+.buy-button:disabled{opacity:.55;cursor:not-allowed}
+
+.secure-note{
+  margin-top:13px;
+  text-align:center;
+  color:var(--muted);
+  font-size:10px;
+}
+
+.secure-note i{
+  color:var(--green);
+  margin-right:5px;
+}
+
+/* LOADING */
+
+#loader{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  background:#0B1120;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  color:white;
+  transition:opacity .3s;
+}
+
+.loader-logo{
+  font-size:29px;
+  font-weight:700;
+  letter-spacing:-1px;
+}
+
+.loader-logo span{color:#E87535}
+
+.loader-line{
+  width:155px;
+  height:4px;
+  border-radius:10px;
+  background:#263044;
+  overflow:hidden;
+  margin-top:25px;
+}
+
+.loader-progress{
+  height:100%;
+  width:40%;
+  border-radius:10px;
+  background:linear-gradient(90deg,#9B5CFF,#E87535);
+  animation:loading 1.1s ease-in-out infinite;
+}
+
+.loader-message{
+  margin-top:13px;
+  font-size:11px;
+  color:#AAB2C2;
+}
+
+@keyframes loading{
+  0%{transform:translateX(-110%)}
+  100%{transform:translateX(260%)}
+}
+
+#message{
+  display:none;
+  margin-top:15px;
+  padding:12px;
+  border-radius:12px;
+  font-size:12px;
+  line-height:1.5;
+  background:#FFF1E8;
+  color:#A34B25;
+}
+
+@media(max-width:380px){
+  main{padding:21px 15px}
+  .header{padding:0 15px}
+  .heading h1{font-size:24px}
+  .product-image{width:76px;height:76px}
+  .product-name{font-size:14px}
+  .wallet-value{font-size:15px}
+}
 </style>
 </head>
 
 <body>
-<div class="page">
-<header>
-  <div class="header-left">
-    <button class="back-btn" type="button" onclick="goBack()" aria-label="Go back">
-      <i class="fa-solid fa-arrow-left"></i>
-    </button>
-    <div class="header-title">Gentle Acct Store</div>
+
+<div id="loader">
+  <div class="loader-logo">Gentle<span>Logs</span></div>
+  <div class="loader-line">
+    <div class="loader-progress"></div>
   </div>
-  <div class="header-right">
-    <div class="wallet-chip"><i class="fa-solid fa-wallet"></i><span id="headerBalance">₦0.00</span></div>
+  <div class="loader-message">Preparing your checkout...</div>
+</div>
+
+<div class="shell">
+
+<header class="header">
+  <a href="javascript:history.back()" class="back-btn" aria-label="Go back">
+    <i class="fa-solid fa-arrow-left"></i>
+  </a>
+
+  <a href="home.html" class="brand">Gentle<span>Logs</span></a>
+
+  <div class="header-label">
+    <i class="fa-solid fa-lock"></i>
+    Secure checkout
   </div>
 </header>
 
 <main>
-  <div id="checkoutContent">
-    <div class="loading"><i class="fa-solid fa-spinner fa-spin"></i><p>Loading checkout...</p></div>
+
+  <div class="heading">
+    <div class="eyebrow">Almost there</div>
+    <h1>Checkout</h1>
+    <p>Review your product before completing your purchase.</p>
   </div>
 
-  <div id="successContent" class="success">
-    <div class="success-icon"><i class="fa-solid fa-check"></i></div>
-    <h1>Purchase Successful</h1>
-    <p>Your purchase information is below.</p>
-    <div class="purchase-card">
-      <div class="purchase-label">Purchase Information</div>
-      <div id="successPurchaseItem" class="purchase-item">-</div>
+  <div class="section-label">Product details</div>
+
+  <section class="product-card">
+    <div class="product-image" id="productImage">
+      <i class="fa-solid fa-box"></i>
     </div>
-    <div class="success-buttons">
-      <button class="success-btn primary" type="button" onclick="window.location.href='orders.html'"><i class="fa-solid fa-receipt"></i> My Orders</button>
-      <button class="success-btn secondary" type="button" onclick="window.location.href='dashboard.html'">Continue Shopping</button>
+
+    <div class="product-info">
+      <div class="product-category" id="productCategory">Product</div>
+      <div class="product-name" id="productName">Loading product...</div>
+      <div class="product-price" id="productPrice">₦0.00</div>
+      <div class="stock" id="stockLabel">
+        <i class="fa-solid fa-circle"></i>
+        Checking availability
+      </div>
     </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title">Customer details</div>
+
+    <div class="customer-card">
+      <div class="customer-row">
+        <div class="customer-icon">
+          <i class="fa-regular fa-user"></i>
+        </div>
+
+        <div class="customer-text">
+          <div class="customer-name" id="customerName">Loading...</div>
+          <div class="customer-email" id="customerEmail"></div>
+        </div>
+      </div>
+
+      <div class="customer-note">
+        This is the account that will be associated with your order.
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title">Payment method</div>
+
+    <div class="wallet-card">
+      <div class="wallet-left">
+        <div class="wallet-icon">
+          <i class="fa-solid fa-wallet"></i>
+        </div>
+
+        <div>
+          <div class="wallet-label">Available wallet balance</div>
+          <div class="wallet-value" id="walletBalance">₦0.00</div>
+        </div>
+      </div>
+
+      <a href="fund.html" class="wallet-link">Add funds</a>
+    </div>
+  </section>
+
+  <section class="summary">
+    <div class="summary-heading">Order summary</div>
+
+    <div class="summary-row">
+      <span>Product</span>
+      <strong id="summaryProduct">—</strong>
+    </div>
+
+    <div class="summary-row">
+      <span>Subtotal</span>
+      <strong id="subtotal">₦0.00</strong>
+    </div>
+
+    <div class="summary-row summary-total">
+      <span>Total amount</span>
+      <strong id="total">₦0.00</strong>
+    </div>
+  </section>
+
+  <div id="message"></div>
+
+  <button class="buy-button" id="buyButton" type="button" disabled>
+    Confirm & Buy
+    <i class="fa-solid fa-arrow-right"></i>
+  </button>
+
+  <div class="secure-note">
+    <i class="fa-solid fa-shield-halved"></i>
+    Your account information is protected.
   </div>
+
 </main>
-
-<footer class="footer">© 2026 Gentle Acct Store · Premium Account Marketplace</footer>
 </div>
 
-<nav class="bottom-nav" aria-label="Main navigation">
-  <a class="nav-item" href="dashboard.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
-  <a class="nav-item active" href="dashboard.html.html"><i class="fa-solid fa-store"></i><span>Products</span></a>
-  <a class="nav-item" href="orders.html"><i class="fa-solid fa-lock"></i><span>Orders</span></a>
-  <a class="nav-item" href="fund.html"><i class="fa-solid fa-circle-plus"></i><span>Fund</span></a>
-  <a class="nav-item" href="menu.html"><i class="fa-solid fa-bars"></i><span>Menu</span></a>
-</nav>
-
-<div id="toast" class="toast" role="status" aria-live="polite"></div>
-
 <script>
-"use strict";
+const auth = window.firebaseAuth;
+const db = window.firebaseDB;
 
-let currentUser = null;
+const $ = id => document.getElementById(id);
+
 let selectedProduct = null;
-let walletBalance = 0;
-let purchaseInProgress = false;
-
-const urlParams = new URLSearchParams(window.location.search);
-const urlProductId = urlParams.get("id");
-let savedProductId = null;
-try { savedProductId = localStorage.getItem("gentleCheckoutProduct"); } catch(e) {}
-const selectedId = urlProductId || savedProductId;
-const THEME_KEY = "gentle-acct-store-theme";
-
-function getThemeKey(user){ return "gentle-acct-store-theme-user-" + user.uid; }
-
-function readSavedTheme(){
-  try {
-    if(currentUser){
-      const personal = localStorage.getItem(getThemeKey(currentUser));
-      if(["light","dark","blue"].includes(personal)) return personal;
-    }
-    const shared = localStorage.getItem(THEME_KEY);
-    if(["light","dark","blue"].includes(shared)) return shared;
-  } catch(e) {}
-  return "light";
-}
-
-function applyTheme(theme){
-  if(!["light","dark","blue"].includes(theme)) theme = "light";
-  document.documentElement.classList.toggle("dark-mode", theme === "dark");
-  document.documentElement.classList.toggle("blue-mode", theme === "blue");
-  const meta = document.querySelector('meta[name="theme-color"]');
-  if(meta) meta.content = theme === "dark" ? "#0B1120" : theme === "blue" ? "#1D4ED8" : "#285B32";
-}
-
-function syncTheme(){ applyTheme(readSavedTheme()); }
-
-window.addEventListener("storage",function(event){
-  if(event.key === THEME_KEY || (currentUser && event.key === getThemeKey(currentUser)) || event.key === null) syncTheme();
-});
-
-window.addEventListener("pageshow",syncTheme);
-
-document.addEventListener("visibilitychange",function(){
-  if(!document.hidden) syncTheme();
-});
-
-syncTheme();
-
-if(typeof firebaseAuth === "undefined" || typeof firebaseDB === "undefined"){
-  showError("Firebase is not configured. Please check firebase.js.");
-} else {
-  firebaseAuth.onAuthStateChanged(async function(user){
-    if(!user){
-      window.location.replace("login.html");
-      return;
-    }
-
-    currentUser = user;
-    syncTheme();
-    try{const cached=localStorage.getItem("gentleBalance");if(cached!==null&&Number.isFinite(Number(cached)))walletBalance=Number(cached);}catch(e){}
-
-    if(!selectedId){
-      showError("No product was selected.");
-      return;
-    }
-
-    await loadCheckout();
-  });
-}
-
-async function loadCheckout(){
-  try{
-    const productRef = firebaseDB.collection("products").doc(selectedId);
-    const productSnapshot = await productRef.get();
-
-    if(!productSnapshot.exists){
-      showError("This product is no longer available.");
-      return;
-    }
-
-    selectedProduct = {
-      id: productSnapshot.id,
-      ...productSnapshot.data()
-    };
-
-    const walletSnapshot = await firebaseDB
-      .collection("wallets")
-      .doc(currentUser.uid)
-      .get();
-
-    walletBalance = walletSnapshot.exists
-      ? Number(walletSnapshot.data().balance || 0)
-      : 0;
-    if(!Number.isFinite(walletBalance)||walletBalance<0)throw new Error("Wallet balance is invalid.");
-    try{localStorage.setItem("gentleBalance",String(walletBalance));}catch(e){}
-
-    renderCheckout();
-  }catch(error){
-    console.error("CHECKOUT ERROR:",error);
-    showError(error.message || "Unable to load checkout.");
-  }
-}
-
-function renderCheckout(){
-  const container = document.getElementById("checkoutContent");
-
-  const productNameRaw = String(selectedProduct.name || "Product");
-  const productName = escapeHTML(productNameRaw);
-  const category = escapeHTML(selectedProduct.category || "Product");
-  const description = String(selectedProduct.description || "Digital product");
-  const price = Number(selectedProduct.price || 0);
-  const stock = Number(selectedProduct.stockCount || 0);
-
-  const hasEnoughBalance = walletBalance >= price;
-  const canBuy = stock > 0 && hasEnoughBalance;
-
-  document.getElementById("headerBalance").textContent =
-    formatMoney(walletBalance);
-
-  let visualHTML =
-    '<div class="visual-placeholder"><i class="fa-solid fa-envelope-open-text"></i><span>Gentle Acct Store</span></div>';
-
-  if(selectedProduct.image){
-    visualHTML = `
-      <img
-        src="${escapeAttribute(selectedProduct.image)}"
-        alt="${productName}"
-        onerror="this.style.display='none';this.parentElement.querySelector('.visual-placeholder').style.display='flex'"
-      >
-      <div class="visual-placeholder" style="display:none">
-        <i class="fa-solid fa-box"></i>
-        <span>Gentle Acct Store</span>
-      </div>
-    `;
-  }
-
-  container.innerHTML = `
-    <div class="breadcrumb">
-      <a href="dashboard.html">Home</a>
-      <i class="fa-solid fa-chevron-right"></i>
-      <a href="dashboard.html">Products</a>
-      <i class="fa-solid fa-chevron-right"></i>
-      <span>${category}</span>
-      <i class="fa-solid fa-chevron-right"></i>
-    </div>
-
-    <div class="page-heading">
-      <h1>${productName}</h1>
-      <p>Review your selected product and confirm your purchase.</p>
-    </div>
-
-    <section class="product-card">
-      <div class="product-visual">
-        ${visualHTML}
-        ${
-          stock > 0
-            ? '<span class="hot-badge">AVAILABLE</span>'
-            : '<span class="hot-badge">SOLD OUT</span>'
-        }
-      </div>
-
-      <div class="product-content">
-        <h2>${productName}</h2>
-        <div class="category">${category}</div>
-
-        <div class="product-price">${formatMoney(price)}</div>
-        <div class="price-caption">per unit</div>
-
-        <div class="vendor-discount">
-          <i class="fa-solid fa-user-plus"></i>
-          <span></span>
-        </div>
-
-        <div class="stock-box">
-          <i class="fa-solid fa-circle"></i>
-          <span>
-            ${stock > 0 ? stock + " available" : "Currently unavailable"}
-          </span>
-        </div>
-
-        <div class="details-box">
-          <div class="details-title">PRODUCT DETAILS</div>
-          <div class="details-text">${escapeHTML(productNameRaw)}</div>
-        </div>
-
-        <div class="wallet-summary">
-          <span>Your wallet balance</span>
-          <strong>${formatMoney(walletBalance)}</strong>
-        </div>
-
-        ${
-          !hasEnoughBalance
-            ? `
-              <div class="notice">
-                <i class="fa-solid fa-circle-info"></i>
-                <div>Your wallet balance is not enough for this purchase. Fund your wallet to continue.</div>
-              </div>
-              <a href="fund.html" class="fund-link">
-                Fund Wallet <i class="fa-solid fa-arrow-right"></i>
-              </a>
-            `
-            : ""
-        }
-
-        <button
-          id="payButton"
-          class="pay-btn"
-          type="button"
-          ${canBuy ? "" : "disabled"}
-        >
-          <i class="fa-solid fa-bolt"></i>
-          ${
-            stock <= 0
-              ? "Sold Out"
-              : !hasEnoughBalance
-                ? "Insufficient Balance"
-                : "Buy Now"
-          }
-        </button>
-
-        <div class="notice">
-          <i class="fa-solid fa-shield-halved"></i>
-          <div>Your purchase is processed securely. The item will be delivered after successful payment.</div>
-        </div>
-      </div>
-    </section>
-  `;
-
-  const payButton = document.getElementById("payButton");
-
-  if(payButton && canBuy){
-    payButton.addEventListener("click",completePurchase);
-  }
-}
-
-async function completePurchase(){
-  const button = document.getElementById("payButton");
-
-  if(purchaseInProgress) return;
-
-  if(!selectedProduct){
-    showToast("Product information is missing.");
-    return;
-  }
-
-  const price = Number(selectedProduct.price || 0);
-
-  if(walletBalance < price){
-    showToast("Insufficient wallet balance.");
-    return;
-  }
-
-  if(Number(selectedProduct.stockCount || 0) <= 0){
-    showToast("This product is sold out.");
-    return;
-  }
-
-  purchaseInProgress = true;
-
-  try{
-    button.disabled = true;
-    button.innerHTML =
-      '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
-
-    const productRef = firebaseDB
-      .collection("products")
-      .doc(selectedProduct.id);
-
-    // Spencer products are purchased live through the Cloudflare Worker.
-    // The server verifies the customer, product price, stock and wallet balance.
-    if(String(selectedProduct.supplierProvider || "").toLowerCase() === "spenceraccstore"){
-      const idToken = await firebaseAuth.currentUser.getIdToken();
-      const pendingKey = "gentle_spencer_pending_" + currentUser.uid + "_" + selectedProduct.id;
-      let requestId = localStorage.getItem(pendingKey);
-      if(!requestId){
-        requestId = (crypto.randomUUID ? crypto.randomUUID() :
-          "sp_" + Date.now() + "_" + Math.random().toString(36).slice(2, 12));
-        localStorage.setItem(pendingKey,requestId);
-      }
-      const response = await fetch("/api/customer/spencer-purchase",{
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json",
-          "Authorization":"Bearer " + idToken
-        },
-        body:JSON.stringify({productId:selectedProduct.id,requestId})
-      });
-      const result = await response.json().catch(()=>({}));
-      if(response.status === 202 || result.pending){
-        showToast(result.error || "Your order is processing. Check Orders before trying again.");
-        button.disabled = true;
-        button.innerHTML = '<i class="fa-solid fa-clock"></i> Order Processing';
-        return;
-      }
-      if(!response.ok || !result.success){
-        if(response.status !== 202 && !result.pending) localStorage.removeItem(pendingKey);
-        throw new Error(result.error || "Purchase could not be completed.");
-      }
-      localStorage.removeItem(pendingKey);
-      walletBalance = Number(result.balance);
-      showSuccess(String(result.purchaseText || ""));
-      return;
-    }
-
-    const inventoryQuery = await productRef
-      .collection("inventory")
-      .where("sold","==",false)
-      .get();
-
-    if(inventoryQuery.empty){
-      throw new Error("This product has no available inventory.");
-    }
-
-    const inventoryDocs = inventoryQuery.docs.sort(function(a,b){
-      return Number(a.data().position || 0) -
-             Number(b.data().position || 0);
-    });
-
-    const inventoryDoc = inventoryDocs[0];
-    const inventoryRef = inventoryDoc.ref;
-    const orderRef = firebaseDB.collection("orders").doc();
-    const walletRef = firebaseDB.collection("wallets").doc(currentUser.uid);
-
-    let newBalance = 0;
-    let purchaseItem = "";
-
-    await firebaseDB.runTransaction(async function(transaction){
-      const walletSnapshot = await transaction.get(walletRef);
-      const productSnapshot = await transaction.get(productRef);
-      const inventorySnapshot = await transaction.get(inventoryRef);
-
-      if(!walletSnapshot.exists){
-        throw new Error("Your wallet has not been created yet. Please contact support.");
-      }
-
-      if(!productSnapshot.exists){
-        throw new Error("This product no longer exists.");
-      }
-
-      if(!inventorySnapshot.exists){
-        throw new Error("The inventory item no longer exists.");
-      }
-
-      const wallet = walletSnapshot.data();
-      const product = productSnapshot.data();
-      const inventory = inventorySnapshot.data();
-
-      const currentBalance = Number(wallet.balance || 0);
-      const currentStock = Number(product.stockCount || 0);
-      const currentPrice = Number(product.price || 0);
-
-      if(currentStock <= 0){
-        throw new Error("This product is sold out.");
-      }
-
-      if(currentBalance < currentPrice){
-        throw new Error("Insufficient wallet balance.");
-      }
-
-      if(inventory.sold === true){
-        throw new Error("This inventory item has already been purchased. Please try again.");
-      }
-
-      purchaseItem = String(inventory.value || "").trim();
-
-      if(!purchaseItem){
-        throw new Error("The inventory item is empty.");
-      }
-
-      newBalance = Number((currentBalance-currentPrice).toFixed(2));
-
-      transaction.update(walletRef,{
-        balance:newBalance,
-        updatedAt:firebase.firestore.FieldValue.serverTimestamp(),
-        lastOrderId:orderRef.id
-      });
-
-      transaction.update(productRef,{
-        stockCount:currentStock-1,
-        updatedAt:firebase.firestore.FieldValue.serverTimestamp(),
-        lastOrderId:orderRef.id
-      });
-
-      transaction.update(inventoryRef,{
-        sold:true,
-        soldTo:currentUser.uid,
-        soldAt:firebase.firestore.FieldValue.serverTimestamp(),
-        orderId:orderRef.id
-      });
-
-      transaction.set(orderRef,{
-        userId:currentUser.uid,
-        userEmail:currentUser.email || "",
-        productId:selectedProduct.id,
-        productName:product.name || "",
-        amount:currentPrice,
-        status:"completed",
-        purchaseText:purchaseItem,
-        inventoryId:inventoryDoc.id,
-        createdAt:firebase.firestore.FieldValue.serverTimestamp()
-      });
-    });
-
-    walletBalance = newBalance;
-    try{localStorage.setItem("gentleBalance",String(newBalance));}catch(e){}
-    selectedProduct.stockCount =
-      Number(selectedProduct.stockCount || 0)-1;
-
-    showSuccess(purchaseItem);
-  }catch(error){
-    console.error("PURCHASE ERROR:",error);
-
-    button.disabled = false;
-    button.innerHTML =
-      '<i class="fa-solid fa-bolt"></i> Buy Now';
-
-    showToast(error.message || "Purchase could not be completed.");
-  }finally{
-    purchaseInProgress = false;
-  }
-}
-
-/*
-  Corrected purchased-link handling:
-  - Supports a URL on its own or surrounded by other text.
-  - Validates HTTP and HTTPS URLs.
-  - Uses a standard anchor instead of intercepting the click.
-  - Opens the link in a new tab on supported browsers.
-  - Keeps surrounding inventory text visible.
-*/
-function showSuccess(purchaseItem){
-  document.getElementById("checkoutContent").style.display = "none";
-  document.getElementById("successContent").classList.add("show");
-
-  const itemElement = document.getElementById("successPurchaseItem");
-  const item = String(purchaseItem || "").trim();
-
-  itemElement.replaceChildren();
-
-  if(!item){
-    itemElement.textContent = "No purchase information found.";
-  } else {
-    const match = item.match(/https?:\/\/[^\s<>"']+/i);
-
-    if(match){
-      let rawURL = match[0];
-
-      // Remove punctuation commonly added after pasted URLs.
-      rawURL = rawURL.replace(/[),.;!?}\]]+$/g, "");
-
-      let parsedURL = null;
-
-      try{
-        parsedURL = new URL(rawURL);
-      }catch(error){}
-
-      if(
-        parsedURL &&
-        (parsedURL.protocol === "https:" || parsedURL.protocol === "http:")
-      ){
-        const beforeText = item.slice(0, match.index);
-        const afterText = item.slice(match.index + rawURL.length);
-
-        if(beforeText){
-          itemElement.appendChild(
-            document.createTextNode(beforeText)
-          );
-          itemElement.appendChild(document.createElement("br"));
-        }
-
-        const link = document.createElement("a");
-        link.href = parsedURL.href;
-        link.textContent = "Open Your Purchased Details ↗";
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-
-        itemElement.appendChild(link);
-
-        if(afterText){
-          itemElement.appendChild(document.createElement("br"));
-          itemElement.appendChild(
-            document.createTextNode(afterText)
-          );
-        }
-      }else{
-        itemElement.textContent = item;
-      }
-    }else{
-      itemElement.textContent = item;
-    }
-  }
-
-  try{
-    localStorage.removeItem("gentleCheckoutProduct");
-  }catch(error){}
-}
-
-function showError(message){
-  const container = document.getElementById("checkoutContent");
-  if(!container) return;
-
-  container.innerHTML = `
-    <div class="error-box">
-      <i class="fa-solid fa-triangle-exclamation"></i>
-      <h2>Checkout unavailable</h2>
-      <p>${escapeHTML(message)}</p>
-      <button
-        type="button"
-        onclick="window.location.href='dashboard.html'"
-      >Back to Store</button>
-    </div>
-  `;
-}
-
-function goBack(){
-  if(document.getElementById("successContent").classList.contains("show")){
-    window.location.href = "dashboard.html";
-    return;
-  }
-
-  window.history.back();
-}
-
-function formatMoney(amount){
-  return "₦" + Number(amount || 0).toLocaleString("en-NG",{
+let currentUser = null;
+let currentWallet = null;
+let productPrice = 0;
+let productStock = 0;
+
+function money(value){
+  return "₦" + Number(value || 0).toLocaleString("en-NG",{
     minimumFractionDigits:2,
     maximumFractionDigits:2
   });
 }
 
-let toastTimer;
-
-function showToast(message){
-  const toast = document.getElementById("toast");
-  toast.textContent = message;
-  toast.classList.add("show");
-
-  clearTimeout(toastTimer);
-
-  toastTimer = setTimeout(function(){
-    toast.classList.remove("show");
-  },3000);
+function showMessage(message){
+  $("message").textContent = message;
+  $("message").style.display = "block";
 }
 
-function escapeHTML(value){
-  return String(value ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+function hideLoader(){
+  $("loader").style.opacity = "0";
+  setTimeout(() => {
+    $("loader").style.display = "none";
+  },300);
 }
 
-function escapeAttribute(value){
-  return escapeHTML(value);
+function getProductId(){
+  const params = new URLSearchParams(location.search);
+
+  return params.get("id") ||
+    localStorage.getItem("gentleCheckoutProduct");
 }
+
+async function loadCheckout(user){
+  currentUser = user;
+
+  const productId = getProductId();
+
+  if(!productId){
+    throw new Error("No product was selected. Please return to the marketplace.");
+  }
+
+  const productRef = db.collection("products").doc(productId);
+  const walletRef = db.collection("wallets").doc(user.uid);
+  const customerRef = db.collection("customers").doc(user.uid);
+
+  const results = await Promise.all([
+    productRef.get(),
+    walletRef.get(),
+    customerRef.get()
+  ]);
+
+  const productDoc = results[0];
+  const walletDoc = results[1];
+  const customerDoc = results[2];
+
+  if(!productDoc.exists){
+    throw new Error("This product could not be found.");
+  }
+
+  selectedProduct = {
+    id:productDoc.id,
+    ...productDoc.data()
+  };
+
+  currentWallet = walletDoc.exists ? walletDoc.data() : {};
+
+  const customer = customerDoc.exists ? customerDoc.data() : {};
+
+  productPrice = Number(selectedProduct.price || 0);
+  productStock = Number(selectedProduct.stockCount || 0);
+
+  if(!Number.isFinite(productPrice) || productPrice <= 0){
+    throw new Error("The product price is unavailable.");
+  }
+
+  $("productName").textContent = selectedProduct.name || "Product";
+  $("productCategory").textContent = selectedProduct.category || "Digital product";
+  $("productPrice").textContent = money(productPrice);
+
+  $("summaryProduct").textContent = selectedProduct.name || "Product";
+  $("subtotal").textContent = money(productPrice);
+  $("total").textContent = money(productPrice);
+
+  if(selectedProduct.image){
+    const image = document.createElement("img");
+    image.src = selectedProduct.image;
+    image.alt = selectedProduct.name || "Product";
+    image.onerror = () => {
+      image.remove();
+      $("productImage").innerHTML = '<i class="fa-solid fa-box"></i>';
+    };
+
+    $("productImage").replaceChildren(image);
+  }
+
+  const customerName =
+    customer.name ||
+    customer.fullName ||
+    user.displayName ||
+    "Customer";
+
+  $("customerName").textContent = customerName;
+  $("customerEmail").textContent = customer.email || user.email || "";
+
+  const balance = Number(
+    currentWallet.balance ??
+    currentWallet.walletBalance ??
+    0
+  );
+
+  $("walletBalance").textContent = money(balance);
+
+  $("stockLabel").innerHTML =
+    '<i class="fa-solid fa-circle"></i> ' +
+    (productStock > 0 ? "Available" : "Out of stock");
+
+  if(productStock > 0){
+    $("buyButton").disabled = false;
+  }else{
+    $("buyButton").disabled = true;
+    showMessage("This product is currently out of stock.");
+  }
+}
+
+if(!auth || !db){
+  hideLoader();
+  showMessage("Firebase could not be initialized. Please check firebase.js.");
+}else{
+  auth.onAuthStateChanged(async user => {
+    if(!user){
+      location.href = "login.html";
+      return;
+    }
+
+    try{
+      await loadCheckout(user);
+    }catch(error){
+      console.error("Checkout loading error:",error);
+      showMessage(error.message || "Unable to load checkout.");
+      $("buyButton").disabled = true;
+    }finally{
+      hideLoader();
+    }
+  });
+}
+
+/*
+  PURCHASE INTEGRATION
+
+  Connect this button to the existing secure purchase handler
+  after verifying the inventory schema and purchase API.
+
+  Do not debit a wallet or mark inventory as sold directly
+  from this customer-facing page.
+*/
+
+$("buyButton").addEventListener("click",() => {
+  if(!selectedProduct || !currentUser) return;
+
+  const balance = Number(
+    currentWallet.balance ??
+    currentWallet.walletBalance ??
+    0
+  );
+
+  if(balance < productPrice){
+    showMessage("Your wallet balance is insufficient. Please add funds.");
+    return;
+  }
+
+  showMessage(
+    "Your checkout is ready. The secure purchase and automatic delivery handler still needs to be connected."
+  );
+});
 </script>
-<script src="gentle-loading.js"></script>
+
 </body>
 </html>
-
-
-<style id="gentle-customer-final-polish">
-:root{--green:#29532A!important;--green-dark:#194D28!important;--green-light:#EAF4EC!important;--green-soft:#EAF4EC!important;--green-border:#D9E9DC!important;--primary:#29532A!important;--accent:#29532A!important;--border:#D9E9DC!important;--line:#D9E9DC!important}
-html,body,button,input,textarea,select{font-family:Inter,"Space Grotesk",Arial,sans-serif!important}
-button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline-color:rgba(41,83,42,.35)!important}
-input:focus,textarea:focus,select:focus{border-color:#397B45!important;box-shadow:0 0 0 3px rgba(41,83,42,.10)!important}
-@media(max-width:767px){input,textarea,select{font-size:16px!important}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
-</style>
-
-<style id="gentle-green-brand-final">
-/* Keep the customer-facing pages on the Gentle green identity. */
-.brand-logo,.logo-box,.brand-icon,.brand-mark,.main-icon,.heading-icon,.stat-icon,.deposit-icon,.support-icon,.menu-icon,.success-icon{background-color:#EAF4EC!important;color:#29532A!important}
-.primary-btn,.pay-btn,.complete-btn,.submit,.hero-button.primary,.search-box button,.related-buy,.save-button,.support-btn,.error-box button{background:#29532A!important;color:#FFFFFF!important;border-color:#29532A!important}
-.primary-btn:hover,.pay-btn:hover,.complete-btn:hover,.hero-button.primary:hover,.related-buy:hover,.save-button:hover{background:#194D28!important}
-.brand-name,.brand-text h1,.header-title,.header-icon,.back-btn,.view-all,.product-price,.related-price,.amount,.detail-value,.history-amount,.section-heading:before,.nav-item.active,.success h1,.success-icon{color:#29532A!important}
-.header,.top-header,header{border-bottom-color:#D9E9DC!important}
-</style>
