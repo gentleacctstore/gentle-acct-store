@@ -2232,11 +2232,21 @@ async function checkXtraBalance() {
   $("xtraBalance").textContent="Checking…";$("xtraConnection").textContent="Connecting…";
   try {
     const result=await xtraAdminRequest("/api/xtralogs/admin/balance");
-    const data=result.data||result;
-    const balance=data.balance??data.available_balance??data.wallet_balance;
-    $("xtraBalance").textContent=balance===undefined?"Connected":xtraMoney(balance,data.currency||"NGN");
+    const info=result.balanceInfo||null;
+    const data=result.data||result.result||result.wallet||result;
+    const balance=info&&Number.isFinite(Number(info.amount))
+      ?Number(info.amount)
+      :(data.balance??data.available_balance??data.wallet_balance??data.current_balance??data.account_balance);
+    const currency=(info&&info.currency)||data.currency||data.currency_code||"NGN";
+    if(balance===undefined||balance===null||!Number.isFinite(Number(balance))) {
+      $("xtraBalance").textContent="Balance unavailable";
+      $("xtraConnection").textContent="Connected";
+      showXtraMessage("XtraLogs is connected, but its balance response did not contain a recognised balance field. The API connection is healthy.","success");
+      return;
+    }
+    $("xtraBalance").textContent=xtraMoney(balance,currency);
     $("xtraConnection").textContent="Connected";
-    showXtraMessage("XtraLogs API connection is working.","success");
+    showXtraMessage("XtraLogs API connection and wallet balance loaded.","success");
   } catch(error) {$("xtraBalance").textContent="Unavailable";$("xtraConnection").textContent="Not connected";showXtraMessage(error.message||"Could not connect to XtraLogs.");}
 }
 async function loadXtraCatalogue() {

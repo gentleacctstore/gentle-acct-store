@@ -1,14 +1,14 @@
 
 <!DOCTYPE html>
-
-<html data-theme="dark" lang="en">
+<html lang="en" data-theme="dark">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1" name="viewport"/>
-<meta content="#0b1120" name="theme-color"/>
-<meta content="Gentle Acct Store customer management dashboard" name="description"/>
-<title>Customers | Gentle Acct Store</title>
-<script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1120">
+  <meta name="description" content="Gentle Acct Store customer management dashboard">
+  <title>Customers | Gentle Acct Store</title>
+
+  <script>
     (function () {
       try {
         const theme = localStorage.getItem("gentle-acct-store-theme");
@@ -19,10 +19,12 @@
       }
     })();
   </script>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
-<style>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
     :root {
       color-scheme: dark;
       --bg: #0b1120;
@@ -654,208 +656,141 @@
       }
     }
   
-/* Mobile-first compact layout overrides */
-html,body{max-width:100%;overflow-x:hidden}
-*,*::before,*::after{box-sizing:border-box}
-img,svg,video,canvas{max-width:100%;height:auto}
-button,a,input,select,textarea{touch-action:manipulation}
-.table-wrap,.table-container,.table-responsive,.panel,.panel-body{max-width:100%;}
-.table-wrap,.table-container,.table-responsive{overflow-x:auto;-webkit-overflow-scrolling:touch}
-table{min-width:620px}
-@media(max-width:900px){
- .unified-sidebar{position:relative;inset:auto;width:100%;height:auto;display:flex;flex-direction:row;align-items:center;gap:7px;padding:8px 10px;overflow-x:auto;overflow-y:hidden;white-space:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
- .unified-brand{flex:0 0 auto;padding:3px 8px!important;margin-right:5px}
- .unified-nav-label,.unified-sidebar-foot{display:none!important}
- .unified-sidebar>a.unified-nav{display:inline-flex;flex:0 0 auto;align-items:center;gap:6px;min-height:35px;padding:8px 10px;margin:0;font-size:11px;white-space:nowrap}
- .admin-shell-main{margin:0!important;width:100%;min-width:0}
- .admin-shell-main>.container,.admin-shell-main>main{width:100%;padding:16px 12px 28px!important}
- .admin-shell-main>.topbar .topbar-inner{padding:9px 12px!important;gap:8px;flex-wrap:wrap}
- .admin-shell-main .page-heading,.admin-shell-main .hero,.admin-shell-main .page-intro{margin-bottom:14px}
- .admin-shell-main .panel,.admin-shell-main .stat,.admin-shell-main .request,.admin-shell-main .referral-card,.admin-shell-main .customer-card,.admin-shell-main .table-wrap{border-radius:12px}
- .admin-shell-main .stat{padding:12px!important;min-width:0}
- .admin-shell-main .panel{min-width:0}
- .admin-shell-main input,.admin-shell-main select,.admin-shell-main textarea{font-size:16px!important;min-height:42px;max-width:100%}
- .admin-shell-main button{min-height:38px;max-width:100%}
- .admin-shell-main .stats{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
- .admin-shell-main .page-heading{align-items:flex-start;gap:10px;flex-wrap:wrap}
- .admin-shell-main .page-heading h1,.admin-shell-main h1{font-size:clamp(19px,5vw,25px)}
- .admin-shell-main .top-actions{display:flex;gap:6px;flex-wrap:wrap}
-}
-@media(max-width:560px){
- .admin-shell-main>.container,.admin-shell-main>main{padding:13px 10px 24px!important}
- .admin-shell-main .stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}
- .admin-shell-main .stat{padding:10px!important}
- .admin-shell-main .stat strong,.admin-shell-main .stat-number{font-size:19px!important}
- .admin-shell-main .panel-head,.admin-shell-main .panel-body{padding:11px!important}
- .admin-shell-main .page-heading{display:flex;flex-direction:column;align-items:stretch}
- .admin-shell-main .page-heading button,.admin-shell-main .page-heading a{width:100%}
- .admin-shell-main form{max-width:100%}
- .admin-shell-main .form-grid,.admin-shell-main .filters,.admin-shell-main .toolbar,.admin-shell-main .search-row{grid-template-columns:minmax(0,1fr)!important;display:grid;gap:9px}
- .admin-shell-main input,.admin-shell-main select,.admin-shell-main textarea{width:100%;min-width:0}
- .admin-shell-main .topbar-inner{align-items:center}
- .admin-shell-main .top-actions>*{font-size:12px;padding:8px 10px}
-}
-@media(max-width:360px){
- .admin-shell-main .stats{grid-template-columns:1fr!important}
- .unified-sidebar>a.unified-nav{font-size:10px;padding:7px 8px}
-}
+/* GENTLE ADMIN CONSISTENCY + MOBILE SAFETY */
+:root{--blue:#176b3a;--blue-dark:#10552e;--green:#168044;--blue-soft:rgba(23,107,58,.12)}
+html[data-theme="light"]{--blue:#176b3a;--blue-dark:#10552e;--green:#15803d}
+html[data-theme="blue"]{--blue:#176b3a;--blue-dark:#10552e;--green:#15803d}
+button,input,select,textarea{font-size:16px}
+.topbar{box-shadow:0 5px 22px rgba(16,45,27,.06)}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #55a875;outline-offset:2px}
+@media(max-width:640px){.topbar{padding:12px 14px}.container{width:100%;max-width:100%;overflow-x:hidden}.customer-card{min-width:0}}
 
 </style>
-<style>
-/* Unified Gentle Admin design system */
-:root{--ga-blue:#2563eb;--ga-blue2:#1d4ed8;--ga-radius:16px}
-html[data-theme="dark"]{--ga-bg:#0b1220;--ga-panel:#111c2e;--ga-panel2:#162238;--ga-border:#27364d;--ga-text:#e8eef8;--ga-muted:#91a1b8;--ga-soft:#172b4b}
-html[data-theme="light"],html[data-theme="blue"]{--ga-bg:#f4f7fb;--ga-panel:#fff;--ga-panel2:#f8faff;--ga-border:#e2e8f0;--ga-text:#172338;--ga-muted:#718096;--ga-soft:#edf3ff}
-body{background:var(--ga-bg)!important;color:var(--ga-text)!important;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif!important;font-size:14px!important}
-button,input,select,textarea{font-size:16px!important}
-a{transition:color .18s,background .18s,border-color .18s}
-.unified-sidebar{position:fixed;inset:0 auto 0 0;width:248px;padding:25px 17px 18px;background:#0b1425;color:#eaf1ff;display:flex;flex-direction:column;z-index:60;border-right:1px solid #1d2b42;overflow:auto}
-.unified-brand{display:flex;align-items:center;gap:12px;padding:4px 8px 29px;color:#fff;text-decoration:none}
-.unified-mark{width:39px;height:39px;border-radius:12px;background:linear-gradient(145deg,#3b82f6,#1d4ed8);display:grid;place-items:center;font-size:20px;font-weight:800;color:white;box-shadow:0 8px 20px #2563eb44}
-.unified-brand b{display:block;font-size:14px;letter-spacing:1.5px}.unified-brand small{display:block;color:#8191aa;font-size:9px;letter-spacing:1.8px;margin-top:4px}
-.unified-nav-label{padding:17px 11px 8px;color:#71829b;font-size:9px;font-weight:800;letter-spacing:1.5px}
-.unified-nav{display:flex;align-items:center;gap:12px;padding:11px 12px;margin:2px 0;border-radius:10px;color:#aab8cd;text-decoration:none;font-size:12px;font-weight:600;min-height:41px}
-.unified-nav i{width:17px;text-align:center;color:#8295b3;font-size:13px}.unified-nav:hover,.unified-nav.active{background:#1b3152;color:#fff}.unified-nav.active i,.unified-nav:hover i{color:#70a5ff}
-.unified-sidebar-foot{margin-top:auto;padding:17px 10px 5px;border-top:1px solid #223149;color:#90a0b7;font-size:10px}.online-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#22c55e;margin-right:8px;box-shadow:0 0 0 4px #22c55e1b}
-.admin-shell-main{margin-left:248px;min-width:0;min-height:100vh}.admin-shell-main>.topbar{position:sticky;top:0;z-index:30;background:var(--ga-panel);border-bottom:1px solid var(--ga-border);box-shadow:0 5px 18px #0000000a}
-.admin-shell-main>.container,.admin-shell-main>main{max-width:1440px;margin:0 auto;padding:30px clamp(18px,3vw,42px) 45px}
-.admin-shell-main .page-heading,.admin-shell-main .hero,.admin-shell-main .page-intro{margin-bottom:23px}
-.admin-shell-main h1,.admin-shell-main h2,.admin-shell-main h3,.admin-shell-main h4{letter-spacing:-.035em}
-.admin-shell-main .panel,.admin-shell-main .stat,.admin-shell-main .request,.admin-shell-main .referral-card,.admin-shell-main .customer-card,.admin-shell-main .table-wrap{background:var(--ga-panel);border:1px solid var(--ga-border);border-radius:15px;box-shadow:0 8px 24px #07152a0b}
-.admin-shell-main .stat{padding:19px}.admin-shell-main .panel{overflow:hidden}
-.admin-shell-main input,.admin-shell-main select,.admin-shell-main textarea{border:1px solid var(--ga-border)!important;border-radius:10px!important;background:var(--ga-panel2)!important;color:var(--ga-text)!important;min-height:43px;padding:10px 12px}
-.admin-shell-main button{border-radius:10px;transition:transform .16s,filter .16s,background .16s}.admin-shell-main button:active{transform:translateY(1px)}
-.admin-shell-main .refresh-btn,.admin-shell-main .verify-btn,.admin-shell-main .back-btn{background:var(--ga-blue)!important;border-color:var(--ga-blue)!important;color:#fff!important}
-.admin-shell-main .refresh-btn:hover,.admin-shell-main .verify-btn:hover,.admin-shell-main .back-btn:hover{background:var(--ga-blue2)!important}
-.admin-shell-main .page-title,.admin-shell-main .hero h1{font-weight:750}
-.admin-shell-main .topbar-inner{max-width:none;padding:13px clamp(18px,3vw,42px)}
-/* Main dashboard keeps its existing Firebase-driven sidebar and sections */
-#adminApp>.sidebar{background:#0b1425!important;border-right:1px solid #1d2b42}
-#adminApp .brand-icon{background:linear-gradient(145deg,#3b82f6,#1d4ed8)!important}
-#adminApp .nav-link.active,#adminApp .nav-link:hover{background:#1b3152!important;color:#fff!important}
-#adminApp .main{background:var(--ga-bg)}
-#adminApp .topbar,#adminApp .panel,#adminApp .stat-card,#adminApp .health-card,#adminApp .insight-card{border-color:var(--ga-border)!important}
-#adminApp .primary-btn,#adminApp .btn-primary{background:var(--ga-blue)!important;border-color:var(--ga-blue)!important}
-#adminApp .primary-btn:hover,#adminApp .btn-primary:hover{background:var(--ga-blue2)!important}
-@media(max-width:900px){.unified-sidebar{position:relative;inset:auto;width:100%;height:auto;padding:10px 12px;display:block;overflow:visible}.unified-brand{padding:2px 5px 10px}.unified-nav-label,.unified-sidebar-foot{display:none}.unified-sidebar>a.unified-nav{display:inline-flex;white-space:nowrap;padding:9px 10px;margin:2px 3px 0 0;min-height:36px;font-size:11px}.unified-sidebar{white-space:normal}.admin-shell-main{margin-left:0}.admin-shell-main>.container,.admin-shell-main>main{padding:20px 14px 32px}}
-@media(max-width:560px){.admin-shell-main>.topbar .topbar-inner{padding:10px 13px}.admin-shell-main .stats{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-shell-main .stat{padding:13px}.admin-shell-main .page-heading{align-items:flex-start}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
-</style></head>
+</head>
+
 <body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-icon">
+        <i class="fa-solid fa-users"></i>
+      </div>
+      <div>
+        <h1>Gentle Acct Store</h1>
+        <p>Customer management</p>
+      </div>
+    </div>
 
-
-
-
-
-
-
-
-<aside aria-label="Admin navigation" class="unified-sidebar">
-<a class="unified-brand" href="admin.html"><span class="unified-mark">G</span><span><b>GENTLE</b><small>ADMIN CONSOLE</small></span></a>
-<div class="unified-nav-label">WORKSPACE</div>
-<a class="unified-nav" href="admin.html"><i class="fa-solid fa-grid-2"></i> Overview</a>
-<a class="unified-nav" href="admin.html#productsSection"><i class="fa-solid fa-box"></i> Products</a>
-<a class="unified-nav" href="admin.html#inventorySection"><i class="fa-solid fa-layer-group"></i> Inventory</a>
-<a class="unified-nav" href="admin.html#categoryLinksSection"><i class="fa-solid fa-link"></i> Category links</a>
-<a class="unified-nav" href="admin.html#supplierSection"><i class="fa-solid fa-truck-fast"></i> Supplier</a>
-<div class="unified-nav-label">CUSTOMER OPERATIONS</div>
-<a aria-current="page" class="unified-nav active" href="customers.html"><i class="fa-solid fa-users"></i> Customers</a>
-<a class="unified-nav" href="wallet-funding.html"><i class="fa-solid fa-wallet"></i> Wallet funding</a>
-<a class="unified-nav" href="admin-referrals.html"><i class="fa-solid fa-share-nodes"></i> Referrals</a>
-<div class="unified-sidebar-foot"><span class="online-dot"></span> Admin workspace</div>
-</aside><div class="admin-shell-main"><header class="topbar">
-<div class="brand">
-<div class="brand-icon">
-<i class="fa-solid fa-users"></i>
-</div>
-<div>
-<h1>Gentle Acct Store</h1>
-<p>Customer management</p>
-</div>
-</div>
-<div class="top-actions">
-<button class="top-btn" id="themeBtn" type="button">
-<i class="fa-solid fa-moon"></i> Dark theme
+    <div class="top-actions">
+      <button class="top-btn" id="themeBtn" type="button">
+        <i class="fa-solid fa-moon"></i> Dark theme
       </button>
-<a class="top-btn" href="admin.html">
-<i class="fa-solid fa-arrow-left"></i> Admin Dashboard
+
+      <a class="top-btn" href="admin.html">
+        <i class="fa-solid fa-arrow-left"></i> Admin Dashboard
       </a>
-<button class="top-btn" id="logoutBtn" type="button">
-<i class="fa-solid fa-right-from-bracket"></i> Logout
+
+      <button class="top-btn" id="logoutBtn" type="button">
+        <i class="fa-solid fa-right-from-bracket"></i> Logout
       </button>
-</div>
-</header><main class="container">
-<section class="page-heading">
-<div>
-<div class="eyebrow">Admin control centre</div>
-<h2>Customers</h2>
-<p>View registered customer profiles and search their details.</p>
-</div>
-<button class="refresh-btn" id="refreshBtn" type="button">
-<i class="fa-solid fa-rotate"></i> Refresh customers
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="page-heading">
+      <div>
+        <div class="eyebrow">Admin control centre</div>
+        <h2>Customers</h2>
+        <p>View registered customer profiles and search their details.</p>
+      </div>
+
+      <button class="refresh-btn" id="refreshBtn" type="button">
+        <i class="fa-solid fa-rotate"></i> Refresh customers
       </button>
-</section>
-<section class="stats">
-<div class="stat-card">
-<div class="stat-top">
-<span class="stat-label">Total profiles</span>
-<span class="stat-icon"><i class="fa-solid fa-users"></i></span>
-</div>
-<strong class="stat-number" id="totalCustomers">—</strong>
-<p class="stat-note">Profiles saved in Firestore</p>
-</div>
-<div class="stat-card">
-<div class="stat-top">
-<span class="stat-label">Google profiles</span>
-<span class="stat-icon"><i class="fa-brands fa-google"></i></span>
-</div>
-<strong class="stat-number" id="googleCustomers">—</strong>
-<p class="stat-note">Profiles marked as Google signup</p>
-</div>
-<div class="stat-card">
-<div class="stat-top">
-<span class="stat-label">Email profiles</span>
-<span class="stat-icon"><i class="fa-solid fa-envelope"></i></span>
-</div>
-<strong class="stat-number" id="emailCustomers">—</strong>
-<p class="stat-note">Profiles marked as email signup</p>
-</div>
-</section>
-<section class="panel">
-<div class="panel-header">
-<div>
-<h3>All customer profiles</h3>
-<p>Search by name, email address or customer ID.</p>
-</div>
-<div class="search-wrap">
-<i class="fa-solid fa-magnifying-glass"></i>
-<input aria-label="Search customers" autocomplete="off" id="search" placeholder="Search customers..." type="search"/>
-</div>
-</div>
-<div class="count-row">
-<span id="customerCount">Loading customers...</span>
-<span class="live-label">
-<span class="live-dot"></span> Firestore profiles
+    </section>
+
+    <section class="stats">
+      <div class="stat-card">
+        <div class="stat-top">
+          <span class="stat-label">Total profiles</span>
+          <span class="stat-icon"><i class="fa-solid fa-users"></i></span>
+        </div>
+        <strong class="stat-number" id="totalCustomers">—</strong>
+        <p class="stat-note">Profiles saved in Firestore</p>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-top">
+          <span class="stat-label">Google profiles</span>
+          <span class="stat-icon"><i class="fa-brands fa-google"></i></span>
+        </div>
+        <strong class="stat-number" id="googleCustomers">—</strong>
+        <p class="stat-note">Profiles marked as Google signup</p>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-top">
+          <span class="stat-label">Email profiles</span>
+          <span class="stat-icon"><i class="fa-solid fa-envelope"></i></span>
+        </div>
+        <strong class="stat-number" id="emailCustomers">—</strong>
+        <p class="stat-note">Profiles marked as email signup</p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <h3>All customer profiles</h3>
+          <p>Search by name, email address or customer ID.</p>
+        </div>
+
+        <div class="search-wrap">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input
+            id="search"
+            type="search"
+            placeholder="Search customers..."
+            autocomplete="off"
+            aria-label="Search customers"
+          >
+        </div>
+      </div>
+
+      <div class="count-row">
+        <span id="customerCount">Loading customers...</span>
+        <span class="live-label">
+          <span class="live-dot"></span> Firestore profiles
         </span>
-</div>
-<div id="customers">
-<div class="loading">
-<div class="loading-icon">
-<i class="fa-solid fa-spinner fa-spin"></i>
-</div>
-<p>Loading customer profiles...</p>
-</div>
-</div>
-</section>
-<div class="notice">
-<i class="fa-solid fa-circle-info"></i>
+      </div>
+
+      <div id="customers">
+        <div class="loading">
+          <div class="loading-icon">
+            <i class="fa-solid fa-spinner fa-spin"></i>
+          </div>
+          <p>Loading customer profiles...</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="notice">
+      <i class="fa-solid fa-circle-info"></i>
       This page displays customer profiles stored in Firestore. A Google account
       that exists only in Firebase Authentication will not appear until its
       customer profile has been created in Firestore.
     </div>
-</main><footer class="footer">
-    Gentle Acct Store © <span id="currentYear"></span> · Admin customer management
-  </footer></div><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script src="firebase.js"></script><script>
+  </main>
+
+  <footer class="footer">
+    Gentle Acct Store &copy; <span id="currentYear"></span> · Admin customer management
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="firebase.js"></script>
+
+  <script>
     "use strict";
 
     const ADMIN_UID = "UoEjCy99gbQKkGob59vGi3CunZi1";
@@ -1248,5 +1183,6 @@ a{transition:color .18s,background .18s,border-color .18s}
         await loadCustomers();
       });
     }
-  </script></body>
+  </script>
+</body>
 </html>
