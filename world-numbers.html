@@ -34,7 +34,7 @@ async function loadCountry(code){
  $('search').placeholder='Search services…';$('search').value='';
  $('backCountries').style.display='inline-block';
  $('products').innerHTML='<div class="empty">Loading available numbers…</div>';
- try{const d=await api('/api/xtralogs/customer/catalog?catalog=numbers-global&country='+encodeURIComponent(selectedCountry));items=d.products||[];renderServices()}
+ try{const d=await api('/api/xtralogs/customer/catalog?catalog=numbers-global&country='+encodeURIComponent(selectedCountry));items=Array.isArray(d.products)?d.products:[];renderServices()}
  catch(e){$('products').innerHTML='<div class="empty">'+safe(e.message)+'</div>';$('count').textContent='Unavailable'}
 }
 function renderServices(){
