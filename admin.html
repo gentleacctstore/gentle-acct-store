@@ -2303,15 +2303,12 @@ async function importXtraCountries() {
   $("xtraImportCountryStatus").textContent="Fetching the available countries from XtraLogs…";
   try {
     const result=await xtraAdminRequest("/api/xtralogs/admin/catalog?catalog=numbers-global");
-    const raw=xtraExtractItems(result);
-    const countries=raw.map(item=>{
-      if(typeof item==="string") return {code:item.length===2?item.toUpperCase():"",name:item};
-      const code=String(item.iso2??item.iso_code??item.country_code??item.code??item.country_iso??"").toUpperCase();
-      const name=String(item.country_name??item.name??item.country??item.title??item.label??code);
-      return {code,name};
-    }).filter(item=>/^[A-Z]{2}$/.test(item.code)&&item.name).filter((item,index,list)=>list.findIndex(x=>x.code===item.code)===index);
-    if(!countries.length) throw new Error("XtraLogs returned no valid country codes. Please check the supplier catalogue.");
-    const settings=await xtraAdminRequest("/api/xtralogs/admin/pricing",{method:"POST",body:JSON.stringify({importedCountries:countries})});
+    const countries=Array.isArray(result.countries)?result.countries:[];
+    if(!countries.length) {
+      const keys=Array.isArray(result.sourceKeys)?" Supplier response fields: "+result.sourceKeys.join(", "):"";
+      throw new Error("XtraLogs did not return a readable country list."+keys+" Check the supplier's Global Numbers catalogue response.");
+    }
+    const settings=await xtraAdminRequest("/api/xtralogs/admin/pricing",{method:"POST",body:JSON.stringify({pricingMode:$("xtraPricingMode").value,defaultMarginPercent:Number($("xtraDefaultMargin").value||20),overrides:xtraPricingOverrides,importedCountries:countries})});
     const count=(settings.settings?.importedCountries||countries).length;
     $("xtraImportCountryStatus").textContent=count+" countries imported successfully. They are now available on the customer World Numbers page.";
     showXtraMessage(count+" World Numbers countries imported.","success");

@@ -763,17 +763,57 @@ async function xtraSavePricing(env,settings) {
   if(!sa.project_id||!sa.client_email||!sa.private_key) throw new Error("Firebase service account is not configured.");
   const token=await getGoogleAccessToken(sa);
   const url=new URL(`https://firestore.googleapis.com/v1/projects/${encodeURIComponent(sa.project_id)}/databases/(default)/documents/storeSettings/xtralogsPricing`);
-  ["pricingMode","defaultMarginPercent","overrides","updatedAt"].forEach(k=>url.searchParams.append("updateMask.fieldPaths",k));
+  ["pricingMode","defaultMarginPercent","overrides","importedCountries","updatedAt"].forEach(k=>url.searchParams.append("updateMask.fieldPaths",k));
   const fields={
     pricingMode:xtraFirestoreEncode(settings.pricingMode),
     defaultMarginPercent:xtraFirestoreEncode(settings.defaultMarginPercent),
     overrides:xtraFirestoreEncode(settings.overrides||{}),
-    importedCountries:xtraFirestoreEncode(Array.isArray(settings.importedCountries)?settings.importedCountries:[]),
+    importedCountries:xtraFirestoreEncode(settings.importedCountries||[]),
     updatedAt:{timestampValue:new Date().toISOString()}
   };
   const response=await fetch(url,{method:"PATCH",headers:{Authorization:"Bearer "+token,"Content-Type":"application/json"},body:JSON.stringify({fields})});
   if(!response.ok) throw new Error("Could not save XtraLogs pricing settings to Firestore.");
   return true;
+}
+
+
+function xtraNormalizeCountries(data) {
+  const found=[];
+  const codeKeys=["iso2","iso_2","iso_code","country_code","countryCode","country_iso","country_iso2","code","short_code","alpha2"];
+  const nameKeys=["country_name","countryName","name","country","title","label","display_name"];
+  const visited=new Set();
+  function walk(value,depth=0) {
+    if(value==null||depth>8) return;
+    if(Array.isArray(value)) {
+      for(const item of value) {
+        if(typeof item==="string") {
+          const v=item.trim();
+          const m=v.match(/^([A-Za-z]{2})\\s*(?:[-:|,]\\s*(.+))?$/);
+          if(m) found.push({code:m[1].toUpperCase(),name:(m[2]||v).trim()});
+        } else walk(item,depth+1);
+      }
+      return;
+    }
+    if(typeof value!=="object") return;
+    if(visited.has(value)) return;
+    visited.add(value);
+    let code="",name="";
+    for(const k of codeKeys) if(value[k]!==undefined&&value[k]!==null&&String(value[k]).trim()){code=String(value[k]).trim().toUpperCase();break;}
+    for(const k of nameKeys) if(value[k]!==undefined&&value[k]!==null&&String(value[k]).trim()){name=String(value[k]).trim();break;}
+    if(!code && typeof value.key==="string") code=value.key.toUpperCase();
+    if(!code && typeof value.value==="string" && /^[A-Za-z]{2}$/.test(value.value)) code=value.value.toUpperCase();
+    if(/^[A-Z]{2}$/.test(code)) found.push({code,name:name||code});
+    for(const [k,v] of Object.entries(value)) {
+      if(/^[A-Za-z]{2}$/.test(k) && (typeof v==="string"||typeof v==="object")) {
+        found.push({code:k.toUpperCase(),name:typeof v==="string"?v:(v?.name||v?.country_name||k)});
+      }
+      if(typeof v==="object") walk(v,depth+1);
+    }
+  }
+  walk(data);
+  const unique=new Map();
+  for(const c of found) if(/^[A-Z]{2}$/.test(c.code)&&c.name) unique.set(c.code,{code:c.code,name:c.name});
+  return [...unique.values()].sort((a,b)=>a.name.localeCompare(b.name));
 }
 
 const XTRALOGS_CATALOGS={
@@ -836,6 +876,10 @@ async function handleXtraLogs(request,env) {
     }
     const path=endpoint.split("?")[0]+(query.size?"?"+query.toString():"");
     const result=await xtraUpstream(env,path);
+    if(key==="numbers-global"&&!url.searchParams.get("country")&&result.response.ok) {
+      const countries=xtraNormalizeCountries(result.payload);
+      return xtraJson({success:true,catalog:key,countries,sourceKeys:result.payload&&typeof result.payload==="object"?Object.keys(result.payload):[]},200,origin);
+    }
     return xtraJson(result.payload,result.response.status,origin);
   }
   if(request.method==="GET"&&new URL(request.url).pathname==="/api/xtralogs/admin/pricing") {
@@ -849,8 +893,6 @@ async function handleXtraLogs(request,env) {
     const margin=Number(body.defaultMarginPercent);
     if(!Number.isFinite(margin)||margin<0||margin>500) return xtraJson({error:"Default profit percentage must be between 0 and 500."},400,origin);
     const overrides=body.overrides&&typeof body.overrides==="object"&&!Array.isArray(body.overrides)?body.overrides:{};
-    const currentSettings=await xtraGetPricing(env);
-    const importedCountries=Array.isArray(body.importedCountries)?body.importedCountries.map(item=>({code:String(item?.code||"").toUpperCase(),name:String(item?.name||"").trim()})).filter(item=>/^[A-Z]{2}$/.test(item.code)&&item.name).filter((item,index,list)=>list.findIndex(x=>x.code===item.code)===index).slice(0,300):Array.isArray(currentSettings.importedCountries)?currentSettings.importedCountries:[];
     const clean={};
     for(const [key,item] of Object.entries(overrides).slice(0,3000)) {
       if(!/^[a-z0-9-]{1,30}:[A-Za-z0-9._-]{1,100}$/i.test(key)||!item||typeof item!=="object") continue;
@@ -858,6 +900,10 @@ async function handleXtraLogs(request,env) {
       if(!Number.isFinite(price)||price<0||price>100000000) continue;
       clean[key]={sellingPrice:price,enabled:item.enabled!==false,currency:String(item.currency||"NGN").slice(0,8)};
     }
+    const current=await xtraGetPricing(env);
+    const importedCountries=Array.isArray(body.importedCountries)
+      ? xtraNormalizeCountries(body.importedCountries)
+      : (Array.isArray(current.importedCountries)?current.importedCountries:[]);
     await xtraSavePricing(env,{pricingMode:mode,defaultMarginPercent:margin,overrides:clean,importedCountries});
     return xtraJson({success:true,message:"XtraLogs pricing settings saved.",settings:{pricingMode:mode,defaultMarginPercent:margin,overrides:clean,importedCountries}},200,origin);
   }
@@ -921,23 +967,13 @@ async function handleXtraCustomer(request,env) {
     if(!endpoint)return xtraJson({error:"Unknown catalogue"},400,origin);
     const query=new URLSearchParams(endpoint.split("?")[1]||"");
     for(const key of ["country","page","per_page","service","username","quantity","network","kind","type_id","number"]){const v=url.searchParams.get(key);if(v&&/^[A-Za-z0-9._-]{1,80}$/.test(v))query.set(key,v);}
-    const settings=await xtraGetPricing(env);
-    if(catalog==="numbers-global"&&!url.searchParams.get("country")&&Array.isArray(settings.importedCountries)&&settings.importedCountries.length){
-      return xtraJson({success:true,catalog,countries:settings.importedCountries},200,origin);
-    }
     const upstream=await xtraUpstream(env,endpoint.split("?")[0]+(query.size?"?"+query.toString():""));
     if(!upstream.response.ok)return xtraJson({error:upstream.payload?.message||upstream.payload?.error||"Could not load this catalogue."},upstream.response.status,origin);
-    const items=xtraExtractCatalogItems(upstream.payload);
+    const items=xtraExtractCatalogItems(upstream.payload);const settings=await xtraGetPricing(env);
     if(catalog==="numbers-global"&&!url.searchParams.get("country")){
-      const countries=items.map(item=>{
-        if(typeof item==="string"){
-          const code=item.length===2?item.toUpperCase():"";
-          return {code,name:item};
-        }
-        const code=String(item.iso2??item.iso_code??item.country_code??item.code??item.country_iso??"").toUpperCase();
-        const name=String(item.country_name??item.name??item.country??item.title??item.label??code);
-        return {code,name};
-      }).filter(x=>x.code&&/^[A-Z]{2}$/.test(x.code));
+      const countries=Array.isArray(settings.importedCountries)&&settings.importedCountries.length
+        ? settings.importedCountries
+        : xtraNormalizeCountries(upstream.payload);
       return xtraJson({success:true,catalog,countries},200,origin);
     }
     const products=items.map(item=>{const p=xtraSellingPrice(item,catalog,settings);return {id:xtraCatalogIdentity(item),name:String(item.name??item.title??item.service_name??item.product_name??item.package_name??item.operator_name??"XtraLogs service"),description:String(item.description??item.details??""),price:p.price,currency:p.currency,available:item.available!==false&&item.in_stock!==false,category:catalog,raw:item};}).filter(x=>x.id);
