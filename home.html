@@ -1015,13 +1015,6 @@ input,select,textarea{
 @keyframes gentleHomeLoaderMove{0%{transform:translateX(-110%)}100%{transform:translateX(260%)}}
 @media(prefers-reduced-motion:reduce){.gentle-home-loader-progress{animation:none;width:100%}}
 
-
-/* Live customer notification badge */
-.header-icon .dot{display:none}
-.header-icon.has-unread .dot{display:block}
-.header-icon .notification-count{position:absolute;top:-6px;right:-7px;min-width:18px;height:18px;padding:0 5px;border-radius:20px;background:var(--orange);color:#fff;border:2px solid #fff;font:700 9px/14px "Space Grotesk",sans-serif;text-align:center;display:none}
-.header-icon.has-unread .notification-count{display:block}
-
 </style>
 </head>
 
@@ -1046,7 +1039,7 @@ input,select,textarea{
   <div class="header-actions">
     <a class="header-icon" href="notifications.html" aria-label="Notifications">
       <i class="fa-regular fa-bell"></i>
-      <span class="dot"></span><span class="notification-count" id="homeNotificationCount"></span>
+      <span class="dot"></span>
     </a>
 
     <a class="profile-dot" href="profile.html" id="profileInitial">G</a>
@@ -1444,43 +1437,6 @@ const toast=message=>{
   },2800);
 };
 
-/* Live notification count for the signed-in customer. */
-let stopHomeNotificationListeners=[];
-function startHomeNotificationCount(uid){
-  stopHomeNotificationListeners.forEach(stop=>{try{stop()}catch(_){}});
-  stopHomeNotificationListeners=[];
-  const bell=document.querySelector('.header-icon[aria-label="Notifications"]');
-  const countEl=$("homeNotificationCount");
-  if(!bell||!countEl)return;
-  const db=window.firebaseDB;
-  let notices=[],readIds=new Set();
-  const render=()=>{
-    const unread=notices.filter(n=>{
-      const d=n.data||{};
-      const targeted=d.audience==="all" || (Array.isArray(d.recipientUids)&&d.recipientUids.includes(uid));
-      return d.active!==false && targeted && !readIds.has(n.id);
-    }).length;
-    bell.classList.toggle("has-unread",unread>0);
-    countEl.textContent=unread>99?"99+":String(unread);
-    bell.setAttribute("aria-label",unread?`Notifications, ${unread} unread`:"Notifications");
-  };
-  const mergeNoticeSnapshots=()=>render();
-  let allDocs=[],selectedDocs=[];
-  const stopAll=db.collection("notifications").where("active","==",true).where("audience","==","all").onSnapshot(s=>{
-    allDocs=s.docs.map(doc=>({id:doc.id,data:doc.data()||{}}));
-    notices=[...allDocs,...selectedDocs];mergeNoticeSnapshots();
-  },e=>console.warn("All-customer notifications unavailable:",e));
-  const stopSelected=db.collection("notifications").where("active","==",true).where("audience","==","selected").where("recipientUids","array-contains",uid).onSnapshot(s=>{
-    selectedDocs=s.docs.map(doc=>({id:doc.id,data:doc.data()||{}}));
-    notices=[...allDocs,...selectedDocs];mergeNoticeSnapshots();
-  },e=>console.warn("Selected notifications unavailable:",e));
-  const stopReads=db.collection("notificationReads").doc(uid).collection("items").onSnapshot(s=>{
-    readIds=new Set(s.docs.map(doc=>doc.id));render();
-  },e=>console.warn("Notification read status unavailable:",e));
-  stopHomeNotificationListeners=[stopAll,stopSelected,stopReads];
-}
-
-
 /* Coming soon popup */
 
 const comingSoonPopup=$("comingSoonPopup");
@@ -1796,7 +1752,8 @@ function clearSession(){
       "gentleLoggedIn",
       "gentleCurrentUserId",
       "gentleUser",
-      "gentleBalance"
+      "gentleBalance",
+      "gentleBalanceUid"
     ].forEach(key=>localStorage.removeItem(key));
 
   }catch(error){
@@ -1829,7 +1786,35 @@ if(!window.firebaseAuth||!window.firebaseDB){
     */
 
     user=currentUser;
-    startHomeNotificationCount(currentUser.uid);
+
+    // Restore this customer's last-known dashboard details immediately.
+    // The live Firestore reads below still refresh the values afterwards.
+    try{
+      const cachedUser=JSON.parse(localStorage.getItem("gentleUser")||"null");
+      if(cachedUser && cachedUser.uid===currentUser.uid){
+        const cachedName=[cachedUser.firstName,cachedUser.lastName]
+          .filter(Boolean).join(" ")
+          ||cachedUser.name
+          ||cachedUser.fullName
+          ||cachedUser.username
+          ||currentUser.displayName
+          ||(currentUser.email||"GentleLogs Customer").split("@")[0];
+        const displayName=String(cachedName).trim();
+        $("cardholderName").textContent=displayName.toUpperCase();
+        $("profileInitial").textContent=displayName.charAt(0).toUpperCase()||"G";
+        $("welcomeName").textContent=displayName?" "+displayName.split(" ")[0]:"";
+      }
+
+      const cachedBalanceUid=localStorage.getItem("gentleBalanceUid");
+      const cachedBalance=Number(localStorage.getItem("gentleBalance"));
+      if(cachedBalanceUid===currentUser.uid && Number.isFinite(cachedBalance) && cachedBalance>=0){
+        balance=cachedBalance;
+        renderBalance();
+        $("walletSubtitle").textContent=money(balance,currency)+" · Updating";
+      }
+    }catch(error){
+      console.warn("Cached dashboard data could not be restored:",error);
+    }
 
     try{
 
@@ -1916,6 +1901,7 @@ if(!window.firebaseAuth||!window.firebaseDB){
 
         try{
           localStorage.setItem("gentleBalance",String(balance));
+          localStorage.setItem("gentleBalanceUid",currentUser.uid);
         }catch(error){}
 
       }).catch(error=>{
