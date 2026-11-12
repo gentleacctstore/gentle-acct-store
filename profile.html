@@ -108,6 +108,21 @@ html.dark-mode .nav-item{color:#AAB0B8}html.dark-mode .nav-item.active{color:#FF
 @media(max-width:370px){.container{padding:16px 11px 25px}.profile-hero{padding:19px}.profile-name{font-size:18px}.quick-grid{gap:7px}.quick-card{padding:12px 8px}.quick-card strong{font-size:10px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
+<style id="gentlelogs-unified-bottom-nav">
+/* GentleLogs unified bottom navigation */
+.bottom-nav{position:fixed;z-index:80;left:50%;right:auto;bottom:0;transform:translateX(-50%);width:min(100%,720px);min-height:78px;height:auto;padding:9px 10px calc(9px + env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:center;background:rgba(255,255,255,.98);border-top:1px solid #EEE8E4;box-shadow:0 -8px 28px rgba(38,42,48,.055);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.nav-item{min-width:0;min-height:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:4px 2px;border-radius:14px;color:#9A9DA3;font-family:"Space Grotesk",sans-serif;font-size:11px;line-height:1.15;font-weight:600;text-align:center;white-space:nowrap;text-decoration:none;-webkit-tap-highlight-color:transparent;transition:color .18s ease,background .18s ease,transform .18s ease}
+.nav-item i{width:42px;height:32px;display:grid;place-items:center;border-radius:11px;font-size:20px;line-height:1;color:inherit}
+.nav-item.active{color:#E87535;background:transparent}
+.nav-item.active i{background:#FFF0E7;color:#E87535}
+.nav-item:active{transform:scale(.96)}
+body{padding-bottom:calc(94px + env(safe-area-inset-bottom))!important}
+html.dark-mode .bottom-nav{background:rgba(28,30,34,.98);border-top-color:#3A3E44;box-shadow:0 -8px 28px rgba(0,0,0,.22)}
+html.dark-mode .nav-item{color:#AAB0B8}
+html.dark-mode .nav-item.active{color:#FF9A61}
+html.dark-mode .nav-item.active i{background:#4B2C20;color:#FFB98F}
+@media(max-width:360px){.bottom-nav{padding-left:5px;padding-right:5px}.nav-item{font-size:10px;gap:4px}.nav-item i{width:38px;font-size:19px}}
+</style>
 </head>
 
 <body>
@@ -165,8 +180,8 @@ html.dark-mode .nav-item{color:#AAB0B8}html.dark-mode .nav-item.active{color:#FF
 </div>
 
 <nav class="bottom-nav" aria-label="Main navigation">
-  <a href="dashboard.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Home</span></a>
-  <a href="dashboard.html#products" class="nav-item"><i class="fa-solid fa-box"></i><span>Products</span></a>
+  <a href="home.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Home</span></a>
+  <a href="dashboard.html#productsContainer" class="nav-item"><i class="fa-solid fa-store"></i><span>Products</span></a>
   <a href="orders.html" class="nav-item"><i class="fa-solid fa-receipt"></i><span>Orders</span></a>
   <a href="fund.html" class="nav-item"><i class="fa-solid fa-wallet"></i><span>Fund</span></a>
   <a href="profile.html" class="nav-item active" aria-current="page"><i class="fa-solid fa-user"></i><span>Profile</span></a>
@@ -584,7 +599,7 @@ document.querySelectorAll(".toggle-password").forEach(function(button){
 });
 
 document.getElementById("backButton").addEventListener("click",function(){
-  window.location.href="dashboard.html";
+  window.location.href="home.html";
 });
 
 document.getElementById("closePasswordButton")
