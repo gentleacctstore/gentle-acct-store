@@ -850,12 +850,16 @@ async function handleXtraLogs(request,env) {
     if(!/^[A-Za-z0-9][A-Za-z0-9_-]{1,79}$/.test(countryCode))return xtraJson({error:"Invalid country identifier."},400,origin);
     const endpoint=XTRALOGS_CATALOGS["numbers-global"].split("?")[0];
     const result=await xtraUpstream(env,endpoint+"?scope=global&country="+encodeURIComponent(countryCode));
-    if(!result.response.ok)return xtraJson({error:result.payload?.message||result.payload?.error||"Could not import services for "+countryName, countryCode},result.response.status,origin);
-    const rows=xtraExtractCatalogItems(result.payload).filter(item=>xtraCatalogIdentity(item));
+    if(!result.response.ok)return xtraJson({error:result.payload?.message||result.payload?.error||"Could not import services for "+countryName,countryCode,upstreamStatus:result.response.status},result.response.status,origin);
+    const rows=xtraExtractWorldServiceItems(result.payload);
+    if(!rows.length){
+      const topLevelKeys=result.payload&&typeof result.payload==="object"?Object.keys(result.payload):[];
+      return xtraJson({success:false,error:"XtraLogs returned no identifiable number services for "+countryName+". This country was not marked as imported.",countryCode,countryName,serviceCount:0,topLevelKeys},422,origin);
+    }
     const settings=await xtraGetPricing(env);
     const services=rows.map(item=>{
       const id=xtraCatalogIdentity(item),cost=xtraCatalogCost(item),price=xtraSellingPrice(item,"numbers-global",settings,countryCode);
-      return {id,name:String(item.name??item.title??item.service_name??item.product_name??"Number service"),description:String(item.description??item.details??""),supplierCost:cost.amount,supplierCurrency:cost.currency,price:price.price,currency:price.currency,available:item.available!==false&&item.in_stock!==false,raw:item};
+      return {id,name:String(item.name??item.title??item.service_name??item.product_name??item.operator_name??"Number service "+id),description:String(item.description??item.details??item.server_name??item.server??""),supplierCost:cost.amount,supplierCurrency:cost.currency,price:price.price,currency:price.currency,available:item.available!==false&&item.in_stock!==false,server:item.server_name??item.server??item.server_id??null,raw:item};
     });
     const sa=JSON.parse(env.FCM_SERVICE_ACCOUNT_JSON||"{}");
     if(!sa.project_id)throw new Error("Firebase service account is not configured.");
@@ -863,9 +867,9 @@ async function handleXtraLogs(request,env) {
     const docPath=`projects/${sa.project_id}/databases/(default)/documents/storeSettings/xtralogsWorldCatalog/countries/${encodeURIComponent(countryCode)}`;
     const docUrl=`https://firestore.googleapis.com/v1/${docPath}`;
     const payload={countryCode,countryName,services,serviceCount:services.length,importedAt:new Date().toISOString()};
-    if(JSON.stringify(payload).length>850000)return xtraJson({error:"The service catalogue for "+countryName+" is too large to save safely."},413,origin);
+    if(JSON.stringify(payload).length>850000)return xtraJson({error:"The service catalogue for "+countryName+" is too large to save safely.",countryCode,serviceCount:services.length},413,origin);
     const save=await fetch(docUrl,{method:"PATCH",headers:{Authorization:"Bearer "+token,"Content-Type":"application/json"},body:JSON.stringify({fields:{countryCode:{stringValue:countryCode},countryName:{stringValue:countryName},services:xtraFirestoreEncode(services),serviceCount:{integerValue:String(services.length)},importedAt:{timestampValue:payload.importedAt}}})});
-    if(!save.ok){const msg=await save.text();console.error("XtraLogs country catalogue save failed",save.status,msg.slice(0,500));return xtraJson({error:"Could not save "+countryName+" services to Firebase."},502,origin);}
+    if(!save.ok){const msg=await save.text();console.error("XtraLogs country catalogue save failed",save.status,msg.slice(0,500));return xtraJson({error:"Could not save "+countryName+" services to Firebase.",countryCode,serviceCount:services.length},502,origin);}
     return xtraJson({success:true,countryCode,countryName,serviceCount:services.length,importedAt:payload.importedAt},200,origin);
   }
   if(request.method==="GET"&&new URL(request.url).pathname==="/api/xtralogs/admin/pricing") {
@@ -956,8 +960,45 @@ function xtraNormalizeWorldCountries(payload) {
   return rows.sort((a,b)=>a.name.localeCompare(b.name));
 }
 function xtraCatalogIdentity(item) {
-  const id=item.service_id??item.product_id??item.item_id??item.id??item.package_id??item.operator_id;
-  return id===undefined||id===null?"":String(id);
+  if(!item||typeof item!=="object") return "";
+  const id=item.service_id??item.serviceId??item.number_service_id??item.activation_service_id??
+    item.product_id??item.productId??item.item_id??item.itemId??item.package_id??item.packageId??
+    item.operator_id??item.operatorId??item.id;
+  return id===undefined||id===null||String(id).trim()===""?"":String(id).trim();
+}
+function xtraExtractWorldServiceItems(payload) {
+  const out=[],seen=new Set(),visited=new Set();
+  const idKeys=["service_id","serviceId","number_service_id","activation_service_id","product_id","productId","item_id","itemId","package_id","packageId","operator_id","operatorId","id"];
+  const nameKeys=["name","title","service_name","product_name","operator_name","label"];
+  const priceKeys=["rank_price_minor","price_minor","price","price_usd","amount","cost"];
+  const containers=["services","numbers","products","items","results","records","list","data","result","payload","catalog","response"];
+  function add(row,keyHint="") {
+    if(!row||typeof row!=="object"||Array.isArray(row))return;
+    let item=row,id=xtraCatalogIdentity(row);
+    if(!id && /^\\d{1,20}$/.test(keyHint)){id=keyHint;item={...row,service_id:keyHint};}
+    if(!id)return;
+    const hasName=nameKeys.some(k=>row[k]!==undefined&&String(row[k]).trim());
+    const hasPrice=priceKeys.some(k=>row[k]!==undefined&&row[k]!==null&&row[k]!=="");
+    if(!hasName&&!hasPrice)return;
+    if(seen.has(String(id)))return;
+    seen.add(String(id));out.push(item);
+  }
+  function walk(value,depth=0,keyHint="") {
+    if(value==null||depth>9)return;
+    if(Array.isArray(value)){for(const row of value)if(row&&typeof row==="object")add(row);return;}
+    if(typeof value!=="object"||visited.has(value))return;
+    visited.add(value);
+    const before=out.length;add(value,keyHint);if(out.length>before)return;
+    for(const [key,child] of Object.entries(value)){
+      if(!child||typeof child!=="object")continue;
+      if(containers.includes(key.toLowerCase())||Array.isArray(child)){walk(child,depth+1,key);continue;}
+      const hasId=idKeys.some(k=>child[k]!==undefined&&child[k]!==null);
+      const hasPrice=priceKeys.some(k=>child[k]!==undefined&&child[k]!==null);
+      const hasName=nameKeys.some(k=>child[k]!==undefined&&String(child[k]).trim());
+      if(hasId||(hasPrice&&hasName))add(child,key);else walk(child,depth+1,key);
+    }
+  }
+  walk(payload);return out;
 }
 function xtraCatalogCost(item) {
   if(item.rank_price_minor!==undefined) return {amount:Number(item.rank_price_minor)/100,currency:"NGN"};

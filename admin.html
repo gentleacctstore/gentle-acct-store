@@ -931,7 +931,7 @@ html,body{background:#050b1b!important;color:#edf6ff!important}
  <div class="panel-body">
   <div class="xtra-category-toolbar">
    <select id="xtraCatalogSelect" aria-label="Active category" class="hidden"><option value="logs">Logs</option><option value="numbers-usa">USA numbers</option><option value="numbers-global">Global numbers</option><option value="smm">Social media marketing</option><option value="telegram">Telegram</option><option value="esim">eSIM</option><option value="topup">International top-up</option><option value="gifts">Gifts</option><option value="proxies">Proxies</option><option value="vtu">Nigeria airtime and data</option></select>
-   <div id="xtraWorldCountryWrap" class="hidden"><label for="xtraWorldCountry">Choose country</label><select id="xtraWorldCountry" aria-label="Select World Numbers country"><option value="">Import countries first</option></select><button class="btn btn-primary" id="xtraImportCountries" type="button">↓ Import all countries + services</button><div id="xtraWorldImportProgress" class="supplier-note" style="display:none" aria-live="polite"></div></div>
+   <div id="xtraWorldCountryWrap" class="hidden"><label for="xtraWorldCountry">Choose country</label><select id="xtraWorldCountry" aria-label="Select World Numbers country"><option value="">Import countries first</option></select><button class="btn" id="xtraImportCountries" type="button">↓ Import all countries + services</button></div>
    <div id="xtraCatalogCountryWrap" class="hidden"><label for="xtraCatalogCountry">Country code</label><input id="xtraCatalogCountry" placeholder="e.g. NG or US" maxlength="80" aria-label="Country code"></div>
    <div class="form-grid" id="xtraCatalogExtraFields" style="grid-column:1/-1"></div>
    <input id="xtraCatalogSearch" type="search" placeholder="Search this category..." aria-label="Search category catalogue">
@@ -2385,33 +2385,37 @@ document.querySelectorAll("[data-xtra-open]").forEach(button=>button.addEventLis
 $("xtraBackCategories").addEventListener("click",showXtraCategories);
 
 async function importXtraWorldCountries(){
- const button=$("xtraImportCountries"),progress=$("xtraWorldImportProgress");button.disabled=true;button.textContent="Preparing import…";progress.style.display="block";
+ const button=$("xtraImportCountries");button.disabled=true;
+ const originalLabel=button.textContent;button.textContent="Preparing import…";
  try{
-  progress.textContent="Step 1 of 2 · Fetching the complete XtraLogs country list…";
   const result=await xtraAdminRequest("/api/xtralogs/admin/catalog?catalog=numbers-global");
   const countries=xtraNormalizeAdminCountries(result);
-  if(!countries.length)throw Error("XtraLogs did not return a recognised country list. No incomplete catalogue was imported.");
+  if(!countries.length)throw Error("XtraLogs did not return a usable country list. No import was marked successful.");
   const saved=await xtraAdminRequest("/api/xtralogs/admin/pricing",{method:"POST",body:JSON.stringify({pricingMode:$("xtraPricingMode").value,defaultMarginPercent:Number($("xtraDefaultMargin").value),overrides:xtraPricingOverrides,importedCountries:countries})});
   xtraImportedCountries=saved.settings?.importedCountries||countries;
-  const select=$("xtraWorldCountry");select.innerHTML='<option value="">Choose a country…</option>'+xtraImportedCountries.map(c=>`<option value="${escapeHTML(c.code)}">${escapeHTML(c.name)} (${escapeHTML(c.code)})</option>`).join("");
-  let imported=0,serviceTotal=0,failed=[];
-  for(let i=0;i<xtraImportedCountries.length;i++){
-    const country=xtraImportedCountries[i];
-    button.textContent=`Importing ${i+1}/${xtraImportedCountries.length}…`;
-    progress.textContent=`Step 2 of 2 · Importing services: ${country.name} (${i+1} of ${xtraImportedCountries.length}) · ${imported} countries completed`;
+  const select=$("xtraWorldCountry");
+  select.innerHTML='<option value="">Choose a country…</option>'+xtraImportedCountries.map(c=>`<option value="${escapeHTML(c.code)}">${escapeHTML(c.name)} (${escapeHTML(c.code)})</option>`).join("");
+  $("xtraCatalogResults").innerHTML='<div class="loading" style="grid-column:1/-1">Importing number services for '+countries.length+' countries…</div>';
+  let completed=0,serviceTotal=0,empty=0,failed=0;const failures=[];
+  for(let i=0;i<countries.length;i++){
+    const country=countries[i];button.textContent="Importing "+(i+1)+"/"+countries.length+"…";
+    $("xtraCatalogResults").innerHTML='<div class="loading" style="grid-column:1/-1">Importing '+escapeHTML(country.name)+' ('+(i+1)+' of '+countries.length+') · '+serviceTotal+' services saved so far</div>';
     try{
-      const response=await xtraAdminRequest("/api/xtralogs/admin/world-import-country",{method:"POST",body:JSON.stringify({countryCode:country.code,countryName:country.name})});
-      imported++;serviceTotal+=Number(response.serviceCount||0);
-    }catch(error){failed.push({country:country.name,error:error.message||"Import failed"});}
+      const imported=await xtraAdminRequest("/api/xtralogs/admin/world-import-country",{method:"POST",body:JSON.stringify({countryCode:country.code,countryName:country.name})});
+      const count=Number(imported.serviceCount||0);
+      if(imported.success&&count>0){completed++;serviceTotal+=count;}
+      else{empty++;failures.push(country.name+": supplier returned no identifiable services");}
+    }catch(error){failed++;failures.push(country.name+": "+(error.message||"import failed"));}
+    showXtraMessage("Import progress: "+(i+1)+"/"+countries.length+" countries · "+serviceTotal+" services saved · "+empty+" empty · "+failed+" failed","success");
+    if(i<countries.length-1)await new Promise(resolve=>setTimeout(resolve,1050));
   }
-  progress.textContent=`Import finished · ${imported}/${xtraImportedCountries.length} countries · ${serviceTotal} services imported · ${failed.length} countries failed.`;
-  if(failed.length){
-    const preview=failed.slice(0,8).map(x=>x.country+": "+x.error).join("\n");
-    showXtraMessage(`Imported ${imported} countries and ${serviceTotal} services. ${failed.length} countries could not be imported. ${preview}`,"error");
-  }else showXtraMessage(`Complete import successful: ${imported} countries and ${serviceTotal} number services saved to Firebase.`,"success");
-  $("xtraCatalogResults").innerHTML=`<div class="empty-state" style="grid-column:1/-1">${imported} countries and ${serviceTotal} services imported. Customers can now load the saved catalogues by country.${failed.length?" Some countries failed; see the import message above.":" All country catalogues imported successfully."}</div>`;
- }catch(error){progress.textContent=error.message||"Full catalogue import failed.";showXtraMessage(error.message||"Could not import all World Numbers catalogues.");}
- finally{button.disabled=false;button.textContent="↓ Import all countries + services";}
+  const summary="Import finished: "+completed+" countries with services, "+serviceTotal+" number services saved, "+empty+" empty, "+failed+" failed.";
+  $("xtraCatalogResults").innerHTML='<div class="empty-state" style="grid-column:1/-1">'+escapeHTML(summary)+(failures.length?'<details style="margin-top:12px;text-align:left"><summary>Countries needing attention ('+failures.length+')</summary><ul>'+failures.slice(0,80).map(x=>'<li>'+escapeHTML(x)+'</li>').join("")+'</ul></details>':'')+'</div>';
+  showXtraMessage(summary,completed>0&&empty===0&&failed===0?"success":"error");
+ }catch(error){
+  showXtraMessage(error.message||"World Numbers import failed.");
+  $("xtraCatalogResults").innerHTML='<div class="empty-state" style="grid-column:1/-1">'+escapeHTML(error.message||"Country and service import failed")+'</div>';
+ }finally{button.disabled=false;button.textContent=originalLabel;}
 }
 async function loadXtraCatalogue() {
   const button=$("xtraLoadCatalog");button.disabled=true;button.textContent="Fetching…";
