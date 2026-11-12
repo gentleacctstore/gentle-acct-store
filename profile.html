@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#29532A">
+<meta name="theme-color" content="#E87535">
 <meta name="description" content="Manage your Gentle Acct Store profile, orders, wallet, security and appearance.">
 <title>Profile - Gentle Acct Store</title>
 
@@ -29,833 +29,84 @@
 <script src="firebase.js"></script>
 
 <style>
-:root{
-  --green:#C9232C;
-  --green-dark:#991B24;
-  --green-light:#FDEEEF;
-  --green-soft:#FFFFFF;
-  --white:#FFFFFF;
-  --text:#171923;
-  --muted:#747985;
-  --border:#F1D5D7;
-  --danger:#DC2626;
-  --danger-bg:#FFF1F1;
-  --success:#15803D;
-  --success-bg:#EDF8F1;
-  --shadow:0 5px 20px rgba(201,35,44,.06);
-}
-
+:root{--g:#E87535;--g2:#C85D27;--pale:#FFF0E7;--canvas:#FFFCFA;--ink:#282B30;--muted:#858B95;--line:#F0E5DE;--card:#fff;--danger:#C83A43;--shadow:0 12px 32px rgba(80,48,28,.07)}
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-
-body{
-  min-height:100vh;
-  background:radial-gradient(circle at top right,rgba(201,35,44,.06),transparent 32%),var(--green-soft);
-  color:var(--text);
-  font-family:Space Grotesk,sans-serif;
-  font-size:12px;
-  padding-bottom:82px;
-  transition:background .2s,color .2s;
-}
-
-button,input{font-family:inherit}
-button{cursor:pointer}
-a{text-decoration:none;color:inherit}
-
-button:focus-visible,a:focus-visible,input:focus-visible{
-  outline:3px solid rgba(201,35,44,.3);
-  outline-offset:3px;
-}
-
-.header{
-  min-height:58px;
-  background:rgba(255,255,255,.97);
-  border-bottom:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 14px;
-  position:sticky;
-  top:0;
-  z-index:30;
-  backdrop-filter:blur(14px);
-}
-
-.header-title{
-  font-size:15px;
-  font-weight:700;
-  color:var(--text);
-}
-
-.header-icon{
-  width:35px;
-  height:35px;
-  border:0;
-  border-radius:10px;
-  background:var(--green-light);
-  color:var(--green);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:13px;
-}
-
-.container{
-  width:100%;
-  max-width:600px;
-  margin:auto;
-  padding:16px 13px 30px;
-}
-
-.profile-card{
-  position:relative;
-  overflow:hidden;
-  background:linear-gradient(135deg,#C9232C,#E0444C);
-  color:white;
-  border-radius:17px;
-  padding:19px 16px;
-  box-shadow:0 8px 22px rgba(201,35,44,.14);
-  margin-bottom:13px;
-}
-
-.profile-card:before,.profile-card:after{
-  content:"";
-  position:absolute;
-  border-radius:50%;
-  pointer-events:none;
-  background:rgba(255,255,255,.08);
-}
-
-.profile-card:before{
-  width:160px;height:160px;right:-70px;top:-90px;
-}
-
-.profile-card:after{
-  width:110px;height:110px;right:45px;bottom:-85px;
-}
-
-.profile-top{
-  position:relative;
-  z-index:1;
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.avatar{
-  width:55px;
-  height:55px;
-  border-radius:15px;
-  background:white;
-  color:var(--green);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:22px;
-  font-weight:800;
-  flex-shrink:0;
-  box-shadow:0 5px 15px rgba(0,0,0,.1);
-}
-
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{min-height:100vh;background:var(--canvas);color:var(--ink);font-family:"Space Grotesk",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding-bottom:90px;-webkit-font-smoothing:antialiased}
+button,input{font:inherit}button{cursor:pointer}a{text-decoration:none;color:inherit}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid rgba(232,117,53,.28);outline-offset:3px}
+.header{height:62px;background:rgba(255,255,255,.94);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 max(16px,calc((100vw - 680px)/2));position:sticky;top:0;z-index:30;backdrop-filter:blur(18px)}
+.header-title{font-size:17px;font-weight:800;letter-spacing:-.04em}
+.header-icon{width:40px;height:40px;border:1px solid var(--line);border-radius:13px;background:var(--pale);color:var(--g);display:grid;place-items:center;font-size:14px}
+.container{width:100%;max-width:680px;margin:auto;padding:22px 16px 30px}
+.profile-hero{position:relative;overflow:hidden;border-radius:26px;background:linear-gradient(130deg,#25292F 0%,#343940 62%,#E87535 160%);padding:25px;color:#fff;box-shadow:0 18px 40px rgba(54,43,35,.16);margin-bottom:19px}
+.profile-hero:before,.profile-hero:after{content:"";position:absolute;border:1px solid rgba(255,255,255,.12);border-radius:50%;pointer-events:none}
+.profile-hero:before{width:260px;height:260px;right:-120px;top:-145px}
+.profile-hero:after{width:170px;height:170px;right:45px;bottom:-130px}
+.hero-kicker{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#FFD7C0;font-weight:800;margin-bottom:18px}
+.hero-user{display:flex;align-items:center;gap:15px;position:relative;z-index:1}
+.avatar{width:68px;height:68px;flex:0 0 68px;border-radius:22px;background:#fff;color:var(--g);display:grid;place-items:center;font-size:27px;font-weight:850;box-shadow:0 8px 20px rgba(0,0,0,.13)}
 .profile-info{min-width:0}
-
-.profile-name{
-  font-size:16px;
-  font-weight:700;
-  margin-bottom:3px;
-  overflow-wrap:anywhere;
-}
-
-.profile-email{
-  font-size:10px;
-  opacity:.9;
-  overflow-wrap:anywhere;
-}
-
-.verified{
-  display:inline-flex;
-  align-items:center;
-  gap:5px;
-  font-size:9px;
-  font-weight:600;
-  margin-top:7px;
-  background:rgba(255,255,255,.15);
-  border:1px solid rgba(255,255,255,.16);
-  padding:5px 8px;
-  border-radius:8px;
-}
-
-.section{
-  background:white;
-  border:1px solid var(--border);
-  border-radius:14px;
-  box-shadow:var(--shadow);
-  margin-bottom:13px;
-  overflow:hidden;
-}
-
-.section-title{
-  padding:14px 14px 10px;
-  font-size:12px;
-  font-weight:700;
-  color:var(--text);
-}
-
-.menu-item{
-  width:100%;
-  background:white;
-  border:0;
-  border-top:1px solid #EDF2ED;
-  padding:12px 13px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  text-align:left;
-  transition:background .2s;
-  color:inherit;
-}
-
-.menu-item:hover{background:#F6FAF6}
-.menu-item:active{background:var(--green-light)}
-
-.menu-icon{
-  width:36px;
-  height:36px;
-  border-radius:10px;
-  background:var(--green-light);
-  color:var(--green);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:13px;
-  flex-shrink:0;
-}
-
-.menu-content{flex:1;min-width:0}
-
-.menu-content strong{
-  display:block;
-  font-size:11px;
-  font-weight:600;
-  color:var(--text);
-  margin-bottom:2px;
-}
-
-.menu-content span{
-  display:block;
-  font-size:9px;
-  color:var(--muted);
-  line-height:1.6;
-}
-
-.menu-arrow{color:#9297A2;font-size:9px}
-
-.security-row{
-  background:white;
-  border-top:1px solid #EDF2ED;
-  padding:12px 13px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.security-status{
-  margin-left:auto;
-  display:flex;
-  align-items:center;
-  gap:4px;
-  font-size:9px;
-  font-weight:600;
-  white-space:nowrap;
-}
-
-.security-status.good{color:var(--success)}
-.security-status.warning{color:#A16207}
-
-.logout-button{
-  width:100%;
-  border:1px solid #FFDCDC;
-  background:var(--danger-bg);
-  color:var(--danger);
-  padding:12px;
-  border-radius:11px;
-  font-size:11px;
-  font-weight:700;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  margin-top:5px;
-}
-
-.logout-button:disabled{opacity:.6;cursor:not-allowed}
-
-.version{
-  text-align:center;
-  color:#9297A2;
-  font-size:9px;
-  margin-top:16px;
-}
-
-/* APPEARANCE OPTIONS */
-.theme-options{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:8px;
-  padding:5px 12px 14px;
-}
-
-.theme-option{
-  border:2px solid var(--border);
-  border-radius:11px;
-  background:#fff;
-  padding:9px 5px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:7px;
-  color:var(--text);
-  font-size:10px;
-  font-weight:600;
-  transition:border-color .2s,transform .2s;
-  min-width:0;
-}
-
-.theme-option:active{transform:scale(.97)}
-
-.theme-option.selected{
-  border-color:var(--green);
-  background:var(--green-light);
-}
-
-.theme-preview{
-  width:100%;
-  height:52px;
-  border-radius:7px;
-  padding:6px;
-  display:flex;
-  gap:4px;
-  align-items:flex-start;
-  border:1px solid #F1D5D7;
-}
-
-.preview-sidebar{
-  width:20%;
-  height:100%;
-  border-radius:4px;
-  background:#F8DADC;
-}
-
-.preview-lines{
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  gap:5px;
-  padding-top:3px;
-}
-
-.preview-lines i{
-  height:4px;
-  border-radius:5px;
-  background:#E9B8BC;
-  width:85%;
-}
-
-.preview-lines i:last-child{width:55%}
-
-.theme-preview.dark-preview{
-  background:#0B1120;
-  border-color:#334155;
-}
-
-.dark-preview .preview-sidebar{background:#1D2D49}
-.dark-preview .preview-lines i{background:#475569}
-
-.theme-preview.red-preview{
-  background:#FFF5F5;
-  border-color:#E9B8BC;
-}
-
-.red-preview .preview-sidebar{background:#C9232C}
-.red-preview .preview-lines i{background:#E6A5AA}
-
-.theme-check{color:var(--green);font-size:11px}
-
-.theme-help{
-  padding:0 14px 13px;
-  color:var(--muted);
-  font-size:9px;
-  line-height:1.7;
-}
-
-.theme-notice{
-  display:none;
-  margin:0 12px 13px;
-  padding:9px;
-  border-radius:9px;
-  background:var(--success-bg);
-  color:var(--success);
-  font-size:10px;
-  font-weight:600;
-}
-
+.profile-name{font-size:21px;font-weight:800;letter-spacing:-.045em;overflow-wrap:anywhere;margin-bottom:5px}
+.profile-email{font-size:12px;color:#F6DED1;overflow-wrap:anywhere}
+.verified{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:6px 9px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.12);border-radius:999px;font-size:10px;font-weight:700}
+.hero-foot{position:relative;z-index:1;margin-top:24px;padding-top:16px;border-top:1px solid rgba(255,255,255,.18);display:flex;align-items:center;justify-content:space-between;gap:10px;color:#F6DED1;font-size:11px}
+.hero-foot strong{color:#fff;font-size:11px}
+.profile-section{margin:20px 0}
+.section-heading{display:flex;align-items:center;justify-content:space-between;margin:0 2px 11px}
+.section-heading h2{font-size:15px;font-weight:800;letter-spacing:-.035em}
+.section-heading span{font-size:10px;color:var(--muted)}
+.quick-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.quick-card{min-height:108px;background:var(--card);border:1px solid var(--line);border-radius:19px;padding:15px 10px;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;text-align:left;box-shadow:var(--shadow);color:var(--ink)}
+.quick-card .quick-icon{width:38px;height:38px;border-radius:13px;background:var(--pale);color:var(--g);display:grid;place-items:center;font-size:15px}
+.quick-card strong{font-size:11px;font-weight:800}.quick-card small{font-size:9px;color:var(--muted);margin-top:3px}
+.settings-card{background:var(--card);border:1px solid var(--line);border-radius:21px;overflow:hidden;box-shadow:var(--shadow)}
+.setting-row{display:flex;align-items:center;gap:12px;padding:15px;border-top:1px solid var(--line);min-height:68px}
+.setting-row:first-child{border-top:0}
+.setting-icon{width:39px;height:39px;border-radius:13px;background:var(--pale);color:var(--g);display:grid;place-items:center;flex:0 0 39px}
+.setting-copy{flex:1;min-width:0}.setting-copy strong{display:block;font-size:12px;font-weight:800}.setting-copy span{display:block;color:var(--muted);font-size:10px;line-height:1.5;margin-top:4px}
+.setting-arrow{color:#9AA69D;font-size:11px}
+.theme-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;padding:14px}
+.theme-option{border:1.5px solid var(--line);border-radius:15px;background:#fff;padding:9px 7px;display:flex;align-items:center;gap:7px;justify-content:center;color:var(--ink);font-size:11px;font-weight:750;min-height:44px}
+.theme-option.selected{border-color:var(--g);background:var(--pale);color:var(--g)}
+.theme-preview{display:none}.theme-check{font-size:11px}
+.theme-help{padding:0 15px 14px;color:var(--muted);font-size:10px;line-height:1.6}
+.theme-notice{display:none;margin:0 14px 14px;padding:10px 12px;border-radius:12px;background:var(--pale);color:var(--g);font-size:11px;font-weight:700}
 .theme-notice.show{display:block}
-
-/* PASSWORD MODAL */
-.modal{
-  position:fixed;
-  inset:0;
-  background:rgba(15,23,42,.55);
-  display:none;
-  align-items:flex-end;
-  justify-content:center;
-  z-index:100;
-  padding:12px;
-}
-
-.modal.show{display:flex}
-
-.modal-box{
-  background:white;
-  width:100%;
-  max-width:480px;
-  border-radius:18px;
-  padding:17px;
-  box-shadow:0 -10px 35px rgba(0,0,0,.15);
-  animation:modalUp .2s ease;
-  max-height:90vh;
-  overflow-y:auto;
-}
-
-@keyframes modalUp{
-  from{transform:translateY(18px);opacity:0}
-  to{transform:translateY(0);opacity:1}
-}
-
-.modal-header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:16px;
-}
-
-.modal-header h2{
-  font-size:15px;
-  font-weight:700;
-  color:var(--text);
-}
-
-.close-button{
-  width:32px;
-  height:32px;
-  border:0;
-  border-radius:50%;
-  background:#F0F5F0;
-  color:#545866;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.field{margin-bottom:13px}
-
-.field label{
-  display:block;
-  font-size:10px;
-  font-weight:600;
-  color:#343743;
-  margin-bottom:6px;
-}
-
-.password-wrap{position:relative}
-
-.field input{
-  width:100%;
-  height:43px;
-  border:1px solid #DCE6DD;
-  border-radius:10px;
-  background:#FBFDFB;
-  padding:0 42px 0 12px;
-  font-size:11px;
-  outline:none;
-  color:var(--text);
-}
-
-.field input:focus{
-  border-color:var(--green);
-  background:white;
-  box-shadow:0 0 0 3px rgba(201,35,44,.08);
-}
-
-.toggle-password{
-  position:absolute;
-  right:10px;
-  top:50%;
-  transform:translateY(-50%);
-  border:0;
-  background:transparent;
-  color:#7B877D;
-  font-size:12px;
-  padding:5px;
-}
-
-.modal-status{
-  display:none;
-  padding:10px;
-  border-radius:9px;
-  font-size:10px;
-  font-weight:600;
-  line-height:1.6;
-  margin-bottom:12px;
-}
-
-.modal-status.show{display:block}
-.modal-status.error{background:var(--danger-bg);color:var(--danger)}
-.modal-status.success{background:var(--success-bg);color:var(--success)}
-
-.save-button{
-  width:100%;
-  border:0;
-  background:var(--green);
-  color:white;
-  height:43px;
-  border-radius:10px;
-  font-size:11px;
-  font-weight:700;
-}
-
-.save-button:disabled{opacity:.6;cursor:not-allowed}
-
-/* BOTTOM NAVIGATION */
-.bottom-nav{
-  position:fixed;
-  left:0;
-  right:0;
-  bottom:0;
-  height:65px;
-  background:rgba(255,255,255,.98);
-  border-top:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  justify-content:space-around;
-  z-index:50;
-  backdrop-filter:blur(14px);
-}
-
-.nav-item{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:4px;
-  color:#858A96;
-  font-size:9px;
-  font-weight:500;
-  min-width:50px;
-}
-
-.nav-item i{font-size:15px}
-.nav-item.active,.nav-item:hover{color:var(--green)}
-
-.loading{
-  text-align:center;
-  padding:40px 18px;
-  color:var(--muted);
-}
-
-.loading i{
-  display:block;
-  font-size:22px;
-  color:var(--green);
-  margin-bottom:10px;
-}
-
-.loading p{font-size:10px;line-height:1.7}
-
-/* DARK MODE */
-html.dark-mode,html.dark-mode body{
-  background:#0B1510;
-  color:#E5EEE7;
-}
-
-html.dark-mode .header{
-  background:rgba(15,27,19,.97);
-  border-bottom-color:#293B2D;
-}
-
-html.dark-mode .header-title{color:#E5EEE7}
-html.dark-mode .header-icon{background:#213C28;color:#B9E5C1}
-
-html.dark-mode .section,
-html.dark-mode .menu-item,
-html.dark-mode .security-row{
-  background:#152219;
-  border-color:#2B3D30;
-}
-
-html.dark-mode .section-title,
-html.dark-mode .menu-content strong{color:#E5EEE7}
-
-html.dark-mode .menu-item{border-top-color:#2B3D30}
-html.dark-mode .menu-item:hover{background:#1B2C20}
-html.dark-mode .menu-item:active{background:#213C28}
-html.dark-mode .menu-icon{background:#213C28;color:#B9E5C1}
-html.dark-mode .menu-content span{color:#A5B5A8}
-html.dark-mode .menu-arrow{color:#84978A}
-html.dark-mode .security-row{border-top-color:#2B3D30}
-
-html.dark-mode .profile-card{
-  background:linear-gradient(135deg,#991B24,#C9232C);
-}
-
-html.dark-mode .logout-button{
-  background:#351D2A;
-  border-color:#653040;
-  color:#FDA4AF;
-}
-
-html.dark-mode .version{color:#84978A}
-html.dark-mode .modal{background:rgba(0,0,0,.7)}
-
-html.dark-mode .modal-box{
-  background:#152219;
-  color:#E5EEE7;
-  border:1px solid #2B3D30;
-}
-
-html.dark-mode .modal-header h2{color:#E5EEE7}
-html.dark-mode .close-button{background:#293B2D;color:#D6E5D9}
-html.dark-mode .field label{color:#D6E5D9}
-
-html.dark-mode .field input{
-  background:#0B1510;
-  border-color:#344A38;
-  color:#F1F5F2;
-}
-
-html.dark-mode .field input:focus{
-  background:#101D14;
-  border-color:#E66A70;
-}
-
-html.dark-mode .toggle-password{color:#A5B5A8}
-html.dark-mode .modal-status.error{background:#351D2A;color:#FDA4AF}
-html.dark-mode .modal-status.success{background:#153526;color:#86EFAC}
-
-html.dark-mode .bottom-nav{
-  background:rgba(15,27,19,.98);
-  border-top-color:#293B2D;
-}
-
-html.dark-mode .nav-item{color:#A5B5A8}
-html.dark-mode .nav-item.active,
-html.dark-mode .nav-item:hover{color:#B9E5C1}
-
-html.dark-mode .loading{color:#A5B5A8}
-html.dark-mode .loading i{color:#B9E5C1}
-
-html.dark-mode .theme-option{
-  background:#152219;
-  color:#E5EEE7;
-  border-color:#344A38;
-}
-
-html.dark-mode .theme-option.selected{
-  background:#213C28;
-  border-color:#E66A70;
-}
-
-html.dark-mode .theme-help{color:#A5B5A8}
-html.dark-mode .theme-notice{background:#153526;color:#86EFAC}
-
-/* RED MODE */
-html.green-mode:not(.dark-mode) body{
-  background:radial-gradient(circle at top right,rgba(201,35,44,.12),transparent 35%),#FFFFFF;
-}
-
-html.green-mode:not(.dark-mode) .section{border-color:#F1D5D7}
-
-html.green-mode:not(.dark-mode) .header,
-html.green-mode:not(.dark-mode) .bottom-nav{
-  background:rgba(243,248,244,.98);
-}
-
-html.green-mode:not(.dark-mode) .theme-option.selected{
-  background:#FDEEEF;
-}
-
-@media(min-width:600px){
-  .modal{align-items:center}
-  .modal-box{border-radius:18px}
-}
-
-@media(max-width:360px){
-  .container{padding:13px 10px 25px}
-  .profile-card{padding:17px 13px}
-  .avatar{width:50px;height:50px;border-radius:14px}
-  .profile-name{font-size:14px}
-  .security-row{gap:7px;padding:10px}
-  .security-status{font-size:8px}
-  .theme-options{gap:5px;padding-left:9px;padding-right:9px}
-  .theme-option{font-size:9px}
-}
-</style>
-
-<style id="gentle-unified-green-white-palette">
-/* Unified Gentle Acct Store brand colours. Layout, typography and behaviour remain unchanged. */
-:root{
- --green:#29532A !important; --green-dark:#194D28 !important;
- --green-light:#EAF4EC !important; --green-soft:#EAF4EC !important;
- --green-pale:#F2F6F3 !important; --green-border:#D9E9DC !important;
- --blue:#29532A !important; --blue-dark:#194D28 !important;
- --blue-light:#EAF4EC !important; --blue-soft:#F2F6F3 !important;
- --primary:#29532A !important; --primary-dark:#194D28 !important;
- --accent:#29532A !important; --accent-light:#EAF4EC !important;
- --bg:#F2F6F3 !important; --background:#F2F6F3 !important;
- --page:#F2F6F3 !important; --white:#FFFFFF !important;
- --border:#D9E9DC !important; --line:#D9E9DC !important;
- --shadow:0 5px 18px rgba(41,83,42,.07) !important;
-}
-/* Shared brand accents and primary controls */
-.brand-name,.brand-text h1,.brand-accent,.header-title,.header-title i,
-.header-icon,.back-btn,.back-login,.fund-link,.view-all,.related-price,
-.product-price,.amount,.detail-value,.history-amount,.nav-item.active,
-.tx-amount,.order-price,.section-heading,.section-heading:before,
-.input-icon,.stat-icon,.heading-icon,.empty-icon,.menu-icon,
-.card-heading-icon,.deposit-icon,.support-icon,.loading-spinner,
-.loading i,.state-icon,.order-icon,.success-icon,.success h1,
-.theme-check,.security-status.good {color:#29532A !important;}
-.header,.top-header,header {border-bottom-color:#29532A !important;}
-.header-icon,.back-btn,.wallet-chip,.auth-tab.active,.menu-icon,
-.card-heading-icon,.deposit-icon,.support-icon,.stat-icon,
-.order-icon,.state-icon,.success-icon,.theme-option.selected {
- background-color:#EAF4EC !important; border-color:#D9E9DC !important;
-}
-.reset-btn,.pay-btn,.primary-btn,.update-btn,.complete-btn,.btn-primary,
-.copy-small,.related-buy,.wallet-btn:not(.secondary),.copy-btn,
-.error-box button,.refresh,.retry,.retry-btn,.shop-btn,.success-btn.primary,
-button.primary,.button.primary,.save-button,.logout-button:not(.secondary) {
- background:#29532A !important; color:#FFFFFF !important;
- border-color:#29532A !important; box-shadow:0 7px 18px rgba(41,83,42,.15) !important;
-}
-.reset-btn:hover,.pay-btn:hover,.primary-btn:hover,.update-btn:hover,
-.complete-btn:hover,.btn-primary:hover,.related-buy:hover,.refresh:hover,
-.retry:hover,.retry-btn:hover,.save-button:hover {background:#194D28 !important;}
-.btn-secondary,.secondary-btn,.wallet-btn.secondary,.back,
-.header-icon,.wallet-chip {color:#194D28 !important;background:#EAF4EC !important;border-color:#D9E9DC !important;}
-input:focus,textarea:focus,select:focus,.form-control:focus,
-.amount-wrap:focus-within {border-color:#29532A !important;box-shadow:0 0 0 3px rgba(41,83,42,.10) !important;}
-input,textarea,select,.form-control {accent-color:#29532A;}
-.hero,.wallet-card,.balance-card,.summary-card,.profile-card {
- background:linear-gradient(125deg,#194D28 0%,#29532A 58%,#47764A 100%) !important;
- color:#FFFFFF !important;
-}
-.hero h2,.hero p,.hero-label,.summary-card,.summary-card *,
-.wallet-card *,.balance-card *,.profile-card * {color:#FFFFFF;}
-.notice,.details-box,.wallet-summary,.purchase-item,.purchase-text,
-.reference,.link-box,.security-badge,.security-note {
- background:#EAF4EC !important;border-color:#D9E9DC !important;
-}
-.status.approved,.status.success,.status.completed,.message.success {
- background:#EAF4EC !important;color:#194D28 !important;
-}
-/* White surfaces and consistent page backgrounds */
-html:not(.dark-mode):not([data-theme="dark"]) body,
-html:not(.dark-mode):not([data-theme="dark"]) .page,
-html:not(.dark-mode):not([data-theme="dark"]) main {background-color:#F2F6F3;}
-.card,.auth-card,.product-card,.related-card,.stat-card,.floating-card,
-.transaction,.order,.state-box,.empty,.loading,.purchase-card,
-.section,.fund-card,.deposit-list {border-color:#D9E9DC;}
-/* Dark mode keeps its existing dark surfaces while using the same green brand accent. */
-html.dark-mode,html[data-theme="dark"] {--green:#8BC995 !important;--green-dark:#B7E4BE !important;--blue:#8BC995 !important;--blue-dark:#B7E4BE !important;--green-light:#203B29 !important;--blue-light:#203B29 !important;--border:#304F37 !important;}
-html.dark-mode .nav-item.active,html[data-theme="dark"] .nav-item.active,
-html.dark-mode .header-icon,html[data-theme="dark"] .header-icon,
-html.dark-mode .back-btn,html[data-theme="dark"] .back-btn {color:#B7E4BE !important;}
-@media(max-width:767px){input,textarea,select,.form-control,.input-wrap input{font-size:16px !important;}}
-</style>
-
-
-<style>
-
-/* Gentle Acct Store — cohesive premium visual layer.
-   Presentation-only overrides: existing IDs, scripts, data flows and actions remain intact. */
-:root {
-  --brand-green: #176b3a;
-  --brand-green-dark: #10552e;
-  --brand-green-soft: #eaf4ee;
-  --brand-ink: #17251d;
-  --brand-muted: #718078;
-  --brand-line: #e4ece6;
-  --brand-canvas: #f5f8f6;
-  --brand-shadow: 0 12px 34px rgba(20, 54, 34, .075);
-  --brand-shadow-hover: 0 18px 42px rgba(20, 54, 34, .11);
-}
-html { -webkit-text-size-adjust: 100%; }
-body {
-  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
-button, input, select, textarea { font-family: inherit; }
-a, button { -webkit-tap-highlight-color: transparent; }
-button { transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease, border-color .18s ease; }
-button:active { transform: translateY(1px); }
-:focus-visible { outline: 3px solid rgba(35, 130, 76, .28); outline-offset: 2px; }
-input, select, textarea { min-height: 44px; font-size: 16px !important; }
-.card, .auth-card, .panel, .purchase-card, .balance-card, .floating-card,
-.stat-card, .product-card, .wallet-card, .section-card, .content-card,
-.order-card, .transaction, .theme-card, .settings-card {
-  border-color: var(--brand-line);
-  box-shadow: var(--brand-shadow);
-}
-.card, .auth-card, .panel, .purchase-card, .balance-card, .floating-card {
-  border-radius: 20px;
-}
-.stat-card, .product-card, .order-card, .transaction, .theme-card {
-  border-radius: 16px;
-}
-.btn, .primary-btn, .submit-btn, .buy-btn, .reset-btn, .action-btn,
-button[type="submit"] {
-  border-radius: 12px;
-  font-weight: 650;
-  letter-spacing: -.01em;
-}
-.btn-primary, .primary-btn, .submit-btn, .buy-btn, .reset-btn,
-.action-btn.primary, button[type="submit"] {
-  box-shadow: 0 7px 18px rgba(23, 107, 58, .16);
-}
-.btn-primary:hover, .primary-btn:hover, .submit-btn:hover, .buy-btn:hover,
-.reset-btn:hover, .action-btn.primary:hover, button[type="submit"]:hover {
-  box-shadow: 0 10px 24px rgba(23, 107, 58, .22);
-  transform: translateY(-1px);
-}
-.top-header, header, .header, .app-header {
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-}
-.section-heading, .section-title, .heading, .panel-title {
-  letter-spacing: -.035em;
-}
-small, .muted, .subtitle, .panel-desc, .description {
-  letter-spacing: .005em;
-}
-@media (hover:hover) {
-  .stat-card:hover, .product-card:hover, .order-card:hover, .transaction:hover {
-    box-shadow: var(--brand-shadow-hover);
-    transform: translateY(-2px);
-  }
-}
-@media (max-width: 640px) {
-  .card, .auth-card, .panel, .purchase-card, .balance-card, .floating-card {
-    border-radius: 17px;
-  }
-  input, select, textarea { font-size: 16px !important; }
-}
-
-
-:root { --green:#176b3a !important; --green-dark:#10552e !important; --green-light:#eaf4ee !important; --green-soft:#f5f8f6 !important; --border:#e4ece6 !important; --shadow:0 12px 34px rgba(20,54,34,.075) !important; }
-body { background:#f5f8f6 !important; }
-
+.security-pill{margin-left:auto;border-radius:999px;padding:6px 9px;font-size:9px;font-weight:800;white-space:nowrap}
+.security-pill.good{background:#EAF7EF;color:#18723A}.security-pill.warning{background:#FFF5E6;color:#A16207}
+.logout-button{width:100%;height:50px;border:1px solid #F2D8DA;background:#FFF1F2;color:var(--danger);border-radius:15px;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:9px;margin-top:20px}
+.logout-button:disabled{opacity:.6;cursor:not-allowed}
+.version{text-align:center;color:#9AA69D;font-size:10px;margin:18px 0 2px}
+.modal{position:fixed;inset:0;background:rgba(10,25,15,.58);display:none;align-items:flex-end;justify-content:center;z-index:100;padding:12px}
+.modal.show{display:flex}.modal-box{background:#fff;width:100%;max-width:480px;border-radius:23px;padding:20px;box-shadow:0 -10px 35px rgba(0,0,0,.15);animation:modalUp .2s ease;max-height:90vh;overflow-y:auto}
+@keyframes modalUp{from{transform:translateY(18px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:17px}.modal-header h2{font-size:17px;font-weight:800}
+.close-button{width:36px;height:36px;border:0;border-radius:12px;background:var(--pale);color:var(--g);display:grid;place-items:center}
+.field{margin-bottom:14px}.field label{display:block;font-size:12px;font-weight:750;margin-bottom:7px}.password-wrap{position:relative}
+.field input{width:100%;height:48px;border:1px solid var(--line);border-radius:13px;background:#F8FBF8;padding:0 45px 0 13px;font-size:16px;outline:none;color:var(--ink)}
+.field input:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(232,117,53,.10)}
+.toggle-password{position:absolute;right:12px;top:50%;transform:translateY(-50%);border:0;background:transparent;color:#718078;font-size:14px;padding:6px}
+.modal-status{display:none;padding:11px;border-radius:12px;font-size:11px;font-weight:700;line-height:1.6;margin-bottom:13px}.modal-status.show{display:block}.modal-status.error{background:#FFF1F2;color:#B4232D}.modal-status.success{background:#EAF7EF;color:#18723A}
+.save-button{width:100%;border:0;background:var(--g);color:white;height:49px;border-radius:13px;font-size:12px;font-weight:800}.save-button:disabled{opacity:.6;cursor:not-allowed}
+.bottom-nav{position:fixed;left:0;right:0;bottom:0;height:72px;background:rgba(255,255,255,.97);border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-around;z-index:50;backdrop-filter:blur(16px);padding-bottom:env(safe-area-inset-bottom)}
+.nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;color:#929D95;font-size:10px;font-weight:650;min-width:52px}.nav-item i{font-size:17px}.nav-item.active,.nav-item:hover{color:var(--g)}
+.loading{text-align:center;padding:45px 18px;color:var(--muted)}.loading i{display:block;font-size:23px;color:var(--g);margin-bottom:12px}.loading p{font-size:12px}
+html.dark-mode,html.dark-mode body{background:#0D1710;color:#F4F2F0}
+html.dark-mode .header,html.dark-mode .bottom-nav{background:rgba(28,30,34,.97);border-color:#3B3E43}
+html.dark-mode .header-title{color:#F4F2F0}
+html.dark-mode .settings-card,html.dark-mode .quick-card,html.dark-mode .theme-option{background:#1D2228;border-color:#3A4149;color:#F4F2F0}
+html.dark-mode .setting-row{border-color:#3A4149}html.dark-mode .setting-copy span,html.dark-mode .section-heading span,html.dark-mode .theme-help{color:#AAB0B8}
+html.dark-mode .setting-icon,html.dark-mode .quick-icon,html.dark-mode .theme-option.selected{background:#4B2C20;color:#FFC29E}
+html.dark-mode .logout-button{background:#351D2A;border-color:#653040;color:#FDA4AF}
+html.dark-mode .modal-box{background:#1D2228;color:#F4F2F0;border:1px solid #3A4149}
+html.dark-mode .modal-header h2,html.dark-mode .field label{color:#F4F2F0}
+html.dark-mode .field input{background:#14181D;border-color:#454C55;color:#fff}
+html.dark-mode .close-button{background:#3B3E43;color:#FFB98F}
+html.dark-mode .nav-item{color:#AAB0B8}html.dark-mode .nav-item.active{color:#FFB98F}
+@media(min-width:600px){.modal{align-items:center}.container{padding-top:30px}.profile-hero{padding:30px}.quick-card{min-height:118px}}
+@media(max-width:370px){.container{padding:16px 11px 25px}.profile-hero{padding:19px}.profile-name{font-size:18px}.quick-grid{gap:7px}.quick-card{padding:12px 8px}.quick-card strong{font-size:10px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
 
@@ -1095,115 +346,83 @@ function renderProfile(user){
   const firstLetter = displayName.charAt(0).toUpperCase();
 
   pageContent.innerHTML = `
-    <div class="profile-card">
-      <div class="profile-top">
+    <section class="profile-hero">
+      <div class="hero-kicker">Gentle Acct Store · Account centre</div>
+      <div class="hero-user">
         <div class="avatar">${escapeHTML(firstLetter)}</div>
         <div class="profile-info">
           <div class="profile-name">${escapeHTML(displayName)}</div>
           <div class="profile-email">${escapeHTML(user.email || "")}</div>
           <div class="verified">
             <i class="fa-solid ${user.emailVerified ? "fa-circle-check" : "fa-circle-exclamation"}"></i>
-            ${user.emailVerified ? "Email verified" : "Email not verified"}
+            ${user.emailVerified ? "Verified account" : "Email not verified"}
           </div>
         </div>
       </div>
-    </div>
-
-    <section class="section" id="appearanceSection">
-      <div class="section-title">
-        <i class="fa-solid fa-palette" style="color:var(--green);margin-right:6px"></i>
-        Appearance &amp; Theme
-      </div>
-
-      <div class="theme-options">
-        <button type="button" class="theme-option" data-theme="light" aria-pressed="false">
-          <span class="theme-preview">
-            <span class="preview-sidebar"></span>
-            <span class="preview-lines"><i></i><i></i><i></i></span>
-          </span>
-          <span>Light</span>
-          <i class="fa-solid fa-circle-check theme-check" style="visibility:hidden"></i>
-        </button>
-
-        <button type="button" class="theme-option" data-theme="dark" aria-pressed="false">
-          <span class="theme-preview dark-preview">
-            <span class="preview-sidebar"></span>
-            <span class="preview-lines"><i></i><i></i><i></i></span>
-          </span>
-          <span>Dark</span>
-          <i class="fa-solid fa-circle-check theme-check" style="visibility:hidden"></i>
-        </button>
-
-        <button type="button" class="theme-option" data-theme="green" aria-pressed="false">
-          <span class="theme-preview red-preview">
-            <span class="preview-sidebar"></span>
-            <span class="preview-lines"><i></i><i></i><i></i></span>
-          </span>
-          <span>Red</span>
-          <i class="fa-solid fa-circle-check theme-check" style="visibility:hidden"></i>
-        </button>
-      </div>
-
-      <p class="theme-help">
-        Choose how Gentle Acct Store looks on your device. Your choice is saved for this signed-in account in this browser.
-      </p>
-
-      <div id="themeNotice" class="theme-notice" role="status" aria-live="polite"></div>
+      <div class="hero-foot"><span>Account status</span><strong>${user.emailVerified ? "Active & verified" : "Active"}</strong></div>
     </section>
 
-    <section class="section">
-      <div class="section-title">Account</div>
-
-      <button id="changePasswordButton" class="menu-item" type="button">
-        <div class="menu-icon"><i class="fa-solid fa-lock"></i></div>
-        <div class="menu-content">
-          <strong>Change Password</strong>
-          <span>Update your account password securely</span>
-        </div>
-        <div class="menu-arrow"><i class="fa-solid fa-chevron-right"></i></div>
-      </button>
-
-      <button id="ordersButton" class="menu-item" type="button">
-        <div class="menu-icon"><i class="fa-solid fa-receipt"></i></div>
-        <div class="menu-content">
-          <strong>My Orders</strong>
-          <span>View your purchased products</span>
-        </div>
-        <div class="menu-arrow"><i class="fa-solid fa-chevron-right"></i></div>
-      </button>
-
-      <button id="walletButton" class="menu-item" type="button">
-        <div class="menu-icon"><i class="fa-solid fa-wallet"></i></div>
-        <div class="menu-content">
-          <strong>Wallet</strong>
-          <span>View your wallet and add funds</span>
-        </div>
-        <div class="menu-arrow"><i class="fa-solid fa-chevron-right"></i></div>
-      </button>
+    <section class="profile-section">
+      <div class="section-heading"><h2>Quick access</h2><span>Your essentials</span></div>
+      <div class="quick-grid">
+        <button id="ordersButton" class="quick-card" type="button">
+          <span class="quick-icon"><i class="fa-solid fa-receipt"></i></span>
+          <span><strong>My orders</strong><small>Purchase history</small></span>
+        </button>
+        <button id="walletButton" class="quick-card" type="button">
+          <span class="quick-icon"><i class="fa-solid fa-wallet"></i></span>
+          <span><strong>My wallet</strong><small>Balance &amp; funding</small></span>
+        </button>
+        <button id="changePasswordButton" class="quick-card" type="button">
+          <span class="quick-icon"><i class="fa-solid fa-lock"></i></span>
+          <span><strong>Password</strong><small>Update security</small></span>
+        </button>
+      </div>
     </section>
 
-    <section class="section">
-      <div class="section-title">Security</div>
-
-      <div class="security-row">
-        <div class="menu-icon"><i class="fa-solid fa-shield-halved"></i></div>
-        <div class="menu-content">
-          <strong>Account Security</strong>
-          <span>Authentication is managed by Firebase</span>
+    <section class="profile-section">
+      <div class="section-heading"><h2>Personalise your space</h2><span>Saved on this device</span></div>
+      <div class="settings-card">
+        <div class="setting-row">
+          <div class="setting-icon"><i class="fa-solid fa-palette"></i></div>
+          <div class="setting-copy"><strong>Appearance</strong><span>Choose the look that feels right for you</span></div>
         </div>
-        <div class="security-status ${user.emailVerified ? "good" : "warning"}">
-          <i class="fa-solid ${user.emailVerified ? "fa-circle-check" : "fa-circle-exclamation"}"></i>
-          ${user.emailVerified ? "Verified" : "Unverified"}
+        <div class="theme-options">
+          <button type="button" class="theme-option" data-theme="light" aria-pressed="false">
+            <i class="fa-regular fa-sun"></i><span>Light</span><i class="fa-solid fa-circle-check theme-check" style="visibility:hidden"></i>
+          </button>
+          <button type="button" class="theme-option" data-theme="dark" aria-pressed="false">
+            <i class="fa-solid fa-moon"></i><span>Dark</span><i class="fa-solid fa-circle-check theme-check" style="visibility:hidden"></i>
+          </button>
+          <button type="button" class="theme-option" data-theme="green" aria-pressed="false">
+            <i class="fa-solid fa-sun"></i><span>Orange</span><i class="fa-solid fa-circle-check theme-check" style="visibility:hidden"></i>
+          </button>
+        </div>
+        <p class="theme-help">Your appearance preference is saved for this signed-in account in this browser.</p>
+        <div id="themeNotice" class="theme-notice" role="status" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="profile-section">
+      <div class="section-heading"><h2>Security overview</h2><span>Firebase protected</span></div>
+      <div class="settings-card">
+        <div class="setting-row">
+          <div class="setting-icon"><i class="fa-solid fa-shield-halved"></i></div>
+          <div class="setting-copy"><strong>Email verification</strong><span>${user.emailVerified ? "Your email address has been verified." : "Verify your email to strengthen account security."}</span></div>
+          <span class="security-pill ${user.emailVerified ? "good" : "warning"}">${user.emailVerified ? "Verified" : "Pending"}</span>
+        </div>
+        <div class="setting-row">
+          <div class="setting-icon"><i class="fa-solid fa-key"></i></div>
+          <div class="setting-copy"><strong>Password protection</strong><span>Change your password whenever you need to.</span></div>
+          <i class="fa-solid fa-chevron-right setting-arrow"></i>
         </div>
       </div>
     </section>
 
     <button id="logoutButton" class="logout-button" type="button">
-      <i class="fa-solid fa-right-from-bracket"></i>
-      <span>Log Out</span>
+      <i class="fa-solid fa-right-from-bracket"></i><span>Sign out of account</span>
     </button>
-
-    <div class="version">Gentle Acct Store</div>
+    <div class="version">GENTLE ACCT STORE · CUSTOMER ACCOUNT</div>
   `;
 
   document.querySelectorAll(".theme-option").forEach(function(button){
@@ -1385,22 +604,3 @@ document.addEventListener("keydown",function(event){
 </script>
 </body>
 </html>
-
-
-<style id="gentle-customer-final-polish">
-:root{--green:#29532A!important;--green-dark:#194D28!important;--green-light:#EAF4EC!important;--green-soft:#EAF4EC!important;--green-border:#D9E9DC!important;--primary:#29532A!important;--accent:#29532A!important;--border:#D9E9DC!important;--line:#D9E9DC!important}
-html,body,button,input,textarea,select{font-family:Inter,"Space Grotesk",Arial,sans-serif!important}
-button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline-color:rgba(41,83,42,.35)!important}
-input:focus,textarea:focus,select:focus{border-color:#397B45!important;box-shadow:0 0 0 3px rgba(41,83,42,.10)!important}
-@media(max-width:767px){input,textarea,select{font-size:16px!important}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
-</style>
-
-<style id="gentle-green-brand-final">
-/* Keep the customer-facing pages on the Gentle green identity. */
-.brand-logo,.logo-box,.brand-icon,.brand-mark,.main-icon,.heading-icon,.stat-icon,.deposit-icon,.support-icon,.menu-icon,.success-icon{background-color:#EAF4EC!important;color:#29532A!important}
-.primary-btn,.pay-btn,.complete-btn,.submit,.hero-button.primary,.search-box button,.related-buy,.save-button,.support-btn,.error-box button{background:#29532A!important;color:#FFFFFF!important;border-color:#29532A!important}
-.primary-btn:hover,.pay-btn:hover,.complete-btn:hover,.hero-button.primary:hover,.related-buy:hover,.save-button:hover{background:#194D28!important}
-.brand-name,.brand-text h1,.header-title,.header-icon,.back-btn,.view-all,.product-price,.related-price,.amount,.detail-value,.history-amount,.section-heading:before,.nav-item.active,.success h1,.success-icon{color:#29532A!important}
-.header,.top-header,header{border-bottom-color:#D9E9DC!important}
-</style>
