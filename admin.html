@@ -936,8 +936,10 @@ html,body{background:#050b1b!important;color:#edf6ff!important}
   <div class="form-grid" id="xtraCatalogExtraFields" style="grid-column:1/-1"></div>
   <input id="xtraCatalogSearch" type="search" placeholder="Search fetched services..." aria-label="Search catalogue">
   <button class="btn btn-primary" id="xtraLoadCatalog" type="button">Fetch catalogue</button>
+  <button class="btn" id="xtraImportCountries" type="button" style="display:none">Import Countries</button>
  </div>
- <div class="supplier-note">Some catalogues need extra filters. For example, global numbers need a country code to show purchasable services. The catalogue is read from XtraLogs; this page does not submit real orders.</div>
+ <div class="supplier-note" id="xtraImportCountryStatus">For World Numbers, import the supplier country list here. Imported countries will be available on the customer World Numbers page.</div>
+ <div class="supplier-note">The catalogue is read from XtraLogs; this page does not submit real orders.</div>
  <div class="supplier-card-grid" id="xtraCatalogResults"><div class="empty-state" style="grid-column:1/-1">Choose a catalogue and tap Fetch catalogue.</div></div>
  <div class="panel-body"><button class="btn btn-primary" id="xtraSaveServicePrices" type="button">Save service prices</button></div>
 </div>
@@ -2275,8 +2277,10 @@ function renderXtraCatalogFilters() {
   const country=$("xtraCatalogCountry");
   const wrap=$("xtraCatalogExtraFields");
   country.style.display=["numbers-global","esim","topup","gifts"].includes(catalog)?"":"none";
-  country.placeholder=catalog==="numbers-global"?"Required country code (e.g. CA)":catalog==="gifts"?"Country code (e.g. US)": "Country code (e.g. NG)";
-  if(catalog==="numbers-global") country.value=country.value||"CA";
+  $("xtraImportCountries").style.display=catalog==="numbers-global"?"":"none";
+  $("xtraImportCountryStatus").style.display=catalog==="numbers-global"?"":"none";
+  country.placeholder=catalog==="numbers-global"?"Select a country after importing":catalog==="gifts"?"Country code (e.g. US)": "Country code (e.g. NG)";
+  if(catalog==="numbers-global") country.value="";
   if(catalog==="esim"||catalog==="topup"||catalog==="vtu") country.value=country.value||"NG";
   if(catalog==="gifts") country.value=country.value||"US";
   let html="";
@@ -2292,6 +2296,29 @@ function appendXtraCatalogFilters(params) {
   for(const [id,key] of [["xtraCatalogKind","kind"],["xtraCatalogNetwork","network"],["xtraCatalogTypeId","type_id"],["xtraCatalogService","service"],["xtraCatalogUsername","username"],["xtraCatalogQuantity","quantity"],["xtraCatalogNumber","number"],["xtraCatalogPage","page"],["xtraCatalogPerPage","per_page"]]) {
     const el=$(id);if(el&&el.value.trim())params.set(key,el.value.trim());
   }
+}
+async function importXtraCountries() {
+  const button=$("xtraImportCountries");
+  button.disabled=true;button.textContent="Importing…";
+  $("xtraImportCountryStatus").textContent="Fetching the available countries from XtraLogs…";
+  try {
+    const result=await xtraAdminRequest("/api/xtralogs/admin/catalog?catalog=numbers-global");
+    const raw=xtraExtractItems(result);
+    const countries=raw.map(item=>{
+      if(typeof item==="string") return {code:item.length===2?item.toUpperCase():"",name:item};
+      const code=String(item.iso2??item.iso_code??item.country_code??item.code??item.country_iso??"").toUpperCase();
+      const name=String(item.country_name??item.name??item.country??item.title??item.label??code);
+      return {code,name};
+    }).filter(item=>/^[A-Z]{2}$/.test(item.code)&&item.name).filter((item,index,list)=>list.findIndex(x=>x.code===item.code)===index);
+    if(!countries.length) throw new Error("XtraLogs returned no valid country codes. Please check the supplier catalogue.");
+    const settings=await xtraAdminRequest("/api/xtralogs/admin/pricing",{method:"POST",body:JSON.stringify({importedCountries:countries})});
+    const count=(settings.settings?.importedCountries||countries).length;
+    $("xtraImportCountryStatus").textContent=count+" countries imported successfully. They are now available on the customer World Numbers page.";
+    showXtraMessage(count+" World Numbers countries imported.","success");
+  } catch(error) {
+    $("xtraImportCountryStatus").textContent=error.message||"Could not import countries.";
+    showXtraMessage(error.message||"Could not import World Numbers countries.");
+  } finally {button.disabled=false;button.textContent="Import Countries";}
 }
 async function loadXtraCatalogue() {
   const button=$("xtraLoadCatalog");button.disabled=true;button.textContent="Fetching…";
@@ -2375,6 +2402,7 @@ document.querySelectorAll("[data-xtra-category]").forEach(card=>card.addEventLis
 $("xtraBackCategories").addEventListener("click",showXtraCategories);
 $("xtraRefreshBalance").addEventListener("click",checkXtraBalance);
 $("xtraLoadCatalog").addEventListener("click",loadXtraCatalogue);
+$("xtraImportCountries").addEventListener("click",importXtraCountries);
 $("xtraCatalogSelect").addEventListener("change",()=>{xtraCatalogueItems=[];$("xtraCatalogResults").innerHTML="";renderXtraCatalogFilters();});
 renderXtraCatalogFilters();
 $("xtraCatalogSearch").addEventListener("input",renderXtraCatalogue);

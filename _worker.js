@@ -752,7 +752,7 @@ async function xtraGetPricing(env) {
   const token=await getGoogleAccessToken(sa);
   const url=`https://firestore.googleapis.com/v1/projects/${encodeURIComponent(sa.project_id)}/databases/(default)/documents/storeSettings/xtralogsPricing`;
   const response=await fetch(url,{headers:{Authorization:"Bearer "+token}});
-  if(response.status===404) return {pricingMode:"automatic",defaultMarginPercent:20,overrides:{}};
+  if(response.status===404) return {pricingMode:"automatic",defaultMarginPercent:20,overrides:{},importedCountries:[]};
   if(!response.ok) throw new Error("Could not read XtraLogs pricing settings from Firestore.");
   const doc=await response.json();
   return xtraFirestoreDecodeFields(doc.fields||{});
@@ -768,6 +768,7 @@ async function xtraSavePricing(env,settings) {
     pricingMode:xtraFirestoreEncode(settings.pricingMode),
     defaultMarginPercent:xtraFirestoreEncode(settings.defaultMarginPercent),
     overrides:xtraFirestoreEncode(settings.overrides||{}),
+    importedCountries:xtraFirestoreEncode(Array.isArray(settings.importedCountries)?settings.importedCountries:[]),
     updatedAt:{timestampValue:new Date().toISOString()}
   };
   const response=await fetch(url,{method:"PATCH",headers:{Authorization:"Bearer "+token,"Content-Type":"application/json"},body:JSON.stringify({fields})});
@@ -848,6 +849,8 @@ async function handleXtraLogs(request,env) {
     const margin=Number(body.defaultMarginPercent);
     if(!Number.isFinite(margin)||margin<0||margin>500) return xtraJson({error:"Default profit percentage must be between 0 and 500."},400,origin);
     const overrides=body.overrides&&typeof body.overrides==="object"&&!Array.isArray(body.overrides)?body.overrides:{};
+    const currentSettings=await xtraGetPricing(env);
+    const importedCountries=Array.isArray(body.importedCountries)?body.importedCountries.map(item=>({code:String(item?.code||"").toUpperCase(),name:String(item?.name||"").trim()})).filter(item=>/^[A-Z]{2}$/.test(item.code)&&item.name).filter((item,index,list)=>list.findIndex(x=>x.code===item.code)===index).slice(0,300):Array.isArray(currentSettings.importedCountries)?currentSettings.importedCountries:[];
     const clean={};
     for(const [key,item] of Object.entries(overrides).slice(0,3000)) {
       if(!/^[a-z0-9-]{1,30}:[A-Za-z0-9._-]{1,100}$/i.test(key)||!item||typeof item!=="object") continue;
@@ -855,8 +858,8 @@ async function handleXtraLogs(request,env) {
       if(!Number.isFinite(price)||price<0||price>100000000) continue;
       clean[key]={sellingPrice:price,enabled:item.enabled!==false,currency:String(item.currency||"NGN").slice(0,8)};
     }
-    await xtraSavePricing(env,{pricingMode:mode,defaultMarginPercent:margin,overrides:clean});
-    return xtraJson({success:true,message:"XtraLogs pricing settings saved.",settings:{pricingMode:mode,defaultMarginPercent:margin,overrides:clean}},200,origin);
+    await xtraSavePricing(env,{pricingMode:mode,defaultMarginPercent:margin,overrides:clean,importedCountries});
+    return xtraJson({success:true,message:"XtraLogs pricing settings saved.",settings:{pricingMode:mode,defaultMarginPercent:margin,overrides:clean,importedCountries}},200,origin);
   }
   return xtraJson({error:"Unknown XtraLogs admin operation."},404,origin);
 }
@@ -918,9 +921,13 @@ async function handleXtraCustomer(request,env) {
     if(!endpoint)return xtraJson({error:"Unknown catalogue"},400,origin);
     const query=new URLSearchParams(endpoint.split("?")[1]||"");
     for(const key of ["country","page","per_page","service","username","quantity","network","kind","type_id","number"]){const v=url.searchParams.get(key);if(v&&/^[A-Za-z0-9._-]{1,80}$/.test(v))query.set(key,v);}
+    const settings=await xtraGetPricing(env);
+    if(catalog==="numbers-global"&&!url.searchParams.get("country")&&Array.isArray(settings.importedCountries)&&settings.importedCountries.length){
+      return xtraJson({success:true,catalog,countries:settings.importedCountries},200,origin);
+    }
     const upstream=await xtraUpstream(env,endpoint.split("?")[0]+(query.size?"?"+query.toString():""));
     if(!upstream.response.ok)return xtraJson({error:upstream.payload?.message||upstream.payload?.error||"Could not load this catalogue."},upstream.response.status,origin);
-    const items=xtraExtractCatalogItems(upstream.payload);const settings=await xtraGetPricing(env);
+    const items=xtraExtractCatalogItems(upstream.payload);
     if(catalog==="numbers-global"&&!url.searchParams.get("country")){
       const countries=items.map(item=>{
         if(typeof item==="string"){
