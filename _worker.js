@@ -752,7 +752,7 @@ async function xtraGetPricing(env) {
   const token=await getGoogleAccessToken(sa);
   const url=`https://firestore.googleapis.com/v1/projects/${encodeURIComponent(sa.project_id)}/databases/(default)/documents/storeSettings/xtralogsPricing`;
   const response=await fetch(url,{headers:{Authorization:"Bearer "+token}});
-  if(response.status===404) return {pricingMode:"automatic",defaultMarginPercent:20,overrides:{}};
+  if(response.status===404) return {pricingMode:"automatic",defaultMarginPercent:20,overrides:{},importedCountries:[]};
   if(!response.ok) throw new Error("Could not read XtraLogs pricing settings from Firestore.");
   const doc=await response.json();
   return xtraFirestoreDecodeFields(doc.fields||{});
@@ -763,11 +763,12 @@ async function xtraSavePricing(env,settings) {
   if(!sa.project_id||!sa.client_email||!sa.private_key) throw new Error("Firebase service account is not configured.");
   const token=await getGoogleAccessToken(sa);
   const url=new URL(`https://firestore.googleapis.com/v1/projects/${encodeURIComponent(sa.project_id)}/databases/(default)/documents/storeSettings/xtralogsPricing`);
-  ["pricingMode","defaultMarginPercent","overrides","updatedAt"].forEach(k=>url.searchParams.append("updateMask.fieldPaths",k));
+  ["pricingMode","defaultMarginPercent","overrides","importedCountries","updatedAt"].forEach(k=>url.searchParams.append("updateMask.fieldPaths",k));
   const fields={
     pricingMode:xtraFirestoreEncode(settings.pricingMode),
     defaultMarginPercent:xtraFirestoreEncode(settings.defaultMarginPercent),
     overrides:xtraFirestoreEncode(settings.overrides||{}),
+    importedCountries:xtraFirestoreEncode(settings.importedCountries||[]),
     updatedAt:{timestampValue:new Date().toISOString()}
   };
   const response=await fetch(url,{method:"PATCH",headers:{Authorization:"Bearer "+token,"Content-Type":"application/json"},body:JSON.stringify({fields})});
@@ -835,6 +836,10 @@ async function handleXtraLogs(request,env) {
     }
     const path=endpoint.split("?")[0]+(query.size?"?"+query.toString():"");
     const result=await xtraUpstream(env,path);
+    if(key==="numbers-global"&&!url.searchParams.get("country")&&result.response.ok){
+      const countries=xtraNormalizeWorldCountries(result.payload);
+      return xtraJson({success:true,catalog:key,countries,countryCount:countries.length},200,origin);
+    }
     return xtraJson(result.payload,result.response.status,origin);
   }
   if(request.method==="GET"&&new URL(request.url).pathname==="/api/xtralogs/admin/pricing") {
@@ -850,13 +855,15 @@ async function handleXtraLogs(request,env) {
     const overrides=body.overrides&&typeof body.overrides==="object"&&!Array.isArray(body.overrides)?body.overrides:{};
     const clean={};
     for(const [key,item] of Object.entries(overrides).slice(0,3000)) {
-      if(!/^[a-z0-9-]{1,30}:[A-Za-z0-9._-]{1,100}$/i.test(key)||!item||typeof item!=="object") continue;
+      if(!/^[a-z0-9-]{1,30}:(?:[A-Za-z0-9._-]{1,80}:)?[A-Za-z0-9._-]{1,100}$/i.test(key)||!item||typeof item!=="object") continue;
       const price=Number(item.sellingPrice);
       if(!Number.isFinite(price)||price<0||price>100000000) continue;
       clean[key]={sellingPrice:price,enabled:item.enabled!==false,currency:String(item.currency||"NGN").slice(0,8)};
     }
-    await xtraSavePricing(env,{pricingMode:mode,defaultMarginPercent:margin,overrides:clean});
-    return xtraJson({success:true,message:"XtraLogs pricing settings saved.",settings:{pricingMode:mode,defaultMarginPercent:margin,overrides:clean}},200,origin);
+    const current=await xtraGetPricing(env);
+    const importedCountries=Array.isArray(body.importedCountries)?xtraNormalizeWorldCountries({countries:body.importedCountries}):(Array.isArray(current.importedCountries)?current.importedCountries:[]);
+    await xtraSavePricing(env,{pricingMode:mode,defaultMarginPercent:margin,overrides:clean,importedCountries});
+    return xtraJson({success:true,message:"XtraLogs pricing settings saved.",settings:{pricingMode:mode,defaultMarginPercent:margin,overrides:clean,importedCountries}},200,origin);
   }
   return xtraJson({error:"Unknown XtraLogs admin operation."},404,origin);
 }
@@ -876,34 +883,50 @@ function xtraExtractCatalogItems(data,depth=0) {
   return [];
 }
 function xtraNormalizeWorldCountries(payload) {
-  const rows=[];
-  const seen=new Set();
+  const rows=[],seen=new Set();
+  const codeKeys=["iso2","iso_code","country_code","countryCode","country_iso","country_iso_code","alpha2","country_id","countryId","country_slug","country_key","slug","code","value"];
+  const nameKeys=["country_name","countryName","name","country","title","label","display_name"];
+  const countryArrayKeys=["countries","country_list","available_countries","country_options","country_data","countryCodes"];
   const add=(code,name)=>{
-    code=String(code||"").trim().toUpperCase();
-    name=String(name||"").trim();
-    if(!/^[A-Z]{2}$/.test(code)||!name||seen.has(code))return;
-    seen.add(code);rows.push({code,name});
+    code=String(code??"").trim();name=String(name??"").trim();
+    if(!/^[A-Za-z0-9][A-Za-z0-9_-]{1,79}$/.test(code)||!name)return;
+    const key=code.toLowerCase();if(seen.has(key))return;seen.add(key);rows.push({code,name});
   };
-  const visit=(value,depth=0)=>{
+  const visitCountry=(value,depth=0)=>{
     if(depth>7||value==null)return;
-    if(Array.isArray(value)){for(const item of value)visit(item,depth+1);return;}
+    if(Array.isArray(value)){for(const item of value)visitCountry(item,depth+1);return;}
     if(typeof value==="string"){
-      const s=value.trim();
-      if(/^[A-Z]{2}$/i.test(s))add(s,s.toUpperCase());
+      const name=value.trim();if(name)add(name.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,""),name);
       return;
     }
     if(typeof value!=="object")return;
-    const code=value.iso2??value.iso_code??value.country_code??value.country_iso??value.alpha2??value.code;
-    const name=value.country_name??value.name??value.country??value.title??value.label;
-    if(code!==undefined)add(code,name??code);
-    // Some supplier responses key country records by ISO code.
+    let code="",name="";
+    for(const key of codeKeys)if(value[key]!==undefined&&value[key]!==null&&String(value[key]).trim()){code=String(value[key]).trim();break;}
+    for(const key of nameKeys)if(value[key]!==undefined&&value[key]!==null&&String(value[key]).trim()){name=String(value[key]).trim();break;}
+    if(code&&name)add(code,name);
     for(const [key,child] of Object.entries(value)){
-      if(/^[A-Z]{2}$/i.test(key)&&child&&typeof child==="object"&&!Array.isArray(child)){
-        add(key,child.name??child.country_name??child.country??key);
-      } else if(["countries","country_list","available_countries","data","result","payload","response"].includes(key.toLowerCase())) visit(child,depth+1);
+      if(/^[A-Za-z]{2}$/.test(key)&&child&&typeof child==="object"&&!Array.isArray(child))add(key,child.name??child.country_name??child.country??key);
+      else if(countryArrayKeys.includes(key))visitCountry(child,depth+1);
     }
   };
-  visit(payload);
+  const scan=(value,depth=0)=>{
+    if(depth>6||!value||typeof value!=="object"||Array.isArray(value))return;
+    for(const [key,child] of Object.entries(value)){
+      if(countryArrayKeys.includes(key))visitCountry(child,depth+1);
+      else if(["data","result","payload","response","catalog"].includes(key.toLowerCase())){
+        if(Array.isArray(child)){
+          for(const row of child){
+            if(!row||typeof row!=="object"||Array.isArray(row))continue;
+            const hasCountryCode=[...codeKeys].some(k=>row[k]!==undefined&&row[k]!==null&&String(row[k]).trim());
+            const hasCountryName=[...nameKeys].some(k=>row[k]!==undefined&&row[k]!==null&&String(row[k]).trim());
+            if(hasCountryCode&&hasCountryName)visitCountry(row,depth+1);
+            else scan(row,depth+1);
+          }
+        } else scan(child,depth+1);
+      }
+    }
+  };
+  if(Array.isArray(payload))visitCountry(payload);else scan(payload);
   return rows.sort((a,b)=>a.name.localeCompare(b.name));
 }
 function xtraCatalogIdentity(item) {
@@ -954,7 +977,8 @@ async function handleXtraCustomer(request,env) {
     if(!upstream.response.ok)return xtraJson({error:upstream.payload?.message||upstream.payload?.error||"Could not load this catalogue."},upstream.response.status,origin);
     const items=xtraExtractCatalogItems(upstream.payload);const settings=await xtraGetPricing(env);
     if(catalog==="numbers-global"&&!url.searchParams.get("country")){
-      const countries=xtraNormalizeWorldCountries(upstream.payload);
+      const liveCountries=xtraNormalizeWorldCountries(upstream.payload);
+      const countries=liveCountries.length?liveCountries:(Array.isArray(settings.importedCountries)?settings.importedCountries:[]);
       return xtraJson({success:true,catalog,countries,countryCount:countries.length},200,origin);
     }
     const products=items.map(item=>{const p=xtraSellingPrice(item,catalog,settings,url.searchParams.get("country")||"");return {id:xtraCatalogIdentity(item),name:String(item.name??item.title??item.service_name??item.product_name??item.package_name??item.operator_name??"XtraLogs service"),description:String(item.description??item.details??""),price:p.price,currency:p.currency,available:item.available!==false&&item.in_stock!==false,category:catalog,raw:item};}).filter(x=>x.id);
@@ -966,12 +990,12 @@ async function handleXtraCustomer(request,env) {
     if(!XTRALOGS_CATALOGS[catalog]||!itemId||!/^[A-Za-z0-9_-]{16,100}$/.test(requestId))return xtraJson({error:"Invalid service or purchase reference"},400,origin);
     if(!["logs","numbers-usa","numbers-global","smm"].includes(catalog))return xtraJson({error:"Checkout for this service category is being prepared. Please try Logs, USA Numbers, World Numbers or Boosting first."},409,origin);
     const catalogQuery=new URLSearchParams(XTRALOGS_CATALOGS[catalog].split("?")[1]||"");
-    if(catalog==="numbers-global"&&body.country)catalogQuery.set("country",String(body.country).toUpperCase());
+    if(catalog==="numbers-global"&&body.country)catalogQuery.set("country",String(body.country));
     const {response:catalogResponse,payload:catalogPayload}=await xtraUpstream(env,XTRALOGS_CATALOGS[catalog].split("?")[0]+(catalogQuery.size?"?"+catalogQuery.toString():""));
     if(!catalogResponse.ok)return xtraJson({error:"Could not verify the latest supplier price. Please try again."},502,origin);
     const item=xtraExtractCatalogItems(catalogPayload).find(x=>xtraCatalogIdentity(x)===itemId);
     if(!item)return xtraJson({error:"This service is no longer available. Refresh the catalogue."},404,origin);
-    const settings=await xtraGetPricing(env),selling=xtraSellingPrice(item,catalog,settings,catalog==="numbers-global"?String(body.country||"").toUpperCase():"");
+    const settings=await xtraGetPricing(env),selling=xtraSellingPrice(item,catalog,settings,catalog==="numbers-global"?String(body.country||""):"");
     if(!Number.isFinite(selling.price)||selling.price<=0||selling.currency!=="NGN")return xtraJson({error:"This service does not have a valid NGN selling price configured yet."},409,origin);
     const wallet=await fsGet(sa.project_id,token,"wallets",user.localId);
     if(!wallet.document)return xtraJson({error:"Your GentleLogs wallet was not found."},404,origin);
