@@ -740,9 +740,19 @@ function showEmpty(title,message,icon) {
   document.getElementById("resultsCount").textContent = "0 results";
 }
 
-function initializeAdminPage() {
+async function initializeAdminPage() {
   if (!window.firebaseAuth || !window.firebaseDB || !window.firebase) {
     showEmpty("Firebase unavailable","Check that firebase.js and the Firebase SDK are loaded correctly.","fa-triangle-exclamation");
+    return;
+  }
+
+  try {
+    // Match the main admin dashboard: retain the owner session while moving
+    // between admin pages in this tab, but do not use permanent persistence.
+    await window.firebaseAuth.setPersistence(window.firebase.auth.Auth.Persistence.SESSION);
+  } catch(error) {
+    console.error("Could not initialise admin session:",error);
+    showEmpty("Session error","Could not initialise the admin session. Return to the Admin Dashboard and sign in again.","fa-triangle-exclamation");
     return;
   }
 
@@ -751,13 +761,13 @@ function initializeAdminPage() {
     currentAdmin = null;
 
     if (!user) {
-      window.location.replace("admin-login.html");
+      window.location.replace("admin.html");
       return;
     }
 
     if (user.uid !== ADMIN_UID || !user.emailVerified) {
       try { await window.firebaseAuth.signOut(); } catch(error) { console.error(error); }
-      window.location.replace("admin-login.html");
+      window.location.replace("admin.html");
       return;
     }
 

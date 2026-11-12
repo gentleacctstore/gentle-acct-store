@@ -2142,31 +2142,9 @@ $("loginForm").addEventListener("submit",async event=>{
 });
 
 /* OWNER-ONLY SESSION HANDLING
-   Only ADMIN_UID may enter. Firebase persistence is NONE, so a page reload
-   or a new visit always requires a fresh email/password sign-in. Leaving
-   Safari / hiding this page also signs the owner out. No inactivity timer. */
-let adminLocking=false;
-async function lockAdminSession(message){
-  // Do not cancel an in-progress email/password sign-in (iOS may briefly
-  // hide the page while presenting keyboard or password AutoFill UI).
-  if(adminLoginInProgress || adminLocking)return;
-  adminLocking=true;
-  const app=$("adminApp"), login=$("loginScreen");
-  if(app)app.classList.add("hidden");
-  if(login)login.classList.remove("hidden");
-  try{if(auth&&auth.currentUser)await auth.signOut();}
-  catch(error){console.error("Admin sign-out failed:",error);}
-  if(message)showLogin(message);
-  adminLocking=false;
-}
-document.addEventListener("visibilitychange",()=>{
-  if(document.hidden && auth && auth.currentUser){
-    lockAdminSession("You were signed out because Safari was left or moved to the background.");
-  }
-});
-window.addEventListener("pagehide",()=>{
-  if(auth && auth.currentUser)lockAdminSession();
-});
+   Keep the authorised owner signed in while moving between admin pages in
+   the same browser tab. Firebase SESSION persistence clears the session
+   when the tab/browser session ends. No inactivity timer. */
 
 /* AUTHENTICATION */
 
@@ -2178,11 +2156,10 @@ if(!window.firebase) {
 } else if(!auth||!db) {
   showLogin("Firebase SDK loaded, but firebase.js did not create window.firebaseAuth and window.firebaseDB. Check firebase.js and make sure it loads before this dashboard script.");
 } else {
-  // Always start at the login screen. NONE persistence prevents a saved
-  // Firebase session from silently reopening the admin dashboard.
-  adminAuthReady=auth.setPersistence(firebase.auth.Auth.Persistence.NONE)
-    .then(async()=>{
-      if(auth.currentUser) await auth.signOut();
+  // SESSION persistence keeps authentication available across admin page
+  // navigation in this tab, without creating a permanent remembered login.
+  adminAuthReady=auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
+    .then(()=>{
       auth.onAuthStateChanged(async user=>{
         if(!user) {
           // Always reveal the login screen when Firebase reports a signed-out state.
