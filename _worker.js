@@ -921,6 +921,18 @@ async function handleXtraCustomer(request,env) {
     const upstream=await xtraUpstream(env,endpoint.split("?")[0]+(query.size?"?"+query.toString():""));
     if(!upstream.response.ok)return xtraJson({error:upstream.payload?.message||upstream.payload?.error||"Could not load this catalogue."},upstream.response.status,origin);
     const items=xtraExtractCatalogItems(upstream.payload);const settings=await xtraGetPricing(env);
+    if(catalog==="numbers-global"&&!url.searchParams.get("country")){
+      const countries=items.map(item=>{
+        if(typeof item==="string"){
+          const code=item.length===2?item.toUpperCase():"";
+          return {code,name:item};
+        }
+        const code=String(item.iso2??item.iso_code??item.country_code??item.code??item.country_iso??"").toUpperCase();
+        const name=String(item.country_name??item.name??item.country??item.title??item.label??code);
+        return {code,name};
+      }).filter(x=>x.code&&/^[A-Z]{2}$/.test(x.code));
+      return xtraJson({success:true,catalog,countries},200,origin);
+    }
     const products=items.map(item=>{const p=xtraSellingPrice(item,catalog,settings);return {id:xtraCatalogIdentity(item),name:String(item.name??item.title??item.service_name??item.product_name??item.package_name??item.operator_name??"XtraLogs service"),description:String(item.description??item.details??""),price:p.price,currency:p.currency,available:item.available!==false&&item.in_stock!==false,category:catalog,raw:item};}).filter(x=>x.id);
     return xtraJson({success:true,catalog,products},200,origin);
   }
