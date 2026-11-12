@@ -139,9 +139,34 @@ body{font-family:"Space Grotesk",system-ui,sans-serif;background:#f3f4f8;color:#
 .bottom-nav{max-width:600px}
 @media(max-width:380px){.page{padding-left:12px;padding-right:12px}.hero-stats strong{font-size:15px}.reward{font-size:17px}.panel{padding:11px}.how-panel .steps{gap:5px}}
 
+
+/* GentleLogs branded page-loading screen */
+body.page-loading{overflow:hidden}
+#pageLoader{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px;background:radial-gradient(circle at 50% 38%,#172c4d 0%,#0b1427 48%,#070d19 100%);color:#fff;transition:opacity .35s ease,visibility .35s ease}
+#pageLoader.is-hidden{opacity:0;visibility:hidden;pointer-events:none}
+.loader-inner{width:min(290px,85vw);text-align:center}
+.loader-logo{width:58px;height:58px;margin:0 auto 17px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(145deg,#20c878,#087f43);box-shadow:0 10px 35px #18bd7650;font-size:29px;font-weight:900;color:#fff}
+.loader-brand{font-size:21px;font-weight:900;letter-spacing:-.8px}
+.loader-brand span{color:#39d98a}
+.loader-message{margin-top:9px;color:#aab8cc;font-size:11px;letter-spacing:.2px}
+.loader-track{height:5px;margin:24px auto 0;overflow:hidden;border-radius:20px;background:#ffffff18}
+.loader-track span{display:block;width:42%;height:100%;border-radius:20px;background:linear-gradient(90deg,#8b5cf6,#26d98a);animation:loaderTravel 1.25s ease-in-out infinite}
+@keyframes loaderTravel{0%{transform:translateX(-110%)}100%{transform:translateX(260%)}}
+@media(prefers-reduced-motion:reduce){#pageLoader,.loader-track span{transition:none;animation:none}}
+
 </style>
 </head>
-<body>
+<body class="page-loading">
+
+<div id="pageLoader" role="status" aria-live="polite" aria-label="Loading GentleLogs referrals">
+  <div class="loader-inner">
+    <div class="loader-logo">G</div>
+    <div class="loader-brand">Gentle<span>Logs</span></div>
+    <div class="loader-message" id="loaderMessage">Preparing your rewards…</div>
+    <div class="loader-track"><span></span></div>
+  </div>
+</div>
+
 <main class="page">
   <header class="topbar">
     <a class="back" href="home.html" aria-label="Back to home"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></a>
@@ -202,16 +227,6 @@ body{font-family:"Space Grotesk",system-ui,sans-serif;background:#f3f4f8;color:#
     </div>
   </section>
 
-  <section class="panel">
-    <div class="panel-head"><h2>Your referral link</h2></div>
-    <p class="panel-sub">Share this link with friends. It opens the GentleLogs signup page with your referral ID attached.</p>
-    <div class="link-box" id="referralLink">Preparing your personal link…</div>
-    <div class="actions">
-      <button class="copy-btn" id="copyBtn"><svg viewBox="0 0 24 24"><rect x="8" y="8" width="13" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg>Copy link</button>
-      <button class="share-btn" id="shareBtn"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.7 10.7 6.6-4.4m-6.6 9.4 6.6 2.6"/></svg>Share link</button>
-    </div>
-  </section>
-
   <div class="toolbar">
     <h2>Referral history</h2>
     <button class="refresh" id="refreshBtn">Refresh</button>
@@ -249,6 +264,15 @@ body{font-family:"Space Grotesk",system-ui,sans-serif;background:#f3f4f8;color:#
   let activeFilter = "all";
   let referralCodeValue = "";
   let toastTimer;
+  let authResolved = false;
+
+  function hidePageLoader(message) {
+    const loader = $("pageLoader");
+    if (message) $("loaderMessage").textContent = message;
+    loader.classList.add("is-hidden");
+    document.body.classList.remove("page-loading");
+    window.setTimeout(() => loader.remove(), 450);
+  }
 
   function toast(message) {
     const el = $("toast");
@@ -337,13 +361,11 @@ body{font-family:"Space Grotesk",system-ui,sans-serif;background:#f3f4f8;color:#
 
       const approved = referralRows.filter(row => row.status === "approved");
       const pending = referralRows.filter(row => row.status === "pending");
-      $("totalCount").textContent = referralRows.length.toLocaleString("en-NG");
-      $("pendingCount").textContent = pending.length.toLocaleString("en-NG");
-      $("approvedCount").textContent = approved.length.toLocaleString("en-NG");
       $("totalHero").textContent = referralRows.length.toLocaleString("en-NG");
       $("earnedHero").textContent = "₦" + approved.reduce((sum,row)=>sum+(Number(row.reward)||500),0).toLocaleString("en-NG");
-      const progress = approved.length > 0 ? 100 : 0;
-      $("progressText").textContent = (approved.length > 0 ? "1" : "0") + " / 1 reward";
+      const approvedCount = approved.length;
+      const progress = approvedCount > 0 ? 100 : 0;
+      $("progressText").textContent = approvedCount.toLocaleString("en-NG") + " reward" + (approvedCount === 1 ? "" : "s") + " earned";
       $("progressFill").style.width = progress + "%";
       renderRows();
     } catch (error) {
@@ -445,6 +467,20 @@ body{font-family:"Space Grotesk",system-ui,sans-serif;background:#f3f4f8;color:#
 
   $("copyBtn").addEventListener("click", copyLink);
   $("shareBtn").addEventListener("click", shareLink);
+  $("copyCodeBtn").addEventListener("click", async () => {
+    const code = referralCodeValue;
+    if (!code) return;
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(code);
+        toast("Referral code copied!");
+      } else {
+        window.prompt("Copy your referral code:", code);
+      }
+    } catch (_) {
+      window.prompt("Copy your referral code:", code);
+    }
+  });
   $("refreshBtn").addEventListener("click", loadReferrals);
   $("filters").addEventListener("click", event => {
     const button = event.target.closest("[data-filter]");
@@ -457,11 +493,13 @@ body{font-family:"Space Grotesk",system-ui,sans-serif;background:#f3f4f8;color:#
   if (!window.firebaseAuth || !window.firebaseDB) {
     $("referralList").innerHTML = '<div class="empty"><strong>Firebase is not available</strong>Check that the Firebase compat scripts and firebase.js are loading correctly.</div>';
     notice("Firebase could not initialize. Your referral page is not connected yet.", "error");
+    hidePageLoader("Unable to connect. Please refresh.");
     return;
   }
 
   firebaseAuth.onAuthStateChanged(async user => {
     if (!user) {
+      $("loaderMessage").textContent = "Opening secure login…";
       window.location.replace("login.html");
       return;
     }
@@ -469,12 +507,15 @@ body{font-family:"Space Grotesk",system-ui,sans-serif;background:#f3f4f8;color:#
     referralCodeValue = user.uid.slice(0,8).toUpperCase();
     $("referralCode").textContent = referralCodeValue;
     $("referralLink").textContent = makeReferralLink(user);
-    $("copyCodeBtn").addEventListener("click", async () => {
-      const usableLink = $("referralLink").textContent;
-      try { await navigator.clipboard.writeText(usableLink); toast("Your referral link copied!"); }
-      catch (_) { window.prompt("Copy your referral link:", usableLink); }
-    });
-    await Promise.all([loadReferrals(),loadLeaderboard()]);
+    try {
+      await Promise.all([loadReferrals(),loadLeaderboard()]);
+    } catch (error) {
+      console.error("Referral page initialization failed:", error);
+      notice("Some referral information could not be loaded. Please refresh.", "error");
+    } finally {
+      authResolved = true;
+      hidePageLoader("Your rewards are ready");
+    }
   });
 })();
 </script>
