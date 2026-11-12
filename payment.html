@@ -274,6 +274,7 @@ function showApprovedScreen(){
   $("checkingTitle").textContent="Successful!";
   $("checkingMessage").textContent="Your payment has been received and your account has been credited successfully.";
   $("checkingBox").classList.add("payment-approved");
+  $("successHomeButton").classList.remove("hidden");
 }
 function showRejectedScreen(){
   $("checkingSpinner").classList.add("hidden");
