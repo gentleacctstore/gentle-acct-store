@@ -6,8 +6,8 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="#0b1120" name="theme-color"/>
-<meta content="Gentle Acct Store admin dashboard" name="description"/>
-<title>Admin Dashboard | Gentle Acct Store</title>
+<meta content="GentleLogs private administrator command centre" name="description"/>
+<title>GentleLogs | Neon Admin Command Centre</title>
 <script>
 try {
   document.documentElement.dataset.theme =
@@ -527,12 +527,197 @@ a{transition:color .18s,background .18s,border-color .18s}
 @media(max-width:900px){.unified-sidebar{position:relative;inset:auto;width:100%;height:auto;padding:10px 12px;display:block;overflow:visible}.unified-brand{padding:2px 5px 10px}.unified-nav-label,.unified-sidebar-foot{display:none}.unified-sidebar>a.unified-nav{display:inline-flex;white-space:nowrap;padding:9px 10px;margin:2px 3px 0 0;min-height:36px;font-size:11px}.unified-sidebar{white-space:normal}.admin-shell-main{margin-left:0}.admin-shell-main>.container,.admin-shell-main>main{padding:20px 14px 32px}}
 @media(max-width:560px){.admin-shell-main>.topbar .topbar-inner{padding:10px 13px}.admin-shell-main .stats{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-shell-main .stat{padding:13px}.admin-shell-main .page-heading{align-items:flex-start}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
-</style></head>
+</style>
+<style id="gentlelogs-admin-redesign">
+:root{color-scheme:light;--blue:#e87535;--blue-dark:#c95f27;--navy:#111827;--bg:#f7f8fa;--surface:#fff;--surface-2:#fff7f2;--text:#18212b;--muted:#788391;--border:#e8e9ec;--green:#16845b;--red:#d94848;--input-bg:#fff;--hover:#fff0e6;--shadow:0 14px 40px #17202b0d}
+html[data-theme="dark"]{color-scheme:light;--bg:#f7f8fa;--surface:#fff;--surface-2:#fff7f2;--text:#18212b;--muted:#788391;--border:#e8e9ec;--input-bg:#fff;--hover:#fff0e6;--shadow:0 14px 40px #17202b0d}
+html,body{background:var(--bg)!important;color:var(--text)!important;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif!important}
+#adminApp>.sidebar{width:252px!important;padding:22px 15px!important;background:#111827!important;border-right:1px solid #263142!important;box-shadow:8px 0 30px #1018280a}
+#adminApp .brand{padding:6px 8px 28px!important;gap:12px!important}
+#adminApp .brand-icon{width:42px!important;height:42px!important;border-radius:13px!important;background:linear-gradient(145deg,#f28a4b,#d65e2c)!important;box-shadow:0 8px 20px #e8753540!important}
+#adminApp .brand-name{font-size:16px!important;letter-spacing:-.4px!important;color:#fff!important}
+#adminApp .brand-sub{font-size:9px!important;letter-spacing:1.6px!important;color:#aab4c2!important}
+#adminApp .nav-label{font-size:9px!important;letter-spacing:1.6px!important;color:#758296!important;padding:13px 12px 8px!important}
+#adminApp .nav-link{min-height:43px!important;margin:3px 0!important;padding:11px 13px!important;border-radius:11px!important;color:#c1cad6!important;font-size:12px!important;font-weight:620!important;transition:background .18s,color .18s!important}
+#adminApp .nav-link:hover,#adminApp .nav-link.active{background:#273244!important;color:#fff!important}
+#adminApp .nav-link.active{box-shadow:inset 3px 0 #f28a4b!important}
+#adminApp .nav-icon{font-size:16px!important;color:#f29a65!important}
+#adminApp .admin-chip{border-color:#2b3647!important}
+#adminApp .avatar{background:#3a2a23!important;color:#ffc39d!important}
+#adminApp .admin-email{color:#aeb8c7!important}
+#adminApp .main{margin-left:252px!important;background:#f7f8fa!important}
+#adminApp .topbar{min-height:74px!important;padding:14px clamp(16px,3vw,34px)!important;background:#fff!important;border-bottom:1px solid #e8e9ec!important;box-shadow:0 4px 18px #17202b08!important}
+#adminApp .page-title{font-size:20px!important;font-weight:780!important;letter-spacing:-.7px!important;color:#18212b!important}
+#adminApp .page-subtitle{font-size:11px!important;color:#87909b!important}
+#adminApp .content{max-width:1500px!important;padding:25px clamp(14px,2.7vw,34px) 42px!important}
+#adminApp .welcome{padding:24px 26px!important;border-radius:17px!important;background:linear-gradient(115deg,#172333,#26384c)!important;box-shadow:0 12px 28px #14223614!important;margin-bottom:18px!important}
+#adminApp .welcome h2{font-size:21px!important;letter-spacing:-.6px!important;color:#fff!important}
+#adminApp .welcome p{font-size:12px!important;color:#c4cfda!important}
+#adminApp .stats{gap:12px!important;margin-bottom:18px!important}
+#adminApp .stat-card,#adminApp .insight-card,#adminApp .health-item,#adminApp .panel,#adminApp .quick-card{border:1px solid #e8e9ec!important;border-radius:14px!important;background:#fff!important;box-shadow:0 7px 22px #17202b08!important}
+#adminApp .stat-card{padding:16px!important}
+#adminApp .stat-label{font-size:11px!important;color:#7a8491!important}
+#adminApp .stat-icon{width:34px!important;height:34px!important;border-radius:10px!important;background:#fff0e6!important;color:#d96c32!important}
+#adminApp .stat-number{font-size:25px!important;color:#17212d!important;letter-spacing:-.8px!important}
+#adminApp .stat-note{font-size:10px!important;color:#8b95a1!important}
+#adminApp .panel{margin-bottom:17px!important;overflow:hidden!important}
+#adminApp .panel-head{padding:16px 18px!important;border-bottom:1px solid #eceef1!important}
+#adminApp .panel-body{padding:17px 18px!important}
+#adminApp .panel-title{font-size:14px!important;font-weight:780!important;color:#1b2632!important}
+#adminApp .panel-desc{font-size:10px!important;color:#87919d!important}
+#adminApp .quick-links{gap:11px!important;margin-bottom:18px!important}
+#adminApp .quick-card{padding:15px!important;color:#1c2733!important;text-decoration:none!important}
+#adminApp .quick-icon{font-size:19px!important;margin-bottom:9px!important}
+#adminApp .quick-title{font-size:12px!important;font-weight:780!important}
+#adminApp .quick-desc{font-size:10px!important;line-height:1.5!important;color:#84909c!important}
+#adminApp .btn,#adminApp .icon-btn{border-radius:9px!important;font-size:11px!important;font-weight:700!important}
+#adminApp .btn-primary{background:#e87535!important;border-color:#e87535!important;color:#fff!important;box-shadow:0 5px 13px #e8753526!important}
+#adminApp .btn-primary:hover{background:#ce642e!important;border-color:#ce642e!important}
+#adminApp .btn-danger{background:#fff1f0!important;color:#c83d3d!important;border-color:#f4cccc!important}
+#adminApp input,#adminApp select,#adminApp textarea{font-family:inherit!important;border-color:#e2e6ea!important;border-radius:9px!important;background:#fff!important;color:#202a35!important;font-size:16px!important}
+#adminApp .search-wrap input,#adminApp .filter{min-height:42px!important}
+#adminApp .table-wrap{border:1px solid #e8e9ec!important;border-radius:11px!important;background:#fff!important}
+#adminApp th{background:#f7f8fa!important;color:#7b8794!important;font-size:9px!important;letter-spacing:.8px!important}
+#adminApp td{font-size:11px!important;border-color:#edf0f2!important}
+#adminApp .product-card{border:1px solid #e8e9ec!important;border-radius:13px!important;box-shadow:0 5px 18px #17202b08!important}
+#adminApp .product-category{background:#fff0e6!important;color:#c96532!important}
+#adminApp .product-price{color:#d96c32!important}
+#adminApp .modal{border:1px solid #e6e8eb!important;border-radius:16px!important;box-shadow:0 25px 80px #11182730!important}
+#adminApp .modal-head,#adminApp .modal-foot{background:#fafbfc!important}
+#adminApp .health-symbol{background:#fff0e6!important;color:#d96c32!important}
+#adminApp .health-panel{gap:9px!important;margin-bottom:17px!important}
+#adminApp .health-item{padding:12px!important}
+#adminApp .supplier-stat,#adminApp .supplier-card{border:1px solid #e8e9ec!important;border-radius:12px!important;background:#fff!important}
+#adminApp .supplier-card-value{background:#f8f9fa!important;border-color:#eceef0!important}
+#adminApp .supplier-card-check{accent-color:#e87535!important}
+#adminApp .supplier-import-progress-fill{background:#e87535!important}
+.login-screen{position:fixed!important;inset:0!important;z-index:500!important;display:none;align-items:center!important;justify-content:center!important;padding:20px!important;background:radial-gradient(circle at 15% 10%,#ffdfc8 0,transparent 35%),linear-gradient(145deg,#111827,#202d3d)!important}
+#adminApp .login-screen[style*="flex"]{display:flex!important}
+.login-card{width:min(100%,420px)!important;padding:30px!important;border:1px solid #ffffff30!important;border-radius:19px!important;box-shadow:0 28px 90px #0005!important}
+.new-login-mark{width:48px;height:48px;display:grid;place-items:center;border-radius:15px;background:linear-gradient(145deg,#f28a4b,#d65e2c);color:white;font-size:23px;font-weight:900;box-shadow:0 9px 20px #e8753540;margin-bottom:18px}
+.new-login-kicker{font-size:9px;font-weight:800;letter-spacing:1.8px;color:#d97745;margin-bottom:8px}
+.login-card h1{font-size:25px!important;letter-spacing:-.8px!important;color:#17212d!important;margin:0 0 8px!important}
+.login-card p{font-size:12px!important;color:#75808c!important;line-height:1.6!important}
+.login-card .field label{font-size:11px!important;color:#36414d!important}
+.login-card .field input{min-height:46px!important;font-size:16px!important;border:1px solid #e1e5e9!important;border-radius:10px!important}
+.login-card .btn-primary{min-height:47px!important;background:#e87535!important;border-color:#e87535!important}
+.login-security-warning{margin:17px 0 15px;padding:13px 14px;border:1px solid #8f3448;border-radius:11px;background:#281923;color:#f7dbe2;font-size:11px;line-height:1.55}
+.login-security-warning strong{display:block;color:#ff8b9b;font-size:10px;letter-spacing:.8px;margin-bottom:5px}
+.login-security-warning p{margin:0;color:#f1dce2;font-size:11px!important}
+#adminApp .toast{border-radius:11px!important;background:#172333!important;box-shadow:0 10px 30px #0002!important}
+@media(max-width:760px){#adminApp>.sidebar{width:min(84vw,275px)!important;transform:translateX(-105%);transition:transform .22s!important}#adminApp>.sidebar.open{transform:translateX(0)!important}#adminApp .main{margin-left:0!important}#adminApp .topbar{min-height:66px!important;padding:11px 13px!important}#adminApp .content{padding:14px 11px 28px!important}#adminApp .welcome{padding:17px!important;border-radius:14px!important;gap:12px!important}#adminApp .welcome h2{font-size:17px!important}#adminApp .stats{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}#adminApp .stat-card{padding:12px!important}#adminApp .stat-number{font-size:21px!important;margin-top:11px!important}#adminApp .quick-links{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}#adminApp .quick-card{padding:12px!important}#adminApp .health-panel{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important}#adminApp .health-item{padding:9px!important}#adminApp .panel-head,#adminApp .panel-body{padding:13px!important}#adminApp .product-grid{padding:9px!important;gap:8px!important}#adminApp .product-image{height:105px!important}#adminApp .form-grid{grid-template-columns:1fr!important}#adminApp .field.full{grid-column:auto!important}}
+@media(max-width:360px){#adminApp .quick-links{grid-template-columns:1fr!important}}
+@media(prefers-reduced-motion:reduce){#adminApp *,#adminApp *:before,#adminApp *:after{transition:none!important;animation:none!important}}
+</style>
+<style id="gentlelogs-neon-command-centre">
+/* GENTLELOGS NEON COMMAND CENTRE — COMPLETE VISUAL THEME */
+:root{color-scheme:dark;--bg:#050b1b;--surface:#0b1730;--surface-2:#102142;--text:#eef6ff;--muted:#91a8c8;--border:#183d68;--blue:#08c9f5;--blue-dark:#168bff;--navy:#030817;--green:#00e6ad;--red:#ff547d;--input-bg:#0b1c38;--hover:#152c52;--shadow:0 16px 45px #0008}
+*{box-sizing:border-box}html,body{min-height:100%;background:#050b1b!important;color:var(--text)!important;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif!important}body{background:radial-gradient(ellipse at 12% 8%,#102b59 0,transparent 35%),radial-gradient(ellipse at 90% 90%,#211052 0,transparent 34%),#050b1b!important}button,input,textarea,select{font:inherit}button,a{cursor:pointer}button:disabled{opacity:.55;cursor:not-allowed}.hidden{display:none!important}
+/* LOGIN */
+.login-screen{min-height:100vh!important;display:flex;align-items:center;justify-content:center;padding:22px!important;background:radial-gradient(ellipse at 15% 15%,#063c65 0,transparent 38%),radial-gradient(ellipse at 85% 85%,#36136b 0,transparent 35%),#030817!important;position:relative;overflow:hidden}
+.login-screen:before,.login-screen:after{content:"";position:absolute;width:320px;height:320px;border:1px solid #00c9f544;border-radius:50%;filter:blur(.2px);pointer-events:none}.login-screen:before{left:-170px;top:12%}.login-screen:after{right:-170px;bottom:8%;border-color:#a855f744}
+.login-card{position:relative;z-index:1;width:min(100%,470px)!important;padding:34px!important;border-radius:25px!important;background:linear-gradient(145deg,#0d1d3b,#08142b)!important;color:#eff7ff!important;border:1px solid #1c5b8a!important;box-shadow:0 0 0 1px #00c9f51a,0 25px 90px #0009,0 0 55px #087cb522!important}
+.new-login-mark{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,#00d9f5,#633cff);color:white;font-size:32px;font-weight:950;box-shadow:0 0 30px #00c9f566;margin-bottom:19px}
+.new-login-kicker{font-size:10px!important;letter-spacing:3px!important;color:#00d9f5!important;font-weight:900!important;margin-bottom:12px}
+.login-card h1{font-size:29px!important;letter-spacing:-1px;color:#fff!important;margin:0 0 9px!important}.login-card p{font-size:13px!important;line-height:1.65;color:#9fb5d4!important}
+.login-security-warning{margin:20px 0!important;padding:15px!important;border:1px solid #ff477a!important;border-radius:13px!important;background:linear-gradient(120deg,#3a102c,#21152f)!important;color:#ffe5ed!important;box-shadow:0 0 25px #ff477a20!important;font-size:11px!important;line-height:1.6!important}
+.login-security-warning strong{display:block;color:#ff668f!important;font-size:11px!important;letter-spacing:1.1px!important;margin-bottom:7px}.login-security-warning b{display:block;color:#fff!important;font-size:12px!important;margin-bottom:5px}.login-security-warning p{margin:0!important;color:#f5cbd9!important;font-size:11px!important}
+.error-box{background:#42182b!important;border:1px solid #a83b62;color:#ffd8e4!important;border-radius:11px;padding:12px;font-size:12px}
+.login-card .field{margin:16px 0!important;display:flex;flex-direction:column;gap:8px}.login-card .field label{font-size:11px!important;font-weight:800;color:#b9cbe5!important;letter-spacing:.4px}.login-card .field input{width:100%;min-height:52px!important;padding:13px 15px!important;border:1px solid #254b75!important;border-radius:12px!important;background:#07142b!important;color:#fff!important;font-size:16px!important;outline:none}.login-card .field input:focus{border-color:#00c9f5!important;box-shadow:0 0 0 3px #00c9f522!important}.login-card .btn-primary{width:100%;min-height:53px!important;border:0!important;border-radius:13px!important;background:linear-gradient(100deg,#00c9f5,#5c35f5)!important;color:white!important;font-size:14px!important;font-weight:900!important;box-shadow:0 8px 28px #315bff55!important}
+/* APP SHELL */
+#adminApp{min-height:100vh;background:transparent!important}.sidebar{width:248px!important;padding:22px 15px!important;background:linear-gradient(180deg,#07152e,#050b1b)!important;border-right:1px solid #17456d!important;box-shadow:12px 0 45px #0005!important;color:#edf7ff!important}.brand{padding:5px 8px 25px!important}.brand-icon{width:44px!important;height:44px!important;border-radius:14px!important;background:linear-gradient(135deg,#00d9f5,#663dff)!important;color:#fff!important;box-shadow:0 0 25px #00bff544!important}.brand-name{font-size:17px!important;color:#fff!important;letter-spacing:-.5px}.brand-sub{font-size:9px!important;letter-spacing:2px!important;color:#6dddf5!important}.nav-label{color:#6383a9!important;font-size:9px!important;letter-spacing:2px!important;font-weight:900!important}.nav-link{color:#a8bdd9!important;border:1px solid transparent!important;border-radius:11px!important;padding:11px 12px!important;font-size:12px!important;font-weight:700!important;transition:.18s!important}.nav-link:hover,.nav-link.active{background:linear-gradient(100deg,#073d61,#24175b)!important;border-color:#12618b!important;color:#fff!important;box-shadow:inset 3px 0 #00d9f5,0 5px 20px #0003!important}.nav-icon{color:#00d9f5!important}.admin-chip{border-color:#1b4268!important}.avatar{background:linear-gradient(135deg,#00c9f5,#643cff)!important;color:#fff!important}.admin-email{color:#8ea9ca!important}
+.main{margin-left:248px!important;min-width:0;background:transparent!important}.topbar{min-height:76px!important;padding:15px 25px!important;background:#07142beF!important;border-bottom:1px solid #163b61!important;backdrop-filter:blur(16px)}.page-title{font-size:21px!important;color:#f4f9ff!important;letter-spacing:-.5px}.page-subtitle{color:#86a1c3!important}.content{max-width:1600px!important;padding:24px 25px 45px!important}.btn,.icon-btn{border:1px solid #24517b!important;border-radius:10px!important;background:#0d2040!important;color:#dceeff!important}.btn-primary{background:linear-gradient(100deg,#00bfe9,#5638e9)!important;border-color:#1689d5!important;color:white!important;box-shadow:0 5px 20px #0868b533!important}.btn-danger{background:#3b172b!important;color:#ff9ab5!important;border-color:#9a3458!important}.welcome{border:1px solid #27548a!important;border-radius:18px!important;background:radial-gradient(circle at 90% 0,#47218b,#122957 45%,#0b1b37)!important;box-shadow:0 15px 45px #0004!important}.welcome h2{color:white!important}.welcome p{color:#b8d0ee!important}.stats{gap:13px!important}.stat-card,.panel,.quick-card,.health-item,.insight-card,.supplier-stat{background:linear-gradient(145deg,#0d1d39,#09152c)!important;border:1px solid #1a456e!important;border-radius:15px!important;box-shadow:0 12px 32px #0003!important;color:#edf6ff!important}.stat-card{padding:17px!important}.stat-label,.stat-note,.panel-desc,.quick-desc,.muted{color:#8ea8c9!important}.stat-number{color:#fff!important}.stat-icon,.health-symbol{background:#0b3151!important;color:#00d9f5!important}.panel-head{border-color:#183d63!important}.panel-title,.quick-title{color:#f1f7ff!important}.panel-body{color:#dcecff!important}.quick-card:hover{border-color:#00c9f5!important;transform:translateY(-2px)}.product-card{background:#09172f!important;border-color:#1b456c!important}.product-image{background:#0d2343!important}.product-name{color:#fff!important}.product-description{color:#8fa9c9!important}.product-category{background:#172b54!important;color:#64ddff!important}.product-price{color:#00d9f5!important}.stock-badge{background:#064b45!important;color:#6fffd8!important}.stock-badge.out{background:#4b1b35!important;color:#ff9ab5!important}
+table{color:#e4f0ff!important}th,td{border-color:#183653!important}th{color:#7f9bbc!important}tr:hover td{background:#102344!important}.search-wrap input,.filter,.field input,.field textarea,.field select,.category-trigger{background:#07162e!important;color:#edf6ff!important;border:1px solid #244b72!important;border-radius:10px!important}.field label{color:#b7cce5!important}.help-text{color:#829fbe!important}.category-options{background:#0b1a34!important;border-color:#28547c!important}.category-option{background:#0b1a34!important;color:#e5f1ff!important}.category-option:hover,.category-option.selected{background:#17365d!important;color:#00d9f5!important}.modal{background:#0a1932!important;color:#eaf4ff!important;border:1px solid #23517c!important;box-shadow:0 20px 70px #0009!important}.modal-head,.modal-foot{border-color:#1d4267!important}.toast{background:#10294b!important;color:#fff!important;border:1px solid #1c5b87!important}.low-stock-notice{background:#352a16!important;border-color:#98702a!important}.health-value.ok{color:#00e6ad!important}.health-value.warn{color:#ffbd55!important}.health-value.bad{color:#ff668f!important}.status.success{color:#00e6ad!important}.status.failed{color:#ff668f!important}
+/* SUPPLIER AND MOBILE */
+.supplier-note{background:#102747!important;color:#9bb5d4!important}.supplier-card{background:#0b1a34!important;border-color:#1a456e!important}.supplier-card-value{background:#102442!important;border-color:#1a456e!important}.supplier-toolbar select,.supplier-toolbar input,.supplier-table input[type=number]{background:#07162e!important;color:#eaf4ff!important;border-color:#244b72!important}
+@media(max-width:1100px){.product-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:760px){.sidebar{width:min(84vw,275px)!important;transform:translateX(-105%);transition:transform .22s!important;z-index:50}.sidebar.open{transform:translateX(0)!important}.main{margin-left:0!important;width:100%!important}.topbar{min-height:64px!important;padding:10px 12px!important;gap:8px}.content{padding:14px 11px 28px!important}.welcome{padding:16px!important;align-items:flex-start!important;flex-direction:column!important}.welcome h2{font-size:18px!important}.stats{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}.stat-card{padding:11px!important}.stat-number{font-size:20px!important;margin-top:10px!important}.quick-links{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}.quick-card{padding:12px!important}.health-panel{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}.insight-row{grid-template-columns:1fr!important}.panel-head,.panel-body{padding:13px!important}.product-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;padding:9px!important;gap:8px!important}.product-image{height:105px!important}.form-grid{grid-template-columns:1fr!important}.field.full{grid-column:auto!important}.top-actions .desktop-only{display:none!important}.login-card{padding:25px 20px!important}.login-card h1{font-size:25px!important}input,select,textarea{font-size:16px!important}}
+@media(max-width:360px){.quick-links{grid-template-columns:1fr!important}.product-grid{grid-template-columns:1fr!important}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+
+
+/* FINAL NEON VISUAL OVERRIDE: apply consistently to EVERY admin section */
+#adminApp,#adminApp .main,#adminApp .content,#adminApp section{background:transparent!important;color:#edf6ff!important}
+html,body{background:#050b1b!important;color:#edf6ff!important}
+#adminApp .topbar{background:rgba(5,13,30,.96)!important;border-bottom:1px solid #17456d!important}
+#adminApp .welcome,#adminApp .panel,#adminApp .stat-card,#adminApp .insight-card,#adminApp .health-item,#adminApp .quick-card,#adminApp .supplier-stat,#adminApp .supplier-card,#adminApp .product-card{background:linear-gradient(145deg,#102344,#08152d)!important;border:1px solid #1b527d!important;color:#edf6ff!important;box-shadow:0 10px 32px #0006, inset 0 1px #ffffff0a!important}
+#adminApp .welcome{background:radial-gradient(ellipse at 90% 0,#392078 0,transparent 40%),linear-gradient(120deg,#0b2547,#101b3a)!important;border-color:#23618c!important}
+#adminApp .welcome h2,#adminApp .panel-title,#adminApp .quick-title,#adminApp .product-name,#adminApp .stat-number,#adminApp .insight-value{color:#f4f9ff!important}
+#adminApp .welcome p,#adminApp .panel-desc,#adminApp .quick-desc,#adminApp .stat-label,#adminApp .stat-note,#adminApp .insight-note,#adminApp .product-description{color:#9bb4d4!important}
+#adminApp .stat-icon,#adminApp .health-symbol,#adminApp .quick-icon{background:linear-gradient(145deg,#103d62,#25205a)!important;color:#00d9f5!important;border:1px solid #1b6791!important}
+#adminApp .panel-head,#adminApp .panel-body{background:transparent!important;border-color:#1b4268!important;color:#e8f3ff!important}
+#adminApp .table-wrap{background:#08162e!important;border:1px solid #1b456d!important;border-radius:13px!important}
+#adminApp table{background:transparent!important;color:#eaf4ff!important}
+#adminApp th{background:#102746!important;color:#8fb3d7!important;border-color:#1b456d!important}
+#adminApp td{background:transparent!important;color:#dcecff!important;border-color:#173958!important}
+#adminApp tr:hover td{background:#102746!important}
+#adminApp .product-category{background:#172e59!important;color:#67e5ff!important}
+#adminApp .product-price{color:#00d9f5!important}
+#adminApp .product-image{background:#0b2040!important}
+#adminApp .btn,#adminApp .icon-btn{background:#102746!important;border:1px solid #24547c!important;color:#e6f5ff!important}
+#adminApp .btn-primary{background:linear-gradient(100deg,#00c9f5,#633bff)!important;border:0!important;color:#fff!important;box-shadow:0 6px 22px #244dff55!important}
+#adminApp input,#adminApp select,#adminApp textarea,#adminApp .category-trigger{background:#07162e!important;color:#edf6ff!important;border:1px solid #285078!important}
+#adminApp input::placeholder,#adminApp textarea::placeholder{color:#718bab!important}
+#adminApp .modal{background:#091a34!important;color:#eaf4ff!important;border:1px solid #23608c!important}
+#adminApp .modal-head,#adminApp .modal-foot{background:#0b2040!important;border-color:#1c456d!important}
+#adminApp .supplier-note{background:#102746!important;color:#9bb5d4!important;border:1px solid #1b456d!important}
+#adminApp .supplier-card-value{background:#0b2040!important;border-color:#1b456d!important;color:#eaf4ff!important}
+#adminApp .health-value.ok{color:#00e6ad!important}#adminApp .health-value.warn{color:#ffca65!important}#adminApp .health-value.bad{color:#ff668f!important}
+#adminApp .stock-badge{background:#064b45!important;color:#6fffd8!important}#adminApp .stock-badge.out{background:#4b1b35!important;color:#ff9ab5!important}
+@media(max-width:760px){#adminApp .topbar{background:#07142b!important}#adminApp .content{background:transparent!important}#adminApp .stats,#adminApp .health-panel{grid-template-columns:repeat(2,minmax(0,1fr))!important}#adminApp .quick-links{grid-template-columns:repeat(2,minmax(0,1fr))!important}#adminApp .stat-card,#adminApp .quick-card,#adminApp .health-item{min-width:0!important}#adminApp .panel{overflow:hidden!important}#adminApp .table-wrap{max-width:100%!important;overflow-x:auto!important}}
+</style>
+
+<style id="gentlelogs-final-neon-fixes">
+/* Final compact supplier layout: preserve the existing Spencer controls and behavior. */
+#supplierSection .panel{overflow:hidden}
+#supplierSection .panel-body{padding:14px!important}
+#supplierSection .supplier-summary{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:9px!important;margin:0 0 12px!important}
+#supplierSection .supplier-stat{min-width:0!important;padding:11px 12px!important;border-radius:12px!important}
+#supplierSection .supplier-stat small{font-size:9px!important;letter-spacing:.7px!important;line-height:1.35!important}
+#supplierSection .supplier-stat strong{font-size:17px!important;margin-top:5px!important;line-height:1.25!important}
+#supplierSection .supplier-toolbar{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important;padding:12px!important}
+#supplierSection .supplier-toolbar select,#supplierSection .supplier-toolbar input{width:100%!important;min-width:0!important;min-height:40px!important;padding:9px 10px!important;font-size:16px!important;border-radius:9px!important}
+#supplierSection .supplier-toolbar input{grid-column:1/-1!important}
+#supplierSection .supplier-toolbar button{width:100%!important;min-width:0!important;min-height:40px!important;padding:9px 10px!important;font-size:11px!important;white-space:normal!important}
+#supplierSection .supplier-note{margin:12px!important;padding:10px!important;font-size:10px!important;line-height:1.5!important}
+#supplierSection .supplier-card-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:9px!important;padding:12px!important}
+#supplierSection .supplier-card{min-width:0!important;padding:11px!important;gap:8px!important;border-radius:12px!important}
+#supplierSection .supplier-card-name{font-size:11px!important}
+#supplierSection .supplier-card-meta{font-size:9px!important}
+#supplierSection .supplier-card-values{gap:5px!important}
+#supplierSection .supplier-card-value{padding:7px!important}
+#supplierSection .supplier-card-value small{font-size:8px!important}
+#supplierSection .supplier-card-value strong{font-size:11px!important}
+#supplierSection .supplier-selling-price{width:100%!important;min-width:0!important;min-height:38px!important;padding:8px!important;font-size:16px!important;background:#07162e!important;color:#eaf4ff!important;border:1px solid #244b72!important;border-radius:8px!important}
+#supplierSection .supplier-card-actions .btn{padding:7px 9px!important;font-size:10px!important}
+@media(max-width:760px){
+ #supplierSection .panel-head{padding:12px!important;align-items:flex-start!important}
+ #supplierSection .panel-head .panel-title{font-size:13px!important}
+ #supplierSection .panel-head .panel-desc{font-size:10px!important}
+ #supplierSection .supplier-summary{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important}
+ #supplierSection .supplier-stat{padding:9px!important}
+ #supplierSection .supplier-stat small{font-size:8px!important}
+ #supplierSection .supplier-stat strong{font-size:14px!important}
+ #supplierSection .supplier-toolbar{grid-template-columns:1fr 1fr!important;padding:10px!important}
+ #supplierSection .supplier-toolbar>*{width:100%!important}
+ #supplierSection .supplier-toolbar input{grid-column:1/-1!important}
+ #supplierSection .supplier-toolbar button{min-height:38px!important;font-size:10px!important}
+ #supplierSection .supplier-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important;padding:9px!important}
+ #supplierSection .supplier-card{padding:9px!important}
+}
+@media(max-width:360px){#supplierSection .supplier-card-grid{grid-template-columns:1fr!important}#supplierSection .supplier-summary{grid-template-columns:1fr!important}}
+/* Keep every admin screen in the selected midnight neon palette. */
+#adminApp .supplier-toolbar select,#adminApp .supplier-toolbar input,#adminApp .supplier-table input[type=number]{background:#07162e!important;color:#eaf4ff!important;border-color:#244b72!important}
+#adminApp .supplier-stat small{color:#8ea8c9!important}
+</style>
+
+</head>
 <body>
 <div class="login-screen" id="loginScreen">
 <div class="login-card">
-<h1>Gentle Admin</h1>
-<p>Sign in with the authorised administrator account.</p>
+<div class="new-login-mark">G</div><div class="new-login-kicker">GENTLELOGS / PRIVATE ACCESS</div><h1>Admin workspace</h1>
+<p>Secure sign-in for authorised administrators only.</p>
+<div class="login-security-warning"><strong>⚠ RESTRICTED SYSTEM — LEAVE NOW</strong><b>UNAUTHORISED USERS MUST NOT ATTEMPT TO SIGN IN.</b><p>This control panel is for approved GentleLogs administrators only. Unauthorised access attempts may be logged and investigated.</p></div>
 <div class="error-box hidden" id="loginError"></div>
 <form id="loginForm">
 <div class="field">
@@ -552,7 +737,7 @@ a{transition:color .18s,background .18s,border-color .18s}
 <div class="brand">
 <div class="brand-icon">G</div>
 <div>
-<div class="brand-name">Gentle Acct Store</div>
+<div class="brand-name">GentleLogs</div>
 <div class="brand-sub">ADMIN CONTROL CENTER</div>
 </div>
 </div>
@@ -824,6 +1009,8 @@ function hideMessage(id) {
 
 function readableError(error) {
   const code=error && error.code ? error.code : "";
+  if(code==="auth/too-many-requests") return "Firebase has temporarily rate-limited sign-in attempts from this device. This is not an expiry of your admin email or password. Stop retrying for now and try again after Firebase lifts the restriction. The dashboard cannot remove or bypass this security limit.";
+  if(code==="auth/invalid-credential" || code==="auth/wrong-password" || code==="auth/user-not-found") return "The email address or password was not accepted. Check the details and try again later.";
   if(code.includes("permission-denied")) return "Firebase denied access. Check Firestore rules and the signed-in admin account.";
   if(code.includes("unavailable")) return "Firestore is temporarily unavailable. Check your internet connection and try again.";
   if(code.includes("unauthenticated")) return "Your session has expired. Sign in again.";
@@ -1916,32 +2103,69 @@ $("logoutButton").addEventListener("click",async()=>{
   }
 });
 
+
 /* LOGIN */
+
+let adminLoginInProgress=false;
+let adminAuthReady=Promise.resolve();
 
 $("loginForm").addEventListener("submit",async event=>{
   event.preventDefault();
   if(!auth)return showLogin("Firebase authentication is not configured.");
+  if(adminLoginInProgress) return;
 
   const button=$("loginButton");
+  adminLoginInProgress=true;
   button.disabled=true;
   button.textContent="Signing in...";
 
   try {
-    const credential=await auth.signInWithEmailAndPassword(
-      $("loginEmail").value.trim(),
-      $("loginPassword").value
-    );
-    if(credential.user.uid!==ADMIN_UID) {
+    // Wait until the startup session reset has completed before signing in.
+    await adminAuthReady;
+    const email=$("loginEmail").value.trim();
+    const password=$("loginPassword").value;
+    if(!email || !password) throw new Error("Enter your admin email and password.");
+    const credential=await auth.signInWithEmailAndPassword(email,password);
+    if(!credential.user || credential.user.uid!==ADMIN_UID) {
       await auth.signOut();
       showLogin("This account is not authorised to access the admin dashboard.");
     }
   } catch(error) {
     console.error("Admin sign-in failed:",error);
+    // Show the real Firebase error; never silently hide a failed login.
     showLogin("Sign-in failed: "+readableError(error));
   } finally {
+    adminLoginInProgress=false;
     button.disabled=false;
     button.textContent="Sign in";
   }
+});
+
+/* OWNER-ONLY SESSION HANDLING
+   Only ADMIN_UID may enter. Firebase persistence is NONE, so a page reload
+   or a new visit always requires a fresh email/password sign-in. Leaving
+   Safari / hiding this page also signs the owner out. No inactivity timer. */
+let adminLocking=false;
+async function lockAdminSession(message){
+  // Do not cancel an in-progress email/password sign-in (iOS may briefly
+  // hide the page while presenting keyboard or password AutoFill UI).
+  if(adminLoginInProgress || adminLocking)return;
+  adminLocking=true;
+  const app=$("adminApp"), login=$("loginScreen");
+  if(app)app.classList.add("hidden");
+  if(login)login.classList.remove("hidden");
+  try{if(auth&&auth.currentUser)await auth.signOut();}
+  catch(error){console.error("Admin sign-out failed:",error);}
+  if(message)showLogin(message);
+  adminLocking=false;
+}
+document.addEventListener("visibilitychange",()=>{
+  if(document.hidden && auth && auth.currentUser){
+    lockAdminSession("You were signed out because Safari was left or moved to the background.");
+  }
+});
+window.addEventListener("pagehide",()=>{
+  if(auth && auth.currentUser)lockAdminSession();
 });
 
 /* AUTHENTICATION */
@@ -1954,18 +2178,31 @@ if(!window.firebase) {
 } else if(!auth||!db) {
   showLogin("Firebase SDK loaded, but firebase.js did not create window.firebaseAuth and window.firebaseDB. Check firebase.js and make sure it loads before this dashboard script.");
 } else {
-  auth.onAuthStateChanged(async user=>{
-    if(!user) {
-      showLogin();
-      return;
-    }
-    if(user.uid!==ADMIN_UID) {
-      await auth.signOut();
-      showLogin("This account is not authorised to access the admin dashboard.");
-      return;
-    }
-    showAdmin(user);
-    await refreshAll();
+  // Always start at the login screen. NONE persistence prevents a saved
+  // Firebase session from silently reopening the admin dashboard.
+  adminAuthReady=auth.setPersistence(firebase.auth.Auth.Persistence.NONE)
+    .then(async()=>{
+      if(auth.currentUser) await auth.signOut();
+      auth.onAuthStateChanged(async user=>{
+        if(!user) {
+          // Always reveal the login screen when Firebase reports a signed-out state.
+          // Removing .hidden alone is insufficient because the CSS login layer
+          // has its own display rule.
+          showLogin();
+          return;
+        }
+        if(user.uid!==ADMIN_UID) {
+          await auth.signOut();
+          showLogin("This account is not authorised to access the admin dashboard.");
+          return;
+        }
+        showAdmin(user);
+        await refreshAll();
+      });
+    });
+  adminAuthReady.catch(error=>{
+    console.error("Could not initialise admin authentication:",error);
+    showLogin("Could not initialise Firebase authentication: "+readableError(error));
   });
 }
 </script>
