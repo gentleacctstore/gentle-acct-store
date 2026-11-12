@@ -1117,19 +1117,14 @@ input,select,textarea{
       <strong>Buy Logs</strong>
     </a>
 
-    <a class="service coming-soon-item" href="#" data-coming-soon="USA Numbers">
+    <a class="service" href="usa-numbers.html">
       <span class="service-icon"><i class="fa-solid fa-phone"></i></span>
       <strong>USA Numbers</strong>
     </a>
 
-    <a class="service coming-soon-item" href="#" data-coming-soon="World Numbers">
+    <a class="service" href="world-numbers.html">
       <span class="service-icon"><i class="fa-solid fa-globe"></i></span>
       <strong>World Numbers</strong>
-    </a>
-
-    <a class="service" href="xtralogs.html">
-      <span class="service-icon"><i class="fa-solid fa-layer-group"></i></span>
-      <strong>XtraLogs Tools</strong>
     </a>
 
     <a class="service" href="orders.html">
@@ -1137,19 +1132,19 @@ input,select,textarea{
       <strong>Orders</strong>
     </a>
 
-    <a class="service coming-soon-item" href="#" data-coming-soon="Boosting">
+    <a class="service" href="boosting.html">
       <span class="service-icon"><i class="fa-solid fa-chart-line"></i></span>
       <strong>Boosting</strong>
     </a>
 
-    <a class="service" href="referrals.html">
-      <span class="service-icon"><i class="fa-solid fa-gift"></i></span>
-      <strong>Referrals</strong>
+    <a class="service" href="data.html">
+      <span class="service-icon"><i class="fa-solid fa-signal"></i></span>
+      <strong>Data</strong>
     </a>
 
-    <a class="service coming-soon-item" href="#" data-coming-soon="Accounts">
-      <span class="service-icon"><i class="fa-solid fa-layer-group"></i></span>
-      <strong>Accounts</strong>
+    <a class="service" href="telegram.html">
+      <span class="service-icon"><i class="fa-brands fa-telegram"></i></span>
+      <strong>Telegram</strong>
     </a>
 
     <a class="service" href="profile.html">
@@ -1183,18 +1178,6 @@ input,select,textarea{
   </div>
 
   <div class="quick-panel">
-
-     <a class="quick-row" href="xtralogs.html">
-       <span class="quick-icon"><i class="fa-solid fa-layer-group"></i></span>
-       <span class="quick-copy"><strong>XtraLogs marketplace</strong><small>Browse tools and services using your wallet</small></span>
-       <i class="fa-solid fa-chevron-right row-arrow"></i>
-     </a>
-
-     <a class="quick-row" href="xtralogs-orders.html">
-       <span class="quick-icon"><i class="fa-solid fa-list-check"></i></span>
-       <span class="quick-copy"><strong>XtraLogs orders</strong><small>Track your XtraLogs purchases</small></span>
-       <i class="fa-solid fa-chevron-right row-arrow"></i>
-     </a>
 
     <a class="quick-row" href="orders.html">
       <span class="quick-icon"><i class="fa-regular fa-clipboard"></i></span>
@@ -1433,7 +1416,7 @@ document.addEventListener("click",event=>{
   if(message){
     message.textContent=href.startsWith("orders.html")
       ?"Opening your orders..."
-      :href.startsWith("dashboard.html")
+      :href.startsWith("dashboard.html") || /^(usa-numbers|world-numbers|boosting|data|telegram)\.html/.test(href)
         ?"Opening the marketplace..."
         :"Opening GentleLogs...";
   }
