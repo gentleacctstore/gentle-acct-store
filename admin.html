@@ -908,6 +908,7 @@ html,body{background:#050b1b!important;color:#edf6ff!important}
  <div class="supplier-toolbar">
   <select id="xtraCatalogSelect" aria-label="XtraLogs catalogue"><option value="logs">Logs</option><option value="numbers-usa">USA numbers</option><option value="numbers-global">Global numbers</option><option value="smm">Social media marketing</option><option value="telegram">Telegram</option><option value="esim">eSIM</option><option value="topup">International top-up</option><option value="gifts">Gifts</option><option value="proxies">Proxies</option><option value="vtu">Nigeria airtime and data</option></select>
   <input id="xtraCatalogCountry" placeholder="Country code (e.g. CA, NG)" maxlength="2" aria-label="Country code">
+  <div class="form-grid" id="xtraCatalogExtraFields" style="grid-column:1/-1"></div>
   <input id="xtraCatalogSearch" type="search" placeholder="Search fetched services..." aria-label="Search catalogue">
   <button class="btn btn-primary" id="xtraLoadCatalog" type="button">Fetch catalogue</button>
  </div>
@@ -2208,9 +2209,11 @@ function xtraCost(item) {
   if(item.price_usd!==undefined) return {value:Number(item.price_usd),currency:"USD"};
   return {value:0,currency:String(item.currency||"NGN").toUpperCase()};
 }
-function xtraExtractItems(data) {
+function xtraExtractItems(data,depth=0) {
   if(Array.isArray(data)) return data;
-  for(const key of ["services","products","items","data","countries","plans","operators","results"]) if(Array.isArray(data?.[key])) return data[key];
+  if(!data||typeof data!=="object"||depth>5)return [];
+  for(const key of ["services","products","items","countries","plans","operators","results","records","list"]) if(Array.isArray(data[key])) return data[key];
+  for(const key of ["data","result","payload","catalog","response"]) {const found=xtraExtractItems(data[key],depth+1);if(found.length)return found;}
   return [];
 }
 function xtraMoney(value,currency="NGN") {
@@ -2234,20 +2237,35 @@ async function checkXtraBalance() {
     const result=await xtraAdminRequest("/api/xtralogs/admin/balance");
     const info=result.balanceInfo||null;
     const data=result.data||result.result||result.wallet||result;
-    const balance=info&&Number.isFinite(Number(info.amount))
-      ?Number(info.amount)
-      :(data.balance??data.available_balance??data.wallet_balance??data.current_balance??data.account_balance);
+    const balance=info&&Number.isFinite(Number(info.amount))?Number(info.amount):(data.balance??data.available_balance??data.wallet_balance??data.current_balance??data.account_balance);
     const currency=(info&&info.currency)||data.currency||data.currency_code||"NGN";
-    if(balance===undefined||balance===null||!Number.isFinite(Number(balance))) {
-      $("xtraBalance").textContent="Balance unavailable";
-      $("xtraConnection").textContent="Connected";
-      showXtraMessage("XtraLogs is connected, but its balance response did not contain a recognised balance field. The API connection is healthy.","success");
-      return;
-    }
-    $("xtraBalance").textContent=xtraMoney(balance,currency);
+    $("xtraBalance").textContent=balance===undefined||balance===null||!Number.isFinite(Number(balance))?"Balance unavailable":xtraMoney(balance,currency);
     $("xtraConnection").textContent="Connected";
-    showXtraMessage("XtraLogs API connection and wallet balance loaded.","success");
+    showXtraMessage(balance===undefined||balance===null?"Connection works, but the API did not return a recognised balance field.":"XtraLogs API connection and wallet balance loaded.","success");
   } catch(error) {$("xtraBalance").textContent="Unavailable";$("xtraConnection").textContent="Not connected";showXtraMessage(error.message||"Could not connect to XtraLogs.");}
+}
+function renderXtraCatalogFilters() {
+  const catalog=$("xtraCatalogSelect").value;
+  const country=$("xtraCatalogCountry");
+  const wrap=$("xtraCatalogExtraFields");
+  country.style.display=["numbers-global","esim","topup","gifts"].includes(catalog)?"":"none";
+  country.placeholder=catalog==="numbers-global"?"Required country code (e.g. CA)":catalog==="gifts"?"Country code (e.g. US)": "Country code (e.g. NG)";
+  if(catalog==="numbers-global") country.value=country.value||"CA";
+  if(catalog==="esim"||catalog==="topup"||catalog==="vtu") country.value=country.value||"NG";
+  if(catalog==="gifts") country.value=country.value||"US";
+  let html="";
+  const field=(label,id,placeholder,value,type="text")=>`<div class="field"><label for="${id}">${label}</label><input id="${id}" type="${type}" placeholder="${placeholder}" value="${value}" ${type==="number"?'min="1"':''}></div>`;
+  const select=(label,id,options)=>`<div class="field"><label for="${id}">${label}</label><select id="${id}">${options.map(o=>`<option value="${o[0]}">${o[1]}</option>`).join("")}</select></div>`;
+  if(catalog==="vtu") html=select("Service kind","xtraCatalogKind",[["data","Nigeria data"],["airtime","Nigeria airtime"]])+select("Network","xtraCatalogNetwork",[["mtn","MTN"],["glo","Glo"],["airtel","Airtel"],["9mobile","9mobile"]])+field("Plan type ID (if required)","xtraCatalogTypeId","e.g. 1","1","number");
+  if(catalog==="telegram") html=select("Telegram service","xtraCatalogService",[["stars","Stars"],["premium","Premium"]])+field("Recipient username (if required)","xtraCatalogUsername","e.g. username","")+field("Quantity","xtraCatalogQuantity","e.g. 1000","1000","number");
+  if(catalog==="topup") html=field("Phone number","xtraCatalogNumber","International phone number","","text");
+  if(catalog==="smm") html=field("Page","xtraCatalogPage","1","1","number")+field("Items per page","xtraCatalogPerPage","80","80","number");
+  wrap.innerHTML=html;
+}
+function appendXtraCatalogFilters(params) {
+  for(const [id,key] of [["xtraCatalogKind","kind"],["xtraCatalogNetwork","network"],["xtraCatalogTypeId","type_id"],["xtraCatalogService","service"],["xtraCatalogUsername","username"],["xtraCatalogQuantity","quantity"],["xtraCatalogNumber","number"],["xtraCatalogPage","page"],["xtraCatalogPerPage","per_page"]]) {
+    const el=$(id);if(el&&el.value.trim())params.set(key,el.value.trim());
+  }
 }
 async function loadXtraCatalogue() {
   const button=$("xtraLoadCatalog");button.disabled=true;button.textContent="Fetching…";
@@ -2257,6 +2275,7 @@ async function loadXtraCatalogue() {
     const params=new URLSearchParams({catalog});
     const country=$("xtraCatalogCountry").value.trim().toUpperCase();
     if(country) params.set("country",country);
+    appendXtraCatalogFilters(params);
     const result=await xtraAdminRequest("/api/xtralogs/admin/catalog?"+params.toString());
     xtraCatalogueItems=xtraExtractItems(result);
     renderXtraCatalogue();
@@ -2298,6 +2317,8 @@ async function saveXtraServicePrices() {
 }
 $("xtraRefreshBalance").addEventListener("click",checkXtraBalance);
 $("xtraLoadCatalog").addEventListener("click",loadXtraCatalogue);
+$("xtraCatalogSelect").addEventListener("change",()=>{xtraCatalogueItems=[];$("xtraCatalogResults").innerHTML="";renderXtraCatalogFilters();});
+renderXtraCatalogFilters();
 $("xtraCatalogSearch").addEventListener("input",renderXtraCatalogue);
 $("xtraDefaultMargin").addEventListener("input",()=>{if(xtraCatalogueItems.length)renderXtraCatalogue();$("xtraMarginSummary").textContent=(Number($("xtraDefaultMargin").value)||0)+"%";});
 $("xtraSavePricing").addEventListener("click",saveXtraPricing);

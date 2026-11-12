@@ -797,7 +797,29 @@ async function handleXtraLogs(request,env) {
   if(request.method==="GET"&&new URL(request.url).pathname==="/api/xtralogs/admin/balance") {
     if(!env.XTRALOGS_API_KEY) return xtraJson({error:"XTRALOGS_API_KEY is not configured in Cloudflare Worker secrets."},503,origin);
     const result=await xtraUpstream(env,"/balance");
-    return xtraJson(result.payload,result.response.status,origin);
+    const payload=result.payload;
+    const balanceKeys=["balance","available_balance","wallet_balance","current_balance","account_balance","credits"];
+    const minorKeys=["balance_minor","available_balance_minor","wallet_balance_minor","current_balance_minor","balance_kobo"];
+    function findXtraBalance(value,depth=0) {
+      if(!value || typeof value!=="object" || depth>5) return null;
+      for(const key of balanceKeys) {
+        if(value[key]!==undefined && value[key]!==null && value[key]!=="" && Number.isFinite(Number(value[key]))) {
+          return {amount:Number(value[key]),currency:String(value.currency||value.currency_code||"NGN").toUpperCase(),source:key};
+        }
+      }
+      for(const key of minorKeys) {
+        if(value[key]!==undefined && value[key]!==null && value[key]!=="" && Number.isFinite(Number(value[key]))) {
+          return {amount:Number(value[key])/100,currency:String(value.currency||value.currency_code||"NGN").toUpperCase(),source:key};
+        }
+      }
+      for(const key of ["data","result","wallet","account","balance_info","payload"]) {
+        const found=findXtraBalance(value[key],depth+1);
+        if(found) return found;
+      }
+      return null;
+    }
+    const balanceInfo=findXtraBalance(payload);
+    return xtraJson({...((payload&&typeof payload==="object"&&!Array.isArray(payload))?payload:{data:payload}),balanceInfo},result.response.status,origin);
   }
   if(request.method==="GET"&&new URL(request.url).pathname==="/api/xtralogs/admin/catalog") {
     if(!env.XTRALOGS_API_KEY) return xtraJson({error:"XTRALOGS_API_KEY is not configured in Cloudflare Worker secrets."},503,origin);
@@ -841,9 +863,15 @@ async function handleXtraLogs(request,env) {
 
 
 /* XTRALOGS CUSTOMER MARKETPLACE */
-function xtraExtractCatalogItems(data) {
+function xtraExtractCatalogItems(data,depth=0) {
   if(Array.isArray(data)) return data;
-  for(const key of ["services","products","items","data","countries","plans","operators","results"]) if(Array.isArray(data?.[key])) return data[key];
+  if(!data || typeof data!=="object" || depth>5) return [];
+  const keys=["services","products","items","countries","plans","operators","results","records","list"];
+  for(const key of keys) if(Array.isArray(data[key])) return data[key];
+  for(const key of ["data","result","payload","catalog","response"]) {
+    const found=xtraExtractCatalogItems(data[key],depth+1);
+    if(found.length) return found;
+  }
   return [];
 }
 function xtraCatalogIdentity(item) {
@@ -859,7 +887,7 @@ function xtraCatalogCost(item) {
 }
 async function xtraCustomerIdentity(request) {
   const origin=request.headers.get("Origin");
-  if(origin!==ALLOWED_ORIGIN) return {error:supplierJson({error:"Origin not allowed"},403,null)};
+  if(origin && origin!==ALLOWED_ORIGIN) return {error:supplierJson({error:"Origin not allowed"},403,null)};
   const auth=request.headers.get("Authorization")||"";
   const idToken=auth.startsWith("Bearer ")?auth.slice(7):"";
   if(!idToken) return {error:supplierJson({error:"Sign in before continuing"},401,origin)};
@@ -881,7 +909,7 @@ function xtraSellingPrice(item,catalog,settings) {
 }
 async function handleXtraCustomer(request,env) {
   const origin=request.headers.get("Origin");
-  if(origin!==ALLOWED_ORIGIN)return xtraJson({error:"Origin not allowed"},403,null);
+  if(origin && origin!==ALLOWED_ORIGIN)return xtraJson({error:"Origin not allowed"},403,null);
   if(request.method==="OPTIONS") return new Response(null,{status:204,headers:{"Access-Control-Allow-Origin":ALLOWED_ORIGIN,"Access-Control-Allow-Methods":"GET, POST, OPTIONS","Access-Control-Allow-Headers":"Content-Type, Authorization","Access-Control-Max-Age":"86400","Vary":"Origin"}});
   const auth=await xtraCustomerIdentity(request);if(auth.error)return auth.error;
   const {user}=auth;const url=new URL(request.url);const {sa,token}=await xtraCustomerFirebase(env);
