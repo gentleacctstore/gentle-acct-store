@@ -1,17 +1,18 @@
 
 <!DOCTYPE html>
-
-<html data-theme="dark" lang="en">
+<html lang="en" data-theme="dark">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
-<meta content="#05070D" name="theme-color"/>
-<meta content="Gentle Acct Store wallet funding administration." name="description"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#05070D">
+<meta name="description" content="Gentle Acct Store wallet funding administration.">
 <title>Wallet Funding | Gentle Admin</title>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
 <script>
 (function(){
   try {
@@ -27,10 +28,12 @@
   }
 })();
 </script>
+
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="firebase.js"></script>
+
 <style>
 :root,
 html[data-theme="dark"]{
@@ -407,226 +410,220 @@ svg{flex-shrink:0}
   *,*::before,*::after{transition:none!important;scroll-behavior:auto!important}
 }
 
-/* Mobile-first compact layout overrides */
-html,body{max-width:100%;overflow-x:hidden}
-*,*::before,*::after{box-sizing:border-box}
-img,svg,video,canvas{max-width:100%;height:auto}
-button,a,input,select,textarea{touch-action:manipulation}
-.table-wrap,.table-container,.table-responsive,.panel,.panel-body{max-width:100%;}
-.table-wrap,.table-container,.table-responsive{overflow-x:auto;-webkit-overflow-scrolling:touch}
-table{min-width:620px}
-@media(max-width:900px){
- .unified-sidebar{position:relative;inset:auto;width:100%;height:auto;display:flex;flex-direction:row;align-items:center;gap:7px;padding:8px 10px;overflow-x:auto;overflow-y:hidden;white-space:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
- .unified-brand{flex:0 0 auto;padding:3px 8px!important;margin-right:5px}
- .unified-nav-label,.unified-sidebar-foot{display:none!important}
- .unified-sidebar>a.unified-nav{display:inline-flex;flex:0 0 auto;align-items:center;gap:6px;min-height:35px;padding:8px 10px;margin:0;font-size:11px;white-space:nowrap}
- .admin-shell-main{margin:0!important;width:100%;min-width:0}
- .admin-shell-main>.container,.admin-shell-main>main{width:100%;padding:16px 12px 28px!important}
- .admin-shell-main>.topbar .topbar-inner{padding:9px 12px!important;gap:8px;flex-wrap:wrap}
- .admin-shell-main .page-heading,.admin-shell-main .hero,.admin-shell-main .page-intro{margin-bottom:14px}
- .admin-shell-main .panel,.admin-shell-main .stat,.admin-shell-main .request,.admin-shell-main .referral-card,.admin-shell-main .customer-card,.admin-shell-main .table-wrap{border-radius:12px}
- .admin-shell-main .stat{padding:12px!important;min-width:0}
- .admin-shell-main .panel{min-width:0}
- .admin-shell-main input,.admin-shell-main select,.admin-shell-main textarea{font-size:16px!important;min-height:42px;max-width:100%}
- .admin-shell-main button{min-height:38px;max-width:100%}
- .admin-shell-main .stats{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
- .admin-shell-main .page-heading{align-items:flex-start;gap:10px;flex-wrap:wrap}
- .admin-shell-main .page-heading h1,.admin-shell-main h1{font-size:clamp(19px,5vw,25px)}
- .admin-shell-main .top-actions{display:flex;gap:6px;flex-wrap:wrap}
+/* GENTLE ADMIN CONSISTENCY + MOBILE SAFETY */
+:root,html[data-theme="dark"]{--accent:#176b3a;--accent2:#2b9254;--accent-soft:#102b1d}
+html[data-theme="light"]{--accent:#176b3a;--accent2:#10552e;--accent-soft:#e8f4ec}
+html[data-theme="blue"]{--accent:#176b3a;--accent2:#2b9254;--accent-soft:#102b1d}
+button,input,select,textarea{font-size:16px}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #55a875;outline-offset:2px}
+@media(max-width:560px){.container{width:100%;max-width:100%;overflow-x:hidden}.requests{min-width:0}.request{min-width:0;overflow-wrap:anywhere}}
+
+
+
+/* PREMIUM WALLET FUNDING UPGRADE */
+.stats{grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+.stat{
+  border-radius:20px;
+  background:linear-gradient(145deg,var(--surface),color-mix(in srgb,var(--surface2) 72%,var(--surface)));
+  border-color:color-mix(in srgb,var(--accent) 23%,var(--border));
+  box-shadow:0 14px 34px rgba(0,0,0,.13),inset 0 1px 0 rgba(255,255,255,.035);
+  transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease
 }
+.stat:hover{transform:translateY(-3px);border-color:var(--accent2);box-shadow:0 18px 38px rgba(0,0,0,.2)}
+.stat-icon{box-shadow:0 7px 18px color-mix(in srgb,var(--accent) 15%,transparent)}
+.panel{border-radius:22px;border-color:color-mix(in srgb,var(--accent) 20%,var(--border))}
+.panel-header{background:linear-gradient(110deg,color-mix(in srgb,var(--accent) 9%,var(--surface)),var(--surface))}
+.panel-title-icon{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 22%,transparent)}
+.refresh-btn{box-shadow:0 7px 18px color-mix(in srgb,var(--accent) 20%,transparent)}
+.search-input,.status-filter{min-height:46px;border-radius:13px}
+.search-input:focus,.status-filter:focus{box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 16%,transparent)}
+.request{
+  border-radius:18px;
+  background:linear-gradient(145deg,var(--surface2),color-mix(in srgb,var(--surface3) 28%,var(--surface2)));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025)
+}
+.request:hover{transform:translateY(-2px)}
+.customer-avatar{border:1px solid color-mix(in srgb,var(--accent) 26%,transparent)}
+.amount{font-size:28px;letter-spacing:-1px}
+.detail{border-radius:12px}
+.action-btn{min-height:43px;border-radius:12px}
+.verify-btn{box-shadow:0 7px 18px color-mix(in srgb,var(--accent) 18%,transparent)}
+.notice{border-radius:14px;box-shadow:var(--shadow)}
+.page-intro{margin-bottom:28px}
+.eyebrow{letter-spacing:1.8px}
+.brand-icon{border:1px solid rgba(255,255,255,.14)}
+@media(max-width:900px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){
- .admin-shell-main>.container,.admin-shell-main>main{padding:13px 10px 24px!important}
- .admin-shell-main .stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}
- .admin-shell-main .stat{padding:10px!important}
- .admin-shell-main .stat strong,.admin-shell-main .stat-number{font-size:19px!important}
- .admin-shell-main .panel-head,.admin-shell-main .panel-body{padding:11px!important}
- .admin-shell-main .page-heading{display:flex;flex-direction:column;align-items:stretch}
- .admin-shell-main .page-heading button,.admin-shell-main .page-heading a{width:100%}
- .admin-shell-main form{max-width:100%}
- .admin-shell-main .form-grid,.admin-shell-main .filters,.admin-shell-main .toolbar,.admin-shell-main .search-row{grid-template-columns:minmax(0,1fr)!important;display:grid;gap:9px}
- .admin-shell-main input,.admin-shell-main select,.admin-shell-main textarea{width:100%;min-width:0}
- .admin-shell-main .topbar-inner{align-items:center}
- .admin-shell-main .top-actions>*{font-size:12px;padding:8px 10px}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  .stat{min-height:132px;padding:13px 11px}
+  .stat-top{display:flex;align-items:center;gap:7px;margin-bottom:13px}
+  .stat-icon{margin:0;width:32px;height:32px;font-size:12px}
+  .stat-label{font-size:8px;line-height:1.4}
+  .stat-value{font-size:19px}
+  .amount{font-size:25px}
+  .request{border-radius:16px}
 }
-@media(max-width:360px){
- .admin-shell-main .stats{grid-template-columns:1fr!important}
- .unified-sidebar>a.unified-nav{font-size:10px;padding:7px 8px}
+@media(max-width:350px){
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stat{display:block}
+  .stat-top{display:block}
+  .stat-icon{margin-bottom:8px}
+}
+@media(prefers-reduced-motion:reduce){
+  .stat,.request{transition:none}
+  .stat:hover,.request:hover{transform:none}
 }
 
 </style>
-<style>
-/* Unified Gentle Admin design system */
-:root{--ga-blue:#2563eb;--ga-blue2:#1d4ed8;--ga-radius:16px}
-html[data-theme="dark"]{--ga-bg:#0b1220;--ga-panel:#111c2e;--ga-panel2:#162238;--ga-border:#27364d;--ga-text:#e8eef8;--ga-muted:#91a1b8;--ga-soft:#172b4b}
-html[data-theme="light"],html[data-theme="blue"]{--ga-bg:#f4f7fb;--ga-panel:#fff;--ga-panel2:#f8faff;--ga-border:#e2e8f0;--ga-text:#172338;--ga-muted:#718096;--ga-soft:#edf3ff}
-body{background:var(--ga-bg)!important;color:var(--ga-text)!important;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif!important;font-size:14px!important}
-button,input,select,textarea{font-size:16px!important}
-a{transition:color .18s,background .18s,border-color .18s}
-.unified-sidebar{position:fixed;inset:0 auto 0 0;width:248px;padding:25px 17px 18px;background:#0b1425;color:#eaf1ff;display:flex;flex-direction:column;z-index:60;border-right:1px solid #1d2b42;overflow:auto}
-.unified-brand{display:flex;align-items:center;gap:12px;padding:4px 8px 29px;color:#fff;text-decoration:none}
-.unified-mark{width:39px;height:39px;border-radius:12px;background:linear-gradient(145deg,#3b82f6,#1d4ed8);display:grid;place-items:center;font-size:20px;font-weight:800;color:white;box-shadow:0 8px 20px #2563eb44}
-.unified-brand b{display:block;font-size:14px;letter-spacing:1.5px}.unified-brand small{display:block;color:#8191aa;font-size:9px;letter-spacing:1.8px;margin-top:4px}
-.unified-nav-label{padding:17px 11px 8px;color:#71829b;font-size:9px;font-weight:800;letter-spacing:1.5px}
-.unified-nav{display:flex;align-items:center;gap:12px;padding:11px 12px;margin:2px 0;border-radius:10px;color:#aab8cd;text-decoration:none;font-size:12px;font-weight:600;min-height:41px}
-.unified-nav i{width:17px;text-align:center;color:#8295b3;font-size:13px}.unified-nav:hover,.unified-nav.active{background:#1b3152;color:#fff}.unified-nav.active i,.unified-nav:hover i{color:#70a5ff}
-.unified-sidebar-foot{margin-top:auto;padding:17px 10px 5px;border-top:1px solid #223149;color:#90a0b7;font-size:10px}.online-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#22c55e;margin-right:8px;box-shadow:0 0 0 4px #22c55e1b}
-.admin-shell-main{margin-left:248px;min-width:0;min-height:100vh}.admin-shell-main>.topbar{position:sticky;top:0;z-index:30;background:var(--ga-panel);border-bottom:1px solid var(--ga-border);box-shadow:0 5px 18px #0000000a}
-.admin-shell-main>.container,.admin-shell-main>main{max-width:1440px;margin:0 auto;padding:30px clamp(18px,3vw,42px) 45px}
-.admin-shell-main .page-heading,.admin-shell-main .hero,.admin-shell-main .page-intro{margin-bottom:23px}
-.admin-shell-main h1,.admin-shell-main h2,.admin-shell-main h3,.admin-shell-main h4{letter-spacing:-.035em}
-.admin-shell-main .panel,.admin-shell-main .stat,.admin-shell-main .request,.admin-shell-main .referral-card,.admin-shell-main .customer-card,.admin-shell-main .table-wrap{background:var(--ga-panel);border:1px solid var(--ga-border);border-radius:15px;box-shadow:0 8px 24px #07152a0b}
-.admin-shell-main .stat{padding:19px}.admin-shell-main .panel{overflow:hidden}
-.admin-shell-main input,.admin-shell-main select,.admin-shell-main textarea{border:1px solid var(--ga-border)!important;border-radius:10px!important;background:var(--ga-panel2)!important;color:var(--ga-text)!important;min-height:43px;padding:10px 12px}
-.admin-shell-main button{border-radius:10px;transition:transform .16s,filter .16s,background .16s}.admin-shell-main button:active{transform:translateY(1px)}
-.admin-shell-main .refresh-btn,.admin-shell-main .verify-btn,.admin-shell-main .back-btn{background:var(--ga-blue)!important;border-color:var(--ga-blue)!important;color:#fff!important}
-.admin-shell-main .refresh-btn:hover,.admin-shell-main .verify-btn:hover,.admin-shell-main .back-btn:hover{background:var(--ga-blue2)!important}
-.admin-shell-main .page-title,.admin-shell-main .hero h1{font-weight:750}
-.admin-shell-main .topbar-inner{max-width:none;padding:13px clamp(18px,3vw,42px)}
-/* Main dashboard keeps its existing Firebase-driven sidebar and sections */
-#adminApp>.sidebar{background:#0b1425!important;border-right:1px solid #1d2b42}
-#adminApp .brand-icon{background:linear-gradient(145deg,#3b82f6,#1d4ed8)!important}
-#adminApp .nav-link.active,#adminApp .nav-link:hover{background:#1b3152!important;color:#fff!important}
-#adminApp .main{background:var(--ga-bg)}
-#adminApp .topbar,#adminApp .panel,#adminApp .stat-card,#adminApp .health-card,#adminApp .insight-card{border-color:var(--ga-border)!important}
-#adminApp .primary-btn,#adminApp .btn-primary{background:var(--ga-blue)!important;border-color:var(--ga-blue)!important}
-#adminApp .primary-btn:hover,#adminApp .btn-primary:hover{background:var(--ga-blue2)!important}
-@media(max-width:900px){.unified-sidebar{position:relative;inset:auto;width:100%;height:auto;padding:10px 12px;display:block;overflow:visible}.unified-brand{padding:2px 5px 10px}.unified-nav-label,.unified-sidebar-foot{display:none}.unified-sidebar>a.unified-nav{display:inline-flex;white-space:nowrap;padding:9px 10px;margin:2px 3px 0 0;min-height:36px;font-size:11px}.unified-sidebar{white-space:normal}.admin-shell-main{margin-left:0}.admin-shell-main>.container,.admin-shell-main>main{padding:20px 14px 32px}}
-@media(max-width:560px){.admin-shell-main>.topbar .topbar-inner{padding:10px 13px}.admin-shell-main .stats{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-shell-main .stat{padding:13px}.admin-shell-main .page-heading{align-items:flex-start}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
-</style></head>
+</head>
+
 <body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a href="gentleadmin.html" class="brand" aria-label="Back to Gentle Admin dashboard">
+      <div class="brand-icon"><i class="fa-solid fa-wallet"></i></div>
+      <div>
+        <div class="brand-name">Gentle Admin</div>
+        <div class="brand-subtitle">STORE MANAGEMENT</div>
+      </div>
+    </a>
 
+    <div class="top-actions">
+      <button type="button" class="icon-btn" id="themeButton"
+        title="Change theme" aria-label="Change theme">
+        <i class="fa-solid fa-moon"></i>
+      </button>
+      <a href="admin.html" class="back-btn" aria-label="Back to Admin">
+        <i class="fa-solid fa-arrow-left"></i><span> Back to Admin</span>
+      </a>
+    </div>
+  </div>
+</header>
 
+<main class="container">
+  <div class="breadcrumb">
+    <i class="fa-solid fa-house"></i>
+    <span>Admin</span>
+    <i class="fa-solid fa-chevron-right"></i>
+    <strong>Wallet Funding</strong>
+  </div>
 
-<aside aria-label="Admin navigation" class="unified-sidebar">
-<a class="unified-brand" href="admin.html"><span class="unified-mark">G</span><span><b>GENTLE</b><small>ADMIN CONSOLE</small></span></a>
-<div class="unified-nav-label">WORKSPACE</div>
-<a class="unified-nav" href="admin.html"><i class="fa-solid fa-grid-2"></i> Overview</a>
-<a class="unified-nav" href="admin.html#productsSection"><i class="fa-solid fa-box"></i> Products</a>
-<a class="unified-nav" href="admin.html#inventorySection"><i class="fa-solid fa-layer-group"></i> Inventory</a>
-<a class="unified-nav" href="admin.html#categoryLinksSection"><i class="fa-solid fa-link"></i> Category links</a>
-<a class="unified-nav" href="admin.html#supplierSection"><i class="fa-solid fa-truck-fast"></i> Supplier</a>
-<div class="unified-nav-label">CUSTOMER OPERATIONS</div>
-<a class="unified-nav" href="customers.html"><i class="fa-solid fa-users"></i> Customers</a>
-<a aria-current="page" class="unified-nav active" href="wallet-funding.html"><i class="fa-solid fa-wallet"></i> Wallet funding</a>
-<a class="unified-nav" href="admin-referrals.html"><i class="fa-solid fa-share-nodes"></i> Referrals</a>
-<div class="unified-sidebar-foot"><span class="online-dot"></span> Admin workspace</div>
-</aside><div class="admin-shell-main"><header class="topbar">
-<div class="topbar-inner">
-<a aria-label="Back to Gentle Admin dashboard" class="brand" href="gentleadmin.html">
-<div class="brand-icon"><i class="fa-solid fa-wallet"></i></div>
-<div>
-<div class="brand-name">Gentle Admin</div>
-<div class="brand-subtitle">STORE MANAGEMENT</div>
-</div>
-</a>
-<div class="top-actions">
-<button aria-label="Change theme" class="icon-btn" id="themeButton" title="Change theme" type="button">
-<i class="fa-solid fa-moon"></i>
-</button>
-<a aria-label="Back to Admin" class="back-btn" href="admin.html">
-<i class="fa-solid fa-arrow-left"></i><span> Back to Admin</span>
-</a>
-</div>
-</div>
-</header><main class="container">
-<div class="breadcrumb">
-<i class="fa-solid fa-house"></i>
-<span>Admin</span>
-<i class="fa-solid fa-chevron-right"></i>
-<strong>Wallet Funding</strong>
-</div>
-<section class="page-intro">
-<div>
-<div class="eyebrow"><span class="eyebrow-dot"></span> FINANCIAL OPERATIONS</div>
-<h1 class="page-title">Wallet Funding</h1>
-<p class="page-description">
+  <section class="page-intro">
+    <div>
+      <div class="eyebrow"><span class="eyebrow-dot"></span> FINANCIAL OPERATIONS</div>
+      <h1 class="page-title">Wallet Funding</h1>
+      <p class="page-description">
         Review transfer requests, verify received payments and manage customer wallet funding.
       </p>
-</div>
-<div class="admin-chip">
-<i class="fa-solid fa-shield-halved"></i>
-<span><strong>Admin panel</strong> · Protected access</span>
-</div>
-</section>
-<div aria-live="polite" class="notice" id="notice" role="status"></div>
-<section aria-label="Funding statistics" class="stats">
-<article class="stat">
-<div class="stat-top">
-<div class="stat-icon"><i class="fa-solid fa-receipt"></i></div>
-<span class="stat-label">ALL REQUESTS</span>
-</div>
-<div class="stat-content">
-<h2 class="stat-value" id="totalRequests">0</h2>
-<p class="stat-caption">Total submissions received</p>
-</div>
-</article>
-<article class="stat">
-<div class="stat-top">
-<div class="stat-icon"><i class="fa-solid fa-clock"></i></div>
-<span class="stat-label">AWAITING REVIEW</span>
-</div>
-<div class="stat-content">
-<h2 class="stat-value" id="pendingRequests">0</h2>
-<p class="stat-caption">Requests awaiting a decision</p>
-</div>
-</article>
-<article class="stat">
-<div class="stat-top">
-<div class="stat-icon"><i class="fa-solid fa-naira-sign"></i></div>
-<span class="stat-label">REQUESTED VALUE</span>
-</div>
-<div class="stat-content">
-<h2 class="stat-value" id="totalAmount">₦0</h2>
-<p class="stat-caption">Total value of valid requests</p>
-</div>
-</article>
-</section>
-<section class="panel">
-<div class="panel-header">
-<div class="panel-title-wrap">
-<div class="panel-title-icon"><i class="fa-solid fa-list-check"></i></div>
-<div>
-<h2 class="panel-title">Funding Requests</h2>
-<p class="panel-subtitle">Review each request before processing.</p>
-</div>
-</div>
-<div class="panel-tools">
-<button class="refresh-btn" id="refreshButton" type="button">
-<i class="fa-solid fa-rotate"></i> Refresh Requests
+    </div>
+    <div class="admin-chip">
+      <i class="fa-solid fa-shield-halved"></i>
+      <span><strong>Admin panel</strong> · Protected access</span>
+    </div>
+  </section>
+
+  <div id="notice" class="notice" role="status" aria-live="polite"></div>
+
+  <section class="stats" aria-label="Funding statistics">
+    <article class="stat">
+      <div class="stat-top">
+        <div class="stat-icon"><i class="fa-solid fa-receipt"></i></div>
+        <span class="stat-label">ALL REQUESTS</span>
+      </div>
+      <div class="stat-content">
+        <h2 class="stat-value" id="totalRequests">0</h2>
+        <p class="stat-caption">Total submissions received</p>
+      </div>
+    </article>
+
+    <article class="stat">
+      <div class="stat-top">
+        <div class="stat-icon"><i class="fa-solid fa-clock"></i></div>
+        <span class="stat-label">AWAITING REVIEW</span>
+      </div>
+      <div class="stat-content">
+        <h2 class="stat-value" id="pendingRequests">0</h2>
+        <p class="stat-caption">Requests awaiting a decision</p>
+      </div>
+    </article>
+
+    <article class="stat">
+      <div class="stat-top">
+        <div class="stat-icon"><i class="fa-solid fa-circle-check"></i></div>
+        <span class="stat-label">APPROVED / CREDITED</span>
+      </div>
+      <div class="stat-content">
+        <h2 class="stat-value" id="approvedRequests">0</h2>
+        <p class="stat-caption">Successfully processed requests</p>
+      </div>
+    </article>
+
+    <article class="stat">
+      <div class="stat-top">
+        <div class="stat-icon"><i class="fa-solid fa-naira-sign"></i></div>
+        <span class="stat-label">REQUESTED VALUE</span>
+      </div>
+      <div class="stat-content">
+        <h2 class="stat-value" id="totalAmount">₦0</h2>
+        <p class="stat-caption">Total value of valid requests</p>
+      </div>
+    </article>
+  </section>
+
+  <section class="panel">
+    <div class="panel-header">
+      <div class="panel-title-wrap">
+        <div class="panel-title-icon"><i class="fa-solid fa-list-check"></i></div>
+        <div>
+          <h2 class="panel-title">Funding Requests</h2>
+          <p class="panel-subtitle">Review each request before processing.</p>
+        </div>
+      </div>
+      <div class="panel-tools">
+        <button type="button" id="refreshButton" class="refresh-btn">
+          <i class="fa-solid fa-rotate"></i> Refresh Requests
         </button>
-</div>
-</div>
-<div class="toolbar">
-<label class="search-wrap">
-<i class="fa-solid fa-magnifying-glass"></i>
-<input aria-label="Search funding requests" class="search-input" id="searchInput" placeholder="Search customer, email, reference or user ID..." type="search"/>
-</label>
-<select aria-label="Filter by status" class="status-filter" id="statusFilter">
-<option value="all">All statuses</option>
-<option value="pending">Pending</option>
-<option value="approved">Approved / Credited</option>
-<option value="rejected">Rejected</option>
-<option value="other">Other statuses</option>
-</select>
-</div>
-<div class="results-bar">
-<span id="resultsLabel">Loading funding requests...</span>
-<span class="results-count" id="resultsCount">0 results</span>
-</div>
-<div class="requests" id="requests">
-<div class="empty">
-<div class="empty-icon"><i class="fa-solid fa-spinner fa-spin"></i></div>
-<h4>Checking admin access</h4>
-<p>Please wait while your session is checked.</p>
-</div>
-</div>
-</section>
-<footer class="footer">
-<span><i class="fa-solid fa-shield-halved"></i> Gentle Acct Store · Admin tools</span>
-<span>Verify bank receipts before approving funding.</span>
-</footer>
-</main></div><script>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <label class="search-wrap">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input id="searchInput" class="search-input" type="search"
+          placeholder="Search customer, email, reference or user ID..."
+          aria-label="Search funding requests">
+      </label>
+
+      <select id="statusFilter" class="status-filter" aria-label="Filter by status">
+        <option value="all">All statuses</option>
+        <option value="pending">Pending</option>
+        <option value="approved">Approved / Credited</option>
+        <option value="rejected">Rejected</option>
+        <option value="other">Other statuses</option>
+      </select>
+    </div>
+
+    <div class="results-bar">
+      <span id="resultsLabel">Loading funding requests...</span>
+      <span id="resultsCount" class="results-count">0 results</span>
+    </div>
+
+    <div id="requests" class="requests">
+      <div class="empty">
+        <div class="empty-icon"><i class="fa-solid fa-spinner fa-spin"></i></div>
+        <h4>Checking admin access</h4>
+        <p>Please wait while your session is checked.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span><i class="fa-solid fa-shield-halved"></i> Gentle Acct Store · Admin tools</span>
+    <span>Verify bank receipts before approving funding.</span>
+  </footer>
+</main>
+
+<script>
 "use strict";
 
 const ADMIN_UID = "UoEjCy99gbQKkGob59vGi3CunZi1";
@@ -833,6 +830,8 @@ function updateSummary(requests) {
   document.getElementById("totalRequests").textContent = requests.length;
   document.getElementById("pendingRequests").textContent =
     requests.filter(r=>pendingStatuses.includes(r.status)).length;
+  document.getElementById("approvedRequests").textContent =
+    requests.filter(r=>approvedStatuses.includes(r.status)).length;
 
   const total = requests.reduce((sum,r)=>
     sum + (Number.isFinite(r.amount) && r.amount > 0 ? r.amount : 0),0);
@@ -1133,5 +1132,6 @@ async function rejectFundingRequest(request,verifyButton,rejectButton) {
 }
 
 initializeAdminPage();
-</script></body>
+</script>
+</body>
 </html>
