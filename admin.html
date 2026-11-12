@@ -471,8 +471,8 @@ html,body{max-width:100%;overflow-x:hidden}*,*::before,*::after{box-sizing:borde
 .xtra-category-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:18px}
 .xtra-category-card{appearance:none;text-align:left;display:flex;flex-direction:column;align-items:flex-start;gap:9px;min-height:145px;padding:17px;border:1px solid var(--border);border-radius:16px;background:linear-gradient(145deg,rgba(25,48,82,.9),rgba(8,22,45,.95));color:var(--text);cursor:pointer;transition:transform .18s,border-color .18s,box-shadow .18s}
 .xtra-category-card:active{transform:scale(.985)}.xtra-category-card:hover{border-color:#2CA7E8;box-shadow:0 8px 24px #0002}
-.xtra-category-card span{font-size:25px;line-height:1.1}.xtra-category-card strong{font-size:14px}.xtra-category-card small{font-size:11px;line-height:1.45;color:var(--muted)}
-.xtra-category-toolbar{display:grid;gap:13px}.xtra-category-toolbar>div label{display:block;margin:0 0 7px;font-weight:700}.xtra-category-toolbar select,.xtra-category-toolbar input{width:100%;min-height:48px}.xtra-category-toolbar #xtraWorldCountryWrap,.xtra-category-toolbar #xtraCatalogCountryWrap{display:grid;gap:9px}.xtra-category-toolbar #xtraWorldCountryWrap .btn{justify-self:start}
+.xtra-category-card span{font-size:25px;line-height:1.1}.xtra-category-card strong{font-size:14px}.xtra-category-card small{font-size:11px;line-height:1.45;color:var(--muted)}.xtra-category-card:after{content:"Open workspace →";font-size:11px;font-weight:800;color:#45B5F1;margin-top:auto}
+.xtra-category-toolbar{display:grid;gap:13px;padding:4px 0 14px}.xtra-category-toolbar>div label{display:block;margin:0 0 7px;font-weight:700}.xtra-category-toolbar select,.xtra-category-toolbar input{width:100%;min-height:48px}.xtra-category-toolbar #xtraWorldCountryWrap,.xtra-category-toolbar #xtraCatalogCountryWrap{display:grid;gap:9px}.xtra-category-toolbar #xtraWorldCountryWrap .btn{justify-self:start}
 @media(min-width:700px){.xtra-category-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.xtra-category-card{min-height:155px}}
 @media(max-width:380px){.xtra-category-grid{padding:12px;gap:8px}.xtra-category-card{padding:12px;min-height:132px}}
 </style>
@@ -914,16 +914,16 @@ html,body{background:#050b1b!important;color:#edf6ff!important}
 <div class="panel" id="xtraCategoryHome">
  <div class="panel-head"><div><div class="panel-title">XtraLogs categories</div><div class="panel-desc">Open a dedicated workspace for each supplier category. Each page has its own filters, catalogue and customer pricing.</div></div></div>
  <div class="xtra-category-grid">
-  <button class="xtra-category-card" data-xtra-open="logs"><span>▣</span><strong>Logs</strong><small>Account logs and products</small></button>
-  <button class="xtra-category-card" data-xtra-open="numbers-usa"><span>🇺🇸</span><strong>USA Numbers</strong><small>United States number services</small></button>
-  <button class="xtra-category-card" data-xtra-open="numbers-global"><span>🌍</span><strong>Global Numbers</strong><small>Countries, services and number prices</small></button>
-  <button class="xtra-category-card" data-xtra-open="smm"><span>📈</span><strong>Social Media Marketing</strong><small>Platform services and quantities</small></button>
-  <button class="xtra-category-card" data-xtra-open="telegram"><span>✈️</span><strong>Telegram</strong><small>Stars and Premium services</small></button>
-  <button class="xtra-category-card" data-xtra-open="esim"><span>📶</span><strong>eSIM</strong><small>Country packages</small></button>
-  <button class="xtra-category-card" data-xtra-open="topup"><span>📲</span><strong>International Top-up</strong><small>Phone and operator top-ups</small></button>
-  <button class="xtra-category-card" data-xtra-open="gifts"><span>🎁</span><strong>Gifts</strong><small>Gift products and regions</small></button>
-  <button class="xtra-category-card" data-xtra-open="proxies"><span>🛡️</span><strong>Proxies</strong><small>Proxy categories and plans</small></button>
-  <button class="xtra-category-card" data-xtra-open="vtu"><span>🇳🇬</span><strong>Nigeria Airtime &amp; Data</strong><small>Networks, plans and top-ups</small></button>
+  <button type="button" class="xtra-category-card" data-xtra-open="logs" aria-label="Open Logs workspace"><span>▣</span><strong>Logs</strong><small>Account logs and products</small></button>
+  <button type="button" class="xtra-category-card" data-xtra-open="numbers-usa" aria-label="Open USA Numbers workspace"><span>🇺🇸</span><strong>USA Numbers</strong><small>United States number services</small></button>
+  <button type="button" class="xtra-category-card" data-xtra-open="numbers-global" aria-label="Open Global Numbers workspace"><span>🌍</span><strong>Global Numbers</strong><small>Countries, services and number prices</small></button>
+  <button type="button" class="xtra-category-card" data-xtra-open="smm" aria-label="Open Social Media Marketing workspace"><span>📈</span><strong>Social Media Marketing</strong><small>Platform services and quantities</small></button>
+  <button type="button" class="xtra-category-card" data-xtra-open="telegram" aria-label="Open Telegram workspace"><span>✈️</span><strong>Telegram</strong><small>Stars and Premium services</small></button>
+  <button type="button" class="xtra-category-card" data-xtra-open="esim" aria-label="Open eSIM workspace"><span>📶</span><strong>eSIM</strong><small>Country packages</small></button>
+  <button type="button" class="xtra-category-card" data-xtra-open="topup" aria-label="Open International Top-up workspace"><span>📲</span><strong>International Top-up</strong><small>Phone and operator top-ups</small></button>
+  <button type="button" class="xtra-category-card" data-xtra-open="gifts" aria-label="Open Gifts workspace"><span>🎁</span><strong>Gifts</strong><small>Gift products and regions</small></button>
+  <button type="button" class="xtra-category-card" data-xtra-open="proxies" aria-label="Open Proxies workspace"><span>🛡️</span><strong>Proxies</strong><small>Proxy categories and plans</small></button>
+  <button type="button" class="xtra-category-card" data-xtra-open="vtu" aria-label="Open Nigeria Airtime and Data workspace"><span>🇳🇬</span><strong>Nigeria Airtime &amp; Data</strong><small>Networks, plans and top-ups</small></button>
  </div>
 </div>
 <div class="panel hidden" id="xtraCategoryPage">
@@ -931,7 +931,7 @@ html,body{background:#050b1b!important;color:#edf6ff!important}
  <div class="panel-body">
   <div class="xtra-category-toolbar">
    <select id="xtraCatalogSelect" aria-label="Active category" class="hidden"><option value="logs">Logs</option><option value="numbers-usa">USA numbers</option><option value="numbers-global">Global numbers</option><option value="smm">Social media marketing</option><option value="telegram">Telegram</option><option value="esim">eSIM</option><option value="topup">International top-up</option><option value="gifts">Gifts</option><option value="proxies">Proxies</option><option value="vtu">Nigeria airtime and data</option></select>
-   <div id="xtraWorldCountryWrap" class="hidden"><label for="xtraWorldCountry">Choose country</label><select id="xtraWorldCountry" aria-label="Select World Numbers country"><option value="">Import countries first</option></select><button class="btn" id="xtraImportCountries" type="button">↓ Import countries</button></div>
+   <div id="xtraWorldCountryWrap" class="hidden"><label for="xtraWorldCountry">Choose country</label><select id="xtraWorldCountry" aria-label="Select World Numbers country"><option value="">Import countries first</option></select><button class="btn btn-primary" id="xtraImportCountries" type="button">↓ Import all countries + services</button><div id="xtraWorldImportProgress" class="supplier-note" style="display:none" aria-live="polite"></div></div>
    <div id="xtraCatalogCountryWrap" class="hidden"><label for="xtraCatalogCountry">Country code</label><input id="xtraCatalogCountry" placeholder="e.g. NG or US" maxlength="80" aria-label="Country code"></div>
    <div class="form-grid" id="xtraCatalogExtraFields" style="grid-column:1/-1"></div>
    <input id="xtraCatalogSearch" type="search" placeholder="Search this category..." aria-label="Search category catalogue">
@@ -2209,6 +2209,7 @@ $("loginForm").addEventListener("submit",async event=>{
 let xtraCatalogueItems=[];
 let xtraPricingOverrides={};
 let xtraPricingLoaded=false;
+let xtraImportedCountries=[];
 
 async function xtraAdminRequest(path,options={}) {
   if(!auth||!auth.currentUser) throw new Error("Sign in to the authorised admin account first.");
@@ -2298,6 +2299,7 @@ async function loadXtraPricingSettings() {
     $("xtraPricingMode").value=settings.pricingMode==="manual"?"manual":"automatic";
     $("xtraDefaultMargin").value=Number(settings.defaultMarginPercent??20);
     xtraPricingOverrides=settings.overrides||{};
+    xtraImportedCountries=Array.isArray(settings.importedCountries)?settings.importedCountries:[];
     $("xtraMarginSummary").textContent=Number(settings.defaultMarginPercent??20)+"%";
     xtraPricingLoaded=true;
   } catch(error) {showXtraMessage(error.message||"Could not load XtraLogs pricing settings.");}
@@ -2358,9 +2360,24 @@ function openXtraCategory(catalog){
   $("xtraCatalogSelect").value=catalog;
   $("xtraCategoryHome").classList.add("hidden");$("xtraCategoryPage").classList.remove("hidden");
   $("xtraCategoryTitle").textContent=XTRA_CATEGORY_INFO[catalog][0];$("xtraCategoryDescription").textContent=XTRA_CATEGORY_INFO[catalog][1];
-  $("xtraCategoryHint").textContent=catalog==="numbers-global"?"Import the full country list first. Then choose a country and fetch its actual number services.":"This workspace loads only the selected category. Review supplier costs and customer prices before saving.";
+  const pageHints={
+    logs:"LOGS WORKSPACE · Fetch log products, inspect supplier cost, set customer price, and save.",
+    "numbers-usa":"USA NUMBERS WORKSPACE · Fetch USA services and configure the customer price for each service.",
+    "numbers-global":"WORLD NUMBERS WORKSPACE · Import countries, select one country, fetch its services, then configure country-specific prices.",
+    smm:"SOCIAL MEDIA WORKSPACE · Set page and page size, fetch platform services, and configure prices.",
+    telegram:"TELEGRAM WORKSPACE · Select Stars or Premium, enter optional recipient details, and fetch matching services.",
+    esim:"ESIM WORKSPACE · Select a destination country to fetch available packages and prices.",
+    topup:"TOP-UP WORKSPACE · Enter destination and phone number to fetch the available top-up options.",
+    gifts:"GIFTS WORKSPACE · Select destination country and fetch matching gift products.",
+    proxies:"PROXIES WORKSPACE · Fetch proxy plans and configure customer prices.",
+    vtu:"NIGERIA VTU WORKSPACE · Select airtime/data and network before fetching plans."
+  };
+  $("xtraCategoryHint").textContent=pageHints[catalog]||"This workspace loads only the selected category. Review supplier costs and customer prices before saving.";
   xtraCatalogueItems=[];$("xtraCatalogSearch").value="";$("xtraCatalogResults").innerHTML='<div class="empty-state" style="grid-column:1/-1">Fetch this category to load its catalogue.</div>';
-  if(catalog==="numbers-global")$("xtraWorldCountry").innerHTML='<option value="">Import countries first</option>';
+  if(catalog==="numbers-global"){
+    const saved=xtraImportedCountries;
+    $("xtraWorldCountry").innerHTML='<option value="">'+(saved.length?'Choose a country…':'Import countries first')+'</option>'+saved.map(c=>`<option value="${escapeHTML(c.code)}">${escapeHTML(c.name)} (${escapeHTML(c.code)})</option>`).join("");
+  }
   renderXtraCatalogFilters();
 }
 function showXtraCategories(){$("xtraCategoryPage").classList.add("hidden");$("xtraCategoryHome").classList.remove("hidden");xtraCatalogueItems=[];}
@@ -2368,19 +2385,33 @@ document.querySelectorAll("[data-xtra-open]").forEach(button=>button.addEventLis
 $("xtraBackCategories").addEventListener("click",showXtraCategories);
 
 async function importXtraWorldCountries(){
- const button=$("xtraImportCountries");button.disabled=true;button.textContent="Importing…";
+ const button=$("xtraImportCountries"),progress=$("xtraWorldImportProgress");button.disabled=true;button.textContent="Preparing import…";progress.style.display="block";
  try{
+  progress.textContent="Step 1 of 2 · Fetching the complete XtraLogs country list…";
   const result=await xtraAdminRequest("/api/xtralogs/admin/catalog?catalog=numbers-global");
   const countries=xtraNormalizeAdminCountries(result);
-  if(!countries.length)throw Error("The supplier response did not contain a recognised country list. The raw response has not been treated as services or durations.");
-  const pricing=await xtraAdminRequest("/api/xtralogs/admin/pricing");
-  const settings=pricing.settings||{};
+  if(!countries.length)throw Error("XtraLogs did not return a recognised country list. No incomplete catalogue was imported.");
   const saved=await xtraAdminRequest("/api/xtralogs/admin/pricing",{method:"POST",body:JSON.stringify({pricingMode:$("xtraPricingMode").value,defaultMarginPercent:Number($("xtraDefaultMargin").value),overrides:xtraPricingOverrides,importedCountries:countries})});
-  const select=$("xtraWorldCountry");select.innerHTML='<option value="">Choose a country…</option>'+countries.map(c=>`<option value="${escapeHTML(c.code)}">${escapeHTML(c.name)} (${escapeHTML(c.code)})</option>`).join("");
-  showXtraMessage(countries.length+" World Numbers countries imported and saved.","success");
-  $("xtraCatalogResults").innerHTML='<div class="empty-state" style="grid-column:1/-1">'+countries.length+' countries imported. Choose one above, then tap Fetch catalogue to load its services.</div>';
- }catch(error){showXtraMessage(error.message||"Could not import World Numbers countries.");$("xtraCatalogResults").innerHTML='<div class="empty-state" style="grid-column:1/-1">'+escapeHTML(error.message||"Country import failed")+'</div>';}
- finally{button.disabled=false;button.textContent="↓ Import countries";}
+  xtraImportedCountries=saved.settings?.importedCountries||countries;
+  const select=$("xtraWorldCountry");select.innerHTML='<option value="">Choose a country…</option>'+xtraImportedCountries.map(c=>`<option value="${escapeHTML(c.code)}">${escapeHTML(c.name)} (${escapeHTML(c.code)})</option>`).join("");
+  let imported=0,serviceTotal=0,failed=[];
+  for(let i=0;i<xtraImportedCountries.length;i++){
+    const country=xtraImportedCountries[i];
+    button.textContent=`Importing ${i+1}/${xtraImportedCountries.length}…`;
+    progress.textContent=`Step 2 of 2 · Importing services: ${country.name} (${i+1} of ${xtraImportedCountries.length}) · ${imported} countries completed`;
+    try{
+      const response=await xtraAdminRequest("/api/xtralogs/admin/world-import-country",{method:"POST",body:JSON.stringify({countryCode:country.code,countryName:country.name})});
+      imported++;serviceTotal+=Number(response.serviceCount||0);
+    }catch(error){failed.push({country:country.name,error:error.message||"Import failed"});}
+  }
+  progress.textContent=`Import finished · ${imported}/${xtraImportedCountries.length} countries · ${serviceTotal} services imported · ${failed.length} countries failed.`;
+  if(failed.length){
+    const preview=failed.slice(0,8).map(x=>x.country+": "+x.error).join("\n");
+    showXtraMessage(`Imported ${imported} countries and ${serviceTotal} services. ${failed.length} countries could not be imported. ${preview}`,"error");
+  }else showXtraMessage(`Complete import successful: ${imported} countries and ${serviceTotal} number services saved to Firebase.`,"success");
+  $("xtraCatalogResults").innerHTML=`<div class="empty-state" style="grid-column:1/-1">${imported} countries and ${serviceTotal} services imported. Customers can now load the saved catalogues by country.${failed.length?" Some countries failed; see the import message above.":" All country catalogues imported successfully."}</div>`;
+ }catch(error){progress.textContent=error.message||"Full catalogue import failed.";showXtraMessage(error.message||"Could not import all World Numbers catalogues.");}
+ finally{button.disabled=false;button.textContent="↓ Import all countries + services";}
 }
 async function loadXtraCatalogue() {
   const button=$("xtraLoadCatalog");button.disabled=true;button.textContent="Fetching…";

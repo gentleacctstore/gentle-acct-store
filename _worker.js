@@ -842,6 +842,32 @@ async function handleXtraLogs(request,env) {
     }
     return xtraJson(result.payload,result.response.status,origin);
   }
+  if(request.method==="POST"&&new URL(request.url).pathname==="/api/xtralogs/admin/world-import-country") {
+    if(!env.XTRALOGS_API_KEY) return xtraJson({error:"XTRALOGS_API_KEY is not configured in Cloudflare Worker secrets."},503,origin);
+    let body;try{body=await request.json();}catch{return xtraJson({error:"Invalid import request."},400,origin);}
+    const countryCode=String(body.countryCode||"").trim();
+    const countryName=String(body.countryName||countryCode).trim();
+    if(!/^[A-Za-z0-9][A-Za-z0-9_-]{1,79}$/.test(countryCode))return xtraJson({error:"Invalid country identifier."},400,origin);
+    const endpoint=XTRALOGS_CATALOGS["numbers-global"].split("?")[0];
+    const result=await xtraUpstream(env,endpoint+"?scope=global&country="+encodeURIComponent(countryCode));
+    if(!result.response.ok)return xtraJson({error:result.payload?.message||result.payload?.error||"Could not import services for "+countryName, countryCode},result.response.status,origin);
+    const rows=xtraExtractCatalogItems(result.payload).filter(item=>xtraCatalogIdentity(item));
+    const settings=await xtraGetPricing(env);
+    const services=rows.map(item=>{
+      const id=xtraCatalogIdentity(item),cost=xtraCatalogCost(item),price=xtraSellingPrice(item,"numbers-global",settings,countryCode);
+      return {id,name:String(item.name??item.title??item.service_name??item.product_name??"Number service"),description:String(item.description??item.details??""),supplierCost:cost.amount,supplierCurrency:cost.currency,price:price.price,currency:price.currency,available:item.available!==false&&item.in_stock!==false,raw:item};
+    });
+    const sa=JSON.parse(env.FCM_SERVICE_ACCOUNT_JSON||"{}");
+    if(!sa.project_id)throw new Error("Firebase service account is not configured.");
+    const token=await getGoogleAccessToken(sa);
+    const docPath=`projects/${sa.project_id}/databases/(default)/documents/storeSettings/xtralogsWorldCatalog/countries/${encodeURIComponent(countryCode)}`;
+    const docUrl=`https://firestore.googleapis.com/v1/${docPath}`;
+    const payload={countryCode,countryName,services,serviceCount:services.length,importedAt:new Date().toISOString()};
+    if(JSON.stringify(payload).length>850000)return xtraJson({error:"The service catalogue for "+countryName+" is too large to save safely."},413,origin);
+    const save=await fetch(docUrl,{method:"PATCH",headers:{Authorization:"Bearer "+token,"Content-Type":"application/json"},body:JSON.stringify({fields:{countryCode:{stringValue:countryCode},countryName:{stringValue:countryName},services:xtraFirestoreEncode(services),serviceCount:{integerValue:String(services.length)},importedAt:{timestampValue:payload.importedAt}}})});
+    if(!save.ok){const msg=await save.text();console.error("XtraLogs country catalogue save failed",save.status,msg.slice(0,500));return xtraJson({error:"Could not save "+countryName+" services to Firebase."},502,origin);}
+    return xtraJson({success:true,countryCode,countryName,serviceCount:services.length,importedAt:payload.importedAt},200,origin);
+  }
   if(request.method==="GET"&&new URL(request.url).pathname==="/api/xtralogs/admin/pricing") {
     const settings=await xtraGetPricing(env);
     return xtraJson({success:true,settings},200,origin);
@@ -973,6 +999,19 @@ async function handleXtraCustomer(request,env) {
     if(!endpoint)return xtraJson({error:"Unknown catalogue"},400,origin);
     const query=new URLSearchParams(endpoint.split("?")[1]||"");
     for(const key of ["country","page","per_page","service","username","quantity","network","kind","type_id","number"]){const v=url.searchParams.get(key);if(v&&/^[A-Za-z0-9._-]{1,80}$/.test(v))query.set(key,v);}
+    if(catalog==="numbers-global"&&url.searchParams.get("country")){
+      const countryCode=String(url.searchParams.get("country"));
+      const cached=await fsGet(sa.project_id,token,"storeSettings/xtralogsWorldCatalog/countries",countryCode);
+      if(cached.document){
+        const fields=xtraFirestoreDecodeFields(cached.document.fields||{});
+        const pricing=await xtraGetPricing(env);
+        const products=(fields.services||[]).map(row=>{
+          const raw=row.raw||{},sell=xtraSellingPrice(raw,catalog,pricing,countryCode);
+          return {id:String(row.id),name:row.name,description:row.description||"",price:sell.price,currency:sell.currency,available:row.available!==false,category:catalog,raw};
+        });
+        return xtraJson({success:true,catalog,products,cached:true,country:{code:fields.countryCode,name:fields.countryName}},200,origin);
+      }
+    }
     const upstream=await xtraUpstream(env,endpoint.split("?")[0]+(query.size?"?"+query.toString():""));
     if(!upstream.response.ok)return xtraJson({error:upstream.payload?.message||upstream.payload?.error||"Could not load this catalogue."},upstream.response.status,origin);
     const items=xtraExtractCatalogItems(upstream.payload);const settings=await xtraGetPricing(env);
