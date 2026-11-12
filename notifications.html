@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#FFFCFA">
+<meta name="description" content="GentleLogs customer notifications and announcements.">
+<title>Notifications | GentleLogs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+:root{--orange:#E87535;--orange-dark:#C96532;--orange-soft:#FFF1E8;--bg:#FFFCFA;--surface:#fff;--ink:#252A30;--muted:#9298A2;--line:#F0EEEB;--green:#168A58;--shadow:0 5px 22px rgba(37,42,48,.045)}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Space Grotesk",system-ui,sans-serif}button,input,textarea,select{font:inherit;font-size:16px}button,a{cursor:pointer}a{color:inherit;text-decoration:none}.shell{width:min(100%,720px);min-height:100vh;margin:auto;padding-bottom:35px}.top{height:68px;padding:0 22px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,252,250,.96);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;backdrop-filter:blur(16px)}.brand{font-size:22px;font-weight:700;letter-spacing:-1px}.brand span{color:var(--orange)}.back{width:39px;height:39px;border:1px solid var(--line);border-radius:12px;background:#fff;color:#59616D;display:grid;place-items:center}.main{padding:25px 22px}.eyebrow{font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--orange);text-transform:uppercase}.heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin:5px 0 20px}.heading h1{font-size:25px;letter-spacing:-1px;margin:0}.heading p{font-size:12px;color:var(--muted);margin:5px 0 0;line-height:1.6}.btn{min-height:40px;border:1px solid var(--line);border-radius:11px;padding:9px 13px;background:#fff;color:var(--ink);font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:7px}.btn.primary{background:var(--orange);border-color:var(--orange);color:#fff}.btn.danger{color:#c24135;border-color:#f4d5d1}.btn:disabled{opacity:.55;cursor:not-allowed}.panel{background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);margin-bottom:17px;overflow:hidden}.panel-head{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px}.panel-head strong{font-size:13px}.panel-body{padding:17px}.field{display:flex;flex-direction:column;gap:7px;margin-bottom:13px}.field label{font-size:11px;font-weight:700}.field input,.field textarea,.field select{width:100%;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--ink);padding:12px;outline:none}.field textarea{min-height:105px;resize:vertical;line-height:1.5}.field input:focus,.field textarea:focus,.field select:focus{border-color:#E9A17B;box-shadow:0 0 0 3px #E8753518}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.muted{font-size:10px;color:var(--muted);line-height:1.6}.audience-box{padding:13px;border:1px solid var(--line);border-radius:12px;margin:5px 0 13px}.radio-line{display:flex;align-items:center;gap:8px;font-size:12px;margin:8px 0}.radio-line input{width:17px;height:17px;accent-color:var(--orange)}.recipient-tools{display:flex;gap:8px;margin:10px 0}.recipient-tools input{flex:1;min-width:0;border:1px solid var(--line);border-radius:9px;padding:9px}.recipient-list{max-height:190px;overflow:auto;border:1px solid var(--line);border-radius:10px;padding:7px}.recipient{display:flex;align-items:center;gap:9px;padding:8px;border-bottom:1px solid #f5f3f0;font-size:11px}.recipient:last-child{border:0}.recipient input{width:16px;height:16px;accent-color:var(--orange)}.recipient small{display:block;color:var(--muted);font-size:9px;overflow-wrap:anywhere}.actions{display:flex;gap:8px;flex-wrap:wrap}.notice{padding:15px;border:1px solid var(--line);border-radius:15px;margin-bottom:11px;background:#fff}.notice.unread{border-color:#f2c7ae;background:#fffaf6}.notice-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.notice-title{font-size:13px;font-weight:700;line-height:1.45}.notice-type{font-size:8px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--orange-dark);background:var(--orange-soft);border-radius:6px;padding:5px 7px;white-space:nowrap}.notice-message{font-size:11px;color:#68707A;line-height:1.7;margin:9px 0;white-space:pre-wrap;overflow-wrap:anywhere}.notice-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;color:var(--muted);font-size:9px}.notice-link{font-size:10px;color:var(--orange-dark);font-weight:700}.admin-meta{font-size:9px;color:var(--muted);margin-top:7px}.empty{text-align:center;padding:35px 15px;color:var(--muted);font-size:12px}.hidden{display:none!important}.toast{position:fixed;left:50%;bottom:20px;transform:translate(-50%,12px);opacity:0;pointer-events:none;background:#252A30;color:#fff;border-radius:11px;padding:12px 16px;font-size:11px;z-index:30;max-width:90vw;transition:.2s}.toast.show{opacity:1;transform:translate(-50%,0)}.loading{text-align:center;padding:25px;color:var(--muted);font-size:12px}.tag{font-size:9px;border-radius:20px;padding:5px 8px;background:#f1f5f9;color:#526071}.tag.live{background:#e9f8ef;color:#16804a}.tag.paused{background:#fff2df;color:#9b641f}
+@media(max-width:480px){.top{height:62px;padding:0 15px}.main{padding:20px 14px}.heading h1{font-size:22px}.heading{align-items:center}.grid{grid-template-columns:1fr}.panel-body{padding:14px}.panel-head{padding:14px}.heading .btn{padding:8px 10px}.notice{padding:13px}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header class="top"><a class="brand" href="home.html">Gentle<span>Logs</span></a><a class="back" href="home.html" aria-label="Back to home"><i class="fa-solid fa-arrow-left"></i></a></header>
+<main class="main">
+<div class="eyebrow" id="eyebrow">YOUR ACCOUNT</div>
+<div class="heading"><div><h1 id="pageTitle">Notifications</h1><p id="pageSubtitle">Updates and important messages from GentleLogs.</p></div><button class="btn hidden" id="markAllBtn" type="button"><i class="fa-solid fa-check-double"></i> Mark all read</button></div>
+<section class="panel hidden" id="adminComposer">
+ <div class="panel-head"><strong id="composerHeading"><i class="fa-solid fa-paper-plane"></i> Create announcement</strong><span class="tag live">OWNER ACCESS</span></div>
+ <div class="panel-body">
+  <form id="noticeForm">
+   <div class="field"><label for="noticeTitle">Notification title</label><input id="noticeTitle" maxlength="90" placeholder="e.g. Important store update" required></div>
+   <div class="field"><label for="noticeMessage">Message</label><textarea id="noticeMessage" maxlength="1800" placeholder="Write the message customers will see..." required></textarea><div class="muted">Keep the message clear and helpful. Maximum 1,800 characters.</div></div>
+   <div class="grid">
+    <div class="field"><label for="noticeType">Notification type</label><select id="noticeType"><option value="announcement">Announcement</option><option value="update">Store update</option><option value="promotion">Promotion</option><option value="important">Important</option><option value="order">Order information</option></select></div>
+    <div class="field"><label for="noticeLink">Optional link</label><input id="noticeLink" maxlength="500" placeholder="orders.html or https://..."></div>
+   </div>
+   <div class="audience-box"><strong style="font-size:11px">Who should receive it?</strong>
+    <label class="radio-line"><input type="radio" name="audience" value="all" checked> All customers</label>
+    <label class="radio-line"><input type="radio" name="audience" value="selected"> Selected customers only</label>
+    <div id="recipientPicker" class="hidden">
+     <div class="recipient-tools"><input id="customerSearch" placeholder="Search name, email or customer ID"><button class="btn" id="selectVisibleBtn" type="button">Select visible</button></div>
+     <div class="recipient-list" id="customerList"><div class="loading">Loading customer list…</div></div>
+     <div class="muted" id="selectedCount">No customers selected.</div>
+    </div>
+   </div>
+   <div class="actions"><button class="btn primary" id="publishBtn" type="submit"><i class="fa-solid fa-paper-plane"></i> Publish notification</button><button class="btn hidden" id="cancelEditBtn" type="button">Cancel edit</button></div>
+  </form>
+ </div>
+</section>
+<section class="panel"><div class="panel-head"><strong id="listHeading">Your messages</strong><span class="tag" id="noticeCount">0 messages</span></div><div class="panel-body" id="noticeList"><div class="loading">Loading notifications…</div></div></section>
+</main>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase.js"></script>
+<script>
+(()=>{
+"use strict";
+const OWNER_UID="UoEjCy99gbQKkGob59vGi3CunZi1";
+const auth=window.firebaseAuth,db=window.firebaseDB,$=id=>document.getElementById(id);
+let currentUser=null,isOwner=false,allNotices=[],readIds=new Set(),customers=[],selectedIds=new Set(),editingId=null;
+let stopNotices=null,stopReads=null;
+const esc=value=>String(value??"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function toast(message){const el=$("toast");el.textContent=message;el.classList.add("show");clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove("show"),2800)}
+function dateText(value){try{const d=value&&typeof value.toDate==="function"?value.toDate():value instanceof Date?value:null;return d?d.toLocaleString("en-NG",{dateStyle:"medium",timeStyle:"short"}):"Just now"}catch(_){return "Just now"}}
+function safeLink(value){const v=String(value||"").trim();if(!v)return "";if(/^https?:\/\//i.test(v))return v;if(/^(?!\/\/)[a-zA-Z0-9_./?=&%-]+$/.test(v))return v;return ""}
+function targeted(doc){return doc.audience==="all"||(Array.isArray(doc.recipientUids)&&doc.recipientUids.includes(currentUser.uid))}
+function setCustomerMode(){
+ $("eyebrow").textContent="YOUR ACCOUNT";$("pageTitle").textContent="Notifications";$("pageSubtitle").textContent="Updates and important messages from GentleLogs.";$("adminComposer").classList.add("hidden");$("markAllBtn").classList.remove("hidden");$("listHeading").textContent="Your messages";
+}
+function setAdminMode(){
+ $("eyebrow").textContent="PRIVATE ADMIN CONTROL";$("pageTitle").textContent="Customer notifications";$("pageSubtitle").textContent="Publish announcements and manage customer messages.";$("adminComposer").classList.remove("hidden");$("markAllBtn").classList.add("hidden");$("listHeading").textContent="Published notifications";
+}
+function renderCustomerList(){
+ const q=$("customerSearch").value.trim().toLowerCase();const filtered=customers.filter(c=>(c.name+" "+c.email+" "+c.uid).toLowerCase().includes(q));
+ $("customerList").innerHTML=filtered.length?filtered.map(c=>'<label class="recipient"><input type="checkbox" data-customer="'+esc(c.uid)+'" '+(selectedIds.has(c.uid)?"checked":"")+'><span><b>'+esc(c.name||"Customer")+'</b><small>'+esc(c.email||c.uid)+'</small></span></label>').join(""):'<div class="empty">No matching customers found.</div>';
+ $("selectedCount").textContent=selectedIds.size+" customer(s) selected.";
+}
+async function loadCustomers(){
+ try{const snap=await db.collection("customers").get();customers=snap.docs.map(doc=>{const d=doc.data()||{};const name=[d.firstName,d.lastName].filter(Boolean).join(" ")||d.name||d.fullName||d.username||"Customer";return {uid:doc.id,name,email:d.email||d.emailAddress||""}}).sort((a,b)=>a.name.localeCompare(b.name));renderCustomerList();}
+ catch(error){console.error("Customer list:",error);$("customerList").innerHTML='<div class="empty">Could not load customers. Check Firestore read permissions.</div>';}
+}
+function render(){
+ const docs=isOwner?allNotices:allNotices.filter(n=>n.active!==false&&targeted(n));
+ const unread=docs.filter(n=>!readIds.has(n.id));
+ $("noticeCount").textContent=isOwner?docs.length+" total":unread.length+" unread";
+ if(!docs.length){$("noticeList").innerHTML='<div class="empty"><i class="fa-regular fa-bell" style="font-size:25px;display:block;margin-bottom:10px"></i>No notifications yet.</div>';return;}
+ $("noticeList").innerHTML=docs.map(n=>{
+  const unreadClass=!isOwner&&!readIds.has(n.id)?"unread":"";const link=safeLink(n.link);const status=n.active===false?'<span class="tag paused">Paused</span>':'<span class="tag live">Published</span>';
+  const adminActions=isOwner?'<div class="actions"><button class="btn" data-edit="'+esc(n.id)+'" type="button"><i class="fa-solid fa-pen"></i> Edit</button><button class="btn" data-toggle="'+esc(n.id)+'" type="button">'+(n.active===false?'Publish':'Pause')+'</button><button class="btn danger" data-delete="'+esc(n.id)+'" type="button">Delete</button></div>':'';
+  const readAction=!isOwner&&!readIds.has(n.id)?'<button class="btn" data-read="'+esc(n.id)+'" type="button">Mark as read</button>':'';
+  const linkHtml=link?'<a class="notice-link" href="'+esc(link)+'" '+(/^https?:/i.test(link)?'target="_blank" rel="noopener noreferrer"':'')+'>Open link <i class="fa-solid fa-arrow-up-right-from-square"></i></a>':'';
+  return '<article class="notice '+unreadClass+'"><div class="notice-top"><div class="notice-title">'+esc(n.title||"GentleLogs update")+'</div><span class="notice-type">'+esc(n.type||"announcement")+'</span></div><div class="notice-message">'+esc(n.message||"")+'</div><div class="notice-foot"><span>'+dateText(n.createdAt)+'</span><span>'+(isOwner?status:(!readIds.has(n.id)?'<b style="color:var(--orange-dark)">NEW</b>':'Read'))+'</span></div><div class="actions" style="margin-top:11px">'+linkHtml+readAction+adminActions+'</div>'+(isOwner?'<div class="admin-meta">Audience: '+(n.audience==="all"?"All customers":(Array.isArray(n.recipientUids)?n.recipientUids.length:0)+" selected customer(s)")+'</div>':'')+'</article>';
+ }).join("");
+}
+function subscribe(){
+ if(stopNotices)stopNotices();if(stopReads)stopReads();
+ const showError=error=>{$("noticeList").innerHTML='<div class="empty">Notifications could not be loaded. Check Firestore rules.</div>';console.error(error)};
+ if(isOwner){
+  stopNotices=db.collection("notifications").onSnapshot(s=>{allNotices=s.docs.map(doc=>({id:doc.id,...(doc.data()||{})}));allNotices.sort((a,b)=>{const av=a.createdAt&&a.createdAt.toMillis?a.createdAt.toMillis():0;const bv=b.createdAt&&b.createdAt.toMillis?b.createdAt.toMillis():0;return bv-av});render()},showError);
+ }else{
+  let allDocs=[],selectedDocs=[];
+  const merge=()=>{const byId=new Map();[...allDocs,...selectedDocs].forEach(n=>byId.set(n.id,n));allNotices=Array.from(byId.values()).sort((a,b)=>{const av=a.createdAt&&a.createdAt.toMillis?a.createdAt.toMillis():0;const bv=b.createdAt&&b.createdAt.toMillis?b.createdAt.toMillis():0;return bv-av});render()};
+  const stopAll=db.collection("notifications").where("active","==",true).where("audience","==","all").onSnapshot(s=>{allDocs=s.docs.map(doc=>({id:doc.id,...(doc.data()||{})}));merge()},showError);
+  const stopSelected=db.collection("notifications").where("active","==",true).where("audience","==","selected").where("recipientUids","array-contains",currentUser.uid).onSnapshot(s=>{selectedDocs=s.docs.map(doc=>({id:doc.id,...(doc.data()||{})}));merge()},showError);
+  stopNotices=()=>{stopAll();stopSelected()};
+  stopReads=db.collection("notificationReads").doc(currentUser.uid).collection("items").onSnapshot(s=>{readIds=new Set(s.docs.map(d=>d.id));render()},error=>console.warn("Read state:",error));
+ }
+}
+function resetForm(){editingId=null;$("noticeForm").reset();selectedIds.clear();$("composerHeading").innerHTML='<i class="fa-solid fa-paper-plane"></i> Create announcement';$("publishBtn").innerHTML='<i class="fa-solid fa-paper-plane"></i> Publish notification';$("cancelEditBtn").classList.add("hidden");$("recipientPicker").classList.add("hidden");renderCustomerList()}
+function beginEdit(id){const n=allNotices.find(x=>x.id===id);if(!n)return;editingId=id;$("noticeTitle").value=n.title||"";$("noticeMessage").value=n.message||"";$("noticeType").value=n.type||"announcement";$("noticeLink").value=n.link||"";document.querySelector('input[name="audience"][value="'+(n.audience==="selected"?"selected":"all")+'"]').checked=true;selectedIds=new Set(Array.isArray(n.recipientUids)?n.recipientUids:[]);$("recipientPicker").classList.toggle("hidden",n.audience!=="selected");renderCustomerList();$("composerHeading").innerHTML='<i class="fa-solid fa-pen"></i> Edit notification';$("publishBtn").innerHTML='<i class="fa-solid fa-floppy-disk"></i> Save changes';$("cancelEditBtn").classList.remove("hidden");window.scrollTo({top:0,behavior:"smooth"})}
+$("noticeForm").addEventListener("submit",async e=>{
+ e.preventDefault();if(!isOwner)return toast("Owner access is required.");const title=$("noticeTitle").value.trim(),message=$("noticeMessage").value.trim(),link=safeLink($("noticeLink").value);const audience=document.querySelector('input[name="audience"]:checked').value;
+ if(!title||!message)return toast("Enter a title and message.");if($("noticeLink").value.trim()&&!link)return toast("Enter a valid web link or page path.");if(audience==="selected"&&!selectedIds.size)return toast("Select at least one customer.");
+ const btn=$("publishBtn");btn.disabled=true;
+ try{const payload={title,message,type:$("noticeType").value,link:link||"",audience,recipientUids:audience==="selected"?Array.from(selectedIds):[],active:true,updatedAt:firebase.firestore.FieldValue.serverTimestamp()};
+  if(editingId){await db.collection("notifications").doc(editingId).update(payload);toast("Notification updated.");}
+  else{payload.createdAt=firebase.firestore.FieldValue.serverTimestamp();payload.createdBy=currentUser.uid;await db.collection("notifications").add(payload);toast("Notification published to customers.");}
+  resetForm();
+ }catch(error){console.error(error);toast("Could not save notification: "+(error.message||"Check Firestore rules."));}
+ finally{btn.disabled=false;}
+});
+document.querySelectorAll('input[name="audience"]').forEach(el=>el.addEventListener("change",()=>{$("recipientPicker").classList.toggle("hidden",el.value!=="selected"||!el.checked)}));
+$("customerSearch").addEventListener("input",renderCustomerList);
+$("customerList").addEventListener("change",e=>{const cb=e.target.closest("[data-customer]");if(!cb)return;cb.checked?selectedIds.add(cb.dataset.customer):selectedIds.delete(cb.dataset.customer);$("selectedCount").textContent=selectedIds.size+" customer(s) selected."});
+$("selectVisibleBtn").addEventListener("click",()=>{const q=$("customerSearch").value.trim().toLowerCase();customers.filter(c=>(c.name+" "+c.email+" "+c.uid).toLowerCase().includes(q)).forEach(c=>selectedIds.add(c.uid));renderCustomerList()});
+$("cancelEditBtn").addEventListener("click",resetForm);
+$("noticeList").addEventListener("click",async e=>{
+ const edit=e.target.closest("[data-edit]"),del=e.target.closest("[data-delete]"),toggle=e.target.closest("[data-toggle]"),read=e.target.closest("[data-read]");
+ try{if(edit){beginEdit(edit.dataset.edit);return;}if(del&&isOwner){if(!confirm("Delete this notification permanently?"))return;await db.collection("notifications").doc(del.dataset.delete).delete();toast("Notification deleted.");return;}if(toggle&&isOwner){const n=allNotices.find(x=>x.id===toggle.dataset.toggle);if(n)await db.collection("notifications").doc(n.id).update({active:n.active===false,updatedAt:firebase.firestore.FieldValue.serverTimestamp()});toast("Notification status updated.");return;}if(read&&!isOwner){await db.collection("notificationReads").doc(currentUser.uid).collection("items").doc(read.dataset.read).set({readAt:firebase.firestore.FieldValue.serverTimestamp()});}}
+ catch(error){console.error(error);toast("Action failed: "+(error.message||"Check permissions."));}
+});
+$("markAllBtn").addEventListener("click",async()=>{const unread=allNotices.filter(n=>n.active!==false&&targeted(n)&&!readIds.has(n.id));if(!unread.length)return toast("You are all caught up.");const batch=db.batch();unread.forEach(n=>batch.set(db.collection("notificationReads").doc(currentUser.uid).collection("items").doc(n.id),{readAt:firebase.firestore.FieldValue.serverTimestamp()}));try{await batch.commit();toast("All notifications marked as read.");}catch(error){console.error(error);toast("Could not update read status.")}});
+if(!auth||!db){$("noticeList").innerHTML='<div class="empty">Firebase is not connected. Check firebase.js.</div>';return;}
+auth.onAuthStateChanged(async user=>{
+ if(!user){window.location.replace("login.html");return;}currentUser=user;isOwner=user.uid===OWNER_UID;
+ if(isOwner){setAdminMode();await loadCustomers();}else{setCustomerMode();}
+ subscribe();
+});
+window.addEventListener("beforeunload",()=>{if(stopNotices)stopNotices();if(stopReads)stopReads()});
+})();
+</script>
+</body>
+</html>
