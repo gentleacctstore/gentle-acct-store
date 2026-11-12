@@ -692,6 +692,153 @@ async function syncSpencerStock(env) {
   return { updated, missing, supplierProducts: supplierList.length, syncedAt };
 }
 
+
+/* XTRALOGS TOOLS — SECURE ADMIN CONNECTION AND PRICING SETTINGS */
+const XTRALOGS_API_BASE = "https://xtralogstools.com/api/v1";
+
+function xtraJson(data, status=200, origin=ALLOWED_ORIGIN) {
+  const headers={"Content-Type":"application/json","Cache-Control":"no-store","Vary":"Origin","Access-Control-Allow-Methods":"GET, POST, OPTIONS","Access-Control-Allow-Headers":"Content-Type, Authorization"};
+  if(origin) headers["Access-Control-Allow-Origin"]=origin;
+  return new Response(JSON.stringify(data),{status,headers});
+}
+
+async function xtraUpstream(env,path,method="GET",body) {
+  if(!env.XTRALOGS_API_KEY) throw new Error("XTRALOGS_API_KEY is not configured in Cloudflare Worker secrets.");
+  const response=await fetch(XTRALOGS_API_BASE+path,{
+    method,
+    headers:{Authorization:"Bearer "+env.XTRALOGS_API_KEY,Accept:"application/json",...(body?{"Content-Type":"application/json"}:{})},
+    ...(body?{body:JSON.stringify(body)}:{})
+  });
+  const type=response.headers.get("content-type")||"";
+  let payload;
+  try { payload=type.includes("application/json")?await response.json():{error:(await response.text()).slice(0,500)}; }
+  catch { payload={error:"XtraLogs returned an unreadable response."}; }
+  return {response,payload};
+}
+
+function xtraFirestoreDecode(value) {
+  if(!value||typeof value!=="object") return value;
+  if("stringValue" in value) return value.stringValue;
+  if("integerValue" in value) return Number(value.integerValue);
+  if("doubleValue" in value) return Number(value.doubleValue);
+  if("booleanValue" in value) return value.booleanValue;
+  if("timestampValue" in value) return value.timestampValue;
+  if("mapValue" in value) return xtraFirestoreDecodeFields(value.mapValue.fields||{});
+  if("arrayValue" in value) return (value.arrayValue.values||[]).map(xtraFirestoreDecode);
+  return null;
+}
+function xtraFirestoreDecodeFields(fields) {
+  const result={};
+  for(const [key,value] of Object.entries(fields||{})) result[key]=xtraFirestoreDecode(value);
+  return result;
+}
+function xtraFirestoreEncode(value) {
+  if(value===null||value===undefined) return {nullValue:null};
+  if(typeof value==="string") return {stringValue:value};
+  if(typeof value==="boolean") return {booleanValue:value};
+  if(typeof value==="number") return Number.isInteger(value)?{integerValue:String(value)}:{doubleValue:value};
+  if(Array.isArray(value)) return {arrayValue:{values:value.map(xtraFirestoreEncode)}};
+  if(typeof value==="object") {
+    const fields={};
+    for(const [key,item] of Object.entries(value)) fields[key]=xtraFirestoreEncode(item);
+    return {mapValue:{fields}};
+  }
+  return {nullValue:null};
+}
+
+async function xtraGetPricing(env) {
+  const sa=JSON.parse(env.FCM_SERVICE_ACCOUNT_JSON||"{}");
+  if(!sa.project_id||!sa.client_email||!sa.private_key) throw new Error("Firebase service account is not configured.");
+  const token=await getGoogleAccessToken(sa);
+  const url=`https://firestore.googleapis.com/v1/projects/${encodeURIComponent(sa.project_id)}/databases/(default)/documents/storeSettings/xtralogsPricing`;
+  const response=await fetch(url,{headers:{Authorization:"Bearer "+token}});
+  if(response.status===404) return {pricingMode:"automatic",defaultMarginPercent:20,overrides:{}};
+  if(!response.ok) throw new Error("Could not read XtraLogs pricing settings from Firestore.");
+  const doc=await response.json();
+  return xtraFirestoreDecodeFields(doc.fields||{});
+}
+
+async function xtraSavePricing(env,settings) {
+  const sa=JSON.parse(env.FCM_SERVICE_ACCOUNT_JSON||"{}");
+  if(!sa.project_id||!sa.client_email||!sa.private_key) throw new Error("Firebase service account is not configured.");
+  const token=await getGoogleAccessToken(sa);
+  const url=new URL(`https://firestore.googleapis.com/v1/projects/${encodeURIComponent(sa.project_id)}/databases/(default)/documents/storeSettings/xtralogsPricing`);
+  ["pricingMode","defaultMarginPercent","overrides","updatedAt"].forEach(k=>url.searchParams.append("updateMask.fieldPaths",k));
+  const fields={
+    pricingMode:xtraFirestoreEncode(settings.pricingMode),
+    defaultMarginPercent:xtraFirestoreEncode(settings.defaultMarginPercent),
+    overrides:xtraFirestoreEncode(settings.overrides||{}),
+    updatedAt:{timestampValue:new Date().toISOString()}
+  };
+  const response=await fetch(url,{method:"PATCH",headers:{Authorization:"Bearer "+token,"Content-Type":"application/json"},body:JSON.stringify({fields})});
+  if(!response.ok) throw new Error("Could not save XtraLogs pricing settings to Firestore.");
+  return true;
+}
+
+const XTRALOGS_CATALOGS={
+  "numbers-usa":"/catalog/numbers?scope=usa",
+  "numbers-global":"/catalog/numbers?scope=global",
+  "logs":"/catalog/logs",
+  "smm":"/catalog/smm?page=1&per_page=80",
+  "telegram":"/catalog/telegram",
+  "esim":"/catalog/esim",
+  "topup":"/catalog/topup",
+  "gifts":"/catalog/gifts",
+  "proxies":"/catalog/proxies",
+  "vtu":"/catalog/vtu"
+};
+
+async function handleXtraLogs(request,env) {
+  const origin=request.headers.get("Origin");
+  if(origin&&origin!==ALLOWED_ORIGIN) return xtraJson({error:"Origin not allowed"},403,null);
+  if(request.method==="OPTIONS") return new Response(null,{status:204,headers:{"Access-Control-Allow-Origin":ALLOWED_ORIGIN,"Access-Control-Allow-Methods":"GET, POST, OPTIONS","Access-Control-Allow-Headers":"Content-Type, Authorization","Access-Control-Max-Age":"86400","Vary":"Origin"}});
+  const auth=await verifySupplierAdmin(request);
+  if(!auth.ok) return auth.response;
+  if(request.method==="GET"&&new URL(request.url).pathname==="/api/xtralogs/admin/balance") {
+    if(!env.XTRALOGS_API_KEY) return xtraJson({error:"XTRALOGS_API_KEY is not configured in Cloudflare Worker secrets."},503,origin);
+    const result=await xtraUpstream(env,"/balance");
+    return xtraJson(result.payload,result.response.status,origin);
+  }
+  if(request.method==="GET"&&new URL(request.url).pathname==="/api/xtralogs/admin/catalog") {
+    if(!env.XTRALOGS_API_KEY) return xtraJson({error:"XTRALOGS_API_KEY is not configured in Cloudflare Worker secrets."},503,origin);
+    const url=new URL(request.url);
+    const key=url.searchParams.get("catalog")||"";
+    let endpoint=XTRALOGS_CATALOGS[key];
+    if(!endpoint) return xtraJson({error:"Unknown XtraLogs catalogue. Choose a supported catalogue."},400,origin);
+    const allowedParams={country:["country"],page:["page"],per_page:["per_page"],service:["service"],username:["username"],quantity:["quantity"],network:["network"],kind:["kind"],type_id:["type_id"],number:["number"]};
+    const query=new URLSearchParams(endpoint.split("?")[1]||"");
+    for(const [name,allowed] of Object.entries(allowedParams)) {
+      const value=url.searchParams.get(name);
+      if(value!==null&&allowed.includes(name)&&/^[A-Za-z0-9._-]{1,80}$/.test(value)) query.set(name,value);
+    }
+    const path=endpoint.split("?")[0]+(query.size?"?"+query.toString():"");
+    const result=await xtraUpstream(env,path);
+    return xtraJson(result.payload,result.response.status,origin);
+  }
+  if(request.method==="GET"&&new URL(request.url).pathname==="/api/xtralogs/admin/pricing") {
+    const settings=await xtraGetPricing(env);
+    return xtraJson({success:true,settings},200,origin);
+  }
+  if(request.method==="POST"&&new URL(request.url).pathname==="/api/xtralogs/admin/pricing") {
+    let body;
+    try{body=await request.json();}catch{return xtraJson({error:"Invalid JSON"},400,origin);}
+    const mode=body.pricingMode==="manual"?"manual":"automatic";
+    const margin=Number(body.defaultMarginPercent);
+    if(!Number.isFinite(margin)||margin<0||margin>500) return xtraJson({error:"Default profit percentage must be between 0 and 500."},400,origin);
+    const overrides=body.overrides&&typeof body.overrides==="object"&&!Array.isArray(body.overrides)?body.overrides:{};
+    const clean={};
+    for(const [key,item] of Object.entries(overrides).slice(0,3000)) {
+      if(!/^[a-z0-9-]{1,30}:[A-Za-z0-9._-]{1,100}$/i.test(key)||!item||typeof item!=="object") continue;
+      const price=Number(item.sellingPrice);
+      if(!Number.isFinite(price)||price<0||price>100000000) continue;
+      clean[key]={sellingPrice:price,enabled:item.enabled!==false,currency:String(item.currency||"NGN").slice(0,8)};
+    }
+    await xtraSavePricing(env,{pricingMode:mode,defaultMarginPercent:margin,overrides:clean});
+    return xtraJson({success:true,message:"XtraLogs pricing settings saved.",settings:{pricingMode:mode,defaultMarginPercent:margin,overrides:clean}},200,origin);
+  }
+  return xtraJson({error:"Unknown XtraLogs admin operation."},404,origin);
+}
+
 export default {
   async scheduled(controller, env, ctx) {
     ctx.waitUntil((async () => {
@@ -706,6 +853,14 @@ export default {
 
   async fetch(request, env) {
     const url = new URL(request.url);
+
+    if (url.pathname.startsWith("/api/xtralogs/admin/")) {
+      try { return await handleXtraLogs(request, env); }
+      catch (error) {
+        console.error("XtraLogs admin API error:", error);
+        return xtraJson({ error: error.message || "XtraLogs service failed" }, 500, request.headers.get("Origin"));
+      }
+    }
 
     if (url.pathname === "/api/customer/spencer-purchase") {
       try { return await handleCustomerSpencerPurchase(request, env); }

@@ -747,10 +747,10 @@ html,body{background:#050b1b!important;color:#edf6ff!important}
 <button class="nav-link" data-section="inventory"><span class="nav-icon">▤</span>Inventory</button>
 <button class="nav-link" data-section="categoryLinks"><span class="nav-icon">🔗</span>Category Links</button>
 <button class="nav-link" data-section="supplier"><span class="nav-icon">⇄</span>Supplier API</button>
+<button class="nav-link" data-section="xtralogs"><span class="nav-icon">✦</span>XtraLogs Tools</button>
 <a class="nav-link" href="customers.html"><span class="nav-icon">♙</span>Customers</a>
 <a class="nav-link" href="wallet-funding.html"><span class="nav-icon">↗</span>Funding requests</a>
 <a class="nav-link" href="admin-referrals.html"><span class="nav-icon">♧</span>Referral management</a>
-<a class="nav-link" href="notifications.html"><span class="nav-icon">🔔</span>Customer notifications</a>
 <div class="sidebar-bottom">
 <div class="nav-label">ACCOUNT</div>
 <button class="nav-link" id="notificationButton"><span class="nav-icon">♧</span>Enable notifications</button>
@@ -799,7 +799,6 @@ html,body{background:#050b1b!important;color:#edf6ff!important}
 <a class="quick-card" href="customers.html"><div class="quick-icon">👥</div><div class="quick-title">Customers</div><div class="quick-desc">View registered customers, email addresses and customer IDs.</div></a>
 <a class="quick-card" href="wallet-funding.html"><div class="quick-icon">💳</div><div class="quick-title">Wallet Funding</div><div class="quick-desc">Review customer deposits and funding requests.</div></a>
 <a class="quick-card" href="admin-referrals.html"><div class="quick-icon">🎁</div><div class="quick-title">Referral Management</div><div class="quick-desc">Check referred customers and referral rewards.</div></a>
-<a class="quick-card" href="notifications.html"><div class="quick-icon">🔔</div><div class="quick-title">Customer Notifications</div><div class="quick-desc">Send announcements and updates to your customers.</div></a>
 <button class="quick-card" id="dashboardSupplierShortcut" style="text-align:left;font:inherit;cursor:pointer" type="button"><div class="quick-icon">⇄</div><div class="quick-title">Supplier API</div><div class="quick-desc">Open supplier products, check stock and manage imported listings.</div></button>
 </div>
 <div class="stats">
@@ -886,6 +885,38 @@ html,body{background:#050b1b!important;color:#edf6ff!important}
 <div class="supplier-card-grid" id="supplierProductsTable"><div class="empty-state" style="grid-column:1/-1">Fetch supplier products to display them here.</div></div>
 </div>
 </section>
+<section class="hidden" id="xtralogsSection">
+<div class="panel">
+ <div class="panel-head"><div><div class="panel-title">XtraLogs Tools connection</div><div class="panel-desc">Secure connection, service catalogue and customer pricing.</div></div><button class="btn" id="xtraRefreshBalance" type="button">↻ Check connection</button></div>
+ <div class="panel-body">
+  <div class="hidden" id="xtraMessage"></div>
+  <div class="supplier-summary">
+   <div class="supplier-stat"><small>XtraLogs wallet balance</small><strong id="xtraBalance">—</strong></div>
+   <div class="supplier-stat"><small>API connection</small><strong id="xtraConnection">Not checked</strong></div>
+   <div class="supplier-stat"><small>Default profit</small><strong id="xtraMarginSummary">20%</strong></div>
+  </div>
+  <div class="form-grid" style="margin-bottom:14px">
+   <div class="field"><label for="xtraPricingMode">Pricing method</label><select id="xtraPricingMode"><option value="automatic">Automatic profit percentage</option><option value="manual">Manual service prices</option></select></div>
+   <div class="field"><label for="xtraDefaultMargin">Default profit (%)</label><input id="xtraDefaultMargin" type="number" min="0" max="500" step="0.1" value="20" inputmode="decimal"></div>
+  </div>
+  <div class="supplier-note">Automatic pricing starts at 20% profit and can be changed here. Individual manual prices override the automatic calculation. Your XtraLogs API key must be saved as the Cloudflare Worker secret <code>XTRALOGS_API_KEY</code>; it must never be pasted into this page.</div>
+  <div class="toolbar" style="margin-bottom:12px"><button class="btn btn-primary" id="xtraSavePricing" type="button">Save pricing settings</button></div>
+ </div>
+</div>
+<div class="panel">
+ <div class="panel-head"><div><div class="panel-title">XtraLogs service catalogue</div><div class="panel-desc">Fetch a catalogue, review supplier costs and set a customer price for each service.</div></div></div>
+ <div class="supplier-toolbar">
+  <select id="xtraCatalogSelect" aria-label="XtraLogs catalogue"><option value="logs">Logs</option><option value="numbers-usa">USA numbers</option><option value="numbers-global">Global numbers</option><option value="smm">Social media marketing</option><option value="telegram">Telegram</option><option value="esim">eSIM</option><option value="topup">International top-up</option><option value="gifts">Gifts</option><option value="proxies">Proxies</option><option value="vtu">Nigeria airtime and data</option></select>
+  <input id="xtraCatalogCountry" placeholder="Country code (e.g. CA, NG)" maxlength="2" aria-label="Country code">
+  <input id="xtraCatalogSearch" type="search" placeholder="Search fetched services..." aria-label="Search catalogue">
+  <button class="btn btn-primary" id="xtraLoadCatalog" type="button">Fetch catalogue</button>
+ </div>
+ <div class="supplier-note">Some catalogues need extra filters. For example, global numbers need a country code to show purchasable services. The catalogue is read from XtraLogs; this page does not submit real orders.</div>
+ <div class="supplier-card-grid" id="xtraCatalogResults"><div class="empty-state" style="grid-column:1/-1">Choose a catalogue and tap Fetch catalogue.</div></div>
+ <div class="panel-body"><button class="btn btn-primary" id="xtraSaveServicePrices" type="button">Save service prices</button></div>
+</div>
+</section>
+
 </div>
 </main>
 </div>
@@ -1101,7 +1132,7 @@ $("themeToggle").addEventListener("click",()=>{
 /* NAVIGATION */
 
 function showSection(section) {
-  const map={dashboard:"dashboardSection",products:"productsSection",inventory:"inventorySection",categoryLinks:"categoryLinksSection",supplier:"supplierSection"};
+  const map={dashboard:"dashboardSection",products:"productsSection",inventory:"inventorySection",categoryLinks:"categoryLinksSection",supplier:"supplierSection",xtralogs:"xtralogsSection"};
   Object.entries(map).forEach(([key,id])=>$(id).classList.toggle("hidden",key!==section));
   document.querySelectorAll(".nav-link[data-section]").forEach(button=>{
     button.classList.toggle("active",button.dataset.section===section);
@@ -1111,7 +1142,8 @@ function showSection(section) {
     products:["Products","Manage your store products"],
     inventory:["Inventory","Review available and sold stock"],
     categoryLinks:["Category Links","Manage category logos and saved links"],
-    supplier:["Supplier API","Connect Spencer Acc Store and import products"]
+    supplier:["Supplier API","Connect Spencer Acc Store and import products"],
+    xtralogs:["XtraLogs Tools","Connect XtraLogs catalogues and manage customer pricing"]
   };
   $("pageTitle").textContent=titles[section][0];
   $("pageSubtitle").textContent=titles[section][1];
@@ -1119,6 +1151,7 @@ function showSection(section) {
   if(section==="inventory") renderInventoryTable();
   if(section==="categoryLinks") renderCategoryLinksTable();
   if(section==="supplier") autoLoadSupplierSection();
+  if(section==="xtralogs") { loadXtraPricingSettings(); checkXtraBalance(); }
 }
 
 document.querySelectorAll(".nav-link[data-section]").forEach(button=>{
@@ -2142,6 +2175,124 @@ $("loginForm").addEventListener("submit",async event=>{
     button.textContent="Sign in";
   }
 });
+
+
+
+/* XTRALOGS TOOLS ADMIN */
+let xtraCatalogueItems=[];
+let xtraPricingOverrides={};
+let xtraPricingLoaded=false;
+
+async function xtraAdminRequest(path,options={}) {
+  if(!auth||!auth.currentUser) throw new Error("Sign in to the authorised admin account first.");
+  const token=await auth.currentUser.getIdToken();
+  const response=await fetch(path,{...options,headers:{Authorization:"Bearer "+token,"Content-Type":"application/json",...(options.headers||{})}});
+  let data={};try{data=await response.json();}catch{throw new Error("XtraLogs returned an invalid response.");}
+  if(!response.ok) throw new Error(data.error||data.message||"XtraLogs request failed ("+response.status+").");
+  return data;
+}
+function showXtraMessage(message,type="error") {
+  const el=$("xtraMessage");el.className=type==="success"?"success-box":"error-box";el.textContent=message;
+}
+function xtraItemId(item) {
+  const id=item.service_id??item.product_id??item.item_id??item.id??item.package_id??item.operator_id;
+  return id===undefined||id===null?"":String(id);
+}
+function xtraItemName(item) {
+  return String(item.name??item.title??item.service_name??item.product_name??item.package_name??item.operator_name??"Unnamed service");
+}
+function xtraCost(item) {
+  if(item.rank_price_minor!==undefined) return {value:Number(item.rank_price_minor)/100,currency:"NGN"};
+  if(item.price_minor!==undefined) return {value:Number(item.price_minor)/100,currency:"NGN"};
+  if(item.price!==undefined) return {value:Number(item.price),currency:String(item.currency||"NGN").toUpperCase()};
+  if(item.price_usd!==undefined) return {value:Number(item.price_usd),currency:"USD"};
+  return {value:0,currency:String(item.currency||"NGN").toUpperCase()};
+}
+function xtraExtractItems(data) {
+  if(Array.isArray(data)) return data;
+  for(const key of ["services","products","items","data","countries","plans","operators","results"]) if(Array.isArray(data?.[key])) return data[key];
+  return [];
+}
+function xtraMoney(value,currency="NGN") {
+  const n=Number(value||0);return (currency==="USD"?"$":"₦")+n.toLocaleString("en-NG",{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+async function loadXtraPricingSettings() {
+  if(xtraPricingLoaded) return;
+  try {
+    const result=await xtraAdminRequest("/api/xtralogs/admin/pricing");
+    const settings=result.settings||{};
+    $("xtraPricingMode").value=settings.pricingMode==="manual"?"manual":"automatic";
+    $("xtraDefaultMargin").value=Number(settings.defaultMarginPercent??20);
+    xtraPricingOverrides=settings.overrides||{};
+    $("xtraMarginSummary").textContent=Number(settings.defaultMarginPercent??20)+"%";
+    xtraPricingLoaded=true;
+  } catch(error) {showXtraMessage(error.message||"Could not load XtraLogs pricing settings.");}
+}
+async function checkXtraBalance() {
+  $("xtraBalance").textContent="Checking…";$("xtraConnection").textContent="Connecting…";
+  try {
+    const result=await xtraAdminRequest("/api/xtralogs/admin/balance");
+    const data=result.data||result;
+    const balance=data.balance??data.available_balance??data.wallet_balance;
+    $("xtraBalance").textContent=balance===undefined?"Connected":xtraMoney(balance,data.currency||"NGN");
+    $("xtraConnection").textContent="Connected";
+    showXtraMessage("XtraLogs API connection is working.","success");
+  } catch(error) {$("xtraBalance").textContent="Unavailable";$("xtraConnection").textContent="Not connected";showXtraMessage(error.message||"Could not connect to XtraLogs.");}
+}
+async function loadXtraCatalogue() {
+  const button=$("xtraLoadCatalog");button.disabled=true;button.textContent="Fetching…";
+  $("xtraCatalogResults").innerHTML='<div class="loading" style="grid-column:1/-1">Fetching XtraLogs catalogue…</div>';
+  try {
+    const catalog=$("xtraCatalogSelect").value;
+    const params=new URLSearchParams({catalog});
+    const country=$("xtraCatalogCountry").value.trim().toUpperCase();
+    if(country) params.set("country",country);
+    const result=await xtraAdminRequest("/api/xtralogs/admin/catalog?"+params.toString());
+    xtraCatalogueItems=xtraExtractItems(result);
+    renderXtraCatalogue();
+    showXtraMessage("Loaded "+xtraCatalogueItems.length+" catalogue entries.","success");
+  } catch(error) {
+    xtraCatalogueItems=[];$("xtraCatalogResults").innerHTML='<div class="empty-state" style="grid-column:1/-1">'+escapeHTML(error.message||"Could not load catalogue.")+'</div>';
+    showXtraMessage(error.message||"Could not load XtraLogs catalogue.");
+  } finally {button.disabled=false;button.textContent="Fetch catalogue";}
+}
+function renderXtraCatalogue() {
+  const term=$("xtraCatalogSearch").value.trim().toLowerCase();
+  const catalog=$("xtraCatalogSelect").value;
+  const items=xtraCatalogueItems.filter(item=>!term||xtraItemName(item).toLowerCase().includes(term)||xtraItemId(item).toLowerCase().includes(term));
+  $("xtraCatalogResults").innerHTML=items.length?items.map(item=>{
+    const id=xtraItemId(item);const key=catalog+":"+id;const cost=xtraCost(item);const saved=xtraPricingOverrides[key]||{};
+    const auto=Number((cost.value*(1+Number($("xtraDefaultMargin").value||20)/100)).toFixed(2));
+    const selling=saved.sellingPrice!==undefined?saved.sellingPrice:auto;
+    return `<article class="supplier-card"><div class="supplier-card-name">${escapeHTML(xtraItemName(item))}</div><div class="supplier-card-meta">ID: ${escapeHTML(id||"Not supplied")} · ${escapeHTML(catalog)}</div><div class="supplier-card-values"><div class="supplier-card-value"><small>Supplier cost</small><strong>${xtraMoney(cost.value,cost.currency)}</strong></div><div class="supplier-card-value"><small>Auto price</small><strong>${xtraMoney(auto,cost.currency)}</strong></div></div><label class="small muted" for="xtra-price-${escapeHTML(id)}">Manual customer price (${cost.currency})</label><input class="supplier-selling-price xtra-service-price" id="xtra-price-${escapeHTML(id)}" data-xtra-key="${escapeHTML(key)}" data-xtra-currency="${escapeHTML(cost.currency)}" type="number" min="0" step="0.01" value="${escapeHTML(selling)}"><label class="small muted"><input type="checkbox" class="xtra-price-enabled" data-xtra-key="${escapeHTML(key)}" ${saved.enabled===false?"":"checked"}> Use manual override for this service</label></article>`;
+  }).join(""):'<div class="empty-state" style="grid-column:1/-1">No catalogue entries found. Some catalogues need a country or extra query parameters.</div>';
+}
+async function saveXtraPricing() {
+  const button=$("xtraSavePricing");button.disabled=true;button.textContent="Saving…";
+  try {
+    const result=await xtraAdminRequest("/api/xtralogs/admin/pricing",{method:"POST",body:JSON.stringify({pricingMode:$("xtraPricingMode").value,defaultMarginPercent:Number($("xtraDefaultMargin").value),overrides:xtraPricingOverrides})});
+    xtraPricingOverrides=result.settings?.overrides||xtraPricingOverrides;
+    $("xtraMarginSummary").textContent=Number($("xtraDefaultMargin").value)+"%";
+    showXtraMessage("Pricing settings saved securely.","success");
+    renderXtraCatalogue();
+  } catch(error) {showXtraMessage(error.message||"Could not save pricing settings.");}
+  finally {button.disabled=false;button.textContent="Save pricing settings";}
+}
+async function saveXtraServicePrices() {
+  document.querySelectorAll(".xtra-service-price").forEach(input=>{
+    const key=input.dataset.xtraKey;const checkbox=document.querySelector('.xtra-price-enabled[data-xtra-key="'+CSS.escape(key)+'"]');
+    const price=Number(input.value);
+    if(key&&input.value.trim()!==""&&Number.isFinite(price)&&price>=0) xtraPricingOverrides[key]={sellingPrice:price,enabled:checkbox?checkbox.checked:true,currency:input.dataset.xtraCurrency||"NGN"};
+  });
+  await saveXtraPricing();
+}
+$("xtraRefreshBalance").addEventListener("click",checkXtraBalance);
+$("xtraLoadCatalog").addEventListener("click",loadXtraCatalogue);
+$("xtraCatalogSearch").addEventListener("input",renderXtraCatalogue);
+$("xtraDefaultMargin").addEventListener("input",()=>{if(xtraCatalogueItems.length)renderXtraCatalogue();$("xtraMarginSummary").textContent=(Number($("xtraDefaultMargin").value)||0)+"%";});
+$("xtraSavePricing").addEventListener("click",saveXtraPricing);
+$("xtraSaveServicePrices").addEventListener("click",saveXtraServicePrices);
+$("xtraPricingMode").addEventListener("change",()=>{if(xtraCatalogueItems.length)renderXtraCatalogue();});
 
 /* OWNER-ONLY SESSION HANDLING
    Keep the authorised owner signed in while moving between admin pages in
