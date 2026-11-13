@@ -907,7 +907,7 @@ html,body{background:#050b1b!important;color:#edf6ff!important}
    <div class="field"><label for="xtraPricingMode">Pricing method</label><select id="xtraPricingMode"><option value="automatic">Automatic profit percentage</option><option value="manual">Manual service prices</option></select></div>
    <div class="field"><label for="xtraDefaultMargin">Default profit (%)</label><input id="xtraDefaultMargin" type="number" min="0" max="500" step="0.1" value="20" inputmode="decimal"></div>
   </div>
-  <div class="supplier-note">Automatic pricing starts at 20% profit and can be changed here. Individual manual prices override the automatic calculation. Your XtraLogs API key must be saved as the Cloudflare Worker secret <code>XTRALOGS_API_KEY</code>; it must never be pasted into this page.</div>
+  <div class="supplier-note">Automatic pricing starts at 20% profit and can be changed here. Individual manual prices override the automatic calculation. USA and Global Numbers catalogues are saved to the private Firestore <code>xtralogsCatalog</code> collection when fetched/imported. Your XtraLogs API key must be saved as the Cloudflare Pages secret <code>XTRALOGS_API_KEY</code>; never paste it into this page. Other category tiles remain placeholders until their supplier endpoints are connected.</div>
   <div class="toolbar" style="margin-bottom:12px"><button class="btn btn-primary" id="xtraSavePricing" type="button">Save pricing settings</button></div>
  </div>
 </div>
