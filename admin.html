@@ -912,7 +912,7 @@ html,body{background:#050b1b!important;color:#edf6ff!important}
  </div>
 </div>
 <div class="panel" id="xtraCategoryHome">
- <div class="panel-head"><div><div class="panel-title">XtraLogs categories</div><div class="panel-desc">Open a dedicated workspace for each supplier category. Each page has its own filters, catalogue and customer pricing.</div></div></div>
+ <div class="panel-head"><div><div class="panel-title">Service categories</div><div class="panel-desc">Open a dedicated workspace for each supplier category. Each page has its own filters, catalogue and customer pricing.</div></div></div>
  <div class="xtra-category-grid">
   <button type="button" class="xtra-category-card" data-xtra-open="logs" aria-label="Open Logs workspace"><span>▣</span><strong>Logs</strong><small>Account logs and products</small></button>
   <button type="button" class="xtra-category-card" data-xtra-open="numbers-usa" aria-label="Open USA Numbers workspace"><span>🇺🇸</span><strong>USA Numbers</strong><small>United States number services</small></button>
@@ -937,7 +937,7 @@ html,body{background:#050b1b!important;color:#edf6ff!important}
    <input id="xtraCatalogSearch" type="search" placeholder="Search this category..." aria-label="Search category catalogue">
    <button class="btn btn-primary" id="xtraLoadCatalog" type="button">Fetch catalogue</button>
   </div>
-  <div class="supplier-note" id="xtraCategoryHint">Fetch this category's catalogue to review supplier costs and customer prices.</div>
+  <div class="supplier-note" id="xtraCategoryHint">Fetch this category's catalogue to review service costs and customer prices.</div>
   <div class="supplier-card-grid" id="xtraCatalogResults"><div class="empty-state" style="grid-column:1/-1">Choose a category to begin.</div></div>
   <div class="panel-body"><button class="btn btn-primary" id="xtraSaveServicePrices" type="button">Save service prices</button></div>
  </div>
@@ -1170,7 +1170,7 @@ function showSection(section) {
     inventory:["Inventory","Review available and sold stock"],
     categoryLinks:["Category Links","Manage category logos and saved links"],
     supplier:["Supplier API","Connect Spencer Acc Store and import products"],
-    xtralogs:["XtraLogs Tools","Connect XtraLogs catalogues and manage customer pricing"]
+    xtralogs:["XtraLogs Tools","Connect service catalogues and manage customer pricing"]
   };
   $("pageTitle").textContent=titles[section][0];
   $("pageSubtitle").textContent=titles[section][1];
@@ -1421,7 +1421,7 @@ function renderSupplierProducts() {
       </div>
       <div><div class="supplier-card-name">${escapeHTML(product.name||"Unnamed product")}</div><div class="supplier-card-meta">ID: ${id} · ${escapeHTML(category?.category_name||"Uncategorised")}</div></div>
       <div class="supplier-card-values">
-        <div class="supplier-card-value"><small>Supplier cost</small><strong>${money(supplierPrice)}</strong></div>
+        <div class="supplier-card-value"><small>Service cost</small><strong>${money(supplierPrice)}</strong></div>
         <div class="supplier-card-value"><small>Available stock</small><strong>${stock.toLocaleString("en-NG")}</strong></div>
         <div class="supplier-card-value"><small>Minimum order</small><strong>${Number(product.min_order||1)}</strong></div>
         <div class="supplier-card-value"><small>Maximum order</small><strong>${Number(product.max_order||1)}</strong></div>
@@ -2224,25 +2224,40 @@ function showXtraMessage(message,type="error") {
   const el=$("xtraMessage");el.className=type==="success"?"success-box":"error-box";el.textContent=message;
 }
 function xtraItemId(item) {
-  const id=item.service_id??item.product_id??item.item_id??item.id??item.package_id??item.operator_id;
+  const id=item.service_id??item.serviceId??item.number_service_id??item.activation_service_id??item.product_id??item.productId??item.item_id??item.itemId??item.id??item.package_id??item.packageId??item.operator_id??item.operatorId;
   return id===undefined||id===null?"":String(id);
 }
 function xtraItemName(item) {
-  return String(item.name??item.title??item.service_name??item.product_name??item.package_name??item.operator_name??"Unnamed service");
+  return String(item.name??item.title??item.service_name??item.product_name??item.package_name??item.operator_name??item.label??"Unnamed service");
 }
-function xtraCost(item,catalog="") {
+function xtraCost(item) {
   if(item.rank_price_minor!==undefined) return {value:Number(item.rank_price_minor)/100,currency:"NGN"};
-  if(!String(catalog).startsWith("numbers-")&&item.price_minor!==undefined) return {value:Number(item.price_minor)/100,currency:"NGN"};
-  if(String(catalog).startsWith("numbers-")) return {value:0,currency:"NGN"};
+  if($("xtraCatalogSelect").value==="numbers-usa"||$("xtraCatalogSelect").value==="numbers-global") return {value:0,currency:"NGN"};
+  if(item.price_minor!==undefined) return {value:Number(item.price_minor)/100,currency:"NGN"};
   if(item.price!==undefined) return {value:Number(item.price),currency:String(item.currency||"NGN").toUpperCase()};
   if(item.price_usd!==undefined) return {value:Number(item.price_usd),currency:"USD"};
   return {value:0,currency:String(item.currency||"NGN").toUpperCase()};
 }
 function xtraExtractItems(data,depth=0) {
-  if(Array.isArray(data)) return data;
-  if(!data||typeof data!=="object"||depth>7)return [];
-  for(const key of ["services","numbers","products","plans","operators","items","results","records","list","countries","country_list","available_countries"]) if(Array.isArray(data[key])) return data[key];
-  for(const key of ["data","result","payload","catalog","response"]) {const found=xtraExtractItems(data[key],depth+1);if(found.length)return found;}
+  const isUSA=$("xtraCatalogSelect")?.value==="numbers-usa";
+  if(depth>8||data==null)return [];
+  const idKeys=["service_id","serviceId","number_service_id","activation_service_id","product_id","productId","item_id","itemId","package_id","packageId","operator_id","operatorId","id"];
+  const nameKeys=["name","title","service_name","product_name","package_name","operator_name","label"];
+  if(Array.isArray(data)) {
+    if(!isUSA)return data;
+    return data.filter(row=>row&&typeof row==="object"&&!Array.isArray(row)&&idKeys.some(k=>row[k]!==undefined&&row[k]!==null)&&nameKeys.some(k=>row[k]!==undefined&&String(row[k]).trim()));
+  }
+  if(typeof data!=="object")return [];
+  const preferred=isUSA?["services","numbers","products","items","results","records","list"]:["services","products","plans","operators","items","countries","country_list","available_countries","results","records","list"];
+  for(const key of preferred){const value=data[key];if(Array.isArray(value)){const rows=xtraExtractItems(value,depth+1);if(rows.length)return rows;}}
+  for(const key of ["data","result","payload","catalog","response"]){const rows=xtraExtractItems(data[key],depth+1);if(rows.length)return rows;}
+  if(isUSA){
+    const rows=[];
+    for(const [key,value] of Object.entries(data)){
+      if(value&&typeof value==="object"&&!Array.isArray(value)&&idKeys.some(k=>value[k]!==undefined)&&nameKeys.some(k=>value[k]!==undefined))rows.push(value);
+    }
+    if(rows.length)return rows;
+  }
   return [];
 }
 function xtraNormalizeAdminCountries(payload) {
@@ -2346,7 +2361,7 @@ function appendXtraCatalogFilters(params) {
   }
 }
 const XTRA_CATEGORY_INFO={
- logs:["Logs","Browse available log products, inspect supplier costs and set customer prices."],
+ logs:["Logs","Browse available log products, inspect service costs and set customer prices."],
  "numbers-usa":["USA Numbers","Load available United States number services and configure each selling price."],
  "numbers-global":["Global Numbers","Import the supplier country list, choose a country, then load its number services and prices."],
  smm:["Social Media Marketing","Choose a page and page size, then manage each social service and its customer price."],
@@ -2363,7 +2378,7 @@ function openXtraCategory(catalog){
   $("xtraCategoryHome").classList.add("hidden");$("xtraCategoryPage").classList.remove("hidden");
   $("xtraCategoryTitle").textContent=XTRA_CATEGORY_INFO[catalog][0];$("xtraCategoryDescription").textContent=XTRA_CATEGORY_INFO[catalog][1];
   const pageHints={
-    logs:"LOGS WORKSPACE · Fetch log products, inspect supplier cost, set customer price, and save.",
+    logs:"LOGS WORKSPACE · Fetch log products, inspect service cost, set customer price, and save.",
     "numbers-usa":"USA NUMBERS WORKSPACE · Fetch USA services and configure the customer price for each service.",
     "numbers-global":"WORLD NUMBERS WORKSPACE · Import countries, select one country, fetch its services, then configure country-specific prices.",
     smm:"SOCIAL MEDIA WORKSPACE · Set page and page size, fetch platform services, and configure prices.",
@@ -2374,7 +2389,7 @@ function openXtraCategory(catalog){
     proxies:"PROXIES WORKSPACE · Fetch proxy plans and configure customer prices.",
     vtu:"NIGERIA VTU WORKSPACE · Select airtime/data and network before fetching plans."
   };
-  $("xtraCategoryHint").textContent=pageHints[catalog]||"This workspace loads only the selected category. Review supplier costs and customer prices before saving.";
+  $("xtraCategoryHint").textContent=pageHints[catalog]||"This workspace loads only the selected category. Review service costs and customer prices before saving.";
   xtraCatalogueItems=[];$("xtraCatalogSearch").value="";$("xtraCatalogResults").innerHTML='<div class="empty-state" style="grid-column:1/-1">Fetch this category to load its catalogue.</div>';
   if(catalog==="numbers-global"){
     const saved=xtraImportedCountries;
@@ -2475,7 +2490,7 @@ $("xtraRetryFailed").addEventListener("click",retryFailedXtraCountries);
 
 async function loadXtraCatalogue() {
   const button=$("xtraLoadCatalog");button.disabled=true;button.textContent="Fetching…";
-  $("xtraCatalogResults").innerHTML='<div class="loading" style="grid-column:1/-1">Fetching XtraLogs catalogue…</div>';
+  $("xtraCatalogResults").innerHTML='<div class="loading" style="grid-column:1/-1">Fetching service catalogue…</div>';
   try {
     const catalog=$("xtraCatalogSelect").value;
     const params=new URLSearchParams({catalog});
@@ -2490,11 +2505,12 @@ async function loadXtraCatalogue() {
     appendXtraCatalogFilters(params);
     const result=await xtraAdminRequest("/api/xtralogs/admin/catalog?"+params.toString());
     xtraCatalogueItems=xtraExtractItems(result);
+    if(catalog==="numbers-usa") xtraCatalogueItems=xtraCatalogueItems.filter(item=>xtraItemId(item));
     renderXtraCatalogue();
-    showXtraMessage("Loaded "+xtraCatalogueItems.length+" catalogue entries.","success");
+    showXtraMessage("Loaded "+xtraCatalogueItems.length+(catalog==="numbers-usa"?" USA number services.":" catalogue entries."),"success");
   } catch(error) {
     xtraCatalogueItems=[];$("xtraCatalogResults").innerHTML='<div class="empty-state" style="grid-column:1/-1">'+escapeHTML(error.message||"Could not load catalogue.")+'</div>';
-    showXtraMessage(error.message||"Could not load XtraLogs catalogue.");
+    showXtraMessage(error.message||"Could not load service catalogue.");
   } finally {button.disabled=false;button.textContent="Fetch catalogue";}
 }
 function renderXtraCatalogue() {
@@ -2502,11 +2518,11 @@ function renderXtraCatalogue() {
   const catalog=$("xtraCatalogSelect").value;
   const items=xtraCatalogueItems.filter(item=>!term||xtraItemName(item).toLowerCase().includes(term)||xtraItemId(item).toLowerCase().includes(term));
   $("xtraCatalogResults").innerHTML=items.length?items.map(item=>{
-    const id=xtraItemId(item);const worldCountry=catalog==="numbers-global"?($("xtraWorldCountry")?.value||""):"";const key=catalog==="numbers-global"&&worldCountry?catalog+":"+worldCountry+":"+id:catalog+":"+id;const cost=xtraCost(item,catalog);const saved=xtraPricingOverrides[key]||{};
+    const id=xtraItemId(item);const worldCountry=catalog==="numbers-global"?($("xtraWorldCountry")?.value||""):"";const key=catalog==="numbers-global"&&worldCountry?catalog+":"+worldCountry+":"+id:catalog+":"+id;const cost=xtraCost(item);const saved=xtraPricingOverrides[key]||{};
     const auto=Number((cost.value*(1+Number($("xtraDefaultMargin").value||20)/100)).toFixed(2));
     const selling=saved.sellingPrice!==undefined?saved.sellingPrice:auto;
-    return `<article class="supplier-card"><div class="supplier-card-name">${escapeHTML(xtraItemName(item))}</div><div class="supplier-card-meta">ID: ${escapeHTML(id||"Not supplied")} · ${escapeHTML(catalog)}</div><div class="supplier-card-values"><div class="supplier-card-value"><small>Supplier cost</small><strong>${xtraMoney(cost.value,cost.currency)}</strong></div><div class="supplier-card-value"><small>Auto price</small><strong>${xtraMoney(auto,cost.currency)}</strong></div></div><label class="small muted" for="xtra-price-${escapeHTML(id)}">Manual customer price (${cost.currency})</label><input class="supplier-selling-price xtra-service-price" id="xtra-price-${escapeHTML(id)}" data-xtra-key="${escapeHTML(key)}" data-xtra-currency="${escapeHTML(cost.currency)}" type="number" min="0" step="0.01" value="${escapeHTML(selling)}"><label class="small muted"><input type="checkbox" class="xtra-price-enabled" data-xtra-key="${escapeHTML(key)}" ${saved.enabled===false?"":"checked"}> Use manual override for this service</label></article>`;
-  }).join(""):'<div class="empty-state" style="grid-column:1/-1">No catalogue entries found. Some catalogues need a country or extra query parameters.</div>';
+    return `<article class="supplier-card"><div class="supplier-card-name">${escapeHTML(xtraItemName(item))}</div><div class="supplier-card-meta">Service ID: ${escapeHTML(id||"Unavailable")} · ${escapeHTML(catalog)}</div><div class="supplier-card-values"><div class="supplier-card-value"><small>Service cost</small><strong>${xtraMoney(cost.value,cost.currency)}</strong></div><div class="supplier-card-value"><small>Auto price</small><strong>${xtraMoney(auto,cost.currency)}</strong></div></div><label class="small muted" for="xtra-price-${escapeHTML(id)}">Manual customer price (${cost.currency})</label><input class="supplier-selling-price xtra-service-price" id="xtra-price-${escapeHTML(id)}" data-xtra-key="${escapeHTML(key)}" data-xtra-currency="${escapeHTML(cost.currency)}" type="number" min="0" step="0.01" value="${escapeHTML(selling)}"><label class="small muted"><input type="checkbox" class="xtra-price-enabled" data-xtra-key="${escapeHTML(key)}" ${saved.enabled===false?"":"checked"}> Use manual override for this service</label></article>`;
+  }).join(""):'<div class="empty-state" style="grid-column:1/-1">'+(catalog==="numbers-usa"?'No USA number services with valid service IDs were returned. Check the XtraLogs USA Numbers response and API permissions.':'No catalogue entries found. Some catalogues need a country or extra query parameters.')+'</div>';
 }
 async function saveXtraPricing() {
   const button=$("xtraSavePricing");button.disabled=true;button.textContent="Saving…";
