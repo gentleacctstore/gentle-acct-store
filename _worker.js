@@ -1059,30 +1059,44 @@ async function handleXtraCustomer(request,env) {
     if(!endpoint)return xtraJson({error:"Unknown catalogue"},400,origin);
     const query=new URLSearchParams(endpoint.split("?")[1]||"");
     for(const key of ["country","page","per_page","service","username","quantity","network","kind","type_id","number"]){const v=url.searchParams.get(key);if(v&&/^[A-Za-z0-9._-]{1,80}$/.test(v))query.set(key,v);}
-    if(catalog==="numbers-global"&&url.searchParams.get("country")){
-      const countryCode=String(url.searchParams.get("country"));
-      const cached=await fsGet(sa.project_id,token,"storeSettings/xtralogsWorldCatalog/countries",countryCode);
-      if(cached.document){
-        const fields=xtraFirestoreDecodeFields(cached.document.fields||{});
-        const pricing=await xtraGetPricing(env);
-        const products=(fields.services||[]).map(row=>{
-          const raw=row.raw||{},sell=xtraSellingPrice(raw,catalog,pricing,countryCode);
-          return {id:String(row.id),name:row.name,description:row.description||"",logoUrl:row.logoUrl||xtraCatalogLogo(raw),price:sell.price,currency:sell.currency,available:row.available!==false,category:catalog,raw};
-        });
-        return xtraJson({success:true,catalog,products,cached:true,country:{code:fields.countryCode,name:fields.countryName}},200,origin);
-      }
-    }
+
+    // Always query XtraLogs live for World Numbers. Firebase imports may be used
+    // for country labels/pricing only; they must never decide current availability.
     const upstream=await xtraUpstream(env,endpoint.split("?")[0]+(query.size?"?"+query.toString():""));
-    if(!upstream.response.ok)return xtraJson({error:upstream.payload?.message||upstream.payload?.error||"Could not load this catalogue."},upstream.response.status,origin);
-    const items=xtraExtractCatalogItems(upstream.payload);const settings=await xtraGetPricing(env);
+    if(!upstream.response.ok)return xtraJson({error:upstream.payload?.message||upstream.payload?.error||"Could not verify live XtraLogs availability. Please try again."},upstream.response.status,origin);
+
+    const items=xtraExtractCatalogItems(upstream.payload);
+    const settings=await xtraGetPricing(env);
     if(catalog==="numbers-global"&&!url.searchParams.get("country")){
       const liveCountries=xtraNormalizeWorldCountries(upstream.payload);
       const countries=liveCountries.length?liveCountries:(Array.isArray(settings.importedCountries)?settings.importedCountries:[]);
-      return xtraJson({success:true,catalog,countries,countryCount:countries.length},200,origin);
+      return xtraJson({success:true,catalog,countries,countryCount:countries.length,liveChecked:true,checkedAt:new Date().toISOString()},200,origin);
     }
-    const products=items.map(item=>{const p=xtraSellingPrice(item,catalog,settings,url.searchParams.get("country")||"");return {id:xtraCatalogIdentity(item),name:String(item.name??item.title??item.service_name??item.product_name??item.package_name??item.operator_name??"XtraLogs service"),description:String(item.description??item.details??""),logoUrl:xtraCatalogLogo(item),price:p.price,currency:p.currency,available:item.available!==false&&item.in_stock!==false,category:catalog,raw:item};}).filter(x=>x.id);
-    return xtraJson({success:true,catalog,products},200,origin);
+
+    const isSupplierAvailable=item=>{
+      const boolKeys=["available","is_available","in_stock","is_in_stock","enabled","active","is_active"];
+      for(const key of boolKeys){
+        if(item[key]!==undefined&&item[key]!==null){
+          const value=item[key];
+          if(value===false||value===0||String(value).toLowerCase()==="false"||String(value).toLowerCase()==="no")return false;
+        }
+      }
+      const stockKeys=["stock","stock_count","quantity_available","available_quantity","remaining","remaining_quantity"];
+      for(const key of stockKeys){
+        if(item[key]!==undefined&&item[key]!==null&&item[key]!==""&&Number.isFinite(Number(item[key]))&&Number(item[key])<=0)return false;
+      }
+      const status=String(item.status??item.state??item.availability??"").trim().toLowerCase();
+      if(status&&["unavailable","out_of_stock","out-of-stock","disabled","inactive","sold_out","sold out","ended","closed"].includes(status))return false;
+      return true;
+    };
+
+    const products=items.map(item=>{
+      const p=xtraSellingPrice(item,catalog,settings,url.searchParams.get("country")||"");
+      return {id:xtraCatalogIdentity(item),name:String(item.name??item.title??item.service_name??item.product_name??item.package_name??item.operator_name??"XtraLogs service"),description:String(item.description??item.details??""),logoUrl:xtraCatalogLogo(item),price:p.price,currency:p.currency,available:isSupplierAvailable(item),category:catalog,raw:item};
+    }).filter(x=>x.id&&x.available&&Number.isFinite(x.price)&&x.price>0);
+    return xtraJson({success:true,catalog,products,liveChecked:true,checkedAt:new Date().toISOString()},200,origin);
   }
+
   if(request.method==="POST"&&url.pathname==="/api/xtralogs/customer/purchase") {
     let body;try{body=await request.json();}catch{return xtraJson({error:"Invalid purchase request"},400,origin);}
     const catalog=String(body.catalog||""),itemId=String(body.itemId||""),requestId=String(body.requestId||"");
@@ -1090,26 +1104,30 @@ async function handleXtraCustomer(request,env) {
     if(!["logs","numbers-usa","numbers-global","smm"].includes(catalog))return xtraJson({error:"Checkout for this service category is being prepared. Please try Logs, USA Numbers, World Numbers or Boosting first."},409,origin);
     const countryCode=String(body.country||"").trim();
     if(catalog==="numbers-global"&&!/^[A-Za-z0-9][A-Za-z0-9_-]{1,79}$/.test(countryCode))return xtraJson({error:"Select a valid country before activating a number."},400,origin);
-    let item=null;
-    // World Numbers is displayed from the same Firebase-imported country catalogue.
-    // Verify against that exact source first so an imported service ID is not rejected
-    // merely because the supplier's live catalogue response is shaped differently.
-    if(catalog==="numbers-global"){
-      const cached=await fsGet(sa.project_id,token,"storeSettings/xtralogsWorldCatalog/countries",countryCode);
-      if(cached.document){
-        const fields=xtraFirestoreDecodeFields(cached.document.fields||{});
-        const row=(fields.services||[]).find(x=>String(x.id)===itemId);
-        if(row)item=row.raw||row;
+    // Re-check the supplier's live catalogue immediately before reserving wallet funds.
+    // Never trust a previously imported Firebase row as proof that a service is available.
+    const catalogQuery=new URLSearchParams(XTRALOGS_CATALOGS[catalog].split("?")[1]||"");
+    if(catalog==="numbers-global")catalogQuery.set("country",countryCode);
+    const {response:catalogResponse,payload:catalogPayload}=await xtraUpstream(env,XTRALOGS_CATALOGS[catalog].split("?")[0]+(catalogQuery.size?"?"+catalogQuery.toString():""));
+    if(!catalogResponse.ok)return xtraJson({error:"XtraLogs live availability check failed. Your wallet has not been charged. Please try again."},502,origin);
+    const liveItems=xtraExtractCatalogItems(catalogPayload);
+    let item=liveItems.find(x=>xtraCatalogIdentity(x)===itemId);
+    const isSupplierAvailable=item=>{
+      if(!item)return false;
+      for(const key of ["available","is_available","in_stock","is_in_stock","enabled","active","is_active"]){
+        if(item[key]!==undefined&&item[key]!==null){
+          const value=item[key];
+          if(value===false||value===0||String(value).toLowerCase()==="false"||String(value).toLowerCase()==="no")return false;
+        }
       }
-    }
-    if(!item){
-      const catalogQuery=new URLSearchParams(XTRALOGS_CATALOGS[catalog].split("?")[1]||"");
-      if(catalog==="numbers-global")catalogQuery.set("country",countryCode);
-      const {response:catalogResponse,payload:catalogPayload}=await xtraUpstream(env,XTRALOGS_CATALOGS[catalog].split("?")[0]+(catalogQuery.size?"?"+catalogQuery.toString():""));
-      if(!catalogResponse.ok)return xtraJson({error:"Could not verify the supplier catalogue. Please try again."},502,origin);
-      item=xtraExtractCatalogItems(catalogPayload).find(x=>xtraCatalogIdentity(x)===itemId);
-    }
-    if(!item)return xtraJson({error:"This service is no longer available. Refresh the catalogue."},404,origin);
+      for(const key of ["stock","stock_count","quantity_available","available_quantity","remaining","remaining_quantity"]){
+        if(item[key]!==undefined&&item[key]!==null&&item[key]!==""&&Number.isFinite(Number(item[key]))&&Number(item[key])<=0)return false;
+      }
+      const status=String(item.status??item.state??item.availability??"").trim().toLowerCase();
+      if(status&&["unavailable","out_of_stock","out-of-stock","disabled","inactive","sold_out","sold out","ended","closed"].includes(status))return false;
+      return true;
+    };
+    if(!item||!isSupplierAvailable(item))return xtraJson({error:"This service is currently unavailable on XtraLogs. Your wallet has not been charged. Refresh the catalogue to see available services."},409,origin);
     const settings=await xtraGetPricing(env),selling=xtraSellingPrice(item,catalog,settings,catalog==="numbers-global"?countryCode:"");
     if(!Number.isFinite(selling.price)||selling.price<=0||selling.currency!=="NGN")return xtraJson({error:"This service does not have a valid NGN selling price configured yet."},409,origin);
     const wallet=await fsGet(sa.project_id,token,"wallets",user.localId);
