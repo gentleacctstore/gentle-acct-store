@@ -931,7 +931,7 @@ html,body{background:#050b1b!important;color:#edf6ff!important}
  <div class="panel-body">
   <div class="xtra-category-toolbar">
    <select id="xtraCatalogSelect" aria-label="Active category" class="hidden"><option value="logs">Logs</option><option value="numbers-usa">USA numbers</option><option value="numbers-global">Global numbers</option><option value="smm">Social media marketing</option><option value="telegram">Telegram</option><option value="esim">eSIM</option><option value="topup">International top-up</option><option value="gifts">Gifts</option><option value="proxies">Proxies</option><option value="vtu">Nigeria airtime and data</option></select>
-   <div id="xtraWorldCountryWrap" class="hidden"><label for="xtraWorldCountry">Choose country</label><select id="xtraWorldCountry" aria-label="Select World Numbers country"><option value="">Import countries first</option></select><button class="btn" id="xtraImportCountries" type="button">↓ Import all countries + services</button></div>
+   <div id="xtraWorldCountryWrap" class="hidden"><label for="xtraWorldCountry">Choose country</label><select id="xtraWorldCountry" aria-label="Select World Numbers country"><option value="">Import countries first</option></select><button class="btn btn-primary" id="xtraImportCountries" type="button">↓ Import all countries + services</button><div class="toolbar" style="gap:8px;flex-wrap:wrap"><button class="btn" id="xtraImportSelected" type="button">Import selected country</button><button class="btn" id="xtraPauseImport" type="button" disabled>Pause</button><button class="btn" id="xtraStopImport" type="button" disabled>Stop</button><button class="btn" id="xtraRetryFailed" type="button" disabled>Retry failed</button></div><small id="xtraImportStatus" class="muted">Imports are rate-limited to protect the supplier API.</small></div>
    <div id="xtraCatalogCountryWrap" class="hidden"><label for="xtraCatalogCountry">Country code</label><input id="xtraCatalogCountry" placeholder="e.g. NG or US" maxlength="80" aria-label="Country code"></div>
    <div class="form-grid" id="xtraCatalogExtraFields" style="grid-column:1/-1"></div>
    <input id="xtraCatalogSearch" type="search" placeholder="Search this category..." aria-label="Search category catalogue">
@@ -2210,6 +2210,7 @@ let xtraCatalogueItems=[];
 let xtraPricingOverrides={};
 let xtraPricingLoaded=false;
 let xtraImportedCountries=[];
+let xtraImportPaused=false,xtraImportStop=false,xtraImportRunning=false,xtraFailedCountries=[];
 
 async function xtraAdminRequest(path,options={}) {
   if(!auth||!auth.currentUser) throw new Error("Sign in to the authorised admin account first.");
@@ -2384,39 +2385,76 @@ function showXtraCategories(){$("xtraCategoryPage").classList.add("hidden");$("x
 document.querySelectorAll("[data-xtra-open]").forEach(button=>button.addEventListener("click",()=>openXtraCategory(button.dataset.xtraOpen)));
 $("xtraBackCategories").addEventListener("click",showXtraCategories);
 
+function setXtraImportControls(running){
+ xtraImportRunning=running;
+ $("xtraPauseImport").disabled=!running;
+ $("xtraStopImport").disabled=!running;
+ $("xtraRetryFailed").disabled=running||!xtraFailedCountries.length;
+ $("xtraImportSelected").disabled=running;
+ $("xtraImportCountries").disabled=running;
+}
+async function waitForXtraImportResume(){
+ while(xtraImportPaused&&!xtraImportStop) await new Promise(resolve=>setTimeout(resolve,250));
+ return !xtraImportStop;
+}
+async function importXtraCountry(country){
+ return await xtraAdminRequest("/api/xtralogs/admin/world-import-country",{method:"POST",body:JSON.stringify({countryCode:country.code,countryName:country.name})});
+}
+async function runXtraCountryQueue(queue,label){
+ if(xtraImportRunning)return;
+ xtraImportPaused=false;xtraImportStop=false;setXtraImportControls(true);
+ const button=$("xtraImportCountries");const originalLabel=button.textContent;
+ let savedCount=0,empty=0,failed=0,done=0;const failures=[];
+ try{
+  for(let i=0;i<queue.length;i++){
+   if(!(await waitForXtraImportResume()))break;
+   const country=queue[i];
+   $("xtraImportStatus").textContent=(xtraImportPaused?"Paused · ":"")+label+" · "+(i+1)+"/"+queue.length+" · "+savedCount+" services saved";
+   button.textContent="Importing "+(i+1)+"/"+queue.length+"…";
+   $("xtraCatalogResults").innerHTML='<div class="loading" style="grid-column:1/-1">'+(xtraImportPaused?'Import paused. ':'')+'Importing '+escapeHTML(country.name)+' ('+(i+1)+' of '+queue.length+') · '+savedCount+' services saved</div>';
+   try{
+    const result=await importXtraCountry(country);const count=Number(result.serviceCount||0);
+    if(result.success&&count>0){savedCount+=count;}else{empty++;failures.push(country);}
+   }catch(error){failed++;failures.push(country);}
+   done++;
+   $("xtraImportStatus").textContent="Progress: "+done+"/"+queue.length+" · "+savedCount+" services · "+empty+" empty · "+failed+" failed";
+   showXtraMessage("Import progress: "+done+"/"+queue.length+" countries · "+savedCount+" services saved · "+empty+" empty · "+failed+" failed", "success");
+   // XtraLogs documents a 60-request/minute limit. Keep a small safety margin.
+   if(i<queue.length-1){let remaining=1050;while(remaining>0&&!xtraImportStop){if(!(await waitForXtraImportResume()))break;const slice=Math.min(250,remaining);await new Promise(resolve=>setTimeout(resolve,slice));remaining-=slice;}}
+  }
+  if(xtraImportStop) failures.push(...queue.slice(done));
+  xtraFailedCountries=failures;
+  const summary=(xtraImportStop?"Import stopped":"Import finished")+": "+done+"/"+queue.length+" processed, "+savedCount+" services saved, "+empty+" empty, "+failed+" failed.";
+  $("xtraCatalogResults").innerHTML='<div class="empty-state" style="grid-column:1/-1">'+escapeHTML(summary)+(failures.length?'<details style="margin-top:12px;text-align:left"><summary>Countries to retry ('+failures.length+')</summary><ul>'+failures.slice(0,100).map(c=>'<li>'+escapeHTML(c.name)+' ('+escapeHTML(c.code)+')</li>').join("")+'</ul></details>':'')+'</div>';
+  showXtraMessage(summary,failed===0&&empty===0&&!xtraImportStop?"success":"error");
+ }finally{
+  button.textContent=originalLabel;setXtraImportControls(false);$("xtraPauseImport").textContent="Pause";
+  $("xtraImportStatus").textContent=xtraFailedCountries.length?xtraFailedCountries.length+" countries need retry.":"Import queue finished.";
+ }
+}
 async function importXtraWorldCountries(){
- const button=$("xtraImportCountries");button.disabled=true;
- const originalLabel=button.textContent;button.textContent="Preparing import…";
+ const button=$("xtraImportCountries");button.disabled=true;button.textContent="Loading country list…";
  try{
   const result=await xtraAdminRequest("/api/xtralogs/admin/catalog?catalog=numbers-global");
   const countries=xtraNormalizeAdminCountries(result);
-  if(!countries.length)throw Error("XtraLogs did not return a usable country list. No import was marked successful.");
+  if(!countries.length)throw Error("XtraLogs did not return a usable country list.");
   const saved=await xtraAdminRequest("/api/xtralogs/admin/pricing",{method:"POST",body:JSON.stringify({pricingMode:$("xtraPricingMode").value,defaultMarginPercent:Number($("xtraDefaultMargin").value),overrides:xtraPricingOverrides,importedCountries:countries})});
   xtraImportedCountries=saved.settings?.importedCountries||countries;
-  const select=$("xtraWorldCountry");
-  select.innerHTML='<option value="">Choose a country…</option>'+xtraImportedCountries.map(c=>`<option value="${escapeHTML(c.code)}">${escapeHTML(c.name)} (${escapeHTML(c.code)})</option>`).join("");
-  $("xtraCatalogResults").innerHTML='<div class="loading" style="grid-column:1/-1">Importing number services for '+countries.length+' countries…</div>';
-  let completed=0,serviceTotal=0,liveAvailable=0,unknownAvailability=0,empty=0,failed=0;const failures=[];
-  for(let i=0;i<countries.length;i++){
-    const country=countries[i];button.textContent="Importing "+(i+1)+"/"+countries.length+"…";
-    $("xtraCatalogResults").innerHTML='<div class="loading" style="grid-column:1/-1">Importing '+escapeHTML(country.name)+' ('+(i+1)+' of '+countries.length+') · '+serviceTotal+' services saved so far</div>';
-    try{
-      const imported=await xtraAdminRequest("/api/xtralogs/admin/world-import-country",{method:"POST",body:JSON.stringify({countryCode:country.code,countryName:country.name})});
-      const count=Number(imported.serviceCount||0);
-      if(imported.success&&count>0){completed++;serviceTotal+=count;liveAvailable+=Number(imported.availableCount||0);unknownAvailability+=Number(imported.unknownCount||0);}
-      else{empty++;failures.push(country.name+": supplier returned no identifiable services");}
-    }catch(error){failed++;failures.push(country.name+": "+(error.message||"import failed"));}
-    showXtraMessage("Import progress: "+(i+1)+"/"+countries.length+" countries · "+serviceTotal+" services saved · "+empty+" empty · "+failed+" failed","success");
-    if(i<countries.length-1)await new Promise(resolve=>setTimeout(resolve,1050));
-  }
-  const summary="Live catalogue refresh finished: "+completed+" countries with services, "+serviceTotal+" services returned, "+liveAvailable+" explicitly live-available, "+unknownAvailability+" availability unconfirmed, "+empty+" empty, "+failed+" failed. Only explicitly confirmed live-available numbers can be purchased.";
-  $("xtraCatalogResults").innerHTML='<div class="empty-state" style="grid-column:1/-1">'+escapeHTML(summary)+(failures.length?'<details style="margin-top:12px;text-align:left"><summary>Countries needing attention ('+failures.length+')</summary><ul>'+failures.slice(0,80).map(x=>'<li>'+escapeHTML(x)+'</li>').join("")+'</ul></details>':'')+'</div>';
-  showXtraMessage(summary,completed>0&&empty===0&&failed===0?"success":"error");
- }catch(error){
-  showXtraMessage(error.message||"World Numbers import failed.");
-  $("xtraCatalogResults").innerHTML='<div class="empty-state" style="grid-column:1/-1">'+escapeHTML(error.message||"Country and service import failed")+'</div>';
- }finally{button.disabled=false;button.textContent=originalLabel;}
+  $("xtraWorldCountry").innerHTML='<option value="">Choose a country…</option>'+xtraImportedCountries.map(c=>`<option value="${escapeHTML(c.code)}">${escapeHTML(c.name)} (${escapeHTML(c.code)})</option>`).join("");
+  await runXtraCountryQueue(countries,"All countries");
+ }catch(error){button.disabled=false;button.textContent="↓ Import all countries + services";showXtraMessage(error.message||"World Numbers import failed.");}
 }
+async function importSelectedXtraCountry(){
+ const code=$("xtraWorldCountry").value;const country=xtraImportedCountries.find(c=>String(c.code)===String(code));
+ if(!country){showXtraMessage("Choose a country first.");return;}
+ await runXtraCountryQueue([country],"Selected country");
+}
+async function retryFailedXtraCountries(){if(!xtraFailedCountries.length)return;const retry=[...xtraFailedCountries];xtraFailedCountries=[];await runXtraCountryQueue(retry,"Retry failed countries");}
+$("xtraPauseImport").addEventListener("click",()=>{if(!xtraImportRunning)return;xtraImportPaused=!xtraImportPaused;$("xtraPauseImport").textContent=xtraImportPaused?"Resume":"Pause";$("xtraImportStatus").textContent=xtraImportPaused?"Import paused. Tap Resume to continue.":"Import resumed.";});
+$("xtraStopImport").addEventListener("click",()=>{xtraImportStop=true;xtraImportPaused=false;$("xtraImportStatus").textContent="Stopping after the current country…";});
+$("xtraImportSelected").addEventListener("click",importSelectedXtraCountry);
+$("xtraRetryFailed").addEventListener("click",retryFailedXtraCountries);
+
 async function loadXtraCatalogue() {
   const button=$("xtraLoadCatalog");button.disabled=true;button.textContent="Fetching…";
   $("xtraCatalogResults").innerHTML='<div class="loading" style="grid-column:1/-1">Fetching XtraLogs catalogue…</div>';
@@ -2441,24 +2479,15 @@ async function loadXtraCatalogue() {
     showXtraMessage(error.message||"Could not load XtraLogs catalogue.");
   } finally {button.disabled=false;button.textContent="Fetch catalogue";}
 }
-function xtraAdminAvailability(item){
- const boolKeys=["available","is_available","in_stock","inStock","can_purchase","canPurchase","active","enabled"];
- for(const k of boolKeys)if(typeof item?.[k]==="boolean")return item[k]?"LIVE AVAILABLE":"UNAVAILABLE";
- for(const k of ["stock","stock_count","stockCount","quantity_available","available_count","count","numbers_available","number_count"])if(item?.[k]!==undefined&&item?.[k]!==null&&item[k]!==""){const n=Number(item[k]);if(Number.isFinite(n))return n>0?"LIVE AVAILABLE":"NO STOCK";}
- const st=String(item?.status??item?.availability??item?.state??"").toLowerCase();
- if(["available","active","in_stock","instock","ready","online","enabled"].includes(st))return "LIVE AVAILABLE";
- if(["unavailable","out_of_stock","out-of-stock","sold_out","sold out","inactive","disabled","offline","empty"].includes(st))return "UNAVAILABLE";
- return "AVAILABILITY UNCONFIRMED";
-}
 function renderXtraCatalogue() {
   const term=$("xtraCatalogSearch").value.trim().toLowerCase();
   const catalog=$("xtraCatalogSelect").value;
   const items=xtraCatalogueItems.filter(item=>!term||xtraItemName(item).toLowerCase().includes(term)||xtraItemId(item).toLowerCase().includes(term));
   $("xtraCatalogResults").innerHTML=items.length?items.map(item=>{
-    const id=xtraItemId(item);const worldCountry=catalog==="numbers-global"?($("xtraWorldCountry")?.value||""):"";const key=catalog==="numbers-global"&&worldCountry?catalog+":"+worldCountry+":"+id:catalog+":"+id;const cost=xtraCost(item);const saved=xtraPricingOverrides[key]||{};const liveStatus=catalog.startsWith("numbers-")?xtraAdminAvailability(item):"CATALOGUE ITEM";
+    const id=xtraItemId(item);const worldCountry=catalog==="numbers-global"?($("xtraWorldCountry")?.value||""):"";const key=catalog==="numbers-global"&&worldCountry?catalog+":"+worldCountry+":"+id:catalog+":"+id;const cost=xtraCost(item);const saved=xtraPricingOverrides[key]||{};
     const auto=Number((cost.value*(1+Number($("xtraDefaultMargin").value||20)/100)).toFixed(2));
     const selling=saved.sellingPrice!==undefined?saved.sellingPrice:auto;
-    return `<article class="supplier-card"><div class="supplier-card-name">${escapeHTML(xtraItemName(item))}</div><div class="supplier-card-meta">ID: ${escapeHTML(id||"Not supplied")} · ${escapeHTML(catalog)} · <strong>${escapeHTML(liveStatus)}</strong></div><div class="supplier-card-values"><div class="supplier-card-value"><small>Supplier cost</small><strong>${xtraMoney(cost.value,cost.currency)}</strong></div><div class="supplier-card-value"><small>Auto price</small><strong>${xtraMoney(auto,cost.currency)}</strong></div></div><label class="small muted" for="xtra-price-${escapeHTML(id)}">Manual customer price (${cost.currency})</label><input class="supplier-selling-price xtra-service-price" id="xtra-price-${escapeHTML(id)}" data-xtra-key="${escapeHTML(key)}" data-xtra-currency="${escapeHTML(cost.currency)}" type="number" min="0" step="0.01" value="${escapeHTML(selling)}"><label class="small muted"><input type="checkbox" class="xtra-price-enabled" data-xtra-key="${escapeHTML(key)}" ${saved.enabled===false?"":"checked"}> Use manual override for this service</label></article>`;
+    return `<article class="supplier-card"><div class="supplier-card-name">${escapeHTML(xtraItemName(item))}</div><div class="supplier-card-meta">ID: ${escapeHTML(id||"Not supplied")} · ${escapeHTML(catalog)}</div><div class="supplier-card-values"><div class="supplier-card-value"><small>Supplier cost</small><strong>${xtraMoney(cost.value,cost.currency)}</strong></div><div class="supplier-card-value"><small>Auto price</small><strong>${xtraMoney(auto,cost.currency)}</strong></div></div><label class="small muted" for="xtra-price-${escapeHTML(id)}">Manual customer price (${cost.currency})</label><input class="supplier-selling-price xtra-service-price" id="xtra-price-${escapeHTML(id)}" data-xtra-key="${escapeHTML(key)}" data-xtra-currency="${escapeHTML(cost.currency)}" type="number" min="0" step="0.01" value="${escapeHTML(selling)}"><label class="small muted"><input type="checkbox" class="xtra-price-enabled" data-xtra-key="${escapeHTML(key)}" ${saved.enabled===false?"":"checked"}> Use manual override for this service</label></article>`;
   }).join(""):'<div class="empty-state" style="grid-column:1/-1">No catalogue entries found. Some catalogues need a country or extra query parameters.</div>';
 }
 async function saveXtraPricing() {
