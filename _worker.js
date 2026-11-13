@@ -859,7 +859,7 @@ async function handleXtraLogs(request,env) {
     const settings=await xtraGetPricing(env);
     const services=rows.map(item=>{
       const id=xtraCatalogIdentity(item),cost=xtraCatalogCost(item),price=xtraSellingPrice(item,"numbers-global",settings,countryCode);
-      return {id,name:String(item.name??item.title??item.service_name??item.product_name??item.operator_name??"Number service "+id),description:String(item.description??item.details??item.server_name??item.server??""),supplierCost:cost.amount,supplierCurrency:cost.currency,price:price.price,currency:price.currency,available:item.available!==false&&item.in_stock!==false,server:item.server_name??item.server??item.server_id??null,raw:item};
+      return {id,name:String(item.name??item.title??item.service_name??item.product_name??item.operator_name??"Number service "+id),description:String(item.description??item.details??item.server_name??item.server??""),logoUrl:xtraCatalogLogo(item),supplierCost:cost.amount,supplierCurrency:cost.currency,price:price.price,currency:price.currency,available:item.available!==false&&item.in_stock!==false,server:item.server_name??item.server??item.server_id??null,raw:item};
     });
     const sa=JSON.parse(env.FCM_SERVICE_ACCOUNT_JSON||"{}");
     if(!sa.project_id)throw new Error("Firebase service account is not configured.");
@@ -966,6 +966,25 @@ function xtraCatalogIdentity(item) {
     item.operator_id??item.operatorId??item.id;
   return id===undefined||id===null||String(id).trim()===""?"":String(id).trim();
 }
+function xtraCatalogLogo(item, depth=0, seen=new Set()) {
+  if(!item || typeof item!=="object" || depth>5 || seen.has(item)) return "";
+  seen.add(item);
+  const keys=["logo_url","logoUrl","logo","image_url","imageUrl","image","icon_url","iconUrl","icon","avatar_url","avatar","thumbnail_url","thumbnail","picture_url","picture"];
+  for(const key of keys) {
+    const value=item[key];
+    const candidate=typeof value==="string"?value:
+      value&&typeof value==="object"?(value.url||value.src||value.href||value.original||value.large||""):"";
+    if(typeof candidate==="string" && /^https?:\/\//i.test(candidate.trim())) return candidate.trim();
+  }
+  for(const [key,value] of Object.entries(item)) {
+    if(!value || typeof value!=="object" || Array.isArray(value)) continue;
+    if(/logo|image|icon|avatar|thumbnail|picture|media/i.test(key)) {
+      const found=xtraCatalogLogo(value,depth+1,seen);
+      if(found) return found;
+    }
+  }
+  return "";
+}
 function xtraExtractWorldServiceItems(payload) {
   const out=[],seen=new Set(),visited=new Set();
   const idKeys=["service_id","serviceId","number_service_id","activation_service_id","product_id","productId","item_id","itemId","package_id","packageId","operator_id","operatorId","id"];
@@ -1048,7 +1067,7 @@ async function handleXtraCustomer(request,env) {
         const pricing=await xtraGetPricing(env);
         const products=(fields.services||[]).map(row=>{
           const raw=row.raw||{},sell=xtraSellingPrice(raw,catalog,pricing,countryCode);
-          return {id:String(row.id),name:row.name,description:row.description||"",price:sell.price,currency:sell.currency,available:row.available!==false,category:catalog,raw};
+          return {id:String(row.id),name:row.name,description:row.description||"",logoUrl:row.logoUrl||xtraCatalogLogo(raw),price:sell.price,currency:sell.currency,available:row.available!==false,category:catalog,raw};
         });
         return xtraJson({success:true,catalog,products,cached:true,country:{code:fields.countryCode,name:fields.countryName}},200,origin);
       }
@@ -1061,7 +1080,7 @@ async function handleXtraCustomer(request,env) {
       const countries=liveCountries.length?liveCountries:(Array.isArray(settings.importedCountries)?settings.importedCountries:[]);
       return xtraJson({success:true,catalog,countries,countryCount:countries.length},200,origin);
     }
-    const products=items.map(item=>{const p=xtraSellingPrice(item,catalog,settings,url.searchParams.get("country")||"");return {id:xtraCatalogIdentity(item),name:String(item.name??item.title??item.service_name??item.product_name??item.package_name??item.operator_name??"XtraLogs service"),description:String(item.description??item.details??""),price:p.price,currency:p.currency,available:item.available!==false&&item.in_stock!==false,category:catalog,raw:item};}).filter(x=>x.id);
+    const products=items.map(item=>{const p=xtraSellingPrice(item,catalog,settings,url.searchParams.get("country")||"");return {id:xtraCatalogIdentity(item),name:String(item.name??item.title??item.service_name??item.product_name??item.package_name??item.operator_name??"XtraLogs service"),description:String(item.description??item.details??""),logoUrl:xtraCatalogLogo(item),price:p.price,currency:p.currency,available:item.available!==false&&item.in_stock!==false,category:catalog,raw:item};}).filter(x=>x.id);
     return xtraJson({success:true,catalog,products},200,origin);
   }
   if(request.method==="POST"&&url.pathname==="/api/xtralogs/customer/purchase") {
