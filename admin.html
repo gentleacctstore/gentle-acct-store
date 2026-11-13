@@ -2233,6 +2233,7 @@ function xtraItemName(item) {
 function xtraCost(item,catalog="") {
   if(item.rank_price_minor!==undefined) return {value:Number(item.rank_price_minor)/100,currency:"NGN"};
   if(!String(catalog).startsWith("numbers-")&&item.price_minor!==undefined) return {value:Number(item.price_minor)/100,currency:"NGN"};
+  if(String(catalog).startsWith("numbers-")) return {value:0,currency:"NGN"};
   if(item.price!==undefined) return {value:Number(item.price),currency:String(item.currency||"NGN").toUpperCase()};
   if(item.price_usd!==undefined) return {value:Number(item.price_usd),currency:"USD"};
   return {value:0,currency:String(item.currency||"NGN").toUpperCase()};
@@ -2240,7 +2241,7 @@ function xtraCost(item,catalog="") {
 function xtraExtractItems(data,depth=0) {
   if(Array.isArray(data)) return data;
   if(!data||typeof data!=="object"||depth>7)return [];
-  for(const key of ["countries","country_list","available_countries","services","products","plans","operators","items","results","records","list"]) if(Array.isArray(data[key])) return data[key];
+  for(const key of ["services","numbers","products","plans","operators","items","results","records","list","countries","country_list","available_countries"]) if(Array.isArray(data[key])) return data[key];
   for(const key of ["data","result","payload","catalog","response"]) {const found=xtraExtractItems(data[key],depth+1);if(found.length)return found;}
   return [];
 }
