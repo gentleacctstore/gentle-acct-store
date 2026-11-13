@@ -49,9 +49,24 @@ function serviceLogoSlug(name){
  for(const [re,slug] of aliases) if(re.test(n)) return slug;
  return '';
 }
+function serviceLogoDomain(s){
+ const raw=[s?.name,s?.title,s?.service,s?.id].filter(Boolean).join(' ').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
+ const brands=[
+  [/\bposhmark\b/,'poshmark.com'],[/\bproton ?mail\b/,'proton.me'],[/\bswagbucks\b/,'swagbucks.com'],[/\bvinted\b/,'vinted.com'],[/\bwolt\b/,'wolt.com'],[/\bzcity\b/,'zcity.io'],
+  [/\bopen ?ai\b|\bchatgpt\b/,'openai.com'],[/\bnetflix\b/,'netflix.com'],[/\bnaver\b/,'naver.com'],[/\bviber\b/,'viber.com'],[/\bbumble\b/,'bumble.com'],[/\blikee\b/,'likee.video'],[/\bmobikwik\b/,'mobikwik.com'],[/\bxiaomi\b/,'mi.com'],[/\bzepto\b/,'zepto.com'],[/\bline\b/,'line.me'],[/\bdouyu\b/,'douyu.com'],[/\bfiverr\b/,'fiverr.com'],
+  [/\bgrindr\b/,'grindr.com'],[/\bhily\b/,'hily.com'],[/\blazada\b/,'lazada.com'],[/\bpaxful\b/,'paxful.com'],[/\bticket ?master\b/,'ticketmaster.com'],[/\bdiscord\b/,'discord.com'],[/\bcoindcx\b/,'coindcx.com'],[/\bgojek\b/,'gojek.com'],[/\bmocospace\b/,'mocospace.com'],[/\bsignal\b/,'signal.org'],[/\btrip\b/,'trip.com'],[/\b99 ?acres\b/,'99acres.com'],
+  [/\bbolt\b/,'bolt.eu'],[/\bcliqq\b/,'cliqq.net'],[/\bdominos ?pizza\b/,'dominos.com'],[/\bfaceit\b/,'faceit.com'],[/\bhappn\b/,'happn.com'],[/\bmaplesea\b/,'maplesea.com'],[/\bmcdonalds\b/,'mcdonalds.com'],[/\bquikr\b/,'quikr.com'],[/\btencent ?qq\b|\bqq\b/,'qq.com'],[/\btosla\b/,'tosla.com'],[/\byubo\b/,'yubo.live'],[/\bzalo\b/,'zalo.me'],
+  [/\bsteam\b/,'steampowered.com'],[/\blinkedin\b/,'linkedin.com'],[/\baliexpress\b/,'aliexpress.com'],[/\bapple\b/,'apple.com'],[/\bbitclout\b/,'bitclout.com'],[/\bclubhouse\b/,'clubhouse.com'],[/\bcommunity ?gaming\b/,'communitygaming.io'],[/\bdream ?11\b/,'dream11.com'],[/\bdu(ndle|ndle)\b/,'dundle.com'],[/\bgittigidiyor\b/,'gittigidiyor.com'],[/\bglowroad\b/,'glowroad.com'],[/\bgroup ?me\b/,'groupme.com'],[/\bhermes\b/,'hermes.com'],[/\bhumble ?bundle\b/,'humblebundle.com'],[/\bhuya\b/,'huya.com'],[/\biqiyi\b/,'iq.com'],[/\bmeesho\b/,'meesho.com'],[/\bposhmark\b/,'poshmark.com'],[/\bpotato\b/,'potato.im'],[/\bquikr\b/,'quikr.com'],[/\bred ?book\b|\bredbook\b/,'xiaohongshu.com'],[/\bjoyride\b/,'joyride.com'],[/\bkwai\b/,'kwai.com'],[/\baliexpress\b/,'aliexpress.com'],[/\bamazon\b/,'amazon.com'],[/\bgoogle\b/,'google.com'],[/\binstagram\b/,'instagram.com'],[/\btwitter\b|^x$/,'x.com']
+ ];
+ for(const [re,domain] of brands) if(re.test(raw)) return domain;
+ return '';
+}
 function serviceLogo(s){
- const slug=serviceLogoSlug([s?.name,s?.title,s?.service,s?.id].filter(Boolean).join(' '));
- return slug?`https://cdn.simpleicons.org/${slug}`:'';
+ const text=[s?.name,s?.title,s?.service,s?.id].filter(Boolean).join(' ');
+ const slug=serviceLogoSlug(text);
+ if(slug) return `https://cdn.simpleicons.org/${slug}`;
+ const domain=serviceLogoDomain(s);
+ return domain?`https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=128`:'';
 }
 function serviceMonogram(name){
  const value=String(name||'Service').trim();
@@ -77,9 +92,7 @@ function renderServices(){
  $('serviceCount').textContent=list.length.toLocaleString()+' services available';
  $('serviceGrid').innerHTML=list.length?list.map(s=>{
   const logo=serviceLogo(s);
-  const slug=serviceLogoSlug([s.name,s.title,s.service,s.id].filter(Boolean).join(' '));
-  const icon=serviceIconFallback(s.name);
-  const image=logo || (slug?`https://cdn.simpleicons.org/${slug}`:'');
+  const image=logo;
   const mark=serviceMonogram(s.name||s.title||s.service||'Service');
   const logoHTML=image
    ?`<img src="${safe(image)}" alt="${safe(s.name||'Service')} logo" loading="lazy" referrerpolicy="no-referrer" onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='grid'">`
