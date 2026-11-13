@@ -29,6 +29,14 @@ function renderCountries(){const q=$('countrySearch').value.trim().toLowerCase()
 function renderServerFilters(){const servers=[...new Set(countries.map(c=>String(c.server||c.server_name||'').trim()).filter(Boolean))];const tabs=[{id:'all',label:'All servers'},...servers.map(s=>({id:s,label:s}))];$('serverTabs').innerHTML=tabs.map(t=>`<button class="server-tab ${serverFilter===t.id?'active':''}" data-server="${safe(t.id)}">${safe(t.label)}</button>`).join('');$('serverTabs').querySelectorAll('[data-server]').forEach(b=>b.addEventListener('click',()=>{serverFilter=b.dataset.server;renderServerFilters();renderCountries()}))}
 function serviceServerName(s){return String(s.server_name||s.serverName||s.server||s.server_label||s.serverLabel||'').trim()}
 function serviceLogo(s){const raw=s.logo_url||s.logo||s.image_url||s.image||s.icon_url||s.icon||'';return typeof raw==='string'&&/^https?:\/\//i.test(raw)?raw:''}
+function serviceLogoSlug(name){
+ const n=String(name||'').toLowerCase().trim();
+ const rules=[
+  [/steam/,'steam'],[/discord/,'discord'],[/snapchat/,'snapchat'],[/microsoft|outlook|hotmail/,'microsoft'],[/telegram/,'telegram'],[/whatsapp/,'whatsapp'],[/instagram/,'instagram'],[/facebook/,'facebook'],[/tiktok/,'tiktok'],[/google|gmail/,'google'],[/twitter|^x$/,'x'],[/reddit/,'reddit'],[/spotify/,'spotify'],[/uber/,'uber'],[/amazon/,'amazon'],[/aol/,'aol'],[/grindr/,'grindr'],[/viber/,'viber'],[/yahoo/,'yahoo'],[/tinder/,'tinder'],[/netflix/,'netflix'],[/airbnb/,'airbnb'],[/olx/,'olx'],[/twitch/,'twitch'],[/linkedin/,'linkedin'],[/pinterest/,'pinterest'],[/paypal/,'paypal'],[/yandex/,'yandex'],[/binance/,'binance'],[/bybit/,'bybit'],[/coinbase/,'coinbase'],[/steam/,'steam']
+ ];
+ for(const [pattern,slug] of rules) if(pattern.test(n)) return slug;
+ return '';
+}
 function serviceIconFallback(name){
  const n=String(name||'').toLowerCase();
  const map=[[/steam/,'fa-steam'],[/discord/,'fa-discord'],[/snapchat/,'fa-snapchat'],[/microsoft|outlook|hotmail/,'fa-microsoft'],[/telegram/,'fa-telegram'],[/whatsapp/,'fa-whatsapp'],[/instagram/,'fa-instagram'],[/facebook/,'fa-facebook'],[/tiktok/,'fa-tiktok'],[/google|gmail/,'fa-google'],[/twitter|^x$/,'fa-x-twitter'],[/reddit/,'fa-reddit'],[/spotify/,'fa-spotify'],[/uber/,'fa-uber'],[/amazon/,'fa-amazon']];
@@ -47,7 +55,7 @@ function renderServices(){
  $('serviceCount').textContent=list.length.toLocaleString()+' services available';
  $('serviceGrid').innerHTML=list.length?list.map(s=>{
   const logo=serviceLogo(s);
-  const slug=serviceLogoSlug(s.name);
+  const slug=serviceLogoSlug(s.name||s.title||s.service||'');
   const icon=serviceIconFallback(s.name);
   const image=logo || (slug?`https://cdn.simpleicons.org/${slug}`:'');
   return `<button class="service-card" type="button" data-service="${safe(s.id)}"><span class="service-icon">${image?`<img src="${safe(image)}" alt="${safe(s.name||'Service')} logo" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove();this.parentElement.innerHTML='<i class=&quot;${icon}&quot; aria-hidden=&quot;true&quot;></i>'">`:`<i class="${icon}" aria-hidden="true"></i>`}</span><h3>${safe(s.name||'Number service')}</h3><div class="price">${money(s.price)}</div><span class="choose">Select service</span></button>`;
