@@ -746,10 +746,10 @@ function xtraFirestoreEncode(value) {
   return {nullValue:null};
 }
 
-async function xtraGetPricing(env) {
+async function xtraGetPricing(env, suppliedToken) {
   const sa=JSON.parse(env.FCM_SERVICE_ACCOUNT_JSON||"{}");
   if(!sa.project_id||!sa.client_email||!sa.private_key) throw new Error("Firebase service account is not configured.");
-  const token=await getGoogleAccessToken(sa);
+  const token=suppliedToken||await getGoogleAccessToken(sa);
   const url=`https://firestore.googleapis.com/v1/projects/${encodeURIComponent(sa.project_id)}/databases/(default)/documents/storeSettings/xtralogsPricing`;
   const response=await fetch(url,{headers:{Authorization:"Bearer "+token}});
   if(response.status===404) return {pricingMode:"automatic",defaultMarginPercent:20,overrides:{},importedCountries:[]};
@@ -854,33 +854,24 @@ async function handleXtraLogs(request,env) {
     const rows=xtraExtractWorldServiceItems(result.payload);
     if(!rows.length){
       const topLevelKeys=result.payload&&typeof result.payload==="object"?Object.keys(result.payload):[];
-      // Replace any older imported snapshot with an empty live result so old services cannot linger in admin data.
-      const sa=JSON.parse(env.FCM_SERVICE_ACCOUNT_JSON||"{}");
-      if(!sa.project_id)throw new Error("Firebase service account is not configured.");
-      const token=await getGoogleAccessToken(sa),importedAt=new Date().toISOString();
-      const docPath=`projects/${sa.project_id}/databases/(default)/documents/storeSettings/xtralogsWorldCatalog/countries/${encodeURIComponent(countryCode)}`;
-      const save=await fetch(`https://firestore.googleapis.com/v1/${docPath}`,{method:"PATCH",headers:{Authorization:"Bearer "+token,"Content-Type":"application/json"},body:JSON.stringify({fields:{countryCode:{stringValue:countryCode},countryName:{stringValue:countryName},services:{arrayValue:{values:[]}},serviceCount:{integerValue:"0"},availableCount:{integerValue:"0"},unknownCount:{integerValue:"0"},importedAt:{timestampValue:importedAt}}})});
-      if(!save.ok)return xtraJson({error:"XtraLogs returned no services and the old snapshot could not be cleared.",countryCode},502,origin);
-      return xtraJson({success:true,countryCode,countryName,serviceCount:0,availableCount:0,unknownCount:0,empty:true,topLevelKeys,message:"The live supplier catalogue returned no services. Previous imported services have been cleared."},200,origin);
+      return xtraJson({success:false,error:"XtraLogs returned no identifiable number services for "+countryName+". This country was not marked as imported.",countryCode,countryName,serviceCount:0,topLevelKeys},422,origin);
     }
-    const settings=await xtraGetPricing(env);
-    const services=rows.map(item=>{
-      const id=xtraCatalogIdentity(item),cost=xtraCatalogCost(item,"numbers-global"),price=xtraSellingPrice(item,"numbers-global",settings,countryCode);
-      const stock=xtraNumberAvailability(item),server=xtraServiceServer(item);
-      return {id,name:String(item.name??item.title??item.service_name??item.product_name??item.operator_name??"Number service "+id),description:String(item.description??item.details??""),logoUrl:xtraCatalogLogo(item),supplierCost:cost.amount,supplierCurrency:cost.currency,price:price.price,currency:price.currency,available:stock.available,availabilityKnown:stock.known,availabilityReason:stock.reason,server:server||null,raw:item};
-    });
     const sa=JSON.parse(env.FCM_SERVICE_ACCOUNT_JSON||"{}");
     if(!sa.project_id)throw new Error("Firebase service account is not configured.");
+    // Reuse one Google access token for both the pricing read and catalogue save.
     const token=await getGoogleAccessToken(sa);
+    const settings=await xtraGetPricing(env,token);
+    const services=rows.map(item=>{
+      const id=xtraCatalogIdentity(item),cost=xtraCatalogCost(item),price=xtraSellingPrice(item,"numbers-global",settings,countryCode);
+      return {id,name:String(item.name??item.title??item.service_name??item.product_name??item.operator_name??"Number service "+id),description:String(item.description??item.details??item.server_name??item.server??""),logoUrl:xtraCatalogLogo(item),supplierCost:cost.amount,supplierCurrency:cost.currency,price:price.price,currency:price.currency,available:item.available!==false&&item.in_stock!==false,server:item.server_name??item.server??item.server_id??null,raw:item};
+    });
     const docPath=`projects/${sa.project_id}/databases/(default)/documents/storeSettings/xtralogsWorldCatalog/countries/${encodeURIComponent(countryCode)}`;
     const docUrl=`https://firestore.googleapis.com/v1/${docPath}`;
-    const availableCount=services.filter(x=>x.available===true&&x.availabilityKnown===true).length;
-    const unknownCount=services.filter(x=>x.availabilityKnown!==true).length;
-    const payload={countryCode,countryName,services,serviceCount:services.length,availableCount,unknownCount,importedAt:new Date().toISOString()};
+    const payload={countryCode,countryName,services,serviceCount:services.length,importedAt:new Date().toISOString()};
     if(JSON.stringify(payload).length>850000)return xtraJson({error:"The service catalogue for "+countryName+" is too large to save safely.",countryCode,serviceCount:services.length},413,origin);
-    const save=await fetch(docUrl,{method:"PATCH",headers:{Authorization:"Bearer "+token,"Content-Type":"application/json"},body:JSON.stringify({fields:{countryCode:{stringValue:countryCode},countryName:{stringValue:countryName},services:xtraFirestoreEncode(services),serviceCount:{integerValue:String(services.length)},availableCount:{integerValue:String(availableCount)},unknownCount:{integerValue:String(unknownCount)},importedAt:{timestampValue:payload.importedAt}}})});
+    const save=await fetch(docUrl,{method:"PATCH",headers:{Authorization:"Bearer "+token,"Content-Type":"application/json"},body:JSON.stringify({fields:{countryCode:{stringValue:countryCode},countryName:{stringValue:countryName},services:xtraFirestoreEncode(services),serviceCount:{integerValue:String(services.length)},importedAt:{timestampValue:payload.importedAt}}})});
     if(!save.ok){const msg=await save.text();console.error("XtraLogs country catalogue save failed",save.status,msg.slice(0,500));return xtraJson({error:"Could not save "+countryName+" services to Firebase.",countryCode,serviceCount:services.length},502,origin);}
-    return xtraJson({success:true,countryCode,countryName,serviceCount:services.length,availableCount,unknownCount,importedAt:payload.importedAt},200,origin);
+    return xtraJson({success:true,countryCode,countryName,serviceCount:services.length,importedAt:payload.importedAt},200,origin);
   }
   if(request.method==="GET"&&new URL(request.url).pathname==="/api/xtralogs/admin/pricing") {
     const settings=await xtraGetPricing(env);
@@ -995,26 +986,6 @@ function xtraCatalogLogo(item, depth=0, seen=new Set()) {
   }
   return "";
 }
-function xtraNumberAvailability(item) {
-  if(!item || typeof item!=="object") return {available:false,known:false,reason:"No service record"};
-  const boolKeys=["available","is_available","in_stock","inStock","can_purchase","canPurchase","active","enabled"];
-  for(const key of boolKeys) if(typeof item[key]==="boolean") return {available:item[key],known:true,reason:key};
-  const qtyKeys=["stock","stock_count","stockCount","quantity_available","available_count","count","numbers_available","number_count"];
-  for(const key of qtyKeys) if(item[key]!==undefined && item[key]!==null && item[key]!=="") {
-    const n=Number(item[key]); if(Number.isFinite(n)) return {available:n>0,known:true,reason:key};
-  }
-  const status=String(item.status??item.availability??item.state??"").trim().toLowerCase();
-  if(status) {
-    if(["available","active","in_stock","instock","ready","online","enabled"].includes(status)) return {available:true,known:true,reason:"status"};
-    if(["unavailable","out_of_stock","out-of-stock","sold_out","sold out","inactive","disabled","offline","empty"].includes(status)) return {available:false,known:true,reason:"status"};
-  }
-  return {available:false,known:false,reason:"Supplier did not confirm live availability"};
-}
-function xtraServiceServer(item) {
-  const v=item?.server_name??item?.serverName??item?.server_label??item?.serverLabel??item?.server??item?.server_id??item?.serverId??"";
-  if(v && typeof v==="object") return String(v.name??v.label??v.title??v.id??"").trim();
-  return String(v??"").trim();
-}
 function xtraExtractWorldServiceItems(payload) {
   const out=[],seen=new Set(),visited=new Set();
   const idKeys=["service_id","serviceId","number_service_id","activation_service_id","product_id","productId","item_id","itemId","package_id","packageId","operator_id","operatorId","id"];
@@ -1049,11 +1020,7 @@ function xtraExtractWorldServiceItems(payload) {
   }
   walk(payload);return out;
 }
-function xtraCatalogCost(item,catalog="") {
-  if(catalog==="numbers-global"||catalog==="numbers-usa") {
-    if(item.rank_price_minor!==undefined && Number.isFinite(Number(item.rank_price_minor))) return {amount:Number(item.rank_price_minor)/100,currency:"NGN"};
-    return {amount:0,currency:"NGN"};
-  }
+function xtraCatalogCost(item) {
   if(item.rank_price_minor!==undefined) return {amount:Number(item.rank_price_minor)/100,currency:"NGN"};
   if(item.price_minor!==undefined) return {amount:Number(item.price_minor)/100,currency:"NGN"};
   if(item.price!==undefined) return {amount:Number(item.price),currency:String(item.currency||"NGN").toUpperCase()};
@@ -1078,7 +1045,7 @@ async function xtraCustomerFirebase(env) {
   return {sa,token:await getGoogleAccessToken(sa)};
 }
 function xtraSellingPrice(item,catalog,settings,country="") {
-  const id=xtraCatalogIdentity(item),key=catalog==="numbers-global"&&country?catalog+":"+String(country).toUpperCase()+":"+id:catalog+":"+id,cost=xtraCatalogCost(item,catalog),override=settings.overrides?.[key];
+  const id=xtraCatalogIdentity(item),key=catalog==="numbers-global"&&country?catalog+":"+String(country).toUpperCase()+":"+id:catalog+":"+id,cost=xtraCatalogCost(item),override=settings.overrides?.[key];
   if(override&&override.enabled!==false&&Number.isFinite(Number(override.sellingPrice))) return {price:Number(override.sellingPrice),currency:String(override.currency||cost.currency).toUpperCase(),cost,key};
   return {price:Number((cost.amount*(1+Number(settings.defaultMarginPercent??20)/100)).toFixed(2)),currency:cost.currency,cost,key};
 }
@@ -1093,7 +1060,19 @@ async function handleXtraCustomer(request,env) {
     if(!endpoint)return xtraJson({error:"Unknown catalogue"},400,origin);
     const query=new URLSearchParams(endpoint.split("?")[1]||"");
     for(const key of ["country","page","per_page","service","username","quantity","network","kind","type_id","number"]){const v=url.searchParams.get(key);if(v&&/^[A-Za-z0-9._-]{1,80}$/.test(v))query.set(key,v);}
-    // Always use the live supplier catalogue for World Numbers. Firestore imports are admin snapshots only.
+    if(catalog==="numbers-global"&&url.searchParams.get("country")){
+      const countryCode=String(url.searchParams.get("country"));
+      const cached=await fsGet(sa.project_id,token,"storeSettings/xtralogsWorldCatalog/countries",countryCode);
+      if(cached.document){
+        const fields=xtraFirestoreDecodeFields(cached.document.fields||{});
+        const pricing=await xtraGetPricing(env);
+        const products=(fields.services||[]).map(row=>{
+          const raw=row.raw||{},sell=xtraSellingPrice(raw,catalog,pricing,countryCode);
+          return {id:String(row.id),name:row.name,description:row.description||"",logoUrl:row.logoUrl||xtraCatalogLogo(raw),price:sell.price,currency:sell.currency,available:row.available!==false,category:catalog,raw};
+        });
+        return xtraJson({success:true,catalog,products,cached:true,country:{code:fields.countryCode,name:fields.countryName}},200,origin);
+      }
+    }
     const upstream=await xtraUpstream(env,endpoint.split("?")[0]+(query.size?"?"+query.toString():""));
     if(!upstream.response.ok)return xtraJson({error:upstream.payload?.message||upstream.payload?.error||"Could not load this catalogue."},upstream.response.status,origin);
     const items=xtraExtractCatalogItems(upstream.payload);const settings=await xtraGetPricing(env);
@@ -1102,7 +1081,7 @@ async function handleXtraCustomer(request,env) {
       const countries=liveCountries.length?liveCountries:(Array.isArray(settings.importedCountries)?settings.importedCountries:[]);
       return xtraJson({success:true,catalog,countries,countryCount:countries.length},200,origin);
     }
-    const products=items.map(item=>{const p=xtraSellingPrice(item,catalog,settings,url.searchParams.get("country")||""),stock=catalog==="numbers-global"?xtraNumberAvailability(item):{available:item.available!==false&&item.in_stock!==false,known:true,reason:"catalogue"};return {id:xtraCatalogIdentity(item),name:String(item.name??item.title??item.service_name??item.product_name??item.package_name??item.operator_name??"XtraLogs service"),description:String(item.description??item.details??""),logoUrl:xtraCatalogLogo(item),price:p.price,currency:p.currency,available:stock.available,availabilityKnown:stock.known,availabilityReason:stock.reason,server:xtraServiceServer(item)||null,category:catalog};}).filter(x=>x.id);
+    const products=items.map(item=>{const p=xtraSellingPrice(item,catalog,settings,url.searchParams.get("country")||"");return {id:xtraCatalogIdentity(item),name:String(item.name??item.title??item.service_name??item.product_name??item.package_name??item.operator_name??"XtraLogs service"),description:String(item.description??item.details??""),logoUrl:xtraCatalogLogo(item),price:p.price,currency:p.currency,available:item.available!==false&&item.in_stock!==false,category:catalog,raw:item};}).filter(x=>x.id);
     return xtraJson({success:true,catalog,products},200,origin);
   }
   if(request.method==="POST"&&url.pathname==="/api/xtralogs/customer/purchase") {
@@ -1115,11 +1094,7 @@ async function handleXtraCustomer(request,env) {
     const {response:catalogResponse,payload:catalogPayload}=await xtraUpstream(env,XTRALOGS_CATALOGS[catalog].split("?")[0]+(catalogQuery.size?"?"+catalogQuery.toString():""));
     if(!catalogResponse.ok)return xtraJson({error:"Could not verify the latest supplier price. Please try again."},502,origin);
     const item=xtraExtractCatalogItems(catalogPayload).find(x=>xtraCatalogIdentity(x)===itemId);
-    if(!item)return xtraJson({error:"This service is no longer available in the live supplier catalogue. Refresh the catalogue."},404,origin);
-    if(catalog==="numbers-global"){
-      const stock=xtraNumberAvailability(item);
-      if(!stock.known||!stock.available)return xtraJson({error:stock.known?"This service currently has no available numbers. Choose another service.":"XtraLogs did not confirm live number availability for this service. It cannot be purchased until availability is confirmed."},409,origin);
-    }
+    if(!item)return xtraJson({error:"This service is no longer available. Refresh the catalogue."},404,origin);
     const settings=await xtraGetPricing(env),selling=xtraSellingPrice(item,catalog,settings,catalog==="numbers-global"?String(body.country||""):"");
     if(!Number.isFinite(selling.price)||selling.price<=0||selling.currency!=="NGN")return xtraJson({error:"This service does not have a valid NGN selling price configured yet."},409,origin);
     const wallet=await fsGet(sa.project_id,token,"wallets",user.localId);
@@ -1132,7 +1107,7 @@ async function handleXtraCustomer(request,env) {
     const nextBalance=Number((balance-selling.price).toFixed(2)),now=new Date().toISOString();
     const reserve=await fsCommit(sa.project_id,token,[
       {update:{name:walletName,fields:{balance:fsNumber(nextBalance),updatedAt:{timestampValue:now},lastXtraLogsOrderId:{stringValue:orderId}}},updateMask:{fieldPaths:["balance","updatedAt","lastXtraLogsOrderId"]},currentDocument:{updateTime:wallet.document.updateTime}},
-      {update:{name:orderName,fields:{userId:{stringValue:user.localId},userEmail:{stringValue:user.email||""},catalog:{stringValue:catalog},itemId:{stringValue:itemId},serviceName:{stringValue:String(item.name??item.title??item.service_name??"XtraLogs service")},server:{stringValue:xtraServiceServer(item)},amount:fsNumber(selling.price),currency:{stringValue:selling.currency},status:{stringValue:"processing"},createdAt:{timestampValue:now},requestId:{stringValue:orderId}}},currentDocument:{exists:false}}
+      {update:{name:orderName,fields:{userId:{stringValue:user.localId},userEmail:{stringValue:user.email||""},catalog:{stringValue:catalog},itemId:{stringValue:itemId},serviceName:{stringValue:String(item.name??item.title??item.service_name??"XtraLogs service")},amount:fsNumber(selling.price),currency:{stringValue:selling.currency},status:{stringValue:"processing"},createdAt:{timestampValue:now},requestId:{stringValue:orderId}}},currentDocument:{exists:false}}
     ]);
     if(!reserve.ok)return xtraJson({error:"Your wallet changed while checkout was processing. Refresh and try again."},409,origin);
     let supplierBody;

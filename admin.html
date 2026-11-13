@@ -931,7 +931,7 @@ html,body{background:#050b1b!important;color:#edf6ff!important}
  <div class="panel-body">
   <div class="xtra-category-toolbar">
    <select id="xtraCatalogSelect" aria-label="Active category" class="hidden"><option value="logs">Logs</option><option value="numbers-usa">USA numbers</option><option value="numbers-global">Global numbers</option><option value="smm">Social media marketing</option><option value="telegram">Telegram</option><option value="esim">eSIM</option><option value="topup">International top-up</option><option value="gifts">Gifts</option><option value="proxies">Proxies</option><option value="vtu">Nigeria airtime and data</option></select>
-   <div id="xtraWorldCountryWrap" class="hidden"><label for="xtraWorldCountry">Choose country</label><select id="xtraWorldCountry" aria-label="Select World Numbers country"><option value="">Import countries first</option></select><button class="btn btn-primary" id="xtraImportCountries" type="button">↓ Import all countries + services</button><div class="toolbar" style="gap:8px;flex-wrap:wrap"><button class="btn" id="xtraImportSelected" type="button">Import selected country</button><button class="btn" id="xtraPauseImport" type="button" disabled>Pause</button><button class="btn" id="xtraStopImport" type="button" disabled>Stop</button><button class="btn" id="xtraRetryFailed" type="button" disabled>Retry failed</button></div><small id="xtraImportStatus" class="muted">Imports are rate-limited to protect the supplier API.</small></div>
+   <div id="xtraWorldCountryWrap" class="hidden"><label for="xtraWorldCountry">Choose country</label><select id="xtraWorldCountry" aria-label="Select World Numbers country"><option value="">Import countries first</option></select><button class="btn btn-primary" id="xtraImportCountries" type="button">↓ Import all countries + services</button><div class="toolbar" style="gap:8px;flex-wrap:wrap"><button class="btn" id="xtraImportSelected" type="button">Import selected country</button><button class="btn" id="xtraPauseImport" type="button" disabled>Pause</button><button class="btn" id="xtraStopImport" type="button" disabled>Stop</button><button class="btn" id="xtraRetryFailed" type="button" disabled>Retry failed</button></div><small id="xtraImportStatus" class="muted">Imports use 3 concurrent workers with a 1.05-second request-start gap to respect the supplier limit.</small></div>
    <div id="xtraCatalogCountryWrap" class="hidden"><label for="xtraCatalogCountry">Country code</label><input id="xtraCatalogCountry" placeholder="e.g. NG or US" maxlength="80" aria-label="Country code"></div>
    <div class="form-grid" id="xtraCatalogExtraFields" style="grid-column:1/-1"></div>
    <input id="xtraCatalogSearch" type="search" placeholder="Search this category..." aria-label="Search category catalogue">
@@ -2404,25 +2404,42 @@ async function runXtraCountryQueue(queue,label){
  if(xtraImportRunning)return;
  xtraImportPaused=false;xtraImportStop=false;setXtraImportControls(true);
  const button=$("xtraImportCountries");const originalLabel=button.textContent;
- let savedCount=0,empty=0,failed=0,done=0;const failures=[];
- try{
-  for(let i=0;i<queue.length;i++){
-   if(!(await waitForXtraImportResume()))break;
-   const country=queue[i];
-   $("xtraImportStatus").textContent=(xtraImportPaused?"Paused · ":"")+label+" · "+(i+1)+"/"+queue.length+" · "+savedCount+" services saved";
-   button.textContent="Importing "+(i+1)+"/"+queue.length+"…";
-   $("xtraCatalogResults").innerHTML='<div class="loading" style="grid-column:1/-1">'+(xtraImportPaused?'Import paused. ':'')+'Importing '+escapeHTML(country.name)+' ('+(i+1)+' of '+queue.length+') · '+savedCount+' services saved</div>';
+ let savedCount=0,empty=0,failed=0,done=0,nextIndex=0,nextStartAt=0;
+ const failures=[];const workerCount=Math.min(3,queue.length);
+ const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+ async function takeNext(){
+  while(true){
+   if(!(await waitForXtraImportResume()))return null;
+   if(nextIndex>=queue.length)return null;
+   const wait=Math.max(0,nextStartAt-Date.now());
+   if(wait)await sleep(wait);
+   if(!(await waitForXtraImportResume()))return null;
+   if(nextIndex>=queue.length)return null;
+   // Keep request STARTS at least 1.05 seconds apart: safely below the
+   // documented 60 requests/minute supplier limit while allowing I/O overlap.
+   nextStartAt=Date.now()+1050;
+   return {country:queue[nextIndex],index:nextIndex++};
+  }
+ }
+ async function runOne(){
+  while(true){
+   const task=await takeNext();if(!task)return;
+   const {country,index}=task;
+   button.textContent="Importing · "+(done+1)+"/"+queue.length;
+   $("xtraImportStatus").textContent=label+" · " +(done+1)+"/"+queue.length+" started · "+savedCount+" services saved · 3 workers";
    try{
     const result=await importXtraCountry(country);const count=Number(result.serviceCount||0);
-    if(result.success&&count>0){savedCount+=count;}else{empty++;failures.push(country);}
+    if(result.success&&count>0)savedCount+=count;else{empty++;failures.push(country);}
    }catch(error){failed++;failures.push(country);}
    done++;
-   $("xtraImportStatus").textContent="Progress: "+done+"/"+queue.length+" · "+savedCount+" services · "+empty+" empty · "+failed+" failed";
-   showXtraMessage("Import progress: "+done+"/"+queue.length+" countries · "+savedCount+" services saved · "+empty+" empty · "+failed+" failed", "success");
-   // XtraLogs documents a 60-request/minute limit. Keep a small safety margin.
-   if(i<queue.length-1){let remaining=1050;while(remaining>0&&!xtraImportStop){if(!(await waitForXtraImportResume()))break;const slice=Math.min(250,remaining);await new Promise(resolve=>setTimeout(resolve,slice));remaining-=slice;}}
+   $("xtraImportStatus").textContent="Progress: "+done+"/"+queue.length+" completed · "+savedCount+" services · "+empty+" empty · "+failed+" failed";
+   showXtraMessage("Import progress: "+done+"/"+queue.length+" countries · "+savedCount+" services saved · "+empty+" empty · "+failed+" failed","success");
+   $("xtraCatalogResults").innerHTML='<div class="loading" style="grid-column:1/-1">'+escapeHTML(label)+': '+done+' of '+queue.length+' countries completed · '+savedCount+' services saved</div>';
   }
-  if(xtraImportStop) failures.push(...queue.slice(done));
+ }
+ try{
+  await Promise.all(Array.from({length:workerCount},()=>runOne()));
+  if(xtraImportStop)failures.push(...queue.slice(nextIndex));
   xtraFailedCountries=failures;
   const summary=(xtraImportStop?"Import stopped":"Import finished")+": "+done+"/"+queue.length+" processed, "+savedCount+" services saved, "+empty+" empty, "+failed+" failed.";
   $("xtraCatalogResults").innerHTML='<div class="empty-state" style="grid-column:1/-1">'+escapeHTML(summary)+(failures.length?'<details style="margin-top:12px;text-align:left"><summary>Countries to retry ('+failures.length+')</summary><ul>'+failures.slice(0,100).map(c=>'<li>'+escapeHTML(c.name)+' ('+escapeHTML(c.code)+')</li>').join("")+'</ul></details>':'')+'</div>';
