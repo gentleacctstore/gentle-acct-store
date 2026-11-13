@@ -2230,9 +2230,9 @@ function xtraItemId(item) {
 function xtraItemName(item) {
   return String(item.name??item.title??item.service_name??item.product_name??item.package_name??item.operator_name??"Unnamed service");
 }
-function xtraCost(item) {
+function xtraCost(item,catalog="") {
   if(item.rank_price_minor!==undefined) return {value:Number(item.rank_price_minor)/100,currency:"NGN"};
-  if(item.price_minor!==undefined) return {value:Number(item.price_minor)/100,currency:"NGN"};
+  if(!String(catalog).startsWith("numbers-")&&item.price_minor!==undefined) return {value:Number(item.price_minor)/100,currency:"NGN"};
   if(item.price!==undefined) return {value:Number(item.price),currency:String(item.currency||"NGN").toUpperCase()};
   if(item.price_usd!==undefined) return {value:Number(item.price_usd),currency:"USD"};
   return {value:0,currency:String(item.currency||"NGN").toUpperCase()};
@@ -2501,7 +2501,7 @@ function renderXtraCatalogue() {
   const catalog=$("xtraCatalogSelect").value;
   const items=xtraCatalogueItems.filter(item=>!term||xtraItemName(item).toLowerCase().includes(term)||xtraItemId(item).toLowerCase().includes(term));
   $("xtraCatalogResults").innerHTML=items.length?items.map(item=>{
-    const id=xtraItemId(item);const worldCountry=catalog==="numbers-global"?($("xtraWorldCountry")?.value||""):"";const key=catalog==="numbers-global"&&worldCountry?catalog+":"+worldCountry+":"+id:catalog+":"+id;const cost=xtraCost(item);const saved=xtraPricingOverrides[key]||{};
+    const id=xtraItemId(item);const worldCountry=catalog==="numbers-global"?($("xtraWorldCountry")?.value||""):"";const key=catalog==="numbers-global"&&worldCountry?catalog+":"+worldCountry+":"+id:catalog+":"+id;const cost=xtraCost(item,catalog);const saved=xtraPricingOverrides[key]||{};
     const auto=Number((cost.value*(1+Number($("xtraDefaultMargin").value||20)/100)).toFixed(2));
     const selling=saved.sellingPrice!==undefined?saved.sellingPrice:auto;
     return `<article class="supplier-card"><div class="supplier-card-name">${escapeHTML(xtraItemName(item))}</div><div class="supplier-card-meta">ID: ${escapeHTML(id||"Not supplied")} · ${escapeHTML(catalog)}</div><div class="supplier-card-values"><div class="supplier-card-value"><small>Supplier cost</small><strong>${xtraMoney(cost.value,cost.currency)}</strong></div><div class="supplier-card-value"><small>Auto price</small><strong>${xtraMoney(auto,cost.currency)}</strong></div></div><label class="small muted" for="xtra-price-${escapeHTML(id)}">Manual customer price (${cost.currency})</label><input class="supplier-selling-price xtra-service-price" id="xtra-price-${escapeHTML(id)}" data-xtra-key="${escapeHTML(key)}" data-xtra-currency="${escapeHTML(cost.currency)}" type="number" min="0" step="0.01" value="${escapeHTML(selling)}"><label class="small muted"><input type="checkbox" class="xtra-price-enabled" data-xtra-key="${escapeHTML(key)}" ${saved.enabled===false?"":"checked"}> Use manual override for this service</label></article>`;
