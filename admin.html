@@ -936,6 +936,12 @@ html,body{background:#050b1b!important;color:#edf6ff!important}
    <div class="form-grid" id="xtraCatalogExtraFields" style="grid-column:1/-1"></div>
    <input id="xtraCatalogSearch" type="search" placeholder="Search this category..." aria-label="Search category catalogue">
    <button class="btn btn-primary" id="xtraLoadCatalog" type="button">Fetch catalogue</button>
+   <div class="toolbar" id="xtraUSATools" style="grid-column:1/-1;gap:8px;flex-wrap:wrap;display:none">
+    <button class="btn" id="xtraUSAShowUnique" type="button" aria-pressed="true">Unique services</button>
+    <button class="btn" id="xtraUSAShowAll" type="button" aria-pressed="false">Show all supplier options</button>
+    <button class="btn" id="xtraUSAClearSearch" type="button">Clear search</button>
+    <span class="muted small" id="xtraUSAStats" aria-live="polite">Fetch the USA catalogue to inspect services.</span>
+   </div>
   </div>
   <div class="supplier-note" id="xtraCategoryHint">Fetch this category's catalogue to review service costs and customer prices.</div>
   <div class="supplier-card-grid" id="xtraCatalogResults"><div class="empty-state" style="grid-column:1/-1">Choose a category to begin.</div></div>
@@ -2207,6 +2213,7 @@ $("loginForm").addEventListener("submit",async event=>{
 
 /* XTRALOGS TOOLS ADMIN */
 let xtraCatalogueItems=[];
+let xtraUSAView="unique";
 let xtraPricingOverrides={};
 let xtraPricingLoaded=false;
 let xtraImportedCountries=[];
@@ -2228,21 +2235,44 @@ function xtraItemId(item) {
   return id===undefined||id===null?"":String(id);
 }
 function xtraItemName(item) {
-  return String(item.name??item.title??item.service_name??item.product_name??item.package_name??item.operator_name??item.label??"Unnamed service");
+  return String(item.name??item.title??item.service_name??item.serviceName??item.product_name??item.package_name??item.operator_name??item.label??item.service??"Unnamed service").trim();
 }
 function xtraCost(item) {
-  if(item.rank_price_minor!==undefined) return {value:Number(item.rank_price_minor)/100,currency:"NGN"};
+  const minor=item.rank_price_minor??item.price_minor??item.cost_minor??item.amount_minor;
+  if(minor!==undefined&&Number.isFinite(Number(minor))) return {value:Number(minor)/100,currency:String(item.currency||item.currency_code||"NGN").toUpperCase()};
   if($("xtraCatalogSelect").value==="numbers-usa"||$("xtraCatalogSelect").value==="numbers-global") return {value:0,currency:"NGN"};
-  if(item.price_minor!==undefined) return {value:Number(item.price_minor)/100,currency:"NGN"};
   if(item.price!==undefined) return {value:Number(item.price),currency:String(item.currency||"NGN").toUpperCase()};
+  if(item.cost!==undefined) return {value:Number(item.cost),currency:String(item.currency||"NGN").toUpperCase()};
   if(item.price_usd!==undefined) return {value:Number(item.price_usd),currency:"USD"};
   return {value:0,currency:String(item.currency||"NGN").toUpperCase()};
+}
+function xtraUniqueUSAItems(items) {
+  const groups=new Map();
+  for(const item of items){
+    const name=xtraItemName(item);
+    const key=name.toLocaleLowerCase().replace(/\s+/g," ").trim();
+    if(!key)continue;
+    const current=groups.get(key);
+    const cost=xtraCost(item).value;
+    // Keep one option per visible service name. When supplier duplicates have
+    // different costs, prefer the lowest positive cost; keep original order on ties.
+    if(!current||(cost>0&&(xtraCost(current).value<=0||cost<xtraCost(current).value)))groups.set(key,item);
+  }
+  return [...groups.values()];
+}
+function updateXtraUSAControls() {
+  const isUSA=$("xtraCatalogSelect").value==="numbers-usa";
+  const tools=$("xtraUSATools");if(tools)tools.style.display=isUSA?"flex":"none";
+  const unique=$("xtraUSAShowUnique"),all=$("xtraUSAShowAll");
+  if(unique){unique.setAttribute("aria-pressed",String(xtraUSAView==="unique"));unique.classList.toggle("btn-primary",xtraUSAView==="unique");}
+  if(all){all.setAttribute("aria-pressed",String(xtraUSAView==="all"));all.classList.toggle("btn-primary",xtraUSAView==="all");}
+  if(isUSA){const uniqueCount=xtraUniqueUSAItems(xtraCatalogueItems).length;const duplicates=Math.max(0,xtraCatalogueItems.length-uniqueCount);$("xtraUSAStats").textContent=xtraCatalogueItems.length?`${xtraCatalogueItems.length} supplier records · ${uniqueCount} unique service names · ${duplicates} repeated records`:"Fetch the USA catalogue to inspect services.";}
 }
 function xtraExtractItems(data,depth=0) {
   const isUSA=$("xtraCatalogSelect")?.value==="numbers-usa";
   if(depth>8||data==null)return [];
   const idKeys=["service_id","serviceId","number_service_id","activation_service_id","product_id","productId","item_id","itemId","package_id","packageId","operator_id","operatorId","id"];
-  const nameKeys=["name","title","service_name","product_name","package_name","operator_name","label"];
+  const nameKeys=["name","title","service_name","serviceName","product_name","package_name","operator_name","label","service"];
   if(Array.isArray(data)) {
     if(!isUSA)return data;
     return data.filter(row=>row&&typeof row==="object"&&!Array.isArray(row)&&idKeys.some(k=>row[k]!==undefined&&row[k]!==null)&&nameKeys.some(k=>row[k]!==undefined&&String(row[k]).trim()));
@@ -2396,6 +2426,7 @@ function openXtraCategory(catalog){
     $("xtraWorldCountry").innerHTML='<option value="">'+(saved.length?'Choose a country…':'Import countries first')+'</option>'+saved.map(c=>`<option value="${escapeHTML(c.code)}">${escapeHTML(c.name)} (${escapeHTML(c.code)})</option>`).join("");
   }
   renderXtraCatalogFilters();
+  updateXtraUSAControls();
 }
 function showXtraCategories(){$("xtraCategoryPage").classList.add("hidden");$("xtraCategoryHome").classList.remove("hidden");xtraCatalogueItems=[];}
 document.querySelectorAll("[data-xtra-open]").forEach(button=>button.addEventListener("click",()=>openXtraCategory(button.dataset.xtraOpen)));
@@ -2505,9 +2536,14 @@ async function loadXtraCatalogue() {
     appendXtraCatalogFilters(params);
     const result=await xtraAdminRequest("/api/xtralogs/admin/catalog?"+params.toString());
     xtraCatalogueItems=xtraExtractItems(result);
-    if(catalog==="numbers-usa") xtraCatalogueItems=xtraCatalogueItems.filter(item=>xtraItemId(item));
+    if(catalog==="numbers-usa") {
+      xtraCatalogueItems=xtraCatalogueItems.filter(item=>xtraItemId(item)&&xtraItemName(item)!=="Unnamed service");
+      xtraUSAView="unique";
+    }
+    updateXtraUSAControls();
     renderXtraCatalogue();
-    showXtraMessage("Loaded "+xtraCatalogueItems.length+(catalog==="numbers-usa"?" USA number services.":" catalogue entries."),"success");
+    const uniqueCount=catalog==="numbers-usa"?xtraUniqueUSAItems(xtraCatalogueItems).length:xtraCatalogueItems.length;
+    showXtraMessage(catalog==="numbers-usa"?`Received ${xtraCatalogueItems.length} supplier records; ${uniqueCount} unique service names after duplicate grouping.`:"Loaded "+xtraCatalogueItems.length+" catalogue entries.","success");
   } catch(error) {
     xtraCatalogueItems=[];$("xtraCatalogResults").innerHTML='<div class="empty-state" style="grid-column:1/-1">'+escapeHTML(error.message||"Could not load catalogue.")+'</div>';
     showXtraMessage(error.message||"Could not load service catalogue.");
@@ -2516,12 +2552,14 @@ async function loadXtraCatalogue() {
 function renderXtraCatalogue() {
   const term=$("xtraCatalogSearch").value.trim().toLowerCase();
   const catalog=$("xtraCatalogSelect").value;
-  const items=xtraCatalogueItems.filter(item=>!term||xtraItemName(item).toLowerCase().includes(term)||xtraItemId(item).toLowerCase().includes(term));
+  const sourceItems=catalog==="numbers-usa"&&xtraUSAView==="unique"?xtraUniqueUSAItems(xtraCatalogueItems):xtraCatalogueItems;
+  const items=sourceItems.filter(item=>!term||xtraItemName(item).toLowerCase().includes(term)||xtraItemId(item).toLowerCase().includes(term));
+  updateXtraUSAControls();
   $("xtraCatalogResults").innerHTML=items.length?items.map(item=>{
     const id=xtraItemId(item);const worldCountry=catalog==="numbers-global"?($("xtraWorldCountry")?.value||""):"";const key=catalog==="numbers-global"&&worldCountry?catalog+":"+worldCountry+":"+id:catalog+":"+id;const cost=xtraCost(item);const saved=xtraPricingOverrides[key]||{};
     const auto=Number((cost.value*(1+Number($("xtraDefaultMargin").value||20)/100)).toFixed(2));
     const selling=saved.sellingPrice!==undefined?saved.sellingPrice:auto;
-    return `<article class="supplier-card"><div class="supplier-card-name">${escapeHTML(xtraItemName(item))}</div><div class="supplier-card-meta">Service ID: ${escapeHTML(id||"Unavailable")} · ${escapeHTML(catalog)}</div><div class="supplier-card-values"><div class="supplier-card-value"><small>Service cost</small><strong>${xtraMoney(cost.value,cost.currency)}</strong></div><div class="supplier-card-value"><small>Auto price</small><strong>${xtraMoney(auto,cost.currency)}</strong></div></div><label class="small muted" for="xtra-price-${escapeHTML(id)}">Manual customer price (${cost.currency})</label><input class="supplier-selling-price xtra-service-price" id="xtra-price-${escapeHTML(id)}" data-xtra-key="${escapeHTML(key)}" data-xtra-currency="${escapeHTML(cost.currency)}" type="number" min="0" step="0.01" value="${escapeHTML(selling)}"><label class="small muted"><input type="checkbox" class="xtra-price-enabled" data-xtra-key="${escapeHTML(key)}" ${saved.enabled===false?"":"checked"}> Use manual override for this service</label></article>`;
+    return `<article class="supplier-card"><div class="supplier-card-name">${escapeHTML(xtraItemName(item))}</div><div class="supplier-card-meta">Service ID: ${escapeHTML(id||"Unavailable")} · ${escapeHTML(catalog)}</div><div class="supplier-card-values"><div class="supplier-card-value"><small>Service cost</small><strong>${xtraMoney(cost.value,cost.currency)}</strong></div><div class="supplier-card-value"><small>Auto price</small><strong>${xtraMoney(auto,cost.currency)}</strong></div></div><label class="small muted" for="xtra-price-${escapeHTML(id)}">Manual customer price (${cost.currency})</label><input class="supplier-selling-price xtra-service-price" id="xtra-price-${escapeHTML(id)}" data-xtra-key="${escapeHTML(key)}" data-xtra-currency="${escapeHTML(cost.currency)}" type="number" min="0" step="0.01" value="${escapeHTML(selling)}"><label class="small muted"><input type="checkbox" class="xtra-price-enabled" data-xtra-key="${escapeHTML(key)}" ${saved.enabled===true?"checked":""}> Use manual override for this service</label></article>`;
   }).join(""):'<div class="empty-state" style="grid-column:1/-1">'+(catalog==="numbers-usa"?'No USA number services with valid service IDs were returned. Check the XtraLogs USA Numbers response and API permissions.':'No catalogue entries found. Some catalogues need a country or extra query parameters.')+'</div>';
 }
 async function saveXtraPricing() {
@@ -2549,7 +2587,11 @@ $("xtraImportCountries").addEventListener("click",importXtraWorldCountries);
 $("xtraCatalogSelect").addEventListener("change",()=>{xtraCatalogueItems=[];$("xtraCatalogResults").innerHTML="";if($("xtraWorldCountry"))$("xtraWorldCountry").innerHTML='<option value="">Fetch countries first</option>';renderXtraCatalogFilters();});
 $("xtraWorldCountry").addEventListener("change",()=>{xtraCatalogueItems=[];$("xtraCatalogResults").innerHTML=$("xtraWorldCountry").value?'Tap Fetch catalogue to load services for '+escapeHTML($("xtraWorldCountry").selectedOptions[0].text)+'.':'Choose a country.';});
 renderXtraCatalogFilters();
+updateXtraUSAControls();
 $("xtraCatalogSearch").addEventListener("input",renderXtraCatalogue);
+$("xtraUSAShowUnique").addEventListener("click",()=>{xtraUSAView="unique";renderXtraCatalogue();});
+$("xtraUSAShowAll").addEventListener("click",()=>{xtraUSAView="all";renderXtraCatalogue();});
+$("xtraUSAClearSearch").addEventListener("click",()=>{$("xtraCatalogSearch").value="";renderXtraCatalogue();});
 $("xtraDefaultMargin").addEventListener("input",()=>{if(xtraCatalogueItems.length)renderXtraCatalogue();$("xtraMarginSummary").textContent=(Number($("xtraDefaultMargin").value)||0)+"%";});
 $("xtraSavePricing").addEventListener("click",saveXtraPricing);
 $("xtraSaveServicePrices").addEventListener("click",saveXtraServicePrices);
