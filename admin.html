@@ -2396,20 +2396,20 @@ async function importXtraWorldCountries(){
   const select=$("xtraWorldCountry");
   select.innerHTML='<option value="">Choose a country…</option>'+xtraImportedCountries.map(c=>`<option value="${escapeHTML(c.code)}">${escapeHTML(c.name)} (${escapeHTML(c.code)})</option>`).join("");
   $("xtraCatalogResults").innerHTML='<div class="loading" style="grid-column:1/-1">Importing number services for '+countries.length+' countries…</div>';
-  let completed=0,serviceTotal=0,empty=0,failed=0;const failures=[];
+  let completed=0,serviceTotal=0,liveAvailable=0,unknownAvailability=0,empty=0,failed=0;const failures=[];
   for(let i=0;i<countries.length;i++){
     const country=countries[i];button.textContent="Importing "+(i+1)+"/"+countries.length+"…";
     $("xtraCatalogResults").innerHTML='<div class="loading" style="grid-column:1/-1">Importing '+escapeHTML(country.name)+' ('+(i+1)+' of '+countries.length+') · '+serviceTotal+' services saved so far</div>';
     try{
       const imported=await xtraAdminRequest("/api/xtralogs/admin/world-import-country",{method:"POST",body:JSON.stringify({countryCode:country.code,countryName:country.name})});
       const count=Number(imported.serviceCount||0);
-      if(imported.success&&count>0){completed++;serviceTotal+=count;}
+      if(imported.success&&count>0){completed++;serviceTotal+=count;liveAvailable+=Number(imported.availableCount||0);unknownAvailability+=Number(imported.unknownCount||0);}
       else{empty++;failures.push(country.name+": supplier returned no identifiable services");}
     }catch(error){failed++;failures.push(country.name+": "+(error.message||"import failed"));}
     showXtraMessage("Import progress: "+(i+1)+"/"+countries.length+" countries · "+serviceTotal+" services saved · "+empty+" empty · "+failed+" failed","success");
     if(i<countries.length-1)await new Promise(resolve=>setTimeout(resolve,1050));
   }
-  const summary="Import finished: "+completed+" countries with services, "+serviceTotal+" number services saved, "+empty+" empty, "+failed+" failed.";
+  const summary="Live catalogue refresh finished: "+completed+" countries with services, "+serviceTotal+" services returned, "+liveAvailable+" explicitly live-available, "+unknownAvailability+" availability unconfirmed, "+empty+" empty, "+failed+" failed. Only explicitly confirmed live-available numbers can be purchased.";
   $("xtraCatalogResults").innerHTML='<div class="empty-state" style="grid-column:1/-1">'+escapeHTML(summary)+(failures.length?'<details style="margin-top:12px;text-align:left"><summary>Countries needing attention ('+failures.length+')</summary><ul>'+failures.slice(0,80).map(x=>'<li>'+escapeHTML(x)+'</li>').join("")+'</ul></details>':'')+'</div>';
   showXtraMessage(summary,completed>0&&empty===0&&failed===0?"success":"error");
  }catch(error){
@@ -2441,15 +2441,24 @@ async function loadXtraCatalogue() {
     showXtraMessage(error.message||"Could not load XtraLogs catalogue.");
   } finally {button.disabled=false;button.textContent="Fetch catalogue";}
 }
+function xtraAdminAvailability(item){
+ const boolKeys=["available","is_available","in_stock","inStock","can_purchase","canPurchase","active","enabled"];
+ for(const k of boolKeys)if(typeof item?.[k]==="boolean")return item[k]?"LIVE AVAILABLE":"UNAVAILABLE";
+ for(const k of ["stock","stock_count","stockCount","quantity_available","available_count","count","numbers_available","number_count"])if(item?.[k]!==undefined&&item?.[k]!==null&&item[k]!==""){const n=Number(item[k]);if(Number.isFinite(n))return n>0?"LIVE AVAILABLE":"NO STOCK";}
+ const st=String(item?.status??item?.availability??item?.state??"").toLowerCase();
+ if(["available","active","in_stock","instock","ready","online","enabled"].includes(st))return "LIVE AVAILABLE";
+ if(["unavailable","out_of_stock","out-of-stock","sold_out","sold out","inactive","disabled","offline","empty"].includes(st))return "UNAVAILABLE";
+ return "AVAILABILITY UNCONFIRMED";
+}
 function renderXtraCatalogue() {
   const term=$("xtraCatalogSearch").value.trim().toLowerCase();
   const catalog=$("xtraCatalogSelect").value;
   const items=xtraCatalogueItems.filter(item=>!term||xtraItemName(item).toLowerCase().includes(term)||xtraItemId(item).toLowerCase().includes(term));
   $("xtraCatalogResults").innerHTML=items.length?items.map(item=>{
-    const id=xtraItemId(item);const worldCountry=catalog==="numbers-global"?($("xtraWorldCountry")?.value||""):"";const key=catalog==="numbers-global"&&worldCountry?catalog+":"+worldCountry+":"+id:catalog+":"+id;const cost=xtraCost(item);const saved=xtraPricingOverrides[key]||{};
+    const id=xtraItemId(item);const worldCountry=catalog==="numbers-global"?($("xtraWorldCountry")?.value||""):"";const key=catalog==="numbers-global"&&worldCountry?catalog+":"+worldCountry+":"+id:catalog+":"+id;const cost=xtraCost(item);const saved=xtraPricingOverrides[key]||{};const liveStatus=catalog.startsWith("numbers-")?xtraAdminAvailability(item):"CATALOGUE ITEM";
     const auto=Number((cost.value*(1+Number($("xtraDefaultMargin").value||20)/100)).toFixed(2));
     const selling=saved.sellingPrice!==undefined?saved.sellingPrice:auto;
-    return `<article class="supplier-card"><div class="supplier-card-name">${escapeHTML(xtraItemName(item))}</div><div class="supplier-card-meta">ID: ${escapeHTML(id||"Not supplied")} · ${escapeHTML(catalog)}</div><div class="supplier-card-values"><div class="supplier-card-value"><small>Supplier cost</small><strong>${xtraMoney(cost.value,cost.currency)}</strong></div><div class="supplier-card-value"><small>Auto price</small><strong>${xtraMoney(auto,cost.currency)}</strong></div></div><label class="small muted" for="xtra-price-${escapeHTML(id)}">Manual customer price (${cost.currency})</label><input class="supplier-selling-price xtra-service-price" id="xtra-price-${escapeHTML(id)}" data-xtra-key="${escapeHTML(key)}" data-xtra-currency="${escapeHTML(cost.currency)}" type="number" min="0" step="0.01" value="${escapeHTML(selling)}"><label class="small muted"><input type="checkbox" class="xtra-price-enabled" data-xtra-key="${escapeHTML(key)}" ${saved.enabled===false?"":"checked"}> Use manual override for this service</label></article>`;
+    return `<article class="supplier-card"><div class="supplier-card-name">${escapeHTML(xtraItemName(item))}</div><div class="supplier-card-meta">ID: ${escapeHTML(id||"Not supplied")} · ${escapeHTML(catalog)} · <strong>${escapeHTML(liveStatus)}</strong></div><div class="supplier-card-values"><div class="supplier-card-value"><small>Supplier cost</small><strong>${xtraMoney(cost.value,cost.currency)}</strong></div><div class="supplier-card-value"><small>Auto price</small><strong>${xtraMoney(auto,cost.currency)}</strong></div></div><label class="small muted" for="xtra-price-${escapeHTML(id)}">Manual customer price (${cost.currency})</label><input class="supplier-selling-price xtra-service-price" id="xtra-price-${escapeHTML(id)}" data-xtra-key="${escapeHTML(key)}" data-xtra-currency="${escapeHTML(cost.currency)}" type="number" min="0" step="0.01" value="${escapeHTML(selling)}"><label class="small muted"><input type="checkbox" class="xtra-price-enabled" data-xtra-key="${escapeHTML(key)}" ${saved.enabled===false?"":"checked"}> Use manual override for this service</label></article>`;
   }).join(""):'<div class="empty-state" style="grid-column:1/-1">No catalogue entries found. Some catalogues need a country or extra query parameters.</div>';
 }
 async function saveXtraPricing() {

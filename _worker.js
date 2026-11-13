@@ -854,23 +854,33 @@ async function handleXtraLogs(request,env) {
     const rows=xtraExtractWorldServiceItems(result.payload);
     if(!rows.length){
       const topLevelKeys=result.payload&&typeof result.payload==="object"?Object.keys(result.payload):[];
-      return xtraJson({success:false,error:"XtraLogs returned no identifiable number services for "+countryName+". This country was not marked as imported.",countryCode,countryName,serviceCount:0,topLevelKeys},422,origin);
+      // Replace any older imported snapshot with an empty live result so old services cannot linger in admin data.
+      const sa=JSON.parse(env.FCM_SERVICE_ACCOUNT_JSON||"{}");
+      if(!sa.project_id)throw new Error("Firebase service account is not configured.");
+      const token=await getGoogleAccessToken(sa),importedAt=new Date().toISOString();
+      const docPath=`projects/${sa.project_id}/databases/(default)/documents/storeSettings/xtralogsWorldCatalog/countries/${encodeURIComponent(countryCode)}`;
+      const save=await fetch(`https://firestore.googleapis.com/v1/${docPath}`,{method:"PATCH",headers:{Authorization:"Bearer "+token,"Content-Type":"application/json"},body:JSON.stringify({fields:{countryCode:{stringValue:countryCode},countryName:{stringValue:countryName},services:{arrayValue:{values:[]}},serviceCount:{integerValue:"0"},availableCount:{integerValue:"0"},unknownCount:{integerValue:"0"},importedAt:{timestampValue:importedAt}}})});
+      if(!save.ok)return xtraJson({error:"XtraLogs returned no services and the old snapshot could not be cleared.",countryCode},502,origin);
+      return xtraJson({success:true,countryCode,countryName,serviceCount:0,availableCount:0,unknownCount:0,empty:true,topLevelKeys,message:"The live supplier catalogue returned no services. Previous imported services have been cleared."},200,origin);
     }
     const settings=await xtraGetPricing(env);
     const services=rows.map(item=>{
-      const id=xtraCatalogIdentity(item),cost=xtraCatalogCost(item),price=xtraSellingPrice(item,"numbers-global",settings,countryCode);
-      return {id,name:String(item.name??item.title??item.service_name??item.product_name??item.operator_name??"Number service "+id),description:String(item.description??item.details??item.server_name??item.server??""),logoUrl:xtraCatalogLogo(item),supplierCost:cost.amount,supplierCurrency:cost.currency,price:price.price,currency:price.currency,available:item.available!==false&&item.in_stock!==false,server:item.server_name??item.server??item.server_id??null,raw:item};
+      const id=xtraCatalogIdentity(item),cost=xtraCatalogCost(item,"numbers-global"),price=xtraSellingPrice(item,"numbers-global",settings,countryCode);
+      const stock=xtraNumberAvailability(item),server=xtraServiceServer(item);
+      return {id,name:String(item.name??item.title??item.service_name??item.product_name??item.operator_name??"Number service "+id),description:String(item.description??item.details??""),logoUrl:xtraCatalogLogo(item),supplierCost:cost.amount,supplierCurrency:cost.currency,price:price.price,currency:price.currency,available:stock.available,availabilityKnown:stock.known,availabilityReason:stock.reason,server:server||null,raw:item};
     });
     const sa=JSON.parse(env.FCM_SERVICE_ACCOUNT_JSON||"{}");
     if(!sa.project_id)throw new Error("Firebase service account is not configured.");
     const token=await getGoogleAccessToken(sa);
     const docPath=`projects/${sa.project_id}/databases/(default)/documents/storeSettings/xtralogsWorldCatalog/countries/${encodeURIComponent(countryCode)}`;
     const docUrl=`https://firestore.googleapis.com/v1/${docPath}`;
-    const payload={countryCode,countryName,services,serviceCount:services.length,importedAt:new Date().toISOString()};
+    const availableCount=services.filter(x=>x.available===true&&x.availabilityKnown===true).length;
+    const unknownCount=services.filter(x=>x.availabilityKnown!==true).length;
+    const payload={countryCode,countryName,services,serviceCount:services.length,availableCount,unknownCount,importedAt:new Date().toISOString()};
     if(JSON.stringify(payload).length>850000)return xtraJson({error:"The service catalogue for "+countryName+" is too large to save safely.",countryCode,serviceCount:services.length},413,origin);
-    const save=await fetch(docUrl,{method:"PATCH",headers:{Authorization:"Bearer "+token,"Content-Type":"application/json"},body:JSON.stringify({fields:{countryCode:{stringValue:countryCode},countryName:{stringValue:countryName},services:xtraFirestoreEncode(services),serviceCount:{integerValue:String(services.length)},importedAt:{timestampValue:payload.importedAt}}})});
+    const save=await fetch(docUrl,{method:"PATCH",headers:{Authorization:"Bearer "+token,"Content-Type":"application/json"},body:JSON.stringify({fields:{countryCode:{stringValue:countryCode},countryName:{stringValue:countryName},services:xtraFirestoreEncode(services),serviceCount:{integerValue:String(services.length)},availableCount:{integerValue:String(availableCount)},unknownCount:{integerValue:String(unknownCount)},importedAt:{timestampValue:payload.importedAt}}})});
     if(!save.ok){const msg=await save.text();console.error("XtraLogs country catalogue save failed",save.status,msg.slice(0,500));return xtraJson({error:"Could not save "+countryName+" services to Firebase.",countryCode,serviceCount:services.length},502,origin);}
-    return xtraJson({success:true,countryCode,countryName,serviceCount:services.length,importedAt:payload.importedAt},200,origin);
+    return xtraJson({success:true,countryCode,countryName,serviceCount:services.length,availableCount,unknownCount,importedAt:payload.importedAt},200,origin);
   }
   if(request.method==="GET"&&new URL(request.url).pathname==="/api/xtralogs/admin/pricing") {
     const settings=await xtraGetPricing(env);
@@ -896,76 +906,6 @@ async function handleXtraLogs(request,env) {
     return xtraJson({success:true,message:"XtraLogs pricing settings saved.",settings:{pricingMode:mode,defaultMarginPercent:margin,overrides:clean,importedCountries}},200,origin);
   }
   return xtraJson({error:"Unknown XtraLogs admin operation."},404,origin);
-}
-
-
-/* XTRALOGS BACKGROUND WORLD-CATALOGUE SYNC
-   Runs in the existing Worker after World Numbers traffic, without blocking customers. */
-async function xtraSyncWorldCatalog(env) {
-  if (!env.XTRALOGS_API_KEY) throw new Error("XTRALOGS_API_KEY is not configured.");
-  if (!env.FCM_SERVICE_ACCOUNT_JSON) throw new Error("Firebase service account is not configured.");
-  const settings = await xtraGetPricing(env);
-  const countries = Array.isArray(settings.importedCountries) ? settings.importedCountries : [];
-  if (!countries.length) {
-    return { success: true, skipped: true, reason: "No World Numbers countries have been imported in Admin yet.", synced: 0 };
-  }
-  const sa = JSON.parse(env.FCM_SERVICE_ACCOUNT_JSON);
-  const token = await getGoogleAccessToken(sa);
-  const startedAt = new Date().toISOString();
-  let synced = 0, failed = 0, unchangedEmpty = 0;
-  const errors = [];
-  for (const country of countries.slice(0, 250)) {
-    const code = String(country.code || "").trim();
-    const name = String(country.name || code).trim();
-    if (!/^[A-Za-z0-9][A-Za-z0-9_-]{1,79}$/.test(code)) continue;
-    try {
-      const result = await xtraUpstream(env, "/catalog/numbers?scope=global&country=" + encodeURIComponent(code));
-      if (!result.response.ok) throw new Error("XtraLogs HTTP " + result.response.status);
-      const rows = xtraExtractWorldServiceItems(result.payload);
-      // Empty/ambiguous supplier responses must never wipe a previously good catalogue.
-      if (!rows.length) { unchangedEmpty++; throw new Error("Supplier returned no identifiable services; previous cache retained."); }
-      const services = rows.map(item => {
-        const id = xtraCatalogIdentity(item), cost = xtraCatalogCost(item), price = xtraSellingPrice(item, "numbers-global", settings, code);
-        return { id, name: String(item.name ?? item.title ?? item.service_name ?? item.product_name ?? item.operator_name ?? "Number service " + id),
-          description: String(item.description ?? item.details ?? item.server_name ?? item.server ?? ""),
-          logoUrl: xtraCatalogLogo(item), supplierCost: cost.amount, supplierCurrency: cost.currency,
-          price: price.price, currency: price.currency, available: item.available !== false && item.in_stock !== false,
-          server: item.server_name ?? item.server ?? item.server_id ?? null, raw: item };
-      });
-      const docPath = `projects/${sa.project_id}/databases/(default)/documents/storeSettings/xtralogsWorldCatalog/countries/${encodeURIComponent(code)}`;
-      const docUrl = `https://firestore.googleapis.com/v1/${docPath}`;
-      const importedAt = new Date().toISOString();
-      const body = { countryCode: code, countryName: name, services, serviceCount: services.length, importedAt };
-      if (JSON.stringify(body).length > 850000) throw new Error("Catalogue exceeds Firestore document size safety limit.");
-      const save = await fetch(docUrl, { method: "PATCH", headers: { Authorization: "Bearer " + token, "Content-Type": "application/json" }, body: JSON.stringify({ fields: {
-        countryCode: { stringValue: code }, countryName: { stringValue: name }, services: xtraFirestoreEncode(services),
-        serviceCount: { integerValue: String(services.length) }, importedAt: { timestampValue: importedAt }
-      } }) });
-      if (!save.ok) throw new Error("Firebase save failed with HTTP " + save.status);
-      synced++;
-    } catch (error) {
-      failed++; errors.push({ country: code, message: String(error.message || error).slice(0, 180) });
-      console.error("XtraLogs background sync failed for", code, error);
-    }
-  }
-  const completedAt = new Date().toISOString();
-  const statusUrl = `https://firestore.googleapis.com/v1/projects/${encodeURIComponent(sa.project_id)}/databases/(default)/documents/storeSettings/xtralogsWorldCatalog`;
-  let previousSuccessAt = null;
-  try {
-    const previousStatus = await fetch(statusUrl, { headers: { Authorization: "Bearer " + token } });
-    if (previousStatus.ok) {
-      const previousDoc = await previousStatus.json();
-      previousSuccessAt = previousDoc.fields?.lastSuccessAt?.timestampValue || null;
-    }
-  } catch (error) { console.error("Could not read previous XtraLogs sync status:", error); }
-  const statusFields = { lastAttemptAt: { timestampValue: startedAt }, lastCompletedAt: { timestampValue: completedAt },
-    ...(synced ? { lastSuccessAt: { timestampValue: completedAt } } : (previousSuccessAt ? { lastSuccessAt: { timestampValue: previousSuccessAt } } : {})),
-    lastSyncStatus: { stringValue: failed ? (synced ? "partial" : "failed") : "success" },
-    lastSyncCountryCount: { integerValue: String(synced) }, lastSyncFailureCount: { integerValue: String(failed) },
-    lastSyncErrors: xtraFirestoreEncode(errors.slice(0, 30)) };
-  const statusSave = await fetch(statusUrl, { method: "PATCH", headers: { Authorization: "Bearer " + token, "Content-Type": "application/json" }, body: JSON.stringify({ fields: statusFields }) });
-  if (!statusSave.ok) console.error("Could not save XtraLogs sync status:", statusSave.status);
-  return { success: failed === 0, synced, failed, unchangedEmpty, total: countries.length, completedAt, errors: errors.slice(0, 10) };
 }
 
 
@@ -1055,6 +995,26 @@ function xtraCatalogLogo(item, depth=0, seen=new Set()) {
   }
   return "";
 }
+function xtraNumberAvailability(item) {
+  if(!item || typeof item!=="object") return {available:false,known:false,reason:"No service record"};
+  const boolKeys=["available","is_available","in_stock","inStock","can_purchase","canPurchase","active","enabled"];
+  for(const key of boolKeys) if(typeof item[key]==="boolean") return {available:item[key],known:true,reason:key};
+  const qtyKeys=["stock","stock_count","stockCount","quantity_available","available_count","count","numbers_available","number_count"];
+  for(const key of qtyKeys) if(item[key]!==undefined && item[key]!==null && item[key]!=="") {
+    const n=Number(item[key]); if(Number.isFinite(n)) return {available:n>0,known:true,reason:key};
+  }
+  const status=String(item.status??item.availability??item.state??"").trim().toLowerCase();
+  if(status) {
+    if(["available","active","in_stock","instock","ready","online","enabled"].includes(status)) return {available:true,known:true,reason:"status"};
+    if(["unavailable","out_of_stock","out-of-stock","sold_out","sold out","inactive","disabled","offline","empty"].includes(status)) return {available:false,known:true,reason:"status"};
+  }
+  return {available:false,known:false,reason:"Supplier did not confirm live availability"};
+}
+function xtraServiceServer(item) {
+  const v=item?.server_name??item?.serverName??item?.server_label??item?.serverLabel??item?.server??item?.server_id??item?.serverId??"";
+  if(v && typeof v==="object") return String(v.name??v.label??v.title??v.id??"").trim();
+  return String(v??"").trim();
+}
 function xtraExtractWorldServiceItems(payload) {
   const out=[],seen=new Set(),visited=new Set();
   const idKeys=["service_id","serviceId","number_service_id","activation_service_id","product_id","productId","item_id","itemId","package_id","packageId","operator_id","operatorId","id"];
@@ -1090,11 +1050,8 @@ function xtraExtractWorldServiceItems(payload) {
   walk(payload);return out;
 }
 function xtraCatalogCost(item,catalog="") {
-  // XtraLogs explicitly identifies rank_price_minor as the charged number price.
-  // Do not substitute price_minor for USA or World Numbers.
-  if(catalog==="numbers-usa"||catalog==="numbers-global") {
-    if(item.rank_price_minor!==undefined&&item.rank_price_minor!==null&&item.rank_price_minor!=="")
-      return {amount:Number(item.rank_price_minor)/100,currency:"NGN"};
+  if(catalog==="numbers-global"||catalog==="numbers-usa") {
+    if(item.rank_price_minor!==undefined && Number.isFinite(Number(item.rank_price_minor))) return {amount:Number(item.rank_price_minor)/100,currency:"NGN"};
     return {amount:0,currency:"NGN"};
   }
   if(item.rank_price_minor!==undefined) return {amount:Number(item.rank_price_minor)/100,currency:"NGN"};
@@ -1131,247 +1088,90 @@ async function handleXtraCustomer(request,env) {
   if(request.method==="OPTIONS") return new Response(null,{status:204,headers:{"Access-Control-Allow-Origin":ALLOWED_ORIGIN,"Access-Control-Allow-Methods":"GET, POST, OPTIONS","Access-Control-Allow-Headers":"Content-Type, Authorization","Access-Control-Max-Age":"86400","Vary":"Origin"}});
   const auth=await xtraCustomerIdentity(request);if(auth.error)return auth.error;
   const {user}=auth;const url=new URL(request.url);const {sa,token}=await xtraCustomerFirebase(env);
-  const sandboxMode=String(env.XTRALOGS_API_KEY||"").startsWith("sk_test_");
-  if(!env.XTRALOGS_API_KEY)return xtraJson({error:"Number services are temporarily unavailable."},503,origin);
   if(request.method==="GET"&&url.pathname==="/api/xtralogs/customer/catalog") {
     const catalog=url.searchParams.get("catalog")||"logs";const endpoint=XTRALOGS_CATALOGS[catalog];
     if(!endpoint)return xtraJson({error:"Unknown catalogue"},400,origin);
     const query=new URLSearchParams(endpoint.split("?")[1]||"");
     for(const key of ["country","page","per_page","service","username","quantity","network","kind","type_id","number"]){const v=url.searchParams.get(key);if(v&&/^[A-Za-z0-9._-]{1,80}$/.test(v))query.set(key,v);}
-    if(catalog==="numbers-global"&&url.searchParams.get("country")){
-      const countryCode=String(url.searchParams.get("country"));
-      const cached=await fsGet(sa.project_id,token,"storeSettings/xtralogsWorldCatalog/countries",countryCode);
-      if(cached.document){
-        const fields=xtraFirestoreDecodeFields(cached.document.fields||{});
-        const pricing=await xtraGetPricing(env);
-        const products=(fields.services||[]).map(row=>{
-          const raw=row.raw||{},sell=xtraSellingPrice(raw,catalog,pricing,countryCode);
-          return {id:String(row.id),name:row.name,description:row.description||"",logoUrl:row.logoUrl||xtraCatalogLogo(raw),price:sell.price,currency:sell.currency,available:row.available!==false};
-        });
-        return xtraJson({success:true,catalog,products,cached:true,mode:sandboxMode?"sandbox":"live",country:{code:fields.countryCode,name:fields.countryName}},200,origin);
-      }
-    }
+    // Always use the live supplier catalogue for World Numbers. Firestore imports are admin snapshots only.
     const upstream=await xtraUpstream(env,endpoint.split("?")[0]+(query.size?"?"+query.toString():""));
     if(!upstream.response.ok)return xtraJson({error:upstream.payload?.message||upstream.payload?.error||"Could not load this catalogue."},upstream.response.status,origin);
     const items=xtraExtractCatalogItems(upstream.payload);const settings=await xtraGetPricing(env);
     if(catalog==="numbers-global"&&!url.searchParams.get("country")){
       const liveCountries=xtraNormalizeWorldCountries(upstream.payload);
       const countries=liveCountries.length?liveCountries:(Array.isArray(settings.importedCountries)?settings.importedCountries:[]);
-      return xtraJson({success:true,catalog,countries,countryCount:countries.length,mode:sandboxMode?"sandbox":"live"},200,origin);
+      return xtraJson({success:true,catalog,countries,countryCount:countries.length},200,origin);
     }
-    const products=items.map(item=>{const p=xtraSellingPrice(item,catalog,settings,url.searchParams.get("country")||"");return {id:xtraCatalogIdentity(item),name:String(item.name??item.title??item.service_name??item.product_name??item.package_name??item.operator_name??"Number service"),description:String(item.description??item.details??""),logoUrl:xtraCatalogLogo(item),price:p.price,currency:p.currency,available:item.available!==false&&item.in_stock!==false};}).filter(x=>x.id);
-    return xtraJson({success:true,catalog,products,mode:sandboxMode?"sandbox":"live"},200,origin);
+    const products=items.map(item=>{const p=xtraSellingPrice(item,catalog,settings,url.searchParams.get("country")||""),stock=catalog==="numbers-global"?xtraNumberAvailability(item):{available:item.available!==false&&item.in_stock!==false,known:true,reason:"catalogue"};return {id:xtraCatalogIdentity(item),name:String(item.name??item.title??item.service_name??item.product_name??item.package_name??item.operator_name??"XtraLogs service"),description:String(item.description??item.details??""),logoUrl:xtraCatalogLogo(item),price:p.price,currency:p.currency,available:stock.available,availabilityKnown:stock.known,availabilityReason:stock.reason,server:xtraServiceServer(item)||null,category:catalog};}).filter(x=>x.id);
+    return xtraJson({success:true,catalog,products},200,origin);
   }
   if(request.method==="POST"&&url.pathname==="/api/xtralogs/customer/purchase") {
     let body;try{body=await request.json();}catch{return xtraJson({error:"Invalid purchase request"},400,origin);}
     const catalog=String(body.catalog||""),itemId=String(body.itemId||""),requestId=String(body.requestId||"");
     if(!XTRALOGS_CATALOGS[catalog]||!itemId||!/^[A-Za-z0-9_-]{16,100}$/.test(requestId))return xtraJson({error:"Invalid service or purchase reference"},400,origin);
-    if(!["logs","numbers-usa","numbers-global","smm"].includes(catalog))return xtraJson({error:"Checkout for this service category is not available yet."},409,origin);
-    if(catalog==="numbers-global"&&!body.country)return xtraJson({error:"Choose a country before purchasing a number."},400,origin);
-
+    if(!["logs","numbers-usa","numbers-global","smm"].includes(catalog))return xtraJson({error:"Checkout for this service category is being prepared. Please try Logs, USA Numbers, World Numbers or Boosting first."},409,origin);
     const catalogQuery=new URLSearchParams(XTRALOGS_CATALOGS[catalog].split("?")[1]||"");
-    if(catalog==="numbers-global")catalogQuery.set("country",String(body.country));
+    if(catalog==="numbers-global"&&body.country)catalogQuery.set("country",String(body.country));
     const {response:catalogResponse,payload:catalogPayload}=await xtraUpstream(env,XTRALOGS_CATALOGS[catalog].split("?")[0]+(catalogQuery.size?"?"+catalogQuery.toString():""));
-    if(!catalogResponse.ok)return xtraJson({error:catalogPayload?.message||catalogPayload?.error||"Could not verify the latest service price."},catalogResponse.status,origin);
+    if(!catalogResponse.ok)return xtraJson({error:"Could not verify the latest supplier price. Please try again."},502,origin);
     const item=xtraExtractCatalogItems(catalogPayload).find(x=>xtraCatalogIdentity(x)===itemId);
-    if(!item)return xtraJson({error:"This service is no longer available. Refresh the catalogue."},404,origin);
-    const settings=await xtraGetPricing(env),selling=xtraSellingPrice(item,catalog,settings,catalog==="numbers-global"?String(body.country):"");
-    if(!Number.isFinite(selling.price)||selling.price<=0||selling.currency!=="NGN")return xtraJson({error:"This service does not have a valid NGN selling price configured yet."},422,origin);
-
+    if(!item)return xtraJson({error:"This service is no longer available in the live supplier catalogue. Refresh the catalogue."},404,origin);
+    if(catalog==="numbers-global"){
+      const stock=xtraNumberAvailability(item);
+      if(!stock.known||!stock.available)return xtraJson({error:stock.known?"This service currently has no available numbers. Choose another service.":"XtraLogs did not confirm live number availability for this service. It cannot be purchased until availability is confirmed."},409,origin);
+    }
+    const settings=await xtraGetPricing(env),selling=xtraSellingPrice(item,catalog,settings,catalog==="numbers-global"?String(body.country||""):"");
+    if(!Number.isFinite(selling.price)||selling.price<=0||selling.currency!=="NGN")return xtraJson({error:"This service does not have a valid NGN selling price configured yet."},409,origin);
+    const wallet=await fsGet(sa.project_id,token,"wallets",user.localId);
+    if(!wallet.document)return xtraJson({error:"Your GentleLogs wallet was not found."},404,origin);
+    const wf=wallet.document.fields||{},balance=Number(fsValue(wf.balance)||0);
+    if(balance<selling.price)return xtraJson({error:"Insufficient GentleLogs wallet balance. Please add funds."},402,origin);
+    const orderId=requestId,orderName=`projects/${sa.project_id}/databases/(default)/documents/xtralogsOrders/${orderId}`,walletName=`projects/${sa.project_id}/databases/(default)/documents/wallets/${user.localId}`;
+    const existing=await fsGet(sa.project_id,token,"xtralogsOrders",orderId);
+    if(existing.document)return xtraJson({error:"This purchase reference has already been used. Refresh your orders."},409,origin);
+    const nextBalance=Number((balance-selling.price).toFixed(2)),now=new Date().toISOString();
+    const reserve=await fsCommit(sa.project_id,token,[
+      {update:{name:walletName,fields:{balance:fsNumber(nextBalance),updatedAt:{timestampValue:now},lastXtraLogsOrderId:{stringValue:orderId}}},updateMask:{fieldPaths:["balance","updatedAt","lastXtraLogsOrderId"]},currentDocument:{updateTime:wallet.document.updateTime}},
+      {update:{name:orderName,fields:{userId:{stringValue:user.localId},userEmail:{stringValue:user.email||""},catalog:{stringValue:catalog},itemId:{stringValue:itemId},serviceName:{stringValue:String(item.name??item.title??item.service_name??"XtraLogs service")},server:{stringValue:xtraServiceServer(item)},amount:fsNumber(selling.price),currency:{stringValue:selling.currency},status:{stringValue:"processing"},createdAt:{timestampValue:now},requestId:{stringValue:orderId}}},currentDocument:{exists:false}}
+    ]);
+    if(!reserve.ok)return xtraJson({error:"Your wallet changed while checkout was processing. Refresh and try again."},409,origin);
     let supplierBody;
     if(catalog==="logs")supplierBody={type:"logs",product_id:Number(itemId),quantity:1};
     if(catalog==="numbers-usa"||catalog==="numbers-global")supplierBody={type:"numbers",service_id:Number(itemId)};
-    if(catalog==="smm") {
-      const quantity=Number(body.quantity||1),link=String(body.link||"").trim();
-      if(!Number.isSafeInteger(quantity)||quantity<1||!/^https?:\/\//i.test(link))return xtraJson({error:"Enter a valid link and quantity."},400,origin);
-      supplierBody={type:"smm",item_id:Number(itemId),quantity,payload:{link}};
-    }
-
-    const orderId=requestId,orderName=`projects/${sa.project_id}/databases/(default)/documents/xtralogsOrders/${orderId}`,walletName=`projects/${sa.project_id}/databases/(default)/documents/wallets/${user.localId}`;
-    let existing=await fsGet(sa.project_id,token,"xtralogsOrders",orderId);
-    let alreadyReserved=!!existing.document;
-    if(alreadyReserved) {
-      const ef=existing.document.fields||{};
-      if(fsValue(ef.userId)!==user.localId)return xtraJson({error:"Purchase reference conflict."},409,origin);
-      const savedSession=fsValue(ef.sessionId),savedStatus=String(fsValue(ef.status)||"processing");
-      if(savedSession) return xtraJson({success:true,alreadyPlaced:true,orderId,status:savedStatus,phoneNumber:fsValue(ef.phoneNumber)||"",message:"This order has already been placed."},200,origin);
-      // A previous request may have timed out after reaching XtraLogs. Re-submit
-      // with the SAME Idempotency-Key; XtraLogs returns the original order.
-    }
-
-    if(!alreadyReserved) {
-      const now=new Date().toISOString();
-      const orderFields={userId:{stringValue:user.localId},userEmail:{stringValue:user.email||""},catalog:{stringValue:catalog},itemId:{stringValue:itemId},serviceName:{stringValue:String(item.name??item.title??item.service_name??"Number service")},countryCode:{stringValue:String(body.country||"")},countryName:{stringValue:String(body.countryName||body.country||"")},amount:fsNumber(selling.price),currency:{stringValue:selling.currency},status:{stringValue:"processing"},createdAt:{timestampValue:now},requestId:{stringValue:orderId},sandbox:{booleanValue:sandboxMode}};
-      const writes=[];
-      if(!sandboxMode) {
-        const wallet=await fsGet(sa.project_id,token,"wallets",user.localId);
-        if(!wallet.document)return xtraJson({error:"Your GentleLogs wallet was not found."},404,origin);
-        const wf=wallet.document.fields||{},balance=Number(fsValue(wf.balance)||0);
-        if(balance<selling.price)return xtraJson({error:"Insufficient GentleLogs wallet balance. Please add funds."},402,origin);
-        const nextBalance=Number((balance-selling.price).toFixed(2));
-        writes.push({update:{name:walletName,fields:{balance:fsNumber(nextBalance),updatedAt:{timestampValue:now},lastXtraLogsOrderId:{stringValue:orderId}}},updateMask:{fieldPaths:["balance","updatedAt","lastXtraLogsOrderId"]},currentDocument:{updateTime:wallet.document.updateTime}});
-      }
-      writes.push({update:{name:orderName,fields:orderFields},currentDocument:{exists:false}});
-      const reserve=await fsCommit(sa.project_id,token,writes);
-      if(!reserve.ok)return xtraJson({error:"Your wallet or order changed while checkout was processing. Refresh and try again."},409,origin);
-    }
-
+    if(catalog==="smm")supplierBody={type:"smm",item_id:Number(itemId),quantity:Number(body.quantity||1),payload:{link:String(body.link||"")}};
     let upstream;
     try { upstream=await xtraUpstream(env,"/orders","POST",supplierBody,{"Idempotency-Key":requestId}); }
-    catch(error) {
-      console.error("XtraLogs order outcome uncertain:",error);
-      return xtraJson({success:true,pending:true,orderId,message:"Your order is still processing. Do not submit another purchase; check your orders shortly."},202,origin);
-    }
+    catch(error) { console.error("XtraLogs order outcome uncertain:",error); return xtraJson({success:true,pending:true,orderId,message:"The supplier response is taking longer than expected. Your order is marked processing; do not submit it again."},202,origin); }
     const supplierData=upstream.payload||{};
     if(!upstream.response.ok) {
-      // Validation, wallet, permission and rate-limit responses are definite
-      // failures. 5xx responses remain pending because the supplier may have
-      // accepted the order before the connection failed.
-      const definite=[400,401,403,404,422,429].includes(upstream.response.status);
-      if(definite) {
-        const latestOrder=await fsGet(sa.project_id,token,"xtralogsOrders",orderId);
-        if(latestOrder.document) {
-          const lf=latestOrder.document.fields||{},statusNow=String(fsValue(lf.status)||"");
-          if(statusNow!=="failed_refunded"&&statusNow!=="cancelled_refunded") {
-            const writes=[{update:{name:orderName,fields:{status:{stringValue:sandboxMode?"failed":"failed_refunded"},supplierMessage:{stringValue:String(supplierData.message||supplierData.error||"The service could not be ordered.").slice(0,300)}},updateMask:{fieldPaths:["status","supplierMessage"]},currentDocument:{updateTime:latestOrder.document.updateTime}}}];
-            if(!sandboxMode) {
-              const latestWallet=await fsGet(sa.project_id,token,"wallets",user.localId);
-              if(latestWallet.document) {
-                const currentBalance=Number(fsValue(latestWallet.document.fields?.balance)||0);
-                writes.unshift({update:{name:walletName,fields:{balance:fsNumber(Number((currentBalance+selling.price).toFixed(2))),updatedAt:{timestampValue:new Date().toISOString()}}},updateMask:{fieldPaths:["balance","updatedAt"]},currentDocument:{updateTime:latestWallet.document.updateTime}});
-              }
-            }
-            await fsCommit(sa.project_id,token,writes);
-          }
-        }
-        return xtraJson({error:supplierData.message||supplierData.error||(sandboxMode?"The test order could not be completed.":"The order could not be completed. Your GentleLogs wallet has been refunded.")},upstream.response.status===429?429:422,origin);
+      // Only refund for a definite supplier rejection; uncertain outcomes stay pending.
+      if(upstream.response.status>=400&&upstream.response.status!==429) {
+        const latest=await fsGet(sa.project_id,token,"wallets",user.localId);
+        if(latest.document){const latestBalance=Number(fsValue(latest.document.fields?.balance)||0);await fsCommit(sa.project_id,token,[{update:{name:walletName,fields:{balance:fsNumber(Number((latestBalance+selling.price).toFixed(2))),updatedAt:{timestampValue:new Date().toISOString()}}},updateMask:{fieldPaths:["balance","updatedAt"]},currentDocument:{updateTime:latest.document.updateTime}}]);}
+        const patch=`https://firestore.googleapis.com/v1/${orderName}?updateMask.fieldPaths=status&updateMask.fieldPaths=supplierMessage`;
+        await fetch(patch,{method:"PATCH",headers:{Authorization:"Bearer "+token,"Content-Type":"application/json"},body:JSON.stringify({fields:{status:{stringValue:"failed_refunded"},supplierMessage:{stringValue:String(supplierData.message||supplierData.error||"Supplier rejected the order").slice(0,300)}}})});
+        return xtraJson({error:supplierData.message||supplierData.error||"Supplier rejected the order. Your GentleLogs wallet has been refunded."},502,origin);
       }
-      return xtraJson({success:true,pending:true,orderId,message:"Your order is processing. Check your orders again shortly."},202,origin);
+      return xtraJson({success:true,pending:true,orderId,message:"Your order is processing. Check XtraLogs Orders for updates."},202,origin);
     }
-
-    const supplierOrder=supplierData.order||{};
-    const session=supplierData.session||supplierOrder.session||{};
-    const supplierOrderNumber=String(supplierOrder.number??supplierData.order?.number??"");
-    const sessionId=String(session.id??"");
-    const phoneNumber=String(session.number??"");
-    const verificationCode=session.code==null?"":String(session.code);
-    const status=verificationCode?"completed":String(session.status||supplierData.status||"processing");
-    if((catalog==="numbers-usa"||catalog==="numbers-global")&&(!sessionId||!phoneNumber)) {
-      console.error("XtraLogs number response missing documented session fields",JSON.stringify({hasOrder:!!supplierOrderNumber,hasSessionId:!!sessionId,hasNumber:!!phoneNumber}));
-      return xtraJson({success:true,pending:true,orderId,message:"Your number request is processing. The number details will appear when the session is ready."},202,origin);
-    }
-    const patch=`https://firestore.googleapis.com/v1/${orderName}?updateMask.fieldPaths=status&updateMask.fieldPaths=supplierOrderNumber&updateMask.fieldPaths=sessionId&updateMask.fieldPaths=phoneNumber&updateMask.fieldPaths=verificationCode&updateMask.fieldPaths=smsText&updateMask.fieldPaths=supplierResponse`;
-    const save=await fetch(patch,{method:"PATCH",headers:{Authorization:"Bearer "+token,"Content-Type":"application/json"},body:JSON.stringify({fields:{status:{stringValue:status},supplierOrderNumber:{stringValue:supplierOrderNumber},sessionId:{stringValue:sessionId},phoneNumber:{stringValue:phoneNumber},verificationCode:{stringValue:verificationCode},smsText:{stringValue:String(session.sms||session.message||"")},supplierResponse:{stringValue:JSON.stringify(supplierData).slice(0,2500)}}})});
-    if(!save.ok)console.error("Could not save XtraLogs order/session response",save.status);
-    if(verificationCode&&!sandboxMode) {
-      try { await xtraUpstream(env,`/numbers/sessions/${encodeURIComponent(sessionId)}/done`,"POST"); }
-      catch(error) { console.error("XtraLogs done request failed after code receipt:",error); }
-    }
-    return xtraJson({success:true,pending:!verificationCode,orderId,status,phoneNumber,verificationCode,smsText:String(session.sms||session.message||""),amount:selling.price,currency:selling.currency,message:verificationCode?"Your number and SMS code are ready.":"Your number is ready. Waiting for an SMS."},200,origin);
+    const supplierOrder=supplierData.order||supplierData.data||supplierData;
+    const supplierOrderId=String(supplierOrder.order_id??supplierOrder.id??supplierData.order_id??"");
+    const sessionId=String(supplierData.session?.id??supplierOrder.session?.id??"");
+    const status=String(supplierData.status||supplierOrder.status||"processing");
+    const purchaseText=String(supplierData.credentials??supplierData.code??supplierData.number??supplierData.result??"");
+    const patch=`https://firestore.googleapis.com/v1/${orderName}?updateMask.fieldPaths=status&updateMask.fieldPaths=supplierOrderId&updateMask.fieldPaths=sessionId&updateMask.fieldPaths=purchaseText&updateMask.fieldPaths=supplierResponse`;
+    await fetch(patch,{method:"PATCH",headers:{Authorization:"Bearer "+token,"Content-Type":"application/json"},body:JSON.stringify({fields:{status:{stringValue:status},supplierOrderId:{stringValue:supplierOrderId},sessionId:{stringValue:sessionId},purchaseText:{stringValue:purchaseText},supplierResponse:{stringValue:JSON.stringify(supplierData).slice(0,2500)}}})});
+    return xtraJson({success:true,pending:true,orderId,message:"Your order was submitted successfully. Check XtraLogs Orders for delivery and status."},200,origin);
   }
-
-  if(request.method==="POST"&&url.pathname==="/api/xtralogs/customer/session") {
-    let body;try{body=await request.json();}catch{return xtraJson({error:"Invalid session request."},400,origin);}
-    const orderId=String(body.orderId||""),action=String(body.action||"poll");
-    if(!/^[A-Za-z0-9_-]{16,100}$/.test(orderId)||!["poll","cancel"].includes(action))return xtraJson({error:"Invalid number session request."},400,origin);
-    const orderResult=await fsGet(sa.project_id,token,"xtralogsOrders",orderId);
-    if(!orderResult.document)return xtraJson({error:"Number order not found."},404,origin);
-    const orderFields=orderResult.document.fields||{};
-    if(fsValue(orderFields.userId)!==user.localId)return xtraJson({error:"This order does not belong to your account."},403,origin);
-    const sessionId=String(fsValue(orderFields.sessionId)||"");
-    if(!sessionId)return xtraJson({error:"The number session is not ready yet. Please refresh shortly."},409,origin);
-    const currentStatus=String(fsValue(orderFields.status)||"processing");
-    if(currentStatus==="completed")return xtraJson({success:true,status:"completed",phoneNumber:fsValue(orderFields.phoneNumber)||"",verificationCode:fsValue(orderFields.verificationCode)||"",smsText:fsValue(orderFields.smsText)||"",refunded:false},200,origin);
-    if(currentStatus==="cancelled"||currentStatus==="cancelled_refunded"||currentStatus==="failed"||currentStatus==="failed_refunded")return xtraJson({success:true,status:currentStatus,phoneNumber:fsValue(orderFields.phoneNumber)||"",verificationCode:fsValue(orderFields.verificationCode)||"",refunded:currentStatus==="cancelled_refunded"},200,origin);
-
-    if(action==="poll") {
-      const result=await xtraUpstream(env,`/numbers/sessions/${encodeURIComponent(sessionId)}/poll`,"POST");
-      if(!result.response.ok)return xtraJson({error:result.payload?.message||result.payload?.error||"Could not refresh the number session."},result.response.status,origin);
-      const session=result.payload?.session||{};
-      const code=session.code==null?"":String(session.code);
-      let nextStatus=code?"completed":String(session.status||currentStatus);
-      if(code&&!sandboxMode&&!fsValue(orderFields.sandbox)) {
-        const done=await xtraUpstream(env,`/numbers/sessions/${encodeURIComponent(sessionId)}/done`,"POST");
-        if(!done.response.ok)console.error("XtraLogs session done returned",done.response.status);
-        if(done.payload?.session?.status)nextStatus=String(done.payload.session.status);
-      }
-      const phone=String(session.number||fsValue(orderFields.phoneNumber)||"");
-      const smsText=String(session.sms||session.message||fsValue(orderFields.smsText)||"");
-      const patch=`https://firestore.googleapis.com/v1/${orderResult.document.name}?updateMask.fieldPaths=status&updateMask.fieldPaths=phoneNumber&updateMask.fieldPaths=verificationCode&updateMask.fieldPaths=smsText&updateMask.fieldPaths=lastPolledAt`;
-      await fetch(patch,{method:"PATCH",headers:{Authorization:"Bearer "+token,"Content-Type":"application/json"},body:JSON.stringify({fields:{status:{stringValue:nextStatus},phoneNumber:{stringValue:phone},verificationCode:{stringValue:code},smsText:{stringValue:smsText},lastPolledAt:{timestampValue:new Date().toISOString()}}})});
-      return xtraJson({success:true,status:nextStatus,phoneNumber:phone,verificationCode:code,smsText,refunded:false},200,origin);
-    }
-
-    const result=await xtraUpstream(env,`/numbers/sessions/${encodeURIComponent(sessionId)}/cancel`,"POST");
-    if(!result.response.ok)return xtraJson({error:result.payload?.message||result.payload?.error||"The number could not be cancelled."},result.response.status,origin);
-    const session=result.payload?.session||{};
-    const refunded=session.refunded===true;
-    const customerRefunded=refunded&&!sandboxMode&&!fsValue(orderFields.sandbox);
-    if(customerRefunded) {
-      // Refund the GentleLogs customer once, atomically with the order status.
-      let refundCommitted=false;
-      for(let attempt=0;attempt<3;attempt++) {
-        const freshOrder=await fsGet(sa.project_id,token,"xtralogsOrders",orderId);
-        const freshWallet=await fsGet(sa.project_id,token,"wallets",user.localId);
-        if(!freshOrder.document||!freshWallet.document)break;
-        const ff=freshOrder.document.fields||{};
-        if(fsValue(ff.status)==="cancelled_refunded"){refundCommitted=true;break;}
-        if(fsValue(ff.status)==="completed")return xtraJson({error:"This number already received an SMS and cannot be refunded by cancellation."},409,origin);
-        const amount=Number(fsValue(ff.amount)||0),balance=Number(fsValue(freshWallet.document.fields?.balance)||0);
-        const commit=await fsCommit(sa.project_id,token,[
-          {update:{name:freshWallet.document.name,fields:{balance:fsNumber(Number((balance+amount).toFixed(2))),updatedAt:{timestampValue:new Date().toISOString()}}},updateMask:{fieldPaths:["balance","updatedAt"]},currentDocument:{updateTime:freshWallet.document.updateTime}},
-          {update:{name:freshOrder.document.name,fields:{status:{stringValue:"cancelled_refunded"},refunded:{booleanValue:true},refundMinor:{integerValue:String(Number(session.refund_minor||0))}},updateMask:{fieldPaths:["status","refunded","refundMinor"]},currentDocument:{updateTime:freshOrder.document.updateTime}}}
-        ]);
-        if(commit.ok){refundCommitted=true;break;}
-      }
-      if(!refundCommitted)return xtraJson({error:"The supplier cancelled the number, but your GentleLogs refund is still being reconciled. Refresh your orders shortly."},503,origin);
-    } else {
-      const status=(sandboxMode||fsValue(orderFields.sandbox))?"cancelled":String(session.status||"cancelled");
-      const patch=`https://firestore.googleapis.com/v1/${orderResult.document.name}?updateMask.fieldPaths=status`;
-      await fetch(patch,{method:"PATCH",headers:{Authorization:"Bearer "+token,"Content-Type":"application/json"},body:JSON.stringify({fields:{status:{stringValue:status}}})});
-    }
-    return xtraJson({success:true,status:customerRefunded?"cancelled_refunded":((sandboxMode||fsValue(orderFields.sandbox))?"cancelled":String(session.status||"cancelled")),phoneNumber:fsValue(orderFields.phoneNumber)||"",refunded:customerRefunded},200,origin);
-  }
-
   if(request.method==="GET"&&url.pathname==="/api/xtralogs/customer/orders") {
     const queryUrl=`https://firestore.googleapis.com/v1/projects/${encodeURIComponent(sa.project_id)}/databases/(default)/documents:runQuery`;
     const query={structuredQuery:{from:[{collectionId:"xtralogsOrders"}],where:{fieldFilter:{field:{fieldPath:"userId"},op:"EQUAL",value:{stringValue:user.localId}}},limit:100}};
     const response=await fetch(queryUrl,{method:"POST",headers:{Authorization:"Bearer "+token,"Content-Type":"application/json"},body:JSON.stringify(query)});
-    if(!response.ok)return xtraJson({error:"Could not load your number orders."},502,origin);
-    const rows=await response.json();
-    const orders=(rows||[]).filter(x=>x.document).map(x=>{const f=x.document.fields||{};return {
-      id:x.document.name.split("/").pop(),catalog:fsValue(f.catalog),serviceName:fsValue(f.serviceName),countryCode:fsValue(f.countryCode),countryName:fsValue(f.countryName),hasSession:!!fsValue(f.sessionId),
-      amount:fsValue(f.amount),currency:fsValue(f.currency),status:fsValue(f.status),createdAt:fsValue(f.createdAt),
-      phoneNumber:fsValue(f.phoneNumber),verificationCode:fsValue(f.verificationCode),smsText:fsValue(f.smsText),refunded:fsValue(f.refunded)||false
-    };}).sort((a,b)=>String(b.createdAt||"").localeCompare(String(a.createdAt||"")));
+    if(!response.ok)return xtraJson({error:"Could not load your XtraLogs orders."},502,origin);
+    const rows=await response.json();const orders=(rows||[]).filter(x=>x.document).map(x=>{const f=x.document.fields||{};return {id:x.document.name.split("/").pop(),catalog:fsValue(f.catalog),itemId:fsValue(f.itemId),serviceName:fsValue(f.serviceName),amount:fsValue(f.amount),currency:fsValue(f.currency),status:fsValue(f.status),createdAt:fsValue(f.createdAt),purchaseText:fsValue(f.purchaseText),supplierOrderId:fsValue(f.supplierOrderId),sessionId:fsValue(f.sessionId),supplierMessage:fsValue(f.supplierMessage)};}).sort((a,b)=>String(b.createdAt||"").localeCompare(String(a.createdAt||"")));
     return xtraJson({success:true,orders},200,origin);
   }
   return xtraJson({error:"Unknown XtraLogs customer operation."},404,origin);
-}
-
-// Opportunistic refresh for the single-Worker / no-Cron setup.
-// Cloudflare isolates may be restarted at any time, so this is a best-effort
-// 15-minute throttle per warm isolate, not a guaranteed clock-based schedule.
-let xtraBackgroundSyncPromise = null;
-let xtraBackgroundSyncLastStarted = 0;
-async function xtraMaybeBackgroundSync(env) {
-  const now = Date.now();
-  if (xtraBackgroundSyncPromise) return xtraBackgroundSyncPromise;
-  if (now - xtraBackgroundSyncLastStarted < 15 * 60 * 1000) return null;
-  xtraBackgroundSyncLastStarted = now;
-  xtraBackgroundSyncPromise = (async () => {
-    try {
-      const result = await xtraSyncWorldCatalog(env);
-      console.log("XtraLogs opportunistic World Numbers sync:", JSON.stringify(result));
-      return result;
-    } catch (error) {
-      console.error("XtraLogs opportunistic World Numbers sync failed:", error);
-      return { success: false, error: String(error.message || error) };
-    } finally {
-      xtraBackgroundSyncPromise = null;
-    }
-  })();
-  return xtraBackgroundSyncPromise;
 }
 
 export default {
@@ -1380,29 +1180,14 @@ export default {
       try {
         const result = await syncSpencerStock(env);
         console.log("Spencer stock sync completed:", JSON.stringify(result));
-        if (env.XTRALOGS_API_KEY && env.FCM_SERVICE_ACCOUNT_JSON) {
-          const xtraResult = await xtraSyncWorldCatalog(env);
-          console.log("XtraLogs World catalogue sync completed:", JSON.stringify(xtraResult));
-        } else {
-          console.log("XtraLogs background sync skipped: required Worker secrets are not configured.");
-        }
       } catch (error) {
         console.error("Spencer stock sync failed:", error);
       }
     })());
   },
 
-  async fetch(request, env, ctx) {
+  async fetch(request, env) {
     const url = new URL(request.url);
-
-    // Start a non-blocking refresh when customers browse World Numbers.
-    // The response is served from the existing catalogue cache immediately;
-    // the refresh updates Firebase for subsequent visitors.
-    if (request.method === "GET" && url.pathname === "/api/xtralogs/customer/catalog" &&
-        url.searchParams.get("catalog") === "numbers-global" && ctx && typeof ctx.waitUntil === "function" &&
-        env.XTRALOGS_API_KEY && env.FCM_SERVICE_ACCOUNT_JSON) {
-      ctx.waitUntil(xtraMaybeBackgroundSync(env));
-    }
 
     if (url.pathname.startsWith("/api/xtralogs/customer/")) {
       try { return await handleXtraCustomer(request, env); }
