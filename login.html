@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#FFFCFA">
 <meta name="description" content="Sign in securely to your GentleLogs account.">
-<title>Sign In | GentleLogs</title>
+<title>Login | GentleLogs</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -897,27 +897,134 @@ h1{font-size:28px;letter-spacing:-1.15px}
  .gl-emblem-check,.gl-transition-content,.gl-transition-progress span{animation:none!important}
 }
 
+
+/* GENTLELOGS — clean professional sign-in */
+:root{
+  --orange:#E87535;
+  --orange-dark:#C96532;
+  --orange-soft:#FFF3EB;
+  --background:#F7F7F6;
+  --surface:#FFFFFF;
+  --text:#20252B;
+  --muted:#7C858F;
+  --border:#E8E8E6;
+}
+html,body{min-height:100%;width:100%}
+body{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:0!important;
+  min-height:100vh;min-height:100dvh;
+  padding:34px 16px 22px!important;
+  background:#F7F7F6!important;
+  color:#20252B!important;
+}
+body:before,body:after{display:none!important;content:none!important}
+.brand{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:100%!important;
+  margin:0 auto 24px!important;
+  padding:0!important;
+  text-align:center!important;
+  grid-column:auto!important;grid-row:auto!important;
+}
+.brand-mark{
+  position:relative;
+  width:43px;height:43px;margin:0 0 8px!important;
+  border-radius:12px!important;
+  background:#E87535!important;
+  box-shadow:none!important;
+  animation:none!important;
+  font-size:19px!important;
+}
+.brand-mark:after{display:none!important}
+.brand-name{font-size:25px!important;letter-spacing:-1.1px!important;font-weight:700!important}
+.brand-tagline{margin-top:3px!important;font-size:8px!important;letter-spacing:1.8px!important;color:#92979E!important}
+.wrapper{
+  width:100%!important;max-width:440px!important;
+  margin:0 auto!important;padding:0!important;
+  grid-column:auto!important;grid-row:auto!important;
+}
+.card{
+  border:1px solid #E9E8E6!important;
+  border-radius:18px!important;
+  background:#fff!important;
+  box-shadow:0 12px 38px rgba(30,35,40,.055)!important;
+  backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+  overflow:hidden;
+}
+.card:hover{transform:none!important;box-shadow:0 12px 38px rgba(30,35,40,.055)!important}
+.card-top{height:4px!important;background:#E87535!important;animation:none!important}
+.tabs{min-height:56px!important;padding:0 18px!important}
+.content{padding:30px 30px 28px!important}
+.heading-row,.subtitle{display:none!important}
+.group{margin-bottom:19px!important}
+.label-row label{font-size:10px!important;letter-spacing:.55px!important;color:#343B43!important}
+.input-wrap{
+  min-height:52px!important;border:1px solid #E4E5E4!important;
+  border-radius:10px!important;background:#FAFAF9!important;
+  box-shadow:none!important;
+}
+.input-wrap:focus-within{
+  border-color:#E87535!important;
+  background:#fff!important;
+  box-shadow:0 0 0 3px rgba(232,117,53,.09)!important;
+}
+.input-wrap input{height:50px!important;font-size:15px!important}
+.submit{
+  position:relative;overflow:hidden;
+  min-height:52px!important;border-radius:10px!important;
+  background:#E87535!important;box-shadow:none!important;
+  font-size:13px!important;font-weight:700!important;
+}
+.submit:before{display:none!important}
+.submit:hover{background:#D96C32!important;transform:translateY(-1px)!important;box-shadow:0 7px 16px rgba(201,101,50,.15)!important}
+.google-btn{min-height:50px!important;border-radius:10px!important;background:#fff!important}
+.footer{
+  width:100%!important;max-width:440px!important;
+  margin:17px auto 0!important;padding:0!important;
+  border:0!important;grid-column:auto!important;grid-row:auto!important;
+}
+.toast-container{
+  top:50%!important;right:auto!important;left:50%!important;
+  transform:translate(-50%,-50%)!important;
+  width:min(340px,calc(100% - 32px))!important;
+  pointer-events:none!important;
+}
+.toast{
+  align-items:center!important;
+  padding:16px 17px!important;
+  border:1px solid #E6EAE6!important;
+  border-left:4px solid #29965B!important;
+  border-radius:13px!important;
+  background:#fff!important;
+  box-shadow:0 16px 45px rgba(24,35,28,.14)!important;
+  backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+}
+.toast.success .toast-icon{color:#29965B!important}
+.toast-title{font-size:13px!important;color:#20252B!important}
+.toast-message{font-size:11px!important;color:#69737D!important}
+@media(max-width:480px){
+  body{padding:25px 14px max(18px,env(safe-area-inset-bottom))!important}
+  .brand{margin-bottom:20px!important}
+  .content{padding:26px 21px 23px!important}
+  .tabs{min-height:53px!important}
+  .footer{margin-top:15px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="gl-login-transition" id="loginTransition" aria-hidden="true">
-  <div class="gl-transition-grid"></div>
-  <div class="gl-transition-aura aura-one"></div><div class="gl-transition-aura aura-two"></div>
-  <div class="gl-transition-content">
-    <div class="gl-transition-emblem">
-      <span class="gl-emblem-orbit orbit-one"></span><span class="gl-emblem-orbit orbit-two"></span>
-      <span class="gl-emblem-check"><i class="fa-solid fa-check"></i></span>
-    </div>
-    <div class="gl-transition-wordmark">Gentle<span>Logs</span></div>
-    <div class="gl-transition-kicker">SECURE SIGN-IN COMPLETE</div>
-    <h2 id="glWelcomeTitle">Welcome back!</h2>
-    <p id="glWelcomeMessage">Your digital world is ready.</p>
-    <div class="gl-transition-progress"><span></span></div>
-    <small><i class="fa-solid fa-lock"></i> Opening your personal dashboard</small>
-  </div>
-</div>
 
 <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="false"></div>
 
@@ -925,36 +1032,6 @@ h1{font-size:28px;letter-spacing:-1.15px}
   <a href="home.html" class="brand-mark" aria-label="GentleLogs home">G.</a>
   <a href="home.html" class="brand-name">Gentle<span>Logs</span></a>
   <p class="brand-tagline">DIGITAL PRODUCTS. ONE DESK.</p>
-  <section class="login-showcase" aria-label="Welcome to GentleLogs">
-    <div class="showcase-orbit orbit-a"></div>
-    <div class="showcase-orbit orbit-b"></div>
-    <div class="showcase-orbit orbit-c"></div>
-    <div class="showcase-glow"></div>
-    <div class="showcase-core">
-      <div class="showcase-core-icon"><i class="fa-solid fa-bolt"></i></div>
-      <span class="core-spark spark-a"></span><span class="core-spark spark-b"></span>
-    </div>
-    <div class="showcase-floating-card showcase-card-wallet">
-      <span class="showcase-card-icon"><i class="fa-solid fa-wallet"></i></span>
-      <span><b>Your wallet</b><small>Everything in one place</small></span>
-      <i class="fa-solid fa-arrow-up-right-from-square showcase-card-arrow"></i>
-    </div>
-    <div class="showcase-floating-card showcase-card-orders">
-      <span class="showcase-card-icon"><i class="fa-solid fa-bag-shopping"></i></span>
-      <span><b>Quick checkout</b><small>Simple and seamless</small></span>
-      <i class="fa-solid fa-check showcase-card-check"></i>
-    </div>
-    <div class="showcase-copy">
-      <span class="showcase-eyebrow"><i></i> THE GENTLELOGS EXPERIENCE</span>
-      <h2>Your digital world.<br><em>All in one place.</em></h2>
-      <p>Sign in to manage your wallet, explore digital products and keep every order within reach.</p>
-    </div>
-    <div class="showcase-bottom">
-      <span><i class="fa-solid fa-shield-halved"></i> Secure access</span>
-      <span><i class="fa-solid fa-bolt"></i> Smooth checkout</span>
-      <span><i class="fa-solid fa-layer-group"></i> One simple place</span>
-    </div>
-  </section>
 </header>
 
 <main class="wrapper">
@@ -974,14 +1051,6 @@ h1{font-size:28px;letter-spacing:-1.15px}
     </nav>
 
     <div class="content">
-      <div class="heading-row">
-        <div class="heading-icon">
-          <i class="fa-solid fa-lock" aria-hidden="true"></i>
-        </div>
-        <h1>Welcome Back</h1>
-      </div>
-
-      <p class="subtitle">Access your wallet, orders, and digital products.</p>
 
       <form id="loginForm" novalidate>
         <div class="group">
@@ -1403,11 +1472,6 @@ h1{font-size:28px;letter-spacing:-1.15px}
       console.warn("Login state could not be cached:", error);
     }
 
-    try {
-      sessionStorage.setItem("gentleLoginTransition", "1");
-    } catch(error) {
-      console.warn("Login transition flag could not be saved:", error);
-    }
   }
 
   /*
@@ -1449,32 +1513,10 @@ h1{font-size:28px;letter-spacing:-1.15px}
 
   function redirectToHome(user, profile) {
     redirecting = true;
-
-    const customer = profile || {};
-    const fullName =
-      [customer.firstName, customer.lastName].filter(Boolean).join(" ") ||
-      customer.name ||
-      customer.fullName ||
-      customer.username ||
-      (user && user.displayName) ||
-      ((user && user.email) || "there").split("@")[0];
-
-    const firstName = String(fullName).trim().split(/\\s+/)[0] || "there";
-    const overlay = document.getElementById("loginTransition");
-    const title = document.getElementById("glWelcomeTitle");
-    const message = document.getElementById("glWelcomeMessage");
-
-    if(title) title.textContent = "Welcome back, " + firstName + "!";
-    if(message) message.textContent = "Your GentleLogs space is ready. Everything you need is just ahead.";
-
-    if(overlay) {
-      overlay.classList.add("show");
-      overlay.setAttribute("aria-hidden", "false");
-    }
-
+    showMessage("Login successful. Opening your dashboard...", "success");
     setTimeout(function() {
       window.location.replace("home.html");
-    }, 1900);
+    }, 950);
   }
 
   passwordToggle.addEventListener("click", function() {
