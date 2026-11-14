@@ -1118,6 +1118,16 @@ input,select,textarea{
   .wallet-status span,.service-icon,.fresh,.fund-btn:after,.header-icon .dot,.telegram-float{animation:none!important}
 }
 
+
+/* The moving ticker replaces the original announcement strip at the very top. */
+.activity-strip.gl-live-ribbon{
+  height:35px;min-height:35px;width:100%;margin:0;padding:0;
+  border-radius:0;gap:0;display:flex;align-items:center;
+  background:linear-gradient(100deg,#252A30,#343943 52%,#252A30);
+  box-shadow:none;
+}
+.activity-strip.gl-live-ribbon .gl-ribbon-track{padding-left:0}
+
 </style>
 </head>
 
@@ -1140,9 +1150,18 @@ input,select,textarea{
 
 <div class="shell">
 
-<div class="activity-strip">
-  <span class="activity-dot"></span>
-  Your digital marketplace. Simple, secure and seamless.
+<div class="activity-strip gl-live-ribbon" aria-label="GentleLogs marketplace information">
+  <div class="gl-ribbon-glow"></div>
+  <div class="gl-ribbon-track">
+    <span><i class="fa-solid fa-bolt"></i> YOUR DIGITAL MARKETPLACE</span>
+    <b>✦</b><span>FAST CHECKOUT</span><b>✦</b>
+    <span><i class="fa-solid fa-shield-halved"></i> SECURE WALLET</span><b>✦</b>
+    <span>SEAMLESS EXPERIENCE</span><b>✦</b>
+    <span><i class="fa-solid fa-bolt"></i> YOUR DIGITAL MARKETPLACE</span>
+    <b>✦</b><span>FAST CHECKOUT</span><b>✦</b>
+    <span><i class="fa-solid fa-shield-halved"></i> SECURE WALLET</span><b>✦</b>
+    <span>SEAMLESS EXPERIENCE</span><b>✦</b>
+  </div>
 </div>
 
 <header class="header">
@@ -1166,19 +1185,7 @@ input,select,textarea{
   <p>Everything you need, all in one place.</p>
 </div>
 
-<div class="gl-live-ribbon" aria-label="GentleLogs marketplace information">
-  <div class="gl-ribbon-glow"></div>
-  <div class="gl-ribbon-track">
-    <span><i class="fa-solid fa-bolt"></i> YOUR DIGITAL MARKETPLACE</span>
-    <b>✦</b><span>FAST CHECKOUT</span><b>✦</b>
-    <span><i class="fa-solid fa-shield-halved"></i> SECURE WALLET</span><b>✦</b>
-    <span>SEAMLESS EXPERIENCE</span><b>✦</b>
-    <span><i class="fa-solid fa-bolt"></i> YOUR DIGITAL MARKETPLACE</span><b>✦</b>
-    <span>FAST CHECKOUT</span><b>✦</b>
-    <span><i class="fa-solid fa-shield-halved"></i> SECURE WALLET</span><b>✦</b>
-    <span>SEAMLESS EXPERIENCE</span><b>✦</b>
-  </div>
-</div>
+
 
 <!-- WALLET -->
 
