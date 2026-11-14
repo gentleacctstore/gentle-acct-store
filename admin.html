@@ -719,6 +719,21 @@ html,body{background:#050b1b!important;color:#edf6ff!important}
 #adminApp .supplier-stat small{color:#8ea8c9!important}
 </style>
 
+
+<style>
+#websiteManagerSection .wm-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin-top:16px}
+#websiteManagerSection .wm-card{border:1px solid var(--border);background:var(--card);border-radius:13px;padding:15px;min-width:0}
+#websiteManagerSection .wm-card h3{font-size:13px;margin:0 0 13px;color:var(--text)}
+#websiteManagerSection .wm-card label{display:block;font-size:11px;font-weight:700;color:var(--muted);margin:10px 0}
+#websiteManagerSection .wm-card label input:not([type=checkbox]),#websiteManagerSection .wm-card label textarea{display:block;width:100%;margin-top:6px;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--input-bg);color:var(--text);font:inherit;font-size:12px;box-sizing:border-box}
+#websiteManagerSection .wm-card .wm-check{display:flex;align-items:center;gap:8px;color:var(--text)}
+#websiteManagerSection .wm-products{margin-top:14px}
+#websiteManagerSection .wm-product-picker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;max-height:300px;overflow:auto}
+#websiteManagerSection .wm-product-option{display:flex;align-items:flex-start;gap:8px;padding:9px;border:1px solid var(--border);border-radius:9px;font-size:11px;color:var(--text)}
+#websiteManagerSection .wm-product-option small{display:block;color:var(--muted);margin-top:3px;word-break:break-all}
+@media(max-width:760px){#websiteManagerSection .wm-grid,#websiteManagerSection .wm-product-picker{grid-template-columns:1fr}#websiteManagerSection .wm-card{padding:12px}}
+</style>
+
 </head>
 <body>
 <div class="login-screen" id="loginScreen">
@@ -754,6 +769,7 @@ html,body{background:#050b1b!important;color:#edf6ff!important}
 <button class="nav-link" data-section="products"><span class="nav-icon">▣</span>Products</button>
 <button class="nav-link" data-section="inventory"><span class="nav-icon">▤</span>Inventory</button>
 <button class="nav-link" data-section="categoryLinks"><span class="nav-icon">🔗</span>Category Links</button>
+<button class="nav-link" data-section="websiteManager"><span class="nav-icon">⚙</span>Website Manager</button>
 <button class="nav-link" data-section="supplier"><span class="nav-icon">⇄</span>Supplier API</button>
 <button class="nav-link" data-section="xtralogs"><span class="nav-icon">✦</span>XtraLogs Tools</button>
 <a class="nav-link" href="customers.html"><span class="nav-icon">♙</span>Customers</a>
@@ -857,6 +873,29 @@ html,body{background:#050b1b!important;color:#edf6ff!important}
 </div>
 </div>
 </section>
+
+<section class="hidden" id="websiteManagerSection">
+<div class="panel">
+<div class="panel-head"><div><div class="panel-title">Website Manager</div><div class="panel-desc">Manage homepage content, promotions, support links and featured products.</div></div><button class="btn" id="reloadWebsiteSettings" type="button">↻ Reload</button></div>
+<div class="panel-body">
+<div class="error-box">Settings are saved in Firestore at <code>storeSettings/websiteContent</code>. Your homepage must read this document for saved changes to appear to customers. This admin upgrade does not overwrite your homepage file.</div>
+<div class="hidden" id="websiteManagerMessage"></div>
+<div class="wm-grid">
+<div class="wm-card"><h3>Announcement bar</h3><label class="wm-check"><input id="wmAnnouncementEnabled" type="checkbox"> Show announcement bar</label><label>Announcement text<input id="wmAnnouncementText" type="text" placeholder="Your announcement..."/></label></div>
+<div class="wm-card"><h3>Homepage hero</h3><label>Heading<input id="wmHeroTitle" type="text" placeholder="Welcome to GentleLogs"/></label><label>Subtitle<textarea id="wmHeroSubtitle" rows="3" placeholder="Homepage introduction..."></textarea></label><label>Banner image URL<input id="wmHeroImage" type="url" placeholder="https://..."/></label></div>
+<div class="wm-card"><h3>WhatsApp support</h3><label class="wm-check"><input id="wmWhatsappEnabled" type="checkbox"> Show WhatsApp support button</label><label>WhatsApp number (international format)<input id="wmWhatsappNumber" type="tel" placeholder="2348012345678"/></label><label>Button label<input id="wmWhatsappLabel" type="text" placeholder="Chat with support"/></label></div>
+<div class="wm-card"><h3>Telegram support</h3><label class="wm-check"><input id="wmTelegramEnabled" type="checkbox"> Show Telegram support button</label><label>Telegram URL<input id="wmTelegramUrl" type="url" placeholder="https://t.me/yourusername"/></label></div>
+<div class="wm-card"><h3>Website promotion popup</h3><label class="wm-check"><input id="wmPromoEnabled" type="checkbox"> Enable promotion popup</label><label>Popup title<input id="wmPromoTitle" type="text" placeholder="Want your own website?"/></label><label>Popup message<textarea id="wmPromoText" rows="3"></textarea></label><label>Button label<input id="wmPromoLabel" type="text" placeholder="Chat with us"/></label><label>Button link<input id="wmPromoUrl" type="url" placeholder="https://wa.me/..."/></label></div>
+<div class="wm-card"><h3>Coming soon notice</h3><label class="wm-check"><input id="wmComingEnabled" type="checkbox"> Enable coming soon notice</label><label>Notice title<input id="wmComingTitle" type="text" placeholder="Coming soon"/></label><label>Notice message<textarea id="wmComingText" rows="3"></textarea></label></div>
+<div class="wm-card"><h3>New Arrivals section</h3><label class="wm-check"><input id="wmArrivalsEnabled" type="checkbox"> Show New Arrivals</label><label>Section title<input id="wmArrivalsTitle" type="text" placeholder="New Arrivals"/></label><label>Section description<input id="wmArrivalsDescription" type="text" placeholder="Latest products added to our store"/></label><label>Maximum products<input id="wmArrivalsLimit" type="number" min="1" max="30" value="8"/></label></div>
+<div class="wm-card"><h3>Footer details</h3><label>Footer description<textarea id="wmFooterText" rows="3"></textarea></label><label>Contact email<input id="wmFooterEmail" type="email" placeholder="support@example.com"/></label><label>Footer copyright text<input id="wmFooterCopyright" type="text" placeholder="© GentleLogs"/></label></div>
+</div>
+<div class="wm-card wm-products"><h3>Choose New Arrivals products</h3><p class="panel-desc">Select products below. The order in the selected IDs box determines their display order. Leave it empty to use the latest products automatically.</p><input id="wmProductSearch" type="search" placeholder="Search products..." style="width:100%;margin:10px 0"><div id="wmProductPicker" class="wm-product-picker"><div class="loading">Load products to choose featured items.</div></div><label>Selected product IDs (comma-separated, in display order)<textarea id="wmProductIds" rows="3" placeholder="Product IDs appear here as you select them"></textarea></label></div>
+<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px"><button class="btn btn-primary" id="saveWebsiteSettings" type="button">Save website settings</button><button class="btn" id="previewWebsiteSettings" type="button">Preview entered content</button></div>
+<div class="hidden" id="wmPreview" style="margin-top:16px"></div>
+</div></div>
+</section>
+
 <section class="hidden" id="supplierSection">
 <div class="panel">
 <div class="panel-head">
@@ -1176,7 +1215,7 @@ $("themeToggle").addEventListener("click",()=>{
 /* NAVIGATION */
 
 function showSection(section) {
-  const map={dashboard:"dashboardSection",products:"productsSection",inventory:"inventorySection",categoryLinks:"categoryLinksSection",supplier:"supplierSection",xtralogs:"xtralogsSection"};
+  const map={dashboard:"dashboardSection",products:"productsSection",inventory:"inventorySection",categoryLinks:"categoryLinksSection",websiteManager:"websiteManagerSection",supplier:"supplierSection",xtralogs:"xtralogsSection"};
   Object.entries(map).forEach(([key,id])=>$(id).classList.toggle("hidden",key!==section));
   document.querySelectorAll(".nav-link[data-section]").forEach(button=>{
     button.classList.toggle("active",button.dataset.section===section);
@@ -1186,6 +1225,7 @@ function showSection(section) {
     products:["Products","Manage your store products"],
     inventory:["Inventory","Review available and sold stock"],
     categoryLinks:["Category Links","Manage category logos and saved links"],
+    websiteManager:["Website Manager","Control homepage content and promotions"],
     supplier:["Supplier API","Connect Spencer Acc Store and import products"],
     xtralogs:["XtraLogs Tools","Connect service catalogues and manage customer pricing"]
   };
@@ -1194,6 +1234,7 @@ function showSection(section) {
   $("sidebar").classList.remove("open");
   if(section==="inventory") renderInventoryTable();
   if(section==="categoryLinks") renderCategoryLinksTable();
+  if(section==="websiteManager") loadWebsiteSettings();
   if(section==="supplier") autoLoadSupplierSection();
   if(section==="xtralogs") { loadXtraPricingSettings(); checkXtraBalance(); }
 }
@@ -1360,6 +1401,85 @@ $("saveCategoryLinks").addEventListener("click",async()=>{
   }
 });
 
+
+/* WEBSITE MANAGER */
+const WEBSITE_SETTING_FIELDS={
+  announcementEnabled:"wmAnnouncementEnabled",announcementText:"wmAnnouncementText",
+  heroTitle:"wmHeroTitle",heroSubtitle:"wmHeroSubtitle",heroImage:"wmHeroImage",
+  whatsappEnabled:"wmWhatsappEnabled",whatsappNumber:"wmWhatsappNumber",whatsappLabel:"wmWhatsappLabel",
+  telegramEnabled:"wmTelegramEnabled",telegramUrl:"wmTelegramUrl",
+  promoEnabled:"wmPromoEnabled",promoTitle:"wmPromoTitle",promoText:"wmPromoText",promoLabel:"wmPromoLabel",promoUrl:"wmPromoUrl",
+  comingEnabled:"wmComingEnabled",comingTitle:"wmComingTitle",comingText:"wmComingText",
+  arrivalsEnabled:"wmArrivalsEnabled",arrivalsTitle:"wmArrivalsTitle",arrivalsDescription:"wmArrivalsDescription",arrivalsLimit:"wmArrivalsLimit",
+  footerText:"wmFooterText",footerEmail:"wmFooterEmail",footerCopyright:"wmFooterCopyright"
+};
+let websiteSettingsLoaded=false;
+function setWebsiteField(key,value){const el=$(WEBSITE_SETTING_FIELDS[key]);if(!el)return;if(el.type==="checkbox")el.checked=value===true;else el.value=value??"";}
+function getWebsiteField(key){const el=$(WEBSITE_SETTING_FIELDS[key]);if(!el)return null;if(el.type==="checkbox")return el.checked;if(el.type==="number")return Math.max(1,Math.min(30,Number(el.value)||8));return el.value.trim();}
+function validWebsiteUrl(value,label,{allowEmpty=true}={}){
+  const raw=String(value||"").trim();if(!raw&&allowEmpty)return "";
+  let url;try{url=new URL(raw);}catch(_){throw new Error(label+" must be a valid URL.");}
+  if(!["https:","http:"].includes(url.protocol))throw new Error(label+" must begin with https:// or http://.");
+  return url.href;
+}
+async function loadWebsiteSettings(){
+  const button=$("reloadWebsiteSettings");if(button)button.disabled=true;
+  try{
+    if(!db)throw new Error("Firebase Firestore is not initialised.");
+    const snap=await db.collection("storeSettings").doc("websiteContent").get();
+    const data=snap.exists?(snap.data()||{}):{};
+    Object.entries(WEBSITE_SETTING_FIELDS).forEach(([key])=>setWebsiteField(key,data[key]));
+    $("wmProductIds").value=Array.isArray(data.newArrivalsProductIds)?data.newArrivalsProductIds.join(", "):"";
+    websiteSettingsLoaded=true;renderWebsiteProductPicker();hideMessage("websiteManagerMessage");
+  }catch(error){console.error("Website settings load failed:",error);showMessage("websiteManagerMessage","Could not load website settings: "+readableError(error));}
+  finally{if(button)button.disabled=false;}
+}
+function renderWebsiteProductPicker(){
+  const search=($("wmProductSearch").value||"").trim().toLowerCase();
+  const selected=new Set(($("wmProductIds").value||"").split(",").map(x=>x.trim()).filter(Boolean));
+  const rows=products.filter(p=>!search||String(p.name||p.title||p.id).toLowerCase().includes(search)||String(p.category||"").toLowerCase().includes(search));
+  $("wmProductPicker").innerHTML=rows.map(p=>`<label class="wm-product-option"><input type="checkbox" data-wm-product="${escapeHTML(p.id)}" ${selected.has(p.id)?"checked":""}><span><strong>${escapeHTML(p.name||p.title||"Untitled product")}</strong><small>${escapeHTML(p.category||"Uncategorised")} · ID: ${escapeHTML(p.id)}</small></span></label>`).join("")||'<div class="empty-state">No products match your search.</div>';
+  document.querySelectorAll("[data-wm-product]").forEach(box=>box.addEventListener("change",()=>{
+    const ids=($("wmProductIds").value||"").split(",").map(x=>x.trim()).filter(Boolean);
+    const id=box.dataset.wmProduct;const next=box.checked?[...ids.filter(x=>x!==id),id]:ids.filter(x=>x!==id);
+    $("wmProductIds").value=next.join(", ");
+  }));
+}
+$("wmProductSearch").addEventListener("input",renderWebsiteProductPicker);
+$("wmProductIds").addEventListener("input",renderWebsiteProductPicker);
+$("reloadWebsiteSettings").addEventListener("click",loadWebsiteSettings);
+$("saveWebsiteSettings").addEventListener("click",async()=>{
+  const button=$("saveWebsiteSettings");button.disabled=true;button.textContent="Saving...";
+  try{
+    if(!auth||!auth.currentUser||auth.currentUser.uid!==ADMIN_UID)throw new Error("Only the authorised administrator can save website settings.");
+    const data={};Object.keys(WEBSITE_SETTING_FIELDS).forEach(key=>data[key]=getWebsiteField(key));
+    data.heroImage=validWebsiteUrl(data.heroImage,"Hero image URL");
+    data.telegramUrl=validWebsiteUrl(data.telegramUrl,"Telegram URL");
+    data.promoUrl=validWebsiteUrl(data.promoUrl,"Promotion button URL");
+    if(data.whatsappNumber&&!/^\+?[0-9]{8,15}$/.test(data.whatsappNumber.replace(/[\s()-]/g,"")))throw new Error("Enter the WhatsApp number in international format, using digits only (country code included).");
+    data.whatsappNumber=data.whatsappNumber.replace(/[\s()-]/g,"").replace(/^\+/,"");
+    const ids=[...new Set(($("wmProductIds").value||"").split(",").map(x=>x.trim()).filter(Boolean))];
+    const known=new Set(products.map(p=>p.id));const unknown=ids.filter(id=>!known.has(id));
+    if(unknown.length)throw new Error("These selected product IDs were not found in the products collection: "+unknown.join(", "));
+    data.newArrivalsProductIds=ids;
+    data.updatedAt=firebase.firestore.FieldValue.serverTimestamp();data.updatedBy=auth.currentUser.uid;
+    await db.collection("storeSettings").doc("websiteContent").set(data,{merge:true});
+    showMessage("websiteManagerMessage","Website settings saved successfully. Your homepage must be connected to storeSettings/websiteContent before customers can see these changes.","success");showToast("Website settings saved.");
+  }catch(error){console.error("Website settings save failed:",error);showMessage("websiteManagerMessage","Could not save website settings: "+readableError(error));}
+  finally{button.disabled=false;button.textContent="Save website settings";}
+});
+$("previewWebsiteSettings").addEventListener("click",()=>{
+  const preview=$("wmPreview");preview.className="wm-card";
+  const title=$("wmHeroTitle").value.trim()||"GentleLogs";const subtitle=$("wmHeroSubtitle").value.trim();
+  const announcement=$("wmAnnouncementEnabled").checked?$("wmAnnouncementText").value.trim():"";
+  preview.replaceChildren();const heading=document.createElement("h3");heading.textContent="Homepage content preview";preview.append(heading);
+  if(announcement){const a=document.createElement("p");a.textContent="Announcement: "+announcement;preview.append(a);}
+  const h=document.createElement("h2");h.textContent=title;preview.append(h);
+  const p=document.createElement("p");p.textContent=subtitle;preview.append(p);
+  const n=document.createElement("p");n.textContent="New Arrivals: "+($("wmArrivalsEnabled").checked?($("wmArrivalsTitle").value||"New Arrivals")+" · "+$("wmArrivalsLimit").value+" products":"Hidden");preview.append(n);
+  const links=document.createElement("p");links.textContent="WhatsApp: "+($("wmWhatsappEnabled").checked?"Enabled":"Hidden")+" · Telegram: "+($("wmTelegramEnabled").checked?"Enabled":"Hidden");preview.append(links);
+  preview.scrollIntoView({behavior:"smooth",block:"nearest"});
+});
 
 /* SPENCER ACC STORE SUPPLIER API */
 
