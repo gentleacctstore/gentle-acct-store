@@ -1015,15 +1015,95 @@ input,select,textarea{
 @keyframes gentleHomeLoaderMove{0%{transform:translateX(-110%)}100%{transform:translateX(260%)}}
 @media(prefers-reduced-motion:reduce){.gentle-home-loader-progress{animation:none;width:100%}}
 
+
+/* GentleLogs premium motion layer — lightweight and mobile-friendly */
+#gentleHomeLoader{
+  isolation:isolate;overflow:hidden;
+  background:
+    radial-gradient(ellipse at 50% 38%,rgba(232,117,53,.17),transparent 37%),
+    radial-gradient(ellipse at 15% 85%,rgba(111,75,190,.12),transparent 35%),
+    linear-gradient(145deg,#090F1D 0%,#111A2B 52%,#090F1D 100%);
+  transition:opacity .38s ease,visibility .38s ease;
+}
+#gentleHomeLoader:before,#gentleHomeLoader:after{
+  content:"";position:absolute;border:1px solid rgba(255,255,255,.055);
+  border-radius:50%;pointer-events:none;z-index:-1;
+}
+#gentleHomeLoader:before{width:390px;height:390px;animation:ghLoaderDrift 9s ease-in-out infinite}
+#gentleHomeLoader:after{width:540px;height:540px;animation:ghLoaderDrift 13s ease-in-out infinite reverse}
+.gh-loader-content{width:min(82%,330px);display:flex;flex-direction:column;align-items:center;position:relative;z-index:1}
+.gh-loader-glow{position:absolute;width:170px;height:170px;border-radius:50%;filter:blur(55px);opacity:.23;pointer-events:none}
+.gh-loader-glow-one{background:#E87535;top:22%;left:calc(50% - 85px);animation:ghGlow 4s ease-in-out infinite}
+.gh-loader-glow-two{background:#7556D8;bottom:17%;left:calc(50% - 85px);animation:ghGlow 5s ease-in-out infinite reverse}
+.gh-loader-mark{width:82px;height:82px;position:relative;display:grid;place-items:center;margin-bottom:25px}
+.gh-loader-mark-inner{width:58px;height:58px;border-radius:20px;display:grid;place-items:center;
+  color:#fff;font-size:23px;background:linear-gradient(145deg,#F18B50,#D85E2C);
+  box-shadow:0 10px 35px rgba(232,117,53,.3),inset 0 1px 0 rgba(255,255,255,.35);
+  animation:ghMarkFloat 2.8s ease-in-out infinite}
+.gh-loader-orbit{position:absolute;inset:0;border:1px solid rgba(255,255,255,.18);border-radius:27px;transform:rotate(28deg)}
+.gh-loader-orbit-two{inset:7px;border-color:rgba(232,117,53,.42);transform:rotate(-34deg);animation:ghOrbit 8s linear infinite}
+.gentle-home-loader-logo{font-size:32px;letter-spacing:-1.7px;text-shadow:0 3px 25px rgba(255,255,255,.08)}
+.gh-loader-tagline{margin-top:9px;color:#929DB0;font-size:8px;font-weight:700;letter-spacing:2.1px}
+.gentle-home-loader-line{width:190px;height:5px;margin-top:32px;background:rgba(255,255,255,.1);box-shadow:0 0 18px rgba(232,117,53,.08)}
+.gentle-home-loader-progress{width:34%;background:linear-gradient(90deg,#8B67E8,#E87535,#FFB27E);box-shadow:0 0 13px rgba(232,117,53,.6);animation:gentleHomeLoaderMove 1.25s cubic-bezier(.45,0,.55,1) infinite}
+.gentle-home-loader-message{min-height:16px;margin-top:15px;color:#C0C8D5;font-size:11px;letter-spacing:.15px}
+.gh-loader-trust{margin-top:28px;color:#758196;font-size:8px;letter-spacing:1.5px;font-weight:700;display:flex;align-items:center;gap:8px}
+.gh-loader-trust span{width:6px;height:6px;border-radius:50%;background:#54D6A0;box-shadow:0 0 10px rgba(84,214,160,.8);animation:ghPulse 1.6s ease-in-out infinite}
+@keyframes ghMarkFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-6px) rotate(3deg)}}
+@keyframes ghOrbit{to{transform:rotate(326deg)}}
+@keyframes ghGlow{0%,100%{opacity:.15;transform:scale(.88)}50%{opacity:.3;transform:scale(1.12)}}
+@keyframes ghLoaderDrift{0%,100%{transform:translate(0,0) scale(.96)}50%{transform:translate(10px,-12px) scale(1.04)}}
+@keyframes ghPulse{0%,100%{opacity:.55;transform:scale(.85)}50%{opacity:1;transform:scale(1.25)}}
+
+/* Gentle entrance and interaction effects */
+@keyframes ghRiseIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.gh-reveal{opacity:0;transform:translateY(13px);transition:opacity .55s ease,transform .55s cubic-bezier(.2,.7,.2,1)}
+.gh-reveal.gh-in-view{opacity:1;transform:translateY(0)}
+.wallet-card{animation:ghRiseIn .7s both;transform-origin:center}
+.service,.product-card,.quick-row,.category-row{transition:transform .24s ease,box-shadow .24s ease,border-color .24s ease,background .24s ease}
+@media(hover:hover){
+  .service:hover,.product-card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(37,42,48,.09);border-color:rgba(232,117,53,.25)}
+  .quick-row:hover,.category-row:hover{background:#FFFAF6}
+  .fund-btn:hover{transform:translateY(-2px);box-shadow:0 7px 18px rgba(232,117,53,.25)}
+  .header-icon:hover{color:var(--orange);border-color:rgba(232,117,53,.3)}
+}
+.service-icon,.quick-icon,.category-logo,.product-logo{transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.service:active .service-icon,.product-card:active .product-logo{transform:scale(.9) rotate(-5deg)}
+.fund-btn{box-shadow:0 5px 14px rgba(232,117,53,.13)}
+.section-head h2{position:relative}
+.fresh{animation:ghFreshPulse 2.8s ease-in-out infinite}
+@keyframes ghFreshPulse{0%,100%{box-shadow:0 0 0 0 rgba(232,117,53,0)}50%{box-shadow:0 0 0 4px rgba(232,117,53,.07)}}
+.nav-item i{transition:transform .22s ease,background .22s ease}
+.nav-item:active i{transform:scale(.88)}
+.toast{backdrop-filter:blur(12px)}
+@media(prefers-reduced-motion:reduce){
+  #gentleHomeLoader:before,#gentleHomeLoader:after,.gh-loader-glow,.gh-loader-mark-inner,.gh-loader-orbit-two,.gh-loader-trust span,.fresh,.wallet-card{animation:none!important}
+  .gh-reveal{opacity:1;transform:none;transition:none}
+  .service,.product-card,.quick-row,.category-row,.nav-item i{transition:none}
+}
+
 </style>
 </head>
 
 <body>
 
 <div id="gentleHomeLoader" role="status" aria-live="polite" aria-label="Loading GentleLogs">
-  <div class="gentle-home-loader-logo">Gentle<span>Logs</span></div>
-  <div class="gentle-home-loader-line"><div class="gentle-home-loader-progress"></div></div>
-  <div class="gentle-home-loader-message" id="gentleHomeLoaderMessage">Opening your orders...</div>
+  <div class="gh-loader-glow gh-loader-glow-one"></div>
+  <div class="gh-loader-glow gh-loader-glow-two"></div>
+  <div class="gh-loader-content">
+    <div class="gh-loader-mark">
+      <span class="gh-loader-mark-inner"><i class="fa-solid fa-bolt"></i></span>
+      <span class="gh-loader-orbit gh-loader-orbit-one"></span>
+      <span class="gh-loader-orbit gh-loader-orbit-two"></span>
+    </div>
+    <div class="gentle-home-loader-logo">Gentle<span>Logs</span></div>
+    <div class="gh-loader-tagline">YOUR DIGITAL WORLD, SIMPLIFIED</div>
+    <div class="gentle-home-loader-line">
+      <div class="gentle-home-loader-progress"></div>
+    </div>
+    <div class="gentle-home-loader-message" id="gentleHomeLoaderMessage">Preparing your experience...</div>
+    <div class="gh-loader-trust"><span></span> SECURE • FAST • SEAMLESS</div>
+  </div>
 </div>
 
 <div class="shell">
@@ -1117,7 +1197,10 @@ input,select,textarea{
       <strong>Buy Logs</strong>
     </a>
 
-    <a class="service" href="usa-numbers.html">
+    <a class="service coming-soon-item"
+       href="#"
+       data-coming-soon="USA Numbers"
+       aria-label="USA Numbers — coming soon">
       <span class="service-icon"><i class="fa-solid fa-phone"></i></span>
       <strong>USA Numbers</strong>
     </a>
@@ -1404,6 +1487,32 @@ let currency="NGN";
 let balanceVisible=true;
 let toastTimer=null;
 
+/* Reveal sections gently as they enter the screen. */
+function initGentleReveals(){
+  const targets=document.querySelectorAll(
+    ".page-heading,.wallet-card,main section,.section-head,.service,.product-card,.quick-row,.category-row"
+  );
+  if(!("IntersectionObserver" in window)){
+    targets.forEach(el=>el.classList.add("gh-in-view"));
+    return;
+  }
+  const observer=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add("gh-in-view");
+        observer.unobserve(entry.target);
+      }
+    });
+  },{threshold:.08,rootMargin:"0px 0px -24px 0px"});
+  targets.forEach((el,index)=>{
+    if(el.classList.contains("wallet-card"))return;
+    el.classList.add("gh-reveal");
+    el.style.transitionDelay=Math.min(index%4,3)*55+"ms";
+    observer.observe(el);
+  });
+}
+initGentleReveals();
+
 
 /* Branded transition for Home navigation links, including every Orders shortcut. */
 document.addEventListener("click",event=>{
@@ -1621,6 +1730,22 @@ function productLogo(product){
   return logos.find(([key])=>
     text.toLowerCase().includes(key)
   )?.[1]||"";
+}
+
+
+/* Animate product cards added later by Firestore. */
+if("MutationObserver" in window){
+  const arrivals=$("newArrivals");
+  if(arrivals){
+    const productObserver=new MutationObserver(()=>{
+      arrivals.querySelectorAll(".product-card:not(.gh-reveal)").forEach((card,index)=>{
+        card.classList.add("gh-reveal");
+        card.style.transitionDelay=(index%4)*55+"ms";
+        requestAnimationFrame(()=>card.classList.add("gh-in-view"));
+      });
+    });
+    productObserver.observe(arrivals,{childList:true,subtree:true});
+  }
 }
 
 /* Load new arrivals */
