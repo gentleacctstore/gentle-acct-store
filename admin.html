@@ -911,7 +911,8 @@ html,body{background:#050b1b!important;color:#edf6ff!important}
    <div class="field"><label for="xtraMinimumPrice">Minimum selling price (₦)</label><input id="xtraMinimumPrice" type="number" min="0" step="1" value="0" inputmode="numeric"></div>
   </div>
   <div class="supplier-note">Set one rule for the whole Logs catalogue. Percentage profit, fixed profit, or whichever gives the higher profit. A minimum price protects low-cost products. Individual manual prices still override the automatic price. Preview prices before importing.</div>
-  <div class="toolbar" style="margin-bottom:12px"><button class="btn btn-primary" id="xtraSavePricing" type="button">Save pricing settings</button></div>
+  <div class="toolbar" style="margin-bottom:12px;gap:8px;flex-wrap:wrap"><button class="btn btn-primary" id="xtraSavePricing" type="button">Save pricing settings</button><button class="btn" id="xtraApplyAutoPrices" type="button">Apply automatic prices to all Logs in store</button></div>
+  <div class="supplier-note">If you use this button, saved manual overrides for Logs are cleared and every imported XtraLogs Logs product is repriced using the automatic rule above. Spencer products and other XtraLogs categories are not changed.</div>
  </div>
 </div>
 <div class="panel" id="xtraCategoryHome">
@@ -2600,6 +2601,38 @@ async function saveXtraPricing() {
   } catch(error) {showXtraMessage(error.message||"Could not save pricing settings.");}
   finally {button.disabled=false;button.textContent="Save pricing settings";}
 }
+async function applyAutomaticPricesToAllLogs() {
+  const button=$("xtraApplyAutoPrices");
+  if(!db){showXtraMessage("Firebase Firestore is not initialised.");return;}
+  if(!confirm("Apply the current automatic pricing rule to EVERY imported XtraLogs Logs product? This clears manual price overrides for Logs only. Spencer products and customer orders will not be changed."))return;
+  button.disabled=true;const old=button.textContent;button.textContent="Applying prices…";
+  try {
+    // Automatic pricing must be active for this bulk operation.
+    $("xtraPricingMode").value="automatic";
+    const nextOverrides={...xtraPricingOverrides};
+    for(const key of Object.keys(nextOverrides)) if(key.startsWith("logs:")) delete nextOverrides[key];
+    const settingsResult=await xtraAdminRequest("/api/xtralogs/admin/pricing",{method:"POST",body:JSON.stringify({pricingMode:"automatic",pricingStrategy:$("xtraPricingStrategy")?.value||"percent",defaultMarginPercent:Number($("xtraDefaultMargin").value),fixedProfitAmount:Number($("xtraFixedProfit")?.value||0),minimumSellingPrice:Number($("xtraMinimumPrice")?.value||0),overrides:nextOverrides})});
+    xtraPricingOverrides=settingsResult.settings?.overrides||nextOverrides;
+    const snap=await db.collection("products").where("supplierProvider","==","xtralogs").get();
+    const docs=snap.docs.filter(doc=>{const d=doc.data();return d.xtraCatalog==="logs"||d.productType==="log";});
+    let updated=0;
+    for(let i=0;i<docs.length;i+=400){
+      const batch=db.batch();
+      docs.slice(i,i+400).forEach(doc=>{
+        const d=doc.data();const cost=Number(d.supplierCost);
+        if(!Number.isFinite(cost)||cost<0)return;
+        const price=xtraAutomaticPrice(cost);
+        batch.update(doc.ref,{price,updatedAt:firebase.firestore.FieldValue.serverTimestamp()});
+        updated++;
+      });
+      await batch.commit();
+    }
+    await loadProducts();
+    if(xtraCatalogueItems.length&&$("xtraCatalogSelect").value==="logs")renderXtraCatalogue();
+    showXtraMessage("Automatic prices applied to "+updated+" XtraLogs Logs products. Manual Logs overrides were cleared.","success");
+  } catch(error){console.error("Bulk Logs repricing failed:",error);showXtraMessage(error.message||"Could not apply automatic prices to the store.");}
+  finally{button.disabled=false;button.textContent=old;}
+}
 function xtraLogCategory(item) {
   const raw=String(item.category_name||item.category||item.platform||item.service_type||item.type_name||"").trim();
   if(raw) return raw.toUpperCase().replace(/\s+/g," ").slice(0,48);
@@ -2709,6 +2742,7 @@ $("xtraUSAShowAll").addEventListener("click",()=>{xtraUSAView="all";renderXtraCa
 $("xtraUSAClearSearch").addEventListener("click",()=>{$("xtraCatalogSearch").value="";renderXtraCatalogue();});
 $("xtraDefaultMargin").addEventListener("input",()=>{if(xtraCatalogueItems.length)renderXtraCatalogue();$("xtraMarginSummary").textContent=(Number($("xtraDefaultMargin").value)||0)+"%";});
 $("xtraSavePricing").addEventListener("click",saveXtraPricing);
+$("xtraApplyAutoPrices").addEventListener("click",applyAutomaticPricesToAllLogs);
 $("xtraSaveServicePrices").addEventListener("click",saveXtraServicePrices);
 $("xtraImportLogsToStore").addEventListener("click",importXtraLogsToStore);
 $("xtraRefreshStoreProducts").addEventListener("click",loadXtraStoreProducts);
