@@ -1130,6 +1130,7 @@ input,select,textarea{
 
 
 /* Website Manager controlled content — only shown when configured in admin. */
+[hidden]{display:none!important}
 .managed-hero-image{width:100%;height:150px;margin:0 0 17px;border-radius:19px;background:#f2eee9 center/cover no-repeat;box-shadow:var(--shadow)}
 .managed-arrivals-description{margin:-7px 1px 13px;color:var(--muted);font-size:11px;line-height:1.6}
 .managed-site-footer{margin:30px 0 4px;padding:18px 4px 5px;border-top:1px solid var(--line);color:var(--muted);font-size:10px;line-height:1.7}
@@ -1199,7 +1200,7 @@ input,select,textarea{
 
 <!-- WALLET -->
 
-<section class="wallet-card">
+<section class="wallet-card" id="homeWalletSection">
 
   <div class="wallet-top">
     <div class="wallet-brand">
@@ -1248,7 +1249,7 @@ input,select,textarea{
 
 <!-- SERVICES -->
 
-<section>
+<section id="homeServicesSection">
   <div class="section-head">
     <h2>Explore services</h2>
   </div>
@@ -1306,7 +1307,7 @@ input,select,textarea{
 
 <!-- NEW ARRIVALS -->
 
-<section>
+<section id="homeArrivalsSection">
   <div class="section-head">
     <h2><span id="managedArrivalsTitle">New arrivals</span> <span class="fresh">JUST IN</span></h2>
     <a class="section-link" href="dashboard.html#productsContainer">Explore marketplace</a>
@@ -1322,7 +1323,7 @@ input,select,textarea{
 
 <!-- QUICK ACCESS -->
 
-<section>
+<section id="homeQuickSection">
   <div class="section-head">
     <h2>Quick access</h2>
   </div>
@@ -1370,7 +1371,7 @@ input,select,textarea{
 
 <!-- POPULAR CATEGORIES -->
 
-<section>
+<section id="homeCategoriesSection">
   <div class="section-head">
     <h2>Popular categories</h2>
     <a class="section-link" href="dashboard.html#productsContainer">Browse logs</a>
@@ -1436,12 +1437,10 @@ input,select,textarea{
 
 <!-- TELEGRAM SUPPORT -->
 
-<a class="telegram-float"
-   href="https://t.me/"
-   target="_blank"
-   rel="noopener noreferrer"
-   aria-label="Telegram support">
-  <i class="fa-brands fa-telegram"></i>
+<a class="telegram-float" id="managedFloatingSupport"
+   href="https://t.me/" target="_blank" rel="noopener noreferrer"
+   aria-label="Contact support">
+  <i class="fa-brands fa-telegram" id="managedSupportIcon"></i>
 </a>
 
 <!-- BOTTOM NAVIGATION -->
@@ -1816,14 +1815,21 @@ function applyManagedWebsiteSettings(data){
     if(heroImage){hero.style.backgroundImage='url("'+heroImage.replace(/["\\]/g,"")+'")';hero.hidden=false;}
     else if(has("heroImage"))hero.hidden=true;
   }
-  if(has("telegramEnabled")){
-    const telegram=document.querySelector(".telegram-float");
-    if(telegram)telegram.hidden=data.telegramEnabled!==true;
+  const support=document.getElementById("managedFloatingSupport");
+  const supportIcon=document.getElementById("managedSupportIcon");
+  if(support){
+    if(has("supportEnabled"))support.hidden=data.supportEnabled!==true;
+    const supportUrl=managedSafeUrl(data.supportUrl);
+    const provider=String(data.supportProvider||"telegram").toLowerCase();
+    const fallback=provider==="whatsapp"?managedWhatsAppUrl(data.whatsappNumber):provider==="telegram"?"https://t.me/":"";
+    if(supportUrl||fallback)support.href=supportUrl||fallback;
+    if(has("supportLabel"))support.setAttribute("aria-label",String(data.supportLabel||"Contact support"));
+    if(supportIcon&&String(data.supportIcon||"").trim())supportIcon.className=String(data.supportIcon).trim();
+    else if(supportIcon)supportIcon.className=provider==="whatsapp"?"fa-brands fa-whatsapp":provider==="custom"?"fa-solid fa-headset":"fa-brands fa-telegram";
   }
-  if(has("telegramUrl")){
-    const telegram=document.querySelector(".telegram-float");
-    const url=managedSafeUrl(data.telegramUrl);
-    if(telegram&&url)telegram.href=url;
+  if(has("whatsappEnabled")&&data.whatsappEnabled!==true){
+    const waCta=document.getElementById("managedPromoCta");
+    if(waCta&&String(data.promoUrl||"").includes("wa.me/"))waCta.hidden=true;
   }
   const promo=$("websitePromo");
   if(has("promoEnabled")&&data.promoEnabled!==true&&promo)promo.classList.remove("show");
@@ -1853,6 +1859,16 @@ function applyManagedWebsiteSettings(data){
     const description=$("managedArrivalsDescription");
     if(description){description.textContent=String(data.arrivalsDescription||"");description.hidden=!String(data.arrivalsDescription||"").trim();}
   }
+  const toggleSection=(key,id)=>{if(has(key)){const el=$(id);if(el)el.hidden=data[key]!==true;}};
+  toggleSection("walletVisible","homeWalletSection");
+  toggleSection("servicesVisible","homeServicesSection");
+  toggleSection("quickVisible","homeQuickSection");
+  toggleSection("categoriesVisible","homeCategoriesSection");
+  if(has("arrivalsBadgeEnabled")){const badge=document.querySelector("#homeArrivalsSection .fresh");if(badge)badge.hidden=data.arrivalsBadgeEnabled!==true;}
+  const root=document.documentElement;
+  if(root){if(/^#[0-9a-f]{6}$/i.test(data.accentColor||"")){root.style.setProperty("--orange",data.accentColor);root.style.setProperty("--orange-dark",data.accentColor);}
+    if(/^#[0-9a-f]{6}$/i.test(data.backgroundColor||""))root.style.setProperty("--bg",data.backgroundColor);
+    if(/^#[0-9a-f]{6}$/i.test(data.textColor||""))root.style.setProperty("--ink",data.textColor);}
   const footer=$("managedSiteFooter");
   const footerText=String(data.footerText||"").trim();
   const footerEmail=String(data.footerEmail||"").trim();
@@ -1903,7 +1919,7 @@ async function loadProducts(){
       );
 
     const settings=managedWebsiteSettings||{};
-    const arrivalsSection=$("newArrivals")?.closest("section");
+    const arrivalsSection=$("homeArrivalsSection")||$("newArrivals")?.closest("section");
     if(Object.prototype.hasOwnProperty.call(settings,"arrivalsEnabled") && settings.arrivalsEnabled!==true){
       if(arrivalsSection)arrivalsSection.hidden=true;
       return;
@@ -2098,8 +2114,7 @@ if(!window.firebaseAuth||!window.firebaseDB){
       /* Load products independently */
 
       await loadManagedWebsiteSettings();
-      loadProducts();
-      loadCategoryLogos();
+      await Promise.allSettled([loadProducts(),loadCategoryLogos()]);
 
       /* Customer profile */
 
