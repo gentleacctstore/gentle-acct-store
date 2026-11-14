@@ -1464,7 +1464,7 @@ $("saveWebsiteSettings").addEventListener("click",async()=>{
     data.newArrivalsProductIds=ids;
     data.updatedAt=firebase.firestore.FieldValue.serverTimestamp();data.updatedBy=auth.currentUser.uid;
     await db.collection("storeSettings").doc("websiteContent").set(data,{merge:true});
-    showMessage("websiteManagerMessage","Website settings saved successfully. Your homepage must be connected to storeSettings/websiteContent before customers can see these changes.","success");showToast("Website settings saved.");
+    showMessage("websiteManagerMessage","Website settings saved successfully. The connected homepage reads storeSettings/websiteContent when it loads.","success");showToast("Website settings saved.");
   }catch(error){console.error("Website settings save failed:",error);showMessage("websiteManagerMessage","Could not save website settings: "+readableError(error));}
   finally{button.disabled=false;button.textContent="Save website settings";}
 });

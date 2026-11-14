@@ -5,8 +5,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#FFFCFA">
-<meta name="description" content="GentleLogs — Your premium digital marketplace.">
-<title>Home | GentleLogs</title>
+<meta name="description" content="Gentle acct store — Your premium digital marketplace.">
+<title>Home | Gentle acct store</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1128,12 +1128,21 @@ input,select,textarea{
 }
 .activity-strip.gl-live-ribbon .gl-ribbon-track{padding-left:0}
 
+
+/* Website Manager controlled content — only shown when configured in admin. */
+.managed-hero-image{width:100%;height:150px;margin:0 0 17px;border-radius:19px;background:#f2eee9 center/cover no-repeat;box-shadow:var(--shadow)}
+.managed-arrivals-description{margin:-7px 1px 13px;color:var(--muted);font-size:11px;line-height:1.6}
+.managed-site-footer{margin:30px 0 4px;padding:18px 4px 5px;border-top:1px solid var(--line);color:var(--muted);font-size:10px;line-height:1.7}
+.managed-site-footer p{margin:0 0 7px}
+.managed-site-footer a{display:inline-block;color:var(--orange-dark);font-weight:700;margin-bottom:7px}
+.managed-site-footer small{display:block;font-size:9px}
+
 </style>
 </head>
 
 <body>
 
-<div id="gentleHomeLoader" role="status" aria-live="polite" aria-label="Loading GentleLogs">
+<div id="gentleHomeLoader" role="status" aria-live="polite" aria-label="Loading Gentle acct store">
   <div class="gl-loader-scene">
     <div class="gl-loader-aura gl-loader-aura-a"></div>
     <div class="gl-loader-aura gl-loader-aura-b"></div>
@@ -1150,7 +1159,7 @@ input,select,textarea{
 
 <div class="shell">
 
-<div class="activity-strip gl-live-ribbon" aria-label="GentleLogs marketplace information">
+<div class="activity-strip gl-live-ribbon" id="managedAnnouncement" aria-label="Gentle acct store marketplace information">
   <div class="gl-ribbon-glow"></div>
   <div class="gl-ribbon-track">
     <span><i class="fa-solid fa-bolt"></i> YOUR DIGITAL MARKETPLACE</span>
@@ -1179,10 +1188,11 @@ input,select,textarea{
 
 <main>
 
-<div class="page-heading">
+<div class="managed-hero-image" id="managedHeroImage" hidden aria-hidden="true"></div>
+<div class="page-heading" id="managedPageHeading">
   <div class="eyebrow">Your account</div>
-  <h1>Welcome back<span id="welcomeName"></span></h1>
-  <p>Everything you need, all in one place.</p>
+  <h1 id="managedHeroTitle">Welcome back<span id="welcomeName"></span></h1>
+  <p id="managedHeroSubtitle">Everything you need, all in one place.</p>
 </div>
 
 
@@ -1194,7 +1204,7 @@ input,select,textarea{
   <div class="wallet-top">
     <div class="wallet-brand">
       <span class="wallet-brand-icon"><i class="fa-solid fa-bolt"></i></span>
-      GentleLogs
+      Gentle acct store 
     </div>
 
     <div class="wallet-status">
@@ -1225,7 +1235,7 @@ input,select,textarea{
   <div class="wallet-bottom">
     <div>
       <small>ACCOUNT HOLDER</small>
-      <strong id="cardholderName">GENTLELOGS CUSTOMER</strong>
+      <strong id="cardholderName"> CUSTOMER NAME</strong>
     </div>
 
     <div class="currency-switch">
@@ -1298,10 +1308,11 @@ input,select,textarea{
 
 <section>
   <div class="section-head">
-    <h2>New arrivals <span class="fresh">JUST IN</span></h2>
+    <h2><span id="managedArrivalsTitle">New arrivals</span> <span class="fresh">JUST IN</span></h2>
     <a class="section-link" href="dashboard.html#productsContainer">Explore marketplace</a>
   </div>
 
+  <p id="managedArrivalsDescription" class="managed-arrivals-description" hidden></p>
   <div class="arrivals" id="newArrivals">
     <div class="product-card">
       <div class="product-title">Loading products...</div>
@@ -1414,6 +1425,12 @@ input,select,textarea{
   </div>
 </section>
 
+<footer class="managed-site-footer" id="managedSiteFooter" hidden>
+  <p id="managedFooterText"></p>
+  <a id="managedFooterEmail" href="#" hidden></a>
+  <small id="managedFooterCopyright"></small>
+</footer>
+
 </main>
 </div>
 
@@ -1477,7 +1494,7 @@ input,select,textarea{
       brand, or any project, we can help bring your idea to life.
     </p>
 
-    <a class="website-promo-cta"
+    <a class="website-promo-cta" id="managedPromoCta"
        href="https://wa.me/2349131953030"
        target="_blank"
        rel="noopener noreferrer">
@@ -1557,7 +1574,7 @@ document.addEventListener("click",event=>{
       ?"Opening your orders..."
       :href.startsWith("dashboard.html") || /^(usa-numbers|world-numbers|boosting|data|telegram)\.html/.test(href)
         ?"Opening the marketplace..."
-        :"Opening GentleLogs...";
+        :"Opening Gentle acct store...";
   }
   loader.classList.add("is-visible");
 });
@@ -1759,6 +1776,108 @@ function productLogo(product){
   )?.[1]||"";
 }
 
+/* Website Manager settings: storeSettings/websiteContent */
+let managedWebsiteSettings=null;
+function managedSafeUrl(value){
+  const raw=String(value||"").trim();
+  if(!raw)return "";
+  try{
+    const url=new URL(raw);
+    return ["https:","http:"].includes(url.protocol)?url.href:"";
+  }catch(_){return "";}
+}
+function managedWhatsAppUrl(number){
+  const digits=String(number||"").replace(/[^0-9]/g,"");
+  return /^[0-9]{8,15}$/.test(digits)?"https://wa.me/"+digits:"";
+}
+function applyManagedWebsiteSettings(data){
+  managedWebsiteSettings=data||{};
+  const has=(key)=>Object.prototype.hasOwnProperty.call(managedWebsiteSettings,key);
+  const setText=(id,value)=>{const el=$(id);if(el&&value!==undefined&&value!==null)el.textContent=String(value);};
+  const announcement=$("managedAnnouncement");
+  if(has("announcementEnabled")&&announcement)announcement.hidden=data.announcementEnabled!==true;
+  if(has("announcementText")&&String(data.announcementText||"").trim()){
+    const track=announcement?.querySelector(".gl-ribbon-track");
+    if(track){
+      track.querySelectorAll("span").forEach((span,index)=>{
+        span.textContent=String(data.announcementText);
+        if(index===0)span.setAttribute("aria-label",String(data.announcementText));
+      });
+    }
+  }
+  if(has("heroTitle")&&String(data.heroTitle||"").trim()){
+    const title=$("managedHeroTitle");
+    if(title&&title.firstChild)title.firstChild.textContent=String(data.heroTitle)+" ";
+  }
+  if(has("heroSubtitle"))setText("managedHeroSubtitle",data.heroSubtitle);
+  const heroImage=managedSafeUrl(data.heroImage);
+  const hero=$("managedHeroImage");
+  if(hero){
+    if(heroImage){hero.style.backgroundImage='url("'+heroImage.replace(/["\\]/g,"")+'")';hero.hidden=false;}
+    else if(has("heroImage"))hero.hidden=true;
+  }
+  if(has("telegramEnabled")){
+    const telegram=document.querySelector(".telegram-float");
+    if(telegram)telegram.hidden=data.telegramEnabled!==true;
+  }
+  if(has("telegramUrl")){
+    const telegram=document.querySelector(".telegram-float");
+    const url=managedSafeUrl(data.telegramUrl);
+    if(telegram&&url)telegram.href=url;
+  }
+  const promo=$("websitePromo");
+  if(has("promoEnabled")&&data.promoEnabled!==true&&promo)promo.classList.remove("show");
+  if(has("promoTitle"))setText("websitePromoTitle",data.promoTitle);
+  if(has("promoText")){
+    const paragraph=promo?.querySelector(".website-promo p");
+    if(paragraph)paragraph.textContent=String(data.promoText||"");
+  }
+  const promoCta=$("managedPromoCta");
+  if(promoCta){
+    if(has("promoLabel")&&String(data.promoLabel||"").trim()){
+      promoCta.lastChild.textContent=" "+String(data.promoLabel);
+    }
+    const directPromo=managedSafeUrl(data.promoUrl);
+    const waUrl=managedWhatsAppUrl(data.whatsappNumber);
+    if(directPromo)promoCta.href=directPromo;
+    else if(waUrl)promoCta.href=waUrl;
+    if(has("whatsappEnabled"))promoCta.hidden=data.whatsappEnabled!==true;
+  }
+  if(has("comingEnabled")){
+    window.gentleComingSoonEnabled=data.comingEnabled===true;
+  }
+  if(has("comingTitle"))setText("comingSoonTitle",data.comingTitle);
+  if(has("comingText"))setText("comingSoonMessage",data.comingText);
+  if(has("arrivalsTitle"))setText("managedArrivalsTitle",data.arrivalsTitle);
+  if(has("arrivalsDescription")){
+    const description=$("managedArrivalsDescription");
+    if(description){description.textContent=String(data.arrivalsDescription||"");description.hidden=!String(data.arrivalsDescription||"").trim();}
+  }
+  const footer=$("managedSiteFooter");
+  const footerText=String(data.footerText||"").trim();
+  const footerEmail=String(data.footerEmail||"").trim();
+  const footerCopyright=String(data.footerCopyright||"").trim();
+  if(footer){
+    footer.hidden=!(footerText||footerEmail||footerCopyright);
+    setText("managedFooterText",footerText);
+    setText("managedFooterCopyright",footerCopyright);
+    const email=$("managedFooterEmail");
+    if(email){
+      if(footerEmail&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(footerEmail)){
+        email.textContent=footerEmail;email.href="mailto:"+footerEmail;email.hidden=false;
+      }else{email.hidden=true;email.removeAttribute("href");}
+    }
+  }
+}
+async function loadManagedWebsiteSettings(){
+  try{
+    const snap=await window.firebaseDB.collection("storeSettings").doc("websiteContent").get();
+    if(snap.exists)applyManagedWebsiteSettings(snap.data()||{});
+  }catch(error){
+    console.warn("Website Manager content could not be loaded:",error);
+  }
+}
+
 /* Load new arrivals */
 
 async function loadProducts(){
@@ -1769,7 +1888,7 @@ async function loadProducts(){
       .collection("products")
       .get();
 
-    const products=snapshot.docs
+    let products=snapshot.docs
       .map(doc=>({
         id:doc.id,
         ...(doc.data()||{})
@@ -1781,8 +1900,22 @@ async function loadProducts(){
       .sort((a,b)=>
         (b.createdAt?.seconds||0)-
         (a.createdAt?.seconds||0)
-      )
-      .slice(0,8);
+      );
+
+    const settings=managedWebsiteSettings||{};
+    const arrivalsSection=$("newArrivals")?.closest("section");
+    if(Object.prototype.hasOwnProperty.call(settings,"arrivalsEnabled") && settings.arrivalsEnabled!==true){
+      if(arrivalsSection)arrivalsSection.hidden=true;
+      return;
+    }
+    if(arrivalsSection)arrivalsSection.hidden=false;
+    const limit=Math.max(1,Math.min(30,Number(settings.arrivalsLimit)||8));
+    if(Array.isArray(settings.newArrivalsProductIds)&&settings.newArrivalsProductIds.length){
+      const byId=new Map(products.map(product=>[product.id,product]));
+      products=settings.newArrivalsProductIds.map(id=>byId.get(id)).filter(Boolean).slice(0,limit);
+    }else{
+      products=products.slice(0,limit);
+    }
 
     $("newArrivals").innerHTML=products.length
       ?products.map(product=>{
@@ -1937,7 +2070,7 @@ if(!window.firebaseAuth||!window.firebaseDB){
           ||cachedUser.fullName
           ||cachedUser.username
           ||currentUser.displayName
-          ||(currentUser.email||"GentleLogs Customer").split("@")[0];
+          ||(currentUser.email||"Gentle acct stote Customer").split("@")[0];
         const displayName=String(cachedName).trim();
         $("cardholderName").textContent=displayName.toUpperCase();
         $("profileInitial").textContent=displayName.charAt(0).toUpperCase()||"G";
@@ -1964,6 +2097,7 @@ if(!window.firebaseAuth||!window.firebaseDB){
 
       /* Load products independently */
 
+      await loadManagedWebsiteSettings();
       loadProducts();
       loadCategoryLogos();
 
@@ -1995,7 +2129,7 @@ if(!window.firebaseAuth||!window.firebaseDB){
           ||profile.fullName
           ||profile.username
           ||currentUser.displayName
-          ||(currentUser.email||"GentleLogs Customer").split("@")[0];
+          ||(currentUser.email||"Gentle acct stote Customer").split("@")[0];
 
         const displayName=String(name).trim();
 
@@ -2052,9 +2186,12 @@ if(!window.firebaseAuth||!window.firebaseDB){
 
       });
 
-      /* Preserve the existing website promotion */
-
-      $("websitePromo").classList.add("show");
+      /* Preserve the original promotion by default; respect admin visibility when configured. */
+      if(!managedWebsiteSettings ||
+         !Object.prototype.hasOwnProperty.call(managedWebsiteSettings,"promoEnabled") ||
+         managedWebsiteSettings.promoEnabled===true){
+        $("websitePromo").classList.add("show");
+      }
 
     }catch(error){
 
