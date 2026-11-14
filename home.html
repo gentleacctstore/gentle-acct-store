@@ -1016,70 +1016,106 @@ input,select,textarea{
 @media(prefers-reduced-motion:reduce){.gentle-home-loader-progress{animation:none;width:100%}}
 
 
-/* GentleLogs premium motion layer — lightweight and mobile-friendly */
+/* ===== GentleLogs premium continuous motion system ===== */
 #gentleHomeLoader{
   isolation:isolate;overflow:hidden;
-  background:
-    radial-gradient(ellipse at 50% 38%,rgba(232,117,53,.17),transparent 37%),
-    radial-gradient(ellipse at 15% 85%,rgba(111,75,190,.12),transparent 35%),
-    linear-gradient(145deg,#090F1D 0%,#111A2B 52%,#090F1D 100%);
-  transition:opacity .38s ease,visibility .38s ease;
+  background:radial-gradient(ellipse at 50% 42%,rgba(232,117,53,.18),transparent 35%),
+             radial-gradient(ellipse at 20% 90%,rgba(112,83,205,.15),transparent 40%),
+             linear-gradient(145deg,#080E1A,#121D30 55%,#080E1A);
+  transition:opacity .42s ease,visibility .42s ease;
 }
 #gentleHomeLoader:before,#gentleHomeLoader:after{
   content:"";position:absolute;border:1px solid rgba(255,255,255,.055);
-  border-radius:50%;pointer-events:none;z-index:-1;
+  border-radius:50%;z-index:-1;pointer-events:none;
 }
-#gentleHomeLoader:before{width:390px;height:390px;animation:ghLoaderDrift 9s ease-in-out infinite}
-#gentleHomeLoader:after{width:540px;height:540px;animation:ghLoaderDrift 13s ease-in-out infinite reverse}
-.gh-loader-content{width:min(82%,330px);display:flex;flex-direction:column;align-items:center;position:relative;z-index:1}
-.gh-loader-glow{position:absolute;width:170px;height:170px;border-radius:50%;filter:blur(55px);opacity:.23;pointer-events:none}
-.gh-loader-glow-one{background:#E87535;top:22%;left:calc(50% - 85px);animation:ghGlow 4s ease-in-out infinite}
-.gh-loader-glow-two{background:#7556D8;bottom:17%;left:calc(50% - 85px);animation:ghGlow 5s ease-in-out infinite reverse}
-.gh-loader-mark{width:82px;height:82px;position:relative;display:grid;place-items:center;margin-bottom:25px}
-.gh-loader-mark-inner{width:58px;height:58px;border-radius:20px;display:grid;place-items:center;
-  color:#fff;font-size:23px;background:linear-gradient(145deg,#F18B50,#D85E2C);
-  box-shadow:0 10px 35px rgba(232,117,53,.3),inset 0 1px 0 rgba(255,255,255,.35);
-  animation:ghMarkFloat 2.8s ease-in-out infinite}
-.gh-loader-orbit{position:absolute;inset:0;border:1px solid rgba(255,255,255,.18);border-radius:27px;transform:rotate(28deg)}
-.gh-loader-orbit-two{inset:7px;border-color:rgba(232,117,53,.42);transform:rotate(-34deg);animation:ghOrbit 8s linear infinite}
-.gentle-home-loader-logo{font-size:32px;letter-spacing:-1.7px;text-shadow:0 3px 25px rgba(255,255,255,.08)}
-.gh-loader-tagline{margin-top:9px;color:#929DB0;font-size:8px;font-weight:700;letter-spacing:2.1px}
-.gentle-home-loader-line{width:190px;height:5px;margin-top:32px;background:rgba(255,255,255,.1);box-shadow:0 0 18px rgba(232,117,53,.08)}
-.gentle-home-loader-progress{width:34%;background:linear-gradient(90deg,#8B67E8,#E87535,#FFB27E);box-shadow:0 0 13px rgba(232,117,53,.6);animation:gentleHomeLoaderMove 1.25s cubic-bezier(.45,0,.55,1) infinite}
-.gentle-home-loader-message{min-height:16px;margin-top:15px;color:#C0C8D5;font-size:11px;letter-spacing:.15px}
-.gh-loader-trust{margin-top:28px;color:#758196;font-size:8px;letter-spacing:1.5px;font-weight:700;display:flex;align-items:center;gap:8px}
-.gh-loader-trust span{width:6px;height:6px;border-radius:50%;background:#54D6A0;box-shadow:0 0 10px rgba(84,214,160,.8);animation:ghPulse 1.6s ease-in-out infinite}
-@keyframes ghMarkFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-6px) rotate(3deg)}}
-@keyframes ghOrbit{to{transform:rotate(326deg)}}
-@keyframes ghGlow{0%,100%{opacity:.15;transform:scale(.88)}50%{opacity:.3;transform:scale(1.12)}}
-@keyframes ghLoaderDrift{0%,100%{transform:translate(0,0) scale(.96)}50%{transform:translate(10px,-12px) scale(1.04)}}
-@keyframes ghPulse{0%,100%{opacity:.55;transform:scale(.85)}50%{opacity:1;transform:scale(1.25)}}
+#gentleHomeLoader:before{width:390px;height:390px;animation:glLoaderDrift 10s ease-in-out infinite}
+#gentleHomeLoader:after{width:560px;height:560px;animation:glLoaderDrift 15s ease-in-out infinite reverse}
+.gl-loader-scene{width:150px;height:150px;position:relative;display:grid;place-items:center;margin-bottom:20px}
+.gl-loader-aura{position:absolute;width:95px;height:95px;border-radius:50%;filter:blur(30px);opacity:.5}
+.gl-loader-aura-a{background:#E87535;animation:glAura 3s ease-in-out infinite}
+.gl-loader-aura-b{background:#805BDF;animation:glAura 4s ease-in-out infinite reverse;transform:translate(25px,18px)}
+.gl-loader-ring{position:absolute;border:1px solid rgba(255,255,255,.23);border-radius:50%;transform:rotateX(65deg)}
+.gl-loader-ring-a{width:135px;height:135px;border-top-color:#F29A68;border-bottom-color:rgba(242,154,104,.12);animation:glRingSpin 3.5s linear infinite}
+.gl-loader-ring-b{width:112px;height:112px;border-left-color:#9D82F0;border-right-color:rgba(157,130,240,.1);animation:glRingSpin 5s linear infinite reverse}
+.gl-loader-core{width:65px;height:65px;position:relative;display:grid;place-items:center;border-radius:21px;
+  color:white;font-size:25px;background:linear-gradient(145deg,#F18C51,#D95E2C);
+  box-shadow:0 0 0 9px rgba(232,117,53,.08),0 12px 42px rgba(232,117,53,.38),inset 0 1px 0 rgba(255,255,255,.4);
+  animation:glCoreFloat 2.4s ease-in-out infinite}
+.gl-loader-core span{position:absolute;inset:-7px;border:1px solid rgba(255,255,255,.2);border-radius:25px;animation:glCorePulse 2s ease-out infinite}
+.gl-loader-wordmark{font-size:34px;font-weight:700;letter-spacing:-1.8px;color:#fff}
+.gl-loader-wordmark span{color:#F18B50}
+.gl-loader-caption{margin-top:8px;font-size:8px;font-weight:700;letter-spacing:2.2px;color:#9BA7BA}
+.gentle-home-loader-line{width:190px;height:4px;margin-top:30px;border-radius:20px;background:rgba(255,255,255,.1);overflow:hidden}
+.gentle-home-loader-progress{width:32%;background:linear-gradient(90deg,#8B68E9,#E87535,#FFC092);box-shadow:0 0 18px rgba(232,117,53,.8);animation:gentleHomeLoaderMove 1.05s ease-in-out infinite}
+.gentle-home-loader-message{margin-top:14px;color:#D0D6E0;font-size:11px;min-height:16px}
+.gl-loader-foot{margin-top:27px;color:#77859B;font-size:8px;font-weight:700;letter-spacing:1.5px}
+.gl-loader-foot i{display:inline-block;width:6px;height:6px;border-radius:50%;background:#52D5A0;box-shadow:0 0 12px #52D5A0;margin-right:6px;animation:glLiveDot 1.3s infinite}
+.gl-loader-foot b{color:#E87535;margin:0 5px}
+@keyframes glRingSpin{to{transform:rotateX(65deg) rotate(360deg)}}
+@keyframes glCoreFloat{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-7px) rotate(4deg)}}
+@keyframes glCorePulse{0%{transform:scale(.9);opacity:.7}100%{transform:scale(1.3);opacity:0}}
+@keyframes glAura{0%,100%{opacity:.28;transform:scale(.8)}50%{opacity:.65;transform:scale(1.25)}}
+@keyframes glLoaderDrift{0%,100%{transform:translate(0,0)}50%{transform:translate(15px,-12px)}}
+@keyframes glLiveDot{50%{opacity:.4;transform:scale(.7)}}
 
-/* Gentle entrance and interaction effects */
-@keyframes ghRiseIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-.gh-reveal{opacity:0;transform:translateY(13px);transition:opacity .55s ease,transform .55s cubic-bezier(.2,.7,.2,1)}
-.gh-reveal.gh-in-view{opacity:1;transform:translateY(0)}
-.wallet-card{animation:ghRiseIn .7s both;transform-origin:center}
-.service,.product-card,.quick-row,.category-row{transition:transform .24s ease,box-shadow .24s ease,border-color .24s ease,background .24s ease}
+/* Moving marketplace ribbon — continuous motion, not a static decoration */
+.gl-live-ribbon{height:35px;margin:-4px 0 20px;position:relative;overflow:hidden;border-radius:10px;
+  background:linear-gradient(100deg,#282D34,#343943 50%,#252A30);display:flex;align-items:center;
+  box-shadow:0 6px 18px rgba(37,42,48,.09)}
+.gl-ribbon-glow{position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(232,117,53,.2),transparent);
+  transform:translateX(-100%);animation:glRibbonShine 5s ease-in-out infinite}
+.gl-ribbon-track{display:flex;align-items:center;gap:19px;width:max-content;white-space:nowrap;
+  color:#E7E9EC;font-size:8px;font-weight:700;letter-spacing:1.15px;animation:glMarquee 29s linear infinite}
+.gl-ribbon-track span{display:flex;align-items:center;gap:7px}
+.gl-ribbon-track i{color:#F08A50;font-size:10px}
+.gl-ribbon-track b{font-size:9px;color:#E87535}
+@keyframes glMarquee{to{transform:translateX(-50%)}}
+@keyframes glRibbonShine{0%,15%{transform:translateX(-100%)}65%,100%{transform:translateX(100%)}}
+
+/* Constant ambient motion in the wallet card */
+.wallet-card{isolation:isolate}
+.wallet-card:before{animation:glWalletOrbit 13s ease-in-out infinite}
+.wallet-card:after{animation:glWalletOrbit 10s ease-in-out infinite reverse}
+.wallet-card .wallet-top:after{content:"";position:absolute;top:-22px;right:20%;width:80px;height:180px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.055),transparent);
+  transform:rotate(28deg);pointer-events:none;animation:glWalletShine 7s ease-in-out infinite}
+.wallet-status span{animation:glLiveDot 1.6s ease-in-out infinite;box-shadow:0 0 9px rgba(85,201,149,.65)}
+@keyframes glWalletOrbit{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-12px,9px) scale(1.08)}}
+@keyframes glWalletShine{0%,35%{transform:translateX(-95px) rotate(28deg);opacity:0}55%{opacity:1}80%,100%{transform:translateX(160px) rotate(28deg);opacity:0}}
+
+/* Subtle continuous motion on service tiles and category marks */
+.service-icon{animation:glIconFloat 4.5s ease-in-out infinite}
+.service:nth-child(2) .service-icon{animation-delay:.35s}
+.service:nth-child(3) .service-icon{animation-delay:.7s}
+.service:nth-child(4) .service-icon{animation-delay:1.05s}
+.service:nth-child(5) .service-icon{animation-delay:1.4s}
+.service:nth-child(6) .service-icon{animation-delay:1.75s}
+.service:nth-child(7) .service-icon{animation-delay:2.1s}
+.service:nth-child(8) .service-icon{animation-delay:2.45s}
+@keyframes glIconFloat{0%,84%,100%{transform:translateY(0)}90%{transform:translateY(-4px)}95%{transform:translateY(0)}}
+.fresh{animation:glFreshGlow 2.4s ease-in-out infinite}
+@keyframes glFreshGlow{0%,100%{box-shadow:0 0 0 rgba(232,117,53,0)}50%{box-shadow:0 0 12px rgba(232,117,53,.22)}}
+.product-arrow{transition:transform .25s ease,background .25s ease}
+.product-card:active .product-arrow{transform:translate(2px,-2px)}
+.fund-btn{position:relative;overflow:hidden}
+.fund-btn:after{content:"";position:absolute;inset:-40% auto -40% -50%;width:35%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.28),transparent);
+  transform:skewX(-20deg);animation:glButtonShine 4.8s ease-in-out infinite}
+@keyframes glButtonShine{0%,55%{left:-55%}80%,100%{left:130%}}
+.header-icon .dot{animation:glNotificationPulse 2s ease-in-out infinite}
+@keyframes glNotificationPulse{0%,100%{box-shadow:0 0 0 2px #fff,0 0 0 2px rgba(232,117,53,0)}50%{box-shadow:0 0 0 2px #fff,0 0 0 6px rgba(232,117,53,.13)}}
+.arrivals{scroll-snap-type:x mandatory}
+.product-card{scroll-snap-align:start}
+.telegram-float{animation:glSupportFloat 4s ease-in-out infinite}
+@keyframes glSupportFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 @media(hover:hover){
-  .service:hover,.product-card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(37,42,48,.09);border-color:rgba(232,117,53,.25)}
-  .quick-row:hover,.category-row:hover{background:#FFFAF6}
-  .fund-btn:hover{transform:translateY(-2px);box-shadow:0 7px 18px rgba(232,117,53,.25)}
-  .header-icon:hover{color:var(--orange);border-color:rgba(232,117,53,.3)}
+  .service:hover,.product-card:hover{transform:translateY(-5px);box-shadow:0 14px 30px rgba(37,42,48,.1);border-color:rgba(232,117,53,.3)}
+  .fund-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(232,117,53,.25)}
 }
-.service-icon,.quick-icon,.category-logo,.product-logo{transition:transform .3s cubic-bezier(.2,.8,.2,1)}
-.service:active .service-icon,.product-card:active .product-logo{transform:scale(.9) rotate(-5deg)}
-.fund-btn{box-shadow:0 5px 14px rgba(232,117,53,.13)}
-.section-head h2{position:relative}
-.fresh{animation:ghFreshPulse 2.8s ease-in-out infinite}
-@keyframes ghFreshPulse{0%,100%{box-shadow:0 0 0 0 rgba(232,117,53,0)}50%{box-shadow:0 0 0 4px rgba(232,117,53,.07)}}
-.nav-item i{transition:transform .22s ease,background .22s ease}
-.nav-item:active i{transform:scale(.88)}
-.toast{backdrop-filter:blur(12px)}
 @media(prefers-reduced-motion:reduce){
-  #gentleHomeLoader:before,#gentleHomeLoader:after,.gh-loader-glow,.gh-loader-mark-inner,.gh-loader-orbit-two,.gh-loader-trust span,.fresh,.wallet-card{animation:none!important}
-  .gh-reveal{opacity:1;transform:none;transition:none}
-  .service,.product-card,.quick-row,.category-row,.nav-item i{transition:none}
+  #gentleHomeLoader:before,#gentleHomeLoader:after,.gl-loader-aura,.gl-loader-ring,.gl-loader-core,.gl-loader-core span,
+  .gl-loader-foot i,.gl-ribbon-glow,.gl-ribbon-track,.wallet-card:before,.wallet-card:after,.wallet-card .wallet-top:after,
+  .wallet-status span,.service-icon,.fresh,.fund-btn:after,.header-icon .dot,.telegram-float{animation:none!important}
 }
 
 </style>
@@ -1088,22 +1124,18 @@ input,select,textarea{
 <body>
 
 <div id="gentleHomeLoader" role="status" aria-live="polite" aria-label="Loading GentleLogs">
-  <div class="gh-loader-glow gh-loader-glow-one"></div>
-  <div class="gh-loader-glow gh-loader-glow-two"></div>
-  <div class="gh-loader-content">
-    <div class="gh-loader-mark">
-      <span class="gh-loader-mark-inner"><i class="fa-solid fa-bolt"></i></span>
-      <span class="gh-loader-orbit gh-loader-orbit-one"></span>
-      <span class="gh-loader-orbit gh-loader-orbit-two"></span>
-    </div>
-    <div class="gentle-home-loader-logo">Gentle<span>Logs</span></div>
-    <div class="gh-loader-tagline">YOUR DIGITAL WORLD, SIMPLIFIED</div>
-    <div class="gentle-home-loader-line">
-      <div class="gentle-home-loader-progress"></div>
-    </div>
-    <div class="gentle-home-loader-message" id="gentleHomeLoaderMessage">Preparing your experience...</div>
-    <div class="gh-loader-trust"><span></span> SECURE • FAST • SEAMLESS</div>
+  <div class="gl-loader-scene">
+    <div class="gl-loader-aura gl-loader-aura-a"></div>
+    <div class="gl-loader-aura gl-loader-aura-b"></div>
+    <div class="gl-loader-ring gl-loader-ring-a"></div>
+    <div class="gl-loader-ring gl-loader-ring-b"></div>
+    <div class="gl-loader-core"><i class="fa-solid fa-bolt"></i><span></span></div>
   </div>
+  <div class="gl-loader-wordmark">Gentle<span>Logs</span></div>
+  <div class="gl-loader-caption">YOUR DIGITAL WORLD, SIMPLIFIED</div>
+  <div class="gentle-home-loader-line"><div class="gentle-home-loader-progress"></div></div>
+  <div class="gentle-home-loader-message" id="gentleHomeLoaderMessage">Preparing your experience...</div>
+  <div class="gl-loader-foot"><i></i> SECURE CONNECTION <b>•</b> FAST EXPERIENCE</div>
 </div>
 
 <div class="shell">
@@ -1132,6 +1164,20 @@ input,select,textarea{
   <div class="eyebrow">Your account</div>
   <h1>Welcome back<span id="welcomeName"></span></h1>
   <p>Everything you need, all in one place.</p>
+</div>
+
+<div class="gl-live-ribbon" aria-label="GentleLogs marketplace information">
+  <div class="gl-ribbon-glow"></div>
+  <div class="gl-ribbon-track">
+    <span><i class="fa-solid fa-bolt"></i> YOUR DIGITAL MARKETPLACE</span>
+    <b>✦</b><span>FAST CHECKOUT</span><b>✦</b>
+    <span><i class="fa-solid fa-shield-halved"></i> SECURE WALLET</span><b>✦</b>
+    <span>SEAMLESS EXPERIENCE</span><b>✦</b>
+    <span><i class="fa-solid fa-bolt"></i> YOUR DIGITAL MARKETPLACE</span><b>✦</b>
+    <span>FAST CHECKOUT</span><b>✦</b>
+    <span><i class="fa-solid fa-shield-halved"></i> SECURE WALLET</span><b>✦</b>
+    <span>SEAMLESS EXPERIENCE</span><b>✦</b>
+  </div>
 </div>
 
 <!-- WALLET -->
@@ -1487,32 +1533,6 @@ let currency="NGN";
 let balanceVisible=true;
 let toastTimer=null;
 
-/* Reveal sections gently as they enter the screen. */
-function initGentleReveals(){
-  const targets=document.querySelectorAll(
-    ".page-heading,.wallet-card,main section,.section-head,.service,.product-card,.quick-row,.category-row"
-  );
-  if(!("IntersectionObserver" in window)){
-    targets.forEach(el=>el.classList.add("gh-in-view"));
-    return;
-  }
-  const observer=new IntersectionObserver(entries=>{
-    entries.forEach(entry=>{
-      if(entry.isIntersecting){
-        entry.target.classList.add("gh-in-view");
-        observer.unobserve(entry.target);
-      }
-    });
-  },{threshold:.08,rootMargin:"0px 0px -24px 0px"});
-  targets.forEach((el,index)=>{
-    if(el.classList.contains("wallet-card"))return;
-    el.classList.add("gh-reveal");
-    el.style.transitionDelay=Math.min(index%4,3)*55+"ms";
-    observer.observe(el);
-  });
-}
-initGentleReveals();
-
 
 /* Branded transition for Home navigation links, including every Orders shortcut. */
 document.addEventListener("click",event=>{
@@ -1730,22 +1750,6 @@ function productLogo(product){
   return logos.find(([key])=>
     text.toLowerCase().includes(key)
   )?.[1]||"";
-}
-
-
-/* Animate product cards added later by Firestore. */
-if("MutationObserver" in window){
-  const arrivals=$("newArrivals");
-  if(arrivals){
-    const productObserver=new MutationObserver(()=>{
-      arrivals.querySelectorAll(".product-card:not(.gh-reveal)").forEach((card,index)=>{
-        card.classList.add("gh-reveal");
-        card.style.transitionDelay=(index%4)*55+"ms";
-        requestAnimationFrame(()=>card.classList.add("gh-in-view"));
-      });
-    });
-    productObserver.observe(arrivals,{childList:true,subtree:true});
-  }
 }
 
 /* Load new arrivals */
