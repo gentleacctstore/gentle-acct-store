@@ -845,7 +845,7 @@ html,body{background:#050b1b!important;color:#edf6ff!important}
 </section>
 <section class="hidden" id="productsSection">
 <div class="panel">
-<div class="panel-head"><div><div class="panel-title">Product management</div><div class="panel-desc">Add, search, edit and remove products</div></div><button class="btn btn-primary" id="productsAddButton">＋ Add product</button></div>
+<div class="panel-head"><div><div class="panel-title">Product management</div><div class="panel-desc">Add, search, edit and remove products</div></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-danger" id="clearAllProductsButton" type="button">🗑 Clear all products</button><button class="btn btn-primary" id="productsAddButton">＋ Add product</button></div></div>
 <div class="panel-body">
 <div class="toolbar">
 <div class="search-wrap"><input id="productSearch" placeholder="Search products by name or category..." type="search"/></div>
@@ -878,13 +878,20 @@ html,body{background:#050b1b!important;color:#edf6ff!important}
 
 <section class="hidden" id="marketplaceCategoriesSection">
 <div class="panel">
-<div class="panel-head"><div><div class="panel-title">Marketplace Category Manager</div><div class="panel-desc">Control the category names, order, visibility and products customers see on the dashboard.</div></div><button class="btn" id="reloadMarketplaceCategories" type="button">↻ Reload</button></div>
+<div class="panel-head"><div><div class="panel-title">Arrange Logs Categories</div><div class="panel-desc">Choose the names, order and products customers see.</div></div><button class="btn" id="reloadMarketplaceCategories" type="button">↻ Reload</button></div>
 <div class="panel-body">
-<div class="error-box"><strong>How to arrange your Logs dashboard</strong><br>1. Add the category names you want customers to see (for example Giveaway Accounts, Reward Accounts and VPN).<br>2. Use the ↑ and ↓ buttons to arrange the category order.<br>3. Open <strong>Choose products</strong> and tick the exact products that belong in that category. Use <strong>Select all</strong> or <strong>Clear selection</strong> to make it faster.<br>4. Switch <strong>Visible</strong> on or off, then tap <strong>Save category settings</strong>.<br><br>These settings affect the customer dashboard only. Your Category Links and homepage settings are not changed. If you leave a category's product list empty, all products in that category's original product category are included.</div>
+<div class="panel-desc" style="padding:12px;border:1px solid var(--border);border-radius:10px;margin-bottom:14px">
+<strong>Simple steps</strong><br>
+1. Add a category name.<br>
+2. Rename it or move it up/down.<br>
+3. Open <strong>Choose products</strong> and tick what belongs there.<br>
+4. Tap <strong>Save changes</strong>.<br><br>
+Your store products are not deleted. These settings only change how products are grouped on the customer Logs page.
+</div>
 <div class="hidden" id="marketplaceCategoriesMessage"></div>
-<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:14px 0"><input id="newMarketplaceCategoryName" type="text" placeholder="Type a category name, e.g. Giveaway Accounts" aria-label="New category name" style="flex:1;min-width:210px"><button class="btn btn-primary" id="addMarketplaceCategory" type="button">＋ Create category</button></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:14px 0"><input id="newMarketplaceCategoryName" type="text" placeholder="New category name (e.g. Giveaway Accounts)" aria-label="New category name" style="flex:1;min-width:210px"><button class="btn btn-primary" id="addMarketplaceCategory" type="button">＋ Add category</button></div>
 <div id="marketplaceCategoryCards"><div class="loading">Loading categories…</div></div>
-<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px"><button class="btn btn-primary" id="saveMarketplaceCategories" type="button">Save category settings</button><button class="btn" id="resetMarketplaceCategories" type="button">Reset to defaults</button></div>
+<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px"><button class="btn btn-primary" id="saveMarketplaceCategories" type="button">Save changes</button><button class="btn" id="resetMarketplaceCategories" type="button">Restore original categories</button></div>
 </div></div>
 </section>
 
@@ -1231,49 +1238,111 @@ $("themeToggle").addEventListener("click",()=>{
 });
 
 /* CUSTOMER DASHBOARD CATEGORY MANAGER */
-function marketplaceCategoryNames(){return [...new Set(products.map(productCategory).filter(Boolean))].sort((a,b)=>a.localeCompare(b));}
-function makeDefaultMarketplaceCategories(){return marketplaceCategoryNames().map((name,index)=>({id:'cat-'+index+'-'+name.toLowerCase().replace(/[^a-z0-9]+/g,'-'),name,visible:true,order:index+1,productIds:products.filter(p=>productCategory(p)===name).map(p=>p.id)}));}
+function marketplaceCategoryNames(){
+  const present=new Set(products.map(productCategory).filter(Boolean));
+  const ordered=(Array.isArray(CATEGORIES)?CATEGORIES:[]).filter(name=>present.has(name));
+  products.forEach(product=>{const name=productCategory(product);if(name&&!ordered.includes(name))ordered.push(name);});
+  return ordered;
+}
+function makeDefaultMarketplaceCategories(){
+  return marketplaceCategoryNames().map((name,index)=>({
+    id:'cat-'+index+'-'+name.toLowerCase().replace(/[^a-z0-9]+/g,'-'),
+    name,visible:true,order:index+1,
+    productIds:products.filter(p=>productCategory(p)===name).map(p=>p.id)
+  }));
+}
 function renderMarketplaceCategoryCards(){
   const host=$('marketplaceCategoryCards');
   if(!host)return;
-  if(!marketplaceCategoryList.length){host.innerHTML='<div class="loading">No categories yet. Type a name above and tap Create category.</div>';return;}
-  host.innerHTML=marketplaceCategoryList.slice().sort((a,b)=>(Number(a.order)||999)-(Number(b.order)||999)).map((cat,index)=>{
+  if(!marketplaceCategoryList.length){host.innerHTML='<div class="loading">No categories yet. Add your first category above.</div>';return;}
+  const ordered=marketplaceCategoryList.slice().sort((a,b)=>(Number(a.order)||999)-(Number(b.order)||999));
+  host.innerHTML=ordered.map((cat,index)=>{
     const chosen=Array.isArray(cat.productIds)?cat.productIds:[];
-    const checks=products.map(p=>`<label class="mc-product-row" style="display:flex;align-items:flex-start;gap:9px;padding:9px;border:1px solid var(--border);border-radius:9px;margin:5px 0;font-size:13px"><input class="mc-product" type="checkbox" value="${escapeHTML(p.id)}" ${chosen.includes(p.id)?'checked':''}><span><strong>${escapeHTML(productName(p))}</strong><small style="display:block;opacity:.65">Current product category: ${escapeHTML(productCategory(p)||'Uncategorised')}</small></span></label>`).join('');
-    return `<article class="panel mc-category-card" data-category-id="${escapeHTML(cat.id)}" style="margin:14px 0;padding:15px;border:1px solid var(--border);border-radius:14px"><div style="display:flex;gap:9px;flex-wrap:wrap;align-items:end"><label style="flex:2;min-width:180px"><strong>1. Customer-facing category name</strong><input class="mc-name" value="${escapeHTML(cat.name||'')}" type="text" aria-label="Customer-facing category name" style="width:100%;margin-top:6px"></label><label style="width:100px"><strong>Order</strong><input class="mc-order" type="number" min="1" value="${Number(cat.order)||index+1}" aria-label="Category order" style="width:100%;margin-top:6px"></label><label style="display:flex;align-items:center;gap:7px;padding:10px"><input class="mc-visible" type="checkbox" ${cat.visible===false?'':'checked'}> <strong>Visible</strong></label><button class="btn btn-small mc-up" type="button" aria-label="Move category up" title="Move category up">↑ Move up</button><button class="btn btn-small mc-down" type="button" aria-label="Move category down" title="Move category down">↓ Move down</button><button class="btn btn-small mc-delete" type="button">Delete category</button></div><details style="margin-top:13px"><summary style="cursor:pointer;font-weight:800;padding:10px;background:var(--surface-2,var(--bg));border-radius:9px">2. Choose products <span class="mc-count">(${chosen.length} selected)</span> — tap to open</summary><p class="panel-desc" style="margin:10px 0">Tick the products customers should see inside <strong>${escapeHTML(cat.name||'this category')}</strong>. A product can be assigned to one custom category at a time. If you select none, all products from the matching original category are included.</p><div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0"><button class="btn btn-small mc-select-all" type="button">✓ Select all products</button><button class="btn btn-small mc-clear" type="button">Clear selection</button><input class="mc-search" type="search" placeholder="Search products in this list…" aria-label="Search products" style="flex:1;min-width:160px"></div><div class="mc-product-list" style="max-height:320px;overflow:auto">${checks||'<p class="panel-desc">No store products have loaded yet. Tap Reload after products are available.</p>'}</div></details></article>`;
+    const checks=products.map(product=>`<label class="mc-product-row" style="display:flex;align-items:center;gap:10px;padding:10px;border-bottom:1px solid var(--border);font-size:14px"><input class="mc-product" type="checkbox" value="${escapeHTML(product.id)}" ${chosen.includes(product.id)?'checked':''}><span>${escapeHTML(productName(product))}<small style="display:block;opacity:.65">${escapeHTML(productCategory(product)||'Uncategorised')}</small></span></label>`).join('');
+    return `<article class="panel mc-category-card" data-category-id="${escapeHTML(cat.id)}" style="margin:12px 0;padding:13px;border:1px solid var(--border);border-radius:12px">
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <strong style="min-width:25px">${index+1}.</strong>
+        <input class="mc-name" value="${escapeHTML(cat.name||'')}" type="text" aria-label="Category name" placeholder="Category name" style="flex:1;min-width:160px">
+        <label style="display:flex;align-items:center;gap:6px;padding:7px"><input class="mc-visible" type="checkbox" ${cat.visible===false?'':'checked'}> Show</label>
+        <button class="btn btn-small mc-up" type="button" title="Move up" aria-label="Move up">↑</button>
+        <button class="btn btn-small mc-down" type="button" title="Move down" aria-label="Move down">↓</button>
+        <button class="btn btn-small mc-delete" type="button">Delete</button>
+      </div>
+      <details style="margin-top:10px">
+        <summary style="cursor:pointer;font-weight:800;padding:11px;background:var(--surface-2,var(--bg));border-radius:9px">Choose products <span class="mc-count">(${chosen.length} selected)</span></summary>
+        <p class="panel-desc" style="margin:9px 0">Tick the products you want in this category. Each product can belong to one category.</p>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;margin:8px 0">
+          <button class="btn btn-small mc-select-all" type="button">Select all</button>
+          <button class="btn btn-small mc-clear" type="button">Clear</button>
+          <input class="mc-search" type="search" placeholder="Find a product…" aria-label="Find a product" style="flex:1;min-width:130px">
+        </div>
+        <div class="mc-product-list" style="max-height:280px;overflow:auto;border:1px solid var(--border);border-radius:9px">${checks||'<p class="panel-desc" style="padding:10px">No products found. Reload after products have loaded.</p>'}</div>
+      </details>
+    </article>`;
   }).join('');
-  host.querySelectorAll('.mc-clear').forEach(btn=>btn.addEventListener('click',()=>{const card=btn.closest('.mc-category-card');card.querySelectorAll('.mc-product').forEach(c=>c.checked=false);card.querySelector('.mc-count').textContent='(0 selected)';}));
-  host.querySelectorAll('.mc-select-all').forEach(btn=>btn.addEventListener('click',()=>{const card=btn.closest('.mc-category-card');card.querySelectorAll('.mc-product-row').forEach(row=>{if(row.style.display!=='none')row.querySelector('.mc-product').checked=true;});card.querySelector('.mc-count').textContent='('+card.querySelectorAll('.mc-product:checked').length+' selected)';}));
-  host.querySelectorAll('.mc-product').forEach(input=>input.addEventListener('change',()=>{const card=input.closest('.mc-category-card');card.querySelector('.mc-count').textContent='('+card.querySelectorAll('.mc-product:checked').length+' selected)';}));
-  host.querySelectorAll('.mc-search').forEach(input=>input.addEventListener('input',()=>{const q=input.value.trim().toLowerCase();input.closest('.mc-category-card').querySelectorAll('.mc-product-row').forEach(row=>row.style.display=row.textContent.toLowerCase().includes(q)?'flex':'none');}));
-  host.querySelectorAll('.mc-delete').forEach(btn=>btn.addEventListener('click',()=>{const id=btn.closest('.mc-category-card').dataset.categoryId;if(!confirm('Delete this category from the customer dashboard arrangement? Products in your store will not be deleted.'))return;marketplaceCategoryList=marketplaceCategoryList.filter(c=>c.id!==id);renderMarketplaceCategoryCards();}));
-  host.querySelectorAll('.mc-up,.mc-down').forEach(btn=>btn.addEventListener('click',()=>{const cards=[...host.querySelectorAll('.mc-category-card')];const card=btn.closest('.mc-category-card');const idx=cards.indexOf(card);const target=btn.classList.contains('mc-up')?idx-1:idx+1;if(target<0||target>=cards.length)return;const ordered=cards.map(el=>el.dataset.categoryId);[ordered[idx],ordered[target]]=[ordered[target],ordered[idx]];ordered.forEach((id,i)=>{const item=marketplaceCategoryList.find(c=>c.id===id);if(item)item.order=i+1;});renderMarketplaceCategoryCards();}));
+  host.querySelectorAll('.mc-clear').forEach(button=>button.addEventListener('click',()=>{
+    const card=button.closest('.mc-category-card');card.querySelectorAll('.mc-product').forEach(input=>input.checked=false);updateCategoryProductCount(card);
+  }));
+  host.querySelectorAll('.mc-select-all').forEach(button=>button.addEventListener('click',()=>{
+    const card=button.closest('.mc-category-card');card.querySelectorAll('.mc-product-row').forEach(row=>{if(row.style.display!=='none')row.querySelector('.mc-product').checked=true;});updateCategoryProductCount(card);
+  }));
+  host.querySelectorAll('.mc-product').forEach(input=>input.addEventListener('change',()=>updateCategoryProductCount(input.closest('.mc-category-card'))));
+  host.querySelectorAll('.mc-search').forEach(input=>input.addEventListener('input',()=>{
+    const query=input.value.trim().toLowerCase();input.closest('.mc-category-card').querySelectorAll('.mc-product-row').forEach(row=>row.style.display=row.textContent.toLowerCase().includes(query)?'flex':'none');
+  }));
+  host.querySelectorAll('.mc-delete').forEach(button=>button.addEventListener('click',()=>{
+    const card=button.closest('.mc-category-card');if(!confirm('Remove this category from the customer dashboard? Your products will not be deleted.'))return;
+    marketplaceCategoryList=marketplaceCategoryList.filter(category=>category.id!==card.dataset.categoryId);renderMarketplaceCategoryCards();
+  }));
+  host.querySelectorAll('.mc-up,.mc-down').forEach(button=>button.addEventListener('click',()=>{
+    const cards=[...host.querySelectorAll('.mc-category-card')],card=button.closest('.mc-category-card'),index=cards.indexOf(card);
+    const target=button.classList.contains('mc-up')?index-1:index+1;if(target<0||target>=cards.length)return;
+    const ids=cards.map(item=>item.dataset.categoryId);[ids[index],ids[target]]=[ids[target],ids[index]];
+    ids.forEach((id,i)=>{const item=marketplaceCategoryList.find(category=>category.id===id);if(item)item.order=i+1;});renderMarketplaceCategoryCards();
+  }));
 }
+function updateCategoryProductCount(card){if(card){const count=card.querySelectorAll('.mc-product:checked').length;card.querySelector('.mc-count').textContent=`(${count} selected)`;}}
 async function loadMarketplaceCategorySettings(){
-  const host=$('marketplaceCategoryCards');host.innerHTML='<div class="loading">Loading your categories and store products…</div>';
+  const host=$('marketplaceCategoryCards');host.innerHTML='<div class="loading">Loading categories…</div>';
   try{
-    if(!db) throw new Error('Firebase Firestore is not initialised. Check firebase.js and refresh the admin page.');
-    if(!products.length) await loadProducts();
-    const snap=await db.collection('storeSettings').doc('marketplaceCategories').get();
-    const saved=snap.exists?snap.data().categories:null;
-    if(Array.isArray(saved)) marketplaceCategoryList=saved.map((c,i)=>({...c,id:String(c.id||'cat-'+i),productIds:Array.isArray(c.productIds)?c.productIds:[]}));
-    else if(saved&&typeof saved==='object') marketplaceCategoryList=Object.entries(saved).map(([key,c],i)=>({id:'cat-'+i+'-'+key,name:c.name||key,visible:c.visible!==false,order:Number(c.order)||i+1,productIds:Array.isArray(c.productIds)?c.productIds:products.filter(p=>productCategory(p)===key).map(p=>p.id)}));
+    if(!db)throw new Error('Firebase is not connected. Check that you are signed in as admin.');
+    if(!products.length)await loadProducts();
+    const snapshot=await db.collection('storeSettings').doc('marketplaceCategories').get();
+    const saved=snapshot.exists?snapshot.data().categories:null;
+    if(Array.isArray(saved))marketplaceCategoryList=saved.map((category,index)=>({...category,id:String(category.id||'cat-'+index),productIds:Array.isArray(category.productIds)?category.productIds:[]}));
+    else if(saved&&typeof saved==='object')marketplaceCategoryList=Object.entries(saved).map(([key,category],index)=>({id:'cat-'+index+'-'+key,name:category.name||key,visible:category.visible!==false,order:Number(category.order)||index+1,productIds:Array.isArray(category.productIds)?category.productIds:products.filter(product=>productCategory(product)===key).map(product=>product.id)}));
     else marketplaceCategoryList=makeDefaultMarketplaceCategories();
-    marketplaceCategorySettings=saved||{};renderMarketplaceCategoryCards();hideMessage('marketplaceCategoriesMessage');
-  }catch(error){console.error('Marketplace category settings load failed:',error);marketplaceCategoryList=makeDefaultMarketplaceCategories();renderMarketplaceCategoryCards();showMessage('marketplaceCategoriesMessage','Category Manager could not finish loading: '+readableError(error)+' You can still arrange the default categories shown below if products have loaded.','error');}
+    hideMessage('marketplaceCategoriesMessage');renderMarketplaceCategoryCards();
+  }catch(error){
+    console.error('Marketplace category settings load failed:',error);
+    marketplaceCategoryList=makeDefaultMarketplaceCategories();renderMarketplaceCategoryCards();
+    showMessage('marketplaceCategoriesMessage','Could not load saved settings: '+readableError(error)+' Check that you are signed in with the admin account and that Firestore rules are published.','error');
+  }
 }
 async function saveMarketplaceCategorySettings(){
-  const cards=[...document.querySelectorAll('.mc-category-card')];const categories=[];const assigned=new Set();
-  cards.forEach((card,index)=>{const productIds=[...card.querySelectorAll('.mc-product:checked')].map(el=>el.value).filter(id=>{if(assigned.has(id))return false;assigned.add(id);return true;});categories.push({id:card.dataset.categoryId,name:card.querySelector('.mc-name').value.trim()||'New category',visible:card.querySelector('.mc-visible').checked,order:Number(card.querySelector('.mc-order').value)||index+1,productIds});});
+  const cards=[...document.querySelectorAll('.mc-category-card')],categories=[],assigned=new Set();
+  cards.forEach((card,index)=>{
+    const productIds=[...card.querySelectorAll('.mc-product:checked')].map(input=>input.value).filter(id=>{if(assigned.has(id))return false;assigned.add(id);return true;});
+    categories.push({id:card.dataset.categoryId,name:card.querySelector('.mc-name').value.trim()||'New category',visible:card.querySelector('.mc-visible').checked,order:index+1,productIds});
+  });
   const button=$('saveMarketplaceCategories');button.disabled=true;button.textContent='Saving…';
-  try{await db.collection('storeSettings').doc('marketplaceCategories').set({categories,managedProductIds:products.map(p=>p.id),updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});marketplaceCategoryList=categories;showMessage('marketplaceCategoriesMessage','Saved. The customer dashboard will display your categories and product selections when it next loads.','success');showToast('Marketplace categories saved');}
-  catch(error){console.error('Marketplace category settings save failed:',error);showMessage('marketplaceCategoriesMessage','Could not save category settings. '+readableError(error));}
-  finally{button.disabled=false;button.textContent='Save category settings';}
+  try{
+    await db.collection('storeSettings').doc('marketplaceCategories').set({categories,managedProductIds:products.map(product=>product.id),updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+    marketplaceCategoryList=categories;showMessage('marketplaceCategoriesMessage','Saved! Your customer Logs page will use these categories the next time it loads.','success');showToast('Category changes saved');
+  }catch(error){console.error('Marketplace category settings save failed:',error);showMessage('marketplaceCategoriesMessage','Could not save. '+readableError(error),'error');}
+  finally{button.disabled=false;button.textContent='Save changes';}
 }
-$('addMarketplaceCategory').addEventListener('click',()=>{const input=$('newMarketplaceCategoryName');const name=input.value.trim();if(!name){input.focus();return;}if(marketplaceCategoryList.some(c=>String(c.name).toLowerCase()===name.toLowerCase())){showMessage('marketplaceCategoriesMessage','That category already exists.');return;}marketplaceCategoryList.push({id:'cat-'+Date.now().toString(36),name,visible:true,order:marketplaceCategoryList.length+1,productIds:[]});input.value='';renderMarketplaceCategoryCards();});
+$('addMarketplaceCategory').addEventListener('click',()=>{
+  const input=$('newMarketplaceCategoryName'),name=input.value.trim();if(!name){input.focus();return;}
+  if(marketplaceCategoryList.some(category=>String(category.name).toLowerCase()===name.toLowerCase())){showMessage('marketplaceCategoriesMessage','That category already exists.','error');return;}
+  marketplaceCategoryList.push({id:'cat-'+Date.now().toString(36),name,visible:true,order:marketplaceCategoryList.length+1,productIds:[]});input.value='';renderMarketplaceCategoryCards();hideMessage('marketplaceCategoriesMessage');
+});
 $('reloadMarketplaceCategories').addEventListener('click',loadMarketplaceCategorySettings);
 $('saveMarketplaceCategories').addEventListener('click',saveMarketplaceCategorySettings);
-$('resetMarketplaceCategories').addEventListener('click',()=>{if(!confirm('Reset category names, order, visibility and product selections to defaults?'))return;marketplaceCategoryList=makeDefaultMarketplaceCategories();renderMarketplaceCategoryCards();showMessage('marketplaceCategoriesMessage','Defaults restored on this screen. Tap Save category settings to apply them.','success');});
+$('resetMarketplaceCategories').addEventListener('click',()=>{
+  if(!confirm('Restore the original store categories and their current product groups?'))return;
+  marketplaceCategoryList=makeDefaultMarketplaceCategories();renderMarketplaceCategoryCards();showMessage('marketplaceCategoriesMessage','Original categories restored on this screen. Tap Save changes to apply them.','success');
+});
 
 /* NAVIGATION */
 
@@ -2184,6 +2253,56 @@ $("productForm").addEventListener("submit",async event=>{
     $("saveProductButton").textContent="Save product";
   }
 });
+
+/* CLEAR ALL PRODUCTS — deletes product documents and their inventory only. Orders and wallets are preserved. */
+async function clearAllProducts() {
+  if(!db) { showToast("Firebase is not connected."); return; }
+  const button=$("clearAllProductsButton");
+  if(!confirm(`You are about to permanently delete ALL ${products.length} store product(s) and every inventory item under them. Customer orders, wallets, funding requests and customer accounts will NOT be deleted. Continue?`)) return;
+  const confirmation=prompt('Type DELETE ALL PRODUCTS to confirm this permanent action:');
+  if(confirmation!=="DELETE ALL PRODUCTS") { showToast("Nothing was deleted."); return; }
+  button.disabled=true;
+  const original=button.textContent;
+  button.textContent="Deleting products…";
+  try {
+    const snapshot=await db.collection("products").get();
+    let deleted=0;
+    for(const productDoc of snapshot.docs) {
+      const inventoryRef=productDoc.ref.collection("inventory");
+      while(true) {
+        const inventorySnapshot=await inventoryRef.limit(400).get();
+        if(inventorySnapshot.empty) break;
+        const batch=db.batch();
+        inventorySnapshot.docs.forEach(item=>batch.delete(item.ref));
+        await batch.commit();
+        if(inventorySnapshot.size<400) break;
+      }
+      await productDoc.ref.delete();
+      deleted++;
+    }
+    // Keep category names and their order, but clear references to products that no longer exist.
+    try {
+      const settingsRef=db.collection("storeSettings").doc("marketplaceCategories");
+      const settingsSnap=await settingsRef.get();
+      if(settingsSnap.exists) {
+        const data=settingsSnap.data()||{};
+        const categories=Array.isArray(data.categories)?data.categories.map(category=>({...category,productIds:[]})):[];
+        await settingsRef.set({categories,managedProductIds:[],updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+      }
+    } catch(settingsError) { console.warn("Products deleted, but category product references could not be cleared:",settingsError); }
+    await loadProducts();
+    showToast(`Done. Deleted ${deleted} product(s) and their inventory. Orders and wallets were kept.`);
+  } catch(error) {
+    console.error("Clear all products failed:",error);
+    showToast("Could not finish clearing products: "+readableError(error));
+    try { await loadProducts(); } catch(refreshError) { console.error(refreshError); }
+  } finally {
+    button.disabled=false;
+    button.textContent=original;
+  }
+}
+
+$("clearAllProductsButton").addEventListener("click",clearAllProducts);
 
 /* DELETE PRODUCT */
 
