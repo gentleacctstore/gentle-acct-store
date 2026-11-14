@@ -10,7 +10,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Orbitron:wght@500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <style>
@@ -1137,6 +1137,52 @@ input,select,textarea{
 .managed-site-footer p{margin:0 0 7px}
 .managed-site-footer a{display:inline-block;color:var(--orange-dark);font-weight:700;margin-bottom:7px}
 .managed-site-footer small{display:block;font-size:9px}
+
+
+/* ===== GentleLogs futuristic light homepage finish ===== */
+:root{
+  --gl-orange-glow:rgba(232,117,53,.18);
+  --gl-orange-line:rgba(232,117,53,.22);
+}
+body{position:relative;isolation:isolate}
+body:before{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(ellipse at 4% 16%,rgba(232,117,53,.055),transparent 28%),
+    radial-gradient(ellipse at 96% 54%,rgba(232,117,53,.045),transparent 30%),
+    radial-gradient(ellipse at 50% 100%,rgba(255,190,145,.07),transparent 36%);
+}
+.shell{position:relative}
+.header{box-shadow:0 5px 24px rgba(37,42,48,.025)}
+.wordmark{position:relative;isolation:isolate;text-shadow:0 0 22px rgba(232,117,53,.08)}
+.wordmark span{
+  background:linear-gradient(110deg,#C96532 5%,#F39A65 48%,#D96B35 90%);
+  background-size:200% auto;-webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;animation:glHomeWordmark 6s ease-in-out infinite;
+}
+.page-heading .eyebrow{display:inline-flex;align-items:center;gap:7px;font-family:"Orbitron","Space Grotesk",sans-serif;letter-spacing:1.1px}
+.page-heading .eyebrow:before{content:"";width:6px;height:6px;border-radius:50%;background:#E87535;box-shadow:0 0 0 4px rgba(232,117,53,.10),0 0 12px rgba(232,117,53,.55);animation:glHomeDot 2s ease-in-out infinite}
+.page-heading h1{font-family:"Syne","Space Grotesk",sans-serif;letter-spacing:-1.25px}
+.section-head h2{font-family:"Syne","Space Grotesk",sans-serif}
+.wallet-card{box-shadow:0 16px 38px rgba(37,42,48,.14),0 0 0 1px rgba(232,117,53,.07)}
+.wallet-brand-icon{box-shadow:0 0 0 5px rgba(232,117,53,.12),0 5px 17px rgba(232,117,53,.25)}
+.fund-btn{background:linear-gradient(115deg,#D96832,#EF8950 55%,#D96832);background-size:200% 100%;box-shadow:0 5px 15px rgba(232,117,53,.18)}
+.service,.product-card,.quick-panel,.category-panel{transition:transform .24s ease,border-color .24s ease,box-shadow .24s ease}
+.service,.product-card{border-color:rgba(240,238,235,.95)}
+.service-icon,.quick-icon{box-shadow:inset 0 1px 0 rgba(255,255,255,.8)}
+.fresh{font-family:"Orbitron","Space Grotesk",sans-serif}
+.bottom-nav{box-shadow:0 -8px 28px rgba(37,42,48,.035)}
+.nav-item.active i{box-shadow:0 4px 13px rgba(232,117,53,.10)}
+.telegram-float{border-color:rgba(232,117,53,.15);box-shadow:0 7px 22px rgba(37,42,48,.10),0 0 0 4px rgba(232,117,53,.035)}
+@keyframes glHomeWordmark{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes glHomeDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(.82)}}
+@media(hover:hover){
+  .quick-row:hover,.category-row:hover{background:#FFFAF6}
+  .header-icon:hover,.profile-dot:hover{border-color:var(--gl-orange-line);box-shadow:0 5px 16px rgba(232,117,53,.08)}
+}
+@media(prefers-reduced-motion:reduce){
+  .wordmark span,.page-heading .eyebrow:before{animation:none!important}
+}
 
 </style>
 </head>
