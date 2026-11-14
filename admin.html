@@ -732,25 +732,6 @@ html,body{background:#050b1b!important;color:#edf6ff!important}
 #websiteManagerSection .wm-product-option{display:flex;align-items:flex-start;gap:8px;padding:9px;border:1px solid var(--border);border-radius:9px;font-size:11px;color:var(--text)}
 #websiteManagerSection .wm-product-option small{display:block;color:var(--muted);margin-top:3px;word-break:break-all}
 @media(max-width:760px){#websiteManagerSection .wm-grid,#websiteManagerSection .wm-product-picker{grid-template-columns:1fr}#websiteManagerSection .wm-card{padding:12px}}
-/* Service Control Centre — mobile-first manager tools */
-#serviceControlSection .service-control-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:16px 0}
-#serviceControlSection .service-control-stats>div{padding:14px;border:1px solid var(--border);border-radius:12px;background:var(--surface-2)}
-#serviceControlSection .service-control-stats small{display:block;color:var(--muted);font-size:10px;font-weight:700}
-#serviceControlSection .service-control-stats strong{display:block;margin-top:6px;font-size:22px}
-#serviceControlSection .service-control-toolbar{display:grid;grid-template-columns:2fr 1fr 1fr;gap:9px;margin:15px 0}
-#serviceControlSection .service-control-toolbar input,#serviceControlSection .service-control-toolbar select{width:100%;min-width:0;padding:11px;border:1px solid var(--border);border-radius:9px;background:var(--input-bg);color:var(--text)}
-#serviceControlSection .service-control-bulk{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
-#serviceControlSection .service-control-list{display:grid;gap:8px}
-#serviceControlSection .sc-row{display:grid;grid-template-columns:minmax(0,1fr) 150px;align-items:center;gap:12px;padding:12px;border:1px solid var(--border);border-radius:11px;background:var(--surface)}
-#serviceControlSection .sc-name{font-size:12px;font-weight:800;overflow-wrap:anywhere}#serviceControlSection .sc-meta{font-size:10px;color:var(--muted);margin-top:4px}
-#serviceControlSection .sc-row select{width:100%;min-width:0;padding:9px;border:1px solid var(--border);border-radius:8px;background:var(--input-bg);color:var(--text)}
-#serviceControlSection .sc-row.pending{border-color:#e87535;box-shadow:0 0 0 2px #e8753514}
-#serviceControlSection .service-control-settings{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-#serviceControlSection .service-control-settings label{display:flex;flex-direction:column;gap:8px;padding:13px;border:1px solid var(--border);border-radius:11px;background:var(--surface-2);font-size:12px}
-#serviceControlSection .service-control-settings label:has(input[type=checkbox]){flex-direction:row;align-items:center;justify-content:space-between}
-#serviceControlSection .service-control-settings small{display:block;color:var(--muted);font-size:10px;margin-top:4px}
-#serviceControlSection .service-control-settings textarea{width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--input-bg);color:var(--text)}
-@media(max-width:760px){#serviceControlSection .service-control-stats{grid-template-columns:repeat(2,minmax(0,1fr))}#serviceControlSection .service-control-toolbar{grid-template-columns:1fr}#serviceControlSection .sc-row{grid-template-columns:minmax(0,1fr) 125px;padding:10px}#serviceControlSection .service-control-settings{grid-template-columns:1fr}#serviceControlSection .service-control-bulk .btn{flex:1 1 100%}}
 </style>
 
 </head>
@@ -789,7 +770,6 @@ html,body{background:#050b1b!important;color:#edf6ff!important}
 <button class="nav-link" data-section="inventory"><span class="nav-icon">▤</span>Inventory</button>
 <button class="nav-link" data-section="categoryLinks"><span class="nav-icon">🔗</span>Category Links</button>
 <button class="nav-link" data-section="websiteManager"><span class="nav-icon">⚙</span>Website Manager</button>
-<button class="nav-link" data-section="serviceControl"><span class="nav-icon">🎛</span>Service Control Centre</button>
 <button class="nav-link" data-section="supplier"><span class="nav-icon">⇄</span>Supplier API</button>
 <button class="nav-link" data-section="xtralogs"><span class="nav-icon">✦</span>XtraLogs Tools</button>
 <a class="nav-link" href="customers.html"><span class="nav-icon">♙</span>Customers</a>
@@ -896,17 +876,17 @@ html,body{background:#050b1b!important;color:#edf6ff!important}
 
 <section class="hidden" id="websiteManagerSection">
 <div class="panel">
-<div class="panel-head"><div><div class="panel-title">Website Manager</div><div class="panel-desc">Manage homepage content, promotions, support links, popup actions and featured products.</div></div><button class="btn" id="reloadWebsiteSettings" type="button">↻ Reload</button></div>
+<div class="panel-head"><div><div class="panel-title">Website Manager</div><div class="panel-desc">Manage optional homepage settings. Existing homepage features stay ON unless you switch them OFF.</div></div><button class="btn" id="reloadWebsiteSettings" type="button">↻ Reload</button></div>
 <div class="panel-body">
-<div class="error-box">Settings are saved in Firestore at <code>storeSettings/websiteContent</code>. Your homepage must read this document for saved changes to appear to customers. This admin upgrade does not overwrite your homepage file.</div>
+<div class="error-box">Settings are saved in Firestore at <code>storeSettings/websiteContent</code>. These are optional controls: existing homepage features stay enabled by default. Switch off only the items you choose. Your original homepage sections and customer features are preserved.</div>
 <div class="hidden" id="websiteManagerMessage"></div>
 <div class="wm-grid">
-<div class="wm-card"><h3>Announcement bar</h3><label class="wm-check"><input id="wmAnnouncementEnabled" type="checkbox"> Show announcement bar</label><label>Announcement text<input id="wmAnnouncementText" type="text" placeholder="Your announcement..."/></label></div>
+<div class="wm-card"><h3>Announcement bar</h3><label class="wm-check"><input id="wmAnnouncementEnabled" type="checkbox" checked> Show announcement bar</label><label>Announcement text<input id="wmAnnouncementText" type="text" placeholder="Your announcement..."/></label></div>
 <div class="wm-card"><h3>Homepage hero</h3><label>Heading<input id="wmHeroTitle" type="text" placeholder="Welcome to GentleLogs"/></label><label>Subtitle<textarea id="wmHeroSubtitle" rows="3" placeholder="Homepage introduction..."></textarea></label><label>Banner image URL<input id="wmHeroImage" type="url" placeholder="https://..."/></label></div>
-<div class="wm-card"><h3>WhatsApp support</h3><label class="wm-check"><input id="wmWhatsappEnabled" type="checkbox"> Show WhatsApp support button</label><label>WhatsApp number (international format)<input id="wmWhatsappNumber" type="tel" placeholder="2348012345678"/></label><label>Button label<input id="wmWhatsappLabel" type="text" placeholder="Chat with support"/></label></div>
+<div class="wm-card"><h3>WhatsApp support</h3><label class="wm-check"><input id="wmWhatsappEnabled" type="checkbox" checked> Show WhatsApp support button</label><label>WhatsApp number (international format)<input id="wmWhatsappNumber" type="tel" placeholder="2348012345678"/></label><label>Button label<input id="wmWhatsappLabel" type="text" placeholder="Chat with support"/></label></div>
 <div class="wm-card"><h3>Floating support button</h3><label class="wm-check"><input id="wmSupportEnabled" type="checkbox" checked> Show floating support button</label><label>Provider<select id="wmSupportProvider"><option value="telegram">Telegram</option><option value="whatsapp">WhatsApp</option><option value="custom">Other / custom link</option></select></label><label>Button label<input id="wmSupportLabel" type="text" placeholder="Contact support"/></label><label>Support URL<input id="wmSupportUrl" type="url" placeholder="https://..."/></label><label>Icon class<input id="wmSupportIcon" type="text" placeholder="fa-brands fa-telegram"/></label><small>Use Font Awesome classes, e.g. fa-brands fa-whatsapp or fa-solid fa-headset. Choose the provider and URL you want customers to open.</small></div>
-<div class="wm-card"><h3>Website promotion popup</h3><label class="wm-check"><input id="wmPromoEnabled" type="checkbox"> Enable promotion popup</label><label>Popup title<input id="wmPromoTitle" type="text" placeholder="Want your own website?"/></label><label>Popup message<textarea id="wmPromoText" rows="3"></textarea></label><label>Button label<input id="wmPromoLabel" type="text" placeholder="Chat with us"/></label><label>Button link<input id="wmPromoUrl" type="url" placeholder="https://wa.me/..."/></label></div>
-<div class="wm-card"><h3>Coming soon notice</h3><label class="wm-check"><input id="wmComingEnabled" type="checkbox"> Enable coming soon notice</label><label>Notice title<input id="wmComingTitle" type="text" placeholder="Coming soon"/></label><label>Notice message<textarea id="wmComingText" rows="3"></textarea></label></div>
+<div class="wm-card"><h3>Website promotion popup</h3><label class="wm-check"><input id="wmPromoEnabled" type="checkbox" checked> Enable promotion popup</label><label>Popup title<input id="wmPromoTitle" type="text" placeholder="Want your own website?"/></label><label>Popup message<textarea id="wmPromoText" rows="3"></textarea></label><label>Button label<input id="wmPromoLabel" type="text" placeholder="Chat with us"/></label><label>Button link<input id="wmPromoUrl" type="url" placeholder="https://wa.me/..."/></label></div>
+<div class="wm-card"><h3>Coming soon notice</h3><label class="wm-check"><input id="wmComingEnabled" type="checkbox" checked> Enable coming soon notice</label><label>Notice title<input id="wmComingTitle" type="text" placeholder="Coming soon"/></label><label>Notice message<textarea id="wmComingText" rows="3"></textarea></label></div>
 <div class="wm-card"><h3>New Arrivals section</h3><label class="wm-check"><input id="wmArrivalsEnabled" type="checkbox" checked> Show New Arrivals</label><label class="wm-check"><input id="wmArrivalsBadgeEnabled" type="checkbox" checked> Show JUST IN badge</label><label>Section title<input id="wmArrivalsTitle" type="text" placeholder="New Arrivals"/></label><label>Section description<input id="wmArrivalsDescription" type="text" placeholder="Latest products added to our store"/></label><label>Maximum products<input id="wmArrivalsLimit" type="number" min="1" max="30" value="8"/></label></div>
 <div class="wm-card"><h3>Homepage section visibility</h3><p class="panel-desc">Switch each homepage area on or off. These switches do not delete its content.</p><label class="wm-check"><input id="wmWalletVisible" type="checkbox" checked> Wallet card</label><label class="wm-check"><input id="wmServicesVisible" type="checkbox" checked> Explore services</label><label class="wm-check"><input id="wmQuickVisible" type="checkbox" checked> Quick access</label><label class="wm-check"><input id="wmCategoriesVisible" type="checkbox" checked> Popular categories</label></div>
 <div class="wm-card"><h3>Website appearance</h3><label>Primary accent colour<input id="wmAccentColor" type="color" value="#f45a0a"/></label><label>Page background colour<input id="wmBackgroundColor" type="color" value="#fffaf7"/></label><label>Text colour<input id="wmTextColor" type="color" value="#252d3a"/></label></div>
@@ -917,19 +897,7 @@ html,body{background:#050b1b!important;color:#edf6ff!important}
 <div class="hidden" id="wmPreview" style="margin-top:16px"></div>
 </div></div>
 </section>
-<section class="hidden" id="serviceControlSection">
-<div class="panel"><div class="panel-head"><div><div class="panel-title">Service Control Centre</div><div class="panel-desc">Choose which products are open to customers and which should display as Coming Soon.</div></div><button class="btn" id="serviceControlReload" type="button">↻ Reload services</button></div>
-<div class="panel-body"><div class="error-box">Availability is saved on each product in Firestore using <code>availabilityStatus</code>, <code>isAvailable</code> and <code>comingSoon</code>. Your customer-facing pages must read these fields to reflect the selected status.</div><div class="hidden" id="serviceControlMessage"></div>
-<div class="service-control-stats"><div><small>Total services</small><strong id="scTotal">—</strong></div><div><small>Open</small><strong id="scOpen">—</strong></div><div><small>Coming soon</small><strong id="scComing">—</strong></div><div><small>Out of stock</small><strong id="scOut">—</strong></div></div>
-<div class="service-control-toolbar"><input id="scSearch" type="search" placeholder="Search by service name or category…"><select id="scStatusFilter"><option value="">All statuses</option><option value="open">Open</option><option value="comingSoon">Coming Soon</option></select><select id="scCategoryFilter"><option value="">All categories</option></select></div>
-<div class="service-control-bulk"><button class="btn" id="scSelectAllOpen" type="button">Set all filtered to Open</button><button class="btn" id="scSelectAllComing" type="button">Set all filtered to Coming Soon</button><button class="btn btn-primary" id="scSave" type="button">Save service changes</button></div>
-<div class="service-control-list" id="scList"><div class="loading">Load products to manage service availability.</div></div><p class="small muted">Changes remain pending until saved. Existing inventory and customer orders are not deleted or modified.</p></div></div>
-<div class="panel"><div class="panel-head"><div><div class="panel-title">Store-wide controls</div><div class="panel-desc">Optional controls for planned maintenance and customer notices.</div></div></div><div class="panel-body"><div class="service-control-settings">
-<label><span><strong>Maintenance mode</strong><small>Save a maintenance flag for the storefront to read.</small></span><input id="scMaintenanceEnabled" type="checkbox"></label>
-<label><span><strong>Maintenance message</strong><small>Message shown by the storefront while maintenance mode is active.</small></span><textarea id="scMaintenanceMessage" rows="2" placeholder="We are carrying out a quick update. Please check back soon."></textarea></label>
-<label><span><strong>Store notice</strong><small>Optional notice that your customer page can display.</small></span><textarea id="scStoreNotice" rows="2" placeholder="Enter a short customer notice…"></textarea></label>
-<label><span><strong>Notice enabled</strong><small>Turn the store notice on or off.</small></span><input id="scStoreNoticeEnabled" type="checkbox"></label></div><button class="btn btn-primary" id="scSaveGlobal" type="button" style="margin-top:14px">Save store-wide controls</button></div></div>
-</section>
+
 <section class="hidden" id="supplierSection">
 <div class="panel">
 <div class="panel-head">
@@ -1249,7 +1217,7 @@ $("themeToggle").addEventListener("click",()=>{
 /* NAVIGATION */
 
 function showSection(section) {
-  const map={dashboard:"dashboardSection",products:"productsSection",inventory:"inventorySection",categoryLinks:"categoryLinksSection",websiteManager:"websiteManagerSection",serviceControl:"serviceControlSection",supplier:"supplierSection",xtralogs:"xtralogsSection"};
+  const map={dashboard:"dashboardSection",products:"productsSection",inventory:"inventorySection",categoryLinks:"categoryLinksSection",websiteManager:"websiteManagerSection",supplier:"supplierSection",xtralogs:"xtralogsSection"};
   Object.entries(map).forEach(([key,id])=>$(id).classList.toggle("hidden",key!==section));
   document.querySelectorAll(".nav-link[data-section]").forEach(button=>{
     button.classList.toggle("active",button.dataset.section===section);
@@ -1260,7 +1228,6 @@ function showSection(section) {
     inventory:["Inventory","Review available and sold stock"],
     categoryLinks:["Category Links","Manage category logos and saved links"],
     websiteManager:["Website Manager","Control homepage content and promotions"],
-    serviceControl:["Service Control Centre","Choose which services are open or coming soon"],
     supplier:["Supplier API","Connect Spencer Acc Store and import products"],
     xtralogs:["XtraLogs Tools","Connect service catalogues and manage customer pricing"]
   };
@@ -1270,7 +1237,6 @@ function showSection(section) {
   if(section==="inventory") renderInventoryTable();
   if(section==="categoryLinks") renderCategoryLinksTable();
   if(section==="websiteManager") loadWebsiteSettings();
-  if(section==="serviceControl") { loadServiceControl(); loadStoreWideControls(); }
   if(section==="supplier") autoLoadSupplierSection();
   if(section==="xtralogs") { loadXtraPricingSettings(); checkXtraBalance(); }
 }
@@ -1466,6 +1432,13 @@ async function loadWebsiteSettings(){
     if(!db)throw new Error("Firebase Firestore is not initialised.");
     const snap=await db.collection("storeSettings").doc("websiteContent").get();
     const data=snap.exists?(snap.data()||{}):{};
+    // Previous manager versions had several new switches unchecked by default.
+    // Treat those legacy defaults as ON so the original homepage experience is preserved.
+    if(Number(data.websiteManagerVersion||0)<2){
+      ["announcementEnabled","whatsappEnabled","supportEnabled","promoEnabled","comingEnabled","arrivalsEnabled","arrivalsBadgeEnabled","walletVisible","servicesVisible","quickVisible","categoriesVisible"].forEach(key=>{
+        if(data[key]===false)data[key]=true;
+      });
+    }
     Object.entries(WEBSITE_SETTING_FIELDS).forEach(([key])=>{if(Object.prototype.hasOwnProperty.call(data,key))setWebsiteField(key,data[key]);});
     $("wmProductIds").value=Array.isArray(data.newArrivalsProductIds)?data.newArrivalsProductIds.join(", "):"";
     websiteSettingsLoaded=true;renderWebsiteProductPicker();hideMessage("websiteManagerMessage");
@@ -1500,6 +1473,7 @@ $("saveWebsiteSettings").addEventListener("click",async()=>{
     const known=new Set(products.map(p=>p.id));const unknown=ids.filter(id=>!known.has(id));
     if(unknown.length)throw new Error("These selected product IDs were not found in the products collection: "+unknown.join(", "));
     data.newArrivalsProductIds=ids;
+    data.websiteManagerVersion=2;
     data.updatedAt=firebase.firestore.FieldValue.serverTimestamp();data.updatedBy=auth.currentUser.uid;
     await db.collection("storeSettings").doc("websiteContent").set(data,{merge:true});
     showMessage("websiteManagerMessage","Website settings saved successfully. The connected homepage reads storeSettings/websiteContent when it loads.","success");showToast("Website settings saved.");
@@ -1518,19 +1492,6 @@ $("previewWebsiteSettings").addEventListener("click",()=>{
   const links=document.createElement("p");links.textContent="Floating support: "+($("wmSupportEnabled").checked?$("wmSupportProvider").value+" · "+$("wmSupportLabel").value:"Hidden");preview.append(links);
   preview.scrollIntoView({behavior:"smooth",block:"nearest"});
 });
-
-/* SERVICE CONTROL CENTRE */
-let serviceControlPending={};
-function serviceStatus(product){const raw=String(product.availabilityStatus||"").toLowerCase();if(raw==="comingsoon"||raw==="coming_soon"||product.comingSoon===true||product.isAvailable===false)return "comingSoon";return "open";}
-function serviceControlStats(){const total=products.length,coming=products.filter(p=>(serviceControlPending[p.id]||serviceStatus(p))==="comingSoon").length,out=products.filter(p=>stockCount(p.id).available===0).length;$('scTotal').textContent=total.toLocaleString('en-NG');$('scOpen').textContent=(total-coming).toLocaleString('en-NG');$('scComing').textContent=coming.toLocaleString('en-NG');$('scOut').textContent=out.toLocaleString('en-NG');}
-function renderServiceControl(){const term=$('scSearch').value.trim().toLowerCase(),status=$('scStatusFilter').value,category=$('scCategoryFilter').value;const rows=products.filter(p=>{const name=productName(p),cat=productCategory(p),current=serviceControlPending[p.id]||serviceStatus(p);return(!term||name.toLowerCase().includes(term)||cat.toLowerCase().includes(term))&&(!status||current===status)&&(!category||cat===category);});$('scList').innerHTML=rows.length?rows.map(p=>{const current=serviceControlPending[p.id]||serviceStatus(p),pending=Object.prototype.hasOwnProperty.call(serviceControlPending,p.id);return `<div class="sc-row ${pending?'pending':''}"><div><div class="sc-name">${escapeHTML(productName(p))}</div><div class="sc-meta">${escapeHTML(productCategory(p))} · ${money(productPrice(p))} · ID ${escapeHTML(p.id)}</div></div><select aria-label="Availability for ${escapeHTML(productName(p))}" data-sc-status="${escapeHTML(p.id)}"><option value="open" ${current==='open'?'selected':''}>Open</option><option value="comingSoon" ${current==='comingSoon'?'selected':''}>Coming Soon</option></select></div>`;}).join(''):'<div class="empty-state">No services match these filters.</div>';$('scList').querySelectorAll('[data-sc-status]').forEach(el=>el.addEventListener('change',()=>{serviceControlPending[el.dataset.scStatus]=el.value;el.closest('.sc-row').classList.add('pending');serviceControlStats();}));serviceControlStats();}
-async function loadServiceControl(){$('scList').innerHTML='<div class="loading">Loading services…</div>';try{await loadProducts();serviceControlPending={};const cats=[...new Set(products.map(productCategory).filter(Boolean))].sort();$('scCategoryFilter').innerHTML='<option value="">All categories</option>'+cats.map(c=>`<option value="${escapeHTML(c)}">${escapeHTML(c)}</option>`).join('');renderServiceControl();hideMessage('serviceControlMessage');}catch(error){showMessage('serviceControlMessage','Could not load services: '+readableError(error));}}
-async function saveServiceControl(){const button=$('scSave'),entries=Object.entries(serviceControlPending);if(!entries.length){showMessage('serviceControlMessage','There are no unsaved service changes.','success');return;}if(!auth||!auth.currentUser||auth.currentUser.uid!==ADMIN_UID){showMessage('serviceControlMessage','Authorised administrator access is required.');return;}button.disabled=true;button.textContent='Saving…';try{for(let i=0;i<entries.length;i+=400){const batch=db.batch();entries.slice(i,i+400).forEach(([id,status])=>batch.set(db.collection('products').doc(id),{availabilityStatus:status,isAvailable:status==='open',comingSoon:status==='comingSoon',availabilityUpdatedAt:firebase.firestore.FieldValue.serverTimestamp(),availabilityUpdatedBy:auth.currentUser.uid},{merge:true}));await batch.commit();}serviceControlPending={};await loadProducts();renderServiceControl();showMessage('serviceControlMessage',entries.length+' service availability setting(s) saved. The storefront must read these fields to display the changes.','success');showToast('Service availability saved.');}catch(error){console.error('Saving service availability failed:',error);showMessage('serviceControlMessage','Could not save service changes: '+readableError(error));}finally{button.disabled=false;button.textContent='Save service changes';}}
-$('scSearch').addEventListener('input',renderServiceControl);$('scStatusFilter').addEventListener('change',renderServiceControl);$('scCategoryFilter').addEventListener('change',renderServiceControl);$('serviceControlReload').addEventListener('click',loadServiceControl);$('scSave').addEventListener('click',saveServiceControl);
-$('scSelectAllOpen').addEventListener('click',()=>{$('scList').querySelectorAll('[data-sc-status]').forEach(el=>{serviceControlPending[el.dataset.scStatus]='open';el.value='open';el.closest('.sc-row').classList.add('pending');});serviceControlStats();});
-$('scSelectAllComing').addEventListener('click',()=>{$('scList').querySelectorAll('[data-sc-status]').forEach(el=>{serviceControlPending[el.dataset.scStatus]='comingSoon';el.value='comingSoon';el.closest('.sc-row').classList.add('pending');});serviceControlStats();});
-async function loadStoreWideControls(){try{const snap=await db.collection('storeSettings').doc('websiteContent').get(),data=snap.exists?(snap.data()||{}):{};$('scMaintenanceEnabled').checked=data.maintenanceEnabled===true;$('scMaintenanceMessage').value=data.maintenanceMessage||'';$('scStoreNoticeEnabled').checked=data.storeNoticeEnabled===true;$('scStoreNotice').value=data.storeNotice||'';}catch(error){showMessage('serviceControlMessage','Could not load store-wide controls: '+readableError(error));}}
-$('scSaveGlobal').addEventListener('click',async()=>{const button=$('scSaveGlobal');button.disabled=true;button.textContent='Saving…';try{if(!auth||!auth.currentUser||auth.currentUser.uid!==ADMIN_UID)throw new Error('Authorised administrator access is required.');await db.collection('storeSettings').doc('websiteContent').set({maintenanceEnabled:$('scMaintenanceEnabled').checked,maintenanceMessage:$('scMaintenanceMessage').value.trim(),storeNoticeEnabled:$('scStoreNoticeEnabled').checked,storeNotice:$('scStoreNotice').value.trim(),updatedAt:firebase.firestore.FieldValue.serverTimestamp(),updatedBy:auth.currentUser.uid},{merge:true});showMessage('serviceControlMessage','Store-wide controls saved. Your storefront must read these settings before they affect customers.','success');}catch(error){showMessage('serviceControlMessage','Could not save store controls: '+readableError(error));}finally{button.disabled=false;button.textContent='Save store-wide controls';}});
 
 /* SPENCER ACC STORE SUPPLIER API */
 

@@ -1594,6 +1594,7 @@ const toast=message=>{
 
 /* Coming soon popup */
 
+window.gentleComingSoonEnabled=true;
 const comingSoonPopup=$("comingSoonPopup");
 
 function closeComingSoon(){
@@ -1604,6 +1605,7 @@ document.addEventListener("click",event=>{
   const item=event.target.closest("[data-coming-soon]");
 
   if(!item)return;
+  if(window.gentleComingSoonEnabled===false)return;
 
   event.preventDefault();
 
@@ -1888,7 +1890,16 @@ function applyManagedWebsiteSettings(data){
 async function loadManagedWebsiteSettings(){
   try{
     const snap=await window.firebaseDB.collection("storeSettings").doc("websiteContent").get();
-    if(snap.exists)applyManagedWebsiteSettings(snap.data()||{});
+    if(snap.exists){
+      const data=snap.data()||{};
+      // Upgrade legacy unchecked defaults without removing any homepage feature.
+      if(Number(data.websiteManagerVersion||0)<2){
+        ["announcementEnabled","whatsappEnabled","supportEnabled","promoEnabled","comingEnabled","arrivalsEnabled","arrivalsBadgeEnabled","walletVisible","servicesVisible","quickVisible","categoriesVisible"].forEach(key=>{
+          if(data[key]===false)data[key]=true;
+        });
+      }
+      applyManagedWebsiteSettings(data);
+    }
   }catch(error){
     console.warn("Website Manager content could not be loaded:",error);
   }
