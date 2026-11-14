@@ -688,92 +688,213 @@ h1 {
   }
 }
 
-/* GentleLogs premium login motion */
+/* ==========================================================
+   GENTLELOGS SIGN-IN — PREMIUM VISUAL REDESIGN
+   Keeps the original Firebase form, IDs and authentication JS.
+   ========================================================== */
+:root{
+  --orange:#E87535;--orange-dark:#C96532;--orange-soft:#FFF1E8;
+  --background:#F8F7F5;--surface:#FFFFFF;--text:#222832;--muted:#89919C;
+  --border:#ECE8E3;--input:#FAFAF9;
+}
+html,body{min-height:100%;width:100%}
+body{
+  position:relative;isolation:isolate;overflow-x:hidden;
+  display:grid;grid-template-columns:minmax(0,1.04fr) minmax(390px,.96fr);
+  grid-template-rows:1fr auto;align-items:center;justify-items:center;
+  gap:0;min-height:100vh;min-height:100dvh;
+  padding:54px clamp(26px,6vw,100px) 26px;
+  background:
+    radial-gradient(ellipse at 12% 18%,rgba(232,117,53,.12),transparent 34%),
+    radial-gradient(ellipse at 85% 85%,rgba(108,89,168,.07),transparent 32%),
+    linear-gradient(135deg,#FBFAF8 0%,#F4F2EF 100%);
+}
 body:before,body:after{
-  content:"";position:fixed;width:260px;height:260px;border-radius:50%;
-  filter:blur(70px);opacity:.22;pointer-events:none;z-index:-1;
-  animation:glLoginAmbient 12s ease-in-out infinite alternate;
+  content:"";position:fixed;z-index:-1;pointer-events:none;border-radius:50%;
+  filter:blur(70px);animation:glAmbientDrift 14s ease-in-out infinite alternate;
 }
-body:before{background:#F2A06E;top:-115px;left:-110px}
-body:after{background:#D9B8F6;right:-130px;bottom:-110px;animation-delay:-5s}
-.brand{animation:glLoginRise .75s cubic-bezier(.2,.75,.2,1) both}
-.brand-mark{position:relative;animation:glBrandFloat 3.8s ease-in-out infinite}
-.brand-mark:after{content:"";position:absolute;inset:-6px;border:1px solid rgba(232,117,53,.22);border-radius:19px;animation:glBrandPulse 2.8s ease-out infinite}
-.brand-name span{display:inline-block;animation:glWordGlow 4s ease-in-out infinite}
-.wrapper{animation:glLoginRise .85s .08s cubic-bezier(.2,.75,.2,1) both}
-.card{transition:box-shadow .35s ease,border-color .35s ease}
-.card:hover{box-shadow:0 26px 70px rgba(64,43,30,.12);border-color:#E9D7CA}
-.card-top{background:linear-gradient(90deg,#C96532,#E87535,#F6B17D,#E87535,#C96532);background-size:220% 100%;animation:glTopFlow 5s linear infinite}
-.heading-icon{position:relative;overflow:hidden}
-.heading-icon:after{content:"";position:absolute;inset:-40% auto -40% -55%;width:40%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.8),transparent);transform:skewX(-20deg);animation:glIconShine 5s ease-in-out infinite}
-h1{animation:glHeadingIn .65s .2s both}
-.subtitle{animation:glHeadingIn .7s .28s both}
-.group{animation:glFieldIn .55s both}
-.group:nth-of-type(1){animation-delay:.2s}
-.group:nth-of-type(2){animation-delay:.28s}
-.remember{animation:glFieldIn .55s .34s both}
-.submit{position:relative;overflow:hidden}
-.submit:before{content:"";position:absolute;inset:-50% auto -50% -45%;width:35%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.28),transparent);transform:skewX(-20deg);animation:glButtonSweep 4.5s ease-in-out infinite}
-.submit.loading:before{display:none}
-.submit:not(:disabled):hover{transform:translateY(-2px);box-shadow:0 13px 25px rgba(201,101,50,.25)}
-.google-btn:hover{transform:translateY(-1px);box-shadow:0 7px 18px rgba(35,29,24,.06)}
-.input-wrap:focus-within{transform:translateY(-1px)}
-.tab.active::after{animation:glTabGrow .35s ease both}
-.footer .secure i{animation:glShieldPulse 2.6s ease-in-out infinite}
-
-/* Full-screen welcome moment after Firebase confirms sign-in */
-.gl-login-transition{
-  position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;
-  overflow:hidden;padding:25px;color:#fff;background:
-    radial-gradient(ellipse at 50% 42%,rgba(232,117,53,.2),transparent 36%),
-    radial-gradient(ellipse at 12% 90%,rgba(117,85,205,.15),transparent 38%),
-    linear-gradient(145deg,#080E1A,#121D30 55%,#080E1A);
-  opacity:0;visibility:hidden;pointer-events:none;transition:opacity .45s ease,visibility .45s ease;
+body:before{width:260px;height:260px;top:-120px;left:34%;background:rgba(238,142,91,.14)}
+body:after{width:300px;height:300px;right:-150px;bottom:-130px;background:rgba(130,107,190,.10);animation-delay:-6s}
+.brand{
+  grid-column:1;grid-row:1;align-self:center;justify-self:stretch;
+  width:min(100%,610px);margin:0 auto;text-align:left;position:relative;
+  display:flex;flex-direction:column;align-items:flex-start;padding:0 5% 0 0;
 }
+.brand-mark{
+  width:48px;height:48px;margin:0 0 12px;border-radius:16px;
+  background:linear-gradient(145deg,#FF9A5E,#D95E2C);
+  box-shadow:0 12px 28px rgba(201,101,50,.24),inset 0 1px 0 rgba(255,255,255,.5);
+  animation:glBrandBob 4s ease-in-out infinite;
+}
+.brand-mark:after{content:"";position:absolute;inset:-7px;border:1px solid rgba(232,117,53,.28);border-radius:21px;animation:glBrandHalo 2.8s ease-out infinite}
+.brand-name{font-size:25px;letter-spacing:-1.2px}
+.brand-tagline{margin-top:5px;font-size:8px;letter-spacing:2.4px}
+.login-showcase{
+  position:relative;isolation:isolate;overflow:hidden;width:100%;min-height:530px;
+  margin-top:38px;padding:42px 38px 28px;border-radius:34px;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+  color:#fff;background:
+    radial-gradient(ellipse at 50% 39%,rgba(232,117,53,.23),transparent 35%),
+    radial-gradient(ellipse at 5% 95%,rgba(119,93,197,.18),transparent 42%),
+    linear-gradient(145deg,#111925 0%,#202A38 53%,#111925 100%);
+  box-shadow:0 28px 70px rgba(27,33,44,.16),inset 0 1px 0 rgba(255,255,255,.09);
+}
+.login-showcase:before,.login-showcase:after{
+  content:"";position:absolute;z-index:-1;border:1px solid rgba(255,255,255,.07);border-radius:50%;pointer-events:none;
+}
+.login-showcase:before{width:420px;height:420px;top:0;left:50%;transform:translateX(-50%);animation:glShowcaseOrbit 18s linear infinite}
+.login-showcase:after{width:570px;height:570px;top:-65px;left:50%;transform:translateX(-50%);border-color:rgba(232,117,53,.13);animation:glShowcaseOrbit 25s linear infinite reverse}
+.showcase-glow{position:absolute;top:75px;left:50%;width:210px;height:210px;transform:translateX(-50%);border-radius:50%;background:#E87535;filter:blur(90px);opacity:.28;animation:glGlowPulse 4s ease-in-out infinite}
+.showcase-core{position:relative;z-index:2;width:122px;height:122px;margin:8px auto 0;display:grid;place-items:center}
+.showcase-core:before,.showcase-core:after{content:"";position:absolute;inset:0;border:1px solid rgba(255,255,255,.25);border-radius:38px;transform:rotate(22deg);animation:glCoreSpin 12s linear infinite}
+.showcase-core:after{inset:10px;border-color:rgba(232,117,53,.5);transform:rotate(-18deg);animation-duration:9s;animation-direction:reverse}
+.showcase-core-icon{width:78px;height:78px;display:grid;place-items:center;border-radius:27px;font-size:31px;color:#fff;
+  background:linear-gradient(145deg,#FF985C,#D95E2C);box-shadow:0 16px 42px rgba(232,117,53,.35),inset 0 1px 0 rgba(255,255,255,.45);animation:glCoreFloat 3.5s ease-in-out infinite}
+.core-spark{position:absolute;width:7px;height:7px;border-radius:50%;background:#FFC394;box-shadow:0 0 15px #FF9B61}
+.spark-a{top:8px;right:14px;animation:glSpark 2s infinite}.spark-b{bottom:8px;left:8px;animation:glSpark 2.4s .6s infinite}
+.showcase-orbit{position:absolute;z-index:0;left:50%;top:74px;border:1px solid rgba(255,255,255,.10);border-radius:50%;pointer-events:none}
+.orbit-a{width:260px;height:120px;transform:translateX(-50%) rotate(-22deg);animation:glOrbitFloat 8s ease-in-out infinite}
+.orbit-b{width:290px;height:130px;transform:translateX(-50%) rotate(28deg);border-color:rgba(232,117,53,.19);animation:glOrbitFloat 10s ease-in-out infinite reverse}
+.orbit-c{width:220px;height:220px;transform:translateX(-50%);border-style:dashed;border-color:rgba(255,255,255,.08);animation:glShowcaseOrbit 30s linear infinite}
+.showcase-floating-card{
+  position:absolute;z-index:3;display:flex;align-items:center;gap:10px;min-width:210px;
+  padding:12px 14px;border:1px solid rgba(255,255,255,.13);border-radius:15px;
+  background:rgba(255,255,255,.09);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  box-shadow:0 12px 28px rgba(0,0,0,.15);animation:glFloatCard 5s ease-in-out infinite;
+}
+.showcase-card-wallet{top:152px;left:4px}.showcase-card-orders{top:226px;right:0;animation-delay:-2.3s}
+.showcase-card-icon{width:34px;height:34px;flex-shrink:0;display:grid;place-items:center;border-radius:11px;background:rgba(232,117,53,.19);color:#FFA16C}
+.showcase-floating-card b,.showcase-floating-card small{display:block;text-align:left}
+.showcase-floating-card b{font-size:10px;color:#fff}.showcase-floating-card small{margin-top:3px;color:#AEB8C7;font-size:8px}
+.showcase-card-arrow{margin-left:auto;color:#AEB8C7;font-size:10px}.showcase-card-check{margin-left:auto;color:#6FE0AD}
+.showcase-copy{position:relative;z-index:2;max-width:420px;margin:52px auto 0;text-align:center}
+.showcase-eyebrow{display:inline-flex;align-items:center;gap:8px;color:#F3A174;font-size:8px;font-weight:700;letter-spacing:2.1px}
+.showcase-eyebrow i{width:6px;height:6px;border-radius:50%;background:#66D6A5;box-shadow:0 0 12px #66D6A5;animation:glSpark 1.8s infinite}
+.showcase-copy h2{margin-top:15px;color:#fff;font-size:clamp(27px,3vw,39px);line-height:1.12;letter-spacing:-1.6px;font-weight:700}
+.showcase-copy h2 em{font-style:normal;color:#F18B50}
+.showcase-copy p{max-width:345px;margin:13px auto 0;color:#B6C0CD;font-size:11px;line-height:1.8}
+.showcase-bottom{position:relative;z-index:2;display:flex;justify-content:center;flex-wrap:wrap;gap:15px;margin-top:auto;padding-top:27px}
+.showcase-bottom span{display:flex;align-items:center;gap:6px;color:#B9C3D0;font-size:8px;letter-spacing:.2px}
+.showcase-bottom i{color:#F19A68;font-size:10px}
+.wrapper{grid-column:2;grid-row:1;width:100%;max-width:470px;margin:0 auto;padding-left:clamp(0px,2vw,26px)}
+.card{
+  border:1px solid rgba(255,255,255,.92);border-radius:25px;
+  background:rgba(255,255,255,.88);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  box-shadow:0 25px 75px rgba(40,42,48,.10),0 3px 10px rgba(40,42,48,.035);
+  transition:transform .35s ease,box-shadow .35s ease;
+}
+.card:hover{transform:translateY(-3px);box-shadow:0 32px 85px rgba(40,42,48,.14)}
+.card-top{height:5px;background:linear-gradient(90deg,#B95029,#E87535,#FFB47F,#E87535,#B95029);background-size:220% 100%;animation:glTopFlow 6s linear infinite}
+.tabs{min-height:62px;padding:0 23px;border-bottom:1px solid #F0ECE8}
+.tab{font-size:12px;letter-spacing:.1px}
+.tab.active{color:#D4612F}
+.tab.active:after{height:3px;box-shadow:0 0 12px rgba(232,117,53,.35)}
+.content{padding:35px clamp(24px,3vw,38px) 32px}
+.heading-row{gap:14px;margin-bottom:9px}
+.heading-icon{width:47px;height:47px;border-radius:15px;background:linear-gradient(145deg,#FFF4EC,#FFE7D8);box-shadow:inset 0 1px 0 #fff,0 5px 15px rgba(232,117,53,.07)}
+h1{font-size:28px;letter-spacing:-1.15px}
+.subtitle{font-size:12px;margin-bottom:28px}
+.group{margin-bottom:19px}
+.label-row label{font-size:9px;letter-spacing:1px;color:#535B65}
+.forgot{font-size:10px}
+.input-wrap{min-height:54px;border-radius:13px;background:#FAF9F7;border-color:#EAE6E1}
+.input-wrap:focus-within{border-color:#E87535;box-shadow:0 0 0 4px rgba(232,117,53,.10),0 7px 18px rgba(232,117,53,.06)}
+.input-icon{width:47px;color:#A0A5AD}
+.input-wrap input{height:52px;font-size:15px}
+.eye{width:42px;height:42px}
+.remember{margin:2px 0 22px;font-size:10px}
+.submit{min-height:54px;border-radius:13px;font-size:13px;letter-spacing:.2px;background:linear-gradient(105deg,#C85C2D,#E87535 58%,#F18C50);box-shadow:0 10px 23px rgba(201,101,50,.23)}
+.submit:before{content:"";position:absolute;top:-40%;bottom:-40%;left:-45%;width:34%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-22deg);animation:glButtonSweep 4.5s ease-in-out infinite}
+.submit:hover{transform:translateY(-2px);box-shadow:0 15px 28px rgba(201,101,50,.29)}
+.google-btn{min-height:52px;border-radius:13px;background:#fff;border-color:#E9E5E0}
+.google-btn:hover{transform:translateY(-2px);box-shadow:0 9px 20px rgba(38,40,44,.07)}
+.or-divider{margin:23px 0 16px;font-size:8px;letter-spacing:1.5px}
+.footer{grid-column:1/-1;grid-row:2;width:100%;margin:22px auto 0;padding-top:15px;border-top:1px solid rgba(60,64,72,.08);font-size:9px}
+.footer .secure i{color:#D86A37}
+.toast{backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:15px;box-shadow:0 16px 40px rgba(20,25,33,.14)}
+/* Full-screen welcome animation after verified Firebase sign-in */
+.gl-login-transition{position:fixed;inset:0;z-index:100000;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:24px;color:#fff;
+  background:radial-gradient(ellipse at 50% 42%,rgba(232,117,53,.22),transparent 35%),radial-gradient(ellipse at 15% 90%,rgba(117,85,205,.17),transparent 38%),linear-gradient(145deg,#080E1A,#142137 55%,#080E1A);
+  opacity:0;visibility:hidden;pointer-events:none;transition:opacity .45s ease,visibility .45s ease}
 .gl-login-transition.show{opacity:1;visibility:visible;pointer-events:auto}
-.gl-login-transition:before,.gl-login-transition:after{content:"";position:absolute;border:1px solid rgba(255,255,255,.06);border-radius:50%;pointer-events:none}
-.gl-login-transition:before{width:360px;height:360px;animation:glAmbientRing 12s ease-in-out infinite}
-.gl-login-transition:after{width:520px;height:520px;animation:glAmbientRing 16s ease-in-out infinite reverse}
-.gl-transition-aura{position:absolute;width:180px;height:180px;border-radius:50%;filter:blur(55px);opacity:.3}
-.gl-transition-aura-one{background:#E87535;animation:glAuraPulse 3.5s ease-in-out infinite}
-.gl-transition-aura-two{background:#7658D5;transform:translate(50px,50px);animation:glAuraPulse 4.5s ease-in-out infinite reverse}
-.gl-transition-content{position:relative;z-index:1;width:min(100%,340px);display:flex;align-items:center;flex-direction:column;text-align:center;animation:glSuccessRise .7s cubic-bezier(.2,.8,.2,1) both}
-.gl-success-orbit{position:absolute;top:0;width:108px;height:108px;border:1px solid rgba(255,255,255,.22);border-radius:50%;margin-top:-12px}
-.gl-success-orbit-one{border-top-color:#F49B68;border-bottom-color:transparent;animation:glSuccessSpin 3s linear infinite}
-.gl-success-orbit-two{width:128px;height:128px;margin-top:-22px;border-left-color:#9B83E9;border-right-color:transparent;animation:glSuccessSpin 4.5s linear infinite reverse}
-.gl-success-mark{width:84px;height:84px;margin:0 0 29px;border-radius:27px;display:grid;place-items:center;
-  background:linear-gradient(145deg,#F18B50,#C96532);font-size:32px;color:#fff;
-  box-shadow:0 0 0 10px rgba(232,117,53,.08),0 16px 45px rgba(232,117,53,.32),inset 0 1px 0 rgba(255,255,255,.4);
-  animation:glSuccessPop .65s .12s cubic-bezier(.2,1.4,.4,1) both}
-.gl-transition-brand{font-size:28px;font-weight:700;letter-spacing:-1.3px}
-.gl-transition-brand span{color:#F18B50}
-.gl-transition-kicker{margin-top:9px;color:#A5B0C1;font-size:8px;font-weight:700;letter-spacing:2px}
-.gl-transition-content h2{margin-top:27px;font-size:27px;letter-spacing:-1px;color:#fff}
-.gl-transition-content p{margin-top:8px;color:#BAC4D2;font-size:12px;line-height:1.7}
-.gl-transition-progress{width:190px;height:4px;margin-top:30px;border-radius:20px;background:rgba(255,255,255,.12);overflow:hidden}
-.gl-transition-progress span{display:block;width:35%;height:100%;border-radius:20px;background:linear-gradient(90deg,#9B75E8,#E87535,#FFC092);box-shadow:0 0 15px rgba(232,117,53,.65);animation:glTransitionLoad 1s ease-in-out infinite}
-.gl-transition-content small{margin-top:13px;color:#8290A5;font-size:10px;letter-spacing:.2px}
-@keyframes glLoginRise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-@keyframes glHeadingIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
-@keyframes glFieldIn{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
-@keyframes glBrandFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-5px) rotate(3deg)}}
-@keyframes glBrandPulse{0%{transform:scale(.9);opacity:.7}100%{transform:scale(1.25);opacity:0}}
-@keyframes glWordGlow{0%,100%{text-shadow:0 0 0 rgba(232,117,53,0)}50%{text-shadow:0 0 16px rgba(232,117,53,.24)}}
+.gl-transition-grid{position:absolute;inset:0;opacity:.16;background-image:linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px);background-size:42px 42px;mask-image:radial-gradient(ellipse at center,#000,transparent 75%)}
+.gl-transition-aura{position:absolute;width:220px;height:220px;border-radius:50%;filter:blur(65px);opacity:.3;animation:glGlowPulse 4s ease-in-out infinite}
+.aura-one{background:#E87535}.aura-two{background:#795BCE;transform:translate(60px,40px);animation-delay:-2s}
+.gl-transition-content{position:relative;z-index:1;width:min(100%,350px);display:flex;align-items:center;flex-direction:column;text-align:center;animation:glSuccessEnter .75s cubic-bezier(.2,.8,.2,1) both}
+.gl-transition-emblem{position:relative;width:125px;height:125px;margin-bottom:24px;display:grid;place-items:center}
+.gl-emblem-orbit{position:absolute;inset:5px;border:1px solid rgba(255,255,255,.23);border-radius:50%}
+.gl-emblem-orbit.orbit-one{border-top-color:#F6A16D;border-bottom-color:transparent;animation:glShowcaseOrbit 3s linear infinite}
+.gl-emblem-orbit.orbit-two{inset:-5px;border-left-color:#A58BEF;border-right-color:transparent;animation:glShowcaseOrbit 4.5s linear infinite reverse}
+.gl-emblem-check{width:78px;height:78px;display:grid;place-items:center;border-radius:26px;font-size:30px;color:#fff;background:linear-gradient(145deg,#FF985C,#C95B2B);box-shadow:0 0 0 10px rgba(232,117,53,.09),0 18px 48px rgba(232,117,53,.34),inset 0 1px 0 rgba(255,255,255,.4);animation:glSuccessPop .7s .1s cubic-bezier(.2,1.4,.4,1) both}
+.gl-transition-wordmark{font-size:28px;font-weight:700;letter-spacing:-1.2px}.gl-transition-wordmark span{color:#F18B50}
+.gl-transition-kicker{margin-top:9px;color:#AAB5C5;font-size:8px;font-weight:700;letter-spacing:2px}
+.gl-transition-content h2{margin-top:25px;color:#fff;font-size:29px;letter-spacing:-1px}
+.gl-transition-content p{margin-top:8px;color:#BDC7D5;font-size:12px;line-height:1.7}
+.gl-transition-progress{width:195px;height:4px;margin-top:29px;border-radius:20px;background:rgba(255,255,255,.12);overflow:hidden}
+.gl-transition-progress span{display:block;width:34%;height:100%;border-radius:20px;background:linear-gradient(90deg,#9A77E7,#E87535,#FFC092);box-shadow:0 0 15px rgba(232,117,53,.7);animation:glProgressRun 1s ease-in-out infinite}
+.gl-transition-content small{margin-top:13px;color:#8291A7;font-size:10px}
+.gl-transition-content small i{margin-right:5px;color:#F09A68}
+@keyframes glAmbientDrift{to{transform:translate(35px,25px) scale(1.15)}}
+@keyframes glBrandBob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-5px) rotate(3deg)}}
+@keyframes glBrandHalo{0%{transform:scale(.9);opacity:.7}100%{transform:scale(1.3);opacity:0}}
+@keyframes glShowcaseOrbit{to{transform:translateX(-50%) rotate(360deg)}}
+@keyframes glGlowPulse{0%,100%{opacity:.18;scale:.84}50%{opacity:.42;scale:1.18}}
+@keyframes glCoreSpin{to{rotate:360deg}}
+@keyframes glCoreFloat{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-7px) rotate(4deg)}}
+@keyframes glOrbitFloat{0%,100%{translate:0 0}50%{translate:0 -10px}}
+@keyframes glFloatCard{0%,100%{translate:0 0}50%{translate:0 -7px}}
+@keyframes glSpark{0%,100%{opacity:.25;scale:.7}50%{opacity:1;scale:1.45}}
 @keyframes glTopFlow{to{background-position:220% 0}}
-@keyframes glIconShine{0%,45%{left:-55%}70%,100%{left:130%}}
-@keyframes glButtonSweep{0%,55%{left:-50%}80%,100%{left:130%}}
-@keyframes glTabGrow{from{transform:scaleX(.4);opacity:.3}to{transform:scaleX(1);opacity:1}}
-@keyframes glShieldPulse{0%,100%{filter:drop-shadow(0 0 0 rgba(232,117,53,0))}50%{filter:drop-shadow(0 0 5px rgba(232,117,53,.5))}}
-@keyframes glLoginAmbient{to{transform:translate(35px,25px) scale(1.18);opacity:.3}}
-@keyframes glSuccessRise{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes glSuccessPop{0%{transform:scale(.65) rotate(-12deg);opacity:0}75%{transform:scale(1.08) rotate(3deg)}100%{transform:scale(1) rotate(0);opacity:1}}
-@keyframes glSuccessSpin{to{transform:rotate(360deg)}}
-@keyframes glAuraPulse{0%,100%{opacity:.18;scale:.85}50%{opacity:.42;scale:1.2}}
-@keyframes glAmbientRing{0%,100%{transform:translate(0,0)}50%{transform:translate(12px,-12px)}}
-@keyframes glTransitionLoad{to{transform:translateX(360%)}}
+@keyframes glButtonSweep{0%,54%{left:-45%}82%,100%{left:130%}}
+@keyframes glSuccessEnter{from{opacity:0;transform:translateY(20px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes glSuccessPop{0%{transform:scale(.6) rotate(-12deg);opacity:0}75%{transform:scale(1.09) rotate(3deg)}100%{transform:scale(1) rotate(0);opacity:1}}
+@keyframes glProgressRun{to{transform:translateX(390%)}}
+@media(max-width:900px){
+ body{grid-template-columns:1fr;grid-template-rows:auto auto auto;gap:0;padding:30px 18px 20px}
+ .brand{grid-column:1;grid-row:1;width:min(100%,480px);padding:0;margin:0 auto 22px;align-items:center;text-align:center}
+ .login-showcase{min-height:300px;margin-top:24px;padding:25px 20px 20px;border-radius:27px}
+ .showcase-core{width:90px;height:90px;margin-top:0}
+ .showcase-core-icon{width:60px;height:60px;border-radius:21px;font-size:24px}
+ .showcase-core:before{border-radius:29px}.showcase-core:after{border-radius:25px}
+ .showcase-orbit{top:34px}.showcase-glow{top:24px;width:160px;height:160px}
+ .showcase-floating-card{min-width:174px;padding:9px 10px;gap:8px}
+ .showcase-card-wallet{top:90px;left:0}.showcase-card-orders{top:145px;right:0}
+ .showcase-card-icon{width:29px;height:29px;border-radius:9px}
+ .showcase-floating-card b{font-size:9px}.showcase-floating-card small{font-size:7px}
+ .showcase-copy{margin-top:33px}
+ .showcase-copy h2{font-size:27px}
+ .showcase-copy p{font-size:10px;max-width:310px;margin-top:8px}
+ .showcase-bottom{gap:12px;padding-top:17px}
+ .showcase-bottom span{font-size:7px}
+ .wrapper{grid-column:1;grid-row:2;max-width:480px;padding:0}
+ .footer{grid-column:1;grid-row:3;max-width:480px;margin-top:18px}
+}
+@media(max-width:480px){
+ body{padding:22px 13px max(18px,env(safe-area-inset-bottom))}
+ .brand{margin-bottom:17px}
+ .login-showcase{min-height:278px;margin-top:19px;padding:19px 13px 16px;border-radius:23px}
+ .showcase-core{width:76px;height:76px}.showcase-core-icon{width:52px;height:52px;border-radius:18px;font-size:21px}
+ .showcase-card-wallet{top:79px;left:-5px}.showcase-card-orders{top:132px;right:-5px}
+ .showcase-floating-card{min-width:154px;padding:8px;border-radius:12px}
+ .showcase-card-icon{width:26px;height:26px}
+ .showcase-floating-card b{font-size:8px}.showcase-floating-card small{font-size:6.5px}
+ .showcase-copy{margin-top:29px}
+ .showcase-copy h2{font-size:24px}
+ .showcase-copy p{max-width:285px;font-size:9px}
+ .showcase-bottom{gap:9px;padding-top:14px}
+ .showcase-bottom span{font-size:6.5px}
+ .card{border-radius:21px}
+ .tabs{min-height:55px;padding:0 12px}
+ .content{padding:27px 21px 23px}
+ h1{font-size:25px}
+ .subtitle{font-size:11px;margin-bottom:23px}
+ .footer{margin-top:15px;padding-top:12px}
+}
 @media(prefers-reduced-motion:reduce){
-  body:before,body:after,.brand,.brand-mark,.brand-mark:after,.brand-name span,.wrapper,.card-top,.heading-icon:after,h1,.subtitle,.group,.remember,
-  .submit:before,.footer .secure i,.gl-login-transition:before,.gl-login-transition:after,.gl-transition-aura,.gl-success-orbit,.gl-success-mark,.gl-transition-content,.gl-transition-progress span{animation:none!important}
+ body:before,body:after,.brand-mark:after,.brand-mark,.login-showcase:before,.login-showcase:after,.showcase-glow,
+ .showcase-core:before,.showcase-core:after,.showcase-core-icon,.showcase-orbit,.showcase-floating-card,.core-spark,
+ .showcase-eyebrow i,.card-top,.submit:before,.gl-transition-grid,.gl-transition-aura,.gl-emblem-orbit,
+ .gl-emblem-check,.gl-transition-content,.gl-transition-progress span{animation:none!important}
 }
 
 </style>
@@ -782,18 +903,19 @@ h1{animation:glHeadingIn .65s .2s both}
 <body>
 
 <div class="gl-login-transition" id="loginTransition" aria-hidden="true">
-  <div class="gl-transition-aura gl-transition-aura-one"></div>
-  <div class="gl-transition-aura gl-transition-aura-two"></div>
+  <div class="gl-transition-grid"></div>
+  <div class="gl-transition-aura aura-one"></div><div class="gl-transition-aura aura-two"></div>
   <div class="gl-transition-content">
-    <div class="gl-success-orbit gl-success-orbit-one"></div>
-    <div class="gl-success-orbit gl-success-orbit-two"></div>
-    <div class="gl-success-mark"><i class="fa-solid fa-check"></i></div>
-    <div class="gl-transition-brand">Gentle<span>Logs</span></div>
-    <div class="gl-transition-kicker">SIGN IN SUCCESSFUL</div>
+    <div class="gl-transition-emblem">
+      <span class="gl-emblem-orbit orbit-one"></span><span class="gl-emblem-orbit orbit-two"></span>
+      <span class="gl-emblem-check"><i class="fa-solid fa-check"></i></span>
+    </div>
+    <div class="gl-transition-wordmark">Gentle<span>Logs</span></div>
+    <div class="gl-transition-kicker">SECURE SIGN-IN COMPLETE</div>
     <h2 id="glWelcomeTitle">Welcome back!</h2>
     <p id="glWelcomeMessage">Your digital world is ready.</p>
     <div class="gl-transition-progress"><span></span></div>
-    <small>Opening your dashboard...</small>
+    <small><i class="fa-solid fa-lock"></i> Opening your personal dashboard</small>
   </div>
 </div>
 
@@ -803,6 +925,36 @@ h1{animation:glHeadingIn .65s .2s both}
   <a href="home.html" class="brand-mark" aria-label="GentleLogs home">G.</a>
   <a href="home.html" class="brand-name">Gentle<span>Logs</span></a>
   <p class="brand-tagline">DIGITAL PRODUCTS. ONE DESK.</p>
+  <section class="login-showcase" aria-label="Welcome to GentleLogs">
+    <div class="showcase-orbit orbit-a"></div>
+    <div class="showcase-orbit orbit-b"></div>
+    <div class="showcase-orbit orbit-c"></div>
+    <div class="showcase-glow"></div>
+    <div class="showcase-core">
+      <div class="showcase-core-icon"><i class="fa-solid fa-bolt"></i></div>
+      <span class="core-spark spark-a"></span><span class="core-spark spark-b"></span>
+    </div>
+    <div class="showcase-floating-card showcase-card-wallet">
+      <span class="showcase-card-icon"><i class="fa-solid fa-wallet"></i></span>
+      <span><b>Your wallet</b><small>Everything in one place</small></span>
+      <i class="fa-solid fa-arrow-up-right-from-square showcase-card-arrow"></i>
+    </div>
+    <div class="showcase-floating-card showcase-card-orders">
+      <span class="showcase-card-icon"><i class="fa-solid fa-bag-shopping"></i></span>
+      <span><b>Quick checkout</b><small>Simple and seamless</small></span>
+      <i class="fa-solid fa-check showcase-card-check"></i>
+    </div>
+    <div class="showcase-copy">
+      <span class="showcase-eyebrow"><i></i> THE GENTLELOGS EXPERIENCE</span>
+      <h2>Your digital world.<br><em>All in one place.</em></h2>
+      <p>Sign in to manage your wallet, explore digital products and keep every order within reach.</p>
+    </div>
+    <div class="showcase-bottom">
+      <span><i class="fa-solid fa-shield-halved"></i> Secure access</span>
+      <span><i class="fa-solid fa-bolt"></i> Smooth checkout</span>
+      <span><i class="fa-solid fa-layer-group"></i> One simple place</span>
+    </div>
+  </section>
 </header>
 
 <main class="wrapper">
@@ -1299,7 +1451,7 @@ h1{animation:glHeadingIn .65s .2s both}
     redirecting = true;
 
     const customer = profile || {};
-    const displayName =
+    const fullName =
       [customer.firstName, customer.lastName].filter(Boolean).join(" ") ||
       customer.name ||
       customer.fullName ||
@@ -1307,13 +1459,13 @@ h1{animation:glHeadingIn .65s .2s both}
       (user && user.displayName) ||
       ((user && user.email) || "there").split("@")[0];
 
-    const firstName = String(displayName).trim().split(/\\s+/)[0] || "there";
+    const firstName = String(fullName).trim().split(/\\s+/)[0] || "there";
     const overlay = document.getElementById("loginTransition");
     const title = document.getElementById("glWelcomeTitle");
     const message = document.getElementById("glWelcomeMessage");
 
     if(title) title.textContent = "Welcome back, " + firstName + "!";
-    if(message) message.textContent = "Your GentleLogs experience is ready. Let's get started.";
+    if(message) message.textContent = "Your GentleLogs space is ready. Everything you need is just ahead.";
 
     if(overlay) {
       overlay.classList.add("show");
@@ -1322,7 +1474,7 @@ h1{animation:glHeadingIn .65s .2s both}
 
     setTimeout(function() {
       window.location.replace("home.html");
-    }, 1850);
+    }, 1900);
   }
 
   passwordToggle.addEventListener("click", function() {
