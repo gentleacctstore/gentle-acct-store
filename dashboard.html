@@ -407,12 +407,13 @@ function getPlatformLogo(value) {
     {keys:["whatsapp"],url:"https://cdn.simpleicons.org/whatsapp/25D366"},
     {keys:["gmail"],url:"https://cdn.simpleicons.org/gmail/EA4335"},
     {keys:["hotmai","outlook"],url:"https://cdn.simpleicons.org/microsoftoutlook/0078D4"},
+    {keys:["at&t","at and t","att mail","att.com","currently.com"],url:"https://www.google.com/s2/favicons?domain=att.com&sz=128"},
     {keys:["email"],url:"https://cdn.simpleicons.org/gmail/EA4335"},
     {keys:["icloud","apple"],url:"https://cdn.simpleicons.org/icloud/3693F3"},
     {keys:["youtube"],url:"https://cdn.simpleicons.org/youtube/FF0000"},
     {keys:["pinterest"],url:"https://cdn.simpleicons.org/pinterest/BD081C"},
     {keys:["bluesky","blue sky"],url:"https://cdn.simpleicons.org/bluesky/0285FF"},
-    {keys:["rambler"],url:"https://cdn.simpleicons.org/rambler/315EF B".replace(" ","")},
+    {keys:["rambler"],url:"https://www.google.com/s2/favicons?domain=rambler.ru&sz=128"},
     {keys:["roblox"],url:"https://cdn.simpleicons.org/roblox/000000"},
     {keys:["discord"],url:"https://cdn.simpleicons.org/discord/5865F2"},
     {keys:["google voice"],url:"https://cdn.simpleicons.org/googlevoice/4285F4"},
@@ -613,25 +614,20 @@ function createProductCard(product) {
     categoryName === "all messaging apps";
 
   let imageHTML = `<i class="fa-solid fa-box"></i>`;
+  const platformLogo = getPlatformLogo(productName) ||
+    getPlatformLogo(product.category);
 
-  if (product.image && !isMessagingApp) {
-    const fallback = getPlatformLogo(productName) ||
-      getPlatformLogo(product.category);
-
-    imageHTML = `<img src="${escapeAttribute(product.image)}" alt="${name}" loading="lazy"
-      onerror="this.onerror=null;${fallback
-        ? `this.src='${fallback}'`
-        : `this.style.display='none'`}">`;
-  } else if (isMessagingApp) {
+  /* Prefer a recognized platform logo over a generic/custom product image.
+     This keeps Outlook, Rambler, AT&T, Bluesky, Facebook and Roblox visible
+     on their product cards even when an old product image URL is saved. */
+  if (isMessagingApp) {
     imageHTML = `<i class="fa-solid fa-comment"></i>`;
-  } else {
-    const logo = getPlatformLogo(productName) ||
-      getPlatformLogo(product.category);
-
-    if (logo) {
-      imageHTML = `<img class="platform-logo" src="${logo}" alt="${name}" loading="lazy"
-        onerror="this.onerror=null;this.style.display='none'">`;
-    }
+  } else if (platformLogo) {
+    imageHTML = `<img class="platform-logo" src="${escapeAttribute(platformLogo)}" alt="${name}" loading="lazy"
+      onerror="this.onerror=null;this.style.display='none'">`;
+  } else if (product.image) {
+    imageHTML = `<img src="${escapeAttribute(product.image)}" alt="${name}" loading="lazy"
+      onerror="this.onerror=null;this.style.display='none'">`;
   }
 
     let stockClass = "";
