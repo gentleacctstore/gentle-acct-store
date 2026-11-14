@@ -904,10 +904,13 @@ html,body{background:#050b1b!important;color:#edf6ff!important}
    <div class="supplier-stat"><small>Default profit</small><strong id="xtraMarginSummary">20%</strong></div>
   </div>
   <div class="form-grid" style="margin-bottom:14px">
-   <div class="field"><label for="xtraPricingMode">Pricing method</label><select id="xtraPricingMode"><option value="automatic">Automatic profit percentage</option><option value="manual">Manual service prices</option></select></div>
-   <div class="field"><label for="xtraDefaultMargin">Default profit (%)</label><input id="xtraDefaultMargin" type="number" min="0" max="500" step="0.1" value="20" inputmode="decimal"></div>
+   <div class="field"><label for="xtraPricingMode">Pricing method</label><select id="xtraPricingMode"><option value="automatic">Automatic pricing rules</option><option value="manual">Manual service prices only</option></select></div>
+   <div class="field"><label for="xtraPricingStrategy">Automatic profit style</label><select id="xtraPricingStrategy"><option value="percent">Percentage profit</option><option value="fixed">Fixed profit per product</option><option value="higher">Use whichever gives higher profit</option></select></div>
+   <div class="field"><label for="xtraDefaultMargin">Profit percentage (%)</label><input id="xtraDefaultMargin" type="number" min="0" max="1000" step="0.1" value="20" inputmode="decimal"></div>
+   <div class="field"><label for="xtraFixedProfit">Fixed profit amount (₦)</label><input id="xtraFixedProfit" type="number" min="0" step="1" value="500" inputmode="numeric"></div>
+   <div class="field"><label for="xtraMinimumPrice">Minimum selling price (₦)</label><input id="xtraMinimumPrice" type="number" min="0" step="1" value="0" inputmode="numeric"></div>
   </div>
-  <div class="supplier-note">Automatic pricing starts at 20% profit and can be changed here. Individual manual prices override the automatic calculation. USA and Global Numbers catalogues are saved to the private Firestore <code>xtralogsCatalog</code> collection when fetched/imported. Your XtraLogs API key must be saved as the Cloudflare Pages secret <code>XTRALOGS_API_KEY</code>; never paste it into this page. Other category tiles remain placeholders until their supplier endpoints are connected.</div>
+  <div class="supplier-note">Set one rule for the whole Logs catalogue. Percentage profit, fixed profit, or whichever gives the higher profit. A minimum price protects low-cost products. Individual manual prices still override the automatic price. Preview prices before importing.</div>
   <div class="toolbar" style="margin-bottom:12px"><button class="btn btn-primary" id="xtraSavePricing" type="button">Save pricing settings</button></div>
  </div>
 </div>
@@ -946,6 +949,13 @@ html,body{background:#050b1b!important;color:#edf6ff!important}
   <div class="supplier-note" id="xtraCategoryHint">Fetch this category's catalogue to review service costs and customer prices.</div>
   <div class="supplier-card-grid" id="xtraCatalogResults"><div class="empty-state" style="grid-column:1/-1">Choose a category to begin.</div></div>
   <div class="panel-body" style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn" id="xtraSaveServicePrices" type="button">Save service prices</button><button class="btn btn-primary" id="xtraImportLogsToStore" type="button">Import Logs to Store</button></div>
+ <div class="panel" id="xtraLogsStoreManager" style="margin-top:16px">
+  <div class="panel-head"><div><div class="panel-title">Store product manager</div><div class="panel-desc">Remove imported XtraLogs products without touching Spencer products or customer orders.</div></div><button class="btn" id="xtraRefreshStoreProducts" type="button">↻ Refresh</button></div>
+  <div class="panel-body">
+   <div class="supplier-summary"><div class="supplier-stat"><small>Logs in store</small><strong id="xtraStoreProductCount">—</strong></div><div class="supplier-stat"><small>Selected</small><strong id="xtraStoreSelectedCount">0</strong></div></div>
+   <div class="toolbar" style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0"><label class="small"><input type="checkbox" id="xtraStoreSelectAll"> Select all Logs</label><button class="btn" id="xtraRemoveSelectedLogs" type="button">Remove selected</button><button class="btn" id="xtraRemoveAllLogs" type="button">Remove all Logs from store</button><button class="btn" id="xtraRemoveAllXtra" type="button">Remove all XtraLogs products</button></div>
+   <div id="xtraStoreProductList" class="supplier-card-grid"><div class="empty-state" style="grid-column:1/-1">Tap Refresh to load imported Logs products.</div></div>
+  </div>
  </div>
 </div>
 </section>
@@ -2337,6 +2347,18 @@ function xtraNormalizeAdminCountries(payload) {
   scan(payload);
   return rows.sort((a,b)=>a.name.localeCompare(b.name));
 }
+function xtraAutomaticPrice(cost) {
+  const value=Math.max(0,Number(cost)||0);
+  const percent=Math.max(0,Number($("xtraDefaultMargin")?.value??20)||0);
+  const fixed=Math.max(0,Number($("xtraFixedProfit")?.value??500)||0);
+  const minimum=Math.max(0,Number($("xtraMinimumPrice")?.value??0)||0);
+  const strategy=$("xtraPricingStrategy")?.value||"percent";
+  const percentPrice=value*(1+percent/100);
+  const fixedPrice=value+fixed;
+  let price=strategy==="fixed"?fixedPrice:strategy==="higher"?Math.max(percentPrice,fixedPrice):percentPrice;
+  price=Math.max(price,minimum);
+  return Number(price.toFixed(2));
+}
 function xtraMoney(value,currency="NGN") {
   const n=Number(value||0);return (currency==="USD"?"$":"₦")+n.toLocaleString("en-NG",{minimumFractionDigits:2,maximumFractionDigits:2});
 }
@@ -2347,6 +2369,9 @@ async function loadXtraPricingSettings() {
     const settings=result.settings||{};
     $("xtraPricingMode").value=settings.pricingMode==="manual"?"manual":"automatic";
     $("xtraDefaultMargin").value=Number(settings.defaultMarginPercent??20);
+    if($("xtraPricingStrategy")) $("xtraPricingStrategy").value=settings.pricingStrategy||"percent";
+    if($("xtraFixedProfit")) $("xtraFixedProfit").value=Number(settings.fixedProfitAmount??500);
+    if($("xtraMinimumPrice")) $("xtraMinimumPrice").value=Number(settings.minimumSellingPrice??0);
     xtraPricingOverrides=settings.overrides||{};
     xtraImportedCountries=Array.isArray(settings.importedCountries)?settings.importedCountries:[];
     $("xtraMarginSummary").textContent=Number(settings.defaultMarginPercent??20)+"%";
@@ -2559,15 +2584,15 @@ function renderXtraCatalogue() {
   updateXtraUSAControls();
   $("xtraCatalogResults").innerHTML=items.length?items.map(item=>{
     const id=xtraItemId(item);const worldCountry=catalog==="numbers-global"?($("xtraWorldCountry")?.value||""):"";const key=catalog==="numbers-global"&&worldCountry?catalog+":"+worldCountry+":"+id:catalog+":"+id;const cost=xtraCost(item);const saved=xtraPricingOverrides[key]||{};
-    const auto=Number((cost.value*(1+Number($("xtraDefaultMargin").value||20)/100)).toFixed(2));
-    const selling=saved.sellingPrice!==undefined?saved.sellingPrice:auto;
+    const auto=xtraAutomaticPrice(cost.value);
+    const selling=saved.enabled===true&&saved.sellingPrice!==undefined?saved.sellingPrice:auto;
     return `<article class="supplier-card"><div class="supplier-card-name">${escapeHTML(xtraItemName(item))}</div><div class="supplier-card-meta">Service ID: ${escapeHTML(id||"Unavailable")} · ${escapeHTML(catalog)}</div><div class="supplier-card-values"><div class="supplier-card-value"><small>Service cost</small><strong>${xtraMoney(cost.value,cost.currency)}</strong></div><div class="supplier-card-value"><small>Auto price</small><strong>${xtraMoney(auto,cost.currency)}</strong></div></div><label class="small muted" for="xtra-price-${escapeHTML(id)}">Manual customer price (${cost.currency})</label><input class="supplier-selling-price xtra-service-price" id="xtra-price-${escapeHTML(id)}" data-xtra-key="${escapeHTML(key)}" data-xtra-currency="${escapeHTML(cost.currency)}" type="number" min="0" step="0.01" value="${escapeHTML(selling)}"><label class="small muted"><input type="checkbox" class="xtra-price-enabled" data-xtra-key="${escapeHTML(key)}" ${saved.enabled===true?"checked":""}> Use manual override for this service</label></article>`;
   }).join(""):'<div class="empty-state" style="grid-column:1/-1">'+(catalog==="numbers-usa"?'No USA number services with valid service IDs were returned. Check the XtraLogs USA Numbers response and API permissions.':'No catalogue entries found. Some catalogues need a country or extra query parameters.')+'</div>';
 }
 async function saveXtraPricing() {
   const button=$("xtraSavePricing");button.disabled=true;button.textContent="Saving…";
   try {
-    const result=await xtraAdminRequest("/api/xtralogs/admin/pricing",{method:"POST",body:JSON.stringify({pricingMode:$("xtraPricingMode").value,defaultMarginPercent:Number($("xtraDefaultMargin").value),overrides:xtraPricingOverrides})});
+    const result=await xtraAdminRequest("/api/xtralogs/admin/pricing",{method:"POST",body:JSON.stringify({pricingMode:$("xtraPricingMode").value,pricingStrategy:$("xtraPricingStrategy")?.value||"percent",defaultMarginPercent:Number($("xtraDefaultMargin").value),fixedProfitAmount:Number($("xtraFixedProfit")?.value||0),minimumSellingPrice:Number($("xtraMinimumPrice")?.value||0),overrides:xtraPricingOverrides})});
     xtraPricingOverrides=result.settings?.overrides||xtraPricingOverrides;
     $("xtraMarginSummary").textContent=Number($("xtraDefaultMargin").value)+"%";
     showXtraMessage("Pricing settings saved securely.","success");
@@ -2597,9 +2622,9 @@ async function importXtraLogsToStore() {
     const id=xtraItemId(item); const name=xtraItemName(item); const cost=xtraCost(item);
     if(!id||!name||name==="Unnamed service"||cost.currency!=="NGN") continue;
     const key="logs:"+id; const saved=xtraPricingOverrides[key]||{};
-    const automatic=Number((cost.value*(1+Number($("xtraDefaultMargin").value||20)/100)).toFixed(2));
-    const price=saved.sellingPrice!==undefined?Number(saved.sellingPrice):automatic;
-    if(saved.enabled===false||!Number.isFinite(price)||price<=0) continue;
+    const automatic=xtraAutomaticPrice(cost.value);
+    const price=saved.enabled===true&&saved.sellingPrice!==undefined?Number(saved.sellingPrice):automatic;
+    if(!Number.isFinite(price)||price<=0) continue;
     prepared.push({id,name,category:xtraLogCategory(item),cost:cost.value,price,service:item});
   }
   if(!prepared.length) { showXtraMessage("No importable NGN Logs services with valid IDs and prices were found. Check the catalogue and pricing."); return; }
@@ -2630,6 +2655,39 @@ async function importXtraLogsToStore() {
   } finally { button.disabled=false;button.textContent=old; }
 }
 
+async function loadXtraStoreProducts() {
+  const list=$("xtraStoreProductList");
+  list.innerHTML='<div class="loading" style="grid-column:1/-1">Loading XtraLogs products…</div>';
+  try {
+    const snap=await db.collection("products").where("supplierProvider","==","xtralogs").get();
+    const rows=snap.docs.map(doc=>({id:doc.id,...doc.data()})).filter(p=>p.xtraCatalog==="logs"||p.productType==="log").sort((a,b)=>String(a.displayName||a.name||"").localeCompare(String(b.displayName||b.name||"")));
+    window.xtraStoreProductRows=rows;
+    $("xtraStoreProductCount").textContent=rows.length;
+    $("xtraStoreSelectedCount").textContent="0";
+    $("xtraStoreSelectAll").checked=false;
+    list.innerHTML=rows.length?rows.map(p=>`<article class="supplier-card"><label style="display:flex;gap:9px;align-items:flex-start"><input class="xtra-store-product-check" type="checkbox" value="${escapeHTML(p.id)}"><span><strong>${escapeHTML(p.displayName||p.name||p.id)}</strong><small style="display:block;color:var(--muted,#777)">₦${Number(p.price||0).toLocaleString("en-NG")} · ID ${escapeHTML(p.supplierProductId||p.id)}</small></span></label><button class="btn" type="button" data-xtra-remove-one="${escapeHTML(p.id)}" style="margin-top:10px">Remove this product</button></article>`).join(""):'<div class="empty-state" style="grid-column:1/-1">No imported XtraLogs Logs products are currently in the store.</div>';
+    list.querySelectorAll(".xtra-store-product-check").forEach(el=>el.addEventListener("change",updateXtraStoreSelectedCount));
+    list.querySelectorAll("[data-xtra-remove-one]").forEach(btn=>btn.addEventListener("click",()=>removeXtraStoreProducts([btn.dataset.xtraRemoveOne],"Remove this XtraLogs product from the store?")));
+  } catch(error) {list.innerHTML='<div class="empty-state" style="grid-column:1/-1">'+escapeHTML(error.message||"Could not load XtraLogs products. Check admin Firestore permissions.")+'</div>';}
+}
+function updateXtraStoreSelectedCount(){const n=document.querySelectorAll(".xtra-store-product-check:checked").length;$("xtraStoreSelectedCount").textContent=n;}
+async function removeXtraStoreProducts(ids,confirmText) {
+  const unique=[...new Set((ids||[]).filter(Boolean))];
+  if(!unique.length){showXtraMessage("Select at least one XtraLogs product first.");return;}
+  if(!confirm(confirmText+" This will not delete customer orders or wallet records."))return;
+  try {
+    for(let i=0;i<unique.length;i+=400){const batch=db.batch();unique.slice(i,i+400).forEach(id=>batch.delete(db.collection("products").doc(id)));await batch.commit();}
+    await loadProducts();await loadXtraStoreProducts();
+    showXtraMessage("Removed "+unique.length+" XtraLogs product(s) from the store. Customer orders were kept.","success");
+  } catch(error){showXtraMessage(error.message||"Could not remove the selected XtraLogs products.");}
+}
+async function removeAllXtraLogsProducts(includeEveryXtra=false){
+  try {
+    const snap=await db.collection("products").where("supplierProvider","==","xtralogs").get();
+    const ids=snap.docs.filter(doc=>includeEveryXtra||doc.data().xtraCatalog==="logs"||doc.data().productType==="log").map(doc=>doc.id);
+    await removeXtraStoreProducts(ids,includeEveryXtra?"Remove ALL XtraLogs supplier products from the store?":"Remove all XtraLogs Logs products from the store?");
+  } catch(error){showXtraMessage(error.message||"Could not find XtraLogs products.");}
+}
 async function saveXtraServicePrices() {
   document.querySelectorAll(".xtra-service-price").forEach(input=>{
     const key=input.dataset.xtraKey;const checkbox=document.querySelector('.xtra-price-enabled[data-xtra-key="'+CSS.escape(key)+'"]');
@@ -2653,6 +2711,12 @@ $("xtraDefaultMargin").addEventListener("input",()=>{if(xtraCatalogueItems.lengt
 $("xtraSavePricing").addEventListener("click",saveXtraPricing);
 $("xtraSaveServicePrices").addEventListener("click",saveXtraServicePrices);
 $("xtraImportLogsToStore").addEventListener("click",importXtraLogsToStore);
+$("xtraRefreshStoreProducts").addEventListener("click",loadXtraStoreProducts);
+$("xtraRemoveSelectedLogs").addEventListener("click",()=>removeXtraStoreProducts([...document.querySelectorAll(".xtra-store-product-check:checked")].map(el=>el.value),"Remove the selected XtraLogs products from the store?"));
+$("xtraRemoveAllLogs").addEventListener("click",()=>removeAllXtraLogsProducts(false));
+$("xtraRemoveAllXtra").addEventListener("click",()=>removeAllXtraLogsProducts(true));
+$("xtraStoreSelectAll").addEventListener("change",e=>{document.querySelectorAll(".xtra-store-product-check").forEach(el=>el.checked=e.target.checked);updateXtraStoreSelectedCount();});
+["xtraPricingStrategy","xtraFixedProfit","xtraMinimumPrice"].forEach(id=>$(id)?.addEventListener("input",()=>{if(xtraCatalogueItems.length)renderXtraCatalogue();}));
 $("xtraPricingMode").addEventListener("change",()=>{if(xtraCatalogueItems.length)renderXtraCatalogue();});
 
 /* OWNER-ONLY SESSION HANDLING
