@@ -1727,6 +1727,21 @@ body:after{
         prompt:"select_account"
       });
 
+      /*
+       * Mobile Safari and some in-app browsers can block popup windows.
+       * Use Firebase redirect sign-in on mobile so Google opens in the
+       * current browsing context. Desktop browsers keep the popup flow.
+       */
+      const isMobileBrowser =
+        /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
+        (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
+      if(isMobileBrowser) {
+        redirecting = true;
+        await auth.signInWithRedirect(provider);
+        return;
+      }
+
       const result = await auth.signInWithPopup(provider);
 
       if(!result.user) {
@@ -1737,7 +1752,7 @@ body:after{
 
     } catch(error) {
       console.error("GentleLogs Google sign-in error:", error);
-
+      redirecting = false;
       showMessage(getFirebaseError(error), "error");
 
     } finally {
@@ -1749,6 +1764,35 @@ body:after{
       }
     }
   });
+
+  /*
+   * Complete Google sign-in after Firebase returns from the Google page.
+   * getRedirectResult() is safe on normal page loads; it returns an empty
+   * result when this visit did not come from a redirect sign-in.
+   */
+  (async function handleGoogleRedirectResult() {
+    try {
+      const auth = getAuth();
+      const result = await auth.getRedirectResult();
+
+      if(!result || !result.user) return;
+
+      submitting = true;
+      redirecting = false;
+      setLoading(googleBtn, true);
+      loginBtn.disabled = true;
+
+      await finishLogin(result.user, true);
+
+    } catch(error) {
+      console.error("GentleLogs Google redirect sign-in error:", error);
+      submitting = false;
+      redirecting = false;
+      setLoading(googleBtn, false);
+      loginBtn.disabled = false;
+      showMessage(getFirebaseError(error), "error");
+    }
+  })();
 
 })();
 </script>
