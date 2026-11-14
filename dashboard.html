@@ -567,6 +567,35 @@ async function enableGentleNotifications() {
   }
 }
 
+function getDisplayProductName(product) {
+  // An admin-entered displayName takes priority over the automatic shortened name.
+  let original = String(product.displayName || product.name || "Product").trim();
+  const entityDecoder = document.createElement("textarea");
+  entityDecoder.innerHTML = original;
+  original = entityDecoder.value.trim();
+  for (let i = 0; i < 3 && /&(?:amp|quot|#39|lt|gt);/i.test(original); i++) {
+    entityDecoder.innerHTML = original;
+    original = entityDecoder.value.trim();
+  }
+  return original
+    .replace(/\s+/g, " ")
+    .replace(/Facebook/gi, "FB")
+    .replace(/Instagram/gi, "IG")
+    .replace(/Accounts/gi, "ACCTS")
+    .replace(/Account/gi, "ACCT")
+    .replace(/Followers/gi, "FOLLOWS")
+    .replace(/Verified by e-mail/gi, "EMAIL VERIFIED")
+    .replace(/Verified by email/gi, "EMAIL VERIFIED")
+    .replace(/Email Included/gi, "EMAIL INCL.")
+    .replace(/No email in the set/gi, "NO EMAIL")
+    .replace(/Registered in/gi, "REG. IN")
+    .replace(/Partially filled profile/gi, "PARTIAL PROFILE")
+    .replace(/2FA in the set/gi, "2FA INCL.")
+    .replace(/Sharp & Ready to Use/gi, "SHARP & READY")
+    .replace(/\s*\|\s*/g, " | ")
+    .toUpperCase();
+}
+
 /* PRODUCT CARD */
 function createProductCard(product) {
   const id = String(product.id || "");
@@ -666,6 +695,32 @@ const gentleLoaderWatchdog=setTimeout(function(){
     if(messageEl)messageEl.innerHTML='The dashboard is taking longer than expected. <button type="button" onclick="window.location.reload()" style="display:block;margin:16px auto 0;padding:10px 18px;border:0;border-radius:12px;background:#E87535;color:#fff;font-weight:800">Try again</button>';
   }
 },20000);
+
+function buyProduct(productId) {
+  const product = products.find(item => item.id === productId);
+
+  if (!product) {
+    showToast("Product could not be found.");
+    return;
+  }
+
+  if (Number(product.stockCount || 0) <= 0) {
+    showToast("This product is sold out.");
+    return;
+  }
+
+  localStorage.setItem("gentleCheckoutProduct",productId);
+  showGentleLoader(
+    "Preparing your checkout",
+    "Please wait while we securely open your selected product."
+  );
+  // Allow the branded loader to paint before navigating to checkout.
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      window.location.href = "checkout.html?id=" + encodeURIComponent(productId);
+    });
+  });
+}
 
 /* AUTHENTICATION */
 firebase.auth().onAuthStateChanged(async function(user) {
