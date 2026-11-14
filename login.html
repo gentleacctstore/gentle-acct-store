@@ -1020,6 +1020,109 @@ body:before,body:after{display:none!important;content:none!important}
   *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 }
 
+
+/* GentleLogs refined sign-in finish */
+body{
+  position:relative;
+  background:
+    radial-gradient(ellipse at 8% 12%,rgba(232,117,53,.16),transparent 34%),
+    radial-gradient(ellipse at 92% 88%,rgba(37,48,65,.08),transparent 34%),
+    linear-gradient(145deg,#FBF8F5 0%,#F4F1ED 52%,#FBF8F5 100%)!important;
+}
+body:before{
+  content:"";display:block!important;position:fixed;z-index:-1;pointer-events:none;
+  width:310px;height:310px;top:-170px;right:-110px;border:1px solid rgba(232,117,53,.15);
+  border-radius:50%;box-shadow:0 0 0 25px rgba(232,117,53,.025),0 0 0 55px rgba(232,117,53,.018);
+}
+body:after{
+  content:"";display:block!important;position:fixed;z-index:-1;pointer-events:none;
+  width:250px;height:250px;bottom:-155px;left:-100px;border:1px solid rgba(37,48,65,.10);
+  border-radius:50%;box-shadow:0 0 0 22px rgba(37,48,65,.025);
+}
+.brand{margin-bottom:26px!important}
+.brand-mark{
+  width:49px!important;height:49px!important;border-radius:15px!important;
+  background:linear-gradient(145deg,#F69A66,#C96532)!important;
+  box-shadow:0 9px 24px rgba(201,101,50,.24)!important;
+  font-size:21px!important;
+}
+.brand-name{font-size:27px!important;letter-spacing:-1.25px!important}
+.brand-tagline{font-size:8px!important;letter-spacing:2px!important}
+.card{
+  border:1px solid rgba(255,255,255,.95)!important;
+  border-radius:22px!important;
+  box-shadow:0 22px 60px rgba(42,37,32,.10),0 3px 12px rgba(42,37,32,.035)!important;
+}
+.card-top{
+  height:5px!important;
+  background:linear-gradient(90deg,#B95029,#E87535,#F6B184,#E87535)!important;
+}
+.content{padding:29px 28px 27px!important}
+.login-intro{margin:0 0 24px}
+.login-intro-kicker{
+  display:inline-block;margin-bottom:8px;color:#C96532;font-size:8px;
+  font-weight:700;letter-spacing:1.55px;
+}
+.login-intro h1{
+  color:#252A30;font-size:25px;line-height:1.2;letter-spacing:-1px;font-weight:700;
+}
+.login-intro p{margin-top:7px;color:#858B93;font-size:11px;line-height:1.6}
+.tabs{min-height:55px!important}
+.tab{font-size:11px!important}
+.input-wrap{border-radius:12px!important;background:#FCFBFA!important}
+.submit{
+  border-radius:12px!important;
+  background:linear-gradient(105deg,#C96532,#E87535 60%,#F39A65)!important;
+  box-shadow:0 8px 19px rgba(201,101,50,.20)!important;
+}
+.google-btn{border-radius:12px!important}
+.footer{color:#96999E!important}
+.toast-container{
+  position:fixed!important;z-index:99999!important;
+  top:50%!important;right:auto!important;left:50%!important;
+  transform:translate(-50%,-50%)!important;
+  width:210px!important;height:210px!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  pointer-events:none!important;
+}
+.toast{
+  width:210px!important;min-height:190px!important;
+  padding:23px 17px 19px!important;
+  display:flex!important;flex-direction:column!important;
+  align-items:center!important;justify-content:center!important;gap:10px!important;
+  border:1px solid #EFE8E1!important;border-left:1px solid #EFE8E1!important;
+  border-radius:22px!important;background:rgba(255,255,255,.98)!important;
+  box-shadow:0 22px 65px rgba(25,30,38,.20)!important;
+  text-align:center!important;pointer-events:auto!important;
+  transform:translateY(8px) scale(.94)!important;
+  animation:glSquarePopupIn .26s cubic-bezier(.2,.8,.2,1) forwards!important;
+}
+.toast.success{border-color:#E4EFE8!important}
+.toast.error{border-color:#F2E2DF!important}
+.toast-icon{
+  width:48px!important;height:48px!important;border-radius:16px!important;
+  display:grid!important;place-items:center!important;
+  background:#EAF7EF!important;color:#24965B!important;font-size:22px!important;
+}
+.toast.error .toast-icon{background:#FFF0EE!important;color:#D94A4A!important}
+.toast-body{flex:0 0 auto!important;width:100%!important}
+.toast-title{margin-bottom:5px!important;font-size:14px!important;font-weight:700!important}
+.toast-message{font-size:10px!important;line-height:1.55!important}
+.toast-close{
+  position:absolute!important;top:9px!important;right:9px!important;
+  width:25px!important;height:25px!important;border-radius:50%!important;
+  background:#F5F3F0!important;font-size:11px!important;
+}
+@keyframes glSquarePopupIn{
+  from{opacity:0;transform:translateY(10px) scale(.88)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+.toast.removing{animation:toastOut .18s ease forwards!important}
+@media(max-width:390px){
+  .content{padding:25px 19px 22px!important}
+  .login-intro h1{font-size:23px}
+}
+
 </style>
 </head>
 
@@ -1051,6 +1154,12 @@ body:before,body:after{display:none!important;content:none!important}
     </nav>
 
     <div class="content">
+
+      <div class="login-intro">
+        <span class="login-intro-kicker">YOUR ACCOUNT, ALL IN ONE PLACE</span>
+        <h1>Sign in to GentleLogs</h1>
+        <p>Access your marketplace, wallet and orders.</p>
+      </div>
 
       <form id="loginForm" novalidate>
         <div class="group">
@@ -1516,7 +1625,7 @@ body:before,body:after{display:none!important;content:none!important}
     showMessage("Login successful. Opening your dashboard...", "success");
     setTimeout(function() {
       window.location.replace("home.html");
-    }, 950);
+    }, 1250);
   }
 
   passwordToggle.addEventListener("click", function() {
