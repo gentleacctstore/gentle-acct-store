@@ -625,6 +625,13 @@ function getProductId(){
     localStorage.getItem("gentleCheckoutProduct");
 }
 
+function isXtraLogsProduct(product){
+  const provider = String(product?.supplierProvider || "").toLowerCase();
+  const catalog = String(product?.xtraCatalog || "").toLowerCase();
+  const type = String(product?.productType || "").toLowerCase();
+  return provider === "xtralogs" || catalog === "logs" || type === "log";
+}
+
 async function loadCheckout(user){
   currentUser = user;
 
@@ -706,11 +713,12 @@ async function loadCheckout(user){
   walletBalance = balance;
   $("walletBalance").textContent = money(balance);
 
+  const supplierProduct = isXtraLogsProduct(selectedProduct);
   $("stockLabel").innerHTML =
     '<i class="fa-solid fa-circle"></i> ' +
-    (productStock > 0 ? "Available" : "Out of stock");
+    (supplierProduct ? "Available from supplier" : (productStock > 0 ? "Available" : "Out of stock"));
 
-  if(productStock > 0){
+  if(supplierProduct || productStock > 0){
     $("buyButton").disabled = false;
   }else{
     $("buyButton").disabled = true;
@@ -762,17 +770,62 @@ async function completePurchase(){
     showMessage("Your wallet balance is insufficient. Please add funds.");
     return;
   }
-  if(Number(selectedProduct.stockCount || 0) <= 0){
-    showMessage("This product is sold out.");
-    return;
-  }
-
   purchaseInProgress = true;
   button.disabled = true;
   button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
 
   try{
     const productRef = db.collection("products").doc(selectedProduct.id);
+
+    // XtraLogs products are fulfilled by the supplier API, not Firebase inventory.
+    if(isXtraLogsProduct(selectedProduct)){
+      if(!auth.currentUser) throw new Error("Please sign in again before purchasing.");
+      const itemId = selectedProduct.xtraServiceId || selectedProduct.supplierProductId;
+      if(itemId === undefined || itemId === null || String(itemId).trim() === ""){
+        throw new Error("The XtraLogs service ID is missing. Please contact support.");
+      }
+
+      const idToken = await auth.currentUser.getIdToken();
+      const pendingKey = "gentle_xtralogs_pending_" + currentUser.uid + "_" + selectedProduct.id;
+      let requestId = localStorage.getItem(pendingKey);
+      if(!requestId){
+        requestId = (crypto.randomUUID ? crypto.randomUUID() :
+          "xl_" + Date.now() + "_" + Math.random().toString(36).slice(2,12));
+        localStorage.setItem(pendingKey,requestId);
+      }
+
+      const response = await fetch("/api/xtralogs/customer/purchase",{
+        method:"POST",
+        headers:{"Content-Type":"application/json","Authorization":"Bearer " + idToken},
+        body:JSON.stringify({
+          catalog:String(selectedProduct.xtraCatalog || "logs"),
+          itemId:String(itemId),
+          requestId
+        })
+      });
+      const result = await response.json().catch(()=>({}));
+
+      if(response.status === 202 || result.pending){
+        showMessage(result.error || "Your XtraLogs order is processing. Check your XtraLogs Orders before trying again.");
+        button.disabled = true;
+        button.innerHTML = '<i class="fa-solid fa-clock"></i> Order Processing';
+        return;
+      }
+      if(!response.ok || !result.success){
+        if(response.status !== 202 && !result.pending) localStorage.removeItem(pendingKey);
+        throw new Error(result.error || "XtraLogs could not complete this purchase. Your wallet has not been confirmed as charged.");
+      }
+
+      localStorage.removeItem(pendingKey);
+      walletBalance = Number(result.balance);
+      if(Number.isFinite(walletBalance)) $("walletBalance").textContent = money(walletBalance);
+      showSuccess(String(result.purchaseText || result.delivery || "Your XtraLogs order was submitted successfully."),"xtralogs-orders.html");
+      return;
+    }
+
+    if(Number(selectedProduct.stockCount || 0) <= 0){
+      throw new Error("This product is sold out.");
+    }
 
     // Keep the existing Spencer Acc Store server-side purchase integration.
     if(String(selectedProduct.supplierProvider || "").toLowerCase() === "spenceraccstore"){
@@ -897,7 +950,7 @@ async function completePurchase(){
   }
 }
 
-function showSuccess(purchaseItem){
+function showSuccess(purchaseItem,ordersHref){
   const item = String(purchaseItem || "").trim();
   const message = $("message");
   message.style.display = "none";
@@ -920,7 +973,8 @@ function showSuccess(purchaseItem){
   value.textContent = item || "No purchase information was returned. Please check your Orders.";
   const actions = document.createElement("div");
   actions.style.cssText = "display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:15px";
-  actions.innerHTML = '<a href="orders.html" style="padding:12px 8px;background:#E87535;color:#fff;border-radius:11px;font-size:12px;font-weight:700">My Orders</a><a href="dashboard.html" style="padding:12px 8px;background:#FFF1E8;color:#C96532;border-radius:11px;font-size:12px;font-weight:700">Continue Shopping</a>';
+  const orderPage = ordersHref || "orders.html";
+  actions.innerHTML = '<a href="' + orderPage + '" style="padding:12px 8px;background:#E87535;color:#fff;border-radius:11px;font-size:12px;font-weight:700">My Orders</a><a href="dashboard.html" style="padding:12px 8px;background:#FFF1E8;color:#C96532;border-radius:11px;font-size:12px;font-weight:700">Continue Shopping</a>';
   success.append(icon,title,desc,label,value,actions);
   $("buyButton").style.display = "none";
   $("secure-note")?.remove?.();
