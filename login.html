@@ -687,10 +687,115 @@ h1 {
     scroll-behavior:auto!important;
   }
 }
+
+/* GentleLogs premium login motion */
+body:before,body:after{
+  content:"";position:fixed;width:260px;height:260px;border-radius:50%;
+  filter:blur(70px);opacity:.22;pointer-events:none;z-index:-1;
+  animation:glLoginAmbient 12s ease-in-out infinite alternate;
+}
+body:before{background:#F2A06E;top:-115px;left:-110px}
+body:after{background:#D9B8F6;right:-130px;bottom:-110px;animation-delay:-5s}
+.brand{animation:glLoginRise .75s cubic-bezier(.2,.75,.2,1) both}
+.brand-mark{position:relative;animation:glBrandFloat 3.8s ease-in-out infinite}
+.brand-mark:after{content:"";position:absolute;inset:-6px;border:1px solid rgba(232,117,53,.22);border-radius:19px;animation:glBrandPulse 2.8s ease-out infinite}
+.brand-name span{display:inline-block;animation:glWordGlow 4s ease-in-out infinite}
+.wrapper{animation:glLoginRise .85s .08s cubic-bezier(.2,.75,.2,1) both}
+.card{transition:box-shadow .35s ease,border-color .35s ease}
+.card:hover{box-shadow:0 26px 70px rgba(64,43,30,.12);border-color:#E9D7CA}
+.card-top{background:linear-gradient(90deg,#C96532,#E87535,#F6B17D,#E87535,#C96532);background-size:220% 100%;animation:glTopFlow 5s linear infinite}
+.heading-icon{position:relative;overflow:hidden}
+.heading-icon:after{content:"";position:absolute;inset:-40% auto -40% -55%;width:40%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.8),transparent);transform:skewX(-20deg);animation:glIconShine 5s ease-in-out infinite}
+h1{animation:glHeadingIn .65s .2s both}
+.subtitle{animation:glHeadingIn .7s .28s both}
+.group{animation:glFieldIn .55s both}
+.group:nth-of-type(1){animation-delay:.2s}
+.group:nth-of-type(2){animation-delay:.28s}
+.remember{animation:glFieldIn .55s .34s both}
+.submit{position:relative;overflow:hidden}
+.submit:before{content:"";position:absolute;inset:-50% auto -50% -45%;width:35%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.28),transparent);transform:skewX(-20deg);animation:glButtonSweep 4.5s ease-in-out infinite}
+.submit.loading:before{display:none}
+.submit:not(:disabled):hover{transform:translateY(-2px);box-shadow:0 13px 25px rgba(201,101,50,.25)}
+.google-btn:hover{transform:translateY(-1px);box-shadow:0 7px 18px rgba(35,29,24,.06)}
+.input-wrap:focus-within{transform:translateY(-1px)}
+.tab.active::after{animation:glTabGrow .35s ease both}
+.footer .secure i{animation:glShieldPulse 2.6s ease-in-out infinite}
+
+/* Full-screen welcome moment after Firebase confirms sign-in */
+.gl-login-transition{
+  position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;
+  overflow:hidden;padding:25px;color:#fff;background:
+    radial-gradient(ellipse at 50% 42%,rgba(232,117,53,.2),transparent 36%),
+    radial-gradient(ellipse at 12% 90%,rgba(117,85,205,.15),transparent 38%),
+    linear-gradient(145deg,#080E1A,#121D30 55%,#080E1A);
+  opacity:0;visibility:hidden;pointer-events:none;transition:opacity .45s ease,visibility .45s ease;
+}
+.gl-login-transition.show{opacity:1;visibility:visible;pointer-events:auto}
+.gl-login-transition:before,.gl-login-transition:after{content:"";position:absolute;border:1px solid rgba(255,255,255,.06);border-radius:50%;pointer-events:none}
+.gl-login-transition:before{width:360px;height:360px;animation:glAmbientRing 12s ease-in-out infinite}
+.gl-login-transition:after{width:520px;height:520px;animation:glAmbientRing 16s ease-in-out infinite reverse}
+.gl-transition-aura{position:absolute;width:180px;height:180px;border-radius:50%;filter:blur(55px);opacity:.3}
+.gl-transition-aura-one{background:#E87535;animation:glAuraPulse 3.5s ease-in-out infinite}
+.gl-transition-aura-two{background:#7658D5;transform:translate(50px,50px);animation:glAuraPulse 4.5s ease-in-out infinite reverse}
+.gl-transition-content{position:relative;z-index:1;width:min(100%,340px);display:flex;align-items:center;flex-direction:column;text-align:center;animation:glSuccessRise .7s cubic-bezier(.2,.8,.2,1) both}
+.gl-success-orbit{position:absolute;top:0;width:108px;height:108px;border:1px solid rgba(255,255,255,.22);border-radius:50%;margin-top:-12px}
+.gl-success-orbit-one{border-top-color:#F49B68;border-bottom-color:transparent;animation:glSuccessSpin 3s linear infinite}
+.gl-success-orbit-two{width:128px;height:128px;margin-top:-22px;border-left-color:#9B83E9;border-right-color:transparent;animation:glSuccessSpin 4.5s linear infinite reverse}
+.gl-success-mark{width:84px;height:84px;margin:0 0 29px;border-radius:27px;display:grid;place-items:center;
+  background:linear-gradient(145deg,#F18B50,#C96532);font-size:32px;color:#fff;
+  box-shadow:0 0 0 10px rgba(232,117,53,.08),0 16px 45px rgba(232,117,53,.32),inset 0 1px 0 rgba(255,255,255,.4);
+  animation:glSuccessPop .65s .12s cubic-bezier(.2,1.4,.4,1) both}
+.gl-transition-brand{font-size:28px;font-weight:700;letter-spacing:-1.3px}
+.gl-transition-brand span{color:#F18B50}
+.gl-transition-kicker{margin-top:9px;color:#A5B0C1;font-size:8px;font-weight:700;letter-spacing:2px}
+.gl-transition-content h2{margin-top:27px;font-size:27px;letter-spacing:-1px;color:#fff}
+.gl-transition-content p{margin-top:8px;color:#BAC4D2;font-size:12px;line-height:1.7}
+.gl-transition-progress{width:190px;height:4px;margin-top:30px;border-radius:20px;background:rgba(255,255,255,.12);overflow:hidden}
+.gl-transition-progress span{display:block;width:35%;height:100%;border-radius:20px;background:linear-gradient(90deg,#9B75E8,#E87535,#FFC092);box-shadow:0 0 15px rgba(232,117,53,.65);animation:glTransitionLoad 1s ease-in-out infinite}
+.gl-transition-content small{margin-top:13px;color:#8290A5;font-size:10px;letter-spacing:.2px}
+@keyframes glLoginRise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes glHeadingIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
+@keyframes glFieldIn{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+@keyframes glBrandFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-5px) rotate(3deg)}}
+@keyframes glBrandPulse{0%{transform:scale(.9);opacity:.7}100%{transform:scale(1.25);opacity:0}}
+@keyframes glWordGlow{0%,100%{text-shadow:0 0 0 rgba(232,117,53,0)}50%{text-shadow:0 0 16px rgba(232,117,53,.24)}}
+@keyframes glTopFlow{to{background-position:220% 0}}
+@keyframes glIconShine{0%,45%{left:-55%}70%,100%{left:130%}}
+@keyframes glButtonSweep{0%,55%{left:-50%}80%,100%{left:130%}}
+@keyframes glTabGrow{from{transform:scaleX(.4);opacity:.3}to{transform:scaleX(1);opacity:1}}
+@keyframes glShieldPulse{0%,100%{filter:drop-shadow(0 0 0 rgba(232,117,53,0))}50%{filter:drop-shadow(0 0 5px rgba(232,117,53,.5))}}
+@keyframes glLoginAmbient{to{transform:translate(35px,25px) scale(1.18);opacity:.3}}
+@keyframes glSuccessRise{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes glSuccessPop{0%{transform:scale(.65) rotate(-12deg);opacity:0}75%{transform:scale(1.08) rotate(3deg)}100%{transform:scale(1) rotate(0);opacity:1}}
+@keyframes glSuccessSpin{to{transform:rotate(360deg)}}
+@keyframes glAuraPulse{0%,100%{opacity:.18;scale:.85}50%{opacity:.42;scale:1.2}}
+@keyframes glAmbientRing{0%,100%{transform:translate(0,0)}50%{transform:translate(12px,-12px)}}
+@keyframes glTransitionLoad{to{transform:translateX(360%)}}
+@media(prefers-reduced-motion:reduce){
+  body:before,body:after,.brand,.brand-mark,.brand-mark:after,.brand-name span,.wrapper,.card-top,.heading-icon:after,h1,.subtitle,.group,.remember,
+  .submit:before,.footer .secure i,.gl-login-transition:before,.gl-login-transition:after,.gl-transition-aura,.gl-success-orbit,.gl-success-mark,.gl-transition-content,.gl-transition-progress span{animation:none!important}
+}
+
 </style>
 </head>
 
 <body>
+
+<div class="gl-login-transition" id="loginTransition" aria-hidden="true">
+  <div class="gl-transition-aura gl-transition-aura-one"></div>
+  <div class="gl-transition-aura gl-transition-aura-two"></div>
+  <div class="gl-transition-content">
+    <div class="gl-success-orbit gl-success-orbit-one"></div>
+    <div class="gl-success-orbit gl-success-orbit-two"></div>
+    <div class="gl-success-mark"><i class="fa-solid fa-check"></i></div>
+    <div class="gl-transition-brand">Gentle<span>Logs</span></div>
+    <div class="gl-transition-kicker">SIGN IN SUCCESSFUL</div>
+    <h2 id="glWelcomeTitle">Welcome back!</h2>
+    <p id="glWelcomeMessage">Your digital world is ready.</p>
+    <div class="gl-transition-progress"><span></span></div>
+    <small>Opening your dashboard...</small>
+  </div>
+</div>
 
 <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="false"></div>
 
@@ -1170,7 +1275,7 @@ h1 {
 
         if(cached && cached.uid === user.uid) {
           saveLoginState(user, cached);
-          redirectToHome();
+          redirectToHome(user, cached);
           return;
         }
       } catch(error) {
@@ -1187,20 +1292,37 @@ h1 {
     );
 
     saveLoginState(user, profile);
-    redirectToHome();
+    redirectToHome(user, profile);
   }
 
-  function redirectToHome() {
+  function redirectToHome(user, profile) {
     redirecting = true;
 
-    showMessage(
-      "Welcome back! You're being taken to your home page.",
-      "success"
-    );
+    const customer = profile || {};
+    const displayName =
+      [customer.firstName, customer.lastName].filter(Boolean).join(" ") ||
+      customer.name ||
+      customer.fullName ||
+      customer.username ||
+      (user && user.displayName) ||
+      ((user && user.email) || "there").split("@")[0];
+
+    const firstName = String(displayName).trim().split(/\\s+/)[0] || "there";
+    const overlay = document.getElementById("loginTransition");
+    const title = document.getElementById("glWelcomeTitle");
+    const message = document.getElementById("glWelcomeMessage");
+
+    if(title) title.textContent = "Welcome back, " + firstName + "!";
+    if(message) message.textContent = "Your GentleLogs experience is ready. Let's get started.";
+
+    if(overlay) {
+      overlay.classList.add("show");
+      overlay.setAttribute("aria-hidden", "false");
+    }
 
     setTimeout(function() {
       window.location.replace("home.html");
-    }, 1000);
+    }, 1850);
   }
 
   passwordToggle.addEventListener("click", function() {
