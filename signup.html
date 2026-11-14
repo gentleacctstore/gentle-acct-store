@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Orbitron:wght@500;600;700;800&family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 :root {
@@ -1908,6 +1908,180 @@ try {
 
 })();
 </script>
+
+
+<style id="gentlelogs-futuristic-orange-signup">
+/* GentleLogs futuristic orange identity — visual-only overrides.
+   Signup, Firebase, referral, validation and navigation logic remain untouched. */
+:root{
+  --orange:#ff6a00;
+  --orange-dark:#ed5b00;
+  --orange-light:#fff0e4;
+  --orange-border:#ffd5b8;
+  --text:#171c27;
+  --muted:#747b89;
+  --background:#fffaf6;
+  --shadow:0 24px 70px rgba(30,25,22,.11);
+}
+body{
+  position:relative;
+  isolation:isolate;
+  font-family:'Space Grotesk','Exo 2',sans-serif;
+  background:
+    radial-gradient(ellipse at 7% 4%,rgba(255,106,0,.16),transparent 34%),
+    radial-gradient(ellipse at 96% 86%,rgba(255,145,55,.13),transparent 31%),
+    linear-gradient(145deg,#fff7f0 0%,#fff 48%,#fff4eb 100%);
+}
+body:before,body:after{
+  z-index:-1;
+  opacity:.28;
+  filter:blur(78px);
+}
+body:before{background:#ff7a1a}
+body:after{background:#ffb36f}
+.page-wrapper{max-width:470px}
+.brand-mark{
+  border-radius:18px;
+  background:linear-gradient(140deg,#ff9b42 0%,#ff6a00 55%,#d94b00 100%);
+  box-shadow:0 12px 30px rgba(255,106,0,.30),inset 0 1px 0 rgba(255,255,255,.42);
+}
+.brand-name{
+  font-family:'Orbitron','Exo 2',sans-serif;
+  font-size:24px;
+  font-weight:800;
+  letter-spacing:-1.4px;
+}
+.brand-name span{color:#ff6a00}
+.brand-caption{
+  font-family:'Rajdhani','Space Grotesk',sans-serif;
+  color:#a35b2d;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:2.2px;
+}
+.auth-card{
+  border:1px solid rgba(255,106,0,.20);
+  border-radius:24px;
+  box-shadow:0 24px 70px rgba(52,35,23,.10),0 3px 12px rgba(255,106,0,.045);
+  background:rgba(255,255,255,.94);
+  backdrop-filter:blur(16px);
+}
+.card-top{
+  height:5px;
+  background:linear-gradient(90deg,#ff6a00,#ff9a3d,#ffd0a5,#ff8a22,#ff6a00);
+  background-size:220% 100%;
+}
+.auth-content{padding:27px 26px 26px}
+.auth-tabs{
+  border-color:rgba(255,106,0,.16);
+  background:#fff4eb;
+}
+.auth-tab{
+  font-family:'Rajdhani','Space Grotesk',sans-serif;
+  font-size:14px;
+  font-weight:700;
+  letter-spacing:.25px;
+}
+.auth-tab.active{
+  color:#e95a00;
+  box-shadow:0 3px 12px rgba(255,106,0,.12);
+}
+.heading{
+  font-family:'Orbitron','Exo 2',sans-serif;
+  font-size:clamp(21px,5vw,26px);
+  font-weight:800;
+  letter-spacing:-1.1px;
+  line-height:1.24;
+}
+.subtitle{
+  font-family:'Exo 2','Space Grotesk',sans-serif;
+  font-size:13px;
+  color:#737987;
+}
+.form-group>label{
+  font-family:'Rajdhani','Space Grotesk',sans-serif;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:1px;
+  color:#3c414b;
+}
+.form-control{
+  border-color:#e9e3de;
+  border-radius:12px;
+  background:#fffdfb;
+  font-family:'Space Grotesk',sans-serif;
+}
+.form-control:focus{
+  border-color:#ff7a1a;
+  box-shadow:0 0 0 4px rgba(255,106,0,.13),0 5px 16px rgba(255,106,0,.06);
+}
+.toggle-password{
+  color:#e96712;
+  font-family:'Rajdhani','Space Grotesk',sans-serif;
+  font-size:13px;
+}
+.terms-row label,.password-hint,.bottom-note,.security-note{
+  font-family:'Exo 2','Space Grotesk',sans-serif;
+}
+.terms-row a,.bottom-note a{color:#ed5b00}
+.primary-btn{
+  min-height:52px;
+  border-radius:13px;
+  background:linear-gradient(110deg,#f45b00 0%,#ff6a00 48%,#ff982e 100%);
+  box-shadow:0 12px 28px rgba(255,106,0,.25),inset 0 1px 0 rgba(255,255,255,.25);
+  font-family:'Space Grotesk',sans-serif;
+  font-size:13px;
+  letter-spacing:.15px;
+}
+.primary-btn:hover:not(:disabled){
+  background:linear-gradient(110deg,#e95100,#ff6a00 55%,#ff8d20);
+  box-shadow:0 15px 32px rgba(255,106,0,.30);
+}
+.google-btn{
+  min-height:51px;
+  border-radius:13px;
+  font-family:'Space Grotesk',sans-serif;
+}
+.divider{
+  font-family:'Rajdhani','Space Grotesk',sans-serif;
+  font-size:11px;
+  letter-spacing:1.4px;
+}
+.security-note:before{
+  background:#ff6a00;
+  box-shadow:0 0 0 4px rgba(255,106,0,.12);
+}
+.toast{
+  border-color:rgba(255,106,0,.18);
+  border-radius:16px;
+}
+.toast.info .toast-icon{
+  background:#fff0e4;
+  color:#ed5b00;
+}
+.toast-progress,.toast.info .toast-progress{background:#ff6a00}
+.gl-signup-emblem .gl-emblem-check{
+  background:linear-gradient(145deg,#ff9b42,#ff6a00 60%,#d94b00);
+  box-shadow:0 0 0 9px rgba(255,106,0,.10),0 17px 48px rgba(255,106,0,.34),inset 0 1px 0 rgba(255,255,255,.4);
+}
+.gl-signup-wordmark span,.gl-signup-perks i{color:#ff9140}
+.gl-signup-loader span{
+  background:linear-gradient(90deg,#ff6a00,#ff9b42,#ffd0a5);
+  box-shadow:0 0 15px rgba(255,106,0,.65);
+}
+@media(max-width:600px){
+  .auth-content{padding:24px 20px 23px}
+  .heading{font-size:22px}
+}
+@media(max-width:390px){
+  .auth-content{padding:22px 16px 20px}
+  .brand-name{font-size:22px}
+}
+@media(prefers-reduced-motion:reduce){
+  .brand-mark,.brand-name span,.card-top,.auth-card,.heading,.subtitle,
+  .form-group,.primary-btn:before,.auth-tab.active:after{animation:none!important}
+}
+</style>
 
 </body>
 </html>
