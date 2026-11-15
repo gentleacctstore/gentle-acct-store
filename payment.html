@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0B1120">
-<meta name="description" content="Complete your GentleLogs payment securely.">
+<meta name="description" content="Complete your GentleLogs wallet funding securely.">
 <title>Complete Payment - GentleLogs</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,314 +15,60 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="firebase.js"></script>
 <style>
-:root{color-scheme:light;--orange:#E87535;--orange-dark:#C96532;--orange-soft:#FFF1E8;--navy:#0B1120;--ink:#252A30;--muted:#78818D;--line:#E9E9EC;--paper:#FFFFFF;--canvas:#FFFDFC;--green:#168B55}
-*{box-sizing:border-box;margin:0;padding:0}
-html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
-body{font-family:"Space Grotesk",sans-serif;background:var(--canvas);color:var(--ink);min-height:100vh;font-size:13px;-webkit-font-smoothing:antialiased}
-button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
-button:disabled{opacity:.6;cursor:not-allowed}
-.page{width:100%;max-width:520px;min-height:100vh;margin:auto;background:var(--canvas);padding-bottom:24px}
-header{height:58px;padding:0 15px;display:flex;align-items:center;gap:11px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
-.back-btn{width:35px;height:35px;border:0;border-radius:11px;background:var(--orange-soft);color:var(--orange-dark);font-size:13px}
-.header-info h2{font-size:14px;font-weight:700;color:var(--navy)}
-.header-info p{font-size:10px;color:var(--muted);margin-top:2px}
-main{padding:19px 14px 22px}
-.heading{text-align:center;margin:3px 0 17px}
-.heading-icon{width:45px;height:45px;border-radius:14px;margin:0 auto 10px;display:grid;place-items:center;background:var(--orange-soft);color:var(--orange);font-size:18px}
-.heading h1{font-size:20px;line-height:1.25;color:var(--navy);margin-bottom:5px}
-.heading p{font-size:11px;line-height:1.65;color:var(--muted);max-width:300px;margin:auto}
-.payment-card{background:var(--paper);border:1px solid var(--line);border-radius:17px;padding:16px;box-shadow:0 8px 24px rgba(11,17,32,.045)}
-.eyebrow{font-size:9px;letter-spacing:.65px;text-transform:uppercase;color:var(--muted);font-weight:700}
-.amount{font-size:29px;font-weight:700;letter-spacing:-1px;color:var(--orange-dark);margin:5px 0 13px;overflow-wrap:anywhere}
-.divider{height:1px;background:var(--line);margin:11px 0}
-.detail{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0}
-.detail-label{font-size:11px;color:var(--muted);flex-shrink:0}
-.detail-value{font-size:11px;color:var(--navy);font-weight:700;text-align:right;overflow-wrap:anywhere}
-.account-row{display:flex;align-items:center;justify-content:flex-end;gap:8px;min-width:0}
-.account-number{font-size:14px;letter-spacing:.4px;white-space:nowrap}
-.copy-btn{border:0;border-radius:8px;padding:8px 10px;background:var(--orange-soft);color:var(--orange-dark);font-size:10px;font-weight:700;white-space:nowrap}
-.copy-btn i{margin-right:4px}
-.notice{display:flex;gap:8px;align-items:flex-start;background:#FFF8F2;border:1px solid #F8E5D7;border-radius:10px;padding:10px;margin-top:11px;color:#79543D;font-size:10px;line-height:1.65}
-.notice i{color:var(--orange);margin-top:1px}
-.button{width:100%;min-height:43px;border:0;border-radius:11px;margin-top:12px;padding:11px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:11px;font-weight:700}
-.primary-btn{background:var(--orange);color:white;box-shadow:0 6px 15px rgba(232,117,53,.18)}
-.primary-btn:hover{background:var(--orange-dark)}
-.whatsapp-btn{background:#168B55;color:white}
-.secondary-btn{background:#fff;color:var(--navy);border:1px solid var(--line)}
-.note{text-align:center;color:var(--muted);font-size:10px;line-height:1.7;margin-top:13px}
-.status{padding:10px 11px;border-radius:10px;margin-top:11px;font-size:10px;line-height:1.65;overflow-wrap:anywhere}
-.status.error{background:#FFF1F1;color:#A52B2B;border:1px solid #F5D0D0}
-.status.info{background:var(--orange-soft);color:#8A4B26;border:1px solid #F6D8C4}
-.status.success{background:#EFFAF4;color:#17643D;border:1px solid #CDEBD9}
-.reference{background:#FFF8F2;border:1px solid #F3E1D4;border-radius:10px;padding:11px;margin-top:12px}
-.ref-label{font-size:9px;color:var(--muted);margin-bottom:4px}
-.ref-value{font-size:12px;font-weight:700;color:var(--navy);overflow-wrap:anywhere}
-footer{text-align:center;padding:0 15px;color:#9299A3;font-size:9px}
-.hidden{display:none!important}
-/* Custom confirmation */
-.modal-backdrop{position:fixed;inset:0;background:rgba(7,13,25,.62);display:flex;align-items:center;justify-content:center;padding:20px;z-index:30}
-.modal{width:100%;max-width:340px;background:#fff;border-radius:18px;padding:21px 18px;box-shadow:0 20px 60px rgba(0,0,0,.2);text-align:center}
-.modal-icon{width:46px;height:46px;border-radius:14px;margin:0 auto 12px;display:grid;place-items:center;background:var(--orange-soft);color:var(--orange);font-size:18px}
-.modal h2{font-size:17px;color:var(--navy);margin-bottom:7px}
-.modal p{font-size:11px;line-height:1.7;color:var(--muted)}
-.modal-actions{display:flex;gap:9px;margin-top:17px}
-.modal-actions button{flex:1;min-height:40px;border-radius:10px;font-size:11px;font-weight:700}
-.no-btn{background:#fff;border:1px solid var(--line);color:var(--ink)}
-.yes-btn{background:var(--orange);border:1px solid var(--orange);color:#fff}
-/* Branded loading screen */
-.loader-screen{position:fixed;inset:0;z-index:50;background:var(--navy);display:flex;align-items:center;justify-content:center;padding:25px;transition:opacity .25s,visibility .25s}
-.loader-screen.off{opacity:0;visibility:hidden;pointer-events:none}
-.loader-content{text-align:center;width:100%;max-width:280px;color:#fff}
-.brand-mark{width:54px;height:54px;border-radius:17px;background:linear-gradient(140deg,#F39A62,#E87535);display:grid;place-items:center;margin:0 auto 14px;color:#fff;font-size:23px;font-weight:700;box-shadow:0 9px 30px rgba(232,117,53,.2)}
-.loader-brand{font-size:19px;font-weight:700;letter-spacing:.2px}
-.loader-brand span{color:#F39A62}
-.loader-caption{font-size:11px;color:#AAB4C4;margin-top:8px;line-height:1.6}
-.loader-track{height:4px;background:#263248;border-radius:20px;overflow:hidden;margin:22px auto 0;width:190px}
-.loader-track span{display:block;height:100%;width:40%;border-radius:20px;background:linear-gradient(90deg,#A66BFF,#F39A62);animation:loadmove 1.15s ease-in-out infinite alternate}
-@keyframes loadmove{from{transform:translateX(0)}to{transform:translateX(150%)}}
-.checking-screen{position:fixed;inset:0;z-index:40;background:rgba(11,17,32,.94);display:flex;align-items:center;justify-content:center;padding:25px}
-.checking-box{text-align:center;max-width:290px;color:#fff}
-.spinner{width:39px;height:39px;border:3px solid rgba(255,255,255,.2);border-top-color:#F39A62;border-radius:50%;margin:0 auto 17px;animation:spin .8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.checking-box h2{font-size:17px;margin-bottom:7px}
-.checking-box p{font-size:11px;line-height:1.7;color:#B7C0CE}
-.checking-box.payment-approved .spinner,.checking-box.payment-rejected .spinner{display:none}
-.checking-box.payment-approved{
-  max-width:360px;width:100%;padding:30px 23px 24px;
-  border:1px solid rgba(120,215,164,.24);border-radius:23px;
-  background:linear-gradient(155deg,#17283A 0%,#101B2C 100%);
-  box-shadow:0 22px 70px rgba(0,0,0,.28);
-}
-.checking-box.payment-approved h2{color:#FFFFFF;font-size:22px;margin-bottom:10px}
-.checking-box.payment-approved h2:before{
-  content:"✓";display:grid;place-items:center;width:72px;height:72px;
-  border-radius:50%;margin:0 auto 19px;background:rgba(22,163,74,.16);
-  border:1px solid rgba(120,215,164,.42);color:#78D7A4;font-size:36px;
-  box-shadow:0 0 0 9px rgba(22,163,74,.055);
-}
-.checking-box.payment-approved p{font-size:12px;color:#C7D2DF;line-height:1.8}
-.success-home-btn{
-  width:100%;min-height:47px;margin-top:23px;padding:12px 16px;
-  border:0;border-radius:12px;background:linear-gradient(110deg,#E87535,#F18A4D);
-  color:#fff;font:700 12px "Space Grotesk",sans-serif;
-  display:flex;align-items:center;justify-content:center;gap:9px;
-  box-shadow:0 8px 22px rgba(232,117,53,.22);
-}
-.success-home-btn:active{transform:scale(.985)}
-.checking-box.payment-rejected h2{color:#FCA5A5}
-@media(max-width:360px){main{padding:15px 10px 20px}.payment-card{padding:13px}.amount{font-size:26px}.account-number{font-size:12px}.copy-btn{padding:8px}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+:root{color-scheme:light;--orange:#E87535;--orange-dark:#C96532;--orange-soft:#FFF1E8;--navy:#0B1120;--ink:#252A30;--muted:#78818D;--line:#E9E9EC;--paper:#fff;--canvas:#FFFDFC}
+*{box-sizing:border-box;margin:0;padding:0}html{-webkit-text-size-adjust:100%}body{font-family:"Space Grotesk",sans-serif;background:var(--canvas);color:var(--ink);min-height:100vh;font-size:13px;-webkit-font-smoothing:antialiased}button{font:inherit;cursor:pointer}button:disabled{opacity:.6;cursor:not-allowed}.page{width:100%;max-width:520px;min-height:100vh;margin:auto;background:var(--canvas);padding-bottom:24px}header{height:58px;padding:0 15px;display:flex;align-items:center;gap:11px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}.back-btn{width:35px;height:35px;border:0;border-radius:11px;background:var(--orange-soft);color:var(--orange-dark);font-size:13px}.header-info h2{font-size:14px;color:var(--navy)}.header-info p{font-size:10px;color:var(--muted);margin-top:2px}main{padding:19px 14px 22px}.heading{text-align:center;margin:3px 0 17px}.heading-icon{width:45px;height:45px;border-radius:14px;margin:0 auto 10px;display:grid;place-items:center;background:var(--orange-soft);color:var(--orange);font-size:18px}.heading h1{font-size:20px;color:var(--navy);margin-bottom:5px}.heading p{font-size:11px;line-height:1.65;color:var(--muted);max-width:310px;margin:auto}.payment-card{background:var(--paper);border:1px solid var(--line);border-radius:17px;padding:16px;box-shadow:0 8px 24px rgba(11,17,32,.045)}.eyebrow{font-size:9px;letter-spacing:.65px;text-transform:uppercase;color:var(--muted);font-weight:700}.amount{font-size:29px;font-weight:700;color:var(--orange-dark);margin:5px 0 13px;overflow-wrap:anywhere}.divider{height:1px;background:var(--line);margin:11px 0}.method-title{font-size:12px;font-weight:700;color:var(--navy);margin:14px 0 9px}.methods{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.method{min-height:82px;border:1.5px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font-size:10px;font-weight:700}.method i{font-size:18px;color:var(--orange)}.method.selected{border-color:var(--orange);background:var(--orange-soft);color:var(--orange-dark)}.notice{display:flex;gap:8px;align-items:flex-start;background:#FFF8F2;border:1px solid #F8E5D7;border-radius:10px;padding:10px;margin-top:13px;color:#79543D;font-size:10px;line-height:1.65}.notice i{color:var(--orange);margin-top:1px}.button{width:100%;min-height:46px;border:0;border-radius:11px;margin-top:14px;padding:11px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:12px;font-weight:700}.primary-btn{background:var(--orange);color:#fff;box-shadow:0 6px 15px rgba(232,117,53,.18)}.status{padding:10px 11px;border-radius:10px;margin-top:11px;font-size:10px;line-height:1.65;overflow-wrap:anywhere}.status.error{background:#FFF1F1;color:#A52B2B;border:1px solid #F5D0D0}.status.info{background:var(--orange-soft);color:#8A4B26;border:1px solid #F6D8C4}.status.success{background:#EFFAF4;color:#17643D;border:1px solid #CDEBD9}.note{text-align:center;color:var(--muted);font-size:10px;line-height:1.7;margin-top:13px}footer{text-align:center;padding:0 15px;color:#9299A3;font-size:9px}.hidden{display:none!important}.loader-screen{position:fixed;inset:0;z-index:50;background:var(--navy);display:flex;align-items:center;justify-content:center;padding:25px;transition:opacity .25s,visibility .25s}.loader-screen.off{opacity:0;visibility:hidden;pointer-events:none}.loader-content{text-align:center;width:100%;max-width:280px;color:#fff}.brand-mark{width:54px;height:54px;border-radius:17px;background:linear-gradient(140deg,#F39A62,#E87535);display:grid;place-items:center;margin:0 auto 14px;color:#fff;font-size:23px}.loader-brand{font-size:19px;font-weight:700}.loader-brand span{color:#F39A62}.loader-caption{font-size:11px;color:#AAB4C4;margin-top:8px;line-height:1.6}.loader-track{height:4px;background:#263248;border-radius:20px;overflow:hidden;margin:22px auto 0;width:190px}.loader-track span{display:block;height:100%;width:40%;border-radius:20px;background:linear-gradient(90deg,#A66BFF,#F39A62);animation:loadmove 1.15s ease-in-out infinite alternate}@keyframes loadmove{to{transform:translateX(150%)}}@media(max-width:360px){main{padding:15px 10px 20px}.payment-card{padding:13px}.amount{font-size:26px}.method{min-height:76px}}
 </style>
 </head>
 <body>
-<div class="loader-screen" id="pageLoader" aria-live="polite">
-  <div class="loader-content">
-    <div class="brand-mark"><i class="fa-solid fa-bolt"></i></div>
-    <div class="loader-brand">Gentle<span>Logs</span></div>
-    <p class="loader-caption">Preparing your secure payment page…</p>
-    <div class="loader-track"><span></span></div>
-  </div>
-</div>
-
+<div class="loader-screen" id="pageLoader" aria-live="polite"><div class="loader-content"><div class="brand-mark"><i class="fa-solid fa-bolt"></i></div><div class="loader-brand">Gentle<span>Logs</span></div><p class="loader-caption">Preparing your secure checkout…</p><div class="loader-track"><span></span></div></div></div>
 <div class="page">
-  <header>
-    <button class="back-btn" id="backButton" type="button" aria-label="Go back"><i class="fa-solid fa-arrow-left"></i></button>
-    <div class="header-info"><h2>Complete Payment</h2><p>GentleLogs · Manual bank transfer</p></div>
-  </header>
-  <main>
-    <div class="heading">
-      <div class="heading-icon"><i class="fa-solid fa-building-columns"></i></div>
-      <h1>Make Your Transfer</h1>
-      <p>Transfer the exact amount below to the account details provided.</p>
-    </div>
-    <section class="payment-card" aria-label="Payment details">
-      <div class="eyebrow">Amount to transfer</div>
-      <div class="amount" id="amount">₦0.00</div>
-      <div class="divider"></div>
-      <div class="detail"><span class="detail-label">Bank</span><span class="detail-value">OPay</span></div>
-      <div class="detail"><span class="detail-label">Account name</span><span class="detail-value">ALMUSTAPHA ABDULAZEEZ</span></div>
-      <div class="detail">
-        <span class="detail-label">Account number</span>
-        <div class="account-row">
-          <span class="detail-value account-number" id="accountNumber">6155154087</span>
-          <button class="copy-btn" id="copyAccountButton" type="button"><i class="fa-regular fa-copy"></i> Copy</button>
-        </div>
-      </div>
-      <div class="notice"><i class="fa-solid fa-shield-halved"></i><span>Confirm the account name and number in your banking app before transferring. Keep your transfer receipt.</span></div>
-      <button class="button primary-btn hidden" id="completeButton" type="button"><i class="fa-solid fa-check-circle"></i> I've Made the Payment</button>
-      <div id="status" class="status hidden" role="status" aria-live="polite"></div>
-      <section id="receiptSection" class="hidden" aria-label="Payment receipt">
-        <div class="reference"><div class="ref-label">Your payment reference</div><div class="ref-value" id="reference"></div></div>
-        <a id="whatsappButton" class="button whatsapp-btn" href="#" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp"></i> Send Receipt on WhatsApp</a>
-        <button class="button secondary-btn" id="copyReferenceButton" type="button"><i class="fa-regular fa-copy"></i> Copy Payment Reference</button>
-      </section>
-      <p class="note">Your payment will be confirmed before your wallet is credited. Please keep your transfer receipt.</p>
-    </section>
-  </main>
-  <footer>GentleLogs · Secure payment process</footer>
+<header><button class="back-btn" id="backButton" type="button" aria-label="Go back"><i class="fa-solid fa-arrow-left"></i></button><div class="header-info"><h2>Complete Payment</h2><p>GentleLogs · Secure checkout</p></div></header>
+<main>
+<div class="heading"><div class="heading-icon"><i class="fa-solid fa-shield-halved"></i></div><h1>Choose Payment Method</h1><p>Select how you want to pay. You’ll continue to the secure payment provider checkout.</p></div>
+<section class="payment-card" aria-label="Checkout details">
+<div class="eyebrow">Wallet funding amount</div><div class="amount" id="amount">₦0.00</div><div class="divider"></div>
+<div class="method-title">Select a payment method</div>
+<div class="methods" role="group" aria-label="Payment method">
+<button class="method selected" type="button" data-method="transfer" aria-pressed="true"><i class="fa-solid fa-building-columns"></i><span>Bank Transfer</span></button>
+<button class="method" type="button" data-method="card" aria-pressed="false"><i class="fa-regular fa-credit-card"></i><span>Card</span></button>
+<button class="method" type="button" data-method="ussd" aria-pressed="false"><i class="fa-solid fa-mobile-screen-button"></i><span>USSD</span></button>
 </div>
-
-<div class="modal-backdrop hidden" id="confirmModal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
-  <div class="modal">
-    <div class="modal-icon"><i class="fa-solid fa-circle-question"></i></div>
-    <h2 id="confirmTitle">Have you made the transfer?</h2>
-    <p>Only select Yes if you have actually transferred <strong id="confirmAmount">₦0.00</strong> to the OPay account shown on this page.</p>
-    <div class="modal-actions">
-      <button class="no-btn" id="noConfirmButton" type="button">No</button>
-      <button class="yes-btn" id="yesConfirmButton" type="button">Yes, I have paid</button>
-    </div>
-  </div>
+<div class="notice"><i class="fa-solid fa-lock"></i><span>Your payment will only be marked successful after the server verifies confirmation from the payment provider. Returning to this page alone does not credit your wallet.</span></div>
+<button class="button primary-btn" id="continueButton" type="button"><i class="fa-solid fa-lock"></i> Continue to Secure Checkout</button>
+<div id="status" class="status hidden" role="status" aria-live="polite"></div>
+<p class="note">Payments are processed securely. Never share your card PIN, password or one-time code with anyone.</p>
+</section>
+</main><footer>GentleLogs · Secure payment process</footer>
 </div>
-
-<div class="checking-screen hidden" id="checkingScreen" role="status" aria-live="polite">
-  <div class="checking-box" id="checkingBox">
-    <div class="spinner" id="checkingSpinner"></div>
-    <h2 id="checkingTitle">Checking for your payment…</h2>
-    <p id="checkingMessage">Please wait. We are confirming your payment.</p>
-    <button class="success-home-btn hidden" id="successHomeButton" type="button">
-      <i class="fa-solid fa-house"></i> Back to Home
-    </button>
-  </div>
-</div>
-
 <script>
 "use strict";
-const WHATSAPP_NUMBER="2349131953030";
-const ACCOUNT_NUMBER="6155154087";
-const MIN_AMOUNT=100,MAX_AMOUNT=10000000,WAIT_TIME=15000;
-let currentUser=null,authReady=false,amount=0,busy=false,fundingReference="";
-let copyTimer=null,accountCopied=false,requestSubmitted=false;
+const MIN_AMOUNT=100,MAX_AMOUNT=5000000;
+let currentUser=null,authReady=false,amount=0,selectedMethod="transfer",busy=false;
 const $=id=>document.getElementById(id);
-const statusElement=$("status"),completeButton=$("completeButton");
-const copyAccountButton=$("copyAccountButton"),copyReferenceButton=$("copyReferenceButton");
-const receiptSection=$("receiptSection");
-let paymentRequestUnsubscribe=null;
-
+const statusElement=$("status"),continueButton=$("continueButton");
 function formatNaira(value){return "₦"+Number(value).toLocaleString("en-NG",{minimumFractionDigits:2,maximumFractionDigits:2});}
 function showStatus(message,type){statusElement.textContent=message;statusElement.className="status "+type;}
 function hideStatus(){statusElement.textContent="";statusElement.className="status hidden";}
-function hidePageLoader(){setTimeout(()=>$("pageLoader").classList.add("off"),250);}
-function validateAmount(){
-  const raw=new URLSearchParams(location.search).get("amount");
-  if(raw===null||!/^\d+$/.test(raw)){showStatus("The payment amount is missing or invalid. Return to your wallet and try again.","error");$("amount").textContent="Invalid amount";return false;}
-  const requested=Number(raw);
-  if(!Number.isSafeInteger(requested)||requested<MIN_AMOUNT||requested>MAX_AMOUNT){showStatus("The payment amount is outside the permitted range. Return to your wallet.","error");$("amount").textContent="Invalid amount";return false;}
-  amount=requested;$("amount").textContent=formatNaira(amount);$("confirmAmount").textContent=formatNaira(amount);return true;
-}
-function setCompleteButtonVisible(){if(accountCopied&&authReady&&currentUser&&!requestSubmitted)completeButton.classList.remove("hidden");}
-function startCopyWait(){
-  if(copyTimer)clearTimeout(copyTimer);
-  accountCopied=true;completeButton.classList.add("hidden");
-  showStatus("Account number copied. Complete your bank transfer. The payment confirmation button will appear shortly.","info");
-  copyTimer=setTimeout(()=>{setCompleteButtonVisible();if(!requestSubmitted)showStatus("Only continue after you have actually made the transfer.","info");},WAIT_TIME);
-}
-async function copyText(text){
-  if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(text);return;}
-  const field=document.createElement("textarea");field.value=text;field.setAttribute("readonly","");
-  field.style.position="fixed";field.style.left="-9999px";document.body.appendChild(field);
-  field.select();field.setSelectionRange(0,field.value.length);
-  const copied=document.execCommand("copy");field.remove();if(!copied)throw new Error("Copy failed");
-}
-async function copyAccount(){
-  if(!authReady||!currentUser){showStatus("Checking your sign-in session. Please wait a moment and try again.","info");return;}
-  try{await copyText(ACCOUNT_NUMBER);copyAccountButton.innerHTML='<i class="fa-solid fa-check"></i> Copied';startCopyWait();}
-  catch(error){console.error("Copy account error:",error);showStatus("Copy failed. Please copy this account number manually: "+ACCOUNT_NUMBER,"error");}
-}
-async function copyReference(){
-  if(!fundingReference){showStatus("There is no payment reference to copy yet.","error");return;}
-  try{await copyText(fundingReference);showStatus("Payment reference copied.","success");}
-  catch(error){showStatus("Copy failed. Your payment reference is: "+fundingReference,"error");}
-}
+function hidePageLoader(){$("pageLoader").classList.add("off");}
+function validateAmount(){const raw=new URLSearchParams(location.search).get("amount");if(raw===null||!/^[0-9]+$/.test(raw)){showStatus("The amount is missing or invalid. Return to your wallet and try again.","error");$("amount").textContent="Invalid amount";return false;}const value=Number(raw);if(!Number.isSafeInteger(value)||value<MIN_AMOUNT||value>MAX_AMOUNT){showStatus("Enter an amount between ₦100 and ₦5,000,000.","error");$("amount").textContent="Invalid amount";return false;}amount=value;$("amount").textContent=formatNaira(amount);return true;}
+document.querySelectorAll(".method").forEach(button=>button.addEventListener("click",()=>{selectedMethod=button.dataset.method;document.querySelectorAll(".method").forEach(item=>{const active=item===button;item.classList.toggle("selected",active);item.setAttribute("aria-pressed",String(active));});hideStatus();}));
 $("backButton").addEventListener("click",()=>location.href="fund.html");
-copyAccountButton.addEventListener("click",copyAccount);
-copyReferenceButton.addEventListener("click",copyReference);
-completeButton.addEventListener("click",()=>{
-  if(!authReady||!currentUser){showStatus("Your sign-in session is not ready. Please wait and try again.","error");return;}
-  if(!accountCopied){showStatus("Please copy the displayed account number first.","error");return;}
-  $("confirmModal").classList.remove("hidden");
-});
-$("successHomeButton").addEventListener("click",()=>{location.href="home.html";});
-$("noConfirmButton").addEventListener("click",()=>$("confirmModal").classList.add("hidden"));
-$("confirmModal").addEventListener("click",event=>{if(event.target===$("confirmModal"))$("confirmModal").classList.add("hidden");});
-$("yesConfirmButton").addEventListener("click",recordPayment);
-
-function initializePaymentPage(){
-  const valid=validateAmount();
-  if(!window.firebaseAuth||typeof window.firebaseAuth.onAuthStateChanged!=="function"||!window.firebaseDB||!window.firebase){
-    showStatus("The payment service could not initialize. Refresh the page and try again.","error");
-    copyAccountButton.disabled=true;hidePageLoader();return;
-  }
-  try{
-    window.firebaseAuth.onAuthStateChanged(user=>{
-      if(!user){currentUser=null;authReady=false;completeButton.classList.add("hidden");if(valid)showStatus("Your sign-in session is unavailable. Sign in to your account, then return to payment.","error");hidePageLoader();return;}
-      currentUser=user;authReady=true;
-      try{localStorage.setItem("gentleLoggedIn","true");localStorage.setItem("gentleCurrentUserId",user.uid);}catch(e){}
-      setCompleteButtonVisible();if(valid)hideStatus();hidePageLoader();
-    },error=>{console.error("AUTH STATE ERROR:",error);authReady=false;currentUser=null;showStatus("We could not check your sign-in session. Refresh the page and try again.","error");hidePageLoader();});
-  }catch(error){console.error("AUTH INITIALIZATION ERROR:",error);showStatus("Authentication could not be initialized. Please refresh the page.","error");hidePageLoader();}
-}
-
-/* Save a pending request and listen for the admin's approval. This page does not credit the wallet. */
-function showWaitingScreen(){
-  $("checkingScreen").classList.remove("hidden");
-  $("checkingSpinner").classList.remove("hidden");
-  $("checkingTitle").textContent="Checking for your payment…";
-  $("checkingMessage").textContent="Please wait. We are confirming your payment.";
-}
-function showApprovedScreen(){
-  $("checkingSpinner").classList.add("hidden");
-  $("checkingTitle").textContent="Successful!";
-  $("checkingMessage").textContent="Your payment has been received and your account has been credited successfully.";
-  $("checkingBox").classList.add("payment-approved");
-  $("successHomeButton").classList.remove("hidden");
-}
-function showRejectedScreen(){
-  $("checkingSpinner").classList.add("hidden");
-  $("checkingTitle").textContent="Payment not approved";
-  $("checkingMessage").textContent="We could not confirm this payment. Please contact support if you have already transferred.";
-  $("checkingBox").classList.add("payment-rejected");
-}
-function watchPaymentApproval(requestRef){
-  if(paymentRequestUnsubscribe)paymentRequestUnsubscribe();
-  paymentRequestUnsubscribe=requestRef.onSnapshot(snapshot=>{
-    if(!snapshot.exists)return;
-    const state=String((snapshot.data()||{}).status||"").toLowerCase();
-    if(["approved","success","successful","completed","credited"].includes(state))showApprovedScreen();
-    else if(["rejected","declined","failed"].includes(state))showRejectedScreen();
-  },error=>{
-    console.error("PAYMENT STATUS LISTENER ERROR:",error);
-    $("checkingMessage").textContent="Your payment request has been sent. We are still waiting for confirmation. Please keep this page open.";
-  });
-}
-async function recordPayment(){
-  if(busy||requestSubmitted)return;
-  if(!authReady||!currentUser||!accountCopied||!Number.isSafeInteger(amount)||amount<MIN_AMOUNT||amount>MAX_AMOUNT)return;
-  if(!window.firebaseDB||!window.firebase){showStatus("The payment service is unavailable. Please try again later.","error");return;}
-  $("confirmModal").classList.add("hidden");
-  const submittingUser=currentUser;busy=true;$("yesConfirmButton").disabled=true;showWaitingScreen();
-  try{
-    const requestRef=window.firebaseDB.collection("fundingRequests").doc();
-    const reference="GENTLE-"+requestRef.id.toUpperCase();
-    const accountName=(submittingUser.displayName&&submittingUser.displayName.trim())||submittingUser.email||"Name not provided";
-    await requestRef.set({userId:submittingUser.uid,accountName:accountName,userEmail:submittingUser.email||"",amount:amount,reference:reference,status:"pending",paymentMethod:"moniepoint_manual_transfer",createdAt:window.firebase.firestore.FieldValue.serverTimestamp()});
-    requestSubmitted=true;
-    completeButton.innerHTML='<i class="fa-solid fa-clock"></i> Awaiting Confirmation';
-    completeButton.disabled=true;copyAccountButton.disabled=true;
-    if(copyTimer){clearTimeout(copyTimer);copyTimer=null;}
-    watchPaymentApproval(requestRef);
-    try{
-      const idToken=await submittingUser.getIdToken();
-      const response=await fetch("/api/notify-funding",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+idToken},body:JSON.stringify({requestId:requestRef.id})});
-      if(!response.ok)console.error("Payment notification failed:",await response.text());
-    }catch(notificationError){console.error("Payment notification error:",notificationError);}
-  }catch(error){
-    console.error("PAYMENT REQUEST ERROR:",error);$("checkingScreen").classList.add("hidden");
-    if(error&&error.code==="permission-denied")showStatus("We could not save this payment request. Please contact support.","error");
-    else if(error&&error.code==="unavailable")showStatus("The payment service is temporarily unavailable. Check your connection and try again.","error");
-    else showStatus("We could not save your payment request. Please check your connection and try again.","error");
-  }finally{busy=false;$("yesConfirmButton").disabled=false;}
-}
-initializePaymentPage();
+async function startCheckout(){if(busy)return;if(!authReady||!currentUser){showStatus("Your sign-in session is not ready. Please sign in and try again.","error");return;}if(!Number.isSafeInteger(amount)||amount<MIN_AMOUNT||amount>MAX_AMOUNT){showStatus("The payment amount is invalid. Return to your wallet and try again.","error");return;}busy=true;continueButton.disabled=true;continueButton.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Preparing checkout…';hideStatus();try{
+  /* Server contract only: the server must authenticate the Firebase ID token, create the provider charge, and return a validated hosted checkout URL. Never put provider secrets in this file. */
+  const idToken=await currentUser.getIdToken();
+  const response=await fetch("/api/create-payment",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+idToken},body:JSON.stringify({amount:amount,currency:"NGN",paymentMethod:selectedMethod})});
+  const result=await response.json().catch(()=>({}));
+  if(!response.ok)throw new Error(result.message||"Secure checkout is not available yet. Please try again later.");
+  if(!result.checkoutUrl||typeof result.checkoutUrl!=="string")throw new Error("The server did not return a valid checkout link.");
+  const checkoutUrl=new URL(result.checkoutUrl);
+  if(checkoutUrl.protocol!=="https:")throw new Error("The checkout link is not secure.");
+  /* Allow only the provider's hosted checkout domain once the adult account owner has confirmed its exact official hostname in the server configuration. */
+  if(!result.allowedCheckoutHost||checkoutUrl.hostname!==result.allowedCheckoutHost)throw new Error("Checkout link could not be verified. Please contact support.");
+  location.assign(checkoutUrl.href);
+ }catch(error){console.error("Checkout initialization error:",error);showStatus(error.message||"We could not start checkout. Please try again.","error");busy=false;continueButton.disabled=false;continueButton.innerHTML='<i class="fa-solid fa-lock"></i> Continue to Secure Checkout';}}
+continueButton.addEventListener("click",startCheckout);
+function initialize(){const valid=validateAmount();if(!window.firebaseAuth||typeof window.firebaseAuth.onAuthStateChanged!=="function"){showStatus("Authentication could not initialize. Refresh the page and try again.","error");hidePageLoader();return;}window.firebaseAuth.onAuthStateChanged(user=>{currentUser=user||null;authReady=!!user;if(!user){if(valid)showStatus("Please sign in to continue with wallet funding.","error");hidePageLoader();return;}try{localStorage.setItem("gentleLoggedIn","true");localStorage.setItem("gentleCurrentUserId",user.uid);}catch(e){}hidePageLoader();},error=>{console.error("Auth state error:",error);showStatus("We could not verify your sign-in session. Please refresh.","error");hidePageLoader();});}
+initialize();
 </script>
 </body>
 </html>
