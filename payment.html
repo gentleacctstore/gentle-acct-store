@@ -63,7 +63,9 @@ async function startCheckout(){if(busy)return;if(!authReady||!currentUser){showS
   const checkoutUrl=new URL(result.checkoutUrl);
   if(checkoutUrl.protocol!=="https:")throw new Error("The checkout link is not secure.");
   /* Allow only the provider's hosted checkout domain once the adult account owner has confirmed its exact official hostname in the server configuration. */
-  if(!result.allowedCheckoutHost||checkoutUrl.hostname!==result.allowedCheckoutHost)throw new Error("Checkout link could not be verified. Please contact support.");
+  if (checkoutUrl.hostname !== "identifyorg.com") {
+  throw new Error("Checkout link could not be verified. Please contact support.");
+}
   location.assign(checkoutUrl.href);
  }catch(error){console.error("Checkout initialization error:",error);showStatus(error.message||"We could not start checkout. Please try again.","error");busy=false;continueButton.disabled=false;continueButton.innerHTML='<i class="fa-solid fa-lock"></i> Continue to Secure Checkout';}}
 continueButton.addEventListener("click",startCheckout);
