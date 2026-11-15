@@ -58,7 +58,7 @@ async function startCheckout(){if(busy)return;if(!authReady||!currentUser){showS
   const idToken=await currentUser.getIdToken();
   const response=await fetch("/api/create-payment",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+idToken},body:JSON.stringify({amount:amount,currency:"NGN",paymentMethod:selectedMethod})});
   const result=await response.json().catch(()=>({}));
-  if(!response.ok)throw new Error(result.message||"Secure checkout is not available yet. Please try again later.");
+  if(!response.ok)throw new Error(result.error||result.message||"Secure checkout is not available yet. Please try again later.");
   if(!result.checkoutUrl||typeof result.checkoutUrl!=="string")throw new Error("The server did not return a valid checkout link.");
   const checkoutUrl=new URL(result.checkoutUrl);
   if(checkoutUrl.protocol!=="https:")throw new Error("The checkout link is not secure.");

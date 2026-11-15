@@ -1869,7 +1869,7 @@ function applyManagedWebsiteSettings(data){
     if(has("supportEnabled"))support.hidden=data.supportEnabled!==true;
     const supportUrl=managedSafeUrl(data.supportUrl);
     const provider=String(data.supportProvider||"telegram").toLowerCase();
-    const fallback=provider==="whatsapp"?managedWhatsAppUrl(data.whatsappNumber):provider==="telegram"?"https://t.me/":"";
+    const fallback=provider==="whatsapp"?managedWhatsAppUrl(data.whatsappNumber):provider==="telegram"?"https://t.me/gentlecutomersupport":"";
     if(supportUrl||fallback)support.href=supportUrl||fallback;
     if(has("supportLabel"))support.setAttribute("aria-label",String(data.supportLabel||"Contact support"));
     if(supportIcon&&String(data.supportIcon||"").trim())supportIcon.className=String(data.supportIcon).trim();
