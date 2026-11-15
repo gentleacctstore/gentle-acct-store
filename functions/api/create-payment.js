@@ -1,12 +1,11 @@
 
-/**
- * GentleLogs — IdentifyOrg checkout creation
- * Cloudflare Pages Function
- */
+import {
+  firestoreRequest,
+  encodeFields
+} from "../_shared/firebase-admin.js";
 
 const MIN_AMOUNT = 100;
 const MAX_AMOUNT = 5000000;
-
 const ALLOWED_METHODS = ["card", "transfer", "ussd"];
 
 export async function onRequestPost({ request, env }) {
@@ -22,7 +21,6 @@ export async function onRequestPost({ request, env }) {
       return json({ error: "Authentication required." }, 401);
     }
 
-    // Verify the Firebase user token.
     const authResponse = await fetch(
       `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${env.FIREBASE_WEB_API_KEY}`,
       {
@@ -44,7 +42,6 @@ export async function onRequestPost({ request, env }) {
     }
 
     const body = await request.json();
-
     const amount = Number(body.amount);
     const method = body.paymentMethod;
 
@@ -62,10 +59,6 @@ export async function onRequestPost({ request, env }) {
       return json({ error: "Invalid payment method." }, 400);
     }
 
-    const customerName = String(
-      user.displayName || "GentleLogs Customer"
-    ).slice(0, 100);
-
     const customerEmail = String(user.email || "").trim();
 
     if (!customerEmail) {
@@ -74,14 +67,9 @@ export async function onRequestPost({ request, env }) {
       }, 400);
     }
 
-    const payload = {
-      amount,
-      customer_name: customerName,
-      customer_email: customerEmail,
-      description: `GentleLogs wallet funding - ${user.localId}`,
-      redirect_url: "https://gentlelogs.pages.dev/payment.html",
-      payment_methods: [method]
-    };
+    const customerName = String(
+      user.displayName || "GentleLogs Customer"
+    ).slice(0, 100);
 
     const paymentResponse = await fetch(
       "https://api.identifyorg.com/v1/business/charges",
@@ -91,7 +79,14 @@ export async function onRequestPost({ request, env }) {
           "Content-Type": "application/json",
           "X-IdentifyOrg-Key": env.IDENTIFYORG_API_KEY
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify({
+          amount,
+          customer_name: customerName,
+          customer_email: customerEmail,
+          description: "GentleLogs wallet funding",
+          redirect_url: "https://gentlelogs.store/payment.html",
+          payment_methods: [method]
+        })
       }
     );
 
@@ -110,10 +105,41 @@ export async function onRequestPost({ request, env }) {
       }, 502);
     }
 
+    const reference = String(result.reference);
+
+    if (!/^[A-Za-z0-9_-]{5,150}$/.test(reference)) {
+      return json({
+        error: "The payment reference returned by the provider is invalid."
+      }, 502);
+    }
+
+    // Save the pending request BEFORE sending the customer to checkout.
+    const requestData = {
+      userId: user.localId,
+      accountName: customerName,
+      userEmail: customerEmail,
+      amount,
+      reference,
+      status: "pending",
+      paymentMethod: "identifyorg_checkout",
+      createdAt: new Date().toISOString()
+    };
+
+    await firestoreRequest(
+      env,
+      "/fundingRequests?documentId=" + encodeURIComponent(reference),
+      {
+        method: "POST",
+        body: JSON.stringify({
+          fields: encodeFields(requestData)
+        })
+      }
+    );
+
     return json({
       success: true,
       checkoutUrl: result.checkout_url,
-      reference: result.reference,
+      reference,
       amount,
       currency: "NGN"
     });
