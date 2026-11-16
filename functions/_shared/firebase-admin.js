@@ -1,24 +1,41 @@
 
 function base64url(value) {
-  const bytes = new TextEncoder().encode(value);
+  const bytes = typeof value === "string"
+    ? new TextEncoder().encode(value)
+    : value;
+
   let binary = "";
-  bytes.forEach(byte => binary += String.fromCharCode(byte));
-  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+
+  for (const byte of bytes) {
+    binary += String.fromCharCode(byte);
+  }
+
+  return btoa(binary)
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
 }
 
 function pemToBytes(pem) {
   const normalized = pem.replace(/\\n/g, "\n");
+
   const base64 = normalized
     .replace(/-----BEGIN PRIVATE KEY-----/g, "")
     .replace(/-----END PRIVATE KEY-----/g, "")
     .replace(/\s/g, "");
-  return Uint8Array.from(atob(base64), c => c.charCodeAt(0));
+
+  return Uint8Array.from(
+    atob(base64),
+    character => character.charCodeAt(0)
+  );
 }
 
 export async function getFirebaseAccessToken(env) {
-  if (!env.FIREBASE_CLIENT_EMAIL ||
-      !env.FIREBASE_PRIVATE_KEY ||
-      !env.FIREBASE_PROJECT_ID) {
+  if (
+    !env.FIREBASE_CLIENT_EMAIL ||
+    !env.FIREBASE_PRIVATE_KEY ||
+    !env.FIREBASE_PROJECT_ID
+  ) {
     throw new Error("Firebase Admin configuration is incomplete.");
   }
 
@@ -43,7 +60,10 @@ export async function getFirebaseAccessToken(env) {
   const key = await crypto.subtle.importKey(
     "pkcs8",
     pemToBytes(env.FIREBASE_PRIVATE_KEY),
-    { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
+    {
+      name: "RSASSA-PKCS1-v1_5",
+      hash: "SHA-256"
+    },
     false,
     ["sign"]
   );
@@ -54,9 +74,8 @@ export async function getFirebaseAccessToken(env) {
     new TextEncoder().encode(unsigned)
   );
 
-  const assertion = unsigned + "." + base64url(
-    new Uint8Array(signature)
-  );
+  const assertion =
+    unsigned + "." + base64url(new Uint8Array(signature));
 
   const response = await fetch(
     "https://oauth2.googleapis.com/token",
@@ -66,7 +85,8 @@ export async function getFirebaseAccessToken(env) {
         "Content-Type": "application/x-www-form-urlencoded"
       },
       body: new URLSearchParams({
-        grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
+        grant_type:
+          "urn:ietf:params:oauth:grant-type:jwt-bearer",
         assertion
       })
     }
@@ -82,9 +102,11 @@ export async function getFirebaseAccessToken(env) {
 }
 
 export function firestoreBase(env) {
-  return "https://firestore.googleapis.com/v1/projects/" +
+  return (
+    "https://firestore.googleapis.com/v1/projects/" +
     encodeURIComponent(env.FIREBASE_PROJECT_ID) +
-    "/databases/(default)/documents";
+    "/databases/(default)/documents"
+  );
 }
 
 export async function firestoreRequest(env, path, options = {}) {
@@ -100,6 +122,7 @@ export async function firestoreRequest(env, path, options = {}) {
   });
 
   const text = await response.text();
+
   let result = {};
 
   try {
@@ -112,6 +135,7 @@ export async function firestoreRequest(env, path, options = {}) {
     const error = new Error(
       result.error?.message || "Firestore request failed."
     );
+
     error.status = response.status;
     throw error;
   }
@@ -134,7 +158,9 @@ export function encodeFields(data) {
         ? { integerValue: String(value) }
         : { doubleValue: value };
     } else if (value instanceof Date) {
-      fields[key] = { timestampValue: value.toISOString() };
+      fields[key] = {
+        timestampValue: value.toISOString()
+      };
     }
   }
 
@@ -145,12 +171,19 @@ export function decodeFields(fields = {}) {
   const result = {};
 
   for (const [key, value] of Object.entries(fields)) {
-    if ("stringValue" in value) result[key] = value.stringValue;
-    else if ("integerValue" in value) result[key] = Number(value.integerValue);
-    else if ("doubleValue" in value) result[key] = value.doubleValue;
-    else if ("booleanValue" in value) result[key] = value.booleanValue;
-    else if ("timestampValue" in value) result[key] = value.timestampValue;
-    else if ("nullValue" in value) result[key] = null;
+    if ("stringValue" in value) {
+      result[key] = value.stringValue;
+    } else if ("integerValue" in value) {
+      result[key] = Number(value.integerValue);
+    } else if ("doubleValue" in value) {
+      result[key] = value.doubleValue;
+    } else if ("booleanValue" in value) {
+      result[key] = value.booleanValue;
+    } else if ("timestampValue" in value) {
+      result[key] = value.timestampValue;
+    } else if ("nullValue" in value) {
+      result[key] = null;
+    }
   }
 
   return result;
