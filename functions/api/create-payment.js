@@ -1,5 +1,11 @@
 
-const IDENTIFYORG_URL = "https://api.identifyorg.com/v1/business/charges";
+import {
+  firestoreRequest,
+  encodeFields
+} from "../_shared/firebase-admin.js";
+
+const IDENTIFYORG_URL =
+  "https://api.identifyorg.com/v1/business/charges";
 
 const MIN_AMOUNT = 100;
 const MAX_AMOUNT = 5000000;
@@ -18,79 +24,109 @@ function json(data, status = 200) {
 
 export async function onRequestPost({ request, env }) {
   try {
-    if (!env.IDENTIFYORG_API_KEY) {
-      return json({ error: "Payment service is not configured." }, 500);
+    if (
+      !env.IDENTIFYORG_API_KEY ||
+      !env.FIREBASE_API_KEY ||
+      !env.FIREBASE_PROJECT_ID ||
+      !env.FIREBASE_CLIENT_EMAIL ||
+      !env.FIREBASE_PRIVATE_KEY
+    ) {
+      return json({
+        error: "Payment server configuration is incomplete."
+      }, 500);
     }
 
-    if (!env.FIREBASE_API_KEY) {
-      return json({ error: "Firebase verification is not configured." }, 500);
-    }
+    // Verify the customer's Firebase session.
+    const authorization =
+      request.headers.get("Authorization") || "";
 
-    const authorization = request.headers.get("Authorization") || "";
     const match = authorization.match(/^Bearer (.+)$/);
 
     if (!match) {
-      return json({ error: "Please sign in before making a payment." }, 401);
+      return json({
+        error: "Please sign in before making a payment."
+      }, 401);
     }
 
-    const idToken = match[1];
-
-    // Verify the Firebase ID token with Firebase Authentication.
     const verifyResponse = await fetch(
-      `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${encodeURIComponent(env.FIREBASE_API_KEY)}`,
+      "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=" +
+        encodeURIComponent(env.FIREBASE_API_KEY),
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ idToken })
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          idToken: match[1]
+        })
       }
     );
 
     const verifyData = await verifyResponse.json();
 
-    if (!verifyResponse.ok || !verifyData.users?.length) {
-      return json({ error: "Your sign-in session is invalid. Please sign in again." }, 401);
+    if (
+      !verifyResponse.ok ||
+      !verifyData.users ||
+      !verifyData.users.length
+    ) {
+      return json({
+        error: "Your sign-in session is invalid."
+      }, 401);
     }
 
     const customer = verifyData.users[0];
+    const uid = String(customer.localId || "");
+    const email = String(customer.email || "").trim();
 
-    if (!customer.email) {
-  return json({ error: "Your account needs an email address." }, 400);
-}
+    if (!uid || !email) {
+      return json({
+        error: "Your account needs a valid email address."
+      }, 400);
+    }
 
+    // Validate the requested payment.
     const body = await request.json();
-
     const amount = Number(body.amount);
-    const selectedMethod = String(body.paymentMethod || "transfer").toLowerCase();
 
-    if (!Number.isSafeInteger(amount) || amount < MIN_AMOUNT || amount > MAX_AMOUNT) {
-      return json({ error: "Enter an amount between ₦100 and ₦5,000,000." }, 400);
+    const selectedMethod =
+      String(body.paymentMethod || "transfer").toLowerCase();
+
+    if (
+      !Number.isSafeInteger(amount) ||
+      amount < MIN_AMOUNT ||
+      amount > MAX_AMOUNT
+    ) {
+      return json({
+        error: "Enter an amount between ₦100 and ₦5,000,000."
+      }, 400);
     }
 
     if (!ALLOWED_METHODS.includes(selectedMethod)) {
-      return json({ error: "That payment method is not supported." }, 400);
+      return json({
+        error: "Unsupported payment method."
+      }, 400);
     }
 
     const customerName =
-      String(customer.displayName || customer.email.split("@")[0]).trim();
+      String(customer.displayName || email.split("@")[0]).trim();
 
     const siteUrl = new URL(request.url).origin;
 
-    const chargePayload = {
-      amount,
-      customer_name: customerName,
-      customer_email: customer.email,
-      description: "GentleLogs wallet funding",
-      redirect_url: `${siteUrl}/payment-return.html`,
-      payment_methods: [selectedMethod]
-    };
-
+    // Create the IdentifyOrg charge.
     const chargeResponse = await fetch(IDENTIFYORG_URL, {
       method: "POST",
       headers: {
         "X-IdentifyOrg-Key": env.IDENTIFYORG_API_KEY,
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(chargePayload)
+      body: JSON.stringify({
+        amount,
+        customer_name: customerName,
+        customer_email: email,
+        description: "GentleLogs wallet funding",
+        redirect_url: siteUrl + "/fund.html",
+        payment_methods: [selectedMethod]
+      })
     });
 
     const chargeData = await chargeResponse.json();
@@ -99,40 +135,84 @@ export async function onRequestPost({ request, env }) {
       console.error("IdentifyOrg charge error:", chargeData);
 
       return json({
-        error: chargeData.message || chargeData.error ||
-          "IdentifyOrg could not create the payment. Please try again."
+        error:
+          chargeData.message ||
+          chargeData.error ||
+          "IdentifyOrg could not create your payment."
       }, 502);
     }
 
-    const checkoutUrl = chargeData.checkout_url;
+    const reference = String(chargeData.reference || "");
+    const checkoutUrl = String(chargeData.checkout_url || "");
 
-    if (!checkoutUrl) {
-      return json({ error: "IdentifyOrg did not return a checkout link." }, 502);
+    if (
+      !/^[A-Za-z0-9_-]{5,150}$/.test(reference) ||
+      !checkoutUrl
+    ) {
+      return json({
+        error: "IdentifyOrg returned incomplete payment details."
+      }, 502);
     }
 
+    // Only accept IdentifyOrg's documented hosted checkout domain.
     let parsedUrl;
 
     try {
       parsedUrl = new URL(checkoutUrl);
     } catch {
-      return json({ error: "IdentifyOrg returned an invalid checkout link." }, 502);
+      return json({
+        error: "Invalid checkout address returned by IdentifyOrg."
+      }, 502);
     }
 
     if (
       parsedUrl.protocol !== "https:" ||
       parsedUrl.hostname !== "identifyorg.com"
     ) {
-      return json({ error: "The checkout link could not be verified." }, 502);
+      return json({
+        error: "The payment checkout address could not be verified."
+      }, 502);
     }
 
+    // Save the pending funding request using the provider reference
+    // as its Firestore document ID. The webhook uses this same ID.
+    const fundingRecord = {
+      userId: uid,
+      amount,
+      currency: "NGN",
+      reference,
+      status: "pending",
+      paymentMethod: "identifyorg_checkout",
+      selectedPaymentMethod: selectedMethod,
+      provider: "IdentifyOrg",
+      customerEmail: email,
+      createdAt: new Date().toISOString()
+    };
+
+    await firestoreRequest(
+      env,
+      "/fundingRequests?documentId=" +
+        encodeURIComponent(reference),
+      {
+        method: "POST",
+        body: JSON.stringify({
+          fields: encodeFields(fundingRecord)
+        })
+      }
+    );
+
+    // Return checkout details to payment.html.
     return json({
       checkoutUrl: parsedUrl.href,
-      reference: chargeData.reference,
+      reference,
       amount
     });
 
   } catch (error) {
-    console.error("GentleLogs payment error:", error);
+    console.error(
+      "GentleLogs payment creation error:",
+      error.message || error
+    );
 
     return json({
       error: "We could not prepare your payment. Please try again."
