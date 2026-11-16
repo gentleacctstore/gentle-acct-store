@@ -1,26 +1,48 @@
 
-/**
- * GentleLogs — Payment status endpoint
- *
- * SAFETY MODE:
- * Payment status cannot be confirmed until the secure
- * IdentifyOrg server-side integration is configured.
- */
+export async function onRequestGet({ env }) {
+  if (!env.IDENTIFYORG_API_KEY) {
+    return Response.json(
+      { error: "IdentifyOrg API key is missing." },
+      { status: 500 }
+    );
+  }
 
-export async function onRequestGet() {
-  return json({
-    code: "PAYMENT_STATUS_NOT_CONFIGURED",
-    status: "unverified",
-    message: "Payment confirmation is not available yet. Please do not assume your wallet has been credited."
-  }, 503);
-}
+  try {
+    const response = await fetch(
+      "https://api.identifyorg.com/v1/business/overview",
+      {
+        method: "GET",
+        headers: {
+          "X-IdentifyOrg-Key": env.IDENTIFYORG_API_KEY
+        }
+      }
+    );
 
-function json(data, status = 200) {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: {
-      "content-type": "application/json; charset=utf-8",
-      "cache-control": "no-store"
+    const data = await response.json();
+
+    if (!response.ok) {
+      return Response.json(
+        { error: data.message || data.error || "Unable to check account." },
+        { status: response.status }
+      );
     }
-  });
+
+    return Response.json({
+      status: data.status,
+      live: data.live,
+      business_verified: data.business_verified,
+      limit: data.limit,
+      remaining: data.remaining,
+      balance: data.balance,
+      fees: data.fees
+    });
+
+  } catch (error) {
+    console.error("IdentifyOrg status error:", error);
+
+    return Response.json(
+      { error: "Could not connect to IdentifyOrg." },
+      { status: 500 }
+    );
+  }
 }
