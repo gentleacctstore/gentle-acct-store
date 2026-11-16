@@ -1,157 +1,10 @@
 
-import {
-  firestoreRequest,
-  encodeFields
-} from "../_shared/firebase-admin.js";
+const IDENTIFYORG_URL = "https://api.identifyorg.com/v1/business/charges";
 
 const MIN_AMOUNT = 100;
 const MAX_AMOUNT = 5000000;
+
 const ALLOWED_METHODS = ["card", "transfer", "ussd"];
-
-export async function onRequestPost({ request, env }) {
-  try {
-    if (!env.IDENTIFYORG_API_KEY || !env.FIREBASE_WEB_API_KEY) {
-      return json({ error: "Payment configuration is incomplete." }, 503);
-    }
-
-    const authorization = request.headers.get("Authorization") || "";
-    const tokenMatch = authorization.match(/^Bearer (.+)$/);
-
-    if (!tokenMatch) {
-      return json({ error: "Authentication required." }, 401);
-    }
-
-    const authResponse = await fetch(
-      `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${env.FIREBASE_WEB_API_KEY}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ idToken: tokenMatch[1] })
-      }
-    );
-
-    if (!authResponse.ok) {
-      return json({ error: "Your sign-in session is invalid." }, 401);
-    }
-
-    const authData = await authResponse.json();
-    const user = authData.users?.[0];
-
-    if (!user?.localId || user.disabled) {
-      return json({ error: "Account verification failed." }, 401);
-    }
-
-    const body = await request.json();
-    const amount = Number(body.amount);
-    const method = body.paymentMethod;
-
-    if (
-      !Number.isSafeInteger(amount) ||
-      amount < MIN_AMOUNT ||
-      amount > MAX_AMOUNT
-    ) {
-      return json({
-        error: "Amount must be between ₦100 and ₦5,000,000."
-      }, 400);
-    }
-
-    if (!ALLOWED_METHODS.includes(method)) {
-      return json({ error: "Invalid payment method." }, 400);
-    }
-
-    const customerEmail = String(user.email || "").trim();
-
-    if (!customerEmail) {
-      return json({
-        error: "A verified customer email is required."
-      }, 400);
-    }
-
-    const customerName = String(
-      user.displayName || "GentleLogs Customer"
-    ).slice(0, 100);
-
-    const paymentResponse = await fetch(
-      "https://api.identifyorg.com/v1/business/charges",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-IdentifyOrg-Key": env.IDENTIFYORG_API_KEY
-        },
-        body: JSON.stringify({
-          amount,
-          customer_name: customerName,
-          customer_email: customerEmail,
-          description: "GentleLogs wallet funding",
-          redirect_url: "https://gentlelogs.store/payment.html",
-          payment_methods: [method]
-        })
-      }
-    );
-
-    const result = await paymentResponse.json();
-
-    if (!paymentResponse.ok) {
-      return json({
-        error: result?.error?.message ||
-          "IdentifyOrg could not create the payment."
-      }, paymentResponse.status);
-    }
-
-    if (!result.checkout_url || !result.reference) {
-      return json({
-        error: "The payment provider returned an incomplete response."
-      }, 502);
-    }
-
-    const reference = String(result.reference);
-
-    if (!/^[A-Za-z0-9_-]{5,150}$/.test(reference)) {
-      return json({
-        error: "The payment reference returned by the provider is invalid."
-      }, 502);
-    }
-
-    // Save the pending request BEFORE sending the customer to checkout.
-    const requestData = {
-      userId: user.localId,
-      accountName: customerName,
-      userEmail: customerEmail,
-      amount,
-      reference,
-      status: "pending",
-      paymentMethod: "identifyorg_checkout",
-      createdAt: new Date().toISOString()
-    };
-
-    await firestoreRequest(
-      env,
-      "/fundingRequests?documentId=" + encodeURIComponent(reference),
-      {
-        method: "POST",
-        body: JSON.stringify({
-          fields: encodeFields(requestData)
-        })
-      }
-    );
-
-    return json({
-      success: true,
-      checkoutUrl: result.checkout_url,
-      reference,
-      amount,
-      currency: "NGN"
-    });
-
-  } catch (error) {
-    console.error("GentleLogs payment creation error:", error);
-
-    return json({
-      error: "Unable to start payment. Please try again."
-    }, 500);
-  }
-}
 
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -161,4 +14,128 @@ function json(data, status = 200) {
       "Cache-Control": "no-store"
     }
   });
+}
+
+export async function onRequestPost({ request, env }) {
+  try {
+    if (!env.IDENTIFYORG_API_KEY) {
+      return json({ error: "Payment service is not configured." }, 500);
+    }
+
+    if (!env.FIREBASE_API_KEY) {
+      return json({ error: "Firebase verification is not configured." }, 500);
+    }
+
+    const authorization = request.headers.get("Authorization") || "";
+    const match = authorization.match(/^Bearer (.+)$/);
+
+    if (!match) {
+      return json({ error: "Please sign in before making a payment." }, 401);
+    }
+
+    const idToken = match[1];
+
+    // Verify the Firebase ID token with Firebase Authentication.
+    const verifyResponse = await fetch(
+      `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${encodeURIComponent(env.FIREBASE_API_KEY)}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ idToken })
+      }
+    );
+
+    const verifyData = await verifyResponse.json();
+
+    if (!verifyResponse.ok || !verifyData.users?.length) {
+      return json({ error: "Your sign-in session is invalid. Please sign in again." }, 401);
+    }
+
+    const customer = verifyData.users[0];
+
+    if (!customer.email || customer.emailVerified !== true) {
+      return json({ error: "Please verify your email address before funding your wallet." }, 403);
+    }
+
+    const body = await request.json();
+
+    const amount = Number(body.amount);
+    const selectedMethod = String(body.paymentMethod || "transfer").toLowerCase();
+
+    if (!Number.isSafeInteger(amount) || amount < MIN_AMOUNT || amount > MAX_AMOUNT) {
+      return json({ error: "Enter an amount between ₦100 and ₦5,000,000." }, 400);
+    }
+
+    if (!ALLOWED_METHODS.includes(selectedMethod)) {
+      return json({ error: "That payment method is not supported." }, 400);
+    }
+
+    const customerName =
+      String(customer.displayName || customer.email.split("@")[0]).trim();
+
+    const siteUrl = new URL(request.url).origin;
+
+    const chargePayload = {
+      amount,
+      customer_name: customerName,
+      customer_email: customer.email,
+      description: "GentleLogs wallet funding",
+      redirect_url: `${siteUrl}/payment-return.html`,
+      payment_methods: [selectedMethod]
+    };
+
+    const chargeResponse = await fetch(IDENTIFYORG_URL, {
+      method: "POST",
+      headers: {
+        "X-IdentifyOrg-Key": env.IDENTIFYORG_API_KEY,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(chargePayload)
+    });
+
+    const chargeData = await chargeResponse.json();
+
+    if (!chargeResponse.ok) {
+      console.error("IdentifyOrg charge error:", chargeData);
+
+      return json({
+        error: chargeData.message || chargeData.error ||
+          "IdentifyOrg could not create the payment. Please try again."
+      }, 502);
+    }
+
+    const checkoutUrl = chargeData.checkout_url;
+
+    if (!checkoutUrl) {
+      return json({ error: "IdentifyOrg did not return a checkout link." }, 502);
+    }
+
+    let parsedUrl;
+
+    try {
+      parsedUrl = new URL(checkoutUrl);
+    } catch {
+      return json({ error: "IdentifyOrg returned an invalid checkout link." }, 502);
+    }
+
+    if (
+      parsedUrl.protocol !== "https:" ||
+      parsedUrl.hostname !== "identifyorg.com"
+    ) {
+      return json({ error: "The checkout link could not be verified." }, 502);
+    }
+
+    return json({
+      checkoutUrl: parsedUrl.href,
+      reference: chargeData.reference,
+      amount
+    });
+
+  } catch (error) {
+    console.error("GentleLogs payment error:", error);
+
+    return json({
+      error: "We could not prepare your payment. Please try again."
+    }, 500);
+  }
 }
