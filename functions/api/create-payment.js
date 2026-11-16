@@ -53,9 +53,9 @@ export async function onRequestPost({ request, env }) {
 
     const customer = verifyData.users[0];
 
-    if (!customer.email || customer.emailVerified !== true) {
-      return json({ error: "Please verify your email address before funding your wallet." }, 403);
-    }
+    if (!customer.email) {
+  return json({ error: "Your account needs an email address." }, 400);
+}
 
     const body = await request.json();
 
