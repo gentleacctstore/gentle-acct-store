@@ -84,7 +84,16 @@ async function verifySignature(rawBody, signatureHeader, secret) {
   return difference === 0;
 }
 
-export async function onRequestPost({ request, env }) {
+export async function onRequest(context) {
+  const { request, env } = context;
+
+  if (request.method !== "POST") {
+    return json(
+      { error: "Method not allowed. Use POST." },
+      405
+    );
+  }
+
   try {
     if (
       !env.IDENTIFYORG_WEBHOOK_SECRET ||
@@ -159,7 +168,7 @@ export async function onRequestPost({ request, env }) {
     const amount = Number(payment.amount);
     const currency = String(payment.currency || "").toUpperCase();
 
-    // Validate the payment details before considering a wallet credit.
+    // Validate payment details.
     if (
       !/^mp_[A-Za-z0-9_-]{5,150}$/.test(reference) ||
       !Number.isSafeInteger(amount) ||
@@ -172,8 +181,7 @@ export async function onRequestPost({ request, env }) {
       }, 400);
     }
 
-    // Only successful payments can credit a wallet.
-    // Held and failed payments are acknowledged without being credited.
+    // Held and failed payments must never credit a wallet.
     if (
       payment.status === "held" ||
       payment.status === "failed"
@@ -191,7 +199,7 @@ export async function onRequestPost({ request, env }) {
       }, 400);
     }
 
-    // Never credit test payments or payments without an explicit live flag.
+    // Only explicitly confirmed live payments are accepted.
     if (payment.test !== false) {
       return json({
         received: true,
@@ -210,7 +218,6 @@ export async function onRequestPost({ request, env }) {
       fundingDocument = await firestoreRequest(env, fundingPath);
     } catch (error) {
       if (error.status === 404) {
-        // Retry later if the funding request has not appeared yet.
         return json({
           error: "Matching funding request not found."
         }, 503);
@@ -221,7 +228,7 @@ export async function onRequestPost({ request, env }) {
 
     const funding = decodeFields(fundingDocument.fields);
 
-    // A previously approved request must never be credited again.
+    // Never credit an already approved request again.
     if (funding.status === "approved") {
       return json({
         received: true,
@@ -292,8 +299,8 @@ export async function onRequestPost({ request, env }) {
       }, 409);
     }
 
-    // Credit the full customer payment.
-    // IdentifyOrg's business fee is not deducted from the customer's wallet.
+    // Credit the full amount paid by the customer.
+    // The business pays the provider fee.
     const newBalance = currentBalance + amount;
 
     if (!Number.isSafeInteger(newBalance)) {
