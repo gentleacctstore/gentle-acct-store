@@ -36,7 +36,6 @@ export async function onRequestPost({ request, env }) {
       }, 500);
     }
 
-    // Verify the customer's Firebase session.
     const authorization =
       request.headers.get("Authorization") || "";
 
@@ -84,7 +83,6 @@ export async function onRequestPost({ request, env }) {
       }, 400);
     }
 
-    // Validate the requested payment.
     const body = await request.json();
     const amount = Number(body.amount);
 
@@ -112,7 +110,6 @@ export async function onRequestPost({ request, env }) {
 
     const siteUrl = new URL(request.url).origin;
 
-    // Create the IdentifyOrg charge.
     const chargeResponse = await fetch(IDENTIFYORG_URL, {
       method: "POST",
       headers: {
@@ -146,7 +143,7 @@ export async function onRequestPost({ request, env }) {
     const checkoutUrl = String(chargeData.checkout_url || "");
 
     if (
-      !/^[A-Za-z0-9_-]{5,150}$/.test(reference) ||
+      !/^mp_[A-Za-z0-9_-]{5,150}$/.test(reference) ||
       !checkoutUrl
     ) {
       return json({
@@ -154,7 +151,6 @@ export async function onRequestPost({ request, env }) {
       }, 502);
     }
 
-    // Only accept IdentifyOrg's documented hosted checkout domain.
     let parsedUrl;
 
     try {
@@ -174,8 +170,6 @@ export async function onRequestPost({ request, env }) {
       }, 502);
     }
 
-    // Save the pending funding request using the provider reference
-    // as its Firestore document ID. The webhook uses this same ID.
     const fundingRecord = {
       userId: uid,
       amount,
@@ -189,6 +183,7 @@ export async function onRequestPost({ request, env }) {
       createdAt: new Date().toISOString()
     };
 
+    // Create the funding request without overwriting an existing one.
     await firestoreRequest(
       env,
       "/fundingRequests?documentId=" +
@@ -201,7 +196,6 @@ export async function onRequestPost({ request, env }) {
       }
     );
 
-    // Return checkout details to payment.html.
     return json({
       checkoutUrl: parsedUrl.href,
       reference,
