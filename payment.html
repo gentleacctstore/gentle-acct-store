@@ -57,9 +57,16 @@ async function startCheckout(){if(busy)return;if(!authReady||!currentUser){showS
   /* Server contract only: the server must authenticate the Firebase ID token, create the provider charge, and return a validated hosted checkout URL. Never put provider secrets in this file. */
   const idToken=await currentUser.getIdToken();
   const response=await fetch("/api/create-payment",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+idToken},body:JSON.stringify({amount:amount,currency:"NGN",paymentMethod:selectedMethod})});
-  const result=await response.json().catch(()=>({}));
-  if(!response.ok)throw new Error(result.error||result.message||"Secure checkout is not available yet. Please try again later.");
-  if(!result.checkoutUrl||typeof result.checkoutUrl!=="string")throw new Error("The server did not return a valid checkout link.");
+  const responseText=await response.text();
+  let result={};
+  try{result=responseText?JSON.parse(responseText):{};}catch(parseError){result={};}
+  if(!response.ok){
+    const serverMessage=typeof result.error==="string"?result.error:(typeof result.message==="string"?result.message:"");
+    const plainResponse=responseText.replace(/\s+/g," ").trim().slice(0,350);
+    const detail=serverMessage||plainResponse||"The server did not provide an error message.";
+    throw new Error("Checkout request failed (HTTP "+response.status+"): "+detail);
+  }
+  if(!result.checkoutUrl||typeof result.checkoutUrl!=="string")throw new Error("Checkout request succeeded, but the server did not return a checkout URL. Please contact support.");
   const checkoutUrl=new URL(result.checkoutUrl);
   if(checkoutUrl.protocol!=="https:")throw new Error("The checkout link is not secure.");
   /* Allow only the provider's hosted checkout domain once the adult account owner has confirmed its exact official hostname in the server configuration. */
