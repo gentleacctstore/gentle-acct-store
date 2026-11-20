@@ -16,14 +16,28 @@ function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/json; charset=utf-8",
       "Cache-Control": "no-store"
     }
   });
 }
 
-export async function onRequestPost({ request, env }) {
+// Cloudflare Pages general request handler.
+export async function onRequest(context) {
+  const method = context.request.method.toUpperCase();
+
+  if (method !== "POST") {
+    return json({
+      error: "Only POST requests are accepted."
+    }, 405);
+  }
+
+  return handlePost(context);
+}
+
+async function handlePost({ request, env }) {
   try {
+    // Check required server configuration.
     if (
       !env.IDENTIFYORG_API_KEY ||
       !env.FIREBASE_API_KEY ||
@@ -36,6 +50,7 @@ export async function onRequestPost({ request, env }) {
       }, 500);
     }
 
+    // Verify the customer's Firebase session.
     const authorization =
       request.headers.get("Authorization") || "";
 
@@ -83,7 +98,17 @@ export async function onRequestPost({ request, env }) {
       }, 400);
     }
 
-    const body = await request.json();
+    // Read and validate the payment request.
+    let body;
+
+    try {
+      body = await request.json();
+    } catch {
+      return json({
+        error: "Invalid payment request."
+      }, 400);
+    }
+
     const amount = Number(body.amount);
 
     const selectedMethod =
@@ -106,10 +131,13 @@ export async function onRequestPost({ request, env }) {
     }
 
     const customerName =
-      String(customer.displayName || email.split("@")[0]).trim();
+      String(
+        customer.displayName || email.split("@")[0]
+      ).trim();
 
     const siteUrl = new URL(request.url).origin;
 
+    // Create the IdentifyOrg live charge.
     const chargeResponse = await fetch(IDENTIFYORG_URL, {
       method: "POST",
       headers: {
@@ -126,10 +154,26 @@ export async function onRequestPost({ request, env }) {
       })
     });
 
-    const chargeData = await chargeResponse.json();
+    let chargeData;
+
+    try {
+      chargeData = await chargeResponse.json();
+    } catch {
+      console.error(
+        "IdentifyOrg returned an invalid response."
+      );
+
+      return json({
+        error: "IdentifyOrg returned an invalid response."
+      }, 502);
+    }
 
     if (!chargeResponse.ok) {
-      console.error("IdentifyOrg charge error:", chargeData);
+      console.error(
+        "IdentifyOrg charge error:",
+        chargeResponse.status,
+        chargeData
+      );
 
       return json({
         error:
@@ -151,6 +195,7 @@ export async function onRequestPost({ request, env }) {
       }, 502);
     }
 
+    // Validate the hosted checkout URL.
     let parsedUrl;
 
     try {
@@ -170,6 +215,7 @@ export async function onRequestPost({ request, env }) {
       }, 502);
     }
 
+    // Save the pending wallet funding request.
     const fundingRecord = {
       userId: uid,
       amount,
@@ -183,7 +229,6 @@ export async function onRequestPost({ request, env }) {
       createdAt: new Date().toISOString()
     };
 
-    // Create the funding request without overwriting an existing one.
     await firestoreRequest(
       env,
       "/fundingRequests?documentId=" +
@@ -196,6 +241,7 @@ export async function onRequestPost({ request, env }) {
       }
     );
 
+    // Send the checkout URL to payment.html.
     return json({
       checkoutUrl: parsedUrl.href,
       reference,
