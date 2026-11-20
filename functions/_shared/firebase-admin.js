@@ -115,7 +115,7 @@ export async function firestoreRequest(env, path, options = {}) {
   const response = await fetch(firestoreBase(env) + path, {
     ...options,
     headers: {
-      "Authorization": "Bearer " + token,
+      Authorization: "Bearer " + token,
       "Content-Type": "application/json",
       ...(options.headers || {})
     }
@@ -143,47 +143,86 @@ export async function firestoreRequest(env, path, options = {}) {
   return result;
 }
 
+function encodeValue(value) {
+  if (value === null) {
+    return { nullValue: null };
+  }
+
+  if (value instanceof Date) {
+    return { timestampValue: value.toISOString() };
+  }
+
+  if (typeof value === "string") {
+    return { stringValue: value };
+  }
+
+  if (typeof value === "boolean") {
+    return { booleanValue: value };
+  }
+
+  if (typeof value === "number") {
+    if (!Number.isFinite(value)) {
+      throw new Error("Invalid Firestore number.");
+    }
+
+    return Number.isInteger(value)
+      ? { integerValue: String(value) }
+      : { doubleValue: value };
+  }
+
+  if (Array.isArray(value)) {
+    return {
+      arrayValue: {
+        values: value.map(encodeValue)
+      }
+    };
+  }
+
+  if (typeof value === "object") {
+    return {
+      mapValue: {
+        fields: encodeFields(value)
+      }
+    };
+  }
+
+  throw new Error("Unsupported Firestore value.");
+}
+
 export function encodeFields(data) {
   const fields = {};
 
   for (const [key, value] of Object.entries(data)) {
-    if (value === null) {
-      fields[key] = { nullValue: null };
-    } else if (typeof value === "string") {
-      fields[key] = { stringValue: value };
-    } else if (typeof value === "boolean") {
-      fields[key] = { booleanValue: value };
-    } else if (typeof value === "number") {
-      fields[key] = Number.isInteger(value)
-        ? { integerValue: String(value) }
-        : { doubleValue: value };
-    } else if (value instanceof Date) {
-      fields[key] = {
-        timestampValue: value.toISOString()
-      };
-    }
+    fields[key] = encodeValue(value);
   }
 
   return fields;
+}
+
+function decodeValue(value) {
+  if ("stringValue" in value) return value.stringValue;
+  if ("integerValue" in value) return Number(value.integerValue);
+  if ("doubleValue" in value) return value.doubleValue;
+  if ("booleanValue" in value) return value.booleanValue;
+  if ("nullValue" in value) return null;
+  if ("timestampValue" in value) return value.timestampValue;
+
+  if ("arrayValue" in value) {
+    return (value.arrayValue.values || []).map(decodeValue);
+  }
+
+  if ("mapValue" in value) {
+    return decodeFields(value.mapValue.fields || {});
+  }
+
+  return undefined;
 }
 
 export function decodeFields(fields = {}) {
   const result = {};
 
   for (const [key, value] of Object.entries(fields)) {
-    if ("stringValue" in value) {
-      result[key] = value.stringValue;
-    } else if ("integerValue" in value) {
-      result[key] = Number(value.integerValue);
-    } else if ("doubleValue" in value) {
-      result[key] = value.doubleValue;
-    } else if ("booleanValue" in value) {
-      result[key] = value.booleanValue;
-    } else if ("timestampValue" in value) {
-      result[key] = value.timestampValue;
-    } else if ("nullValue" in value) {
-      result[key] = null;
-    }
+    result[key] = decodeValue(value);
   }
 
   return result;
