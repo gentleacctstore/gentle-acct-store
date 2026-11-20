@@ -1,17 +1,9 @@
 
 /**
- * GentleLogs — IdentifyOrg payment webhook
+ * GentleLogs — IdentifyOrg live payment webhook
  *
- * - Verifies IdentifyOrg HMAC signatures.
- * - Checks webhook timestamp and delivery ID.
- * - Accepts only payment.received events.
- * - Matches the payment to a pending funding request.
- * - Verifies amount and NGN currency.
- * - Credits the customer's wallet atomically.
- * - Prevents duplicate wallet credits.
- *
- * Requires:
- * functions/_shared/firebase-admin.js
+ * Verifies signed payment events and credits customer wallets
+ * exactly once using an atomic Firestore commit.
  */
 
 import {
@@ -34,9 +26,8 @@ async function verifySignature(rawBody, signatureHeader, secret) {
     const index = part.indexOf("=");
 
     if (index > 0) {
-      const key = part.slice(0, index).trim();
-      const value = part.slice(index + 1).trim();
-      parts[key] = value;
+      parts[part.slice(0, index).trim()] =
+        part.slice(index + 1).trim();
     }
   }
 
@@ -58,10 +49,7 @@ async function verifySignature(rawBody, signatureHeader, secret) {
   const key = await crypto.subtle.importKey(
     "raw",
     new TextEncoder().encode(secret),
-    {
-      name: "HMAC",
-      hash: "SHA-256"
-    },
+    { name: "HMAC", hash: "SHA-256" },
     false,
     ["sign"]
   );
@@ -72,23 +60,19 @@ async function verifySignature(rawBody, signatureHeader, secret) {
     new TextEncoder().encode(timestamp + "." + rawBody)
   );
 
-  const expectedSignature = Array.from(
-    new Uint8Array(signatureBytes)
-  )
+  const expected = Array.from(new Uint8Array(signatureBytes))
     .map(byte => byte.toString(16).padStart(2, "0"))
     .join("");
 
-  if (
-    expectedSignature.length !== suppliedSignature.length
-  ) {
+  if (expected.length !== suppliedSignature.length) {
     return false;
   }
 
   let difference = 0;
 
-  for (let i = 0; i < expectedSignature.length; i++) {
+  for (let i = 0; i < expected.length; i++) {
     difference |=
-      expectedSignature.charCodeAt(i) ^
+      expected.charCodeAt(i) ^
       suppliedSignature.charCodeAt(i);
   }
 
@@ -103,45 +87,33 @@ export async function onRequestPost({ request, env }) {
       !env.FIREBASE_CLIENT_EMAIL ||
       !env.FIREBASE_PRIVATE_KEY
     ) {
-      console.error("Webhook configuration is incomplete.");
-
-      return json({
-        error: "Webhook configuration is incomplete."
-      }, 503);
+      return json({ error: "Webhook configuration is incomplete." }, 503);
     }
 
     const contentType =
       request.headers.get("content-type") || "";
 
     if (!contentType.toLowerCase().includes("application/json")) {
-      return json({
-        error: "Invalid content type."
-      }, 415);
+      return json({ error: "Invalid content type." }, 415);
     }
 
-    // Read the original body before parsing.
     const rawBody = await request.text();
 
     if (!rawBody || rawBody.length > 1024 * 1024) {
-      return json({
-        error: "Invalid webhook body."
-      }, 400);
+      return json({ error: "Invalid webhook body." }, 400);
     }
 
-    // Verify the provider signature.
     const signature =
       request.headers.get("X-IdentifyOrg-Signature");
 
-    const signatureIsValid = await verifySignature(
-      rawBody,
-      signature,
-      env.IDENTIFYORG_WEBHOOK_SECRET
-    );
-
-    if (!signatureIsValid) {
-      return json({
-        error: "Invalid webhook signature."
-      }, 401);
+    if (
+      !(await verifySignature(
+        rawBody,
+        signature,
+        env.IDENTIFYORG_WEBHOOK_SECRET
+      ))
+    ) {
+      return json({ error: "Invalid webhook signature." }, 401);
     }
 
     let payload;
@@ -149,30 +121,23 @@ export async function onRequestPost({ request, env }) {
     try {
       payload = JSON.parse(rawBody);
     } catch {
-      return json({
-        error: "Invalid JSON payload."
-      }, 400);
+      return json({ error: "Invalid JSON payload." }, 400);
     }
 
-    // Confirm the provider's delivery identifier.
     const headerDeliveryId =
       request.headers.get("X-IdentifyOrg-Delivery");
 
-    const deliveryId = String(
-      headerDeliveryId || payload.id || ""
-    );
+    const deliveryId = String(headerDeliveryId || "");
 
     if (
       !deliveryId ||
       deliveryId !== String(payload.id || "") ||
       !/^[A-Za-z0-9_-]{1,180}$/.test(deliveryId)
     ) {
-      return json({
-        error: "Invalid delivery identifier."
-      }, 400);
+      return json({ error: "Invalid delivery identifier." }, 400);
     }
 
-    // Ignore events that do not represent received payments.
+    // Only received payments can credit a wallet.
     if (payload.event !== "payment.received") {
       return json({
         received: true,
@@ -184,37 +149,33 @@ export async function onRequestPost({ request, env }) {
 
     const reference = String(payment.reference || "");
     const amount = Number(payment.amount);
-    const currency = String(
-      payment.currency || ""
-    ).toUpperCase();
+    const currency = String(payment.currency || "").toUpperCase();
 
+    // Validate the actual payment object documented by IdentifyOrg.
     if (
       !/^[A-Za-z0-9_-]{5,150}$/.test(reference) ||
       !Number.isSafeInteger(amount) ||
       amount < MIN_AMOUNT ||
       amount > MAX_AMOUNT ||
-      currency !== "NGN"
+      currency !== "NGN" ||
+      payment.status !== "success" ||
+      payment.test !== false
     ) {
       return json({
-        error: "Invalid payment details."
+        error: "Payment is not a valid successful live NGN payment."
       }, 400);
     }
 
-    // Find the funding request using the provider reference.
-    const requestPath =
+    // Find the original pending funding request.
+    const fundingPath =
       "/fundingRequests/" + encodeURIComponent(reference);
 
     let fundingDocument;
 
     try {
-      fundingDocument = await firestoreRequest(
-        env,
-        requestPath
-      );
+      fundingDocument = await firestoreRequest(env, fundingPath);
     } catch (error) {
       if (error.status === 404) {
-        // Ask the provider to retry if the matching request
-        // has not appeared in Firestore yet.
         return json({
           error: "Matching funding request not found."
         }, 503);
@@ -223,24 +184,24 @@ export async function onRequestPost({ request, env }) {
       throw error;
     }
 
-    const funding = decodeFields(
-      fundingDocument.fields
-    );
+    const funding = decodeFields(fundingDocument.fields);
 
-    // A request must match this exact payment.
+    // Do not credit a funding request twice.
+    if (funding.status === "approved") {
+      return json({
+        received: true,
+        alreadyProcessed: true
+      });
+    }
+
     if (
       funding.status !== "pending" ||
       funding.paymentMethod !== "identifyorg_checkout" ||
+      funding.reference !== reference ||
       Number(funding.amount) !== amount ||
+      String(funding.currency || "").toUpperCase() !== "NGN" ||
       !funding.userId
     ) {
-      if (funding.status === "approved") {
-        return json({
-          received: true,
-          alreadyProcessed: true
-        });
-      }
-
       return json({
         error: "Payment does not match a pending funding request."
       }, 409);
@@ -249,12 +210,10 @@ export async function onRequestPost({ request, env }) {
     const uid = String(funding.userId);
 
     if (!/^[A-Za-z0-9_-]{1,150}$/.test(uid)) {
-      return json({
-        error: "Invalid customer account."
-      }, 400);
+      return json({ error: "Invalid customer account." }, 400);
     }
 
-    // Check whether this delivery was already processed.
+    // Check whether this exact delivery was already processed.
     const deliveryPath =
       "/webhookDeliveries/" + encodeURIComponent(deliveryId);
 
@@ -269,17 +228,13 @@ export async function onRequestPost({ request, env }) {
       if (error.status !== 404) throw error;
     }
 
-    // Load the customer's existing wallet.
-    const walletPath =
-      "/wallets/" + encodeURIComponent(uid);
+    // Load the customer's wallet.
+    const walletPath = "/wallets/" + encodeURIComponent(uid);
 
     let walletDocument;
 
     try {
-      walletDocument = await firestoreRequest(
-        env,
-        walletPath
-      );
+      walletDocument = await firestoreRequest(env, walletPath);
     } catch (error) {
       if (error.status === 404) {
         return json({
@@ -294,7 +249,7 @@ export async function onRequestPost({ request, env }) {
     const currentBalance = Number(wallet.balance);
 
     if (
-      !Number.isFinite(currentBalance) ||
+      !Number.isSafeInteger(currentBalance) ||
       currentBalance < 0
     ) {
       return json({
@@ -302,6 +257,8 @@ export async function onRequestPost({ request, env }) {
       }, 409);
     }
 
+    // Credit the full amount paid by the customer.
+    // Do not subtract IdentifyOrg's fee or use payment.net.
     const newBalance = currentBalance + amount;
 
     if (!Number.isSafeInteger(newBalance)) {
@@ -312,18 +269,7 @@ export async function onRequestPost({ request, env }) {
 
     const now = new Date().toISOString();
 
-    /*
-     * ATOMIC FIRESTORE COMMIT
-     *
-     * All three operations succeed together or fail together:
-     * 1. Update customer wallet.
-     * 2. Mark funding request approved.
-     * 3. Record unique webhook delivery.
-     *
-     * Document version checks prevent concurrent deliveries
-     * from crediting the same funding request twice.
-     */
-
+    // All three writes succeed together or none do.
     const commitBody = {
       writes: [
         {
@@ -335,10 +281,7 @@ export async function onRequestPost({ request, env }) {
             })
           },
           updateMask: {
-            fieldPaths: [
-              "balance",
-              "updatedAt"
-            ]
+            fieldPaths: ["balance", "updatedAt"]
           },
           currentDocument: {
             updateTime: walletDocument.updateTime
@@ -350,14 +293,22 @@ export async function onRequestPost({ request, env }) {
             fields: encodeFields({
               status: "approved",
               creditedAt: now,
-              verifiedAt: now
+              verifiedAt: now,
+              providerFee: Number(payment.fee || 0),
+              providerNet: Number(payment.net || 0),
+              providerPaymentStatus: payment.status,
+              providerTest: payment.test
             })
           },
           updateMask: {
             fieldPaths: [
               "status",
               "creditedAt",
-              "verifiedAt"
+              "verifiedAt",
+              "providerFee",
+              "providerNet",
+              "providerPaymentStatus",
+              "providerTest"
             ]
           },
           currentDocument: {
@@ -367,12 +318,14 @@ export async function onRequestPost({ request, env }) {
         {
           update: {
             name: firestoreBase(env) +
-              "/webhookDeliveries/" + deliveryId,
+              "/webhookDeliveries/" +
+              encodeURIComponent(deliveryId),
             fields: encodeFields({
               eventId: deliveryId,
-              reference: reference,
+              reference,
               userId: uid,
-              amount: amount,
+              amount,
+              currency,
               event: "payment.received",
               processedAt: now
             })
@@ -384,14 +337,10 @@ export async function onRequestPost({ request, env }) {
       ]
     };
 
-    await firestoreRequest(
-      env,
-      ":commit",
-      {
-        method: "POST",
-        body: JSON.stringify(commitBody)
-      }
-    );
+    await firestoreRequest(env, ":commit", {
+      method: "POST",
+      body: JSON.stringify(commitBody)
+    });
 
     console.log(
       "IdentifyOrg payment successfully processed:",
@@ -400,7 +349,11 @@ export async function onRequestPost({ request, env }) {
 
     return json({
       received: true,
-      credited: true
+      credited: true,
+      reference,
+      amount,
+      currency,
+      newBalance
     });
 
   } catch (error) {
@@ -409,7 +362,6 @@ export async function onRequestPost({ request, env }) {
       error.message || error
     );
 
-    // A failed delivery should be retried by the provider.
     return json({
       error: "Payment processing failed. Please retry delivery."
     }, 500);
