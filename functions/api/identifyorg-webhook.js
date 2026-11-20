@@ -32,9 +32,14 @@ async function verifySignature(rawBody, signatureHeader, secret) {
   }
 
   const timestamp = parts.t;
-  const suppliedSignature = parts.v1;
+  const suppliedSignature = String(parts.v1 || "").toLowerCase();
 
-  if (!timestamp || !suppliedSignature) return false;
+  if (
+    !timestamp ||
+    !/^[a-f0-9]{64}$/.test(suppliedSignature)
+  ) {
+    return false;
+  }
 
   const timestampNumber = Number(timestamp);
 
@@ -87,7 +92,10 @@ export async function onRequestPost({ request, env }) {
       !env.FIREBASE_CLIENT_EMAIL ||
       !env.FIREBASE_PRIVATE_KEY
     ) {
-      return json({ error: "Webhook configuration is incomplete." }, 503);
+      return json(
+        { error: "Webhook configuration is incomplete." },
+        503
+      );
     }
 
     const contentType =
@@ -137,7 +145,7 @@ export async function onRequestPost({ request, env }) {
       return json({ error: "Invalid delivery identifier." }, 400);
     }
 
-    // Only received payments can credit a wallet.
+    // Ignore unrelated webhook event types.
     if (payload.event !== "payment.received") {
       return json({
         received: true,
@@ -151,19 +159,45 @@ export async function onRequestPost({ request, env }) {
     const amount = Number(payment.amount);
     const currency = String(payment.currency || "").toUpperCase();
 
-    // Validate the actual payment object documented by IdentifyOrg.
+    // Validate the payment details before considering a wallet credit.
     if (
-      !/^[A-Za-z0-9_-]{5,150}$/.test(reference) ||
+      !/^mp_[A-Za-z0-9_-]{5,150}$/.test(reference) ||
       !Number.isSafeInteger(amount) ||
       amount < MIN_AMOUNT ||
       amount > MAX_AMOUNT ||
-      currency !== "NGN" ||
-      payment.status !== "success" ||
-      payment.test !== false
+      currency !== "NGN"
     ) {
       return json({
-        error: "Payment is not a valid successful live NGN payment."
+        error: "Invalid payment details."
       }, 400);
+    }
+
+    // Only successful payments can credit a wallet.
+    // Held and failed payments are acknowledged without being credited.
+    if (
+      payment.status === "held" ||
+      payment.status === "failed"
+    ) {
+      return json({
+        received: true,
+        ignored: true,
+        reason: "Payment is not successful."
+      });
+    }
+
+    if (payment.status !== "success") {
+      return json({
+        error: "Unknown payment status."
+      }, 400);
+    }
+
+    // Never credit test payments or payments without an explicit live flag.
+    if (payment.test !== false) {
+      return json({
+        received: true,
+        ignored: true,
+        reason: "Payment is not confirmed as live."
+      });
     }
 
     // Find the original pending funding request.
@@ -176,6 +210,7 @@ export async function onRequestPost({ request, env }) {
       fundingDocument = await firestoreRequest(env, fundingPath);
     } catch (error) {
       if (error.status === 404) {
+        // Retry later if the funding request has not appeared yet.
         return json({
           error: "Matching funding request not found."
         }, 503);
@@ -186,7 +221,7 @@ export async function onRequestPost({ request, env }) {
 
     const funding = decodeFields(fundingDocument.fields);
 
-    // Do not credit a funding request twice.
+    // A previously approved request must never be credited again.
     if (funding.status === "approved") {
       return json({
         received: true,
@@ -213,7 +248,7 @@ export async function onRequestPost({ request, env }) {
       return json({ error: "Invalid customer account." }, 400);
     }
 
-    // Check whether this exact delivery was already processed.
+    // Check whether this exact webhook delivery was already processed.
     const deliveryPath =
       "/webhookDeliveries/" + encodeURIComponent(deliveryId);
 
@@ -257,14 +292,28 @@ export async function onRequestPost({ request, env }) {
       }, 409);
     }
 
-    // Credit the full amount paid by the customer.
-    // Do not subtract IdentifyOrg's fee or use payment.net.
+    // Credit the full customer payment.
+    // IdentifyOrg's business fee is not deducted from the customer's wallet.
     const newBalance = currentBalance + amount;
 
     if (!Number.isSafeInteger(newBalance)) {
       return json({
         error: "Wallet balance calculation is invalid."
       }, 409);
+    }
+
+    const providerFee = Number(payment.fee || 0);
+    const providerNet = Number(payment.net || 0);
+
+    if (
+      !Number.isFinite(providerFee) ||
+      providerFee < 0 ||
+      !Number.isFinite(providerNet) ||
+      providerNet < 0
+    ) {
+      return json({
+        error: "Invalid provider payment fee details."
+      }, 400);
     }
 
     const now = new Date().toISOString();
@@ -294,8 +343,8 @@ export async function onRequestPost({ request, env }) {
               status: "approved",
               creditedAt: now,
               verifiedAt: now,
-              providerFee: Number(payment.fee || 0),
-              providerNet: Number(payment.net || 0),
+              providerFee,
+              providerNet,
               providerPaymentStatus: payment.status,
               providerTest: payment.test
             })
