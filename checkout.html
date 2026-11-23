@@ -389,56 +389,17 @@ main{padding:25px 20px}
   margin-right:5px;
 }
 
-/* LOADING */
+/* LOADING — shared GentleLogs loader is defined below */
 
-#loader{
-  position:fixed;
-  inset:0;
-  z-index:100;
-  background:#0B1120;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  color:white;
-  transition:opacity .3s;
-}
 
-.loader-logo{
-  font-size:29px;
-  font-weight:700;
-  letter-spacing:-1px;
-}
 
-.loader-logo span{color:#E87535}
 
-.loader-line{
-  width:155px;
-  height:4px;
-  border-radius:10px;
-  background:#263044;
-  overflow:hidden;
-  margin-top:25px;
-}
 
-.loader-progress{
-  height:100%;
-  width:40%;
-  border-radius:10px;
-  background:linear-gradient(90deg,#9B5CFF,#E87535);
-  animation:loading 1.1s ease-in-out infinite;
-}
 
-.loader-message{
-  margin-top:13px;
-  font-size:11px;
-  color:#AAB2C2;
-}
 
-@keyframes loading{
-  0%{transform:translateX(-110%)}
-  100%{transform:translateX(260%)}
-}
+
+
+
 
 #message{
   display:none;
@@ -464,12 +425,14 @@ main{padding:25px 20px}
 
 <body>
 
-<div id="loader">
-  <div class="loader-logo">Gentle<span>Logs</span></div>
-  <div class="loader-line">
-    <div class="loader-progress"></div>
+<div id="loader" role="status" aria-live="polite" aria-label="Loading checkout">
+  <div class="loader-content">
+    <div class="loader-spinner" aria-hidden="true"></div>
+    <div class="loader-copy">
+      <div class="loader-title">Preparing your checkout</div>
+      <div class="loader-message">Checking your product and wallet details…</div>
+    </div>
   </div>
-  <div class="loader-message">Preparing your checkout...</div>
 </div>
 
 <div class="shell">
@@ -612,10 +575,13 @@ function showMessage(message){
 }
 
 function hideLoader(){
-  $("loader").style.opacity = "0";
+  const loader = $("loader");
+  if(!loader) return;
+  loader.style.opacity = "0";
+  loader.style.visibility = "hidden";
   setTimeout(() => {
-    $("loader").style.display = "none";
-  },300);
+    loader.style.display = "none";
+  },180);
 }
 
 function getProductId(){
@@ -985,6 +951,75 @@ function showSuccess(purchaseItem,ordersHref){
 $("buyButton").addEventListener("click",completePurchase);
 
 </script>
+
+
+<style id="gentlelogs-shared-loader-style">
+#gentleBuyLoader,#loader{
+  position:fixed!important;
+  inset:auto 14px calc(88px + env(safe-area-inset-bottom)) 14px!important;
+  z-index:500!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:0!important;
+  background:transparent!important;
+  color:#252a30!important;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none!important;
+  transition:opacity .18s ease,visibility .18s ease!important;
+}
+#gentleBuyLoader.is-visible,#loader:not([style*="display: none"]){
+  opacity:1;
+  visibility:visible;
+}
+#gentleBuyLoader .loader-content,#loader .loader-content{
+  width:min(100%,360px)!important;
+  max-width:360px!important;
+  min-height:0!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:12px!important;
+  padding:12px 15px!important;
+  border:1px solid rgba(232,117,53,.16)!important;
+  border-radius:16px!important;
+  background:rgba(255,255,255,.97)!important;
+  color:#252a30!important;
+  text-align:left!important;
+  box-shadow:0 10px 32px rgba(37,42,48,.13)!important;
+  backdrop-filter:blur(14px)!important;
+  -webkit-backdrop-filter:blur(14px)!important;
+}
+#gentleBuyLoader .loader-brand,#loader .loader-brand{display:none!important}
+#gentleBuyLoader .loader-spinner,#loader .loader-spinner{
+  flex:0 0 19px!important;width:19px!important;height:19px!important;
+  margin:0!important;border:2px solid #f4dfd2!important;
+  border-top-color:#e87535!important;border-radius:50%!important;
+  animation:glSharedSpin .75s linear infinite!important;
+}
+#gentleBuyLoader .loader-title,#loader .loader-title{
+  margin:0!important;color:#252a30!important;
+  font-family:"Space Grotesk",sans-serif!important;
+  font-size:12px!important;font-weight:800!important;line-height:1.35!important;
+}
+#gentleBuyLoader .loader-message,#loader .loader-message{
+  margin:3px 0 0!important;color:#777d84!important;
+  font-family:"Space Grotesk",sans-serif!important;
+  font-size:10px!important;line-height:1.4!important;
+}
+#gentleBuyLoader .loader-track,#gentleBuyLoader .loader-caption,
+#loader .loader-track,#loader .loader-caption,
+#loader .loader-line{display:none!important}
+#gentleBuyLoader .loader-copy,#loader .loader-copy{flex:1;min-width:0}
+@keyframes glSharedSpin{to{transform:rotate(360deg)}}
+@media(max-width:600px){
+ #gentleBuyLoader,#loader{inset:auto 12px calc(84px + env(safe-area-inset-bottom)) 12px!important}
+ #gentleBuyLoader .loader-content,#loader .loader-content{padding:11px 13px!important;border-radius:14px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ #gentleBuyLoader .loader-spinner,#loader .loader-spinner{animation:none!important}
+}
+</style>
 
 </body>
 </html>

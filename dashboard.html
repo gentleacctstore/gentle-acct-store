@@ -1263,32 +1263,30 @@ document.addEventListener("keydown",event=>{
 </style>
 
 
-<style id="gentlelogs-lightweight-loading-refresh">
-/* Replace the old full-screen navy loading page with a small, quiet status chip.
-   Existing showGentleLoader()/hideGentleLoader() calls and watchdog remain intact. */
-#gentleBuyLoader,
-body.gentle-loading #gentleBuyLoader{
+
+
+
+<style id="gentlelogs-shared-loader-style">
+#gentleBuyLoader,#loader{
   position:fixed!important;
   inset:auto 14px calc(88px + env(safe-area-inset-bottom)) 14px!important;
   z-index:500!important;
   display:flex!important;
-  align-items:flex-end!important;
+  align-items:center!important;
   justify-content:center!important;
   padding:0!important;
   background:transparent!important;
-  opacity:0!important;
-  visibility:hidden!important;
+  color:#252a30!important;
+  opacity:0;
+  visibility:hidden;
   pointer-events:none!important;
   transition:opacity .18s ease,visibility .18s ease!important;
 }
-#gentleBuyLoader.is-visible,
-body.gentle-loading #gentleBuyLoader{
-  opacity:1!important;
-  visibility:visible!important;
-  pointer-events:none!important;
+#gentleBuyLoader.is-visible,#loader:not([style*="display: none"]){
+  opacity:1;
+  visibility:visible;
 }
-#gentleBuyLoader .loader-content,
-#gentleBuyLoader .gentle-loader-card{
+#gentleBuyLoader .loader-content,#loader .loader-content{
   width:min(100%,360px)!important;
   max-width:360px!important;
   min-height:0!important;
@@ -1305,59 +1303,36 @@ body.gentle-loading #gentleBuyLoader{
   backdrop-filter:blur(14px)!important;
   -webkit-backdrop-filter:blur(14px)!important;
 }
-#gentleBuyLoader .loader-brand{display:none!important}
-#gentleBuyLoader .loader-spinner{
-  flex:0 0 19px!important;
-  width:19px!important;height:19px!important;
-  margin:0!important;
-  border:2px solid #f4dfd2!important;
-  border-top-color:var(--orange,#e87535)!important;
-  border-radius:50%!important;
-  animation:glLightSpin .75s linear infinite!important;
+#gentleBuyLoader .loader-brand,#loader .loader-brand{display:none!important}
+#gentleBuyLoader .loader-spinner,#loader .loader-spinner{
+  flex:0 0 19px!important;width:19px!important;height:19px!important;
+  margin:0!important;border:2px solid #f4dfd2!important;
+  border-top-color:#e87535!important;border-radius:50%!important;
+  animation:glSharedSpin .75s linear infinite!important;
 }
-#gentleBuyLoader .loader-title{
+#gentleBuyLoader .loader-title,#loader .loader-title{
   margin:0!important;color:#252a30!important;
   font-family:"Space Grotesk",sans-serif!important;
-  font-size:12px!important;font-weight:800!important;
-  line-height:1.35!important;
+  font-size:12px!important;font-weight:800!important;line-height:1.35!important;
 }
-#gentleBuyLoader .loader-message{
+#gentleBuyLoader .loader-message,#loader .loader-message{
   margin:3px 0 0!important;color:#777d84!important;
+  font-family:"Space Grotesk",sans-serif!important;
   font-size:10px!important;line-height:1.4!important;
 }
-#gentleBuyLoader .loader-track,
-#gentleBuyLoader .loader-caption{display:none!important}
-#gentleBuyLoader .loader-copy,
-#gentleBuyLoader .loader-text{flex:1;min-width:0}
-body.gentle-loading{overflow-x:hidden!important;overflow-y:auto!important}
-@keyframes glLightSpin{to{transform:rotate(360deg)}}
+#gentleBuyLoader .loader-track,#gentleBuyLoader .loader-caption,
+#loader .loader-track,#loader .loader-caption,
+#loader .loader-line{display:none!important}
+#gentleBuyLoader .loader-copy,#loader .loader-copy{flex:1;min-width:0}
+@keyframes glSharedSpin{to{transform:rotate(360deg)}}
 @media(max-width:600px){
-  #gentleBuyLoader{inset:auto 12px calc(84px + env(safe-area-inset-bottom)) 12px!important}
-  #gentleBuyLoader .loader-content,
-  #gentleBuyLoader .gentle-loader-card{padding:11px 13px!important;border-radius:14px!important}
+ #gentleBuyLoader,#loader{inset:auto 12px calc(84px + env(safe-area-inset-bottom)) 12px!important}
+ #gentleBuyLoader .loader-content,#loader .loader-content{padding:11px 13px!important;border-radius:14px!important}
 }
 @media(prefers-reduced-motion:reduce){
-  #gentleBuyLoader .loader-spinner{animation:none!important}
+ #gentleBuyLoader .loader-spinner,#loader .loader-spinner{animation:none!important}
 }
 </style>
-<script id="gentlelogs-loading-markup-adapter">
-/* Support the existing loader markup without changing its JavaScript API. */
-(function(){
-  var loader=document.getElementById("gentleBuyLoader");
-  if(!loader)return;
-  var content=loader.querySelector(".loader-content")||loader.querySelector(".gentle-loader-card");
-  if(!content)return;
-  var title=content.querySelector(".loader-title");
-  var message=content.querySelector(".loader-message");
-  if(title&&message&&!content.querySelector(".loader-copy")){
-    var copy=document.createElement("div");
-    copy.className="loader-copy";
-    title.parentNode.insertBefore(copy,title);
-    copy.appendChild(title);
-    copy.appendChild(message);
-  }
-})();
-</script>
 
 </body>
 </html>
