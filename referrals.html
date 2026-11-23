@@ -140,31 +140,73 @@ body{font-family:"Space Grotesk",system-ui,sans-serif;background:#f3f4f8;color:#
 @media(max-width:380px){.page{padding-left:12px;padding-right:12px}.hero-stats strong{font-size:15px}.reward{font-size:17px}.panel{padding:11px}.how-panel .steps{gap:5px}}
 
 
-/* GentleLogs branded page-loading screen */
-body.page-loading{overflow:hidden}
-#pageLoader{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px;background:radial-gradient(circle at 50% 38%,#172c4d 0%,#0b1427 48%,#070d19 100%);color:#fff;transition:opacity .35s ease,visibility .35s ease}
-#pageLoader.is-hidden{opacity:0;visibility:hidden;pointer-events:none}
-.loader-inner{width:min(290px,85vw);text-align:center}
-.loader-logo{width:58px;height:58px;margin:0 auto 17px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(145deg,#20c878,#087f43);box-shadow:0 10px 35px #18bd7650;font-size:29px;font-weight:900;color:#fff}
-.loader-brand{font-size:21px;font-weight:900;letter-spacing:-.8px}
-.loader-brand span{color:#39d98a}
-.loader-message{margin-top:9px;color:#aab8cc;font-size:11px;letter-spacing:.2px}
-.loader-track{height:5px;margin:24px auto 0;overflow:hidden;border-radius:20px;background:#ffffff18}
-.loader-track span{display:block;width:42%;height:100%;border-radius:20px;background:linear-gradient(90deg,#8b5cf6,#26d98a);animation:loaderTravel 1.25s ease-in-out infinite}
-@keyframes loaderTravel{0%{transform:translateX(-110%)}100%{transform:translateX(260%)}}
-@media(prefers-reduced-motion:reduce){#pageLoader,.loader-track span{transition:none;animation:none}}
+
+/* GentleLogs homepage visual system — referrals */
+:root{
+  --orange:#E87535;--orange-dark:#C96532;--orange-soft:#FFF1E8;
+  --ink:#252A30;--muted:#9298A2;--line:#F0EEEB;--bg:#FFFCFA;
+  --green:#168A58;--purple:#E87535;--purple-bg:#FFF1E8;
+  --pink:#E87535;--blue:#C96532;--blue-bg:#FFF1E8;
+  --amber:#B9791E;--amber-bg:#FFF5E6;
+}
+body{background:var(--bg);color:var(--ink);font-family:"Space Grotesk",system-ui,sans-serif}
+.page{width:min(100%,720px);background:var(--bg);padding:17px 18px 108px}
+.topbar{min-height:48px}
+.back,.top-icon{border-color:var(--line);background:#fff;box-shadow:0 3px 12px rgba(37,42,48,.035)}
+.top-icon{color:var(--orange-dark)}
+.brand-mark{background:linear-gradient(145deg,#F29A64,var(--orange-dark));box-shadow:0 6px 15px rgba(232,117,53,.18)}
+.brand-name span{color:var(--orange-dark)}
+.intro{margin:24px 1px 16px}
+.eyebrow{color:var(--orange-dark);letter-spacing:1.8px}
+h1{color:var(--ink);font-size:27px}
+.intro p{font-size:11px;color:var(--muted)}
+.referral-hero{background:linear-gradient(125deg,#252A30 0%,#343B43 68%,#4A3B34 100%);border:1px solid rgba(232,117,53,.18);box-shadow:0 12px 28px rgba(37,42,48,.10)}
+.referral-hero:after{border-color:rgba(255,255,255,.13);box-shadow:0 0 0 23px rgba(232,117,53,.06),0 0 0 48px rgba(255,255,255,.025)}
+.hero-label{color:#FFD7C1}
+.reward{font-size:21px}
+.hero-note{color:#E8DCD5}
+.hero-stats>div{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.08)}
+.hero-stats span{color:#E8DCD5}
+.progress-panel,.panel,.stat{background:#fff;border-color:var(--line);box-shadow:0 5px 22px rgba(37,42,48,.045)}
+.progress-panel{margin-top:13px;padding:15px;border-radius:17px}
+.panel{border-radius:19px}
+.panel-head strong{color:var(--orange-dark)}
+.progress-track{background:#F7EDE7}
+.progress-track span{background:linear-gradient(90deg,#E87535,#F6A36F)}
+.code-badge{background:var(--orange-soft);color:var(--orange-dark)}
+.code-line{border-color:#F1D5C4;background:#FFFCFA}
+.code-line strong{color:var(--orange-dark)}
+.code-line button{background:var(--orange-soft);color:var(--orange-dark)}
+.copy-btn{background:linear-gradient(135deg,#E87535,#C96532);box-shadow:0 5px 12px rgba(232,117,53,.16)}
+.share-btn{background:var(--orange-soft);color:var(--orange-dark)}
+.step{background:#FFFCFA;border:1px solid #F6E9E0}
+.step-num{background:var(--orange-soft);color:var(--orange-dark)}
+.how-panel{background:linear-gradient(135deg,#fff 0%,#FFFCFA 100%)}
+.how-panel .step{background:#FFF8F3}
+.how-panel .step-num{background:#FFEBDD;color:var(--orange-dark)}
+.leader-rank{background:#FFF1E8;color:var(--orange-dark)}
+.avatar{background:#FFF1E8;color:var(--orange-dark)}
+.toolbar h2{color:var(--ink)}
+.refresh{color:var(--orange-dark);border-color:#F0DCCF}
+.filter.active{background:var(--orange-soft);color:var(--orange-dark);border-color:#F5D7C4}
+.ref-row{border-color:var(--line);box-shadow:0 3px 12px rgba(37,42,48,.025)}
+.bottom-nav{width:min(100%,720px);max-width:720px;border-color:var(--line);box-shadow:0 -5px 22px rgba(37,42,48,.045)}
+.nav-item.active{color:var(--orange-dark)}
+.toast{background:#252A30;border:1px solid rgba(232,117,53,.35)}
+.empty{background:#FFFCFA;border-color:#F0DCCF}
+@media(max-width:380px){.page{padding-left:13px;padding-right:13px}.reward{font-size:18px}}
+@media(prefers-reduced-motion:no-preference){
+  .referral-hero{animation:referralEnter .55s ease both}
+  .panel,.progress-panel,.stat{animation:referralEnter .45s ease both}
+  .copy-btn,.share-btn,.refresh,.filter{transition:transform .18s ease,background .18s ease,box-shadow .18s ease}
+  .copy-btn:active,.share-btn:active,.refresh:active{transform:scale(.98)}
+}
+@keyframes referralEnter{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
 
 </style>
 </head>
-<body class="page-loading">
+<body>
 
-<div id="pageLoader" role="status" aria-live="polite" aria-label="Loading GentleLogs referrals">
-  <div class="loader-inner">
-    <div class="loader-logo">G</div>
-    <div class="loader-brand">Gentle<span>Logs</span></div>
-    <div class="loader-message" id="loaderMessage">Preparing your rewards…</div>
-    <div class="loader-track"><span></span></div>
-  </div>
 </div>
 
 <main class="page">
@@ -266,13 +308,6 @@ body.page-loading{overflow:hidden}
   let toastTimer;
   let authResolved = false;
 
-  function hidePageLoader(message) {
-    const loader = $("pageLoader");
-    if (message) $("loaderMessage").textContent = message;
-    loader.classList.add("is-hidden");
-    document.body.classList.remove("page-loading");
-    window.setTimeout(() => loader.remove(), 450);
-  }
 
   function toast(message) {
     const el = $("toast");
@@ -493,13 +528,11 @@ body.page-loading{overflow:hidden}
   if (!window.firebaseAuth || !window.firebaseDB) {
     $("referralList").innerHTML = '<div class="empty"><strong>Firebase is not available</strong>Check that the Firebase compat scripts and firebase.js are loading correctly.</div>';
     notice("Firebase could not initialize. Your referral page is not connected yet.", "error");
-    hidePageLoader("Unable to connect. Please refresh.");
     return;
   }
 
   firebaseAuth.onAuthStateChanged(async user => {
     if (!user) {
-      $("loaderMessage").textContent = "Opening secure login…";
       window.location.replace("login.html");
       return;
     }
@@ -514,7 +547,6 @@ body.page-loading{overflow:hidden}
       notice("Some referral information could not be loaded. Please refresh.", "error");
     } finally {
       authResolved = true;
-      hidePageLoader("Your rewards are ready");
     }
   });
 })();
