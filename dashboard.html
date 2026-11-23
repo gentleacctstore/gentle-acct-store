@@ -302,6 +302,75 @@ body{
   .product-card{transition:none}
 }
 
+
+/* Shared GentleLogs compact loader */
+#gentleBuyLoader,#loader{
+  position:fixed!important;
+  inset:auto 14px calc(88px + env(safe-area-inset-bottom)) 14px!important;
+  z-index:500!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:0!important;
+  background:transparent!important;
+  color:#252a30!important;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none!important;
+  transition:opacity .18s ease,visibility .18s ease!important;
+}
+#gentleBuyLoader.is-visible,#loader.is-visible{
+  opacity:1!important;
+  visibility:visible!important;
+  pointer-events:auto!important;
+}
+#gentleBuyLoader .loader-content,#loader .loader-content{
+  width:min(100%,360px)!important;
+  max-width:360px!important;
+  min-height:0!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:12px!important;
+  padding:12px 15px!important;
+  border:1px solid rgba(232,117,53,.16)!important;
+  border-radius:16px!important;
+  background:rgba(255,255,255,.97)!important;
+  color:#252a30!important;
+  text-align:left!important;
+  box-shadow:0 10px 32px rgba(37,42,48,.13)!important;
+  backdrop-filter:blur(14px)!important;
+  -webkit-backdrop-filter:blur(14px)!important;
+}
+#gentleBuyLoader .loader-brand,#loader .loader-brand{display:none!important}
+#gentleBuyLoader .loader-spinner,#loader .loader-spinner{
+  flex:0 0 19px!important;width:19px!important;height:19px!important;
+  margin:0!important;border:2px solid #f4dfd2!important;
+  border-top-color:#e87535!important;border-right-color:#e87535!important;
+  border-radius:50%!important;animation:glSharedSpin .75s linear infinite!important;
+}
+#gentleBuyLoader .loader-title,#loader .loader-title{
+  margin:0!important;color:#252a30!important;
+  font-family:"Space Grotesk",sans-serif!important;
+  font-size:12px!important;font-weight:800!important;line-height:1.35!important;
+}
+#gentleBuyLoader .loader-message,#loader .loader-message{
+  margin:3px 0 0!important;color:#777d84!important;
+  font-family:"Space Grotesk",sans-serif!important;
+  font-size:10px!important;line-height:1.4!important;
+}
+#gentleBuyLoader .loader-track,#gentleBuyLoader .loader-caption,
+#loader .loader-track,#loader .loader-caption,#loader .loader-line{display:none!important}
+#gentleBuyLoader .loader-copy,#loader .loader-copy{flex:1;min-width:0}
+body.gentle-loading{overflow:auto!important}
+@keyframes glSharedSpin{to{transform:rotate(360deg)}}
+@media(max-width:600px){
+ #gentleBuyLoader,#loader{inset:auto 12px calc(84px + env(safe-area-inset-bottom)) 12px!important}
+ #gentleBuyLoader .loader-content,#loader .loader-content{padding:11px 13px!important;border-radius:14px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ #gentleBuyLoader .loader-spinner,#loader .loader-spinner{animation:none!important}
+}
+
 </style>
 </head>
 
@@ -792,6 +861,12 @@ const gentleLoaderWatchdog=setTimeout(function(){
     if(messageEl)messageEl.innerHTML='The dashboard is taking longer than expected. <button type="button" onclick="window.location.reload()" style="display:block;margin:16px auto 0;padding:10px 18px;border:0;border-radius:12px;background:#E87535;color:#fff;font-weight:800">Try again</button>';
   }
 },20000);
+
+// Clear the transition loader when leaving this page or restoring it from BFCache.
+window.addEventListener("pagehide",hideGentleLoader);
+window.addEventListener("pageshow",function(){
+  if(document.visibilityState==="visible") hideGentleLoader();
+});
 
 function buyProduct(productId) {
   const product = products.find(item => item.id === productId);

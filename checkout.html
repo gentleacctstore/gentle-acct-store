@@ -425,7 +425,7 @@ main{padding:25px 20px}
 
 <body>
 
-<div id="loader" role="status" aria-live="polite" aria-label="Loading checkout">
+<div id="loader" class="is-visible" role="status" aria-live="polite" aria-label="Loading checkout">
   <div class="loader-content">
     <div class="loader-spinner" aria-hidden="true"></div>
     <div class="loader-copy">
@@ -574,15 +574,30 @@ function showMessage(message){
   $("message").style.display = "block";
 }
 
+function showLoader(title,message){
+  const loader = $("loader");
+  if(!loader) return;
+  const titleEl = loader.querySelector(".loader-title");
+  const messageEl = loader.querySelector(".loader-message");
+  if(title && titleEl) titleEl.textContent = title;
+  if(message && messageEl) messageEl.textContent = message;
+  loader.style.display = "flex";
+  loader.classList.add("is-visible");
+  loader.setAttribute("aria-hidden","false");
+}
 function hideLoader(){
   const loader = $("loader");
   if(!loader) return;
-  loader.style.opacity = "0";
-  loader.style.visibility = "hidden";
+  loader.classList.remove("is-visible");
+  loader.setAttribute("aria-hidden","true");
   setTimeout(() => {
-    loader.style.display = "none";
+    if(!loader.classList.contains("is-visible")) loader.style.display = "none";
   },180);
 }
+
+// Never leave a stale loader visible when navigating back or restoring this page.
+window.addEventListener("pagehide",hideLoader);
+window.addEventListener("pageshow",hideLoader);
 
 function getProductId(){
   const params = new URLSearchParams(location.search);
@@ -739,6 +754,7 @@ async function completePurchase(){
   purchaseInProgress = true;
   button.disabled = true;
   button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
+  showLoader("Processing your purchase","Please wait while GentleLogs confirms your order.");
 
   try{
     const productRef = db.collection("products").doc(selectedProduct.id);
@@ -913,6 +929,7 @@ async function completePurchase(){
     showMessage(error.message || "Purchase could not be completed.");
   }finally{
     purchaseInProgress = false;
+    hideLoader();
   }
 }
 
@@ -969,7 +986,7 @@ $("buyButton").addEventListener("click",completePurchase);
   pointer-events:none!important;
   transition:opacity .18s ease,visibility .18s ease!important;
 }
-#gentleBuyLoader.is-visible,#loader:not([style*="display: none"]){
+#gentleBuyLoader.is-visible,#loader.is-visible){
   opacity:1;
   visibility:visible;
 }
